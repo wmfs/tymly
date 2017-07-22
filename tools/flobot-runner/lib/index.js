@@ -3,6 +3,7 @@ const flobot = require('flobot')
 const config = require('config')
 const process = require('process')
 const jwt = require('jsonwebtoken')
+const Buffer = require('safe-buffer').Buffer
 
 flobot.boot(
   config,
