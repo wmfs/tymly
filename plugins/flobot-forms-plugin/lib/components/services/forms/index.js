@@ -6,12 +6,11 @@
 // var _ = require ('lodash');
 
 class FormsService {
-
   boot (options, callback) {
     this.forms = {}
 
-    const formDefinitions = options.blueprintComponents.forms || {};
-    let formDefinition;
+    const formDefinitions = options.blueprintComponents.forms || {}
+    let formDefinition
 
     for (let formId in formDefinitions) {
       if (formDefinitions.hasOwnProperty(formId)) {
@@ -23,7 +22,6 @@ class FormsService {
 
     callback(null)
   }
-
 }
 
 module.exports = {
@@ -37,4 +35,3 @@ module.exports = {
 
   bootBefore: ['flobots', 'rbac']
 }
-
