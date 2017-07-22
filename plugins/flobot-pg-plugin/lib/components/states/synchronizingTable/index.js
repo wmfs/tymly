@@ -39,7 +39,6 @@ class synchronizingTable {
   }
 
   leave (flobot, data, callback) {
-    const ctx = flobot.ctx
     console.log('Leave Synchronizing table')
     callback(null)
   }
