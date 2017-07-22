@@ -5,6 +5,7 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "body-parser": "^1.15.2",
     "cpr": "^2.0.2",
     "dottie": "^1.1.1",
@@ -17,9 +18,8 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-standard": "^10.0.0",
+    "gulp-mocha": "^4.3.1",
     "chai": "3.2.0",
-    "istanbul": "0.3.18",
-    "mocha": "2.2.5",
     "restler": "^3.4.0",
     "flobot": "0.0.11",
     "flobot-forms-plugin": "0.0.4",
@@ -27,7 +27,7 @@
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

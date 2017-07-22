@@ -8,6 +8,7 @@
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "async": "^2.5.0",
     "camelcase-keys": "^4.1.0",
     "csv-string": "^2.3.2",
@@ -18,14 +19,14 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
     "gulp-standard": "^10.0.0",
     "chai": "^4.1.0",
-    "mocha": "^3.4.2",
     "pg": "^6.4.1"
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

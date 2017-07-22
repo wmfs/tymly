@@ -1,9 +1,21 @@
 {
   "files": {
+    "lib/relationize/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
+    "lib/relationize/README.md": "50476f9c5b97eb5d1db7d984a96d8321d34edcde",
     "lib/relationize/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
-    "lib/relationize/package-deps.json": "ba708cf5a248de232e64343af4dbc15049f27164",
-    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
-    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+    "lib/relationize/lib/index.js": "9628670693e233250d8aec76fa873cecb843172c",
+    "lib/relationize/lib/loader/index.js": "0710de70da7c52ca1fb94337837d22e5205b7626",
+    "lib/relationize/lib/loader/load-from-schema-files.js": "811cf157d00a9a678d259c851862f4974f97f558",
+    "lib/relationize/lib/parser.js": "0dc12b9797b2d8148491ff2d5a367eea9e6782ac",
+    "lib/relationize/package-deps.json": "3970a9afd41c4b43ea976a09d4f14ba2ba0f5a9e",
+    "lib/relationize/package.json": "d239b39a19e72d567517a7915e667acb839fab40",
+    "lib/relationize/test/basic-tests.js": "b9bd5358dcf290a2744ea6ea9afaa766cd5a672e",
+    "lib/relationize/test/fixtures/planet/planet.json": "6f710ceb3d8787a9eed0105973df10962be10b94",
+    ".gitignore": "fbdc4979ace6be2ed72a73c8ef7287a960e1bc6f",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e",
+    "README.md": "7c55e387f1f40a8d898f490cbc6d2e1c1fdd8016",
+    "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
+    "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
   "arguments": "gulp test --color"
 }

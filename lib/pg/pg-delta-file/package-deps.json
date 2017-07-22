@@ -1,9 +1,23 @@
 {
   "files": {
+    "lib/pg/pg-delta-file/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
+    "lib/pg/pg-delta-file/README.md": "2357296b66bdad7d3fe8c013e6cdc14aa777323c",
     "lib/pg/pg-delta-file/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
-    "lib/pg/pg-delta-file/package-deps.json": "6be23e406c4d51df1c05771339e53c3c13a38984",
-    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
-    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+    "lib/pg/pg-delta-file/lib/Transformer.js": "069efbca75d11829d19d9561e2b081c93e8e3785",
+    "lib/pg/pg-delta-file/lib/generate-delta.js": "64d55a14a4001eecdcecceaf79cbaf82ae084830",
+    "lib/pg/pg-delta-file/lib/index.js": "e9382c4b9ab52b7c039832758aebaa5608de8753",
+    "lib/pg/pg-delta-file/lib/simple-csv-encoder.js": "bd9463697790731e634ed8ba3e4dbe9ca8405770",
+    "lib/pg/pg-delta-file/package-deps.json": "705a1144a87189e1c67e7b261299001221ece6b6",
+    "lib/pg/pg-delta-file/package.json": "2d336fc20e9a6ff89a016b151343639b1a26087b",
+    "lib/pg/pg-delta-file/test/fixtures/install-test-schemas.sql": "1256fb85057d33a70a9f6c18a6b9d38eb3c1c87f",
+    "lib/pg/pg-delta-file/test/fixtures/sql-script-runner.js": "2deb809658823aa07edcb44d8270d504b615f56d",
+    "lib/pg/pg-delta-file/test/fixtures/uninstall-test-schemas.sql": "4134cb3ea86e61112e923d969bf8a767a1ad4352",
+    "lib/pg/pg-delta-file/test/tests.js": "a1c878fb8a34fb4c7d16b15edca1de7010a9debb",
+    ".gitignore": "fbdc4979ace6be2ed72a73c8ef7287a960e1bc6f",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e",
+    "README.md": "7c55e387f1f40a8d898f490cbc6d2e1c1fdd8016",
+    "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
+    "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
   "arguments": "gulp test --color"
 }

@@ -9,6 +9,7 @@
   ],
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "async": "^2.4.1",
     "chai-subset": "^1.5.0",
     "dottie": "^2.0.0",
@@ -16,15 +17,15 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
     "gulp-standard": "^10.0.0",
     "chai": "3.2.0",
-    "mocha": "2.2.5",
     "pg": "^6.2.3",
     "pg-diff-sync": "0.0.8"
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

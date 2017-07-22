@@ -9,6 +9,7 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "async": "^2.4.1",
     "csv-streamify": "^3.0.4",
     "csv-string": "^2.3.2",
@@ -22,14 +23,14 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
     "gulp-standard": "^10.0.0",
     "chai": "3.2.0",
-    "chai-subset": "^1.5.0",
-    "mocha": "2.2.5"
+    "chai-subset": "^1.5.0"
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

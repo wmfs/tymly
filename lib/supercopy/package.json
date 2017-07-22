@@ -12,6 +12,7 @@
   ],
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "async": "^2.4.1",
     "csv-string": "^2.3.2",
     "first-line": "^1.0.2",
@@ -20,13 +21,13 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-mocha": "^4.3.1",
     "gulp-standard": "^10.0.0",
-    "chai": "3.2.0",
-    "mocha": "2.2.5"
+    "chai": "3.2.0"
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

@@ -5,19 +5,19 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
+    "boom": "^5.2.0",
     "nodemailer": "^2.7.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-standard": "^10.0.0",
+    "gulp-mocha": "^4.3.1",
     "chai": "3.2.0",
-    "istanbul": "0.3.18",
-    "mocha": "2.2.5",
     "flobot": "0.0.11"
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test"
+    "test": "gulp test standard"
   },
   "license": "MIT",
   "repository": {

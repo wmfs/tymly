@@ -1,10 +1,28 @@
 {
   "files": {
+    "plugins/flobot-forms-plugin/LICENSE.md": "8be925e7b2cab226ec368bfb706d8612519bda18",
+    "plugins/flobot-forms-plugin/README.md": "b6b4282b90a02c7de69dc504d9ea9f32943d6a9b",
+    "plugins/flobot-forms-plugin/gulpfile.js": "48768cc3aa421402c295baacea1d27cb9cfd7388",
+    "plugins/flobot-forms-plugin/lib/components/services/forms/doc/index.js": "0217eb7e0c31981d6837bb7657542f0d46f28974",
     "plugins/flobot-forms-plugin/lib/components/services/forms/index.js": "e81fbdc612ee26d4a5389daf4882c295fe79b983",
+    "plugins/flobot-forms-plugin/lib/components/states/form-filling/doc/example.json": "e2e2005e371e496ed774a1e5c6d84cf32a7966ab",
+    "plugins/flobot-forms-plugin/lib/components/states/form-filling/doc/index.js": "eb2ce7692fddd9df36f86cfab3a26953b0a4102d",
     "plugins/flobot-forms-plugin/lib/components/states/form-filling/index.js": "c4e61b0bde51ef267d2fa4d956194983570aa4b4",
+    "plugins/flobot-forms-plugin/lib/components/states/form-filling/schema.json": "78f55c0a4f4de70017d19c1ac9a51248adb14c2f",
+    "plugins/flobot-forms-plugin/lib/index.js": "f177540aae34806592c5bb8cb2016057d528ddf9",
+    "plugins/flobot-forms-plugin/package-deps.json": "cf8e15adeec87bbf310ab70db48e1487b28edbe5",
+    "plugins/flobot-forms-plugin/package.json": "4373436b06304fec69b7387b009fbaba9bc410c0",
+    "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/blueprint.json": "18a19e988b25722d2167c610f301cbee32712004",
+    "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/flows/simple-form.json": "e406db5d982dd4e97b35144d810bfca56d333d38",
+    "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/forms/simple-form.json": "458e94be57505e8b62f3f8452ca1e6c0fdfb663d",
+    "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/models/simple-form.json": "31d24d2e944aa4ec2b8ec97dcd18d8fd06e2ea64",
     "plugins/flobot-forms-plugin/test/forms-spec.js": "07fbd4fad28e9d84fb7526ad7ebb323eb20e2e03",
-    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
-    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+    "plugins/flobot-forms-plugin/test/mocha.opts": "4848113e5152ed536134ada5f13bc05f6b158dc1",
+    ".gitignore": "fbdc4979ace6be2ed72a73c8ef7287a960e1bc6f",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e",
+    "README.md": "7c55e387f1f40a8d898f490cbc6d2e1c1fdd8016",
+    "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
+    "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
   "arguments": "gulp test --color"
 }
