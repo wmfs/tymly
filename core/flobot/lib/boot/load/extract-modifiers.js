@@ -33,4 +33,3 @@ module.exports = function extractModifiers (components) {
 
   return modifierFunctions
 }
-

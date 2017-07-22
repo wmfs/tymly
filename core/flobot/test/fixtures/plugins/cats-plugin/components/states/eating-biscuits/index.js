@@ -1,7 +1,6 @@
 'use strict'
 
 class EatingBiscuits {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

@@ -11,7 +11,6 @@ class ValueCommand {
     const ctx = flobot.ctx
     callback(null, dottie.get(ctx, this.valuePath))
   }
-
 }
 
 module.exports = {

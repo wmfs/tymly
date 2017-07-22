@@ -1,7 +1,6 @@
 'use strict'
 
 class DrinkingWater {
-
   init (stateConfig, options, callback) {
     callback(null)
   }
@@ -15,7 +14,6 @@ class DrinkingWater {
     console.log(' * And to finish the meal, ' + ctx.petName + ' had some water')
     callback(null)
   }
-
 }
 
 module.exports = {

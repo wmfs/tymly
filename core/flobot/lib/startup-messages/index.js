@@ -2,7 +2,6 @@
 const util = require('util')
 
 class StartupMessages {
-
   constructor () {
     this.reset()
   }
@@ -110,4 +109,3 @@ class StartupMessages {
 }
 
 module.exports = new StartupMessages()
-

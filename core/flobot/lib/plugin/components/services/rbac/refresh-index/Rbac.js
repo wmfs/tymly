@@ -4,7 +4,6 @@ const _ = require('lodash')
 const dottie = require('dottie')
 
 class Rbac {
-
   constructor (data) {
     const _this = this
 
@@ -110,8 +109,6 @@ class Rbac {
 
     console.log('')
   }
-
 }
 
 module.exports = Rbac
-

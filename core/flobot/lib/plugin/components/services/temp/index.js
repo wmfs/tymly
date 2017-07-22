@@ -13,7 +13,6 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 
 class TempService {
-
   boot (options, callback) {
     options.messages.info('Discovering:')
 
@@ -65,11 +64,9 @@ class TempService {
       }
     )
   }
-
 }
 
 module.exports = {
   schema: schema,
   serviceClass: TempService
 }
-

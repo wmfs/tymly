@@ -8,7 +8,6 @@ const async = require('async')
 // TODO: Validate that initialStateId actually points to a valid state ID
 
 class Fsm {
-
   constructor (initialStateId, graph, options) {
     const expressionService = options.services.expression
     this.states = {}
@@ -179,7 +178,6 @@ class Fsm {
       }
     )
   }
-
 }
 
 module.exports = Fsm

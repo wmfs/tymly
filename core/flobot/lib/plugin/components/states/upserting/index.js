@@ -2,9 +2,9 @@
 
 const _ = require('lodash')
 const schema = require('./schema.json')
+const boom = require('boom')
 
 class Upserting {
-
   init (stateConfig, options, callback) {
     this.modelId = stateConfig.options.modelId
 
@@ -14,12 +14,7 @@ class Upserting {
       this.model = options.services.storage.models[this.modelId]
       callback(null)
     } else {
-      callback(
-        {
-          name: 'unknownModel',
-          message: "Unable to initialize Persisting state... unknown model '" + this.modelId + "'"
-        }
-      )
+      callback(boom.notFound("Unable to initialize Persisting state... unknown model '" + this.modelId + "'", {modelId: this.modelId}))
     }
   }
 
@@ -29,12 +24,7 @@ class Upserting {
       flobot,
       function (err, options) {
         if (err) {
-          callback(
-            {
-              name: 'options',
-              message: "Failed to derive runtime options in 'persisting' state",
-              body: err
-            })
+          callback(boom.internal("Failed to derive runtime options in 'persisting' state"))
         } else {
           if (options.doc) {
             const docToPersist = _.cloneDeep(options.doc)
@@ -54,7 +44,7 @@ class Upserting {
               }
             )
           } else {
-            callback({name: 'noData', message: 'Unable to save document - no document supplied'})
+            callback(boom.badData('Unable to save document - no document supplied'))
           }
         }
       }

@@ -14,7 +14,6 @@ class Expression {
 }
 
 class ExpressionService {
-
   boot (options, callback) {
     callback(null)
   }
@@ -32,10 +31,8 @@ class ExpressionService {
   parse (expression) {
     return new Expression(expression)
   }
-
 }
 
 module.exports = {
   serviceClass: ExpressionService
 }
-

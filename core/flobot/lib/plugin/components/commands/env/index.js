@@ -1,9 +1,9 @@
 'use strict'
 const process = require('process')
 const schema = require('./schema.json')
+const boom = require('boom')
 
 class EnvCommand {
-
   constructor (envConfig) {
     this.envVariableName = envConfig.variableName
     if (envConfig.hasOwnProperty('failIfNotSet')) {
@@ -19,16 +19,12 @@ class EnvCommand {
       callback(null, value)
     } else {
       if (this.failIfNotSet) {
-        callback({
-          name: 'environmentVariableNotSet',
-          message: 'Expected $' + this.envVariableName + ' to be set'
-        })
+        callback(boom.notFound('Expected $' + this.envVariableName + ' to be set', {envVariableName: this.envVariableName}))
       } else {
         callback(null)
       }
     }
   }
-
 }
 
 module.exports = {

@@ -42,7 +42,9 @@ describe('Simple Flobot test', function () {
   it('should fail finding dog flow by id', function () {
     flobot.findFlowById('fbotTest_dog_1_0',
       function (err) {
-        expect(err.name).to.eql('unknownFlow')
+        expect(err).to.be.an('error')
+        expect(err.message).to.eql("Unable to find flow with id 'fbotTest_dog_1_0'")
+        expect(err.output.statusCode).to.eql(404)
       }
     )
   })
@@ -135,8 +137,9 @@ describe('Simple Flobot test', function () {
       rupertFlobotId,
       {},
       function (err) {
-        expect(err.name).to.eql('tooManyEvents')
-        expect(err.message).to.be.a('string')
+        expect(err).to.be.an('error')
+        expect(err.message).to.eql("There are 6 viable events to transition from stateId 'sitting'... which one to take?")
+        expect(err.output.statusCode).to.eql(500)
         done()
       }
     )
@@ -149,8 +152,9 @@ describe('Simple Flobot test', function () {
         eventId: 'needThatCatnip'
       },
       function (err) {
-        expect(err.name).to.eql('unknownEvent')
-        expect(err.message).to.be.a('string')
+        expect(err).to.be.an('error')
+        expect(err.message).to.eql("The 'sitting' state has no event 'needThatCatnip'.")
+        expect(err.output.statusCode).to.eql(500)
         done()
       }
     )

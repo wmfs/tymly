@@ -5,7 +5,6 @@ const _ = require('lodash')
 const sprintf = require('sprintf-js').sprintf
 
 class TagsService {
-
   boot (options, callback) {
     const _this = this
 
@@ -129,11 +128,9 @@ class TagsService {
       }
     )
   }
-
 }
 
 module.exports = {
   serviceClass: TagsService,
   bootAfter: ['storage']
 }
-

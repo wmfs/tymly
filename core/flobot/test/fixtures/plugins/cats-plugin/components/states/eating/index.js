@@ -1,7 +1,6 @@
 'use strict'
 
 class Eating {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

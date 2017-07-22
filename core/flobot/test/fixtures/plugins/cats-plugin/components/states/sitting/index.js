@@ -1,7 +1,6 @@
 'use strict'
 
 class Sitting {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

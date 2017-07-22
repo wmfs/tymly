@@ -1,8 +1,9 @@
 'use strict'
 
 const schema = require('./schema.json')
-class Logging {
+const boom = require('boom')
 
+class Logging {
   init (stateConfig, options, callback) {
     callback(null)
   }
@@ -12,12 +13,7 @@ class Logging {
       flobot,
       function (err, options) {
         if (err) {
-          callback(
-            {
-              name: 'options',
-              message: "Failed to derive runtime options in 'logging' state",
-              body: err
-            })
+          callback(boom.internal("Failed to derive runtime options in 'logging' state"))
         } else {
           // TODO: Use Winston or something better.
           console.log(options.text)

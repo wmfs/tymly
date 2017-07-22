@@ -7,7 +7,6 @@ const util = require('util')
 const State = require('./State')
 
 class StatesService {
-
   boot (options, callback) {
     this.states = {}
 

@@ -5,7 +5,6 @@ const _ = require('lodash')
 const dottie = require('dottie')
 
 class RegistryService {
-
   boot (options, callback) {
     const _this = this
     const storage = options.bootedServices.storage
@@ -163,7 +162,6 @@ class RegistryService {
 
     return source
   }
-
 }
 
 module.exports = {
@@ -171,4 +169,3 @@ module.exports = {
   bootAfter: ['storage'],
   bootBefore: ['flobots']
 }
-

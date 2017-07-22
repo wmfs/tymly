@@ -22,7 +22,6 @@ class SprintfCommand {
     const output = vsprintf(this.template, inputs)
     callback(null, output)
   }
-
 }
 
 module.exports = {

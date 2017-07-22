@@ -1,5 +1,5 @@
 'use strict'
-
+const boom = require('boom')
 const _ = require('lodash')
 const MemoryModel = require('./Memory-model')
 const fs = require('fs')
@@ -8,7 +8,6 @@ const path = require('path')
 const EJSON = require('mongodb-extended-json')
 
 class MemoryStorageService {
-
   boot (options, callback) {
     const _this = this
     this.storageName = 'memory'
@@ -45,7 +44,6 @@ class MemoryStorageService {
           if (line[0] === '{') {
             const data = EJSON.parse(line)
             switch (action) {
-
               case 'upsert':
 
                 const where = {}
@@ -65,15 +63,9 @@ class MemoryStorageService {
           callback(null)
         })
     } else {
-      callback(
-        {
-          name: 'unknownModel',
-          message: 'Unable to import file - unknown modelId ' + modelId
-        }
-      )
+      callback(boom.notFound('Unable to import file - unknown modelId ' + modelId, modelId))
     }
   }
-
 }
 
 module.exports = {

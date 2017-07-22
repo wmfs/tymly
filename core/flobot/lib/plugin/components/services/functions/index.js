@@ -9,7 +9,6 @@ const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
 const ARGUMENT_NAMES = /(?:^|,)\s*([^\s,=]+)/g
 
 class FunctionsService {
-
   boot (options, callback) {
     this.functions = {}
 
@@ -81,11 +80,9 @@ class FunctionsService {
       return stripped
     }
   }
-
 }
 
 module.exports = {
   serviceClass: FunctionsService,
   bootBefore: ['flobots']
 }
-

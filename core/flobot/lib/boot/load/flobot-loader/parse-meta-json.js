@@ -41,4 +41,3 @@ module.exports = function parseBlueprintJson (rootDir, expectedMetaFilename, man
 
   return parsed
 }
-

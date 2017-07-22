@@ -8,7 +8,6 @@ const refreshIndexModule = require('./refresh-index/index')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
 
 class RbacService {
-
   boot (options, callback) {
     const _this = this
 
@@ -157,11 +156,9 @@ class RbacService {
 
     return _.uniq(allRoles)
   }
-
 }
 
 module.exports = {
   serviceClass: RbacService,
   bootAfter: ['flobots', 'storage']
 }
-

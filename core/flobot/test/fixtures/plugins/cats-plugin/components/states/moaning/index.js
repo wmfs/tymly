@@ -1,7 +1,6 @@
 'use strict'
 
 class Moaning {
-
   init (stateConfig, options, callback) {
     callback(null)
   }
@@ -15,7 +14,6 @@ class Moaning {
   leave (flobot, data, callback) {
     callback(null)
   }
-
 }
 
 module.exports = {

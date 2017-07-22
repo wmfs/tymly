@@ -4,7 +4,6 @@ const schema = require('./schema.json')
 const LRU = require('lru-cache')
 
 class CacheService {
-
   boot (options, callback) {
     const config = options.config
 
@@ -37,11 +36,9 @@ class CacheService {
       this[cacheName] = LRU(options)
     }
   }
-
 }
 
 module.exports = {
   schema: schema,
   serviceClass: CacheService
 }
-

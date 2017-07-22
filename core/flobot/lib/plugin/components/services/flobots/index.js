@@ -1,5 +1,6 @@
 'use strict'
 
+const boom = require('boom')
 const dottie = require('dottie')
 const Flow = require('./Flow/index')
 const async = require('async')
@@ -11,7 +12,6 @@ const UNSPECIFIED_INSTIGATING_CLIENT = {
 }
 
 class FlobotsService {
-
   boot (options, callback) {
     const _this = this
 
@@ -72,10 +72,7 @@ class FlobotsService {
     if (this.flows.hasOwnProperty(flowId)) {
       callback(null, this.flows[flowId])
     } else {
-      callback({
-        name: 'unknownFlow',
-        message: "Unable to find flow with id '" + flowId + "'"
-      })
+      callback(boom.notFound("Unable to find flow with id '" + flowId + "'", {flowId: flowId}))
     }
   }
 
@@ -299,10 +296,7 @@ class FlobotsService {
               callback(null, flobot)
             }
           } else {
-            callback({
-              name: 'flobotPersistenceGetFail',
-              message: "No flobot with id '" + flobotId + "' could be found."
-            })
+            callback(boom.notFound("No flobot with id '" + flobotId + "' could be found.", {flobotId: flobotId}))
           }
         }
       }

@@ -1,7 +1,6 @@
 'use strict'
 
 class EatingTuna {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

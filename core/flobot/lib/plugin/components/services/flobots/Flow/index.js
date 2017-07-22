@@ -3,9 +3,9 @@ const async = require('async')
 const Fsm = require('./Fsm.js')
 const _ = require('lodash')
 const messages = require('./../../../../../startup-messages/index')
+const boom = require('boom')
 
 class Flow {
-
   constructor (flowId, flowComponent, options) {
     // Set basic properties from definition
     // ------------------------------------
@@ -125,12 +125,7 @@ class Flow {
         }
       )
     } else {
-      callback(
-        {
-          name: 'noDestinationState',
-          message: 'Unable to progress flow - unable to find destination state with id ' + destinationStateId
-        }
-      )
+      callback(boom.internal('Unable to progress flow - unable to find destination state with id ' + destinationStateId), {destinationStateId: destinationStateId})
     }
   }
 
@@ -190,10 +185,13 @@ class Flow {
 
       if (viableEventCount > 1) {
         callback(
-          {
-            name: 'tooManyEvents',
-            message: 'There are ' + viableEventCount + " viable events to transition from stateId '" + currentStateId + "'... which one to take?"
-          }
+          boom.internal(
+            'There are ' + viableEventCount + ' viable events to transition from stateId \'' + currentStateId + '\'... which one to take?',
+            {
+              viableEventCount: viableEventCount,
+              currentStateId: currentStateId
+            }
+          )
         )
       } else {
         if (currentStateEvents.hasOwnProperty(resolvedEventId)) {
@@ -210,9 +208,10 @@ class Flow {
           callback(null, nextStateId)
         } else {
           callback(
+            boom.internal('The \'' + currentStateId + '\' state has no event \'' + resolvedEventId + '\'.'),
             {
-              name: 'unknownEvent',
-              message: "The '" + currentStateId + "' state has no event '" + resolvedEventId + "'."
+              currentStateId: currentStateId,
+              resolvedEventId: resolvedEventId
             }
           )
         }
@@ -300,7 +299,6 @@ class Flow {
       }
     )
   }
-
 }
 
 module.exports = Flow

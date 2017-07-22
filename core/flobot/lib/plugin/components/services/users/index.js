@@ -3,9 +3,9 @@
 const _ = require('lodash')
 const async = require('async')
 const schema = require('./schema.json')
+const boom = require('boom')
 
 class UsersService {
-
   boot (options, callback) {
     const _this = this
     this.messages = options.messages
@@ -172,16 +172,8 @@ class UsersService {
           if (authorized) {
             callback(null)
           } else {
-            callback(
-              {
-                name: 'forbidden',
-                status: 403,
-                message: 'No roles permit this action'
-              }
-            )
+            callback(boom.forbidden('No roles permit this action'))
           }
-//                    console.log('AUTHORIZE: ', action, flowId, userId+' --> '+JSON.stringify(roles), authorized)
-//                    callback (null);
         }
       }
     )
@@ -275,7 +267,6 @@ class UsersService {
       }
     )
   }
-
 }
 
 module.exports = {
@@ -283,4 +274,3 @@ module.exports = {
   serviceClass: UsersService,
   bootAfter: ['caches', 'flobots', 'rbac']
 }
-

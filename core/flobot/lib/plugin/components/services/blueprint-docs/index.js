@@ -3,7 +3,6 @@
 const _ = require('lodash')
 
 class BlueprintDocsService {
-
   boot (options, callback) {
     this.storage = options.bootedServices
     const models = options.bootedServices.storage.models
@@ -89,7 +88,6 @@ class BlueprintDocsService {
       }
     )
   }
-
 }
 
 module.exports = {

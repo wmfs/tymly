@@ -3,7 +3,6 @@
 const levelLabels = ['softly', 'away', 'loudly']
 
 class Purring {
-
   init (stateConfig, options, callback) {
     this.calculateContentmentLevel = options.services.functions.getFunction('fbotTest', 'calculateContentmentLevel')
     callback(null)
@@ -19,7 +18,6 @@ class Purring {
   leave (flobot, data, callback) {
     callback(null)
   }
-
 }
 
 module.exports = {

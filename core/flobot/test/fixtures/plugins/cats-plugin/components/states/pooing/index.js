@@ -1,7 +1,6 @@
 'use strict'
 
 class Pooing {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

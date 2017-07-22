@@ -1,7 +1,6 @@
 'use strict'
 
 class Sleeping {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

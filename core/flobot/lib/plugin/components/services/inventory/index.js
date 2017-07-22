@@ -7,7 +7,6 @@ const pathExploder = require('./../../../../boot/load/flobot-loader/path-explode
 const readPkgUp = require('read-pkg-up')
 
 class InventoryService {
-
   boot (options, callback) {
     callback(null)
   }
@@ -135,7 +134,6 @@ class InventoryService {
     }
     callback(null, inventory)
   }
-
 }
 
 module.exports = {

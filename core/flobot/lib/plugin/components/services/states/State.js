@@ -5,7 +5,6 @@ const async = require('async')
 const dottie = require('dottie')
 
 class State {
-
   stateConstructor (stateConfig, fsmOptions) {
     const _this = this
     const commands = fsmOptions.services.commands.commands

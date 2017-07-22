@@ -3,7 +3,6 @@
 const _ = require('lodash')
 
 class Starting {
-
   init (stateConfig, options, callback) {
     callback(null)
   }

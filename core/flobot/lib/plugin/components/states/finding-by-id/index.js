@@ -2,11 +2,10 @@
 
 const _ = require('lodash')
 const dottie = require('dottie')
-
+const boom = require('boom')
 const schema = require('./schema.json')
 
 class FindingById {
-
   init (stateConfig, options, callback) {
     this.modelId = stateConfig.options.modelId
     const models = options.services.storage.models
@@ -16,12 +15,7 @@ class FindingById {
       this.pkPropertyIds = this.model.pkPropertyIds
       callback(null)
     } else {
-      callback(
-        {
-          name: 'unknownModel',
-          message: "Unable to initialize FindingOne state... unknown model '" + this.modelId + "'"
-        }
-      )
+      callback(boom.notFound("Unable to initialize FindingOne state... unknown model '" + this.modelId + "'", {modelId: this.modelId}))
     }
   }
 

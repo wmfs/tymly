@@ -44,4 +44,3 @@ module.exports = function applyModifiers (modificationFunctions, blueprintCompon
     processObject(null, blueprintComponents, modificationFunctions[i])
   }
 }
-

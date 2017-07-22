@@ -1,11 +1,10 @@
 'use strict'
 
 const dottie = require('dottie')
-
 const schema = require('./schema.json')
+const boom = require('boom')
 
 class FindingOne {
-
   init (stateConfig, options, callback) {
     this.modelId = stateConfig.options.modelId
     this.select = stateConfig.options.select || '-_id -__v -createdAt -updatedAt'
@@ -16,12 +15,7 @@ class FindingOne {
       this.model = options.services.storage.models[this.modelId]
       callback(null)
     } else {
-      callback(
-        {
-          name: 'unknownModel',
-          message: "Unable to initialize FindingOne state... unknown model '" + this.modelId + "'"
-        }
-      )
+      callback(boom.notFound("Unable to initialize FindingOne state... unknown model '" + this.modelId + "'", {modelId: this.modelId}))
     }
   }
 

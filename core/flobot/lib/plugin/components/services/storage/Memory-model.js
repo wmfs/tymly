@@ -6,7 +6,6 @@ require('underscore-query')(_)
 // TODO: This could be a useful module in its own right?
 
 class MemoryModel {
-
   constructor (modelDefinition) {
     this.name = modelDefinition.name
     this.namespace = modelDefinition.namespace
@@ -267,7 +266,6 @@ class MemoryModel {
       callback(null, 0)
     }
   }
-
 }
 
 module.exports = MemoryModel
