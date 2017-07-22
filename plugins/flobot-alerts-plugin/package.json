@@ -17,7 +17,7 @@
   },
   "scripts": {
     "clean": "",
-    "test": "gulp test standard"
+    "test": "gulp standard"
   },
   "license": "MIT",
   "repository": {
