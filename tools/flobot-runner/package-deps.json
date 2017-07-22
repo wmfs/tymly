@@ -1,0 +1,21 @@
+{
+  "files": {
+    "tools/flobot-runner/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "tools/flobot-runner/lib/index.js": "9019d6cc6b3fbc2e2d9dc0045fbef4b812941df1",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/drinking-water/index.js": "10ca014b5cbf621ac560227fb2633e34218fa486",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/eating-biscuits/index.js": "057aee0a5a411f1924feac6f63d254932fcab4ea",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/eating-tuna/index.js": "77aa6fc3feb1b1ca23754bbf5ddd12938d7b70b3",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/eating/index.js": "b4bb265ad33510a00b569a56a96618f754cba374",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/moaning/index.js": "ba66deaced8948a7328f80d1773dc1924781732e",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/pooing/index.js": "d146b865a5c75d957204978915ae00ca48bbd1b8",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/purring/index.js": "f7d32d86132e94956183d3c2ffb7afb8f908cae6",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/retiring/index.js": "0c9066c5a576ab4cbcf892e7d61b9c71fce0d484",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/sitting/index.js": "5afbd64f8e5891e7a589fd1e932f3d44bf2bb5a0",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/sleeping/index.js": "8b35db49f7c04a2618122a8f8687380205e8b0c2",
+    "tools/flobot-runner/test/fixtures/plugins/cats-plugin/components/states/walking/index.js": "94ebc432438102abe29e26701f8a1ec2cb9bf681",
+    "tools/flobot-runner/package-deps.json": "1cdfde922a91c098fa351d5461ea56b69a1e024e",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}

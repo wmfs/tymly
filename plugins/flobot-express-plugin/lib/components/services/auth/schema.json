@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+
+    "secret": {
+      "type": "string",
+      "description": "Used to sign/validate JSON Web Tokens (JWT)"
+    },
+    "audience": {
+      "type": "string",
+      "description": "The audience of a token is the intended recipient of the token - typically, the base address of the resource being accessed"
+    }
+
+  },
+  "required": ["secret", "audience"]
+}
+

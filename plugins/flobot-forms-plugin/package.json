@@ -1,0 +1,31 @@
+{
+  "name": "flobot-forms-plugin",
+  "description": "Adds some form capabilities to Flobot",
+  "version": "0.0.4",
+  "author": "Tim Needham",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "dottie": "1.1.1",
+    "lodash": "4.17.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "istanbul": "0.3.18",
+    "mocha": "2.2.5",
+    "flobot": "0.0.11"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

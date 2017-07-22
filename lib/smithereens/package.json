@@ -1,0 +1,42 @@
+{
+  "name": "smithereens",
+  "description": "Smash CSV files into more manageable files based on column values",
+  "version": "0.0.5",
+  "keywords": [
+    "etl",
+    "csv"
+  ],
+  "author": "Tim Needham",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "async": "^2.4.1",
+    "csv-streamify": "^3.0.4",
+    "csv-string": "^2.3.2",
+    "dottie": "^2.0.0",
+    "glob": "^7.1.2",
+    "hash-sum": "^1.0.2",
+    "jsonfile": "^3.0.0",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "upath": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "chai-subset": "^1.5.0",
+    "mocha": "2.2.5"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tymly/smithereens"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

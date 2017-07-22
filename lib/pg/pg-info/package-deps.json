@@ -1,0 +1,13 @@
+{
+  "files": {
+    "lib/pg/pg-info/README.md": "a98284c6356c01506b6bcf9f7956462e4834c97b",
+    "lib/pg/pg-info/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "lib/pg/pg-info/lib/index.js": "2530ca00be9c11552194aef46581f2c43797a69f",
+    "lib/pg/pg-info/test/fixtures/sql-script-runner.js": "2deb809658823aa07edcb44d8270d504b615f56d",
+    "lib/pg/pg-info/test/tests.js": "ed8904d569b03960cebbf091d02d6c092fef845a",
+    "lib/pg/pg-info/package-deps.json": "6bc59453c8a3072bcd1a4605345ffde236620b0f",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}

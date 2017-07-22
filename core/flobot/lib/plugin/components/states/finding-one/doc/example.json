@@ -1,0 +1,19 @@
+{
+  "findingOne": {
+    "options": {
+      "modelId": "employees",
+      "target": "employeeDetails",
+      "filter": {
+        "where": {
+          "email": {
+            "equals": {
+              "$value": {
+                "path": "key.email"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

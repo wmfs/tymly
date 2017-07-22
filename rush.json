@@ -1,0 +1,69 @@
+{
+  "rushMinimumVersion": "3.0.11",
+  "npmVersion": "3.10.10",
+  "nodeSupportedVersionRange": ">=6.11.0 <7.0.0",
+  "projectFolderMaxDepth": 3,
+
+  "projects": [
+    {
+      "packageName": "flobot",
+      "projectFolder": "core/flobot"
+    },
+    {
+      "packageName": "pg-delta-file",
+      "projectFolder": "lib/pg/pg-delta-file"
+    },
+    {
+      "packageName": "pg-diff-sync",
+      "projectFolder": "lib/pg/pg-diff-sync"
+    },
+    {
+      "packageName": "pg-info",
+      "projectFolder": "lib/pg/pg-info"
+    },
+    {
+      "packageName": "pg-model",
+      "projectFolder": "lib/pg/pg-model"
+    },
+    {
+      "packageName": "pg-telepods",
+      "projectFolder": "lib/pg/pg-telepods"
+    },
+    {
+      "packageName": "relationize",
+      "projectFolder": "lib/relationize"
+    },
+    {
+      "packageName": "smithereens",
+      "projectFolder": "lib/smithereens"
+    },
+    {
+      "packageName": "supercopy",
+      "projectFolder": "lib/supercopy"
+    },
+    {
+      "packageName": "flobot-alerts-plugin",
+      "projectFolder": "plugins/flobot-alerts-plugin"
+    },
+    {
+      "packageName": "flobot-etl-plugin",
+      "projectFolder": "plugins/flobot-etl-plugin"
+    },
+    {
+      "packageName": "flobot-express-plugin",
+      "projectFolder": "plugins/flobot-express-plugin"
+    },
+    {
+      "packageName": "flobot-forms-plugin",
+      "projectFolder": "plugins/flobot-forms-plugin"
+    },
+    {
+      "packageName": "flobot-pg-plugin",
+      "projectFolder": "plugins/flobot-pg-plugin"
+    },
+    {
+      "packageName": "flobot-runner",
+      "projectFolder": "tools/flobot-runner"
+    }
+  ]
+}

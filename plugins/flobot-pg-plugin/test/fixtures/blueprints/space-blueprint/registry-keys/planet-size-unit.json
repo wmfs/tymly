@@ -1,0 +1,13 @@
+{
+  "label": "Planet size unit",
+  "description": "What unit should planet sizes be measured in?",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "string",
+        "default": "km"
+      }
+    },
+    "required": ["value"]
+  }
+}

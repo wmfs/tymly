@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+
+    "from": {
+      "type": "string",
+      "description": "The e-mail address of the sender. All e-mail addresses can be plain `sender@server.com` or formatted `Sender Name <sender@server.com>`. See [Address Formatting](https://nodemailer.com/address-formatting/) for more details."
+    },
+    "transport": {
+      "type": "object",
+      "description": "A [Nodemailer](https://nodemailer.com/) configuration object, connection URL"
+    }
+
+  },
+  "required": ["from", "transport"]
+}
+
+
+
+

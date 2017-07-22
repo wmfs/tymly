@@ -1,0 +1,29 @@
+{
+  "files": {
+    "plugins/flobot-express-plugin/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "plugins/flobot-express-plugin/lib/components/services/auth/index.js": "e02e550a3658aa9f1fc384412aa217b2a01a8553",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/index.js": "0716a080bd9648981427ae64b4f53d90d6d0d9ae",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/routes/cancel-flobot.js": "23fe9110efcba6c691da51d62d6f8d030b9a88dc",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/routes/get-flobot.js": "d71577cf9017bcf5bc445f1f975708dd080ce8c6",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/routes/get-user-remit.js": "70ad9d91df26c7e4bc23278af67d114521b0d31b",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/routes/start-new-flobot.js": "32271c336d907d544156acf558b09439642f8804",
+    "plugins/flobot-express-plugin/lib/components/services/flobot-rest/routes/update-flobot.js": "829cb869a77ee92410b334070c38e18b7e85a7d3",
+    "plugins/flobot-express-plugin/lib/components/services/server/add-static-dir.js": "6d6205dd0c0e4b98f3355e887d34cc73cb2081dd",
+    "plugins/flobot-express-plugin/lib/components/services/server/index.js": "bfd3b41ca06b26c015f7f7e33eb4e6513c6f2429",
+    "plugins/flobot-express-plugin/test/express-spec.js": "b2c5cb8ea601f5c0f895daf39b951ee510df3912",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/drinking-water/index.js": "10ca014b5cbf621ac560227fb2633e34218fa486",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/eating-biscuits/index.js": "057aee0a5a411f1924feac6f63d254932fcab4ea",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/eating-tuna/index.js": "77aa6fc3feb1b1ca23754bbf5ddd12938d7b70b3",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/eating/index.js": "d81af0f23b9922080a071b114dd7b84f16bbdd1a",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/moaning/index.js": "ba66deaced8948a7328f80d1773dc1924781732e",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/pooing/index.js": "9e7663e40368e255307b8b0e796aea231a7eaeeb",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/purring/index.js": "f9b5aa1471c8e355702d954beefe3854283153a8",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/retiring/index.js": "0c9066c5a576ab4cbcf892e7d61b9c71fce0d484",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/sitting/index.js": "5afbd64f8e5891e7a589fd1e932f3d44bf2bb5a0",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/sleeping/index.js": "8b35db49f7c04a2618122a8f8687380205e8b0c2",
+    "plugins/flobot-express-plugin/test/fixtures/plugins/cats-plugin/components/states/walking/index.js": "94ebc432438102abe29e26701f8a1ec2cb9bf681",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}

@@ -1,0 +1,12 @@
+{
+  "title": {
+    "$sprintf": {
+      "template": "%s %s (aged %d years)",
+      "inputPaths": [
+        "employeeData.firstName",
+        "employeeData.lastName",
+        "employeeData.age"
+      ]
+    }
+  }
+}

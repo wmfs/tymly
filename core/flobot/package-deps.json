@@ -1,0 +1,11 @@
+{
+  "files": {
+    "core/flobot/gulpfile.js": "57e1716c69a9f1a76cd032d2d09a5b456a99dfc0",
+    "core/flobot/lib/boot/load/flobot-loader/apply-modifiers/utils.js": "21b97cf3be35229be53b4126451f6f926bfe950e",
+    "core/flobot/lib/plugin/components/services/states/index.js": "a46ec44b94dbb99e109a3d45687e84fa91b3ca65",
+    "core/flobot/package-deps.json": "39a05dad3d8904f82931246de8f697d8d4dce76a",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}

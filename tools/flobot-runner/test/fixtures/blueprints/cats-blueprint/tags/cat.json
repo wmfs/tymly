@@ -1,0 +1,7 @@
+{
+  "label": "Cat",
+  "description": "Something specifically to do with a cat",
+  "styling": {
+    "background-color": "#5F5F5F"
+  }
+}

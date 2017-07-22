@@ -1,0 +1,9 @@
+{
+  "files": {
+    "lib/pg/pg-diff-sync/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "lib/pg/pg-diff-sync/package-deps.json": "4d88c7f5fb94c57602df118d68113d61932656af",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}

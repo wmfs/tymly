@@ -1,0 +1,40 @@
+{
+  "name": "flobot-express-plugin",
+  "description": "Exposes the Flobot framework via an Express.js web app.",
+  "version": "0.0.3",
+  "author": "Tim Needham",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cpr": "^2.0.2",
+    "dottie": "^1.1.1",
+    "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.17.2",
+    "sprintf": "^0.1.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "istanbul": "0.3.18",
+    "mocha": "2.2.5",
+    "restler": "^3.4.0",
+    "flobot": "0.0.11",
+    "flobot-forms-plugin": "0.0.4",
+    "safe-buffer": "^5.1.1"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

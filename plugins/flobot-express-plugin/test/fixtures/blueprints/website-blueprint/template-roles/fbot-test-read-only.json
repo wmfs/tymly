@@ -1,0 +1,10 @@
+{
+    "label": "Get anything in the FlobotTest namespace... useful for dashboards",
+
+    "grants": [
+        {
+            "flowId": "*",
+            "allows": ["get"]
+        }
+    ]
+}

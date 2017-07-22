@@ -1,0 +1,19 @@
+{
+
+    "label": "Read post",
+    "description": "Read a post in its entirety",
+    "version": "1.0",
+    "instigators": ["user"],
+  "tags": ["website", "posts"],
+    "initialStateId": "starting",
+    "initialCtx": {},
+
+    "fsm": {},
+
+    "restrictions": [
+        {
+            "roleId": "$everyone",
+            "allows": ["create"]
+        }
+    ]
+}

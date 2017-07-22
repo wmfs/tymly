@@ -1,0 +1,30 @@
+{
+  "plural": "permissions",
+
+  "primaryKey": ["roleId", "flowId"],
+
+  "description": "Assign Flow permissions to roles",
+  "type": "object",
+
+  "properties": {
+
+    "flowId": {
+      "type": "string"
+    },
+
+    "roleId": {
+      "type": "string"
+    },
+
+    "allows": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+
+  },
+
+  "required": ["flowId", "roleId"]
+
+}

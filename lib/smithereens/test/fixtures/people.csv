@@ -1,0 +1,8 @@
+personNo,firstName,LastName,personType,action
+10,"Lisa","Simpson","c","u"
+20,"Homer","Simpson","a","u"
+30,"Bart","Simpson","c","d"
+40,"Marge","Simpson","a","d"
+50,"Maggie","Simpson","c","x"
+60,"Grampa","Simpson","x","u"
+70,"Milhouse","Van Houten","c","u"

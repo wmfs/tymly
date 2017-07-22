@@ -1,0 +1,35 @@
+{
+  "name": "pg-diff-sync",
+  "description": "Takes two objects that describe the structure of a database and produces the PostgreSQL statements required to get from one to the other.",
+  "version": "0.0.8",
+  "author": "Tim Needham",
+  "keywords": [
+    "pg",
+    "postgres",
+    "migration"
+  ],
+  "main": "./lib/index.js",
+  "dependencies": {
+    "dottie": "^2.0.0",
+    "ejs": "^2.5.6",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "mocha": "2.2.5"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

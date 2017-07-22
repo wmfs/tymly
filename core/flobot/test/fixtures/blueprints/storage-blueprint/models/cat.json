@@ -1,0 +1,30 @@
+{
+  "name": "cat",
+  "version": "1.0",
+  "plural": "cats",
+
+  "primaryKey": ["name"],
+
+  "description": "Model for storing cat details",
+  "type": "object",
+
+  "properties": {
+
+    "name": {
+      "type": "string",
+      "description": "The cat's name."
+    },
+
+    "size": {
+      "type": "string",
+      "enum": ["small", "medium", "large", "alan"],
+      "description": "How big is the cat?"
+    },
+
+    "comment": {
+      "type": "string"
+    }
+  },
+
+  "required": ["name", "size"]
+}

@@ -1,0 +1,8 @@
+{
+  "generated": "2017-05-22T16:06:17.016Z",
+  "schemas": {
+    "pgmodel_test": {
+      "schemaExistsInDatabase": false
+    }
+  }
+}

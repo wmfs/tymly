@@ -1,0 +1,7 @@
+{
+  "label": "Gas",
+  "description": "A gas giant",
+  "styling": {
+    "background-color": "#80C342"
+  }
+}

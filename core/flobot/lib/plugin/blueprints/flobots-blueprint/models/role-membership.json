@@ -1,0 +1,28 @@
+{
+    "plural": "roleMemberships",
+
+    "primaryKey": ["roleId", "memberType", "memberId"],
+
+
+  "description": "For building-up roles with users and sub-roles",
+  "type": "object",
+
+    "properties": {
+
+        "roleId": {
+            "type": "string"
+        },
+
+        "memberType": {
+            "type": "string"
+        },
+
+        "memberId": {
+            "type": "string"
+        }
+
+    },
+
+  "required": ["roleId", "memberType", "memberId"]
+
+}

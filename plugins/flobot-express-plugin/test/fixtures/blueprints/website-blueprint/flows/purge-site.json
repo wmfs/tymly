@@ -1,0 +1,12 @@
+{
+
+    "label": "Purge site",
+    "description": "Take it all down... NOW!!!",
+    "version": "1.0",
+    "instigators": ["user"],
+  "tags": ["website"],
+    "initialStateId": "starting",
+    "initialCtx": {},
+
+    "fsm": {}
+}

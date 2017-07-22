@@ -1,0 +1,5 @@
+{
+  "caches": {
+    "userMemberships": {"max": 500}
+  }
+}

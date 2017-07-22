@@ -1,0 +1,28 @@
+{
+  "name": "simpleForm",
+  "version": "1.0",
+  "description": "Current Flobots",
+  "plural": "simpleForms",
+
+  "primaryKey": ["email"],
+
+  "properties": {
+
+    "name": {
+      "type": "string"
+    },
+
+    "email": {
+      "type": "string",
+      "description": "Email will be used for evil."
+    },
+
+    "comment": {
+      "type": "string",
+      "maxlength": 20
+
+    }
+  },
+
+  "required": ["name", "email", "comment"]
+}

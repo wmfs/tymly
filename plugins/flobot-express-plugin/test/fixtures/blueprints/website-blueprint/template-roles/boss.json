@@ -1,0 +1,17 @@
+{
+    "label": "Boss",
+    "description": "Like a Boss!",
+
+    "roleMemberships": ["teamLeader"],
+
+    "grants": [
+        {
+            "flowId": "purgeSite",
+            "allows": ["create"]
+        },
+        {
+            "flowId": "deletePost",
+            "allows": ["cancel"]
+        }
+    ]
+}

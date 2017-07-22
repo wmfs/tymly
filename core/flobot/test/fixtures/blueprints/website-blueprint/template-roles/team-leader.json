@@ -1,0 +1,11 @@
+{
+    "label": "Team leader",
+    "roleMemberships": ["developer"],
+
+    "grants": [
+        {
+            "flowId": "deletePost",
+            "allows": ["create"]
+        }
+    ]
+}

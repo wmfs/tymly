@@ -1,0 +1,32 @@
+{
+  "name": "flobot-runner",
+  "description": "A tool for running flobots",
+  "version": "0.0.2",
+  "author": "Reece Brend",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "config": "^1.26.1",
+    "flobot": "0.0.11",
+    "jsonwebtoken": "^7.4.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "istanbul": "0.3.18",
+    "mocha": "2.2.5"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test",
+    "start": "node ./lib/index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

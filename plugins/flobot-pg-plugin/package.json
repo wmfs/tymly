@@ -1,0 +1,40 @@
+{
+  "name": "flobot-pg-plugin",
+  "description": "Replace Flobot's out-the-box memory storage with PostgreSQL",
+  "version": "0.0.2",
+  "author": "Tim Needham",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "async": "^2.4.1",
+    "dottie": "^1.1.1",
+    "lodash": "^4.17.2",
+    "pg": "^6.2.3",
+    "pg-delta-file": "0.0.2",
+    "pg-diff-sync": "0.0.8",
+    "pg-info": "0.0.12",
+    "pg-model": "0.0.6",
+    "pg-telepods": "0.0.2",
+    "relationize": "0.0.16",
+    "supercopy": "0.0.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-standard": "^10.0.0",
+    "chai": "3.2.0",
+    "istanbul": "0.3.18",
+    "mocha": "2.2.5",
+    "flobot": "0.0.11"
+  },
+  "scripts": {
+    "clean": "",
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

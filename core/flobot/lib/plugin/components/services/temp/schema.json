@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+
+    "tempDir": {
+      "type": "string",
+      "description": "A path pointing to a directory to use as an alternative to the system-allocated temp dir"
+    }
+
+  },
+  "required": []
+}
+

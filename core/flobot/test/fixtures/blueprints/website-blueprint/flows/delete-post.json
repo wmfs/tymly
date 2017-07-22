@@ -1,0 +1,12 @@
+{
+
+    "label": "Remove post",
+    "description": "Workflow to remove a website post",
+    "version": "1.0",
+    "instigators": ["user"],
+  "tags": ["website", "posts"],
+    "initialStateId": "starting",
+    "initialCtx": {},
+
+    "fsm": {}
+}

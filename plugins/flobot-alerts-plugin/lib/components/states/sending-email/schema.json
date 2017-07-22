@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+
+    "to": {
+      "type": "string",
+      "description": "Comma separated list or an array of recipients e-mail addresses that will appear on the To: field"
+    },
+    "cc": {
+      "type": "string",
+      "description": "Comma separated list or an array of recipients e-mail addresses that will appear on the Cc: field"
+    },
+    "bcc": {
+      "type": "string",
+      "description": "Comma separated list or an array of recipients e-mail addresses that will appear on the Bcc: field"
+    },
+    "subject": {
+      "type": "string",
+      "description": "The subject of the e-mail"
+    },
+    "text": {
+      "type": "string",
+      "description": "The plaintext version of the message as an Unicode string, Buffer, Stream or an attachment-like object ({path: '/var/data/...'})"
+    },
+    "html": {
+      "type": "string",
+      "description": "The HTML version of the message as an Unicode string, Buffer, Stream or an attachment-like object ({path: 'http://...'})"
+    }
+
+  },
+  "required": ["to"]
+}
+
+
+
+

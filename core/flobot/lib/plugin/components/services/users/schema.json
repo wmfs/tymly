@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+
+    "defaultUsers": {
+      "type": "object",
+      "description": "Ensures a list of users are available at boot-time. An object of key/value pairs where the key is a username and the value is an array of role names that should be assigned to it."
+    }
+
+  },
+  "required": []
+}
+

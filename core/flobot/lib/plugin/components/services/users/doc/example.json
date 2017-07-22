@@ -1,0 +1,6 @@
+{
+  "defaultUsers": {
+    "Dave": ["fbotTest_fbotTestAdmin"],
+    "Steve": ["spaceCadet"]
+  }
+}

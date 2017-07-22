@@ -1,0 +1,10 @@
+{
+    "label": "Developer",
+
+    "grants": [
+        {
+            "flowId": "createPost",
+            "allows": ["cancel"]
+        }
+    ]
+}

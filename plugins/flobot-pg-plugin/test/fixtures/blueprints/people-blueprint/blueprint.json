@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "people",
+  "version": "1.0",
+
+  "label": "People",
+  "author": "Tim Needham",
+
+  "organisation": "Flobots",
+  "description": "An example Flobot Blueprint to store simple information about a set of people.",
+  "tags": ["people", "test"]
+
+}

@@ -1,0 +1,43 @@
+{
+
+  "name": "simpleStorage",
+  "description": "Save a cat. Load a cat.",
+  "version": "1.0",
+  "initialStateId": "upserting",
+  "initialCtx": {},
+
+  "fsm": {
+
+    "upserting": {
+      "options": {
+        "modelId": "cat",
+        "doc": {
+          "$value": {
+            "path": "catDocFromParams"
+          }
+        }
+      },
+      "events": {
+        "persisted": {
+          "to": "findingOne"
+        }
+      }
+    },
+
+    "findingOne": {
+      "options": {
+        "modelId": "cat",
+        "target": "catDocFromStorage",
+        "where": {
+          "name": {
+            "equals": {
+              "$value": {
+                "path": "catDocFromParams.name"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

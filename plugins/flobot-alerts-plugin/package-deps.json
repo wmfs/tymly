@@ -1,0 +1,12 @@
+{
+  "files": {
+    "plugins/flobot-alerts-plugin/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "plugins/flobot-alerts-plugin/lib/components/services/email/index.js": "90d233f5b18857f55716179f789628b8a27a3f02",
+    "plugins/flobot-alerts-plugin/lib/components/states/sending-email/index.js": "9d5967cc79f8bc1006b22682ccfc7f03037ad03a",
+    "plugins/flobot-alerts-plugin/test/email-spec.js": "fd6aa45dec415a6e6c4b73c6f306488184d51743",
+    "plugins/flobot-alerts-plugin/package-deps.json": "738417bf5a2769ff69c1ccc25ba476d9fe09a1d2",
+    ".gitignore": "00cbbdf53f6c487c8392d936ce7225824c11446e",
+    "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e"
+  },
+  "arguments": "gulp test --color"
+}
