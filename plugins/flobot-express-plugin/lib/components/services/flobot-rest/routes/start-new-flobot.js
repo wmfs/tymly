@@ -32,11 +32,7 @@ module.exports = function startNewFlobotRoute (req, res) {
         function (err, flobot) {
           if (err) {
             console.error(JSON.stringify(err, null, 2))
-            res.status(err.status || 500).send(
-              {
-                error: err
-              }
-                )
+            res.status(err.output.statusCode).send(err.output.payload)
           } else {
             res.status(201).send(
               {

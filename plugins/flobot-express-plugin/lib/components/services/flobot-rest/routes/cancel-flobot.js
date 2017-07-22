@@ -12,12 +12,7 @@ module.exports = function cancelFlobotRoute (req, res) {
     },
         function (err) {
           if (err) {
-            console.error(JSON.stringify(err, null, 2))
-            res.status(err.status || 500).send(
-              {
-                error: err
-              }
-                )
+            res.status(err.output.statusCode).send(err.output.payload)
           } else {
             res.status(204).send()
           }

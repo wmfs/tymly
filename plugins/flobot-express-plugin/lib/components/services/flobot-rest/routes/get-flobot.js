@@ -13,21 +13,7 @@ module.exports = function getFlobotRoute (req, res) {
         function (err, flobot) {
           if (err) {
             console.error(JSON.stringify(err, null, 2))
-            let status
-            if (err.name === 'flobotPersistenceGetFail') {
-              status = 404
-              err = {
-                name: 'noFlobot',
-                message: err.message
-              }
-            } else {
-              status = err.status || 500
-            }
-            res.status(status).send(
-              {
-                error: err
-              }
-                )
+            res.status(err.output.statusCode).send(err.output.payload)
           } else {
             res.status(200).send(
               {

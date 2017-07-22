@@ -10,7 +10,7 @@ module.exports = function getUsersRemit (req, res) {
     userId,
     function (err, remit) {
       if (err) {
-        res.status(500).send(err)
+        res.status(err.output.statusCode).send(err.output.payload)
       } else {
         res.status(200).send(remit)
       }

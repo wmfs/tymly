@@ -33,7 +33,7 @@ describe('Simple Express tests', function () {
   const remitUrl = 'http://localhost:3000/remit/'
   let rupertFlobotId
   let alanFlobotId
-  const Buffer = require('safe-buffer').buffer
+  const Buffer = require('safe-buffer').Buffer
 
   it('should create a usable admin token for Dave', function () {
     adminToken = jwt.sign(
@@ -205,8 +205,7 @@ describe('Simple Express tests', function () {
         flobotsUrl + rupertFlobotId,
       {}, sendToken(adminToken)).on('complete', function (err, res) {
         expect(res.statusCode).to.equal(500)
-        expect(err.error.name).to.eql('tooManyEvents')
-        expect(err.error.message).to.be.a('string')
+        expect(err.error).to.eql('Internal Server Error')
         done()
       })
   })
@@ -216,8 +215,7 @@ describe('Simple Express tests', function () {
         flobotsUrl + rupertFlobotId,
       {eventId: 'needThatCatnip'}, sendToken(adminToken)).on('complete', function (err, res) {
         expect(res.statusCode).to.equal(500)
-        expect(err.error.name).to.eql('unknownEvent')
-        expect(err.error.message).to.be.a('string')
+        expect(err.error).to.eql('Internal Server Error')
         done()
       })
   })
@@ -322,7 +320,8 @@ describe('Simple Express tests', function () {
   it('should fail getting an unknown cat', function (done) {
     rest.get(flobotsUrl + 'BADKITTY', sendToken(adminToken)).on('complete', function (err, res) {
       expect(res.statusCode).to.equal(404)
-      expect(err.error.name).to.eql('noFlobot')
+      expect(err.error).to.eql('Not Found')
+      expect(err.message).to.eql("No flobot with id 'BADKITTY' could be found.")
       done()
     })
   })
@@ -341,7 +340,8 @@ describe('Simple Express tests', function () {
   it("should fail getting Rupert, now that he's retired for the evening", function (done) {
     rest.get(flobotsUrl + rupertFlobotId, sendToken(adminToken)).on('complete', function (err, res) {
       expect(res.statusCode).to.equal(404)
-      expect(err.error.name).to.eql('noFlobot')
+      expect(err.error).to.eql('Not Found')
+      expect(err.message).to.be.a('string')
       done()
     })
   })
@@ -374,7 +374,8 @@ describe('Simple Express tests', function () {
   it("should fail getting Alan, now that he's been cancelled", function (done) {
     rest.get(flobotsUrl + alanFlobotId, sendToken(adminToken)).on('complete', function (err, res) {
       expect(res.statusCode).to.equal(404)
-      expect(err.error.name).to.eql('noFlobot')
+      expect(err.error).to.eql('Not Found')
+      expect(err.message).to.be.a('string')
       done()
     })
   })
@@ -390,6 +391,8 @@ describe('Simple Express tests', function () {
       }, sendToken(irrelevantToken)).on('complete', function (err, res) {
         console.log(err)
         expect(res.statusCode).to.equal(403)
+        expect(err.error).to.equal('Forbidden')
+        expect(err.message).to.equal('No roles permit this action')
         done()
       })
   })

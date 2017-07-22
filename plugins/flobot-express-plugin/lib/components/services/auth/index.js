@@ -1,9 +1,11 @@
 'use strict'
 
+const boom = require('boom')
 const process = require('process')
 const dottie = require('dottie')
 const jwt = require('express-jwt')
 const schema = require('./schema.json')
+const Buffer = require('safe-buffer').Buffer
 
 class AuthService {
   boot (options, callback) {
@@ -57,10 +59,8 @@ class AuthService {
       options.messages.info('Added JWT Express middleware')
       callback(null)
     } else {
-      callback({
-        name: 'authFail',
-        message: 'Failed to set-up authentication middleware: Is $FLOBOT_AUTH_SECRET and $FLOBOT_AUTH_AUDIENCE set?'
-      })
+      console.error('Failed to set-up authentication middleware: Is $FLOBOT_AUTH_SECRET and $FLOBOT_AUTH_AUDIENCE set?')
+      callback(boom.internal('Failed to set-up authentication middleware: Is $FLOBOT_AUTH_SECRET and $FLOBOT_AUTH_AUDIENCE set?'))
     }
   }
 
