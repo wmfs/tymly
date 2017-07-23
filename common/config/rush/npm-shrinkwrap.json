@@ -1215,18 +1215,6 @@
         }
       }
     },
-    "flobot-forms-plugin": {
-      "version": "0.0.3",
-      "from": "flobot-forms-plugin@0.0.3",
-      "resolved": "https://registry.npmjs.org/flobot-forms-plugin/-/flobot-forms-plugin-0.0.3.tgz",
-      "dependencies": {
-        "lodash": {
-          "version": "4.17.2",
-          "from": "lodash@4.17.2",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.2.tgz"
-        }
-      }
-    },
     "for-in": {
       "version": "1.0.2",
       "from": "for-in@>=1.0.1 <2.0.0",
