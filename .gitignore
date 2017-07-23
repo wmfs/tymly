@@ -77,3 +77,5 @@ output/
 
 # Ignore Rush temporary files
 /common/temp/**
+
+package-deps.json
