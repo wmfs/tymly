@@ -2,7 +2,7 @@
   "files": {
     "plugins/flobot-alerts-plugin/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "plugins/flobot-alerts-plugin/README.md": "e81577df7e8c66390d4ec9bfeafe9388295369c7",
-    "plugins/flobot-alerts-plugin/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "plugins/flobot-alerts-plugin/gulpfile.js": "ffa89addae753d316c1b59db72e0f97be10f8e4f",
     "plugins/flobot-alerts-plugin/lib/components/services/email/doc/example.json": "898e2160c568a9a1b33f41da02fe702cbc946af5",
     "plugins/flobot-alerts-plugin/lib/components/services/email/doc/index.js": "578748515a6a4ec9a394bf4ca2eaf3793ee44a3f",
     "plugins/flobot-alerts-plugin/lib/components/services/email/index.js": "90d233f5b18857f55716179f789628b8a27a3f02",
@@ -12,7 +12,7 @@
     "plugins/flobot-alerts-plugin/lib/components/states/sending-email/index.js": "9d5967cc79f8bc1006b22682ccfc7f03037ad03a",
     "plugins/flobot-alerts-plugin/lib/components/states/sending-email/schema.json": "dcab13162811ca971a93741dd8d248d1032e6de5",
     "plugins/flobot-alerts-plugin/lib/index.js": "f177540aae34806592c5bb8cb2016057d528ddf9",
-    "plugins/flobot-alerts-plugin/package-deps.json": "3739b7cb58cabc46af3d2ce025510c5174ccaf34",
+    "plugins/flobot-alerts-plugin/package-deps.json": "7f5b409139eec1563d0f6be1395c141d288cbd2a",
     "plugins/flobot-alerts-plugin/package.json": "f1c2bb7b65d195008add9a0297b4af28ae57da55",
     "plugins/flobot-alerts-plugin/test/email-spec.js": "fd6aa45dec415a6e6c4b73c6f306488184d51743",
     "plugins/flobot-alerts-plugin/test/fixtures/blueprints/welcome-email-blueprint/blueprint.json": "72acc511d54402bd7da7723ebfde1bbef67d6b14",

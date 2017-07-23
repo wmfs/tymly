@@ -2,7 +2,7 @@
   "files": {
     "plugins/flobot-forms-plugin/LICENSE.md": "8be925e7b2cab226ec368bfb706d8612519bda18",
     "plugins/flobot-forms-plugin/README.md": "b6b4282b90a02c7de69dc504d9ea9f32943d6a9b",
-    "plugins/flobot-forms-plugin/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "plugins/flobot-forms-plugin/gulpfile.js": "ffa89addae753d316c1b59db72e0f97be10f8e4f",
     "plugins/flobot-forms-plugin/lib/components/services/forms/doc/index.js": "0217eb7e0c31981d6837bb7657542f0d46f28974",
     "plugins/flobot-forms-plugin/lib/components/services/forms/index.js": "22eb972fe2d5aa17302044c611576144b4ba1a1f",
     "plugins/flobot-forms-plugin/lib/components/states/form-filling/doc/example.json": "e2e2005e371e496ed774a1e5c6d84cf32a7966ab",
@@ -10,7 +10,7 @@
     "plugins/flobot-forms-plugin/lib/components/states/form-filling/index.js": "8ec70e077431f4ecd90f5dedc23937a0db8b7b47",
     "plugins/flobot-forms-plugin/lib/components/states/form-filling/schema.json": "78f55c0a4f4de70017d19c1ac9a51248adb14c2f",
     "plugins/flobot-forms-plugin/lib/index.js": "f177540aae34806592c5bb8cb2016057d528ddf9",
-    "plugins/flobot-forms-plugin/package-deps.json": "2493377f5248ff5fdcd870cc0ac58d083026dae2",
+    "plugins/flobot-forms-plugin/package-deps.json": "b137c29dcf47b20b99c399ac2a3a4457fc60e133",
     "plugins/flobot-forms-plugin/package.json": "ab3fed39e827e962bf47d27c12e82b1458a89a0b",
     "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/blueprint.json": "18a19e988b25722d2167c610f301cbee32712004",
     "plugins/flobot-forms-plugin/test/fixtures/blueprints/forms/flows/simple-form.json": "e406db5d982dd4e97b35144d810bfca56d333d38",

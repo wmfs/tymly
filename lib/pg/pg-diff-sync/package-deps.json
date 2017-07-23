@@ -2,7 +2,7 @@
   "files": {
     "lib/pg/pg-diff-sync/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "lib/pg/pg-diff-sync/README.md": "8af70e0173d8d9b98592c4c76393a4fdb566ca40",
-    "lib/pg/pg-diff-sync/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "lib/pg/pg-diff-sync/gulpfile.js": "ffa89addae753d316c1b59db72e0f97be10f8e4f",
     "lib/pg/pg-diff-sync/lib/index.js": "8386b91a11d824090166d250dabfd6d5b8a2c408",
     "lib/pg/pg-diff-sync/lib/process-structures.js": "ba34c657c05cd05c89e926731a21ed860ed65718",
     "lib/pg/pg-diff-sync/lib/statement-generators/column-comment/index.js": "6629a997eedb1cb3d1fc720574548a9ed73c7f88",
@@ -27,7 +27,7 @@
     "lib/pg/pg-diff-sync/lib/statement-generators/table-comment/template.ejs": "367dee4b0835678fbb9b71dd6720680be8b83891",
     "lib/pg/pg-diff-sync/lib/statement-generators/table/index.js": "09ff7cc909aac8d003454428ede02dd396a9ac55",
     "lib/pg/pg-diff-sync/lib/statement-generators/table/template.ejs": "008e70614d3e2eecbac3b7c21eaee8e2305b1687",
-    "lib/pg/pg-diff-sync/package-deps.json": "02786f48d35c53f79f31c18793432616123a22b7",
+    "lib/pg/pg-diff-sync/package-deps.json": "2653f0a98c0352b5cb59de924dd6a60a42b0b898",
     "lib/pg/pg-diff-sync/package.json": "5f080194b9a1b6e62cf17abd0ec64a95dbc20325",
     "lib/pg/pg-diff-sync/test/fixtures/empty.json": "5dd9d6a2d7e0073b69e2bfbb7c2b08fea6b58d01",
     "lib/pg/pg-diff-sync/test/fixtures/people-plus-manager-column.json": "a07a64293ebc43c82188c6b9cf2d17cee10224ce",

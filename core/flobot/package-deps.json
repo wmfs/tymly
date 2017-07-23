@@ -2,7 +2,7 @@
   "files": {
     "core/flobot/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "core/flobot/README.md": "a14dae43a24a3852dfaf4243d5278188203c5f9d",
-    "core/flobot/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "core/flobot/gulpfile.js": "ffa89addae753d316c1b59db72e0f97be10f8e4f",
     "core/flobot/lib/boot/boot/index.js": "ce15a656b472c705b97c88d0feace7c8708a5604",
     "core/flobot/lib/boot/index.js": "f4dc041235ee4452a69ec7060469bb4328210838",
     "core/flobot/lib/boot/load/discover-blueprint-dirs.js": "e495a8966b6ecfb564c8b013339f7089ae2807ba",
@@ -105,7 +105,7 @@
     "core/flobot/lib/plugin/components/states/upserting/schema.json": "d031a8dd8e31650c936992c800aebc383337a42b",
     "core/flobot/lib/plugin/index.js": "4d7f6862fa0475a0133437b0b9dba4e9e6d0e7d4",
     "core/flobot/lib/startup-messages/index.js": "14f9c94940013e543df028586eb7a5b47c99373c",
-    "core/flobot/package-deps.json": "4e23127a670a40e83e5795b5c39c6a7f29bcbd6b",
+    "core/flobot/package-deps.json": "e7c3f8aa64c28948a0e13727030e7f1ee859057d",
     "core/flobot/package.json": "539bdd3331f406f8390a25f9d9d8599afc3b2763",
     "core/flobot/test/fixtures/blueprints/cats-blueprint/blueprint.json": "d17bc7eb8841f112b7f10927782d5a60ab5259c7",
     "core/flobot/test/fixtures/blueprints/cats-blueprint/flows/cat.json": "257460b50fd46e3c5bc54ee0ada9492fdcc85bc7",
