@@ -5,7 +5,6 @@
 const expect = require('chai').expect
 const flobot = require('./../lib')
 const path = require('path')
-const formsPluginDir = require.resolve('flobot-forms-plugin')
 
 describe('User-role tests', function () {
   // TODO: MORE! MORE! MORE!
@@ -19,9 +18,7 @@ describe('User-role tests', function () {
   it('should get the RBAC service for user-role testing purposes', function (done) {
     flobot.boot(
       {
-        pluginPaths: [
-          formsPluginDir
-        ],
+        pluginPaths: [],
 
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/website-blueprint')

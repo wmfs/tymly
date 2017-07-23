@@ -2,44 +2,44 @@
   "rushMinimumVersion": "3.0.11",
   "npmVersion": "3.10.10",
   "nodeSupportedVersionRange": ">=6.11.0 <7.0.0",
-  "projectFolderMaxDepth": 3,
+  "projectFolderMaxDepth": 2,
 
   "projects": [
     {
       "packageName": "flobot",
-      "projectFolder": "core/flobot"
+      "projectFolder": "flobot"
     },
     {
       "packageName": "pg-delta-file",
-      "projectFolder": "lib/pg/pg-delta-file"
+      "projectFolder": "pg-delta-file"
     },
     {
       "packageName": "pg-diff-sync",
-      "projectFolder": "lib/pg/pg-diff-sync"
+      "projectFolder": "pg-diff-sync"
     },
     {
       "packageName": "pg-info",
-      "projectFolder": "lib/pg/pg-info"
+      "projectFolder": "pg-info"
     },
     {
       "packageName": "pg-model",
-      "projectFolder": "lib/pg/pg-model"
+      "projectFolder": "pg-model"
     },
     {
       "packageName": "pg-telepods",
-      "projectFolder": "lib/pg/pg-telepods"
+      "projectFolder": "pg-telepods"
     },
     {
       "packageName": "relationize",
-      "projectFolder": "lib/relationize"
+      "projectFolder": "relationize"
     },
     {
       "packageName": "smithereens",
-      "projectFolder": "lib/smithereens"
+      "projectFolder": "smithereens"
     },
     {
       "packageName": "supercopy",
-      "projectFolder": "lib/supercopy"
+      "projectFolder": "supercopy"
     },
     {
       "packageName": "flobot-alerts-plugin",
@@ -63,7 +63,7 @@
     },
     {
       "packageName": "flobot-runner",
-      "projectFolder": "tools/flobot-runner"
+      "projectFolder": "flobot-runner"
     }
   ]
 }
