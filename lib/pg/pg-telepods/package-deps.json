@@ -2,15 +2,15 @@
   "files": {
     "lib/pg/pg-telepods/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "lib/pg/pg-telepods/README.md": "f3c7b5a0ca63e6bca8d0f8452bb5c19102b25e93",
-    "lib/pg/pg-telepods/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "lib/pg/pg-telepods/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
     "lib/pg/pg-telepods/lib/Upsert-transformer.js": "1e5d0d7b79aa412cfed3c9157ffa1912a137dfb8",
     "lib/pg/pg-telepods/lib/get-filename.js": "66ea20c035d681e493f80b60bcba71e6c9c55947",
     "lib/pg/pg-telepods/lib/index.js": "63acd9068a211af1b9f4e09fc97f047bce4b34c4",
     "lib/pg/pg-telepods/lib/process-copy.js": "75db765edbbee727055a365cc671a88e5d2c03ab",
     "lib/pg/pg-telepods/lib/process-deletes.js": "a51d94102196e224ec0519fddb05e3dee64f1835",
     "lib/pg/pg-telepods/lib/process-upserts.js": "fdfcfc5ee7763f8eaad264cacd6af90d64b283b8",
-    "lib/pg/pg-telepods/package-deps.json": "e6103c927e77898e5dc5263dd9df5cf5f3b8bf7e",
-    "lib/pg/pg-telepods/package.json": "a4d309943b29fe25764c5ac70aa18f78d736b9d2",
+    "lib/pg/pg-telepods/package-deps.json": "667111c543c8a1eb99bc896dfff8b7e0f463d485",
+    "lib/pg/pg-telepods/package.json": "782131f781b535c231450870776d44697b9b0ccc",
     "lib/pg/pg-telepods/test/fixtures/install-test-schemas.sql": "318f64b45555c8911ffe2c97be9aa19c82711469",
     "lib/pg/pg-telepods/test/fixtures/sql-script-runner.js": "2deb809658823aa07edcb44d8270d504b615f56d",
     "lib/pg/pg-telepods/test/fixtures/uninstall-test-schemas.sql": "d07766c873bea537ca22ab1d9b4c302980686025",
@@ -21,5 +21,5 @@
     "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
     "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
-  "arguments": "gulp test --color"
+  "arguments": "gulp test standard --color"
 }

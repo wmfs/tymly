@@ -2,21 +2,21 @@
   "files": {
     "lib/smithereens/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "lib/smithereens/README.md": "0e754125e368c27b6a88eff05a9a18d5116e7eb9",
-    "lib/smithereens/gulpfile.js": "48768cc3aa421402c295baacea1d27cb9cfd7388",
-    "lib/smithereens/lib/File-builder.js": "c3ebda235d416dcad1dadd36984d7a8f14e43104",
-    "lib/smithereens/lib/Transformer.js": "6ec5238fb3c2b014eff73d077e6bc38daa2147ce",
-    "lib/smithereens/lib/Writer.js": "da17438c376d32d24c0347bef0ff558952055206",
+    "lib/smithereens/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "lib/smithereens/lib/File-builder.js": "9f59f883d2254e85e85023bd4412244bf7c3b7ee",
+    "lib/smithereens/lib/Transformer.js": "b39b9b0e1ef19ff1d1d84f92154756cf035889de",
+    "lib/smithereens/lib/Writer.js": "08da649e43c1be10ea741d5b3dc29a641960cb94",
     "lib/smithereens/lib/hash-function.js": "182d338fda59079f3f2819e452b72c1313148038",
     "lib/smithereens/lib/index.js": "d85c3bc740c79bf25722b4f274cf44b0f722ee55",
-    "lib/smithereens/package-deps.json": "6abebdc5a1a8ad197d3da9849e5e68d9b4436149",
-    "lib/smithereens/package.json": "64a5c93b28983e33a95eb292ac869e36e2fc4e00",
+    "lib/smithereens/package-deps.json": "23cc95bcdce52e23a33302ce0042be3f6c2d82a2",
+    "lib/smithereens/package.json": "420d7f74486e243511447b39951bbf1ebf50e22b",
     "lib/smithereens/test/fixtures/people.csv": "befc4c23b0f0ee1c19967f507ab2bf2e93b6b2ad",
-    "lib/smithereens/test/simple-people-spec.js": "81acb8988c6e5bfc2ba4eb552e93bfb2b9761cc6",
+    "lib/smithereens/test/simple-people-spec.js": "6018b73d83421549e5271e73fc8bcc23e1d0e5b9",
     ".gitignore": "fbdc4979ace6be2ed72a73c8ef7287a960e1bc6f",
     "LICENSE": "ef1fea721864b0d48a5254e2dbc84d976731a54e",
     "README.md": "7c55e387f1f40a8d898f490cbc6d2e1c1fdd8016",
     "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
     "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
-  "arguments": "gulp test --color"
+  "arguments": "gulp test standard --color"
 }

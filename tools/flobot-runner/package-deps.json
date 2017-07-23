@@ -4,10 +4,10 @@
     "tools/flobot-runner/README.md": "cd62bb90ac1062df54002601bb56fa61c97fc54a",
     "tools/flobot-runner/config/custom-environment-variables.json": "d2eb0134afdf339287e013b8524978729a5bab81",
     "tools/flobot-runner/config/default.json": "32f5a0bcb6312ae15832050ff6b0852e4aad11b5",
-    "tools/flobot-runner/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
-    "tools/flobot-runner/lib/index.js": "9019d6cc6b3fbc2e2d9dc0045fbef4b812941df1",
-    "tools/flobot-runner/package-deps.json": "44e92da62b489c8f06856c5c469b74c9b20116be",
-    "tools/flobot-runner/package.json": "271ed6bcb17bd297af1fc2bbb73957d6f3cbac5b",
+    "tools/flobot-runner/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
+    "tools/flobot-runner/lib/index.js": "8f1847063d5212c6c029058225c19f3d79fabc95",
+    "tools/flobot-runner/package-deps.json": "352b3d176d2c9eafef739bc9a42c47a1741510ff",
+    "tools/flobot-runner/package.json": "8d4d358e3fb23bd78b130d60c189fe96094d0264",
     "tools/flobot-runner/test/fixtures/blueprints/cats-blueprint/blueprint.json": "d17bc7eb8841f112b7f10927782d5a60ab5259c7",
     "tools/flobot-runner/test/fixtures/blueprints/cats-blueprint/flows/cat.json": "257460b50fd46e3c5bc54ee0ada9492fdcc85bc7",
     "tools/flobot-runner/test/fixtures/blueprints/cats-blueprint/functions/calculate-contentment-level.js": "effd32da2df2c4fbd55c5a185efa3fe57bbe5f53",
@@ -46,5 +46,5 @@
     "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
     "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
-  "arguments": "gulp test --color"
+  "arguments": "gulp test standard --color"
 }

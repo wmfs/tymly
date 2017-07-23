@@ -2,10 +2,10 @@
   "files": {
     "lib/pg/pg-info/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "lib/pg/pg-info/README.md": "a98284c6356c01506b6bcf9f7956462e4834c97b",
-    "lib/pg/pg-info/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "lib/pg/pg-info/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
     "lib/pg/pg-info/lib/index.js": "2530ca00be9c11552194aef46581f2c43797a69f",
-    "lib/pg/pg-info/package-deps.json": "625a34f98f80a07f842c647214b1115e98c7e1ea",
-    "lib/pg/pg-info/package.json": "3922c39275a35d413a8f8dbff6df4d4c98c6a94b",
+    "lib/pg/pg-info/package-deps.json": "672435ddd4a696cab0fe17fce7542553d4a80bed",
+    "lib/pg/pg-info/package.json": "cd7a6cb222fedc1467e762d29e2afd1da1cea72a",
     "lib/pg/pg-info/test/fixtures/install-test-schemas.sql": "e76321247ebf2e0d60eaf3cac02903d320679db7",
     "lib/pg/pg-info/test/fixtures/sql-script-runner.js": "2deb809658823aa07edcb44d8270d504b615f56d",
     "lib/pg/pg-info/test/fixtures/uninstall-test-schemas.sql": "ef6b25b3009e1c275a153d40cdac5deaf1bd274b",
@@ -16,5 +16,5 @@
     "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
     "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
-  "arguments": "gulp test --color"
+  "arguments": "gulp test standard --color"
 }

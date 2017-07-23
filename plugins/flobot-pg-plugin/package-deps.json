@@ -2,7 +2,7 @@
   "files": {
     "plugins/flobot-pg-plugin/LICENSE.md": "4ee79e33a6c78dcdbe9adf0e6c21d895d1cd4777",
     "plugins/flobot-pg-plugin/README.md": "9dba924b45d6eb2da714dba4439b8256d93c6a32",
-    "plugins/flobot-pg-plugin/gulpfile.js": "cd352cda5173117ebcaa619428bb22dfa2885316",
+    "plugins/flobot-pg-plugin/gulpfile.js": "f9521969fbad996fadb8ee84122832549de81df1",
     "plugins/flobot-pg-plugin/lib/components/services/storage/doc/example.json": "a8606792e1b4ebc956fd5a71225d21ce754a84c9",
     "plugins/flobot-pg-plugin/lib/components/services/storage/doc/index.js": "faf15f95ff283cabbdc9198934acd5d4f1f96b66",
     "plugins/flobot-pg-plugin/lib/components/services/storage/index.js": "5be10e5ace18a14976cb6eca317f454e2d05d931",
@@ -10,10 +10,10 @@
     "plugins/flobot-pg-plugin/lib/components/services/storage/schema.json": "2241b09d8f7dbe9c4e59aa0d3511cc2c269581db",
     "plugins/flobot-pg-plugin/lib/components/states/exportingCsvDeltaFile/index.js": "25ebc27b7583dc45cf13997ecbc2f92c832499ff",
     "plugins/flobot-pg-plugin/lib/components/states/importingCsvFiles/index.js": "1e5cc51874c0fafbcb8e2efccb771a29075e9b66",
-    "plugins/flobot-pg-plugin/lib/components/states/synchronizingTable/index.js": "87f823af76b952b3f3f74c36618b99141ccbf32c",
+    "plugins/flobot-pg-plugin/lib/components/states/synchronizingTable/index.js": "428449033603ab3f6fc790a6f1d08699816e7d70",
     "plugins/flobot-pg-plugin/lib/index.js": "f177540aae34806592c5bb8cb2016057d528ddf9",
-    "plugins/flobot-pg-plugin/package-deps.json": "eb472f9d5ea819aaff886a6133bd0c4747fcda22",
-    "plugins/flobot-pg-plugin/package.json": "c87abb7f46aaa99c666113e2ab1bb21fdfe41d42",
+    "plugins/flobot-pg-plugin/package-deps.json": "73b637d713d614fc66d99bb0220923c74815fd59",
+    "plugins/flobot-pg-plugin/package.json": "cae091439ddfbf730132a0e6230d4c7e2527c1f6",
     "plugins/flobot-pg-plugin/test/fixtures/blueprints/people-blueprint/blueprint.json": "317fa2ca01b22295c0da8ff7c178d38050136b1d",
     "plugins/flobot-pg-plugin/test/fixtures/blueprints/people-blueprint/flows/people.json": "79adbd0499c8fe0be032c853f4c3566020df5ddc",
     "plugins/flobot-pg-plugin/test/fixtures/blueprints/people-blueprint/models/people.json": "04e2b7c2dbae19a01fb7d47972a52a55e1502060",
@@ -34,5 +34,5 @@
     "common/config/rush/npm-shrinkwrap.json": "25bd08a1e1a59f98e46eb2702f360a67606fc011",
     "rush.json": "13786d17109f577414e7fb9cfa283509d60a4512"
   },
-  "arguments": "gulp test --color"
+  "arguments": "gulp test standard --color"
 }
