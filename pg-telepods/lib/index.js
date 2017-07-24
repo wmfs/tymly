@@ -1,7 +1,7 @@
 'use strict'
 
 const async = require('async')
-const mkdirp = require('mkdirp')
+const makeDir = require('make-dir')
 const path = require('path')
 const processUpserts = require('./process-upserts')
 const processDeletes = require('./process-deletes')
@@ -12,13 +12,20 @@ module.exports = function pgTelepods (options, callback) {
   options.upsertsDir = path.join(options.outputDir, 'upserts')
 
   // Make sure 'deletes' and 'upserts' directories are ready
-  async.each(
+  async.eachSeries(
     [
       options.deletesDir,
       options.upsertsDir
     ],
     function (dirPath, cb) {
-      mkdirp(dirPath, cb)
+      makeDir(dirPath).then(
+        function () {
+          cb(null)
+        }).catch(
+        function (err) {
+          cb(err)
+        }
+      )
     },
     function (err) {
       if (err) {

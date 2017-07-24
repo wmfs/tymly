@@ -31,7 +31,7 @@ class synchronizingTable {
           console.log('error')
           callback(err)
         } else {
-          console.log('done')
+          console.log('Leaving Synchronizing table')
           callback(null)
         }
       }

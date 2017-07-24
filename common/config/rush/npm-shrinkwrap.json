@@ -458,9 +458,9 @@
       "resolved": "https://registry.npmjs.org/check-error/-/check-error-1.0.2.tgz"
     },
     "circular-json": {
-      "version": "0.3.1",
+      "version": "0.3.3",
       "from": "circular-json@>=0.3.1 <0.4.0",
-      "resolved": "https://registry.npmjs.org/circular-json/-/circular-json-0.3.1.tgz"
+      "resolved": "https://registry.npmjs.org/circular-json/-/circular-json-0.3.3.tgz"
     },
     "cli-cursor": {
       "version": "1.0.2",
@@ -2072,6 +2072,11 @@
       "version": "4.0.1",
       "from": "mailcomposer@4.0.1",
       "resolved": "https://registry.npmjs.org/mailcomposer/-/mailcomposer-4.0.1.tgz"
+    },
+    "make-dir": {
+      "version": "1.0.0",
+      "from": "make-dir@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.0.0.tgz"
     },
     "map-cache": {
       "version": "0.2.2",

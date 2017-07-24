@@ -15,7 +15,7 @@
     "babyparse": "^0.4.6",
     "fs": "0.0.1-security",
     "lodash": "^4.17.4",
-    "mkdirp": "^0.5.1",
+    "make-dir": "^1.0.0",
     "pg-query-stream": "^1.0.0"
   },
   "devDependencies": {

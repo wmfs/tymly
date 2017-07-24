@@ -3,7 +3,7 @@
 const UNKNOWN_FILENAME = 'unknown'
 const UNKNOWN_DIR = 'unknown'
 const path = require('path')
-const mkdirp = require('mkdirp')
+const makeDir = require('make-dir')
 const fs = require('fs')
 const csvStringify = require('csv-string').stringify
 const Transformer = require('./Transformer')
@@ -109,14 +109,17 @@ class FileBuilder {
       callback(null, this.files[key])
     } else {
       if (this.knownDirs.indexOf(dirPath) === -1) {
-        mkdirp(path.resolve(this.outputDirRootPath, dirPath), function (err) {
-          if (err) {
-            callback(err)
-          } else {
+        // TODO: Good form to call callbacks inside promises?
+        makeDir(path.resolve(this.outputDirRootPath, dirPath)).then(
+          function () {
             _this.knownDirs.push(dirPath)
             createWriteStream()
           }
-        })
+        ).catch(
+          function (err) {
+            callback(err)
+          }
+        )
       } else {
         createWriteStream()
       }
