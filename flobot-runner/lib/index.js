@@ -26,7 +26,7 @@ flobot.boot(
             }
           )
 
-          console.log(`Server listening on port ${config.serverPort}!\n`)
+          console.log(`Server listening on port ${config.config.serverPort}!\n`)
           services.rbac.rbac.debug()
           console.log(`Admin token: ${adminToken}`)
           console.log(config)
