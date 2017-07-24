@@ -42,7 +42,7 @@ module.exports = function (options, callback) {
                                 if (err) {
                                   cb2(err)
                                 } else {
-                                  if (fileStats.isFile()) {
+                                  if (fileStats.isFile() && fileStats.size > 0) {
                                     getColumnNames(
                                       filePath,
                                       options,
@@ -52,7 +52,8 @@ module.exports = function (options, callback) {
                                         } else {
                                           action[upath.normalize(filePath)] = {
                                             tableName: path.basename(actionItem, path.extname(actionItem)),
-                                            columnNames: columnNames
+                                            columnNames: columnNames,
+                                            size: fileStats.size
                                           }
                                           cb2()
                                         }
