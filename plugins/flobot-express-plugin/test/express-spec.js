@@ -389,7 +389,6 @@ describe('Simple Express tests', function () {
         version: '1.0',
         data: {petName: 'Rupert'}
       }, sendToken(irrelevantToken)).on('complete', function (err, res) {
-        console.log(err)
         expect(res.statusCode).to.equal(403)
         expect(err.error).to.equal('Forbidden')
         expect(err.message).to.equal('No roles permit this action')

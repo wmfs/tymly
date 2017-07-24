@@ -1,10 +1,13 @@
 'use strict'
 
 const boom = require('boom')
+const logBoomError = require('./log-boom-error')
+
 const dottie = require('dottie')
 const Flow = require('./Flow/index')
 const async = require('async')
 const uuid = require('uuid')
+const _ = require('lodash')
 
 const UNSPECIFIED_INSTIGATING_CLIENT = {
   'appName': '__UNSPECIFIED__',
@@ -72,7 +75,9 @@ class FlobotsService {
     if (this.flows.hasOwnProperty(flowId)) {
       callback(null, this.flows[flowId])
     } else {
-      callback(boom.notFound("Unable to find flow with id '" + flowId + "'", {flowId: flowId}))
+      const boomErr = boom.notFound("Unable to find flow with id '" + flowId + "'", {flowId: flowId})
+      logBoomError(boomErr)
+      callback(boomErr)
     }
   }
 
@@ -81,7 +86,13 @@ class FlobotsService {
       flowId,
       function (err, flow) {
         if (err) {
-          callback(err)
+          let boomErr = boom.boomify(err)
+          if (!_.isObject(boomErr.data)) {
+            boomErr.data = {}
+          }
+          boomErr.data.flowId = flowId
+          logBoomError(boomErr)
+          callback(boomErr)
         } else {
           const createOptions = {}
           if (options) {
@@ -103,7 +114,13 @@ class FlobotsService {
 
             function (err, transitionedFlobot) {
               if (err) {
-                callback(err)
+                let boomErr = boom.boomify(err)
+                if (!_.isObject(boomErr.data)) {
+                  boomErr.data = {}
+                }
+                boomErr.data.flobot = flobot
+                logBoomError(boomErr)
+                callback(boomErr)
               } else {
                 callback(null, transitionedFlobot)
               }
@@ -169,7 +186,13 @@ class FlobotsService {
 
       function (err, transitionedFlobot) {
         if (err) {
-          callback(err)
+          let boomErr = boom.boomify(err)
+          if (!_.isObject(boomErr.data)) {
+            boomErr.data = {}
+          }
+          boomErr.data.flobot = flobot
+          logBoomError(boomErr)
+          callback(boomErr)
         } else {
           callback(null, transitionedFlobot)
         }
@@ -212,7 +235,13 @@ class FlobotsService {
     const _this = this
     this.getFlobot(flobotId, null, function (err, flobot) {
       if (err) {
-        callback(err)
+        let boomErr = boom.boomify(err)
+        if (!_.isObject(boomErr.data)) {
+          boomErr.data = {}
+        }
+        boomErr.data.flobotId = flobotId
+        logBoomError(boomErr)
+        callback(boomErr)
       } else {
         _this.findFlowById(
           flobot.flowId,
@@ -277,7 +306,13 @@ class FlobotsService {
       flobotId,
       function (err, flobot) {
         if (err) {
-          callback(err)
+          let boomErr = boom.boomify(err)
+          if (!_.isObject(boomErr.data)) {
+            boomErr.data = {}
+          }
+          boomErr.data.flobotId = flobotId
+          logBoomError(boomErr)
+          callback(boomErr)
         } else {
           if (flobot) {
             if (options && options.hasOwnProperty('onAuthorizationHook')) {
@@ -296,7 +331,9 @@ class FlobotsService {
               callback(null, flobot)
             }
           } else {
-            callback(boom.notFound("No flobot with id '" + flobotId + "' could be found.", {flobotId: flobotId}))
+            const boomErr = boom.notFound("No flobot with id '" + flobotId + "' could be found.", {flobotId: flobotId})
+            logBoomError(boomErr)
+            callback(boomErr)
           }
         }
       }
@@ -308,7 +345,13 @@ class FlobotsService {
       flobotId,
       function (err) {
         if (err) {
-          callback(err)
+          let boomErr = boom.boomify(err)
+          if (!_.isObject(boomErr.data)) {
+            boomErr.data = {}
+          }
+          boomErr.data.flobotId = flobotId
+          logBoomError(boomErr)
+          callback(boomErr)
         } else {
           callback(null)
         }

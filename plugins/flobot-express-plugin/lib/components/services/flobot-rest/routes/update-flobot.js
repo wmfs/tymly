@@ -2,7 +2,7 @@ module.exports = function updateFlobotRoute (req, res) {
   const flobotServices = req.app.get('flobotServices')
   const authService = flobotServices.auth
   const flobotsService = flobotServices.flobots
-
+  const boom = require('boom')
   const options = JSON.parse(JSON.stringify(req.body))
   const userId = authService.extractUserIdFromRequest(req)
 
@@ -18,7 +18,13 @@ module.exports = function updateFlobotRoute (req, res) {
         options,
         function (err, flobot) {
           if (err) {
-            res.status(err.output.statusCode).send(err.output.payload)
+            let boomErr
+            if (err.isBoom) {
+              boomErr = err
+            } else {
+              boomErr = boom.internal('Flobot returned an error while attempting to update', err)
+            }
+            res.status(boomErr.output.statusCode).send(boomErr.output.payload)
           } else {
             res.status(200).send(
               {

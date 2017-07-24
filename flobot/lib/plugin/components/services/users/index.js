@@ -172,7 +172,7 @@ class UsersService {
           if (authorized) {
             callback(null)
           } else {
-            callback(boom.forbidden('No roles permit this action'))
+            callback(boom.forbidden('No roles permit this action', {userId: userId, flowId: flowId}))
           }
         }
       }

@@ -2,6 +2,7 @@ module.exports = function startNewFlobotRoute (req, res) {
   const flobotServices = req.app.get('flobotServices')
   const authService = flobotServices.auth
   const flobotsService = flobotServices.flobots
+  const boom = require('boom')
 
   let flowId
 
@@ -27,19 +28,24 @@ module.exports = function startNewFlobotRoute (req, res) {
   }
 
   flobotsService.startNewFlobot(
-        flowId,
-        options,
-        function (err, flobot) {
-          if (err) {
-            console.error(JSON.stringify(err, null, 2))
-            res.status(err.output.statusCode).send(err.output.payload)
-          } else {
-            res.status(201).send(
-              {
-                flobot: flobot
-              }
-                )
-          }
+    flowId,
+    options,
+    function (err, flobot) {
+      if (err) {
+        let boomErr
+        if (err.isBoom) {
+          boomErr = err
+        } else {
+          boomErr = boom.internal('Flobot returned an error while attempting to start', err)
         }
-    )
+        res.status(boomErr.output.statusCode).send(boomErr.output.payload)
+      } else {
+        res.status(201).send(
+          {
+            flobot: flobot
+          }
+        )
+      }
+    }
+  )
 }
