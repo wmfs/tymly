@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 'use strict'
-
+const PORT = 3003
 const jwt = require('jsonwebtoken')
 const rest = require('restler')
 const expect = require('chai').expect
@@ -29,8 +29,8 @@ describe('Simple Express tests', function () {
   let irrelevantToken
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
-  const flobotsUrl = 'http://localhost:3000/flobots/'
-  const remitUrl = 'http://localhost:3000/remit/'
+  const flobotsUrl = `http://localhost:${PORT}/flobots/`
+  const remitUrl = `http://localhost:${PORT}/remit/`
   let rupertFlobotId
   let alanFlobotId
   const Buffer = require('safe-buffer').Buffer
@@ -98,9 +98,9 @@ describe('Simple Express tests', function () {
   })
 
   it('should start Express app', function (done) {
-    app.listen(3000, function () {
+    app.listen(PORT, function () {
       console.log('\n')
-      console.log('Example app listening on port 3000!\n')
+      console.log(`Example app listening on port ${PORT}!\n`)
       done()
     })
   })
