@@ -13,7 +13,7 @@ class FunctionsService {
   boot (options, callback) {
     this.functions = {}
 
-    // Sandbox for blueprint-functions can play
+    // Sandbox where blueprint-functions can play
     const ctx = {
       services: options.bootedServices,
       utils: {
