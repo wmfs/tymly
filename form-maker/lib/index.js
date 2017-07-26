@@ -3,6 +3,7 @@
 const async = require('async')
 const path = require('path')
 const glob = require('glob')
+const jsonFile = require('jsonfile')
 
 module.exports = function formMaker (options, callback) {
   let modelsDir = path.join(options.blueprintDir, 'models')
@@ -14,11 +15,21 @@ module.exports = function formMaker (options, callback) {
       console.log('Error: ', err)
       callback(err)
     } else {
+      // Iterate through each JSON file
       async.each(
         files,
         function (filePath, cb) {
           console.log('Filepath: ' + filePath)
-          cb(null)
+
+          jsonFile.readFile(filePath, function (err, obj) {
+            if (err) {
+              console.log('Error: ', err)
+              callback(err)
+            } else {
+              console.dir(obj)
+              cb(null)
+            }
+          })
         },
         function (err) {
           console.log(err)

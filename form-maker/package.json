@@ -15,7 +15,8 @@
     "first-line": "^1.0.2",
     "pg": "^6.2.4",
     "upath": "^1.0.0",
-    "glob": "^7.1.2"
+    "glob": "^7.1.2",
+    "jsonfile": "^3.0.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
