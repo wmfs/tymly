@@ -1,5 +1,8 @@
-const _ = require('lodash')
+'use strict'
 
-module.exports = function calculateContentmentLevel () {
-  return _.random(0, 2)
+module.exports = function (ctx) {
+  return function calculateContentmentLevel () {
+    const _ = ctx.utils._
+    return _.random(0, 2)
+  }
 }

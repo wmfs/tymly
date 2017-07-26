@@ -6,8 +6,7 @@ module.exports = function jsFileLoader (blueprintMeta, originalKey, jsFilePath) 
   let loaded
 
   try {
-    const func = require(jsFilePath)
-
+    const closure = require(jsFilePath)
     const keyParts = [
       blueprintMeta.namespace,
       originalKey
@@ -15,7 +14,7 @@ module.exports = function jsFileLoader (blueprintMeta, originalKey, jsFilePath) 
 
     loaded = {
       key: keyParts.join('_'),
-      content: func
+      content: closure
     }
   } catch (err) {
     messages.error(

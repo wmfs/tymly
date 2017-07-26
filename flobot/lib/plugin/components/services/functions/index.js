@@ -3,6 +3,7 @@
 // Getting args from a function:
 //   http://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically-from-javascript
 
+const _ = require('lodash')
 const dottie = require('dottie')
 
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
@@ -11,6 +12,15 @@ const ARGUMENT_NAMES = /(?:^|,)\s*([^\s,=]+)/g
 class FunctionsService {
   boot (options, callback) {
     this.functions = {}
+
+    // Sandbox for blueprint-functions can play
+    const ctx = {
+      services: options.bootedServices,
+      utils: {
+        _: _,
+        dottie: dottie
+      }
+    }
 
     let func
     let functionInfo
@@ -23,10 +33,8 @@ class FunctionsService {
 
       for (let functionId in functions) {
         if (functions.hasOwnProperty(functionId)) {
-          func = functions[functionId]
-
+          func = functions[functionId](ctx) // Closures in play!
           args = this.getFunctionParameters(func)
-
           functionInfo = {
             functionId: functionId,
             func: func,
