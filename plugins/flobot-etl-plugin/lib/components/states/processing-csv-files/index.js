@@ -1,5 +1,6 @@
 'use strict'
 const smithereens = require('smithereens')
+const schema = require('./schema.json')
 
 class ProcessingCsvFiles {
   init (stateConfig, options, callback) {
@@ -37,5 +38,6 @@ class ProcessingCsvFiles {
 
 module.exports = {
   autoNudge: true,
-  stateClass: ProcessingCsvFiles
+  stateClass: ProcessingCsvFiles,
+  schema: schema
 }

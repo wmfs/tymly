@@ -1,0 +1,45 @@
+## Boot config
+<% if (config) { %>
+```json
+<%- JSON.stringify(doc.example, null, 2) %>
+```
+<%- config %>
+<% } else {%>
+- This service doesn't require any configuration to boot.
+<% }%>
+
+<% if (blueprintDirs) { %>
+## Blueprint dirs
+
+> This service can load resources defined in the following Blueprint directories:
+
+|Directory | Content |
+|--------- | ------- |
+<% blueprintDirs.forEach(function(blueprintDir){ -%>
+| `<%=blueprintDir.dirName %>` | <%=blueprintDir.description %> |
+<% }); -%>
+
+<% }%>
+
+<% if (apiMd) { %>
+# Service methods/properties
+<%- apiMd -%>
+<hr>
+<% }%>
+
+<% if (bootBefore) { %>
+### Boots before
+
+<% bootBefore.forEach(function(service) { -%>
+`<%- service -%>`
+<% });-%>
+<% }%>
+
+<% if (bootAfter) { %>
+### Boots after
+
+<% bootAfter.forEach(function(service) { -%>
+ `<%- service -%>`
+<% });-%>
+<% }%>
+

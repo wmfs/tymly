@@ -1,0 +1,46 @@
+{
+  "processingCsvFiles": {
+    "options": {
+      "parser": {
+        "quote": "\"",
+        "delimiter": ",",
+        "newline": "\r\n",
+        "skipFirstLine": false,
+        "trimWhitespace": true
+      },
+      "dirSplits": [
+        {
+          "columnIndex": 3,
+          "valueToDirMap": {
+            "c": "children",
+            "a": "adults"
+          }
+        }
+      ],
+      "fileSplits": {
+        "columnIndex": 4,
+        "valueToFileMap": {
+          "u": {
+            "filename": "changes",
+            "outputColumns": [
+              {"name": "person_no", "columnIndex": 0},
+              {"name": "first_name", "columnIndex": 1},
+              {"name": "last_name", "columnIndex": 2}
+            ]
+          },
+          "d": {
+            "filename": "deletes",
+            "outputColumns": [
+              {"name": "person_no", "columnIndex": 0}
+            ]
+          }
+        }
+      }
+    },
+    "events": {
+      "csvFilesProcessed": {
+        "to": "importingCsvFiles"
+      }
+    }
+  }
+}

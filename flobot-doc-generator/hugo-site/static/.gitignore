@@ -1,0 +1,19 @@
+## IDE things ##
+.idea
+
+# Webstorm
+
+# Eclipse:
+
+.project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders

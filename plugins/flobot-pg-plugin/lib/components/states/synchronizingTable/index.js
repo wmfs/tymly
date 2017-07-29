@@ -3,6 +3,7 @@
  */
 'use strict'
 const startTelepods = require('pg-telepods')
+const schema = require('./schema.json')
 
 class synchronizingTable {
   init (stateConfig, options, callback) {
@@ -46,5 +47,6 @@ class synchronizingTable {
 
 module.exports = {
   autoNudge: true,
-  stateClass: synchronizingTable
+  stateClass: synchronizingTable,
+  schema: schema
 }

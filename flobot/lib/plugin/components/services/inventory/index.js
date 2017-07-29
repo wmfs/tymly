@@ -82,7 +82,6 @@ class InventoryService {
             quiet: false
           }
         )
-
         inventory.plugins[pluginPath] = pluginInfo
       }
     )

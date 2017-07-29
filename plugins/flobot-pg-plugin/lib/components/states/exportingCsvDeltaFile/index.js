@@ -2,11 +2,11 @@
  * Created by Aron.Moore on 12/07/2017.
  */
 'use strict'
+const schema = require('./schema.json')
 const generateDelta = require('pg-delta-file')
 
 class exportingCsvDeltaFile {
   init (stateConfig, options, callback) {
-    console.log('Init Exporting CSV file')
     this.client = options.services.storage.client
     this.since = stateConfig.options.since
     this.createdColumnName = stateConfig.options.createdColumnName
@@ -16,7 +16,6 @@ class exportingCsvDeltaFile {
   }
 
   enter (flobot, data, callback) {
-    console.log('Enter Exporting CSV file')
     generateDelta(
       {
         client: this.client,
@@ -40,12 +39,12 @@ class exportingCsvDeltaFile {
   }
 
   leave (flobot, data, callback) {
-    console.log('Exporting CSV file')
     callback(null)
   }
 }
 
 module.exports = {
   autoNudge: true,
-  stateClass: exportingCsvDeltaFile
+  stateClass: exportingCsvDeltaFile,
+  schema: schema
 }

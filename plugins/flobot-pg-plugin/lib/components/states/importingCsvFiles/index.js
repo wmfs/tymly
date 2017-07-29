@@ -4,6 +4,7 @@
 'use strict'
 const supercopy = require('supercopy')
 const _ = require('lodash')
+const schema = require('./schema.json')
 
 class importingCsvFiles {
   init (stateConfig, options, callback) {
@@ -43,5 +44,6 @@ class importingCsvFiles {
 
 module.exports = {
   autoNudge: true,
-  stateClass: importingCsvFiles
+  stateClass: importingCsvFiles,
+  schema: schema
 }
