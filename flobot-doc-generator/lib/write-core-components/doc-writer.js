@@ -36,7 +36,7 @@ module.exports = function docWriter (componentRootPath, componentTypeName, plugi
             const altPlugin = inventory.plugins[component.pluginId]
 
             ending += sprintf(
-              '- [%s](/core-components/%s/%s-%s)\n',
+              '- [%s](/reference/%s/%s-%s)\n',
               shortenPluginName(altPlugin.package.pkg.name),
               componentTypeName,
               shortenPluginName(altPlugin.package.pkg.name),
@@ -65,7 +65,7 @@ module.exports = function docWriter (componentRootPath, componentTypeName, plugi
   const filePath = path.resolve(
     __dirname,
     path.join(
-      './../../hugo-site/content/core-components',
+      './../../hugo-site/content/reference',
       _.kebabCase(componentTypeName),
       filename
     )

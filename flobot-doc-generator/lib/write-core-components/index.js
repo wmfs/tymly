@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('upath')
 const docWriter = require('./doc-writer')
 const shortenPluginName = require('./utils/shorten-plugin-name')
-const template = fs.readFileSync(path.resolve(__dirname, './templates/core-components.ejs'))
+const template = fs.readFileSync(path.resolve(__dirname, './templates/reference.ejs'))
 const async = require('async')
 
 module.exports = function (rootDir, inventory, callback) {
@@ -124,7 +124,7 @@ module.exports = function (rootDir, inventory, callback) {
           ctx
         )
 
-        const destination = path.resolve(__dirname, './../../hugo-site/content/core-components/index.md')
+        const destination = path.resolve(__dirname, './../../hugo-site/content/reference/index.md')
         console.log('Writing ' + destination)
 
         fs.writeFileSync(destination, md)

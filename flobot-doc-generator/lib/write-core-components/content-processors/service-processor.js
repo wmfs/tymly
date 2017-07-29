@@ -1,3 +1,5 @@
+'use strict'
+
 const Parser = require('./../../jsonschema-markdown')
 const path = require('upath')
 const documentation = require('documentation')
@@ -38,23 +40,53 @@ module.exports = function serviceContentProcessor (ctx, inventory, callback) {
 
   // Get some doc info from the module...
   const indexFilePath = path.join(ctx.componentRootPath, 'index.js')
-  const jsDocInfo = documentation.build([indexFilePath], {})
-
-  if (jsDocInfo.length > 0) {
-    documentation.formats.md(
-      jsDocInfo,
-      {},
-      function (err, md) {
-        if (err) {
-          callback(err)
+  ctx.apiMd = null
+  documentation.build([indexFilePath], {})
+    .then(
+      function (jsDocInfo) {
+        if (jsDocInfo.length > 0) {
+          documentation.formats.md(jsDocInfo, {}).then(
+            function (md) {
+              ctx.apiMd = md
+              callback(null)
+            }
+          ).catch(
+            function (err) {
+              console.error('FAILED TO PARSE FUNCTION MARKDOWN')
+              console.error('  indexFilePath:', indexFilePath)
+              console.error(err)
+              callback(null)
+            }
+          )
         } else {
-          ctx.apiMd = md
           callback(null)
         }
       }
     )
-  } else {
-    ctx.apiMd = null
-    callback(null)
-  }
+    .catch(
+      function (err) {
+        console.error('FAILED TO LOAD FUNCTION MARKDOWN')
+        console.error('  indexFilePath:', indexFilePath)
+        console.error(err)
+        callback(null)
+      }
+    )
+
+// if (jsDocInfo.length > 0) {
+//   documentation.formats.md(
+//     jsDocInfo,
+//     {},
+//     function (err, md) {
+//       if (err) {
+//         callback(err)
+//       } else {
+//         ctx.apiMd = md
+//         callback(null)
+//       }
+//     }
+//   )
+// } else {
+//   ctx.apiMd = null
+//   callback(null)
+// }
 }

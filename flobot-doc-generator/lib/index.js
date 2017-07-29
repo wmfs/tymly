@@ -5,6 +5,7 @@ const sprintf = require('sprintf')
 const path = require('upath')
 const flobot = require('flobot')
 
+const writeConfig = require('./write-config')
 const writeKeyConcepts = require('./write-key-concepts')
 const writeCoreComponents = require('./write-core-components')
 
@@ -43,8 +44,7 @@ class DocGenerator {
               if (err) {
                 callback(err)
               } else {
-                // Got inventory tree: Turn it into some markdown
-                // ----------------------------------------------
+                writeConfig(_this.options.destination, inventory)
                 writeKeyConcepts(_this.options.destination, inventory)
                 writeCoreComponents(_this.options.destination, inventory, callback)
               }
