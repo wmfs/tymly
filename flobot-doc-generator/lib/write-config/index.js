@@ -5,7 +5,6 @@ const ejs = require('ejs')
 const configTemplate = fs.readFileSync(path.resolve(__dirname, './templates/config.ejs'))
 
 module.exports = function (rootDir, inventory) {
-
   const ctx = {}
 
   const toml = ejs.render(
