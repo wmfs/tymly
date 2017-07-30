@@ -1,6 +1,18 @@
 {
   "type": "object",
   "properties": {
+    "parser": {
+      "type": "object",
+      "description": "Object controlling how CSV lines should be parsed. Uses [csv-streamify](https://www.npmjs.com/package/csv-streamify) under the bonnet... with the addition of a `skipFirstLine` property (`boolean`) for conditionally ignoring header lines."
+    },
+    "dirSplits": {
+      "type": "object",
+      "description": "Used to split CSV files across different directories, depending on column values. Please see the [dirSplit](https://github.com/wmfs/tymly/tree/master/smithereens#dirsplit-object) object in [Smithereens](https://github.com/wmfs/tymly/tree/master/smithereens)for more information."
+    },
+    "fileSplits": {
+      "type": "object",
+      "description": "In a similar way, CSV lines can be split across different file too. Please see the [fileSplit](https://github.com/wmfs/tymly/tree/master/smithereens#filesplit-object) object in [Smithereens](https://github.com/wmfs/tymly/tree/master/smithereens)for more information."
+    }
 
   }
 }

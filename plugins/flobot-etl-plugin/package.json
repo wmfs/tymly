@@ -1,6 +1,6 @@
 {
   "name": "flobot-etl-plugin",
-  "description": "A collection of ETL states.",
+  "description": "A collection of states for helping with Extract, Transform and Load tasks.",
   "version": "0.0.2",
   "author": "Aron Moore",
   "main": "./lib/index.js",

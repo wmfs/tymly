@@ -1,6 +1,6 @@
 # flobot-etl-plugin
 
-> A collection of ETL states.
+> A collection of states for helping with Extract, Transform and Load tasks.
 
 ## <a name="install"></a>Install
 
