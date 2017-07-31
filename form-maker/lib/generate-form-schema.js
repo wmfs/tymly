@@ -52,6 +52,10 @@ function processProperties (filepath, content, objectAddedTo) {
       if (property.type === 'array') {
         let arrayAddedTo = []
         processProperties(filepath, property.items, arrayAddedTo)
+        // Add the ''key'[].' before each child key in items[]
+        _.forEach(arrayAddedTo, function (value) {
+          value.key = key + '[].' + value.key
+        })
         objectAddedTo.push({
           key: key,
           add: 'Add ' + key,
