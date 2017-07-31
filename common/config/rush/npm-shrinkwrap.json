@@ -49,6 +49,18 @@
       "from": "projects\\flobot-runner",
       "resolved": "file:projects\\flobot-runner"
     },
+    "@rush-temp/form-maker": {
+      "version": "0.0.0",
+      "from": "projects\\form-maker",
+      "resolved": "file:projects\\form-maker",
+      "dependencies": {
+        "dottie": {
+          "version": "2.0.0",
+          "from": "dottie@>=2.0.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
+        }
+      }
+    },
     "@rush-temp/pg-delta-file": {
       "version": "0.0.0",
       "from": "projects\\pg-delta-file",
@@ -3151,7 +3163,7 @@
     },
     "jsonfile": {
       "version": "3.0.1",
-      "from": "jsonfile@>=3.0.0 <4.0.0",
+      "from": "jsonfile@>=3.0.1 <4.0.0",
       "resolved": "https://registry.npmjs.org/jsonfile/-/jsonfile-3.0.1.tgz",
       "dependencies": {
         "graceful-fs": {
