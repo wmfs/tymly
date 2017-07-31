@@ -21,7 +21,7 @@ module.exports = function generateEditorFlow (filepath, blueprintPath) {
     fsm: {
       findingById: {
         options: {
-          modelId: camelCaseModelName, // gazetteer addressbaseHolding
+          modelId: camelCaseModelName,
           target: 'formData',
           key: {
             $value: {
@@ -37,7 +37,7 @@ module.exports = function generateEditorFlow (filepath, blueprintPath) {
       },
       formFilling: {
         options: {
-          formId: camelCaseFormName, // addressboxForm addressbasePlusForm
+          formId: camelCaseFormName,
           target: 'formData'
         },
         events: {
@@ -48,7 +48,7 @@ module.exports = function generateEditorFlow (filepath, blueprintPath) {
       },
       upserting: {
         options: {
-          modelId: camelCaseModelName, // gazetteer addressbaseHolding
+          modelId: camelCaseModelName,
           doc: {
             $value: {
               path: 'formData'
