@@ -79,3 +79,5 @@ output/
 /common/temp/**
 
 package-deps.json
+
+.yo-rc.json
