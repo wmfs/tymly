@@ -1,4 +1,5 @@
 'use strict'
+const debug = require('debug')('flobot')
 const async = require('async')
 const Fsm = require('./Fsm.js')
 const _ = require('lodash')
@@ -105,6 +106,7 @@ class Flow {
     // ENTER
     // -----
     if (destinationState) {
+      debug('Entering state' + destinationStateId)
       destinationState.enter(
         flobot,
         data,
