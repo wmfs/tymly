@@ -1,0 +1,11 @@
+{
+  "namespace": "<%= blueprint_namespace %>",
+  "name": "<%= blueprint_name %>",
+  "version": "1.0",
+  "label": "<%= blueprint_name %>",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Flobot blueprint to <%= flow_desc %>",
+  "tags": []
+}
