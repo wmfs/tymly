@@ -16,7 +16,10 @@
     "pg": "^6.2.4",
     "upath": "^1.0.0",
     "glob": "^7.1.2",
-    "jsonfile": "^3.0.1"
+    "jsonfile": "^3.0.1",
+    "dottie": "^2.0.0",
+    "fs": "0.0.1-security",
+    "make-dir": "^1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
