@@ -1,0 +1,8 @@
+{
+  "title": "<%= model_name %>",
+  "description": "<%= model_desc %>",
+  "primaryKey": [],
+  "type": "object",
+  "properties": []
+}
+
