@@ -16,7 +16,7 @@ module.exports = class extends Generator {
       [
         {
           name: 'blueprintName',
-          message: 'What is your blueprint\'s name?',
+          message: 'What is your blueprint\'s name?'
         },
         {
           name: 'blueprintNamespace',
