@@ -10,14 +10,13 @@ const path = require('path')
 module.exports = class extends Generator {
   prompting () {
     this.log(yosay(
-      'Welcome to flobot-generator!'
+      'Welcome to FlobotJS blueprint generator!'
     ))
     return this.prompt(
       [
         {
           name: 'blueprintName',
           message: 'What is your blueprint\'s name?',
-          default: 'blueprintName'
         },
         {
           name: 'blueprintNamespace',
@@ -46,7 +45,6 @@ module.exports = class extends Generator {
       ]
     ).then(
       function (props) {
-        this.log('in prompts')
         this.blueprintName = props.blueprintName
         this.blueprintNamespace = props.blueprintNamespace
         this.flowName = props.flowName
