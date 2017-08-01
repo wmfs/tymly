@@ -82,6 +82,7 @@ class Flow {
 
     // LEAVE
     // -----
+    debug('Leaving current state' + flobot.stateId)
     currentState.leave(
       flobot,
       data,
@@ -169,6 +170,7 @@ class Flow {
     const currentStateEvents = currentState._events
 
     if (currentStateEvents === undefined || _.keys(currentStateEvents).length === 0) {
+      debug('Reached a state with no events ' + flobot.stateId)
       // Reached a state with no events out of it... flow complete!
       // ----------------------------------------------------------
       callback(null, null)
@@ -206,7 +208,7 @@ class Flow {
             // Not conditional, so assume a simple 'to'
             nextStateId = resolvedEvent.to
           }
-
+          debug('Found next state' + nextStateId)
           callback(null, nextStateId)
         } else {
           callback(
