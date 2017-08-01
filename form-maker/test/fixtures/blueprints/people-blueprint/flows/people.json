@@ -1,0 +1,34 @@
+{
+  "name": "people",
+  "description": "Do some basic CRUD things.",
+  "version": "1.0",
+  "initialStateId": "upserting",
+  "instigators": ["user"],
+
+  "fsm": {
+
+    "upserting": {
+      "options": {
+        "modelId": "people",
+        "doc": {
+          "$value": {
+            "path": "homer"
+          }
+        }
+      },
+      "events": {
+        "next": {
+          "to": "findingById"
+        }
+      }
+    },
+
+    "findingById": {
+      "options": {
+        "modelId": "people",
+        "target": "foundHomer",
+        "key": 1
+      }
+    }
+  }
+}
