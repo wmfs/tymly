@@ -18,12 +18,18 @@ describe('Run the basic-usage example', function () {
   this.timeout(15000)
 
   it('Should create a new pg client', function () {
-    client = new pg.Client(process.env.PG_CONNECTION_STRING)
+    console.log('\n\nMAKING NEW PG CLIENT.')
+    const pgConnectionString = process.env.PG_CONNECTION_STRING
+    console.log('PG_CONNECTION_STRING=' + pgConnectionString)
+    client = new pg.Client(pgConnectionString)
+    console.log('MADE NEW CLIENT, CONNECTING...')
     client.connect()
+    console.log('CONNECTED')
   }
   )
 
   it('Should install test schemas', function (done) {
+    console.log('ABOUT TO INSTALL TEST SCHEMAS...')
     sqlScriptRunner(
         'install-test-schemas.sql',
         client,
