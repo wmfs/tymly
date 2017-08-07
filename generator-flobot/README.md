@@ -13,7 +13,8 @@ npm install -g generator-flobot
 Then generate your new project:
 
 ```bash
-yo flobot
+yo flobot:blueprint
+yo flobot:plugin
 ```
 
 ## Getting To Know Yeoman
