@@ -20,8 +20,5 @@ formMaker (
 )
 ```
 
-## Environment Variables
-
-
 ## <a name="license"></a>License
 [MIT](https://github.com/wmfs/flobot-runner/blob/master/LICENSE.md)
