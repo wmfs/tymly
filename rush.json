@@ -72,6 +72,10 @@
     {
       "packageName": "flobot-doc-generator",
       "projectFolder": "flobot-doc-generator"
+    },
+    {
+      "packageName": "generator-flobot",
+      "projectFolder": "generator-flobot"
     }
   ]
 }
