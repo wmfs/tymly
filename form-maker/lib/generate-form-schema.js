@@ -38,10 +38,21 @@ module.exports = function generateFormSchema (filepath, content) {
   let formFilename = path.basename(filepath, '-blueprint') + '-form.json'
   console.log('outputDir: ', outputDir)
   console.log('formFilename: ', formFilename)
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir)
-  }
-  fs.writeFileSync(path.join(outputDir, formFilename), JSON.stringify(form, null, 2))
+
+  fs.mkdir(outputDir, function (err) {
+    if (err && (err.code !== 'EEXIST')) {
+      console.log(err)
+    } else {
+      console.log('Making directory.')
+      fs.writeFile(path.join(outputDir, formFilename), JSON.stringify(form, null, 2), function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Creating file.')
+        }
+      })
+    }
+  })
 }
 
 function processProperties (filepath, content, objectAddedTo) {

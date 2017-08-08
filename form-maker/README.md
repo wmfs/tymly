@@ -1,5 +1,5 @@
 # Form-maker
-> Automatically generates form content based on all models specified in a blueprint.
+> Automatically generates form schema and editor flow based on all models specified in a blueprint.
 
 ## <a name="tests"></a>Tests
 ```bash
@@ -15,13 +15,10 @@ formMaker (
   blueprintDir: 'c:/development/blueprints/addressbox-blueprint'
   },
   function (err) {
-    // Done
+    // form-schema and flow-editor are created in the provided blueprint directory in /flows and /forms respectively.
   }
 )
 ```
-
-## Environment Variables
-
 
 ## <a name="license"></a>License
 [MIT](https://github.com/wmfs/flobot-runner/blob/master/LICENSE.md)
