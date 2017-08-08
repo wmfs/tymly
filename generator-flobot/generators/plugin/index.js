@@ -12,9 +12,12 @@ module.exports = class extends Generator {
     this.log(yosay(
       'Welcome to FlobotJS plugin generator!'
     ))
-    this.fs.mkdir(path.resolve(__dirname, '/lib/components/services'))
-    this.fs.mkdir(path.resolve(__dirname, '/lib/components/states'))
-    this.fs.copy(path.resolve(__dirname, './templates/_index,js'), 'index.js')
+  }
+
+  writing () {
+    this.fs.copy(path.resolve(__dirname, './templates/dummyfile.txt'), 'lib/components/services/dummyfile.txt')
+    this.fs.copy(path.resolve(__dirname, './templates/dummyfile.txt'), 'lib/components/states/dummyfile.txt')
+    this.fs.copy(path.resolve(__dirname, './templates/_index.js'), 'index.js')
     this.fs.copy(path.resolve(__dirname, './templates/_README.md'), 'README.md')
     this.fs.copy(path.resolve(__dirname, './templates/_gitignore'), '.gitignore')
     this.fs.copy(path.resolve(__dirname, './templates/_LICENSE.md'), 'LICENSE.md')
