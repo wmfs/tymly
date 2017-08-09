@@ -6,7 +6,7 @@ const supercopy = require('supercopy')
 const _ = require('lodash')
 const schema = require('./schema.json')
 
-class importingCsvFiles {
+class ImportingCsvFiles {
   init (stateConfig, options, callback) {
     this.headerColumnNamePkPrefix = stateConfig.options.headerColumnNamePkPrefix
     this.topDownTableOrder = stateConfig.options.topDownTableOrder
@@ -44,6 +44,6 @@ class importingCsvFiles {
 
 module.exports = {
   autoNudge: true,
-  stateClass: importingCsvFiles,
+  stateClass: ImportingCsvFiles,
   schema: schema
 }

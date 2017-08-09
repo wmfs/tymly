@@ -5,7 +5,7 @@
 const schema = require('./schema.json')
 const generateDelta = require('pg-delta-file')
 
-class exportingCsvDeltaFile {
+class ExportingCsvDeltaFile {
   init (stateConfig, options, callback) {
     this.client = options.services.storage.client
     this.since = stateConfig.options.since
@@ -45,6 +45,6 @@ class exportingCsvDeltaFile {
 
 module.exports = {
   autoNudge: true,
-  stateClass: exportingCsvDeltaFile,
+  stateClass: ExportingCsvDeltaFile,
   schema: schema
 }

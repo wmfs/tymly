@@ -5,7 +5,7 @@
 const startTelepods = require('pg-telepods')
 const schema = require('./schema.json')
 
-class synchronizingTable {
+class SynchronizingTable {
   init (stateConfig, options, callback) {
     console.log('Init Synchronizing table')
     this.client = options.services.storage.client
@@ -47,6 +47,6 @@ class synchronizingTable {
 
 module.exports = {
   autoNudge: true,
-  stateClass: synchronizingTable,
+  stateClass: SynchronizingTable,
   schema: schema
 }
