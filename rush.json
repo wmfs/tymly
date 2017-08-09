@@ -66,16 +66,16 @@
       "projectFolder": "plugins/flobot-pg-plugin"
     },
     {
+      "packageName": "flobot-search-plugin",
+      "projectFolder": "plugins/flobot-search-plugin"
+    },
+    {
       "packageName": "flobot-runner",
       "projectFolder": "flobot-runner"
     },
     {
       "packageName": "flobot-doc-generator",
       "projectFolder": "flobot-doc-generator"
-    },
-    {
-      "packageName": "generator-flobot",
-      "projectFolder": "generator-flobot"
     }
   ]
 }
