@@ -1,0 +1,8 @@
+socialSecurityId,firstName,LastName,personType,action,hashSum
+10,"Lisa","Simpson","c","u","AAAAAAAA"
+20,"Homer","Simpson","a","u","BBBBBBBB"
+30,"Bart","Simpson","c","d","CCCCCCCC"
+40,"Marge","Simpson","a","d","DDDDDDDD"
+50,"Maggie","Simpson","c","x","EEEEEEEE"
+60,"Grampa","Simpson","x","u","FFFFFFFF"
+70,"Milhouse","Van Houten","c","u","GGGGGGGG"

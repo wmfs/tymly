@@ -1,0 +1,76 @@
+{
+  "name": "people",
+  "description": "Process the CSV file.",
+  "version": "1.0",
+  "initialStateId": "processingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "fsm": {
+    "processingCsvFiles": {
+      "options": {
+        "parser": {
+          "quote": "\"",
+          "delimiter": ",",
+          "newline": "\n",
+          "skipFirstLine": true,
+          "trimWhitespace": true
+        },
+        "dirSplits": [
+          {
+            "columnIndex": 4,
+            "valueToDirMap": {
+              "u": "upserts",
+              "d": "delete",
+              "x": "upserts"
+            }
+          }
+        ],
+        "fileSplits": {
+          "columnIndex": 4,
+          "valueToFileMap": {
+            "u": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": ".social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            },
+            "x": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": ".social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            },
+            "d": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": "social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
