@@ -4,6 +4,7 @@
 'use strict'
 const startTelepods = require('pg-telepods')
 const schema = require('./schema.json')
+const getFunction = require('flobot/lib/getFunction.js')
 
 class SynchronizingTable {
   init (stateConfig, options, callback) {
@@ -12,7 +13,7 @@ class SynchronizingTable {
     this.source = stateConfig.options.source
     this.target = stateConfig.options.target
     this.join = stateConfig.options.join
-    this.transformFunction = options.services.functions.functions[stateConfig.options.transformerFunctionName].func
+    this.transformFunction = getFunction(options, stateConfig.options.transformerFunctionName)
     callback(null)
   }
 
