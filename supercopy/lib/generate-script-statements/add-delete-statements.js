@@ -18,7 +18,7 @@ module.exports = function addDeleteStatements (scriptStatements, fileInfo, optio
         )
 
         scriptStatements.push(
-          `DELETE FROM ${options.schemaName}.${info.tableName} WHERE (${info.columnNames.all.join(',')}) IN (SELECT ${info.columnNames.all.join(',')} FROM ${tempTableName});`
+          `DELETE FROM ${options.schemaName}.${_.snakeCase(info.tableName)} WHERE (${info.columnNames.all.join(',')}) IN (SELECT ${info.columnNames.all.join(',')} FROM ${tempTableName});`
         )
 
         scriptStatements.push(
