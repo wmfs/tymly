@@ -46,7 +46,7 @@ describe('Basic Smithereens tests', function () {
         fileSplits: {
           columnIndex: 4,
           valueToFileMap: {
-            'u': {
+            'i&u': {
               filename: 'changes',
               outputColumns: [
                 {name: 'person_no', columnIndex: 0},

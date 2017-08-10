@@ -52,8 +52,19 @@ class FileBuilder {
   static getColumnIndexFileConfigFunction (columnIndex, valueToFileMap) {
     return function columnIndexFileInfo (line) {
       let value = line[columnIndex]
-      if (valueToFileMap.hasOwnProperty(value)) {
-        value = valueToFileMap[value]
+      let keys = _.keys(valueToFileMap) // = [ 'i&u', 'd' ]
+      let matchingKey
+
+      for (let key of keys) {
+        let splitKeys = key.split('&')
+        for (let k of splitKeys) {
+          if (k === value) {
+            matchingKey = key
+          }
+        }
+      }
+      if (valueToFileMap.hasOwnProperty(matchingKey)) {
+        value = valueToFileMap[matchingKey]
       } else {
         value = {filename: UNKNOWN_FILENAME}
       }
