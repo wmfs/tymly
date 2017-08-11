@@ -5,6 +5,7 @@ const path = require('path')
 const expect = require('chai').expect
 const glob = require('glob')
 const _ = require('lodash')
+const csv = require('csvtojson')
 
 describe('Simple CSV and flobot test', function () {
   this.timeout(5000)
@@ -38,8 +39,12 @@ describe('Simple CSV and flobot test', function () {
           sourceDir: path.resolve(__dirname, 'fixtures', 'output')
         }
       },
-      function (err) {
+      function (err, data) {
         expect(err).to.eql(null)
+        expect(data.status).to.eql('finished')
+        expect(data.flowId).to.be.a('string')
+        expect(data.flowId).to.eql('fbotTest_people_1_0')
+        expect(data.stateId).to.eql('processingCsvFiles')
         done()
       }
     )
@@ -55,5 +60,37 @@ describe('Simple CSV and flobot test', function () {
       ])
       done()
     })
+  })
+
+  it('should check delete files have been split correctly', function (done) {
+    let csvDeletesPath = path.resolve(__dirname, 'fixtures', 'output', 'delete', 'people.csv')
+    csv()
+      .fromFile(csvDeletesPath)
+      .on('json', function (json) {
+        expect(json.action).to.equal('d')
+      })
+      .on('done', function (err) {
+        expect(err).to.eql(undefined)
+        done()
+      })
+  })
+
+  it('should check upserts files have been split correctly', function (done) {
+    let csvUpsertsPath = path.resolve(__dirname, 'fixtures', 'output', 'upserts', 'people.csv')
+    csv()
+      .fromFile(csvUpsertsPath)
+      .on('json', function (json) {
+        expect(json.action).to.satisfy(function (action) {
+          if (action === 'x' || action === 'u' || action === 'i') {
+            return true
+          } else {
+            return false
+          }
+        })
+      })
+      .on('done', function (err) {
+        expect(err).to.eql(undefined)
+        done()
+      })
   })
 })
