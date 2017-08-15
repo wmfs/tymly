@@ -24,4 +24,4 @@ $ npm install pg-concat --save
 ```
 
 ## <a name="license"></a>License
-[MIT](https://github.com/wmfs/pg-delta-file/blob/master/LICENSE.md)
+[MIT](https://github.com/wmfs/pg-concat/blob/master/LICENSE.md)
