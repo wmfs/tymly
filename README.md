@@ -1,9 +1,8 @@
-# tymly
+# Tymly
 
-> A [monorepo](https://danluu.com/monorepo/) for all of Tymly's components 
+A [monorepo](https://danluu.com/monorepo/) for all of Tymly's components 
 
-Tymly uses [Rush](https://danluu.com/monorepo/) for managing these interconnected [Node.js](https://nodejs.org/en/) projects,
-please see Rush's [everyday commands](https://github.com/Microsoft/web-build-tools/wiki/Rush-~-Everyday-commands) for further information.
+* We use [Rush](https://danluu.com/monorepo/) for managing our interconnected [Node.js](https://nodejs.org/en/) projects.
 
 ``` bash
 $ npm install -g @microsoft/rush
@@ -13,7 +12,7 @@ $ rush install
 $ rush rebuild
 ```
 
-__Please refer to each individual project's README.md file for more specific information__
+### Please refer to the `README.md` file inside each project for more specific information!
 
 ## <a name="license"></a>License
 
