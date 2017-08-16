@@ -11,6 +11,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "dottie": "^2.0.0",
     "ejs": "^2.5.6",
     "lodash": "^4.17.4"

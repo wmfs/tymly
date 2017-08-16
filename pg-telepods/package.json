@@ -9,6 +9,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "async": "^2.5.0",
     "camelcase-keys": "^4.1.0",
     "csv-string": "^2.3.2",

@@ -6,6 +6,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "nodemailer": "^2.7.0"
   },
   "devDependencies": {

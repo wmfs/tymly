@@ -5,7 +5,8 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "^5.2.0"
+    "boom": "^5.2.0",
+    "debug": "^2.6.8"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

@@ -6,6 +6,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "flobot": "^0.0.11",
+    "debug": "^2.6.8",
     "async": "^2.1.4",
     "documentation": "^5.0.1",
     "ejs": "^2.5.5",

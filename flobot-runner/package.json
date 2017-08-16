@@ -6,6 +6,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "lodash": "^4.17.2",
     "config": "^1.26.1",
     "flobot": "0.0.11",

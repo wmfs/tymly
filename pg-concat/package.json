@@ -10,6 +10,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "async": "^2.5.0",
     "fs": "0.0.1-security",
     "lodash": "^4.17.4"

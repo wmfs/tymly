@@ -6,6 +6,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
+    "debug": "^2.6.8",
     "body-parser": "^1.15.2",
     "cpr": "^2.0.2",
     "dottie": "^1.1.1",
