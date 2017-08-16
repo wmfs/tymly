@@ -49,11 +49,6 @@
       "from": "projects\\flobot-runner",
       "resolved": "file:projects\\flobot-runner"
     },
-    "@rush-temp/flobot-search-plugin": {
-      "version": "0.0.0",
-      "from": "projects\\flobot-search-plugin",
-      "resolved": "file:projects\\flobot-search-plugin"
-    },
     "@rush-temp/form-maker": {
       "version": "0.0.0",
       "from": "projects\\form-maker",
