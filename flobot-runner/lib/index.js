@@ -5,8 +5,12 @@ const process = require('process')
 const jwt = require('jsonwebtoken')
 const Buffer = require('safe-buffer').Buffer
 
+console.log('Flobot Runner')
+console.log('-------------')
+
 // Add an admin user if defined via $FLOBOT_ADMIN_USERID
 let adminUserId = process.env.FLOBOT_ADMIN_USERID
+
 if (adminUserId) {
   // UserID might be double-quoted, so remove if that's the case
   if (adminUserId[0] === '"' && adminUserId[adminUserId.length - 1] === '"') {
@@ -15,6 +19,9 @@ if (adminUserId) {
   config.config.defaultUsers = {}
   config.config.defaultUsers[adminUserId] = process.env.FLOBOT_ADMIN_ROLES.split(',')
 }
+
+console.log('defaultUsers:')
+console.log(JSON.stringify(config.config.defaultUsers, null, 2))
 
 flobot.boot(
   config,
@@ -32,7 +39,7 @@ flobot.boot(
             {},
             new Buffer(process.env.FLOBOT_AUTH_SECRET, 'base64'),
             {
-              subject: 'admin',
+              subject: adminUserId,
               audience: process.env.FLOBOT_AUTH_AUDIENCE
             }
           )

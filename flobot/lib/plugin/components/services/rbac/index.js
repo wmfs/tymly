@@ -2,6 +2,7 @@
 
 const _ = require('lodash')
 const dottie = require('dottie')
+const debug = require('debug')('rbac')
 
 const refreshIndexModule = require('./refresh-index/index')
 
@@ -86,62 +87,86 @@ class RbacService {
    * ) // Returns true/false
    */
   checkRoleAuthorization (userId, ctx, roles, resourceType, resourceName, action) {
-    const key = [
-      resourceType,
-      resourceName,
-      action
-    ].join('.')
 
-    // What roles will allow this?
+    const _this = this
 
-    const unrestricted = dottie.get(this.index, '*.*.*') || []
-    const unrestrictedInADomain = dottie.get(this.index, resourceType + '.*.*') || []
-    const anyActionOnASpecificResource = dottie.get(this.index, resourceType + '.' + resourceName + '.*') || []
-    const anyDomainResourceForASpecificAction = dottie.get(this.index, resourceType + '.*.' + action) || []
-    const specific = dottie.get(this.index, key) || []
+    function getRequiredRoleList () {
+      // What roles will allow this?
 
-    const requiredRoleList = _.uniq(
-      unrestricted.concat(
-        unrestrictedInADomain,
-        anyActionOnASpecificResource,
-        anyDomainResourceForASpecificAction,
-        specific
+      const key = [
+        resourceType,
+        resourceName,
+        action
+      ].join('.')
+
+      const unrestricted = dottie.get(_this.index, '*.*.*') || []
+      const unrestrictedInADomain = dottie.get(_this.index, resourceType + '.*.*') || []
+      const anyActionOnASpecificResource = dottie.get(_this.index, resourceType + '.' + resourceName + '.*') || []
+      const anyDomainResourceForASpecificAction = dottie.get(_this.index, resourceType + '.*.' + action) || []
+      const specific = dottie.get(_this.index, key) || []
+
+      return _.uniq(
+        unrestricted.concat(
+          unrestrictedInADomain,
+          anyActionOnASpecificResource,
+          anyDomainResourceForASpecificAction,
+          specific
+        )
       )
-    )
+    }
 
-    if (requiredRoleList.length > 0) {
-      if (requiredRoleList.indexOf('$everyone') !== -1) {
-        return true
+    function addDebug (requiredRoleList, result) {
+      let text = `User '${userId}' is attempting to '${action}' on ${resourceType} '${resourceName}'... ` +
+        `which requires one of these roles: ${JSON.stringify(requiredRoleList)}, and user has these roles: ${JSON.stringify(roles)}. `
+      if (result) {
+        text += 'Access permitted!'
       } else {
-        if (_.isString(userId) && requiredRoleList.indexOf('$authenticated') !== -1) {
+        text += 'Access denied!'
+      }
+      debug(text)
+    }
+
+    function checker (requiredRoleList) {
+
+      if (requiredRoleList.length > 0) {
+        if (requiredRoleList.indexOf('$everyone') !== -1) {
           return true
         } else {
-          let roleMatch = false
-
-          for (let i = 0; i < roles.length; i++) {
-            if (requiredRoleList.indexOf(roles[i]) !== -1) {
-              roleMatch = true
-              break
-            }
-          }
-
-          if (roleMatch) {
+          if (_.isString(userId) && requiredRoleList.indexOf('$authenticated') !== -1) {
             return true
           } else {
-            // Allow if $owner...;
-            const contextOwner = RbacService.getUserIdFromContext(ctx)
+            let roleMatch = false
 
-            if (contextOwner && userId && contextOwner === userId) {
+            for (let i = 0; i < roles.length; i++) {
+              if (requiredRoleList.indexOf(roles[i]) !== -1) {
+                roleMatch = true
+                break
+              }
+            }
+
+            if (roleMatch) {
               return true
             } else {
-              return false
+              // Allow if $owner...;
+              const contextOwner = RbacService.getUserIdFromContext(ctx)
+
+              if (contextOwner && userId && contextOwner === userId) {
+                return true
+              } else {
+                return false
+              }
             }
           }
         }
+      } else {
+        return false
       }
-    } else {
-      return false
     }
+
+    const requiredRoleList = getRequiredRoleList()
+    const result = checker(requiredRoleList)
+    addDebug(requiredRoleList, result)
+    return result
   }
 
   allRoles (roles) {
