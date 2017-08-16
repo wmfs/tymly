@@ -11,7 +11,9 @@
     "csv"
   ],
   "main": "./lib/index.js",
-  "dependencies": {
+  "dependencies":
+
+  {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
     "async": "^2.4.1",

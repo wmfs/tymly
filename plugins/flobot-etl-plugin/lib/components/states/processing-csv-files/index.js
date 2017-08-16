@@ -11,7 +11,6 @@ class ProcessingCsvFiles {
   }
 
   enter (flobot, data, callback) {
-    console.log('enter processing-csv-files')
     smithereens(
       flobot.ctx.sourceFilePaths,
       {
@@ -31,7 +30,6 @@ class ProcessingCsvFiles {
   }
 
   leave (flobot, data, callback) {
-    console.log('leave processing-csv-files')
     callback(null)
   }
 }
