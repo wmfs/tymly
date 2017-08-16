@@ -87,7 +87,6 @@ class RbacService {
    * ) // Returns true/false
    */
   checkRoleAuthorization (userId, ctx, roles, resourceType, resourceName, action) {
-
     const _this = this
 
     function getRequiredRoleList () {
@@ -127,7 +126,6 @@ class RbacService {
     }
 
     function checker (requiredRoleList) {
-
       if (requiredRoleList.length > 0) {
         if (requiredRoleList.indexOf('$everyone') !== -1) {
           return true
