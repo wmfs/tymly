@@ -1,6 +1,7 @@
 'use strict'
 const smithereens = require('smithereens')
 const schema = require('./schema.json')
+const debug = require('debug')('processingCsvFiles')
 
 class ProcessingCsvFiles {
   init (stateConfig, options, callback) {
@@ -11,6 +12,7 @@ class ProcessingCsvFiles {
   }
 
   enter (flobot, data, callback) {
+    debug(`Flobot ${flobot.flobotId} is entering state 'processingCsvFiles - enabling debug for 'smithereens' is a good idea too!`)
     smithereens(
       flobot.ctx.sourceFilePaths,
       {
@@ -30,6 +32,7 @@ class ProcessingCsvFiles {
   }
 
   leave (flobot, data, callback) {
+    debug(`Flobot ${flobot.flobotId} is leaving state 'processingCsvFiles'`)
     callback(null)
   }
 }
