@@ -1,6 +1,6 @@
 # Tymly
 
-A [monorepo](https://danluu.com/monorepo/) containing all of Tymly's component parts. We use [Rush](https://danluu.com/monorepo/) for managing our interconnected [Node.js](https://nodejs.org/en/) projects.
+A [monorepo](https://danluu.com/monorepo/) containing all of Tymly's component parts. We use [Rush](https://github.com/Microsoft/web-build-tools/wiki/Rush) for managing our interconnected [Node.js](https://nodejs.org/en/) projects.
 
 ``` bash
 $ npm install -g @microsoft/rush
