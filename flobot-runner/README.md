@@ -17,6 +17,7 @@ $ npm test
 | FLOBOT_BLUEPRINTS_PATH |  .          |
 | FLOBOT_ADMIN_USERID    |  .          |
 | FLOBOT_ADMIN_ROLES     |  .          |
+| DEBUG                  |  *          |
 
 
 ## <a name="license"></a>License
