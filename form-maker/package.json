@@ -11,10 +11,10 @@
   "dependencies": {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
-    "async": "^2.4.1",
+    "async": "^2.5.0",
     "csv-string": "^2.3.2",
     "first-line": "^1.0.2",
-    "pg": "^6.2.4",
+    "pg": "^6.4.1",
     "upath": "^1.0.0",
     "glob": "^7.1.2",
     "jsonfile": "^3.0.1",
@@ -26,7 +26,7 @@
     "gulp": "^3.9.1",
     "gulp-mocha": "^4.3.1",
     "gulp-standard": "^10.0.0",
-    "chai": "3.2.0"
+    "chai": "^4.1.0"
   },
   "scripts": {
     "clean": "",

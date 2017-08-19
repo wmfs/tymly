@@ -9,21 +9,20 @@
     "debug": "^2.6.8",
     "body-parser": "^1.15.2",
     "cpr": "^2.0.2",
-    "dottie": "^1.1.1",
+    "dottie": "^2.0.0",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
-    "jsonwebtoken": "^7.1.9",
-    "lodash": "^4.17.2",
+    "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-standard": "^10.0.0",
     "gulp-mocha": "^4.3.1",
-    "chai": "3.2.0",
+    "chai": "^4.1.0",
     "restler": "^3.4.0",
-    "flobot": "0.0.11",
-    "flobot-forms-plugin": "0.0.4",
+    "flobot": "^0.0.11",
     "safe-buffer": "^5.1.1"
   },
   "scripts": {

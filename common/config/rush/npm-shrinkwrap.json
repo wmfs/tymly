@@ -30,14 +30,7 @@
     "@rush-temp/flobot-forms-plugin": {
       "version": "0.0.0",
       "from": "projects\\flobot-forms-plugin",
-      "resolved": "file:projects\\flobot-forms-plugin",
-      "dependencies": {
-        "lodash": {
-          "version": "4.17.2",
-          "from": "lodash@4.17.2",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.2.tgz"
-        }
-      }
+      "resolved": "file:projects\\flobot-forms-plugin"
     },
     "@rush-temp/flobot-pg-plugin": {
       "version": "0.0.0",
@@ -52,118 +45,32 @@
     "@rush-temp/form-maker": {
       "version": "0.0.0",
       "from": "projects\\form-maker",
-      "resolved": "file:projects\\form-maker",
-      "dependencies": {
-        "dottie": {
-          "version": "2.0.0",
-          "from": "dottie@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
-        }
-      }
+      "resolved": "file:projects\\form-maker"
     },
     "@rush-temp/pg-delta-file": {
       "version": "0.0.0",
       "from": "projects\\pg-delta-file",
-      "resolved": "file:projects\\pg-delta-file",
-      "dependencies": {
-        "chai": {
-          "version": "4.1.1",
-          "from": "chai@>=4.1.0 <5.0.0",
-          "resolved": "https://registry.npmjs.org/chai/-/chai-4.1.1.tgz"
-        },
-        "deep-eql": {
-          "version": "2.0.2",
-          "from": "deep-eql@>=2.0.1 <3.0.0",
-          "resolved": "https://registry.npmjs.org/deep-eql/-/deep-eql-2.0.2.tgz",
-          "dependencies": {
-            "type-detect": {
-              "version": "3.0.0",
-              "from": "type-detect@>=3.0.0 <4.0.0",
-              "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-3.0.0.tgz"
-            }
-          }
-        },
-        "type-detect": {
-          "version": "4.0.3",
-          "from": "type-detect@>=4.0.0 <5.0.0",
-          "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.3.tgz"
-        }
-      }
+      "resolved": "file:projects\\pg-delta-file"
     },
     "@rush-temp/pg-diff-sync": {
       "version": "0.0.0",
       "from": "projects\\pg-diff-sync",
-      "resolved": "file:projects\\pg-diff-sync",
-      "dependencies": {
-        "dottie": {
-          "version": "2.0.0",
-          "from": "dottie@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
-        }
-      }
+      "resolved": "file:projects\\pg-diff-sync"
     },
     "@rush-temp/pg-info": {
       "version": "0.0.0",
       "from": "projects\\pg-info",
-      "resolved": "file:projects\\pg-info",
-      "dependencies": {
-        "async": {
-          "version": "2.4.0",
-          "from": "async@2.4.0",
-          "resolved": "https://registry.npmjs.org/async/-/async-2.4.0.tgz"
-        },
-        "pg": {
-          "version": "6.2.2",
-          "from": "pg@6.2.2",
-          "resolved": "https://registry.npmjs.org/pg/-/pg-6.2.2.tgz"
-        },
-        "semver": {
-          "version": "4.3.2",
-          "from": "semver@4.3.2",
-          "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.2.tgz"
-        }
-      }
+      "resolved": "file:projects\\pg-info"
     },
     "@rush-temp/pg-model": {
       "version": "0.0.0",
       "from": "projects\\pg-model",
-      "resolved": "file:projects\\pg-model",
-      "dependencies": {
-        "dottie": {
-          "version": "2.0.0",
-          "from": "dottie@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
-        }
-      }
+      "resolved": "file:projects\\pg-model"
     },
     "@rush-temp/pg-telepods": {
       "version": "0.0.0",
       "from": "projects\\pg-telepods",
-      "resolved": "file:projects\\pg-telepods",
-      "dependencies": {
-        "chai": {
-          "version": "4.1.1",
-          "from": "chai@>=4.1.0 <5.0.0",
-          "resolved": "https://registry.npmjs.org/chai/-/chai-4.1.1.tgz"
-        },
-        "deep-eql": {
-          "version": "2.0.2",
-          "from": "deep-eql@>=2.0.1 <3.0.0",
-          "resolved": "https://registry.npmjs.org/deep-eql/-/deep-eql-2.0.2.tgz",
-          "dependencies": {
-            "type-detect": {
-              "version": "3.0.0",
-              "from": "type-detect@>=3.0.0 <4.0.0",
-              "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-3.0.0.tgz"
-            }
-          }
-        },
-        "type-detect": {
-          "version": "4.0.3",
-          "from": "type-detect@>=4.0.0 <5.0.0",
-          "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.3.tgz"
-        }
-      }
+      "resolved": "file:projects\\pg-telepods"
     },
     "@rush-temp/relationize": {
       "version": "0.0.0",
@@ -173,14 +80,7 @@
     "@rush-temp/smithereens": {
       "version": "0.0.0",
       "from": "projects\\smithereens",
-      "resolved": "file:projects\\smithereens",
-      "dependencies": {
-        "dottie": {
-          "version": "2.0.0",
-          "from": "dottie@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
-        }
-      }
+      "resolved": "file:projects\\smithereens"
     },
     "@rush-temp/supercopy": {
       "version": "0.0.0",
@@ -354,7 +254,7 @@
     },
     "async": {
       "version": "2.5.0",
-      "from": "async@>=2.1.4 <3.0.0",
+      "from": "async@>=2.5.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/async/-/async-2.5.0.tgz"
     },
     "async-each": {
@@ -1039,9 +939,9 @@
       "resolved": "https://registry.npmjs.org/ccount/-/ccount-1.0.2.tgz"
     },
     "chai": {
-      "version": "3.2.0",
-      "from": "chai@3.2.0",
-      "resolved": "https://registry.npmjs.org/chai/-/chai-3.2.0.tgz"
+      "version": "4.1.1",
+      "from": "chai@>=4.1.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/chai/-/chai-4.1.1.tgz"
     },
     "chai-subset": {
       "version": "1.5.0",
@@ -1369,14 +1269,14 @@
       "resolved": "https://registry.npmjs.org/decamelize/-/decamelize-1.2.0.tgz"
     },
     "deep-eql": {
-      "version": "0.1.3",
-      "from": "deep-eql@>=0.1.3 <0.2.0",
-      "resolved": "https://registry.npmjs.org/deep-eql/-/deep-eql-0.1.3.tgz",
+      "version": "2.0.2",
+      "from": "deep-eql@>=2.0.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/deep-eql/-/deep-eql-2.0.2.tgz",
       "dependencies": {
         "type-detect": {
-          "version": "0.1.1",
-          "from": "type-detect@0.1.1",
-          "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-0.1.1.tgz"
+          "version": "3.0.0",
+          "from": "type-detect@>=3.0.0 <4.0.0",
+          "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-3.0.0.tgz"
         }
       }
     },
@@ -1812,9 +1712,9 @@
       }
     },
     "dottie": {
-      "version": "1.1.1",
-      "from": "dottie@>=1.1.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/dottie/-/dottie-1.1.1.tgz"
+      "version": "2.0.0",
+      "from": "dottie@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/dottie/-/dottie-2.0.0.tgz"
     },
     "double-ended-queue": {
       "version": "2.1.0-0",
@@ -1870,7 +1770,7 @@
     },
     "ejs": {
       "version": "2.5.7",
-      "from": "ejs@>=2.5.5 <3.0.0",
+      "from": "ejs@>=2.5.6 <3.0.0",
       "resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz"
     },
     "emoji-regex": {
@@ -1916,9 +1816,9 @@
       "resolved": "https://registry.npmjs.org/es-to-primitive/-/es-to-primitive-1.1.1.tgz"
     },
     "es5-ext": {
-      "version": "0.10.28",
+      "version": "0.10.29",
       "from": "es5-ext@>=0.10.14 <0.11.0",
-      "resolved": "https://registry.npmjs.org/es5-ext/-/es5-ext-0.10.28.tgz"
+      "resolved": "https://registry.npmjs.org/es5-ext/-/es5-ext-0.10.29.tgz"
     },
     "es6-iterator": {
       "version": "2.0.1",
@@ -2445,7 +2345,7 @@
     },
     "glob": {
       "version": "7.1.2",
-      "from": "glob@>=7.1.1 <8.0.0",
+      "from": "glob@>=7.1.2 <8.0.0",
       "resolved": "https://registry.npmjs.org/glob/-/glob-7.1.2.tgz"
     },
     "glob-base": {
@@ -3158,7 +3058,7 @@
     },
     "jsonwebtoken": {
       "version": "7.4.3",
-      "from": "jsonwebtoken@>=7.1.9 <8.0.0",
+      "from": "jsonwebtoken@>=7.4.1 <8.0.0",
       "resolved": "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-7.4.3.tgz"
     },
     "jsx-ast-utils": {
@@ -3279,7 +3179,7 @@
     },
     "lodash": {
       "version": "4.17.4",
-      "from": "lodash@>=4.17.2 <5.0.0",
+      "from": "lodash@>=4.17.4 <5.0.0",
       "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz"
     },
     "lodash._baseassign": {
@@ -3848,9 +3748,16 @@
       "resolved": "https://registry.npmjs.org/object.omit/-/object.omit-2.0.1.tgz"
     },
     "object.pick": {
-      "version": "1.2.0",
+      "version": "1.3.0",
       "from": "object.pick@>=1.2.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/object.pick/-/object.pick-1.2.0.tgz"
+      "resolved": "https://registry.npmjs.org/object.pick/-/object.pick-1.3.0.tgz",
+      "dependencies": {
+        "isobject": {
+          "version": "3.0.1",
+          "from": "isobject@>=3.0.1 <4.0.0",
+          "resolved": "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
+        }
+      }
     },
     "on-finished": {
       "version": "2.3.0",
@@ -4049,7 +3956,7 @@
     },
     "pg": {
       "version": "6.4.2",
-      "from": "pg@>=6.2.3 <7.0.0",
+      "from": "pg@>=6.4.1 <7.0.0",
       "resolved": "https://registry.npmjs.org/pg/-/pg-6.4.2.tgz",
       "dependencies": {
         "semver": {
@@ -5142,9 +5049,9 @@
       "resolved": "https://registry.npmjs.org/type-check/-/type-check-0.3.2.tgz"
     },
     "type-detect": {
-      "version": "1.0.0",
-      "from": "type-detect@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-1.0.0.tgz"
+      "version": "4.0.3",
+      "from": "type-detect@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.3.tgz"
     },
     "type-is": {
       "version": "1.6.15",
