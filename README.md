@@ -1,6 +1,6 @@
 # Tymly
 
-> An open soure low-code platform
+> An open source low-code platform
 
 ## <a name="Installing"></a>Installing
 
