@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('smithereens')
 const UNKNOWN_FILENAME = 'unknown'
 const UNKNOWN_DIR = 'unknown'
 const path = require('path')
@@ -52,7 +53,7 @@ class FileBuilder {
   static getColumnIndexFileConfigFunction (columnIndex, valueToFileMap) {
     return function columnIndexFileInfo (line) {
       let value = line[columnIndex]
-      let keys = _.keys(valueToFileMap) // = [ 'i&u', 'd' ]
+      let keys = _.keys(valueToFileMap)
       let matchingKey
 
       for (let key of keys) {
@@ -108,6 +109,7 @@ class FileBuilder {
           if (err) {
             callback(err)
           } else {
+            debug(`Created writeStream '${key}' (${JSON.stringify(fileConfig)})`)
             callback(null, info)
           }
         })
@@ -135,6 +137,15 @@ class FileBuilder {
         createWriteStream()
       }
     }
+  }
+
+  close () {
+    _.forEach(
+      this.files,
+      function (file) {
+        file.writeStream.close()
+      }
+    )
   }
 
   getManifest () {

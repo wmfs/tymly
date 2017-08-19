@@ -27,7 +27,7 @@ class FileWriter extends Writable {
               callback(err)
             } else {
               info.count += 1
-              callback(null)
+              callback()
             }
           })
         }
@@ -35,7 +35,7 @@ class FileWriter extends Writable {
     } else {
       // Skipped this first line
       this.firstLine = false
-      callback(null)
+      callback()
     }
   }
 }

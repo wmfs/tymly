@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('smithereens')
 const path = require('path')
 const _ = require('lodash')
 const async = require('async')
@@ -9,6 +10,7 @@ const csvParser = require('csv-streamify')
 const FileBuilder = require('./File-builder')
 const Writer = require('./Writer')
 const jsonfile = require('jsonfile')
+const pump = require('pump')
 
 module.exports = function smithereens (sourceFilePaths, options, callback) {
   // Turn sourceFilePaths to an array, if it's not already
@@ -20,7 +22,6 @@ module.exports = function smithereens (sourceFilePaths, options, callback) {
   const parserOptions = options.parser
   parserOptions.objectMode = true
   parserOptions.columns = false
-  const parser = csvParser(parserOptions)
 
   // Create a file builder
   const fileBuilder = new FileBuilder(options)
@@ -42,10 +43,19 @@ module.exports = function smithereens (sourceFilePaths, options, callback) {
             async.eachSeries(
               files,
               function (filePath, cb2) {
+                cb2 = _.once(cb2)
+                debug(`Streaming files from ${filePath}`)
+
+                const rs = fs.createReadStream(filePath)
+                const parser = csvParser(parserOptions)
                 const writer = new Writer(fileBuilder, options)
-                writer.on('finish', cb2)
-                // Magic steam line
-                fs.createReadStream(filePath).pipe(parser).pipe(writer)
+
+                pump(
+                  rs,
+                  parser,
+                  writer,
+                  cb2
+                )
               },
               function (err) {
                 if (err) {
@@ -63,6 +73,7 @@ module.exports = function smithereens (sourceFilePaths, options, callback) {
       if (err) {
         callback(err)
       } else {
+        fileBuilder.close()
         const manifest = fileBuilder.getManifest()
 
         jsonfile.writeFile(
