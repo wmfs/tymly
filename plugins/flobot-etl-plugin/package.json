@@ -17,8 +17,7 @@
     "csvtojson": "^1.1.7"
   },
   "scripts": {
-    "standard": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "lint": "standard"
   },
   "license": "MIT",
   "repository": {

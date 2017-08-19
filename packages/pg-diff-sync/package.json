@@ -22,7 +22,7 @@
     "chai": "^4.1.0"
   },
   "scripts": {
-    "standard": "standard",
+    "lint": "standard",
     "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
   "license": "MIT",

@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "node ./lib/index.js",
-    "standard": "standard",
+    "lint": "standard",
     "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
   "license": "MIT",
