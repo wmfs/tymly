@@ -1,7 +1,7 @@
 {
   "name": "flobot",
   "description": "A framework for building and sharing workflows in Node.js",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -25,10 +25,10 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "chai-subset": "^1.5.0"
+    "chai-subset": "^1.5.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",

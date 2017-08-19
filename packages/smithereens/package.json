@@ -1,7 +1,7 @@
 {
   "name": "smithereens",
   "description": "Smash CSV files into more manageable files based on column values",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": [
     "etl",
     "csv"
@@ -9,25 +9,25 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
     "async": "^2.5.0",
-    "pump": "^1.0.2",
+    "boom": "^5.2.0",
     "csv-streamify": "^3.0.4",
     "csv-string": "^2.3.2",
+    "debug": "^2.6.8",
     "dottie": "^2.0.0",
     "glob": "^7.1.2",
     "hash-sum": "^1.0.2",
     "jsonfile": "^3.0.1",
     "lodash": "^4.17.4",
     "make-dir": "^1.0.0",
+    "pump": "^1.0.2",
     "upath": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "chai-subset": "^1.5.0"
+    "chai-subset": "^1.5.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",

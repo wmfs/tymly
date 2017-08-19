@@ -1,7 +1,7 @@
 {
   "name": "supercopy",
   "description": "Takes a specifically-named directory structure of CSV files and conjures bulk insert, update and delete statements and applies them to a PostgreSQL database.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Tim Needham",
   "keywords": [
     "postgres",
@@ -11,21 +11,19 @@
     "csv"
   ],
   "main": "./lib/index.js",
-  "dependencies":
-
-  {
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
+  "dependencies": {
     "async": "^2.5.0",
+    "boom": "^5.2.0",
     "csv-string": "^2.3.2",
+    "debug": "^2.6.8",
     "first-line": "^1.0.2",
     "pg": "^6.4.1",
     "upath": "^1.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.0",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3",
-    "chai": "^4.1.0"
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard"

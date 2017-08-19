@@ -1,28 +1,30 @@
 {
   "name": "pg-telepods",
   "description": "Takes the contents of one PostgreSQL table, applies a transformation function to each row and ensures a target table is kept in sync",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
-    "etl", "pg", "postgresql"
+    "etl",
+    "pg",
+    "postgresql"
   ],
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
     "async": "^2.5.0",
+    "boom": "^5.2.0",
     "camelcase-keys": "^4.1.0",
     "csv-string": "^2.3.2",
+    "debug": "^2.6.8",
     "lodash": "^4.17.4",
     "make-dir": "^1.0.0",
     "pg-query-stream": "^1.0.0",
-    "supercopy": "^0.0.2"
+    "supercopy": "^0.0.3"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "pg": "^6.4.1"
+    "mocha": "^3.5.0",
+    "pg": "^6.4.1",
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",

@@ -1,7 +1,7 @@
 {
   "name": "form-maker",
   "description": "Automatically generates form content based on all models specified in a blueprint.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Meena Hoda",
   "keywords": [
     "form",
@@ -9,24 +9,24 @@
   ],
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
     "async": "^2.5.0",
+    "boom": "^5.2.0",
     "csv-string": "^2.3.2",
+    "debug": "^2.6.8",
+    "dottie": "^2.0.0",
     "first-line": "^1.0.2",
-    "pg": "^6.4.1",
-    "upath": "^1.0.0",
+    "fs": "0.0.1-security",
     "glob": "^7.1.2",
     "jsonfile": "^3.0.1",
-    "dottie": "^2.0.0",
-    "fs": "0.0.1-security",
-    "make-dir": "^1.0.0"
+    "make-dir": "^1.0.0",
+    "pg": "^6.4.1",
+    "upath": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "chai-subset": "^1.5.0"
+    "chai-subset": "^1.5.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",

@@ -1,7 +1,7 @@
 {
   "name": "pg-concat",
   "description": "Takes an object with parts from table and outputs sql statement.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "pg",
     "postgresql"
@@ -9,17 +9,17 @@
   "author": "Meena Hoda",
   "main": "./lib/index.js",
   "dependencies": {
+    "async": "^2.5.0",
     "boom": "^5.2.0",
     "debug": "^2.6.8",
-    "async": "^2.5.0",
     "fs": "0.0.1-security",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "pg": "^6.4.1"
+    "mocha": "^3.5.0",
+    "pg": "^6.4.1",
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",
