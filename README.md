@@ -2,9 +2,9 @@
 
 > An open soure low-code platform
 
-A [Lerna](https://lernajs.io/) multi-package repository to help manage Tymly's [Node.js](https://nodejs.org/en/) packages. 
-
 ## <a name="Installing"></a>Installing
+
+Note this is a [Lerna](https://lernajs.io/) multi-repository to help manage Tymly's many constituent [Node.js](https://nodejs.org/en/) packages.
 
 ```bash
 $ npm install --global lerna
