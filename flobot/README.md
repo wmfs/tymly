@@ -1,4 +1,4 @@
-# Flobot
+# flobot
 > A framework for building and sharing workflows in Node.js.
 
 ## <a name="install"></a>Install
