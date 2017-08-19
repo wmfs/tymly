@@ -55,7 +55,6 @@ class FileBuilder {
       let value = line[columnIndex]
       let keys = _.keys(valueToFileMap)
       let matchingKey
-
       for (let key of keys) {
         let splitKeys = key.split('&')
         for (let k of splitKeys) {
