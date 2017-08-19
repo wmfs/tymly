@@ -1,29 +1,28 @@
 {
-  "name": "flobot-pg-plugin",
-  "description": "Replace Flobot's out-the-box memory storage with PostgreSQL",
+  "name": "pg-telepods",
+  "description": "Takes the contents of one PostgreSQL table, applies a transformation function to each row and ensures a target table is kept in sync",
   "version": "0.0.2",
-  "author": "Tim Needham",
+  "keywords": [
+    "etl", "pg", "postgresql"
+  ],
+  "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
     "async": "^2.5.0",
-    "dottie": "^2.0.0",
+    "camelcase-keys": "^4.1.0",
+    "csv-string": "^2.3.2",
     "lodash": "^4.17.4",
-    "pg": "^6.4.1",
-    "pg-delta-file": "^0.0.2",
-    "pg-diff-sync": "^0.0.8",
-    "pg-info": "^0.0.12",
-    "pg-model": "^0.0.6",
-    "pg-telepods": "^0.0.2",
-    "relationize": "^0.0.16",
+    "make-dir": "^1.0.0",
+    "pg-query-stream": "^1.0.0",
     "supercopy": "^0.0.2"
   },
   "devDependencies": {
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
     "chai": "^4.1.0",
-    "flobot": "^0.0.11"
+    "pg": "^6.4.1"
   },
   "scripts": {
     "standard": "standard",

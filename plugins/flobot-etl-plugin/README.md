@@ -19,4 +19,4 @@ $ npm test
 
 ## <a name="license"></a>License
 
-[MIT](https://github.com/wmfs/flobot-etl-plugin/blob/master/LICENSE.md)
+[MIT](https://github.com/wmfs/flobot-etl-plugin/blob/master/LICENSE)

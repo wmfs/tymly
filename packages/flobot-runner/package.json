@@ -1,22 +1,25 @@
 {
-  "name": "flobot-forms-plugin",
-  "description": "Adds some form capabilities to Flobot",
-  "version": "0.0.4",
-  "author": "Tim Needham",
+  "name": "flobot-runner",
+  "description": "A tool for running flobots",
+  "version": "0.0.2",
+  "author": "Reece Brend",
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
-    "dottie": "^2.0.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "config": "^1.26.1",
+    "flobot": "^0.0.11",
+    "jsonwebtoken": "^7.4.1",
+    "safe-buffer": "^5.1.1"
   },
   "devDependencies": {
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
-    "chai": "^4.1.0",
-    "flobot": "^0.0.11"
+    "chai": "^4.1.0"
   },
   "scripts": {
+    "start": "node ./lib/index.js",
     "standard": "standard",
     "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },

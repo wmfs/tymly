@@ -17,17 +17,16 @@
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-standard": "^10.0.0",
-    "gulp-mocha": "^4.3.1",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
     "chai": "^4.1.0",
     "restler": "^3.4.0",
     "flobot": "^0.0.11",
     "safe-buffer": "^5.1.1"
   },
   "scripts": {
-    "clean": "",
-    "test": "gulp test"
+    "standard": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
   "license": "MIT",
   "repository": {

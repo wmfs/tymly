@@ -1,0 +1,37 @@
+{
+  "name": "form-maker",
+  "description": "Automatically generates form content based on all models specified in a blueprint.",
+  "version": "0.0.1",
+  "author": "Meena Hoda",
+  "keywords": [
+    "form",
+    "blueprint"
+  ],
+  "main": "./lib/index.js",
+  "dependencies": {
+    "boom": "^5.2.0",
+    "debug": "^2.6.8",
+    "async": "^2.5.0",
+    "csv-string": "^2.3.2",
+    "first-line": "^1.0.2",
+    "pg": "^6.4.1",
+    "upath": "^1.0.0",
+    "glob": "^7.1.2",
+    "jsonfile": "^3.0.1",
+    "dottie": "^2.0.0",
+    "fs": "0.0.1-security",
+    "make-dir": "^1.0.0"
+  },
+  "scripts": {
+    "standard": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/form-maker/issues"
+  }
+}
