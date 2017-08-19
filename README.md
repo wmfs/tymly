@@ -1,8 +1,21 @@
 # Tymly
 
-A [monorepo](https://danluu.com/monorepo/) containing all of Tymly's component parts. We use [Lerna](https://lernajs.io/) for managing our interconnected [Node.js](https://nodejs.org/en/) projects.
+A [Lerna](https://lernajs.io/) multi-package repository to help manage Tymly's [Node.js](https://nodejs.org/en/) packages. 
 
-### Please refer to the `README.md` file inside each project for more specific information!
+## <a name="Installing"></a>Installing
+
+```bash
+$ npm install --global lerna
+$ git clone https://github.com/wmfs/tymly
+$ cd tymly
+$ lerna bootstrap
+```
+
+## <a name="Documentation"></a>Documentation
+
+* The [FlobotJS](http://www.flobotjs.io) site has a lot of information about several Tymly pacakages.
+* Please refer to the `README.md` file inside each package for more specific information!
+
 
 ## <a name="license"></a>License
 

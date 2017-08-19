@@ -66,7 +66,7 @@ Flobot has been developed as an alternative for organisations (especially non-pr
 
 ## <a name="documentation"></a>Documentation
 
-For documentation, please visit https://www.flobotjs.io/
+For documentation, please visit http://www.flobotjs.io/
 
 ## <a name="tests"></a>Tests
 ```bash
