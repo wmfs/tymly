@@ -4,16 +4,18 @@ const async = require('async')
 const path = require('path')
 const getColumnNames = require('./get-column-names')
 const upath = require('upath')
+const debug = require('debug')('supercopy')
 
 module.exports = function (options, callback) {
   const info = {}
-
   const rootDir = options.sourceDir
+  debug(`Staring to collect file info for ${rootDir}`)
 
   fs.readdir(rootDir, function (err, items) {
     if (err) {
       callback(err)
     } else {
+      debug(`Directory contents [${items}]`)
       async.eachSeries(
         items,
         function (item, cb) {
@@ -25,6 +27,7 @@ module.exports = function (options, callback) {
                 cb(err)
               } else {
                 if (stats.isDirectory()) {
+                  debug(`+ ./${item}:`)
                   const action = {}
                   info[item] = action
                   fs.readdir(dirPath, function (err, actionItems) {
@@ -39,6 +42,7 @@ module.exports = function (options, callback) {
                             fs.lstat(
                               filePath,
                               function (err, fileStats) {
+                                debug(`+   ./${actionItem}`)
                                 if (err) {
                                   cb2(err)
                                 } else {

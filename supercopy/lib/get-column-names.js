@@ -1,4 +1,5 @@
 
+// TODO: Known issues with first-line: https://github.com/KenanY/first-line/issues/8
 const firstLine = require('first-line')
 const csvParse = require('csv-string').parse
 const _ = require('lodash')
