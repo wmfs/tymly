@@ -4,6 +4,7 @@
 'use strict'
 const supercopy = require('supercopy')
 const _ = require('lodash')
+const debug = require('debug')('importingCsvFiles')
 const schema = require('./schema.json')
 
 class ImportingCsvFiles {
@@ -16,6 +17,7 @@ class ImportingCsvFiles {
   }
 
   enter (flobot, data, callback) {
+    debug(`Flobot ${flobot.flobotId} has entered state 'importingCsvFiles - enabling debug for 'supercopy' is a good idea too!`)
     supercopy(
       {
         sourceDir: flobot.ctx.sourceDir,
@@ -36,8 +38,7 @@ class ImportingCsvFiles {
   }
 
   leave (flobot, data, callback) {
-    // const ctx = flobot.ctx
-    console.log('Importing CSV file')
+    debug(`Flobot ${flobot.flobotId} is leaving state 'importingCsvFiles`)
     callback(null)
   }
 }
