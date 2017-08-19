@@ -16,8 +16,7 @@
     "flobot": "^0.0.11"
   },
   "scripts": {
-    "standard": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "standard": "standard"
   },
   "license": "MIT",
   "repository": {

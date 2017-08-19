@@ -22,6 +22,12 @@
     "fs": "0.0.1-security",
     "make-dir": "^1.0.0"
   },
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
+    "chai": "^4.1.0",
+    "chai-subset": "^1.5.0"
+  },
   "scripts": {
     "standard": "standard",
     "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
