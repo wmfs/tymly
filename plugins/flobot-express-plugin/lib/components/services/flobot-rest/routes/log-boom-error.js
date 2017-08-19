@@ -7,7 +7,7 @@ module.exports = function logBoomError (boomErr, flobot) {
   message += `|${boomErr.output.statusCode}: ${boomErr.output.payload.error}\n`
   message += `|${boomErr.message}\n`
   if (_.isObject(boomErr.data)) {
-    message += `|${JSON.stringify(boomErr.data, null , 2)}\n`
+    message += `|${JSON.stringify(boomErr.data, null, 2)}\n`
   }
   message += '--------------------------------------------------------------------------------------\n\n'
   console.error(message)

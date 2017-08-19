@@ -20,9 +20,7 @@
     "standard": "^10.0.3"
   },
   "scripts": {
-    "generate": "./scripts/generate",
-    "standard": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "generate": "./scripts/generate"
   },
   "license": "MIT",
   "repository": {
