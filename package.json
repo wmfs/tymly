@@ -1,5 +1,20 @@
 {
-	"devDependencies": {
-		"lerna": "2.0.0"
-	}
+  "name": "tymly",
+  "description": "An open source low-code platform",
+  "version": "0.0.0",
+  "author": "Tim Needham",
+  "devDependencies": {
+    "lerna": "2.0.0"
+  },
+  "scripts": {
+    "test": "lerna run test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
 }
