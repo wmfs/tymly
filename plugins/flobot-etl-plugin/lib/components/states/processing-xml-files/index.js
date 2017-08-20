@@ -1,6 +1,7 @@
-'use strict'.gitignore
+'use strict'
+
 const schema = require('./schema.json')
-const debug = require('debug')('processingCsvFiles')
+const debug = require('debug')('processingXmlFiles')
 
 class ProcessingXmlFiles {
   init (stateConfig, options, callback) {
