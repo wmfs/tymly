@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "entities": {
+      "type": "object",
+      "description": "Identifies which XML tags map to a model."
+    }
+  }
+}
