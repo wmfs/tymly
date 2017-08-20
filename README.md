@@ -5,6 +5,7 @@
 ## <a name="installing"></a>Installing
 
 Note this is a [Lerna](https://lernajs.io/) multi-repository to help manage Tymly's many constituent [Node.js](https://nodejs.org/en/) packages.
+Amongst others, this repository is home to [FlobotJS](https://github.com/wmfs/tymly/packages/flobot) - the engine-room that powers Tymly.
 
 ```bash
 $ npm install --global lerna
