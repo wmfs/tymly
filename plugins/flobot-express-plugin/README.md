@@ -1,6 +1,6 @@
 # flobot-express-plugin
 
-> Exposes the Flobot framework via an Express.js web app.
+> Exposes the [FlobotJS](http://www.flobotjs.io) platform via an Express.js web app.
 
 
 ## <a name="license"></a>License

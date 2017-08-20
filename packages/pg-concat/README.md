@@ -1,6 +1,6 @@
 # pg-concat
 
-> Takes an object with a structure for concatenating 1 or more database columns, exporting the concatenated string.
+> Takes an array of parts and returns the necessary PostgreSQL expression to concatenate them.
 
 ## Usage
 

@@ -1,5 +1,5 @@
 # Form-maker
-> Automatically generates form schema and editor flow based on all models specified in a blueprint.
+> Automatically generates form schema and editor flow for all models specified in a [FlobotJS](http://www.flobotjs.io) blueprint.
 
 ## <a name="tests"></a>Tests
 ```bash

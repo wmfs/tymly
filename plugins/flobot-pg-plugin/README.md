@@ -1,6 +1,6 @@
 # flobot-pg-plugin
 
-> Plugin for FlobotJS that provides PostgreSQL persistence
+> Plugin for [FlobotJS](http://www.flobotjs.io) that provides PostgreSQL persistence
 
 ## <a name="install"></a>Install
 ```bash

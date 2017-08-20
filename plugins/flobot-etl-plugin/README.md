@@ -1,6 +1,6 @@
 # flobot-etl-plugin
 
-> A collection of states for helping with Extract, Transform and Load tasks.
+> A collection of states for helping with Extract, Transform and Load tasks within [FlobotJS](http://www.flobotjs.io).
 
 ## <a name="install"></a>Install
 
