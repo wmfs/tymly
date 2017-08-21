@@ -1,4 +1,5 @@
 const async = require('async')
+const debug = require('debug')('supercopy')
 
 module.exports = function scriptRunner (statements, client, options, callback) {
   let i = -1
@@ -7,9 +8,7 @@ module.exports = function scriptRunner (statements, client, options, callback) {
     function (statement, cb) {
       i++
 
-      if (options.debug) {
-        console.log(statement)
-      }
+      debug(`Running: ${statement}`)
 
       client.query(
         statement,

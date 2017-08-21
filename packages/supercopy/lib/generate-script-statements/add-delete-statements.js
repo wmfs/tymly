@@ -8,9 +8,6 @@ module.exports = function addDeleteStatements (scriptStatements, fileInfo, optio
     _.forOwn(
       fileInfo.deletes,
       function (info, filePath) {
-        if (options.debug) {
-          console.log(info)
-        }
         const tempTableName = addTempTableStatement(scriptStatements, 'delete', options.schemaName, info.tableName)
 
         scriptStatements.push(
