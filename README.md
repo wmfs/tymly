@@ -14,6 +14,8 @@ $ cd tymly
 $ lerna bootstrap
 ```
 
+## <a name="environment-variables"></a>Environment 
+
 ## <a name="running"></a>Running
 
 * Please see the [flobot-runner](https://github.com/wmfs/tymly/packages/flobot-runner) package for details about configuring and starting a [FlobotJS](http://www.flobotjs.io) server.
