@@ -177,6 +177,38 @@ describe('Simple flow test', function () {
     )
   })
 
+  it('should execute calculator', function (done) {
+    statebox.startExecution(
+      {
+        number1: 3,
+        operator: '-',
+        number2: 2
+      },  // input
+      'calculator', // flowName
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should successfully complete calculator execution', function (done) {
+    waitUntilExecutionStatus(
+      executionName,
+      'SUCCEEDED',
+      statebox,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.flowName).to.eql('calculator')
+        expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.output).to.eql({result: 1})
+        done()
+      }
+    )
+  })
+
   it('Should end db client', function () {
     client.end()
   })

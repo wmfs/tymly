@@ -1,6 +1,5 @@
 'use strict'
 
 module.exports = function subtract (event, context) {
-  console.log('SUBTRACTING...')
-  this.sendTaskSuccess()
+  this.sendTaskSuccess(event.number1 - event.number2)
 }
