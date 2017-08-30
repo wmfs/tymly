@@ -1,0 +1,24 @@
+BEGIN;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE SCHEMA IF NOT EXISTS <%= schemaName %>;
+
+CREATE TABLE IF NOT EXISTS <%= schemaName %>.current_executions (
+  execution_name character varying(80) NOT NULL DEFAULT uuid_generate_v1():: character varying PRIMARY KEY,
+  status text NOT NULL DEFAULT 'RUNNING',
+  current_state_name text,
+  state_enter_time timestamp with time zone,
+  flow_name text NOT NULL,
+  input jsonb,
+  output jsonb,
+  _created timestamp with time zone NOT NULL DEFAULT now(),
+  _created_by text,
+  _modified timestamp with time zone NOT NULL DEFAULT now(),
+  _modified_by text
+);
+
+COMMENT ON TABLE <%= schemaName %>.current_executions IS 'Current Statebox executions';
+COMMENT ON COLUMN <%= schemaName %>.current_executions._created IS 'Timestamp for when this record was created';
+COMMENT ON COLUMN <%= schemaName %>.current_executions._created_by IS 'UserID that created this record (if known)';
+COMMENT ON COLUMN <%= schemaName %>.current_executions._modified IS 'Timestamp for when this record was last updated';
+COMMENT ON COLUMN <%= schemaName %>.current_executions._modified_by IS 'UserID that last modified this record (if known)';
+COMMIT;
