@@ -14,6 +14,14 @@ const helloFunction = require('./fixtures/functions/hello')
 const worldFunction = require('./fixtures/functions/world')
 const addFunction = require('./fixtures/functions/add')
 const subtractFunction = require('./fixtures/functions/subtract')
+const a = require('./fixtures/functions/a')
+const b = require('./fixtures/functions/b')
+const c = require('./fixtures/functions/c')
+const d = require('./fixtures/functions/d')
+const e = require('./fixtures/functions/e')
+const f = require('./fixtures/functions/f')
+const g = require('./fixtures/functions/g')
+const h = require('./fixtures/functions/h')
 
 // Flows
 const helloWorldFlow = require('./fixtures/flows/hello-world.json')
@@ -22,6 +30,7 @@ const calculatorFlow = require('./fixtures/flows/calculator.json')
 const calculatorWithInputPathsFlow = require('./fixtures/flows/calculator-with-input-paths.json')
 const passFlow = require('./fixtures/flows/pass-flow.json')
 const failFlow = require('./fixtures/flows/fail-flow.json')
+const parallelFlow = require('./fixtures/flows/parallel-flow.json')
 
 const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
 
@@ -51,12 +60,20 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should add some functions', function () {
+  it('should add some modules', function () {
     statebox.createModuleResource('helloWorld', helloWorldFunction)
     statebox.createModuleResource('hello', helloFunction)
     statebox.createModuleResource('world', worldFunction)
     statebox.createModuleResource('add', addFunction)
     statebox.createModuleResource('subtract', subtractFunction)
+    statebox.createModuleResource('a', a)
+    statebox.createModuleResource('b', b)
+    statebox.createModuleResource('c', c)
+    statebox.createModuleResource('d', d)
+    statebox.createModuleResource('e', e)
+    statebox.createModuleResource('f', f)
+    statebox.createModuleResource('g', g)
+    statebox.createModuleResource('h', h)
   })
 
   it('should create a new helloWorld flow', function (done) {
@@ -339,6 +356,48 @@ describe('Simple flow test', function () {
         expect(executionDescription.currentStateName).to.eql('FailState')
         expect(executionDescription.errorCause).to.eql('Invalid response.')
         expect(executionDescription.errorCode).to.eql('ErrorA')
+        done()
+      }
+    )
+  })
+
+  it('should create a new parallel flow ', function (done) {
+    statebox.createFlow(
+      'parallelFlow',
+      parallelFlow,
+      function (err, info) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should execute parallel flow', function (done) {
+    statebox.startExecution(
+      {
+        results: []
+      },
+      'parallelFlow', // flowName
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should respond with a successful parallel execution', function (done) {
+    waitUntilExecutionStatus(
+      executionName,
+      'SUCCEEDED',
+      statebox,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        // expect(executionDescription.status).to.eql('FAILED')
+        // expect(executionDescription.flowName).to.eql('failFlow')
+        // expect(executionDescription.currentStateName).to.eql('FailState')
+        // expect(executionDescription.errorCause).to.eql('Invalid response.')
+        // expect(executionDescription.errorCode).to.eql('ErrorA')
         done()
       }
     )

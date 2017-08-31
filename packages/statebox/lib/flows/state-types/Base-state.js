@@ -3,6 +3,7 @@ const debugPackage = require('debug')('statebox')
 const flows = require('./../../flows')
 const getExecutionDescription = require('./../../utils/get-execution-description')
 const boom = require('boom')
+const _ = require('lodash')
 
 // https://states-language.net/spec.html#task-state
 // "REFERENCE PATH"
@@ -83,7 +84,11 @@ class BaseState {
         } else {
           let ctx = executionDescription.input
           if (output) {
-            dottie.set(ctx, _this.resultPath, output)
+            if (_this.resultPath) {
+              dottie.set(ctx, _this.resultPath, output)
+            } else {
+              ctx = _.defaults(output, ctx)
+            }
           }
           const flow = flows.findFlowByName(executionDescription.flowName)
           const stateDefinition = flow.findStateDefinitionByName(executionDescription.currentStateName)

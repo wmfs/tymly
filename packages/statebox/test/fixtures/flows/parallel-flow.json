@@ -1,0 +1,15 @@
+{
+  "Comment": "Some parallel branches",
+  "StartAt": "A",
+  "States": {
+    "A": {
+      "Type": "Parallel",
+      "Next": "H"
+    },
+    "H": {
+      "Type": "Task",
+      "Resource": "module:h",
+      "End": true
+    }
+  }
+}

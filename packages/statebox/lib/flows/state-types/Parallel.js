@@ -7,6 +7,14 @@ class Parallel extends BaseStateType {
     this.stateType = 'Parallel'
     this.debug()
   }
+
+  process (executionDescription) {
+    this.processTaskSuccess(
+      undefined,
+      executionDescription.executionName
+    )
+  }
+
 }
 
 module.exports = Parallel

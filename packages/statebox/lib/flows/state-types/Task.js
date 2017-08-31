@@ -23,7 +23,7 @@ class Task extends BaseStateType {
     }
 
     this.inputPath = stateDefinition.InputPath || '$'
-    this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath, '')
+    this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath)
     this.debug()
   }
 
