@@ -21,6 +21,7 @@ const helloThenWorldFlow = require('./fixtures/flows/hello-then-world.json')
 const calculatorFlow = require('./fixtures/flows/calculator.json')
 const calculatorWithInputPathsFlow = require('./fixtures/flows/calculator-with-input-paths.json')
 const passFlow = require('./fixtures/flows/pass-flow.json')
+const failFlow = require('./fixtures/flows/fail-flow.json')
 
 const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
 
@@ -298,6 +299,53 @@ describe('Simple flow test', function () {
             }
           }
         )
+        done()
+      }
+    )
+  })
+
+  it('should create a new fail flow ', function (done) {
+    statebox.createFlow(
+      'failFlow',
+      failFlow,
+      function (err, info) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should execute fail flow', function (done) {
+    statebox.startExecution(
+      {},
+      'failFlow', // flowName
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should respond with a failed execution', function (done) {
+    waitUntilExecutionStatus(
+      executionName,
+      'FAILED',
+      statebox,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('FAILED')
+        // expect(executionDescription.flowName).to.eql('passFlow')
+        // expect(executionDescription.currentStateName).to.eql('PassExample')
+        // expect(executionDescription.input).to.eql(
+        //   {
+        //     georefOf: 'Home',
+        //     coords: {
+        //       'x-datum': 0,
+        //       'y-datum': 600
+        //     }
+        //   }
+        // )
         done()
       }
     )

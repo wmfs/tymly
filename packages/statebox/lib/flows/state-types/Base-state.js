@@ -19,6 +19,7 @@ class BaseState {
     this.schemaName = this.options.schemaName
     this.client = this.options.client
     this.endSql = `UPDATE ${this.schemaName}.current_executions SET status='SUCCEEDED', context=$1 WHERE execution_name=$2`
+    this.failSql = `UPDATE ${this.schemaName}.current_executions SET status='FAILED',error_cause=$1, error_code=$2 WHERE execution_name=$3`
     this.nextSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1, context=$2 WHERE execution_name=$3`
     this.updateStateSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1 WHERE execution_name=$2`
   }
@@ -49,6 +50,26 @@ class BaseState {
       // TODO: No destination state... needs to behave as per the spec
       throw boom.badRequest(`No next-state available in flow ${_this.flowName} (executionName=${executionName})`)
     }
+  }
+
+  processTaskFailure (options, executionName) {
+    const _this = this
+    this.client.query(
+      this.failSql,
+      [
+        options.cause,
+        options.error,
+        executionName
+      ],
+      function (err) {
+        if (err) {
+          // TODO: Needs handling as per spec
+          throw (err)
+        } else {
+          _this.flow.processState(executionName)
+        }
+      }
+    )
   }
 
   processTaskSuccess (output, executionName) {

@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS <%= schemaName %>.current_executions (
   status text NOT NULL DEFAULT 'RUNNING',
   current_state_name text,
   state_enter_time timestamp with time zone,
+  error_cause text,
+  error_code character varying(256),
   flow_name text NOT NULL,
   context jsonb,
   _created timestamp with time zone NOT NULL DEFAULT now(),
