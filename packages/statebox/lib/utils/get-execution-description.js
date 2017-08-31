@@ -5,7 +5,7 @@ class GetExecutionDescription {
   applyOptions (options) {
     this.client = options.client
     this.sql =
-      'SELECT execution_name, status, current_state_name, flow_name, input, output, _created ' +
+      'SELECT execution_name, status, current_state_name, flow_name, context, _created ' +
       `FROM ${options.schemaName}.current_executions ` +
       'WHERE execution_name = $1;'
   }
@@ -23,8 +23,7 @@ class GetExecutionDescription {
               null,
               {
                 executionName: executionName,
-                input: result.rows[0].input,
-                output: result.rows[0].output,
+                input: result.rows[0].context,
                 currentStateName: result.rows[0].current_state_name,
                 flowName: result.rows[0].flow_name,
                 status: result.rows[0].status,

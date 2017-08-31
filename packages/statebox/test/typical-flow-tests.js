@@ -19,6 +19,7 @@ const subtractFunction = require('./fixtures/functions/subtract')
 const helloWorldFlow = require('./fixtures/flows/hello-world.json')
 const helloThenWorldFlow = require('./fixtures/flows/hello-then-world.json')
 const calculatorFlow = require('./fixtures/flows/calculator.json')
+const calculatorWithInputPathsFlow = require('./fixtures/flows/calculator-with-input-paths.json')
 
 const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
 
@@ -111,7 +112,6 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('helloWorld')
         expect(executionDescription.currentStateName).to.eql('Hello World')
-        expect(executionDescription.output).to.eql({})
         done()
       }
     )
@@ -139,7 +139,6 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('helloThenWorld')
         expect(executionDescription.currentStateName).to.eql('World')
-        expect(executionDescription.output).to.eql({})
         done()
       }
     )
@@ -171,7 +170,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Add')
-        expect(executionDescription.output).to.eql({result: 5})
+        expect(executionDescription.input.result).to.eql(5)
         done()
       }
     )
@@ -203,7 +202,52 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Subtract')
-        expect(executionDescription.output).to.eql({result: 1})
+        expect(executionDescription.input.result).to.eql(1)
+        done()
+      }
+    )
+  })
+
+  it('should create a new calculator (with input paths) flow', function (done) {
+    statebox.createFlow(
+      'calculatorWithInputPathsFlow',
+      calculatorWithInputPathsFlow,
+      function (err, info) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should execute calculator (with input paths)', function (done) {
+    statebox.startExecution(
+      {
+        numbers: {
+          number1: 3,
+          number2: 2
+        },
+        operator: '-'
+      },  // input
+      'calculatorWithInputPathsFlow', // flowName
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should successfully complete calculator (with input paths) execution', function (done) {
+    waitUntilExecutionStatus(
+      executionName,
+      'SUCCEEDED',
+      statebox,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.flowName).to.eql('calculatorWithInputPathsFlow')
+        expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.input.result).to.eql(1)
         done()
       }
     )

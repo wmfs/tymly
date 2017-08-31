@@ -117,14 +117,13 @@ class Statebox {
     const flowToExecute = flows.findFlowByName(flowName)
 
     if (flowToExecute) {
-      const sql = `INSERT INTO ${this.options.schemaName}.current_executions (flow_name, input, output, current_state_name) VALUES ($1, $2, $3, $4) RETURNING execution_name, status, _created;`
+      const sql = `INSERT INTO ${this.options.schemaName}.current_executions (flow_name, context, current_state_name) VALUES ($1, $2, $3) RETURNING execution_name, status, _created;`
       this.client.query(
         sql,
         [
-          flowName,
-          input,
-          {},
-          flowToExecute.startAt
+          flowName, // $1 (flow_name)
+          input, // $2 (context)
+          flowToExecute.startAt // $3 (current_state_name)
         ],
         function (err, info) {
           if (err) {
@@ -149,7 +148,7 @@ class Statebox {
         }
       )
     } else {
-      // NO FLow!
+      // No FLow!
       callback(
         boom.badRequest(
           `Unknown Flow with name '${flowName}`,

@@ -2,6 +2,8 @@
 const BaseStateType = require('./Base-state')
 const resources = require('./../../resources')
 const boom = require('boom')
+const jp = require('jsonpath')
+
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 class Task extends BaseStateType {
   constructor (stateName, flow, stateDefinition, options) {
@@ -20,15 +22,16 @@ class Task extends BaseStateType {
         break
     }
 
-    this.inputPath = convertJsonpathToDottie(stateDefinition.InputPath, '')
+    this.inputPath = stateDefinition.InputPath || '$'
     this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath, '')
     this.debug()
   }
 
   process (executionDescription) {
+    const input = jp.value(executionDescription.input, this.inputPath)
     const runnableStateClass = new this.Resource(executionDescription.executionName, this)
     runnableStateClass.run(
-      executionDescription.input,
+      input,
       {} // TODO: http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
     )
   }

@@ -1,0 +1,35 @@
+{
+  "Comment": "A simple calculator",
+  "StartAt": "OperatorChoice",
+  "States": {
+    "OperatorChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.operator",
+          "StringEquals": "+",
+          "Next": "Add"
+        },
+        {
+          "Variable": "$.operator",
+          "StringEquals": "-",
+          "Next": "Subtract"
+        }
+      ]
+    },
+    "Add": {
+      "Type": "Task",
+      "InputPath": "$.numbers",
+      "Resource": "function:add",
+      "ResultPath" : "$.result",
+      "End": true
+    },
+    "Subtract": {
+      "Type": "Task",
+      "InputPath": "$.numbers",
+      "Resource": "function:subtract",
+      "ResultPath" : "$.result",
+      "End": true
+    }
+  }
+}

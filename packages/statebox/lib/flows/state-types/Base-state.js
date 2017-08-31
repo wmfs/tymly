@@ -18,8 +18,8 @@ class BaseState {
     this.options = options
     this.schemaName = this.options.schemaName
     this.client = this.options.client
-    this.endSql = `UPDATE ${this.schemaName}.current_executions SET status='SUCCEEDED', output=$1 WHERE execution_name=$2`
-    this.nextSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1, output=$2 WHERE execution_name=$3`
+    this.endSql = `UPDATE ${this.schemaName}.current_executions SET status='SUCCEEDED', context=$1 WHERE execution_name=$2`
+    this.nextSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1, context=$2 WHERE execution_name=$3`
     this.updateStateSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1 WHERE execution_name=$2`
   }
 
@@ -60,9 +60,9 @@ class BaseState {
           // TODO: Handle this as per spec!
           throw (err)
         } else {
-          let executionOutput = executionDescription.output
+          let ctx = executionDescription.input
           if (output) {
-            dottie.set(executionOutput, _this.resultPath, output)
+            dottie.set(ctx, _this.resultPath, output)
           }
           const flow = flows.findFlowByName(executionDescription.flowName)
           const stateDefinition = flow.findStateDefinitionByName(executionDescription.currentStateName)
@@ -72,7 +72,7 @@ class BaseState {
             _this.client.query(
               _this.endSql,
               [
-                executionOutput,
+                ctx,
                 executionName
               ],
               function (err) {
@@ -90,7 +90,7 @@ class BaseState {
               _this.nextSql,
               [
                 nextStateName,
-                executionOutput,
+                ctx,
                 executionName
               ],
               function (err) {
