@@ -1,6 +1,8 @@
 'use strict'
 
-module.exports = function a (event, context) {
-  console.log('G')
-  this.sendTaskSuccess()
+module.exports = function g (event, context) {
+  const list = event.results
+  list.push('G')
+  this.sendTaskSuccess({results: list})
+
 }
