@@ -289,7 +289,7 @@ describe('Simple flow test', function () {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('passFlow')
-        expect(executionDescription.currentStateName).to.eql('PassExample')
+        expect(executionDescription.currentStateName).to.eql('PassState')
         expect(executionDescription.input).to.eql(
           {
             georefOf: 'Home',
@@ -335,17 +335,10 @@ describe('Simple flow test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
-        // expect(executionDescription.flowName).to.eql('passFlow')
-        // expect(executionDescription.currentStateName).to.eql('PassExample')
-        // expect(executionDescription.input).to.eql(
-        //   {
-        //     georefOf: 'Home',
-        //     coords: {
-        //       'x-datum': 0,
-        //       'y-datum': 600
-        //     }
-        //   }
-        // )
+        expect(executionDescription.flowName).to.eql('failFlow')
+        expect(executionDescription.currentStateName).to.eql('FailState')
+        expect(executionDescription.errorCause).to.eql('Invalid response.')
+        expect(executionDescription.errorCode).to.eql('ErrorA')
         done()
       }
     )

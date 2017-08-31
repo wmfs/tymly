@@ -1,11 +1,12 @@
 'use strict'
 const boom = require('boom')
+const _ = require('lodash')
 
 class GetExecutionDescription {
   applyOptions (options) {
     this.client = options.client
     this.sql =
-      'SELECT execution_name, status, current_state_name, flow_name, context, _created ' +
+      'SELECT execution_name, status, current_state_name, flow_name, context, _created, error_cause, error_code ' +
       `FROM ${options.schemaName}.current_executions ` +
       'WHERE execution_name = $1;'
   }
@@ -19,16 +20,29 @@ class GetExecutionDescription {
           callback(err)
         } else {
           if (result.hasOwnProperty('rows') && result.rows.length === 1) {
+
+            const row = result.rows[0]
+            const response = {
+              executionName: executionName,
+              input: row.context,
+              currentStateName: row.current_state_name,
+              flowName: row.flow_name,
+              status: row.status,
+              startDate: row._created
+            }
+
+            if (response.status === 'FAILED') {
+              if (!_.isUndefined(row.error_cause)) {
+                response.errorCause = row.error_cause
+              }
+              if (!_.isUndefined(row.error_code)) {
+                response.errorCode = row.error_code
+              }
+            }
+
             callback(
               null,
-              {
-                executionName: executionName,
-                input: result.rows[0].context,
-                currentStateName: result.rows[0].current_state_name,
-                flowName: result.rows[0].flow_name,
-                status: result.rows[0].status,
-                startDate: result.rows[0]._created
-              }
+              response
             )
           } else {
             callback(

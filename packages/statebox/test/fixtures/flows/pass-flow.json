@@ -1,8 +1,8 @@
 {
   "Comment": "Example of the Pass State",
-  "StartAt": "PassExample",
+  "StartAt": "PassState",
   "States": {
-    "PassExample": {
+    "PassState": {
       "Type": "Pass",
       "Result": {
         "x-datum": 0,

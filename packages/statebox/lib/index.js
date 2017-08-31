@@ -115,7 +115,6 @@ class Statebox {
     // TODO: Note API usually requires a string, but object seems better for Statebox?
 
     const flowToExecute = flows.findFlowByName(flowName)
-
     if (flowToExecute) {
       const sql = `INSERT INTO ${this.options.schemaName}.current_executions (flow_name, context, current_state_name) VALUES ($1, $2, $3) RETURNING execution_name, status, _created;`
       this.client.query(

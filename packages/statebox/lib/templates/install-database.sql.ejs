@@ -4,8 +4,8 @@ CREATE SCHEMA IF NOT EXISTS <%= schemaName %>;
 
 CREATE TABLE IF NOT EXISTS <%= schemaName %>.current_executions (
   execution_name character varying(80) NOT NULL DEFAULT uuid_generate_v1():: character varying PRIMARY KEY,
-  status text NOT NULL DEFAULT 'RUNNING',
-  current_state_name text,
+  status text NOT NULL DEFAULT 'RUNNING' NOT NULL,
+  current_state_name text NOT NULL,
   state_enter_time timestamp with time zone,
   error_cause text,
   error_code character varying(256),
