@@ -52,11 +52,11 @@ describe('Simple flow test', function () {
   })
 
   it('should add some functions', function () {
-    statebox.createFunctionResource('helloWorld', helloWorldFunction)
-    statebox.createFunctionResource('hello', helloFunction)
-    statebox.createFunctionResource('world', worldFunction)
-    statebox.createFunctionResource('add', addFunction)
-    statebox.createFunctionResource('subtract', subtractFunction)
+    statebox.createModuleResource('helloWorld', helloWorldFunction)
+    statebox.createModuleResource('hello', helloFunction)
+    statebox.createModuleResource('world', worldFunction)
+    statebox.createModuleResource('add', addFunction)
+    statebox.createModuleResource('subtract', subtractFunction)
   })
 
   it('should create a new helloWorld flow', function (done) {
@@ -280,7 +280,7 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should successfully complete calculator (with input paths) execution', function (done) {
+  it('should successfully complete passFlow execution', function (done) {
     waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',

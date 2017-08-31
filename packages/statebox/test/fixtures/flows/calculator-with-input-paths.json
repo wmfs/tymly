@@ -20,14 +20,14 @@
     "Add": {
       "Type": "Task",
       "InputPath": "$.numbers",
-      "Resource": "function:add",
+      "Resource": "module:add",
       "ResultPath" : "$.result",
       "End": true
     },
     "Subtract": {
       "Type": "Task",
       "InputPath": "$.numbers",
-      "Resource": "function:subtract",
+      "Resource": "module:subtract",
       "ResultPath" : "$.result",
       "End": true
     }

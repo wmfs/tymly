@@ -19,13 +19,13 @@
     },
     "Add": {
       "Type": "Task",
-      "Resource": "function:add",
+      "Resource": "module:add",
       "ResultPath" : "$.result",
       "End": true
     },
     "Subtract": {
       "Type": "Task",
-      "Resource": "function:subtract",
+      "Resource": "module:subtract",
       "ResultPath" : "$.result",
       "End": true
     }

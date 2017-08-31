@@ -4,12 +4,12 @@
   "States": {
     "Hello": {
       "Type": "Task",
-      "Resource": "function:hello",
+      "Resource": "module:hello",
       "Next": "World"
     },
     "World": {
       "Type": "Task",
-      "Resource": "function:world",
+      "Resource": "module:world",
       "End": true
     }
   }

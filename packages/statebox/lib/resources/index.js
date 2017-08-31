@@ -2,13 +2,13 @@
 const debug = require('debug')('statebox')
 const functionClasses = {}
 
-module.exports.findFunctionClassByName = function findFunctionClassByName (name) {
+module.exports.findModuleByName = function findModuleByName (name) {
   return functionClasses[name]
 }
 
 // Adds a class for creating
-module.exports.createFunction = function createFunction (name, stateFunction) {
-  const StateFunction = function StateFunction (executionName, state) {
+module.exports.createModule = function createModule (name, stateFunction) {
+  const ModuleResource = function ModuleResource (executionName, state) {
     const _this = this
     this.schemaName = _this.schemaName
     this.client = _this.client
@@ -16,11 +16,11 @@ module.exports.createFunction = function createFunction (name, stateFunction) {
     this.state = state
   }
 
-  StateFunction.prototype.run = stateFunction
-  StateFunction.prototype.sendTaskSuccess = function (output) {
+  ModuleResource.prototype.run = stateFunction
+  ModuleResource.prototype.sendTaskSuccess = function (output) {
     this.state.processTaskSuccess(output, this.executionName)
   }
 
-  functionClasses[name] = StateFunction
-  debug(`Created function resource '${name}'`)
+  functionClasses[name] = ModuleResource
+  debug(`Created module resource '${name}'`)
 }

@@ -21,8 +21,8 @@ class Statebox {
     ensureDatabaseObjects(this.options, callback)
   }
 
-  createFunctionResource (name, functionClass) {
-    resources.createFunction(name, functionClass)
+  createModuleResource (name, functionClass) {
+    resources.createModule(name, functionClass)
   }
 
   validateFlowDefinition (definition, callback) {

@@ -12,12 +12,12 @@ class Task extends BaseStateType {
     const parts = stateDefinition.Resource.split(':')
     this.resourceType = parts[0]
     switch (this.resourceType) {
-      case 'function':
-        const functionName = parts[1]
-        this.Resource = resources.findFunctionClassByName(functionName)
+      case 'module':
+        const moduleName = parts[1]
+        this.Resource = resources.findModuleByName(moduleName)
         if (!this.Resource) {
           // Should be picked-up by flow validation before now
-          throw (boom.badRequest(`Unable to bind Task '${stateName}' in flow '${this.flowName}' - function '${functionName}' not found`, functionName))
+          throw (boom.badRequest(`Unable to bind Task '${stateName}' in flow '${this.flowName}' - module '${moduleName}' not found`, moduleName))
         }
         break
     }
