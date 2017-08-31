@@ -6,49 +6,19 @@
 //   https://aws.amazon.com/step-functions/
 //   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workflows/
 
-
 const _ = require('lodash')
-const debug = require('debug')('statebox')
 const flows = require('./flows')
 const resources = require('./resources')
-const path = require('path')
-const fs = require('fs')
-const ejs = require('ejs')
 const boom = require('boom')
 const getExecutionDescription = require('./utils/get-execution-description')
+const ensureDatabaseObjects = require('./utils/ensure-database-objects')
 
 class Statebox {
   boot (options, callback) {
-    const _this = this
-
     this.client = options.client
     this.options = _.defaults(options, {schemaName: 'statebox'})
     getExecutionDescription.applyOptions(this.options)
-    fs.readFile(
-      path.resolve(__dirname, './templates/install-database.sql.ejs'),
-      {},
-      function (err, buffer) {
-        if (err) {
-          callback(err)
-        } else {
-          const installTemplate = buffer.toString()
-          const sql = ejs.render(installTemplate, _this.options)
-          _this.client.query(
-            sql,
-            [],
-            function (err) {
-              if (err) {
-                // TODO: Rollback (and test the rollback worked too) but don't close connection.
-                callback(err)
-              } else {
-                debug(`Installed database objects in schema ' ${_this.options.schemaName}'`)
-                callback(null)
-              }
-            }
-          )
-        }
-      }
-    )
+    ensureDatabaseObjects(this.options, callback)
   }
 
   createFunctionResource (name, functionClass) {
@@ -68,27 +38,23 @@ class Statebox {
   }
 
   deleteFlow (name, callback) {
-    flows.deleteFlow (name, callback)
+    flows.deleteFlow(name, callback)
   }
 
   describeFlow (name, callback) {
-    flows.describeFlow (name, callback)
+    flows.describeFlow(name, callback)
   }
 
   listFlows (callback) {
-    flows.listFlows (callback)
+    flows.listFlows(callback)
   }
 
   findFlowByName (name) {
-    flows.findFlowByName (name)
+    flows.findFlowByName(name)
   }
 
   findFlows (options, callback) {
-    flows.findFlows (options, callback)
-  }
-
-  createStateType (name, stateClass, callback) {
-
+    flows.findFlows(options, callback)
   }
 
   createTaskResource (name, definition, callback) {
@@ -147,7 +113,7 @@ class Statebox {
         }
       )
     } else {
-      // No FLow!
+      // No Flow!
       callback(
         boom.badRequest(
           `Unknown Flow with name '${flowName}`,
