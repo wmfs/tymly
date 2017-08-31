@@ -3,8 +3,8 @@ const BaseStateType = require('./Base-state')
 const resources = require('./../../resources')
 const boom = require('boom')
 const jp = require('jsonpath')
-
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
+
 class Task extends BaseStateType {
   constructor (stateName, flow, stateDefinition, options) {
     super(stateName, flow, stateDefinition, options)
