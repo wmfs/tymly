@@ -1,5 +1,5 @@
 # statebox
-> A framework for building and sharing workflows in Node.js.
+> Orchestrate Node functions using Amazon States Language
 
 ## Useful links
 

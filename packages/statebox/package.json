@@ -1,6 +1,6 @@
 {
   "name": "statebox",
-  "description": "Finite State Machines defined in Amazon States Language and backed with PostgreSQL",
+  "description": "Orchestrate Node functions using Amazon States Language",
   "version": "0.0.1",
   "author": "Tim Needham",
   "main": "./lib/index.js",
