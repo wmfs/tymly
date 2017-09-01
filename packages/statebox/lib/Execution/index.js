@@ -57,9 +57,7 @@ class Execution {
         )
       )
     }
-
   }
-
 }
 
 module.exports = Execution

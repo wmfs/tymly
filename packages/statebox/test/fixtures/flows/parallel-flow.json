@@ -1,9 +1,67 @@
 {
   "Comment": "Some parallel branches",
-  "StartAt": "A",
+  "StartAt": "Parallel1",
   "States": {
-    "A": {
+    "Parallel1": {
       "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "A",
+          "States": {
+            "A": {
+              "Type": "Task",
+              "Resource": "module:a",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "B",
+          "States": {
+            "B": {
+              "Type": "Task",
+              "Resource": "module:b",
+              "Next": "Parallel2"
+            },
+            "Parallel2": {
+              "Type": "Parallel",
+              "Branches": [
+                {
+                  "StartAt": "C",
+                  "States": {
+                    "C": {
+                      "Type": "Task",
+                      "Resource": "module:c",
+                      "End": true
+                    }
+                  }
+                },
+                {
+                  "StartAt": "D",
+                  "States": {
+                    "D": {
+                      "Type": "Task",
+                      "Resource": "module:d",
+                      "Next": "E"
+                    },
+                    "E": {
+                      "Type": "Task",
+                      "Resource": "module:e",
+                      "End": true
+                    }
+                  }
+                }
+              ],
+              "Next": "F"
+            },
+            "F": {
+              "Type": "Task",
+              "Resource": "module:f",
+              "End": true
+            }
+          }
+        }
+      ],
       "Next": "H"
     },
     "H": {
