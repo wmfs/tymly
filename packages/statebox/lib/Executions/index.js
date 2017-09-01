@@ -3,7 +3,7 @@
 const flows = require('./../flows')
 const boom = require('boom')
 
-class Execution {
+class Executions {
   constructor (options) {
     this.client = options.client
     this.schemaName = options.schemaName
@@ -60,4 +60,4 @@ class Execution {
   }
 }
 
-module.exports = Execution
+module.exports = Executions

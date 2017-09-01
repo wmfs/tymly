@@ -7,7 +7,7 @@
 //   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workflows/
 
 const _ = require('lodash')
-const Execution = require('./Execution')
+const Executions = require('./Executions')
 const flows = require('./flows')
 
 const resources = require('./resources')
@@ -18,7 +18,7 @@ class Statebox {
   boot (options, callback) {
     this.client = options.client
     this.options = _.defaults(options, {schemaName: 'statebox'})
-    this.execution = new Execution(this.options)
+    this.executions = new Executions(this.options)
     getExecutionDescription.applyOptions(this.options)
     ensureDatabaseObjects(this.options, callback)
   }
@@ -76,7 +76,7 @@ class Statebox {
   }
 
   startExecution (input, flowName, callback) {
-    this.execution.start(input, flowName, callback)
+    this.executions.start(input, flowName, callback)
   }
 
   stopExecution (cause, error, executionName, callback) {

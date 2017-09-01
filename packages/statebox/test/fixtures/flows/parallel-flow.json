@@ -62,11 +62,11 @@
           }
         }
       ],
-      "Next": "H"
+      "Next": "G"
     },
-    "H": {
+    "G": {
       "Type": "Task",
-      "Resource": "module:h",
+      "Resource": "module:g",
       "End": true
     }
   }

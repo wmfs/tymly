@@ -21,7 +21,6 @@ const d = require('./fixtures/functions/d')
 const e = require('./fixtures/functions/e')
 const f = require('./fixtures/functions/f')
 const g = require('./fixtures/functions/g')
-const h = require('./fixtures/functions/h')
 
 // Flows
 const helloWorldFlow = require('./fixtures/flows/hello-world.json')
@@ -73,7 +72,6 @@ describe('Simple flow test', function () {
     statebox.createModuleResource('e', e)
     statebox.createModuleResource('f', f)
     statebox.createModuleResource('g', g)
-    statebox.createModuleResource('h', h)
   })
 
   it('should create a new helloWorld flow', function (done) {
@@ -362,6 +360,28 @@ describe('Simple flow test', function () {
   })
 
   it('should create a new parallel flow ', function (done) {
+    /*
+                               |
+                           Parallel1
+                           |       |
+                           A       B
+                       (+4 secs)   |
+                        |      Parallel2
+                        |      |       |
+                        |      C       D
+                        |  (+2 secs)   |
+                        |      |       E
+                        |      |       |
+                        |      ---------
+                        |          |
+                        |          F
+                        |          |
+                        ------------
+                              |
+                              G
+        Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
+     */
+
     statebox.createFlow(
       'parallelFlow',
       parallelFlow,
