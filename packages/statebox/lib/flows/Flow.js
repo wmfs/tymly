@@ -7,6 +7,7 @@ const boom = require('boom')
 
 class Flow {
   constructor (flowName, definition, options) {
+    console.log('>>>', flowName, definition)
     const _this = this
     this.name = flowName
     this.definition = definition

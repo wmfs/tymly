@@ -1,5 +1,6 @@
 'use strict'
 
+const _ = require('lodash')
 const Flow = require('./Flow')
 
 const flows = {}
@@ -14,15 +15,52 @@ module.exports.validateFlowDefinition = function validateFlowDefinition (definit
   callback(null)
 }
 
-module.exports.createFlow = function createFlow (name, definition, options, callback) {
+module.exports.createFlow = function createFlow (flowName, definition, options, callback) {
+  function parseFlows (prefix, root) {
+
+    if (_.isArray(root)) {
+      root.forEach(
+        function (arrayElement) {
+          parseFlows(prefix, arrayElement)
+        }
+      )
+    } else if (_.isObject(root)) {
+      if (root.hasOwnProperty('StartAt')) {
+        if (prefix) {
+          prefix += `:${root.StartAt}`
+        } else {
+          prefix = root.StartAt
+        }
+        parsedFlows[prefix] = root
+      }
+      _.forOwn(
+        root,
+        function (value, key) {
+          parseFlows(prefix, value)
+        }
+      )
+    }
+  }
+
+  const parsedFlows = {}
   this.validateFlowDefinition(
     definition,
     function (err) {
       if (err) {
         callback(err)
       } else {
-        // TODO: Validation should catch everything, but try/catch this?
-        flows[name] = new Flow(name, definition, options)
+        parseFlows(undefined, definition)
+
+        _.forOwn(
+          parsedFlows,
+          function (branchDefinition, branchPath) {
+            let fullFlowName = flowName
+            if (branchPath.indexOf(':') !== -1) {
+              fullFlowName += ':' + branchPath
+            }
+            flows[fullFlowName] = new Flow(fullFlowName, branchDefinition, options)
+          }
+        )
         callback(null)
       }
     }
