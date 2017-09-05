@@ -2,8 +2,8 @@
 const BaseStateType = require('./Base-state')
 
 class Fail extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, flow, stateDefinition, executions, options) {
+    super(stateName, flow, stateDefinition, executions, options)
     this.stateType = 'Fail'
     this.cause = stateDefinition.Cause
     this.error = stateDefinition.Error

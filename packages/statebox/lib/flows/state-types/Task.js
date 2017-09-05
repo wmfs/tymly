@@ -6,8 +6,8 @@ const jp = require('jsonpath')
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 
 class Task extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, flow, stateDefinition, executions, options) {
+    super(stateName, flow, stateDefinition, executions, options)
     this.stateType = 'Task'
     const parts = stateDefinition.Resource.split(':')
     this.resourceType = parts[0]

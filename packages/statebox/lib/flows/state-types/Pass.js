@@ -4,8 +4,8 @@ const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dotti
 
 
 class Pass extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, flow, stateDefinition, executions, options) {
+    super(stateName, flow, stateDefinition, executions, options)
     this.stateType = 'Pass'
     this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath, '')
     this.result = stateDefinition.Result

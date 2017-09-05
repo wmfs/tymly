@@ -11,7 +11,7 @@ const _ = require('lodash')
 const dottie = require('dottie')
 
 class BaseState {
-  constructor (stateName, flow, stateDefinition, options) {
+  constructor (stateName, flow, stateDefinition, executions, options) {
     this.name = stateName
     this.flow = flow
     this.flowName = flow.flowName
@@ -26,7 +26,7 @@ class BaseState {
   }
 
   debug () {
-    debugPackage(` - Created '${this.name}' ${this.stateType} within flow '${this.flowName}'`)
+    debugPackage(` - Created '${this.name}' ${this.stateType} within flow '${this.flow.name}'`)
   }
 
   updateCurrentStateName (nextStateName, executionName) {
@@ -66,8 +66,6 @@ class BaseState {
         if (err) {
           // TODO: Needs handling as per spec
           throw (err)
-        } else {
-          _this.flow.processState(executionName)
         }
       }
     )

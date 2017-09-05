@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Flow = require('./Flow')
 
 const flows = {}
+module.exports.flows = flows
 
 module.exports.validateFlowDefinition = function validateFlowDefinition (definition, callback) {
   // TODO: Make it validate! Is there a JSON Schema for Amazon State Language out there?
@@ -15,28 +16,26 @@ module.exports.validateFlowDefinition = function validateFlowDefinition (definit
   callback(null)
 }
 
-module.exports.createFlow = function createFlow (flowName, definition, options, callback) {
-  function parseFlows (prefix, root) {
-
+module.exports.createFlow = function createFlow (flowName, definition, executions, options, callback) {
+  function parseFlows (topLevel, root) {
     if (_.isArray(root)) {
       root.forEach(
         function (arrayElement) {
-          parseFlows(prefix, arrayElement)
+          parseFlows(topLevel, arrayElement)
         }
       )
     } else if (_.isObject(root)) {
       if (root.hasOwnProperty('StartAt')) {
-        if (prefix) {
-          prefix += `:${root.StartAt}`
+        if (topLevel) {
+          parsedFlows[flowName] = root
         } else {
-          prefix = root.StartAt
+          parsedFlows[`${flowName}:${root.StartAt}`] = root
         }
-        parsedFlows[prefix] = root
       }
       _.forOwn(
         root,
         function (value, key) {
-          parseFlows(prefix, value)
+          parseFlows(false, value)
         }
       )
     }
@@ -49,16 +48,12 @@ module.exports.createFlow = function createFlow (flowName, definition, options, 
       if (err) {
         callback(err)
       } else {
-        parseFlows(undefined, definition)
+        parseFlows(true, definition)
 
         _.forOwn(
           parsedFlows,
           function (branchDefinition, branchPath) {
-            let fullFlowName = flowName
-            if (branchPath.indexOf(':') !== -1) {
-              fullFlowName += ':' + branchPath
-            }
-            flows[fullFlowName] = new Flow(fullFlowName, branchDefinition, options)
+            flows[branchPath] = new Flow(branchPath, branchDefinition, executions, options)
           }
         )
         callback(null)

@@ -6,8 +6,7 @@ const getExecutionDescription = require('./../utils/get-execution-description')
 const boom = require('boom')
 
 class Flow {
-  constructor (flowName, definition, options) {
-    console.log('>>>', flowName, definition)
+  constructor (flowName, definition, executions, options) {
     const _this = this
     this.name = flowName
     this.definition = definition
@@ -19,7 +18,7 @@ class Flow {
       definition.States,
       function (stateDefinition, stateName) {
         const State = stateTypes[stateDefinition.Type]
-        _this.states[stateName] = new State(stateName, _this, stateDefinition, options)
+        _this.states[stateName] = new State(stateName, _this, stateDefinition, executions, options)
       }
     )
   }

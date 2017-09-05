@@ -35,6 +35,7 @@ class Statebox {
     flows.createFlow(
       name,
       definition,
+      this.executions,
       this.options,
       callback)
   }

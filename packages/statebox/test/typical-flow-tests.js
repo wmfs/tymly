@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 'use strict'
 
-const Statebox = require('./../lib')
 const process = require('process')
 const pg = require('pg')
 const chai = require('chai')
@@ -32,6 +31,8 @@ const failFlow = require('./fixtures/flows/fail-flow.json')
 const parallelFlow = require('./fixtures/flows/parallel-flow.json')
 
 const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
+
+const Statebox = require('./../lib')
 
 describe('Simple flow test', function () {
   this.timeout(5000)
@@ -360,27 +361,27 @@ describe('Simple flow test', function () {
   })
 
   it('should create a new parallel flow ', function (done) {
-    /*
-                               |
-                           Parallel1
-                           |       |
-                           A       B
-                       (+4 secs)   |
-                        |      Parallel2
-                        |      |       |
-                        |      C       D
-                        |  (+2 secs)   |
-                        |      |       E
-                        |      |       |
-                        |      ---------
-                        |          |
-                        |          F
-                        |          |
-                        ------------
-                              |
-                              G
-        Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
-     */
+        //
+        //                        |
+        //                    Parallel1
+        //                    |       |
+        //                    A       B
+        //                (+4 secs)   |
+        //                 |      Parallel2
+        //                 |      |       |
+        //                 |      C       D
+        //                 |  (+2 secs)   |
+        //                 |      |       E
+        //                 |      |       |
+        //                 |      ---------
+        //                 |          |
+        //                 |          F
+        //                 |          |
+        //                 ------------
+        //                       |
+        //                       G
+        // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
+
 
     statebox.createFlow(
       'parallelFlow',
