@@ -23,6 +23,10 @@ class Parallel extends BaseStateType {
   }
 
   process (executionDescription) {
+    console.log('?????', executionDescription)
+
+    const rootExecutionName = executionDescription.rootExecutionName || executionDescription.executionName
+
     const _this = this
     async.each(
       this.branches,
@@ -30,6 +34,8 @@ class Parallel extends BaseStateType {
         _this.executions.start(
           executionDescription.input,
           flowName,
+          executionDescription.executionName, // parentExecutionName
+          rootExecutionName, // rootExecutionName
           cb
         )
       },

@@ -6,7 +6,7 @@ class GetExecutionDescription {
   applyOptions (options) {
     this.client = options.client
     this.sql =
-      'SELECT execution_name, status, current_state_name, flow_name, context, _created, error_cause, error_code ' +
+      'SELECT execution_name, status, current_state_name, flow_name, context, parent_execution_name, root_execution_name, _created, error_cause, error_code ' +
       `FROM ${options.schemaName}.current_executions ` +
       'WHERE execution_name = $1;'
   }
@@ -20,10 +20,11 @@ class GetExecutionDescription {
           callback(err)
         } else {
           if (result.hasOwnProperty('rows') && result.rows.length === 1) {
-
             const row = result.rows[0]
             const response = {
               executionName: executionName,
+              parentExecutionName: row.parent_execution_name,
+              rootExecutionName: row.root_execution_name,
               input: row.context,
               currentStateName: row.current_state_name,
               flowName: row.flow_name,

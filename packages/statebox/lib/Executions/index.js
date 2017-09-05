@@ -9,7 +9,7 @@ class Executions {
     this.schemaName = options.schemaName
   }
 
-  start (input, flowName, callback) {
+  start (input, flowName, parentExecutionName, rootExecutionName, callback) {
     // References
     //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html
     //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
@@ -18,13 +18,15 @@ class Executions {
 
     const flowToExecute = flows.findFlowByName(flowName)
     if (flowToExecute) {
-      const sql = `INSERT INTO ${this.schemaName}.current_executions (flow_name, context, current_state_name) VALUES ($1, $2, $3) RETURNING execution_name, status, _created;`
+      const sql = `INSERT INTO ${this.schemaName}.current_executions (flow_name, context, current_state_name,parent_execution_name, root_execution_name) VALUES ($1, $2, $3, $4, $5) RETURNING execution_name, status, _created;`
       this.client.query(
         sql,
         [
           flowName, // $1 (flow_name)
           input, // $2 (context)
-          flowToExecute.startAt // $3 (current_state_name)
+          flowToExecute.startAt, // $3 (current_state_name)
+          parentExecutionName, // $4
+          rootExecutionName // $5
         ],
         function (err, info) {
           if (err) {

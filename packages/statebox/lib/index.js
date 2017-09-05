@@ -77,7 +77,7 @@ class Statebox {
   }
 
   startExecution (input, flowName, callback) {
-    this.executions.start(input, flowName, callback)
+    this.executions.start(input, flowName, null, null, callback)
   }
 
   stopExecution (cause, error, executionName, callback) {

@@ -5,6 +5,7 @@ CREATE SCHEMA IF NOT EXISTS <%= schemaName %>;
 CREATE TABLE IF NOT EXISTS <%= schemaName %>.current_executions (
   execution_name character varying(80) NOT NULL DEFAULT uuid_generate_v1():: character varying PRIMARY KEY,
   parent_execution_name character varying(80),
+  root_execution_name character varying(80),
   status text NOT NULL DEFAULT 'RUNNING' NOT NULL,
   current_state_name text NOT NULL,
   state_enter_time timestamp with time zone,
@@ -19,6 +20,7 @@ CREATE TABLE IF NOT EXISTS <%= schemaName %>.current_executions (
 );
 
 CREATE INDEX IF NOT EXISTS parent_execution_name ON <%= schemaName %>.current_executions(parent_execution_name);
+CREATE INDEX IF NOT EXISTS root_execution_name ON <%= schemaName %>.current_executions(root_execution_name);
 
 COMMENT ON TABLE <%= schemaName %>.current_executions IS 'Current Statebox executions';
 COMMENT ON COLUMN <%= schemaName %>.current_executions._created IS 'Timestamp for when this record was created';
