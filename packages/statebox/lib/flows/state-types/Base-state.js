@@ -23,6 +23,7 @@ class BaseState {
     this.failSql = `UPDATE ${this.schemaName}.current_executions SET status='FAILED',error_cause=$1, error_code=$2 WHERE execution_name=$3`
     this.nextSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1, context=$2 WHERE execution_name=$3`
     this.updateStateSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1 WHERE execution_name=$2`
+    this.branchSql = `SELECT SUM(1) number_of_branches, SUM(CASE WHEN status='SUCCEEDED' THEN 1 ELSE 0 END) number_succeeded, SUM(CASE WHEN status='FAILED' THEN 1 ELSE 0 END) number_failed from ${this.schemaName}.current_executions where parent_execution_name = $1`
   }
 
   debug () {
@@ -54,7 +55,6 @@ class BaseState {
   }
 
   processTaskFailure (options, executionName) {
-    const _this = this
     this.client.query(
       this.failSql,
       [
@@ -66,6 +66,29 @@ class BaseState {
         if (err) {
           // TODO: Needs handling as per spec
           throw (err)
+        }
+      }
+    )
+  }
+
+  processEndOfBranch (parentExecutionName, context) {
+    const _this = this
+    this.client.query(
+      this.branchSql,
+      [parentExecutionName],
+      function (err, result) {
+        if (err) {
+          // TODO: Not sure?
+          throw new Error(err)
+        } else {
+          if (result.rowCount === 1) {
+            const summary = result.rows[0]
+            if (summary.number_of_branches === summary.number_succeeded) {
+              _this.processTaskSuccess(context, parentExecutionName)
+            }
+          } else {
+            // TODO: Not Sure?
+          }
         }
       }
     )
@@ -103,6 +126,11 @@ class BaseState {
                 if (err) {
                   // TODO: Needs handling as per spec
                   throw (err)
+                } else {
+                  // Finished this, but was it part of a parallel branch?
+                  if (executionDescription.parentExecutionName) {
+                    _this.processEndOfBranch(executionDescription.parentExecutionName, executionDescription.context)
+                  }
                 }
               }
             )
