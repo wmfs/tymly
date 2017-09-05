@@ -23,8 +23,6 @@ class Parallel extends BaseStateType {
   }
 
   process (executionDescription) {
-    console.log('?????', executionDescription)
-
     const rootExecutionName = executionDescription.rootExecutionName || executionDescription.executionName
 
     const _this = this
@@ -42,12 +40,11 @@ class Parallel extends BaseStateType {
       function (err) {
         if (err) {
           // TODO: Needs handling!
-          //throw new Error(err)
+          // throw new Error(err)
         }
       }
     )
   }
-
 }
 
 module.exports = Parallel
