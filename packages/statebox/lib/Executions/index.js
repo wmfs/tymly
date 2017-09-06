@@ -54,7 +54,7 @@ class Executions {
       // No Flow!
       callback(
         boom.badRequest(
-          `Unknown Flow with name '${flowName}`,
+          `Unknown Flow with name '${flowName}'`,
           flowName
         )
       )

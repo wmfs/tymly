@@ -14,7 +14,7 @@ class BaseState {
   constructor (stateName, flow, stateDefinition, executions, options) {
     this.name = stateName
     this.flow = flow
-    this.flowName = flow.flowName
+    this.flowName = flow.name
     this.definition = stateDefinition
     this.options = options
     this.schemaName = this.options.schemaName
@@ -24,6 +24,7 @@ class BaseState {
     this.nextSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1, context=$2 WHERE execution_name=$3`
     this.updateStateSql = `UPDATE ${this.schemaName}.current_executions SET current_state_name=$1 WHERE execution_name=$2`
     this.branchSql = `SELECT SUM(1) number_of_branches, SUM(CASE WHEN status='SUCCEEDED' THEN 1 ELSE 0 END) number_succeeded, SUM(CASE WHEN status='FAILED' THEN 1 ELSE 0 END) number_failed from ${this.schemaName}.current_executions where parent_execution_name = $1`
+    this.markRelatedBranchesAsFailed = `UPDATE ${this.schemaName}.current_executions SET status='FAILED', error_cause = COALESCE(error_cause, $1), error_code=COALESCE(error_code, $2) WHERE execution_name = $3`
   }
 
   debug () {
@@ -55,23 +56,39 @@ class BaseState {
   }
 
   processTaskFailure (options, executionName) {
-    this.client.query(
-      this.failSql,
-      [
-        options.cause,
-        options.error,
-        executionName
-      ],
-      function (err) {
+    const _this = this
+    getExecutionDescription.findByName(
+      executionName,
+      function (err, executionDescription) {
         if (err) {
-          // TODO: Needs handling as per spec
+          // TODO: Handle this as per spec!
           throw (err)
+        } else {
+          _this.client.query(
+            _this.failSql,
+            [
+              options.cause,
+              options.error,
+              executionName
+            ],
+            function (err) {
+              if (err) {
+                // TODO: Needs handling as per spec
+                throw (err)
+              } else {
+                // Finished this, but was it part of a parallel branch?
+                if (executionDescription.parentExecutionName) {
+                  _this.processEndOfBranch(executionDescription.parentExecutionName, null, executionDescription)
+                }
+              }
+            }
+          )
         }
       }
     )
   }
 
-  processEndOfBranch (parentExecutionName, context) {
+  processEndOfBranch (parentExecutionName, ctx, executionDescription) {
     const _this = this
     this.client.query(
       this.branchSql,
@@ -84,7 +101,23 @@ class BaseState {
           if (result.rowCount === 1) {
             const summary = result.rows[0]
             if (summary.number_of_branches === summary.number_succeeded) {
-              _this.processTaskSuccess(context, parentExecutionName)
+              debugPackage(`All ${summary.number_of_branches} branches have now succeeded (executionName='${parentExecutionName}')`)
+              _this.processTaskSuccess(ctx, parentExecutionName)
+            } else if (summary.number_failed > 0) {
+              debugPackage(`At least one of the ${summary.number_of_branches} branches has failed (executionName='${parentExecutionName}'). Marking all related branches as FAILED.`)
+              _this.client.query(
+                _this.markRelatedBranchesAsFailed,
+                [
+                  'States.BranchFailed',
+                  'Failed because a state in a parallel branch has failed',
+                  parentExecutionName
+                ],
+                function (err) {
+                  if (err) {
+                    // TODO: Not Sure?
+                  }
+                }
+              )
             }
           } else {
             // TODO: Not Sure?
@@ -129,7 +162,7 @@ class BaseState {
                 } else {
                   // Finished this, but was it part of a parallel branch?
                   if (executionDescription.parentExecutionName) {
-                    _this.processEndOfBranch(executionDescription.parentExecutionName, executionDescription.context)
+                    _this.processEndOfBranch(executionDescription.parentExecutionName, ctx, executionDescription)
                   }
                 }
               }

@@ -29,6 +29,7 @@ const calculatorWithInputPathsFlow = require('./fixtures/flows/calculator-with-i
 const passFlow = require('./fixtures/flows/pass-flow.json')
 const failFlow = require('./fixtures/flows/fail-flow.json')
 const parallelFlow = require('./fixtures/flows/parallel-flow.json')
+const parallelFailFlow = require('./fixtures/flows/parallel-fail-flow.json')
 
 const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
 
@@ -361,27 +362,26 @@ describe('Simple flow test', function () {
   })
 
   it('should create a new parallel flow ', function (done) {
-        //
-        //                        |
-        //                    Parallel1
-        //                    |       |
-        //                    A       B
-        //                (+4 secs)   |
-        //                 |      Parallel2
-        //                 |      |       |
-        //                 |      C       D
-        //                 |  (+2 secs)   |
-        //                 |      |       E
-        //                 |      |       |
-        //                 |      ---------
-        //                 |          |
-        //                 |          F
-        //                 |          |
-        //                 ------------
-        //                       |
-        //                       G
-        // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
-
+    //
+    //                        |
+    //                    Parallel1
+    //                    |       |
+    //                    A       B
+    //                (+4 secs)   |
+    //                 |      Parallel2
+    //                 |      |       |
+    //                 |      C       D
+    //                 |  (+2 secs)   |
+    //                 |      |       E
+    //                 |      |       |
+    //                 |      ---------
+    //                 |          |
+    //                 |          F
+    //                 |          |
+    //                 ------------
+    //                       |
+    //                       G
+    // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
 
     statebox.createFlow(
       'parallelFlow',
@@ -414,11 +414,51 @@ describe('Simple flow test', function () {
       statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // expect(executionDescription.status).to.eql('FAILED')
-        // expect(executionDescription.flowName).to.eql('failFlow')
-        // expect(executionDescription.currentStateName).to.eql('FailState')
-        // expect(executionDescription.errorCause).to.eql('Invalid response.')
-        // expect(executionDescription.errorCode).to.eql('ErrorA')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.flowName).to.eql('parallelFlow')
+        expect(executionDescription.currentStateName).to.eql('G')
+        done()
+      }
+    )
+  })
+
+  it('should create a new parallel-failing flow', function (done) {
+    statebox.createFlow(
+      'parallelFailFlow',
+      parallelFailFlow,
+      function (err, info) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should execute parallel-failing flow', function (done) {
+    statebox.startExecution(
+      {
+        results: []
+      },
+      'parallelFailFlow', // flowName
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should respond with a failed parallel execution', function (done) {
+    waitUntilExecutionStatus(
+      executionName,
+      'FAILED',
+      statebox,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.flowName).to.eql('parallelFailFlow')
+        expect(executionDescription.currentStateName).to.eql('Parallel1')
+        expect(executionDescription.errorCause).to.eql('States.BranchFailed')
+        expect(executionDescription.errorCode).to.eql('Failed because a state in a parallel branch has failed')
         done()
       }
     )

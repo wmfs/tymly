@@ -1,5 +1,6 @@
 'use strict'
 const BaseStateType = require('./Base-state')
+const debugPackage = require('debug')('statebox')
 
 class Fail extends BaseStateType {
   constructor (stateName, flow, stateDefinition, executions, options) {
@@ -11,6 +12,7 @@ class Fail extends BaseStateType {
   }
 
   process (executionDescription) {
+    debugPackage(`Encountered fail state '${this.name}' in flow '${this.flowName}' (executionName='${executionDescription.executionName}')`)
     this.processTaskFailure(
       {
         cause: this.cause,
