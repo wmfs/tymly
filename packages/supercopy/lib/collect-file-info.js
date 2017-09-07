@@ -35,49 +35,49 @@ module.exports = function (options, callback) {
                       cb()
                     } else {
                       async.eachSeries(
-                          actionItems,
-                          function (actionItem, cb2) {
-                            const filePath = path.join(dirPath, actionItem)
+                        actionItems,
+                        function (actionItem, cb2) {
+                          const filePath = path.join(dirPath, actionItem)
 
-                            fs.lstat(
-                              filePath,
-                              function (err, fileStats) {
-                                debug(`+   ./${actionItem}`)
-                                if (err) {
-                                  cb2(err)
-                                } else {
-                                  if (fileStats.isFile() && fileStats.size > 0) {
-                                    getColumnNames(
-                                      filePath,
-                                      options,
-                                      function (err, columnNames) {
-                                        if (err) {
-                                          cb2(err)
-                                        } else {
-                                          action[upath.normalize(filePath)] = {
-                                            tableName: path.basename(actionItem, path.extname(actionItem)),
-                                            columnNames: columnNames,
-                                            size: fileStats.size
-                                          }
-                                          cb2()
+                          fs.lstat(
+                            filePath,
+                            function (err, fileStats) {
+                              debug(`+   ./${actionItem}`)
+                              if (err) {
+                                cb2(err)
+                              } else {
+                                if (fileStats.isFile() && fileStats.size > 0) {
+                                  getColumnNames(
+                                    filePath,
+                                    options,
+                                    function (err, columnNames) {
+                                      if (err) {
+                                        cb2(err)
+                                      } else {
+                                        action[upath.normalize(filePath)] = {
+                                          tableName: path.basename(actionItem, path.extname(actionItem)),
+                                          columnNames: columnNames,
+                                          size: fileStats.size
                                         }
+                                        cb2()
                                       }
-                                    )
-                                  } else {
-                                    cb2()
-                                  }
+                                    }
+                                  )
+                                } else {
+                                  cb2()
                                 }
                               }
-                            )
-                          },
-                          function (err) {
-                            if (err) {
-                              cb(err)
-                            } else {
-                              cb()
                             }
+                          )
+                        },
+                        function (err) {
+                          if (err) {
+                            cb(err)
+                          } else {
+                            cb()
                           }
-                        )
+                        }
+                      )
                     }
                   }
                   )
