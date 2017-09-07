@@ -10,7 +10,16 @@ class SolrService {
   }
 
   generateSelect (ns, model, attribute) {
-    let sql = `SELECT 1,2,3 FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
+    let columns = []
+    for (const [solrFieldName, modelColumnName] of Object.entries(attribute.attributeMapping)) {
+      if (modelColumnName[0] === '@') {
+        columns.push(`${modelColumnName.substring(1)} AS ${solrFieldName}`)
+      } else {
+        columns.push(`${modelColumnName} AS ${solrFieldName}`)
+      }
+    }
+    let sql = `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
+    console.log(sql)
     return sql
   }
 }

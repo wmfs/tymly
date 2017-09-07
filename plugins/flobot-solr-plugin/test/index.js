@@ -49,6 +49,11 @@ describe('Simple solr tests', function () {
           'type': 'string',
           'maxLength': 10,
           'description': '...'
+        },
+        'password': {
+          'type': 'string',
+          'maxLength': 32,
+          'description': '...'
         }
       },
       'required': ['uprn']
@@ -56,7 +61,8 @@ describe('Simple solr tests', function () {
     const attribute = {
       'modelId': 'address',
       'attributeMapping': {
-        'address': '@streetName'
+        'address': '@streetName',
+        'passwordHash': "PG_HASH(password, 'SALT')"
       }
     }
     const ns = 'mySchema'
@@ -64,6 +70,6 @@ describe('Simple solr tests', function () {
     const select = plugin.generateSelect(ns, model, attribute)
 
     expect(select).to.be.a('string')
-    expect(select).to.match(/SELECT [^ ]* FROM my_schema.my_address/)
+    expect(select).to.eql("SELECT streetName AS address, PG_HASH(password, 'SALT') AS passwordHash FROM my_schema.my_address")
   })
 })
