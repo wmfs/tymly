@@ -5,6 +5,7 @@ const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
 // const debug = require('debug')('flobot-solr-plugin')
+const testModel = require('./fixtures/test-model.json')
 const SolrService = require('./../lib/components/services/solr/index.js').serviceClass
 
 describe('Simple solr tests', function () {
@@ -29,35 +30,6 @@ describe('Simple solr tests', function () {
 
   it('generate a SQL CREATE VIEW from a model and an attribute', () => {
     const plugin = new SolrService()
-    const model = {
-      'title': 'myAddress',
-      'description': '...',
-      'primaryKey': ['uprn'],
-      'type': 'object',
-      'properties': {
-        'uprn': {
-          'type': 'integer',
-          'maxLength': 12,
-          'description': '...'
-        },
-        'streetName': {
-          'type': 'string',
-          'maxLength': 128,
-          'description': '...'
-        },
-        'postCode': {
-          'type': 'string',
-          'maxLength': 10,
-          'description': '...'
-        },
-        'password': {
-          'type': 'string',
-          'maxLength': 32,
-          'description': '...'
-        }
-      },
-      'required': ['uprn']
-    }
     const attribute = {
       'modelId': 'address',
       'attributeMapping': {
@@ -67,7 +39,7 @@ describe('Simple solr tests', function () {
     }
     const ns = 'mySchema'
 
-    const select = plugin.generateSelect(ns, model, attribute)
+    const select = plugin.generateSelect(ns, testModel, attribute)
 
     expect(select).to.be.a('string')
     expect(select).to.eql("SELECT streetName AS address, PG_HASH(password, 'SALT') AS passwordHash FROM my_schema.my_address")
