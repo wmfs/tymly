@@ -3,10 +3,11 @@
 const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
+// const debug = require('debug')('flobot-solr-plugin')
 
 describe('Simple solr tests', function () {
-  // let flobotsService
-  it('should create some basic flobot services to test sending emails', function (done) {
+  let solrService
+  it('should create some basic flobot services', function (done) {
     flobot.boot(
       {
         pluginPaths: [
@@ -19,7 +20,8 @@ describe('Simple solr tests', function () {
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
-        // flobotsService = flobotServices.flobots
+        solrService = flobotServices.solr
+        expect(solrService).to.not.eql(null)
         done()
       }
     )
