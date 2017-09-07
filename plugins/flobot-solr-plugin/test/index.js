@@ -30,7 +30,7 @@ describe('Simple solr tests', function () {
   it('generate a SQL CREATE VIEW from a model and an attribute', () => {
     const plugin = new SolrService()
     const model = {
-      'title': 'address',
+      'title': 'myAddress',
       'description': '...',
       'primaryKey': ['uprn'],
       'type': 'object',
@@ -59,9 +59,11 @@ describe('Simple solr tests', function () {
         'address': '@streetName'
       }
     }
+    const ns = 'mySchema'
 
-    const select = plugin.generateSelect(model, attribute)
+    const select = plugin.generateSelect(ns, model, attribute)
 
     expect(select).to.be.a('string')
+    expect(select).to.match(/SELECT [^ ]* FROM my_address/)
   })
 })

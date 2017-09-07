@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('lodash')
+
 class SolrService {
   boot (options, callback) {
     console.log('Solr Service says Hello World!')
@@ -7,8 +9,9 @@ class SolrService {
     callback(null)
   }
 
-  generateSelect (model, attribute) {
-    return 'hello world!'
+  generateSelect (ns, model, attribute) {
+    let sql = `SELECT 1,2,3 FROM ${_.snakeCase(model.title)}`
+    return sql
   }
 }
 
