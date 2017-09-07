@@ -33,13 +33,17 @@ describe('Simple solr tests', function () {
     const attribute = {
       'modelId': 'address',
       'attributeMapping': {
-        'address': '@streetName',
-        'passwordHash': "PG_HASH(password, 'SALT')"
+        'passwordHash': "PG_HASH(password, 'SALT')",
+        'address': '@streetName'
       }
     }
     const ns = 'mySchema'
+    const solrFieldDefaults = [
+      ['address', ''],
+      ['passwordHash', '']
+    ]
 
-    const select = plugin.generateSelect(ns, testModel, attribute)
+    const select = plugin.generateSelect(ns, testModel, attribute, solrFieldDefaults)
 
     expect(select).to.be.a('string')
     expect(select).to.eql("SELECT streetName AS address, PG_HASH(password, 'SALT') AS passwordHash FROM my_schema.my_address")
