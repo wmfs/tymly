@@ -10,7 +10,7 @@ class SolrService {
   }
 
   generateSelect (ns, model, attribute) {
-    let sql = `SELECT 1,2,3 FROM ${_.snakeCase(model.title)}`
+    let sql = `SELECT 1,2,3 FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
     return sql
   }
 }

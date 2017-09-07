@@ -64,6 +64,6 @@ describe('Simple solr tests', function () {
     const select = plugin.generateSelect(ns, model, attribute)
 
     expect(select).to.be.a('string')
-    expect(select).to.match(/SELECT [^ ]* FROM my_address/)
+    expect(select).to.match(/SELECT [^ ]* FROM my_schema.my_address/)
   })
 })
