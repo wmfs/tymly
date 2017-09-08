@@ -1,18 +1,17 @@
 {
-  "name": "flobot-etl-plugin",
-  "description": "A collection of states for helping with Extract, Transform and Load tasks.",
-  "version": "0.0.3",
-  "author": "Aron Moore",
+  "name": "asl-choice-processor",
+  "description": "For determining the next state given an Amazon States Language 'Choices' definition and a set of values.",
+  "version": "0.0.1",
+  "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
-    "smithereens": "^0.0.6"
+    "jsonpath": "^0.2.12",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "csvtojson": "^1.1.7",
-    "flobot": "^0.0.12",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"
   },

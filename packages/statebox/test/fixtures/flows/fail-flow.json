@@ -1,0 +1,11 @@
+{
+  "Comment": "Example of the Pass State",
+  "StartAt": "FailState",
+  "States": {
+    "FailState": {
+      "Type": "Fail",
+      "Cause": "Invalid response.",
+      "Error": "ErrorA"
+    }
+  }
+}

@@ -1,3 +1,5 @@
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+
 # Tymly
 
 > An open source low-code platform built for collaboration
@@ -13,6 +15,8 @@ $ git clone https://github.com/wmfs/tymly
 $ cd tymly
 $ lerna bootstrap
 ```
+
+## <a name="environment-variables"></a>Environment 
 
 ## <a name="running"></a>Running
 

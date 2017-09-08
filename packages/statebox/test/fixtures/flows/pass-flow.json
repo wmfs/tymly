@@ -1,0 +1,15 @@
+{
+  "Comment": "Example of the Pass State",
+  "StartAt": "PassState",
+  "States": {
+    "PassState": {
+      "Type": "Pass",
+      "Result": {
+        "x-datum": 0,
+        "y-datum": 600
+      },
+      "ResultPath": "$.coords",
+      "End": true
+    }
+  }
+}

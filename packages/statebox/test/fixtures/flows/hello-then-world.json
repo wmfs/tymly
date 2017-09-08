@@ -1,0 +1,16 @@
+{
+  "Comment": "A simple two-state example of the States language",
+  "StartAt": "Hello",
+  "States": {
+    "Hello": {
+      "Type": "Task",
+      "Resource": "module:hello",
+      "Next": "World"
+    },
+    "World": {
+      "Type": "Task",
+      "Resource": "module:world",
+      "End": true
+    }
+  }
+}
