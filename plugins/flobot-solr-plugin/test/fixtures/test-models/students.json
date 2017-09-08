@@ -1,0 +1,30 @@
+{
+  "title": "students",
+  "description": "...",
+  "primaryKey": [
+    "studentNo"
+  ],
+  "type": "object",
+  "properties": {
+    "studentNo": {
+      "type": "integer",
+      "maxLength": 12,
+      "description": "unique identifier for this individual"
+    },
+    "firstName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "the individuals first name"
+    },
+    "lastName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "the individuals last name"
+    },
+    "characterName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "the character this individual plays"
+    }
+  }
+}

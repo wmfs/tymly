@@ -4,11 +4,15 @@
 const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
+const debug = require('debug')('flobot-solr-plugin')
 
-const testModel = require('./fixtures/test-model.json')
-const testModels = require('./fixtures/test-models.json')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
+const students = require('./fixtures/test-models/students.json')
+const studentsAndStaff = require('./fixtures/test-models/students-and-staff.json')
 
-describe('Simple solr tests', function () {
+describe('flobot-solr-plugin tests', function () {
+  const ns = 'solr_plugin_test'
+
   let solrService
   let client
 
@@ -37,77 +41,125 @@ describe('Simple solr tests', function () {
   })
 
   it('should generate a SQL SELECT statement', () => {
-    const attribute = {
-      'modelId': 'address',
+    const studentsMappings = {
+      'modelId': 'students',
       'attributeMapping': {
-        'passwordHash': 'PG_HASH(password, \'SALT\')',
-        'address': '@streetName'
+        'id': '\'student#\' || student_no',
+        'actorName': 'first_name || \' \' || last_name',
+        'characterName': '@characterName'
       }
     }
-    const ns = 'mySchema'
     const solrFieldDefaults = [
-      ['address', ''],
-      ['passwordHash', '']
+      ['id', ''],
+      ['actorName', ''],
+      ['characterName', '']
     ]
 
-    const select = solrService.generateSelect(ns, testModel, attribute, solrFieldDefaults)
-    console.log(select)
+    const select = solrService.buildSelectStatement(ns, students, studentsMappings, solrFieldDefaults)
+    debug(select)
 
     expect(select).to.be.a('string')
-    expect(select).to.eql('SELECT streetName AS address, PG_HASH(password, \'SALT\') AS passwordHash FROM my_schema.my_address')
+    expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, character_name AS character_name FROM solr_plugin_test.students')
   })
 
   it('should generate a SQL CREATE VIEW statement', () => {
-    const attributes = [
+    const studentsAndStaffMappings = [
       {
-        'modelId': 'myAddress',
+        'modelId': 'students',
         'attributeMapping': {
-          'passwordHash': 'PG_HASH(password, \'SALT\')',
-          'address': '@streetName'
+          'id': '\'student#\' || student_no',
+          'actorName': 'first_name || \' \' || last_name',
+          'characterName': '@characterName'
         }
       },
       {
-        'modelId': 'myAddress2',
+        'modelId': 'staff',
         'attributeMapping': {
-          'passwordHash': 'PG_HASH(password2, \'SALT\')',
-          'address': '@streetName2'
+          'id': '\'staff#\' || staff_no',
+          'actorName': 'first_name || \' \' || last_name',
+          'characterName': 'character_first_name || \' \' || character_last_name'
         }
       }
     ]
-    const ns = 'mySchema'
     const solrFieldDefaults = [
-      ['address', ''],
-      ['passwordHash', '']
+      ['id', ''],
+      ['actorName', ''],
+      ['characterName', '']
     ]
 
-    const sqlString = solrService.buildViewSql(ns, testModels, attributes, solrFieldDefaults)
-    console.log(sqlString)
+    const sqlString = solrService.buildCreateViewStatement(ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
+    debug(sqlString)
 
     expect(sqlString).to.be.a('string')
-    expect(sqlString).to.eql('CREATE OR REPLACE VIEW mySchema.solr_data AS \nSELECT streetName AS address, PG_HASH(password, \'SALT\') AS passwordHash FROM my_schema.my_address\nUNION\nSELECT streetName2 AS address, PG_HASH(password2, \'SALT\') AS passwordHash FROM my_schema.my_address_2;')
+    expect(sqlString).to.eql('CREATE OR REPLACE VIEW solr_plugin_test.solr_data AS \n' +
+      'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, character_name AS character_name FROM solr_plugin_test.students\n' +
+      'UNION\n' +
+      'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
   })
 
-  it('should create a database view', (done) => {
-    const attributes = [
+  it('should create test resources', function (done) {
+    sqlScriptRunner(
+      './db-scripts/setup.sql',
+      client,
+      function (err) {
+        expect(err).to.equal(null)
+        done()
+      }
+    )
+  })
+
+  it('should create a database view using the test resources', (done) => {
+    const studentsAndStaffMappings = [
       {
-        'modelId': 'myAddress2',
+        'modelId': 'students',
         'attributeMapping': {
-          'passwordHash': 'PG_HASH(password2, \'SALT\')',
-          'address': '@streetName2'
+          'id': '\'student#\' || student_no',
+          'actorName': 'first_name || \' \' || last_name',
+          'characterName': '@characterName'
+        }
+      },
+      {
+        'modelId': 'staff',
+        'attributeMapping': {
+          'id': '\'staff#\' || staff_no',
+          'actorName': 'first_name || \' \' || last_name',
+          'characterName': 'character_first_name || \' \' || character_last_name'
         }
       }
     ]
-    const ns = 'mySchema'
     const solrFieldDefaults = [
-      ['address', ''],
-      ['passwordHash', '']
+      ['id', ''],
+      ['actorName', ''],
+      ['characterName', '']
     ]
 
-    const sqlString = solrService.buildViewSql(ns, testModels, attributes, solrFieldDefaults)
+    const createViewStatement = solrService.buildCreateViewStatement(ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
 
-    solrService.createView(sqlString, function (err) {
-      console.log('~~~~~~~~~~~', err)
+    solrService.executeSQL(createViewStatement, function (err) {
+      expect(err).to.eql(null)
       done()
     })
+  })
+
+  it('should return 19 rows when selecting from the view', function (done) {
+    solrService.executeSQL('SELECT * FROM solr_plugin_test.solr_data ORDER BY character_name ASC;', function (err, result) {
+      expect(err).to.eql(null)
+      expect(result.rowCount).to.eql(19)
+      expect(result.rows[0].id).to.eql('staff#1')
+      expect(result.rows[18].id).to.eql('staff#3')
+      // debug(result)
+      done()
+    })
+  })
+
+  it('should cleanup test resources', (done) => {
+    sqlScriptRunner(
+      './db-scripts/cleanup.sql',
+      client,
+      function (err) {
+        expect(err).to.equal(null)
+        done()
+      }
+    )
   })
 })
