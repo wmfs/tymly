@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
+const debug = require('debug')('flobot-solr-plugin')
 
 class SolrService {
   boot (options, callback) {
@@ -8,7 +9,7 @@ class SolrService {
     callback(null)
   }
 
-  generateSelect (ns, model, attribute, solrFieldDefaults) {
+  buildSelectStatement (ns, model, attribute, solrFieldDefaults) {
     const columns = solrFieldDefaults.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
@@ -16,20 +17,17 @@ class SolrService {
         let mappedValue = attribute.attributeMapping[solrFieldName]
         if (!_.isUndefined(mappedValue)) {
           if (mappedValue[0] === '@') {
-            mappedValue = mappedValue.substring(1)
+            mappedValue = _.snakeCase(mappedValue.substring(1))
           }
         }
-        const columnDefinition = `${mappedValue || defaultValue} AS ${solrFieldName}`
-        return columnDefinition
+        return `${mappedValue || defaultValue} AS ${_.snakeCase(solrFieldName)}`
       }
     )
 
-    let sql = `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
-    // console.log(sql)
-    return sql
+    return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
   }
 
-  buildViewSql (ns, models, attributes, solrFieldDefault) {
+  buildCreateViewStatement (ns, models, attributes, solrFieldDefault) {
     let selects = []
     for (let model of models) {
       let currentAttribute = null
@@ -40,16 +38,16 @@ class SolrService {
         }
       }
       if (currentAttribute != null) {
-        selects.push(this.generateSelect(ns, model, currentAttribute, solrFieldDefault))
+        selects.push(this.buildSelectStatement(ns, model, currentAttribute, solrFieldDefault))
       } else {
-        console.log('Can not find attribute config for model ' + model.title)
+        debug('Can not find attribute config for model ' + model.title)
       }
     }
-    let sqlString = `CREATE OR REPLACE VIEW ${ns}.solr_data AS \n${selects.join('\nUNION\n')};`
-    return sqlString
+
+    return `CREATE OR REPLACE VIEW ${ns}.solr_data AS \n${selects.join('\nUNION\n')};`
   }
 
-  createView (sql, cb) {
+  executeSQL (sql, cb) {
     this.client.query(sql, [], cb)
   }
 }
