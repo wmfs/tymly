@@ -2,7 +2,6 @@
 const BaseStateType = require('./Base-state')
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 
-
 class Pass extends BaseStateType {
   constructor (stateName, flow, stateDefinition, executions, options) {
     super(stateName, flow, stateDefinition, executions, options)

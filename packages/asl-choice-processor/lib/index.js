@@ -5,7 +5,6 @@ const getTopLevelChoices = require('./get-top-level-choices')
 const _ = require('lodash')
 
 module.exports = function (definition) {
-
   const choices = getTopLevelChoices(definition.Choices)
 
   return function calculateNextState (values) {

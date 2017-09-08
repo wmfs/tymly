@@ -22,7 +22,8 @@
     "static-eval": "^1.1.1",
     "underscore-query": "^3.3.2",
     "upath": "^1.0.0",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "statebox": "0.0.1"
   },
   "devDependencies": {
     "chai": "^4.1.0",
