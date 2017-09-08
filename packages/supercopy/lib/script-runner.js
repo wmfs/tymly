@@ -20,7 +20,6 @@ module.exports = function scriptRunner (statements, client, options, callback) {
           copyFrom(newStatement)
         )
         const fileStream = fs.createReadStream(filename)
-        fileStream.on('error', cb)
         fileStream.pipe(stream).on('finish', cb).on('error', cb)
       } else {
         debug(`Running: ${statement}`)
