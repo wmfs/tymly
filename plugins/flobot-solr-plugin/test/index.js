@@ -12,6 +12,11 @@ const studentsAndStaff = require('./fixtures/test-models/students-and-staff.json
 
 describe('flobot-solr-plugin tests', function () {
   const ns = 'solr_plugin_test'
+  const solrFieldDefaults = [
+    ['id', ''],
+    ['actorName', ''],
+    ['characterName', '']
+  ]
 
   let solrService
   let client
@@ -49,17 +54,13 @@ describe('flobot-solr-plugin tests', function () {
         'characterName': '@characterName'
       }
     }
-    const solrFieldDefaults = [
-      ['id', ''],
-      ['actorName', ''],
-      ['characterName', '']
-    ]
 
     const select = solrService.buildSelectStatement(ns, students, studentsMappings, solrFieldDefaults)
     debug(select)
 
     expect(select).to.be.a('string')
-    expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, character_name AS character_name FROM solr_plugin_test.students')
+    expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+      'character_name AS character_name FROM solr_plugin_test.students')
   })
 
   it('should generate a SQL CREATE VIEW statement', () => {
@@ -81,20 +82,18 @@ describe('flobot-solr-plugin tests', function () {
         }
       }
     ]
-    const solrFieldDefaults = [
-      ['id', ''],
-      ['actorName', ''],
-      ['characterName', '']
-    ]
 
-    const sqlString = solrService.buildCreateViewStatement(ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
+    const sqlString = solrService.buildCreateViewStatement(
+      ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
     debug(sqlString)
 
     expect(sqlString).to.be.a('string')
     expect(sqlString).to.eql('CREATE OR REPLACE VIEW solr_plugin_test.solr_data AS \n' +
-      'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, character_name AS character_name FROM solr_plugin_test.students\n' +
+      'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+        'character_name AS character_name FROM solr_plugin_test.students\n' +
       'UNION\n' +
-      'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
+      'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+        'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
   })
 
   it('should create test resources', function (done) {
@@ -127,13 +126,9 @@ describe('flobot-solr-plugin tests', function () {
         }
       }
     ]
-    const solrFieldDefaults = [
-      ['id', ''],
-      ['actorName', ''],
-      ['characterName', '']
-    ]
 
-    const createViewStatement = solrService.buildCreateViewStatement(ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
+    const createViewStatement = solrService.buildCreateViewStatement(
+      ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
 
     solrService.executeSQL(createViewStatement, function (err) {
       expect(err).to.eql(null)
@@ -141,15 +136,18 @@ describe('flobot-solr-plugin tests', function () {
     })
   })
 
-  it('should return 19 rows when selecting from the view', function (done) {
-    solrService.executeSQL('SELECT * FROM solr_plugin_test.solr_data ORDER BY character_name ASC;', function (err, result) {
-      expect(err).to.eql(null)
-      expect(result.rowCount).to.eql(19)
-      expect(result.rows[0].id).to.eql('staff#1')
-      expect(result.rows[18].id).to.eql('staff#3')
-      // debug(result)
-      done()
-    })
+  it('should return 19 rows when selecting from the view', (done) => {
+    solrService.executeSQL(
+      'SELECT * FROM solr_plugin_test.solr_data ORDER BY character_name ASC;',
+      function (err, result) {
+        expect(err).to.eql(null)
+        expect(result.rowCount).to.eql(19)
+        expect(result.rows[0].id).to.eql('staff#1')
+        expect(result.rows[18].id).to.eql('staff#3')
+        // debug(result)
+        done()
+      }
+    )
   })
 
   it('should cleanup test resources', (done) => {
