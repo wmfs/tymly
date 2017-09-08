@@ -9,7 +9,6 @@ const testModel = require('./fixtures/test-model.json')
 const testModels = require('./fixtures/test-models.json')
 
 describe('Simple solr tests', function () {
-
   let solrService
   let client
 
@@ -111,5 +110,4 @@ describe('Simple solr tests', function () {
       done()
     })
   })
-
 })

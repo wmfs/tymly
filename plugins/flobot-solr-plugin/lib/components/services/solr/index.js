@@ -50,7 +50,7 @@ class SolrService {
   }
 
   createView (sql, cb) {
-    client.query(sql, [], cb)
+    this.client.query(sql, [], cb)
   }
 }
 
