@@ -26,8 +26,27 @@ class SolrService {
     )
 
     let sql = `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
-    console.log(sql)
+   // console.log(sql)
     return sql
+  }
+
+  buildViewSql (ns, models, attributes, solrFieldDefault) {
+    let selects = []
+    for (let model of models) {
+      let currentAttribute = null
+      for (let attribute of attributes) {
+        if (attribute.modelId === model.title) {
+          currentAttribute = attribute
+          break
+        }
+      }
+      if (currentAttribute != null) {
+        selects.push(this.generateSelect(ns, model, currentAttribute, solrFieldDefault))
+      } else {
+        console.log('Can not find attribute config for model ' + model.title)
+      }
+    }
+    return selects
   }
 }
 

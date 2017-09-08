@@ -1,0 +1,62 @@
+[
+  {
+    "title": "myAddress",
+    "description": "...",
+    "primaryKey": [
+      "uprn"
+    ],
+    "type": "object",
+    "properties": {
+      "uprn": {
+        "type": "integer",
+        "maxLength": 12,
+        "description": "..."
+      },
+      "streetName": {
+        "type": "string",
+        "maxLength": 128,
+        "description": "..."
+      },
+      "postCode": {
+        "type": "string",
+        "maxLength": 10,
+        "description": "..."
+      },
+      "password": {
+        "type": "string",
+        "maxLength": 32,
+        "description": "..."
+      }
+    }
+  },
+  {
+    "title": "myAddress2",
+    "description": "...",
+    "primaryKey": [
+      "uprn2"
+    ],
+    "type": "object",
+    "properties": {
+      "uprn2": {
+        "type": "integer",
+        "maxLength": 12,
+        "description": "..."
+      },
+      "streetName2": {
+        "type": "string",
+        "maxLength": 128,
+        "description": "..."
+      },
+      "postCode2": {
+        "type": "string",
+        "maxLength": 10,
+        "description": "..."
+      },
+      "password2": {
+        "type": "string",
+        "maxLength": 32,
+        "description": "..."
+      }
+    }
+  }
+]
