@@ -83,7 +83,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should fail supercopy-if some bad people files', function (done) {
+  it('Should fail supercopy-if some bad-people files', function (done) {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/examples/people-with-an-error'),

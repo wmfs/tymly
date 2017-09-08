@@ -2,14 +2,14 @@ const async = require('async')
 const debug = require('debug')('supercopy')
 const fs = require('fs')
 const copyFrom = require('pg-copy-streams').from
-
+const _ = require('lodash')
 module.exports = function scriptRunner (statements, client, options, callback) {
   let i = -1
   async.eachSeries(
     statements,
     function (statement, cb) {
+      const onceCb = _.once(cb)
       i++
-
       if (statement.startsWith('COPY ')) {
         const components = statement.match(/COPY (.*?) FROM '([^']*)'/)
         const tableAndCols = components[1]
@@ -20,13 +20,14 @@ module.exports = function scriptRunner (statements, client, options, callback) {
           copyFrom(newStatement)
         )
         const fileStream = fs.createReadStream(filename)
-        fileStream.pipe(stream).on('finish', cb).on('error', cb)
+        fileStream.on('error', onceCb)
+        fileStream.pipe(stream).on('finish', onceCb).on('error', onceCb)
       } else {
         debug(`Running: ${statement}`)
         client.query(
           statement,
           [],
-          cb
+          onceCb
         )
       }
     },
