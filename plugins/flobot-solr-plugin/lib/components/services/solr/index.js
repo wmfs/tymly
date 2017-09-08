@@ -1,11 +1,10 @@
 'use strict'
 
 const _ = require('lodash')
-let client = null
 
 class SolrService {
   boot (options, callback) {
-    client = options.bootedServices.storage.client
+    this.client = options.bootedServices.storage.client
     callback(null)
   }
 
@@ -46,7 +45,7 @@ class SolrService {
         console.log('Can not find attribute config for model ' + model.title)
       }
     }
-    let sqlString = `CREATE OR REPLACE VIEW ${ns}.solr_data AS ${selects.join(' UNION ')};`
+    let sqlString = `CREATE OR REPLACE VIEW ${ns}.solr_data AS \n${selects.join('\nUNION\n')};`
     return sqlString
   }
 
