@@ -75,11 +75,10 @@ describe('Simple solr tests', function () {
       ['passwordHash', '']
     ]
 
-    const selects = plugin.buildViewSql(ns, testModels, attributes, solrFieldDefaults)
-    assert.lengthOf(selects, 2)
-    for (let select of selects) {
-      console.log(select)
-    }
+    const sqlString = plugin.buildViewSql(ns, testModels, attributes, solrFieldDefaults)
+
+    expect(sqlString).to.be.a('string')
+    expect(sqlString).to.eql('CREATE OR REPLACE VIEW mySchema.solr_data AS SELECT streetName AS address, PG_HASH(password, \'SALT\') AS passwordHash FROM my_schema.my_address UNION SELECT streetName2 AS address, PG_HASH(password2, \'SALT\') AS passwordHash FROM my_schema.my_address_2;')
   })
 
 })

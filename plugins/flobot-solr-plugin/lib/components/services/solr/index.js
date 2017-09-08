@@ -26,7 +26,7 @@ class SolrService {
     )
 
     let sql = `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
-   // console.log(sql)
+    // console.log(sql)
     return sql
   }
 
@@ -46,7 +46,8 @@ class SolrService {
         console.log('Can not find attribute config for model ' + model.title)
       }
     }
-    return selects
+    let sqlString = `CREATE OR REPLACE VIEW ${ns}.solr_data AS ${selects.join(' UNION ')};`
+    return sqlString
   }
 }
 
