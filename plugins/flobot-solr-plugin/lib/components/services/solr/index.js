@@ -1,11 +1,11 @@
 'use strict'
 
 const _ = require('lodash')
+let client = null
 
 class SolrService {
   boot (options, callback) {
-    console.log('Solr Service says Hello World!')
-    console.log(options)
+    client = options.bootedServices.storage.client
     callback(null)
   }
 
@@ -49,9 +49,14 @@ class SolrService {
     let sqlString = `CREATE OR REPLACE VIEW ${ns}.solr_data AS ${selects.join(' UNION ')};`
     return sqlString
   }
+
+  createView (sql, cb) {
+    client.query(sql, [], cb)
+  }
 }
 
 module.exports = {
   serviceClass: SolrService,
+  bootAfter: ['storage'],
   bootBefore: ['flobots']
 }
