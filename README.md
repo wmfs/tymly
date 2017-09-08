@@ -18,7 +18,7 @@ $ lerna bootstrap
 
 ## <a name="running"></a>Running
 
-* Please see the [flobot-runner](https://github.com/wmfs/tymly/packages/flobot-runner) package for details about configuring and starting a [FlobotJS](http://www.flobotjs.io) server.
+* Please see the [flobot-runner](https://github.com/wmfs/tymly/tree/master/packages/flobot-runner) package for details about configuring and starting a [FlobotJS](http://www.flobotjs.io) server.
 
 ## <a name="documentation"></a>Documentation
 

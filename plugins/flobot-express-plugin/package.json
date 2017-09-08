@@ -13,7 +13,6 @@
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.4.1",
-    "lodash": "^4.17.4",
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
@@ -22,7 +21,8 @@
     "mocha": "^3.5.0",
     "restler": "^3.4.0",
     "safe-buffer": "^5.1.1",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "flobot-forms-plugin": "0.0.5"
   },
   "scripts": {
     "lint": "standard",
