@@ -1,3 +1,17 @@
-language: node_js
+anguage: node_js
+
 node_js:
   - "8"
+
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+sudo: false
+dist: trusty
+
+env:
+  global:
+    - PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432
