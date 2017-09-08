@@ -1,4 +1,4 @@
-anguage: node_js
+language: node_js
 
 node_js:
   - "8"
@@ -11,6 +11,9 @@ addons:
 
 sudo: false
 dist: trusty
+
+before_script:
+  - lerna bootstrap
 
 env:
   global:
