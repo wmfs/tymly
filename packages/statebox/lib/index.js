@@ -9,7 +9,7 @@
 const _ = require('lodash')
 const Executions = require('./Executions')
 const flows = require('./flows')
-
+const async = require('async')
 const resources = require('./resources')
 const getExecutionDescription = require('./utils/get-execution-description')
 const ensureDatabaseObjects = require('./utils/ensure-database-objects')
@@ -90,6 +90,37 @@ class Statebox {
 
   describeExecution (executionName, callback) {
     getExecutionDescription.findByName(executionName, callback)
+  }
+
+  waitUntilExecutionStatus (executionName, expectedStatus, callback) {
+    // TODO: Back-offs, timeouts etc.
+    const _this = this
+    let executionDescription = {}
+    async.doUntil(
+      function (cb) {
+        _this.describeExecution(
+          executionName,
+          function (err, latestExecutionDescription) {
+            if (err) {
+              cb(err)
+            } else {
+              executionDescription = latestExecutionDescription
+              cb(null, latestExecutionDescription)
+            }
+          }
+        )
+      },
+      function () {
+        return executionDescription.status === expectedStatus
+      },
+      function (err, finalExecutionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, finalExecutionDescription)
+        }
+      }
+    )
   }
 }
 

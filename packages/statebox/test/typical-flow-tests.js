@@ -31,8 +31,6 @@ const failFlow = require('./fixtures/flows/fail-flow.json')
 const parallelFlow = require('./fixtures/flows/parallel-flow.json')
 const parallelFailFlow = require('./fixtures/flows/parallel-fail-flow.json')
 
-const waitUntilExecutionStatus = require('./utils/wait-until-execution-status')
-
 const Statebox = require('./../lib')
 
 describe('Simple flow test', function () {
@@ -122,10 +120,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete helloWorld execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -149,10 +146,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete helloThenWorld execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -180,10 +176,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -212,10 +207,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -257,10 +251,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator (with input paths) execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -298,10 +291,9 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete passFlow execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -345,10 +337,9 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a failed execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'FAILED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
@@ -408,10 +399,9 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a successful parallel execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'SUCCEEDED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -448,10 +438,9 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a failed parallel execution', function (done) {
-    waitUntilExecutionStatus(
+    statebox.waitUntilExecutionStatus(
       executionName,
       'FAILED',
-      statebox,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
