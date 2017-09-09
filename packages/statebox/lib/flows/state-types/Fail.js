@@ -3,8 +3,8 @@ const BaseStateType = require('./Base-state')
 const debugPackage = require('debug')('statebox')
 
 class Fail extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, executions, options) {
-    super(stateName, flow, stateDefinition, executions, options)
+  constructor (stateName, flow, stateDefinition, options) {
+    super(stateName, flow, stateDefinition, options)
     this.stateType = 'Fail'
     this.cause = stateDefinition.Cause
     this.error = stateDefinition.Error

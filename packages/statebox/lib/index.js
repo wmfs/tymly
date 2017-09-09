@@ -6,21 +6,19 @@
 //   https://aws.amazon.com/step-functions/
 //   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workflows/
 
-const _ = require('lodash')
-const Executions = require('./Executions')
+const executioner = require('./executioner')
 const flows = require('./flows')
 const async = require('async')
 const resources = require('./resources')
-const getExecutionDescription = require('./utils/get-execution-description')
-const ensureDatabaseObjects = require('./utils/ensure-database-objects')
+const MemoryDao = require('./Memory-dao')
 
 class Statebox {
-  boot (options, callback) {
-    this.client = options.client
-    this.options = _.defaults(options, {schemaName: 'statebox'})
-    this.executions = new Executions(this.options)
-    getExecutionDescription.applyOptions(this.options)
-    ensureDatabaseObjects(this.options, callback)
+  constructor (options) {
+    this.options = options || {}
+    if (!this.options.hasOwnProperty('dao')) {
+      this.options.dao = new MemoryDao(options)
+    }
+    this.options.executioner = executioner
   }
 
   createModuleResource (name, functionClass) {
@@ -35,7 +33,6 @@ class Statebox {
     flows.createFlow(
       name,
       definition,
-      this.executions,
       this.options,
       callback)
   }
@@ -76,8 +73,8 @@ class Statebox {
 
   }
 
-  startExecution (input, flowName, callback) {
-    this.executions.start(input, flowName, null, null, callback)
+  startExecution (input, flowName, executionOptions, callback) {
+    executioner(input, flowName, executionOptions, this.options, callback)
   }
 
   stopExecution (cause, error, executionName, callback) {
@@ -89,13 +86,12 @@ class Statebox {
   }
 
   describeExecution (executionName, callback) {
-    getExecutionDescription.findByName(executionName, callback)
+    this.options.dao.findExecutionByName(executionName, callback)
   }
 
   waitUntilExecutionStatus (executionName, expectedStatus, callback) {
     // TODO: Back-offs, timeouts etc.
     const _this = this
-    let executionDescription = {}
     async.doUntil(
       function (cb) {
         _this.describeExecution(
@@ -104,14 +100,18 @@ class Statebox {
             if (err) {
               cb(err)
             } else {
-              executionDescription = latestExecutionDescription
-              cb(null, latestExecutionDescription)
+              setTimeout(
+                function () {
+                  cb(null, latestExecutionDescription)
+                },
+                50
+              )
             }
           }
         )
       },
-      function () {
-        return executionDescription.status === expectedStatus
+      function (latestExecutionDescription) {
+        return latestExecutionDescription.status === expectedStatus
       },
       function (err, finalExecutionDescription) {
         if (err) {

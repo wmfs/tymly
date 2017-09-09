@@ -16,7 +16,7 @@ module.exports.validateFlowDefinition = function validateFlowDefinition (definit
   callback(null)
 }
 
-module.exports.createFlow = function createFlow (flowName, definition, executions, options, callback) {
+module.exports.createFlow = function createFlow (flowName, definition, options, callback) {
   function parseFlows (topLevel, root) {
     if (_.isArray(root)) {
       root.forEach(
@@ -53,7 +53,7 @@ module.exports.createFlow = function createFlow (flowName, definition, execution
         _.forOwn(
           parsedFlows,
           function (branchDefinition, branchPath) {
-            flows[branchPath] = new Flow(branchPath, branchDefinition, executions, options)
+            flows[branchPath] = new Flow(branchPath, branchDefinition, options)
           }
         )
         callback(null)

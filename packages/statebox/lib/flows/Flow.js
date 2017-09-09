@@ -2,23 +2,23 @@
 const debug = require('debug')('statebox')
 const stateTypes = require('./state-types')
 const _ = require('lodash')
-const getExecutionDescription = require('./../utils/get-execution-description')
 const boom = require('boom')
 
 class Flow {
-  constructor (flowName, definition, executions, options) {
+  constructor (flowName, definition, options) {
     const _this = this
     this.name = flowName
     this.definition = definition
     this.startAt = definition.StartAt
     this.states = {}
+    this.options = options
     debug(`Creating '${flowName}' flow (${definition.Comment || 'No flow comment specified'})`)
 
     _.forOwn(
       definition.States,
       function (stateDefinition, stateName) {
         const State = stateTypes[stateDefinition.Type]
-        _this.states[stateName] = new State(stateName, _this, stateDefinition, executions, options)
+        _this.states[stateName] = new State(stateName, _this, stateDefinition, options)
       }
     )
   }
@@ -32,7 +32,7 @@ class Flow {
 
   processState (executionName) {
     const _this = this
-    getExecutionDescription.findByName(
+    this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
         if (err) {

@@ -1,11 +1,8 @@
 /* eslint-env mocha */
 'use strict'
 
-const process = require('process')
-const pg = require('pg')
 const chai = require('chai')
 const expect = chai.expect
-const TEST_DB_SCHEMA_NAME = 'statebox_test'
 
 // Functions
 const helloWorldFunction = require('./fixtures/functions/hello-world')
@@ -35,28 +32,11 @@ const Statebox = require('./../lib')
 
 describe('Simple flow test', function () {
   this.timeout(5000)
-  let client
   let statebox
   let executionName
 
-  it('Should create a new pg client', function () {
-    const pgConnectionString = process.env.PG_CONNECTION_STRING
-    client = new pg.Client(pgConnectionString)
-    client.connect()
-  })
-
-  it('should boot Statebox', function (done) {
+  it('should create a new Statebox instance', function () {
     statebox = new Statebox()
-    statebox.boot(
-      {
-        schemaName: TEST_DB_SCHEMA_NAME,
-        client: client
-      },
-      function (err) {
-        expect(err).to.eql(null)
-        done()
-      }
-    )
   })
 
   it('should add some modules', function () {
@@ -111,6 +91,7 @@ describe('Simple flow test', function () {
     statebox.startExecution(
       {},  // input
       'helloWorld', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -137,6 +118,7 @@ describe('Simple flow test', function () {
     statebox.startExecution(
       {},  // input
       'helloThenWorld', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -167,6 +149,7 @@ describe('Simple flow test', function () {
         number2: 2
       },  // input
       'calculator', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -184,7 +167,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Add')
-        expect(executionDescription.input.result).to.eql(5)
+        expect(executionDescription.ctx.result).to.eql(5)
         done()
       }
     )
@@ -198,6 +181,7 @@ describe('Simple flow test', function () {
         number2: 2
       },  // input
       'calculator', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -215,7 +199,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Subtract')
-        expect(executionDescription.input.result).to.eql(1)
+        expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
     )
@@ -242,6 +226,7 @@ describe('Simple flow test', function () {
         operator: '-'
       },  // input
       'calculatorWithInputPathsFlow', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -259,7 +244,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('calculatorWithInputPathsFlow')
         expect(executionDescription.currentStateName).to.eql('Subtract')
-        expect(executionDescription.input.result).to.eql(1)
+        expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
     )
@@ -282,6 +267,7 @@ describe('Simple flow test', function () {
         georefOf: 'Home'
       },
       'passFlow', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -299,7 +285,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.flowName).to.eql('passFlow')
         expect(executionDescription.currentStateName).to.eql('PassState')
-        expect(executionDescription.input).to.eql(
+        expect(executionDescription.ctx).to.eql(
           {
             georefOf: 'Home',
             coords: {
@@ -328,6 +314,7 @@ describe('Simple flow test', function () {
     statebox.startExecution(
       {},
       'failFlow', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -345,7 +332,7 @@ describe('Simple flow test', function () {
         expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.flowName).to.eql('failFlow')
         expect(executionDescription.currentStateName).to.eql('FailState')
-        expect(executionDescription.errorCause).to.eql('Invalid response.')
+        expect(executionDescription.errorMessage).to.eql('Invalid response.')
         expect(executionDescription.errorCode).to.eql('ErrorA')
         done()
       }
@@ -390,6 +377,7 @@ describe('Simple flow test', function () {
         results: []
       },
       'parallelFlow', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -429,6 +417,7 @@ describe('Simple flow test', function () {
         results: []
       },
       'parallelFailFlow', // flowName
+      {}, // options
       function (err, result) {
         expect(err).to.eql(null)
         executionName = result.executionName
@@ -451,9 +440,5 @@ describe('Simple flow test', function () {
         done()
       }
     )
-  })
-
-  it('Should end db client', function () {
-    client.end()
   })
 })
