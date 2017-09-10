@@ -8,10 +8,6 @@ This here is a [monorepo](https://danluu.com/monorepo/). Each of the [packages](
 
 * __Ordinarily you should refer to each package's specific installation instructions.__
 
-### Git
-
-If you intend to develop any of Tymly's components then you'll need to `git clone` this repository, and for that you'll need __[Git](https://git-scm.com/downloads)__ installed. 
-
 ### Node.js
 
 Tymly is constructed from a collection of __[Node.js](https://nodejs.org/en/)__ packages. To use any of them you'll need to have  Node __Version 8.4.0__ (or above) installed. 
