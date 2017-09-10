@@ -4,7 +4,7 @@
 _An open source low-code platform that's built for collaboration_
 
 ## <a name="environment-variables"></a>Environment
-As discussed in the [installThis-here is a [monorepo](https://danluu.com/monorepo/). Each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
+This here is a [monorepo](https://danluu.com/monorepo/). Each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
 
 * __Ordinarily you should refer to each package's specific installation instructions.__
 
