@@ -4,9 +4,9 @@
 _An open source low-code platform that's built for collaboration_
 
 ## <a name="environment-variables"></a>Environment
-As discussed in the [installation section](#installing) below, this-here is a [monorepo](https://danluu.com/monorepo/). Each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
+As discussed in the [installThis-here is a [monorepo](https://danluu.com/monorepo/). Each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
 
-* Ordinarily you should refer to each package's specific installation instructions.
+* __Ordinarily you should refer to each package's specific installation instructions.__
 
 ### Git
 
@@ -18,7 +18,7 @@ Tymly is constructed from a collection of __[Node.js](https://nodejs.org/en/)__ 
 
 ### Lerna
 
-We use the __[Lerna](https://lernajs.io/)__ multi-repository tool for managing Tymly's many constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all of Tymly's dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
+We use the __[Lerna](https://lernajs.io/)__ multi-repository tool for managing Tymly's constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
 
 ```bash
 $ npm install --global lerna
