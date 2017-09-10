@@ -18,7 +18,7 @@ Tymly is constructed from a collection of [Node.js](https://nodejs.org/en/) pack
 
 ### Lerna
 
-This is a [Lerna](https://lernajs.io/) multi-repository containing Tymly's many constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all of Tymly's dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
+We use the [Lerna](https://lernajs.io/) multi-repository tool for managing Tymly's many constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all of Tymly's dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
 
 ```bash
 $ npm install --global lerna
