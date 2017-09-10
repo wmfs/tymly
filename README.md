@@ -36,7 +36,7 @@ To do anything beyond "Hello world!" you'll need to have access to PostgreSQL __
 PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432/my_test_db
 ```
 
-Also, Tymly will require any database it uses to be capable of generating universally unique identifiers - this is easily achieved by running the following PostgreSQL statement on the appropriate database:
+Also, Tymly will require any database it uses to be capable of generating universally unique identifiers - this is easily achieved by running the following statement on the receiving database:
 
 ```
 CREATE EXTENSION uuid-ossp;
