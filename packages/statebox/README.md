@@ -21,7 +21,7 @@ const statebox = new Statebox()
 
 // STEP 1:
 // Register some 'module' resources (i.e. Javascript 
-// functions) that state machines can then refer use
+// functions) that state machines can refer to...
 // -------------------------------------------------
 
 statebox.createModuleResource(
