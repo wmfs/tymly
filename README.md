@@ -1,28 +1,24 @@
 
 # Tymly [![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-_An open source low-code platform built for collaboration_
+_An open source low-code platform that's built for collaboration_
 
-## <a name="environment-variables"></a>Environment 
+## <a name="environment-variables"></a>Environment
+As discussed in the [installation section](#installing) below, this-here is a [monorepo](https://danluu.com/monorepo/). As such, each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) inside this repository are independently published on [NPM](https://www.npmjs.com/)
 
-Please ensure the following components are installed before attempting to use Tymly...
+* Ordinarily you should refer to each package's specific installation instructions.
 
 ### Git
 
-As discussed in the [installing section](#installing) below, this a [monorepo](https://danluu.com/monorepo/). As such, each of the packages inside this repository are independently published on [NPM](https://www.npmjs.com/)
-. Ordinarily you should refer to each package's specific installation instructions.
-
-* However, if you intend to develop Tymly itself, then you'll need to `git clone` this repository and for that you'll need [Git](https://git-scm.com/downloads) installed. 
+However, if you intend to develop any of Tymly's components then you'll need to `git clone` this repository, and for that you'll need [Git](https://git-scm.com/downloads) installed. 
 
 ### Node.js
 
-Tymly is constructed from a collection of [Node.js](https://nodejs.org/en/) packages.
-Please ensure you have installed Node __Version 8.4.0__ or above. 
+Tymly is constructed from a collection of [Node.js](https://nodejs.org/en/) packages. To use any of them you'll need to have  Node __Version 8.4.0__ (or above) installed. 
 
 ### Lerna
 
-Note this is a [Lerna](https://lernajs.io/) multi-repository containing Tymly's many constituent [Node.js](https://nodejs.org/en/) packages.
-To quickly install the dependencies of each Tymly package (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
+This is a [Lerna](https://lernajs.io/) multi-repository containing Tymly's many constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all of Tymly's dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
 
 ```bash
 $ npm install --global lerna
@@ -30,9 +26,8 @@ $ npm install --global lerna
 
 ### PostgreSQL
 
-Tymly uses [PostgreSQL](https://www.postgresql.org/about/) for all of its database needs. 
-You'll need to have access to PostgreSQL __Version 9.6__ or above and have created a database before running Tymly.   
-
+[PostgreSQL](https://www.postgresql.org/about/) is Tymly's database of choice,
+To do anything beyond "Hello world!" you'll need to have access to PostgreSQL __Version 9.6__ (or above) and have created a database before running Tymly.
 
 * Note that Tymly refers to a `PG_CONNECTION_STRING` environment variable when establishing a pool of PostgreSQL connections, for example: 
 
