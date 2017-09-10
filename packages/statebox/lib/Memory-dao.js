@@ -8,14 +8,14 @@ class MemoryDao {
     this.executions = {}
   }
 
-  createNewExecution (startAt, input, flowName, executionOptions, callback) {
+  createNewExecution (startAt, input, stateMachineName, executionOptions, callback) {
     this.uuid++
     const executionName = this.uuid.toString()
     const executionDescription = {
       executionName: executionName,
       ctx: input,
       currentStateName: startAt,
-      flowName: flowName,
+      stateMachineName: stateMachineName,
       status: 'RUNNING',
       parentExecutionName: executionOptions.parentExecutionName,
       rootExecutionName: executionOptions.rootExecutionName,

@@ -2,12 +2,12 @@
 
 // Amazon States Language reference
 //   Specification: https://states-language.net/spec.html
-//   API: http://docs.aws.amazon.com/step-functions/latest/apireference/API_CreateStateMachine.html
+//   API: http://docs.aws.amazon.com/step-functions/latest/apireference/API_CreatestateMachine.html
 //   https://aws.amazon.com/step-functions/
-//   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workflows/
+//   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workstateMachines/
 
 const executioner = require('./executioner')
-const flows = require('./flows')
+const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
@@ -25,56 +25,40 @@ class Statebox {
     resources.createModule(name, functionClass)
   }
 
-  validateFlowDefinition (definition, callback) {
-    flows.validateFlowDefinition(definition, callback)
+  validatStateMachineDefinition (name, definition) {
+    stateMachines.validateStateMachineDefinition(name, definition)
   }
 
-  createFlow (name, definition, callback) {
-    flows.createFlow(
+  createStateMachine (name, definition, callback) {
+    stateMachines.createStateMachine(
       name,
       definition,
       this.options,
       callback)
   }
 
-  deleteFlow (name, callback) {
-    flows.deleteFlow(name, callback)
+  deleteStateMachine (name) {
+    stateMachines.deleteStateMachine(name)
   }
 
-  describeFlow (name, callback) {
-    flows.describeFlow(name, callback)
+  describeStateMachine (name) {
+    stateMachines.describeStateMachine(name)
   }
 
-  listFlows (callback) {
-    flows.listFlows(callback)
+  listStateMachines () {
+    stateMachines.listStateMachines()
   }
 
-  findFlowByName (name) {
-    flows.findFlowByName(name)
+  findStateMachineByName (name) {
+    stateMachines.findStateMachineByName(name)
   }
 
-  findFlows (options, callback) {
-    flows.findFlows(options, callback)
+  findStateMachines (options) {
+    stateMachines.findStateMachines(options)
   }
 
-  createTaskResource (name, definition, callback) {
-
-  }
-
-  deleteTaskResource (name, callback) {
-
-  }
-
-  describeTaskResource (name, callback) {
-
-  }
-
-  listTaskResources (callback) {
-
-  }
-
-  startExecution (input, flowName, executionOptions, callback) {
-    executioner(input, flowName, executionOptions, this.options, callback)
+  startExecution (input, stateMachineName, executionOptions, callback) {
+    executioner(input, stateMachineName, executionOptions, this.options, callback)
   }
 
   stopExecution (cause, error, executionName, callback) {
@@ -89,7 +73,7 @@ class Statebox {
     this.options.dao.findExecutionByName(executionName, callback)
   }
 
-  waitUntilExecutionStatus (executionName, expectedStatus, callback) {
+  waitUntilStoppedRunning (executionName, callback) {
     // TODO: Back-offs, timeouts etc.
     const _this = this
     async.doUntil(
@@ -111,7 +95,7 @@ class Statebox {
         )
       },
       function (latestExecutionDescription) {
-        return latestExecutionDescription.status === expectedStatus
+        return latestExecutionDescription.status !== 'RUNNING'
       },
       function (err, finalExecutionDescription) {
         if (err) {

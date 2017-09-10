@@ -18,19 +18,19 @@ const e = require('./fixtures/functions/e')
 const f = require('./fixtures/functions/f')
 const g = require('./fixtures/functions/g')
 
-// Flows
-const helloWorldFlow = require('./fixtures/flows/hello-world.json')
-const helloThenWorldFlow = require('./fixtures/flows/hello-then-world.json')
-const calculatorFlow = require('./fixtures/flows/calculator.json')
-const calculatorWithInputPathsFlow = require('./fixtures/flows/calculator-with-input-paths.json')
-const passFlow = require('./fixtures/flows/pass-flow.json')
-const failFlow = require('./fixtures/flows/fail-flow.json')
-const parallelFlow = require('./fixtures/flows/parallel-flow.json')
-const parallelFailFlow = require('./fixtures/flows/parallel-fail-flow.json')
+// stateMachines
+const helloWorldStateMachine = require('./fixtures/state-machines/hello-world.json')
+const helloThenWorldStateMachine = require('./fixtures/state-machines/hello-then-world.json')
+const calculatorStateMachine = require('./fixtures/state-machines/calculator.json')
+const calculatorWithInputPathsStateMachine = require('./fixtures/state-machines/calculator-with-input-paths.json')
+const passStateMachine = require('./fixtures/state-machines/pass-state-machine.json')
+const failStateMachine = require('./fixtures/state-machines/fail-state-machine.json')
+const parallelStateMachine = require('./fixtures/state-machines/parallel-state-machine.json')
+const parallelFailStateMachine = require('./fixtures/state-machines/parallel-fail-state-machine.json')
 
 const Statebox = require('./../lib')
 
-describe('Simple flow test', function () {
+describe('Simple stateMachine test', function () {
   this.timeout(5000)
   let statebox
   let executionName
@@ -54,43 +54,31 @@ describe('Simple flow test', function () {
     statebox.createModuleResource('g', g)
   })
 
-  it('should create a new helloWorld flow', function (done) {
-    statebox.createFlow(
+  it('should create a new helloWorld stateMachine', function () {
+    statebox.createStateMachine(
       'helloWorld',
-      helloWorldFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+      helloWorldStateMachine
     )
   })
 
-  it('should create a new helloThenWorld flow', function (done) {
-    statebox.createFlow(
+  it('should create a new helloThenWorld stateMachine', function () {
+    statebox.createStateMachine(
       'helloThenWorld',
-      helloThenWorldFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+      helloThenWorldStateMachine
     )
   })
 
-  it('should create a new calculator flow', function (done) {
-    statebox.createFlow(
+  it('should create a new calculator stateMachine', function () {
+    statebox.createStateMachine(
       'calculator',
-      calculatorFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+      calculatorStateMachine
     )
   })
 
   it('should execute helloWorld', function (done) {
     statebox.startExecution(
       {},  // input
-      'helloWorld', // flowName
+      'helloWorld', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -101,13 +89,12 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete helloWorld execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('helloWorld')
+        expect(executionDescription.stateMachineName).to.eql('helloWorld')
         expect(executionDescription.currentStateName).to.eql('Hello World')
         done()
       }
@@ -117,7 +104,7 @@ describe('Simple flow test', function () {
   it('should execute helloThenWorld', function (done) {
     statebox.startExecution(
       {},  // input
-      'helloThenWorld', // flowName
+      'helloThenWorld', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -128,13 +115,12 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete helloThenWorld execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('helloThenWorld')
+        expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
         expect(executionDescription.currentStateName).to.eql('World')
         done()
       }
@@ -148,7 +134,7 @@ describe('Simple flow test', function () {
         operator: '+',
         number2: 2
       },  // input
-      'calculator', // flowName
+      'calculator', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -159,13 +145,12 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('calculator')
+        expect(executionDescription.stateMachineName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Add')
         expect(executionDescription.ctx.result).to.eql(5)
         done()
@@ -180,7 +165,7 @@ describe('Simple flow test', function () {
         operator: '-',
         number2: 2
       },  // input
-      'calculator', // flowName
+      'calculator', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -191,13 +176,12 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('calculator')
+        expect(executionDescription.stateMachineName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Subtract')
         expect(executionDescription.ctx.result).to.eql(1)
         done()
@@ -205,14 +189,10 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should create a new calculator (with input paths) flow', function (done) {
-    statebox.createFlow(
-      'calculatorWithInputPathsFlow',
-      calculatorWithInputPathsFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+  it('should create a new calculator (with input paths) stateMachine', function () {
+    statebox.createStateMachine(
+      'calculatorWithInputPathsStateMachine',
+      calculatorWithInputPathsStateMachine
     )
   })
 
@@ -225,7 +205,7 @@ describe('Simple flow test', function () {
         },
         operator: '-'
       },  // input
-      'calculatorWithInputPathsFlow', // flowName
+      'calculatorWithInputPathsStateMachine', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -236,13 +216,12 @@ describe('Simple flow test', function () {
   })
 
   it('should successfully complete calculator (with input paths) execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('calculatorWithInputPathsFlow')
+        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPathsStateMachine')
         expect(executionDescription.currentStateName).to.eql('Subtract')
         expect(executionDescription.ctx.result).to.eql(1)
         done()
@@ -250,23 +229,33 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should create a new pass flow ', function (done) {
-    statebox.createFlow(
-      'passFlow',
-      passFlow,
-      function (err, info) {
+  it('should prove describeExecution works as expected', function (done) {
+    statebox.describeExecution(
+      executionName,
+      function (err, executionDescription) {
         expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPathsStateMachine')
+        expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
     )
   })
 
-  it('should execute pass flow', function (done) {
+  it('should create a new pass stateMachine ', function () {
+    statebox.createStateMachine(
+      'passStateMachine',
+      passStateMachine
+    )
+  })
+
+  it('should execute pass stateMachine', function (done) {
     statebox.startExecution(
       {
         georefOf: 'Home'
       },
-      'passFlow', // flowName
+      'passStateMachine', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -276,14 +265,13 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should successfully complete passFlow execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+  it('should successfully complete passStateMachine execution', function (done) {
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('passFlow')
+        expect(executionDescription.stateMachineName).to.eql('passStateMachine')
         expect(executionDescription.currentStateName).to.eql('PassState')
         expect(executionDescription.ctx).to.eql(
           {
@@ -299,21 +287,17 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should create a new fail flow ', function (done) {
-    statebox.createFlow(
-      'failFlow',
-      failFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+  it('should create a new fail stateMachine ', function () {
+    statebox.createStateMachine(
+      'failStateMachine',
+      failStateMachine
     )
   })
 
-  it('should execute fail flow', function (done) {
+  it('should execute fail stateMachine', function (done) {
     statebox.startExecution(
       {},
-      'failFlow', // flowName
+      'failStateMachine', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -324,13 +308,12 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a failed execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'FAILED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.flowName).to.eql('failFlow')
+        expect(executionDescription.stateMachineName).to.eql('failStateMachine')
         expect(executionDescription.currentStateName).to.eql('FailState')
         expect(executionDescription.errorMessage).to.eql('Invalid response.')
         expect(executionDescription.errorCode).to.eql('ErrorA')
@@ -339,7 +322,7 @@ describe('Simple flow test', function () {
     )
   })
 
-  it('should create a new parallel flow ', function (done) {
+  it('should create a new parallel stateMachine ', function () {
     //
     //                        |
     //                    Parallel1
@@ -361,22 +344,18 @@ describe('Simple flow test', function () {
     //                       G
     // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
 
-    statebox.createFlow(
-      'parallelFlow',
-      parallelFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+    statebox.createStateMachine(
+      'parallelStateMachine',
+      parallelStateMachine
     )
   })
 
-  it('should execute parallel flow', function (done) {
+  it('should execute parallel stateMachine', function (done) {
     statebox.startExecution(
       {
         results: []
       },
-      'parallelFlow', // flowName
+      'parallelStateMachine', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -387,36 +366,31 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a successful parallel execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'SUCCEEDED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.flowName).to.eql('parallelFlow')
+        expect(executionDescription.stateMachineName).to.eql('parallelStateMachine')
         expect(executionDescription.currentStateName).to.eql('G')
         done()
       }
     )
   })
 
-  it('should create a new parallel-failing flow', function (done) {
-    statebox.createFlow(
-      'parallelFailFlow',
-      parallelFailFlow,
-      function (err, info) {
-        expect(err).to.eql(null)
-        done()
-      }
+  it('should create a new parallel-failing stateMachine', function () {
+    statebox.createStateMachine(
+      'parallelFailStateMachine',
+      parallelFailStateMachine
     )
   })
 
-  it('should execute parallel-failing flow', function (done) {
+  it('should execute parallel-failing stateMachine', function (done) {
     statebox.startExecution(
       {
         results: []
       },
-      'parallelFailFlow', // flowName
+      'parallelFailStateMachine', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -427,13 +401,12 @@ describe('Simple flow test', function () {
   })
 
   it('should respond with a failed parallel execution', function (done) {
-    statebox.waitUntilExecutionStatus(
+    statebox.waitUntilStoppedRunning(
       executionName,
-      'FAILED',
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.flowName).to.eql('parallelFailFlow')
+        expect(executionDescription.stateMachineName).to.eql('parallelFailStateMachine')
         expect(executionDescription.currentStateName).to.eql('Parallel1')
         expect(executionDescription.errorCause).to.eql('States.BranchFailed')
         expect(executionDescription.errorCode).to.eql('Failed because a state in a parallel branch has failed')

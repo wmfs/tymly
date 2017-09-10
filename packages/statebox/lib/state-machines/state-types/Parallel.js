@@ -4,16 +4,16 @@ const BaseStateType = require('./Base-state')
 const async = require('async')
 
 class Parallel extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, stateMachine, stateDefinition, options) {
+    super(stateName, stateMachine, stateDefinition, options)
     const _this = this
     this.stateType = 'Parallel'
     this.branches = []
     stateDefinition.Branches.forEach(
       function (branchDefinition) {
-        const parts = flow.name.split(':')
-        const flowName = parts[0] + ':' + branchDefinition.StartAt
-        _this.branches.push(flowName)
+        const parts = stateMachine.name.split(':')
+        const stateMachineName = parts[0] + ':' + branchDefinition.StartAt
+        _this.branches.push(stateMachineName)
       }
     )
     this.debug()
@@ -24,10 +24,10 @@ class Parallel extends BaseStateType {
     const rootExecutionName = executionDescription.rootExecutionName || executionDescription.executionName
     async.each(
       this.branches,
-      function (flowName, cb) {
+      function (stateMachineName, cb) {
         _this.options.executioner(
           _.cloneDeep(executionDescription.ctx),
-          flowName,
+          stateMachineName,
           {
             parentExecutionName: executionDescription.executionName,
             rootExecutionName: rootExecutionName

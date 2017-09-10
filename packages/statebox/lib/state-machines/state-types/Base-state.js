@@ -1,20 +1,20 @@
 'use strict'
 const debugPackage = require('debug')('statebox')
-const flows = require('./../../flows')
+const stateMachines = require('./../../state-machines')
 const _ = require('lodash')
 const dottie = require('dottie')
 
 class BaseState {
-  constructor (stateName, flow, stateDefinition, options) {
+  constructor (stateName, stateMachine, stateDefinition, options) {
     this.name = stateName
-    this.flow = flow
-    this.flowName = flow.name
+    this.stateMachine = stateMachine
+    this.stateMachineName = stateMachine.name
     this.definition = stateDefinition
     this.options = options
   }
 
   debug () {
-    debugPackage(` - Created '${this.name}' ${this.stateType} within flow '${this.flow.name}'`)
+    debugPackage(` - Created '${this.name}' ${this.stateType} within stateMachine '${this.stateMachine.name}'`)
   }
 
   updateCurrentStateName (nextStateName, executionName) {
@@ -27,7 +27,7 @@ class BaseState {
           // TODO: Needs handling as per spec
           throw new Error(err)
         } else {
-          _this.flow.processState(executionName)
+          _this.stateMachine.processState(executionName)
         }
       }
     )
@@ -107,8 +107,8 @@ class BaseState {
               ctx = _.defaults(output, ctx)
             }
           }
-          const flow = flows.findFlowByName(executionDescription.flowName)
-          const stateDefinition = flow.findStateDefinitionByName(executionDescription.currentStateName)
+          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+          const stateDefinition = stateMachine.findStateDefinitionByName(executionDescription.currentStateName)
 
           // END
           if (stateDefinition.End) {
@@ -137,7 +137,7 @@ class BaseState {
                   // TODO: Needs handling as per spec
                   throw new Error(err)
                 } else {
-                  flow.processState(executionName)
+                  stateMachine.processState(executionName)
                 }
               }
             )

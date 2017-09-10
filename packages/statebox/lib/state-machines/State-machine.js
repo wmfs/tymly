@@ -4,15 +4,15 @@ const stateTypes = require('./state-types')
 const _ = require('lodash')
 const boom = require('boom')
 
-class Flow {
-  constructor (flowName, definition, options) {
+class StateMachine {
+  constructor (stateMachineName, definition, options) {
     const _this = this
-    this.name = flowName
+    this.name = stateMachineName
     this.definition = definition
     this.startAt = definition.StartAt
     this.states = {}
     this.options = options
-    debug(`Creating '${flowName}' flow (${definition.Comment || 'No flow comment specified'})`)
+    debug(`Creating '${stateMachineName}' stateMachine (${definition.Comment || 'No stateMachine comment specified'})`)
 
     _.forOwn(
       definition.States,
@@ -42,12 +42,12 @@ class Flow {
           const stateNameToRun = executionDescription.currentStateName
           const stateToRun = _this.states[stateNameToRun]
           if (stateToRun) {
-            debug(`About to process ${stateToRun.stateType} '${stateNameToRun}' in flow '${_this.name}' flow (executionName='${executionName}')`)
+            debug(`About to process ${stateToRun.stateType} '${stateNameToRun}' in stateMachine '${_this.name}' stateMachine (executionName='${executionName}')`)
             // TODO: Why, if no .process method is defined, does this intermittently not throw an error? Mocha in IDE?
             stateToRun.process(executionDescription)
           } else {
             // TODO: Need to handle trying to run an unknown state (should be picked-up in validation though)
-            throw (boom.badRequest(`Unknown state '${stateNameToRun}' in flow '${_this.name}'`))
+            throw (boom.badRequest(`Unknown state '${stateNameToRun}' in stateMachine '${_this.name}'`))
           }
         }
       }
@@ -55,4 +55,4 @@ class Flow {
   }
 }
 
-module.exports = Flow
+module.exports = StateMachine

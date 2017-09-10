@@ -3,8 +3,8 @@ const BaseStateType = require('./Base-state')
 const aslChoiceProcessor = require('asl-choice-processor')
 
 class Choice extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, stateMachine, stateDefinition, options) {
+    super(stateName, stateMachine, stateDefinition, options)
     this.stateType = 'Choice'
     this.calculateNextState = aslChoiceProcessor(stateDefinition)
     this.debug()

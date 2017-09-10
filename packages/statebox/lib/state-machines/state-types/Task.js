@@ -6,8 +6,8 @@ const jp = require('jsonpath')
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 
 class Task extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, stateMachine, stateDefinition, options) {
+    super(stateName, stateMachine, stateDefinition, options)
     this.stateType = 'Task'
     const parts = stateDefinition.Resource.split(':')
     this.resourceType = parts[0]
@@ -16,8 +16,8 @@ class Task extends BaseStateType {
         const moduleName = parts[1]
         this.Resource = resources.findModuleByName(moduleName)
         if (!this.Resource) {
-          // Should be picked-up by flow validation before now
-          throw (boom.badRequest(`Unable to bind Task '${stateName}' in flow '${this.flowName}' - module '${moduleName}' not found`, moduleName))
+          // Should be picked-up by stateMachine validation before now
+          throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module '${moduleName}' not found`, moduleName))
         }
         break
     }

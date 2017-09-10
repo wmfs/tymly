@@ -3,8 +3,8 @@ const BaseStateType = require('./Base-state')
 const debugPackage = require('debug')('statebox')
 
 class Fail extends BaseStateType {
-  constructor (stateName, flow, stateDefinition, options) {
-    super(stateName, flow, stateDefinition, options)
+  constructor (stateName, stateMachine, stateDefinition, options) {
+    super(stateName, stateMachine, stateDefinition, options)
     this.stateType = 'Fail'
     this.cause = stateDefinition.Cause
     this.error = stateDefinition.Error
@@ -12,7 +12,7 @@ class Fail extends BaseStateType {
   }
 
   process (executionDescription) {
-    debugPackage(`Encountered fail state '${this.name}' in flow '${this.flowName}' (executionName='${executionDescription.executionName}')`)
+    debugPackage(`Encountered fail state '${this.name}' in stateMachine '${this.stateMachineName}' (executionName='${executionDescription.executionName}')`)
     this.processTaskFailure(
       {
         cause: this.cause,
