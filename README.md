@@ -44,7 +44,7 @@ CREATE EXTENSION uuid-ossp;
 > __Important:__ Each component within this repository is published on [npmjs.com](https://www.npmjs.com/) as an independent package.
 For example, `pg-info` is maintained [within this repo](https://github.com/wmfs/tymly/tree/master/packages/pg-info) and published as its own separate concern [here](https://www.npmjs.com/package/pg-info). Please refer to the README.md file within each package for specific usage/installation advice.
 
-With your environment in place, grabbing the latest Tymly (most likely because you intended to develop Tymly components as opposed to using one of its published packages) is a simple matter of cloning this repo and running Lerna's [bootstrap](https://lernajs.io/#command-bootstrap) command: 
+With your environment in place, grabbing the latest Tymly (most likely because you intend to develop Tymly components as opposed to using one of its published packages) is a simple matter of cloning this repo and running Lerna's [bootstrap](https://lernajs.io/#command-bootstrap) command: 
 
 ```
 $ git clone https://github.com/wmfs/tymly
