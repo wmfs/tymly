@@ -46,7 +46,7 @@ CREATE EXTENSION uuid-ossp;
 ## <a name="installing"></a>Installation
 
 > __Important:__ Each component within this repository will be published on [NPM](https://www.npmjs.com/) as an independent package.
-For example, `pg-info` is maintained [within this repo](https://github.com/wmfs/tymly/tree/master/packages/pg-info), but its published as its own separate concern [here](https://www.npmjs.com/package/pg-info). Please refer to the README.md file within each package for specific usage/installation advise.  
+For example, `pg-info` is maintained [within this repo](https://github.com/wmfs/tymly/tree/master/packages/pg-info), but its published as its own separate concern [here](https://www.npmjs.com/package/pg-info). Please refer to the README.md file within each package for specific usage/installation advice.
 
 With your environment in place, grabbing the latest Tymly (most likely because you intended to develop Tymly components as opposed to using one of its published packages) is a simple matter of cloning this repo and running Lerna's [bootstrap](https://lernajs.io/#command-bootstrap) command: 
 
@@ -58,7 +58,7 @@ $ lerna bootstrap
 
 ## <a name="test"></a>Testing
 
-The following Lerna command will run all tests in all of Tymly's packages (and also ensure all code meets [Standard.js](https://standardjs.com/) style rules):
+The following Lerna command will run all tests in all of Tymly's packages (and also ensures everyting meets [Standard.js](https://standardjs.com/) style rules):
 
 ``` bash
 $ lerna run test
