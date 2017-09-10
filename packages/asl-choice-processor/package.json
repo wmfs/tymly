@@ -1,7 +1,7 @@
 {
   "name": "asl-choice-processor",
   "description": "For determining the next state given an Amazon States Language 'Choices' definition and a set of values.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {

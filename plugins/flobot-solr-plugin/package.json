@@ -1,7 +1,7 @@
 {
   "name": "flobot-solr-plugin",
   "description": "Plugin which handles interaction with Apache Solr",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Jasvinder Bahra",
   "dependencies": {
     "async": "^2.5.0",
