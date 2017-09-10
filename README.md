@@ -4,7 +4,7 @@
 _An open source low-code platform that's built for collaboration_
 
 ## <a name="environment-variables"></a>Environment
-As discussed in the [installation section](#installing) below, this-here is a [monorepo](https://danluu.com/monorepo/). As such, each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) inside this repository are independently published on [NPM](https://www.npmjs.com/)
+As discussed in the [installation section](#installing) below, this-here is a [monorepo](https://danluu.com/monorepo/). As such, each of the [packages](https://github.com/wmfs/tymly/tree/master/packages) inside this repository are independently published on [NPM](https://www.npmjs.com/).
 
 * Ordinarily you should refer to each package's specific installation instructions.
 
@@ -26,7 +26,8 @@ $ npm install --global lerna
 
 ### PostgreSQL
 
-[PostgreSQL](https://www.postgresql.org/about/) is Tymly's database of choice,
+[PostgreSQL](https://www.postgresql.org/about/) is Tymly's database of choice.
+
 To do anything beyond "Hello world!" you'll need to have access to PostgreSQL __Version 9.6__ (or above) and have created a database before running Tymly.
 
 * Note that Tymly refers to a `PG_CONNECTION_STRING` environment variable when establishing a pool of PostgreSQL connections, for example: 
