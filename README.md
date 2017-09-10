@@ -26,9 +26,9 @@ $ npm install --global lerna
 
 ### PostgreSQL
 
-[PostgreSQL](https://www.postgresql.org/about/) is Tymly's database of choice.
+__[PostgreSQL](https://www.postgresql.org/about/) is Tymly's database of choice.__
 
-To do anything beyond "Hello world!" you'll need to have access to PostgreSQL __Version 9.6__ (or above) and have created a database before running Tymly.
+To do anything beyond "_Hello world!_" you'll need to have access to PostgreSQL __Version 9.6__ (or above) and have created a database before running Tymly.
 
 * Note that Tymly refers to a `PG_CONNECTION_STRING` environment variable when establishing a pool of PostgreSQL connections, for example: 
 
