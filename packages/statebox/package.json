@@ -1,6 +1,7 @@
 {
   "name": "statebox",
   "description": "Orchestrate Node functions using Amazon States Language",
+  "keywords": ["fsm", "finite", "state", "machine", "aws"],
   "version": "0.0.2",
   "author": "Tim Needham",
   "main": "./lib/index.js",
