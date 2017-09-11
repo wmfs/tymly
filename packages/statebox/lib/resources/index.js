@@ -1,23 +1,13 @@
 'use strict'
 const debug = require('debug')('statebox')
-const functionClasses = {}
+const moduleClasses = {}
 
 module.exports.findModuleByName = function findModuleByName (name) {
-  return functionClasses[name]
+  return moduleClasses[name]
 }
 
 // Adds a class for creating
-module.exports.createModule = function createModule (name, stateFunction) {
-  const ModuleResource = function ModuleResource (executionName, state) {
-    const _this = this
-    this.schemaName = _this.schemaName
-    this.client = _this.client
-    this.executionName = executionName
-    this.state = state
-  }
-
-  ModuleResource.prototype.run = stateFunction
-
-  functionClasses[name] = ModuleResource
-  debug(`Created module resource '${name}'`)
+module.exports.createModule = function createModule (moduleName, module) {
+  moduleClasses[moduleName] = module
+  debug(`Created module resource '${moduleName}'`)
 }

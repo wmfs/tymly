@@ -31,8 +31,8 @@ class Task extends BaseStateType {
     switch (this.resourceType) {
       case 'module':
         const moduleName = parts[1]
-        this.Resource = resources.findModuleByName(moduleName)
-        if (!this.Resource) {
+        this.resource = resources.findModuleByName(moduleName)
+        if (!this.resource) {
           // Should be picked-up by stateMachine validation before now
           throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module '${moduleName}' not found`, moduleName))
         }
@@ -47,13 +47,12 @@ class Task extends BaseStateType {
   process (executionDescription) {
     const _this = this
     const input = jp.value(executionDescription.ctx, this.inputPath)
-    const runnableStateClass = new this.Resource(executionDescription.executionName, this)
     const context = new Context(executionDescription, this)
 
     process.nextTick(
       function () {
         try {
-          runnableStateClass.run(
+          _this.resource.run(
             input,
             context
           )
