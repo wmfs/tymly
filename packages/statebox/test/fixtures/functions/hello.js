@@ -2,5 +2,5 @@
 
 module.exports = function hello (event, context) {
   console.log('HELLO...')
-  this.sendTaskSuccess()
+  context.sendTaskSuccess()
 }

@@ -27,13 +27,13 @@ const statebox = new Statebox()
 statebox.createModuleResource(
   'add',
   function addTwoNumbers (event, context) {
-    this.sendTaskSuccess(event.number1 + event.number2)
+    context.sendTaskSuccess(event.number1 + event.number2)
   }
 )
 statebox.createModuleResource(
   'subtract',
   function subtractOneNumberFromAnother (event, context) {
-    this.sendTaskSuccess(event.number1 - event.number2)
+    context.sendTaskSuccess(event.number1 - event.number2)
   }
 )
 

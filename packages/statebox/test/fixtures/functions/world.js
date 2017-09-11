@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function hello (event, context) {
+module.exports = function world (event, context) {
   console.log('...WORLD!')
-  this.sendTaskSuccess()
+  context.sendTaskSuccess()
 }

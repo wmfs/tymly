@@ -17,9 +17,6 @@ module.exports.createModule = function createModule (name, stateFunction) {
   }
 
   ModuleResource.prototype.run = stateFunction
-  ModuleResource.prototype.sendTaskSuccess = function (output) {
-    this.state.processTaskSuccess(output, this.executionName)
-  }
 
   functionClasses[name] = ModuleResource
   debug(`Created module resource '${name}'`)

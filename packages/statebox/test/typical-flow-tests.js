@@ -4,12 +4,13 @@
 const chai = require('chai')
 const expect = chai.expect
 
-// Functions
+// Modules
 const helloWorldFunction = require('./fixtures/functions/hello-world')
 const helloFunction = require('./fixtures/functions/hello')
 const worldFunction = require('./fixtures/functions/world')
 const addFunction = require('./fixtures/functions/add')
 const subtractFunction = require('./fixtures/functions/subtract')
+const failureFunction = require('./fixtures/functions/failure')
 const a = require('./fixtures/functions/a')
 const b = require('./fixtures/functions/b')
 const c = require('./fixtures/functions/c')
@@ -21,6 +22,7 @@ const g = require('./fixtures/functions/g')
 // stateMachines
 const helloWorldStateMachine = require('./fixtures/state-machines/hello-world.json')
 const helloThenWorldStateMachine = require('./fixtures/state-machines/hello-then-world.json')
+const helloThenFailureStateMachine = require('./fixtures/state-machines/hello-then-failure.json')
 const calculatorStateMachine = require('./fixtures/state-machines/calculator.json')
 const calculatorWithInputPathsStateMachine = require('./fixtures/state-machines/calculator-with-input-paths.json')
 const passStateMachine = require('./fixtures/state-machines/pass-state-machine.json')
@@ -45,6 +47,7 @@ describe('Simple stateMachine test', function () {
     statebox.createModuleResource('world', worldFunction)
     statebox.createModuleResource('add', addFunction)
     statebox.createModuleResource('subtract', subtractFunction)
+    statebox.createModuleResource('failure', failureFunction)
     statebox.createModuleResource('a', a)
     statebox.createModuleResource('b', b)
     statebox.createModuleResource('c', c)
@@ -65,6 +68,13 @@ describe('Simple stateMachine test', function () {
     statebox.createStateMachine(
       'helloThenWorld',
       helloThenWorldStateMachine
+    )
+  })
+
+  it('should create a new helloThenFailure state machine', function () {
+    statebox.createStateMachine(
+      'helloThenFailure',
+      helloThenFailureStateMachine
     )
   })
 
@@ -122,6 +132,34 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
         expect(executionDescription.currentStateName).to.eql('World')
+        done()
+      }
+    )
+  })
+
+  it('should execute helloThenFailure', function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloThenFailure', // state machine name
+      {}, // options
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should successfully fail helloThenFailure execution', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.stateMachineName).to.eql('helloThenFailure')
+        expect(executionDescription.currentStateName).to.eql('Failure')
+        expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
+        expect(executionDescription.errorMessage).to.eql('But at least it was expected')
         done()
       }
     )
