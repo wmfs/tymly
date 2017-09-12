@@ -45,20 +45,19 @@ module.exports = function (options, callback) {
 
                           lstatAsync(filePath)
                             .then(fileStats => {
-                              if (fileStats.isFile() && fileStats.size > 0) {
-                                columnNamesAsync(filePath, options)
-                                  .then(columnNames => {
-                                    action[upath.normalize(filePath)] = {
-                                      tableName: path.basename(actionItem, path.extname(actionItem)),
-                                      columnNames: columnNames,
-                                      size: fileStats.size
-                                    }
-                                    cb2()
-                                  })
-                                  .catch(err => cb2(err));
-                              } else {
-                                cb2()
-                              }
+                              if (!fileStats.isFile() || fileStats.size === 0)
+                                return cb2();
+
+                              columnNamesAsync(filePath, options)
+                                .then(columnNames => {
+                                  action[upath.normalize(filePath)] = {
+                                    tableName: path.basename(actionItem, path.extname(actionItem)),
+                                    columnNames: columnNames,
+                                    size: fileStats.size
+                                  }
+                                  cb2()
+                                })
+                                .catch(err => cb2(err));
                             })
                             .catch(err => cb2(err))
                         },
