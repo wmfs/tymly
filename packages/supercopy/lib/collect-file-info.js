@@ -5,6 +5,9 @@ const path = require('path')
 const getColumnNames = require('./get-column-names')
 const upath = require('upath')
 const debug = require('debug')('supercopy')
+const promisify = require('util').promisify
+
+const lstatAsync = promisify(fs.lstat)
 
 module.exports = function (options, callback) {
   const info = {}
@@ -39,36 +42,30 @@ module.exports = function (options, callback) {
                         function (actionItem, cb2) {
                           const filePath = path.join(dirPath, actionItem)
 
-                          fs.lstat(
-                            filePath,
-                            function (err, fileStats) {
-                              debug(`+   ./${actionItem}`)
-                              if (err) {
-                                cb2(err)
-                              } else {
-                                if (fileStats.isFile() && fileStats.size > 0) {
-                                  getColumnNames(
-                                    filePath,
-                                    options,
-                                    function (err, columnNames) {
-                                      if (err) {
-                                        cb2(err)
-                                      } else {
-                                        action[upath.normalize(filePath)] = {
-                                          tableName: path.basename(actionItem, path.extname(actionItem)),
-                                          columnNames: columnNames,
-                                          size: fileStats.size
-                                        }
-                                        cb2()
+                          lstatAsync(filePath)
+                            .then(fileStats => {
+                              if (fileStats.isFile() && fileStats.size > 0) {
+                                getColumnNames(
+                                  filePath,
+                                  options,
+                                  function (err, columnNames) {
+                                    if (err) {
+                                      cb2(err)
+                                    } else {
+                                      action[upath.normalize(filePath)] = {
+                                        tableName: path.basename(actionItem, path.extname(actionItem)),
+                                        columnNames: columnNames,
+                                        size: fileStats.size
                                       }
+                                      cb2()
                                     }
-                                  )
-                                } else {
-                                  cb2()
-                                }
+                                  }
+                                )
+                              } else {
+                                cb2()
                               }
-                            }
-                          )
+                            })
+                            .catch(err => cb2(err))
                         },
                         function (err) {
                           if (err) {
