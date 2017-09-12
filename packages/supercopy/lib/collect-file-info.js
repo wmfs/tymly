@@ -43,7 +43,7 @@ async function collect (options) {
   return info
 } // collect
 
-async function directoriesUnder (rootDir) {
+function directoriesUnder (rootDir) {
   return directoryContents(
     rootDir,
     stats => stats.isDirectory,
@@ -51,7 +51,7 @@ async function directoriesUnder (rootDir) {
   )
 } // directoriesUnder
 
-async function filesUnder (rootDir) {
+function filesUnder (rootDir) {
   return directoryContents(
     rootDir,
     stats => (stats.isFile() && stats.size !== 0),
