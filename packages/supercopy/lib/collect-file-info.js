@@ -7,6 +7,7 @@ const upath = require('upath')
 const debug = require('debug')('supercopy')
 const promisify = require('util').promisify
 
+const readdirAsync = promisify(fs.readdir)
 const lstatAsync = promisify(fs.lstat)
 const columnNamesAsync = promisify(getColumnNames)
 
@@ -34,10 +35,9 @@ module.exports = function (options, callback) {
                   debug(`+ ./${item}:`)
                   const action = {}
                   info[item] = action
-                  fs.readdir(dirPath, function (err, actionItems) {
-                    if (err) {
-                      cb()
-                    } else {
+
+                  readdirAsync(dirPath)
+                    .then(actionItems => {
                       async.eachSeries(
                         actionItems,
                         function (actionItem, cb2) {
@@ -69,9 +69,8 @@ module.exports = function (options, callback) {
                           }
                         }
                       )
-                    }
-                  }
-                  )
+                    })
+                    .catch(err => cb(err));
                 } else {
                   cb()
                 }
