@@ -8,6 +8,7 @@ const debug = require('debug')('supercopy')
 const promisify = require('util').promisify
 
 const lstatAsync = promisify(fs.lstat)
+const columnNamesAsync = promisify(getColumnNames)
 
 module.exports = function (options, callback) {
   const info = {}
@@ -45,22 +46,16 @@ module.exports = function (options, callback) {
                           lstatAsync(filePath)
                             .then(fileStats => {
                               if (fileStats.isFile() && fileStats.size > 0) {
-                                getColumnNames(
-                                  filePath,
-                                  options,
-                                  function (err, columnNames) {
-                                    if (err) {
-                                      cb2(err)
-                                    } else {
-                                      action[upath.normalize(filePath)] = {
-                                        tableName: path.basename(actionItem, path.extname(actionItem)),
-                                        columnNames: columnNames,
-                                        size: fileStats.size
-                                      }
-                                      cb2()
+                                columnNamesAsync(filePath, options)
+                                  .then(columnNames => {
+                                    action[upath.normalize(filePath)] = {
+                                      tableName: path.basename(actionItem, path.extname(actionItem)),
+                                      columnNames: columnNames,
+                                      size: fileStats.size
                                     }
-                                  }
-                                )
+                                    cb2()
+                                  })
+                                  .catch(err => cb2(err));
                               } else {
                                 cb2()
                               }
