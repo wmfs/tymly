@@ -50,11 +50,11 @@ class Statebox {
   }
 
   findStateMachineByName (name) {
-    stateMachines.findStateMachineByName(name)
+    return stateMachines.findStateMachineByName(name)
   }
 
   findStateMachines (options) {
-    stateMachines.findStateMachines(options)
+    return stateMachines.findStateMachines(options)
   }
 
   startExecution (input, stateMachineName, executionOptions, callback) {
