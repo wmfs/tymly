@@ -37,13 +37,15 @@ class BaseState {
     const _this = this
     this.options.dao.findExecutionByName(
       executionName,
-      function (err) {
+      function (err, executionDescription) {
         if (err) {
           // TODO: Handle this as per spec!
           throw (err)
         } else {
+          const tracker = _this.options.parallelBranchTracker
+          tracker.registerChildExecutionFail(executionName)
           _this.options.dao.failExecution(
-            executionName,
+            executionDescription,
             options.cause,
             options.error,
             function (err) {
@@ -52,39 +54,6 @@ class BaseState {
               }
             }
           )
-        }
-      }
-    )
-  }
-
-  processEndOfBranch (parentExecutionName, ctx, executionDescription) {
-    const _this = this
-    this.options.dao.getBranchSummary(
-      parentExecutionName,
-      function (err, summary) {
-        if (err) {
-          // TODO: Not sure?
-          throw new Error(err)
-        } else {
-          if (summary) {
-            if (summary.numberOfBranches === summary.numberSucceeded) {
-              debugPackage(`All ${summary.number_of_branches} branches have now succeeded (executionName='${parentExecutionName}')`)
-              _this.processTaskSuccess(ctx, parentExecutionName)
-            } else if (summary.numberFailed > 0) {
-              debugPackage(`At least one of the ${summary.numberOfBranches} branches has failed (executionName='${parentExecutionName}'). Marking all related branches as FAILED.`)
-              _this.options.dao.markRelatedBranchesAsFailed(
-                parentExecutionName,
-                'States.BranchFailed',
-                'Failed because a state in a parallel branch has failed',
-                function (err) {
-                  if (err) {
-                    // TODO: Not Sure?
-                    throw new Error(err)
-                  }
-                }
-              )
-            }
-          }
         }
       }
     )
@@ -120,8 +89,16 @@ class BaseState {
                   // TODO: Needs handling as per spec
                   throw new Error(err)
                 } else {
-                  if (executionDescription.parentExecutionName) {
-                    _this.processEndOfBranch(executionDescription.parentExecutionName, ctx, executionDescription)
+                  const parentExecutionName = executionDescription.parentExecutionName
+                  if (parentExecutionName) {
+                    // Has a parent flow, so see if the related parallel state can advance
+                    const tracker = _this.options.parallelBranchTracker
+                    tracker.registerChildExecutionEnd(executionDescription.executionName)
+                    const parallelStateStatus = tracker.getParallelTaskStatus(parentExecutionName)
+                    if (parallelStateStatus === 'SUCCEEDED') {
+                      debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
+                      _this.processTaskSuccess(ctx, parentExecutionName)
+                    }
                   }
                 }
               }

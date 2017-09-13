@@ -7,6 +7,7 @@ class Parallel extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
     super(stateName, stateMachine, stateDefinition, options)
     const _this = this
+    this.parallelBranchTracker = options.parallelBranchTracker
     this.stateType = 'Parallel'
     this.branches = []
     stateDefinition.Branches.forEach(
@@ -21,7 +22,9 @@ class Parallel extends BaseStateType {
 
   process (executionDescription) {
     const _this = this
+    const parentExecutionName = executionDescription.executionName
     const rootExecutionName = executionDescription.rootExecutionName || executionDescription.executionName
+    this.parallelBranchTracker.addParentExecutionName(parentExecutionName)
     async.each(
       this.branches,
       function (stateMachineName, cb) {
@@ -29,12 +32,21 @@ class Parallel extends BaseStateType {
           _.cloneDeep(executionDescription.ctx),
           stateMachineName,
           {
-            parentExecutionName: executionDescription.executionName,
+            parentExecutionName: parentExecutionName,
             rootExecutionName: rootExecutionName
           },
           _this.options,
-          executionDescription.rootExecutionName || executionDescription.executionName,
-          cb
+          function (err, childExecutionDescription) {
+            if (err) {
+              cb(err)
+            } else {
+              _this.parallelBranchTracker.addChildExecutionName(
+                parentExecutionName,
+                childExecutionDescription.executionName
+              )
+              cb(null)
+            }
+          }
         )
       },
       function (err) {
