@@ -1,27 +1,31 @@
 'use strict'
 
 const _ = require('lodash')
+const debug = require('debug')('flobot-solr-plugin')
 
 class SolrService {
   boot (options, callback) {
+    this.viewNamespace = 'fbot'
+    if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
+      this.fields = []
+      this.createViewSQL = null
+      callback(null)
+    }
+
     this.client = options.bootedServices.storage.client
-
-    // const attributes = this.constructSearchAttributeArray(options.blueprintComponents.searchDocs)
-    // const models = this.constructModelArray(options.blueprintComponents.models)
-
     this.fields = this.constructFieldArray(options.config.solrIndexFields)
+    this.createViewSQL = this.buildCreateViewStatement(
+      this.constructModelArray(options.blueprintComponents.models),
+      this.constructSearchAttributeArray(options.blueprintComponents.searchDocs))
 
-    // TODO: Best way to do this Jez?
-
-    // const viewStr = this.buildCreateViewStatement('x', models, attributes, fields)
     callback(null)
   }
 
   constructModelArray (models) {
     let modelArray = []
-    for (const model in models) {
-      if (models.hasOwnProperty(model)) {
-        modelArray.push(models[model])
+    for (const modelName in models) {
+      if (models.hasOwnProperty(modelName)) {
+        modelArray.push(models[modelName])
       }
     }
     return modelArray
@@ -45,12 +49,12 @@ class SolrService {
     return fieldArray
   }
 
-  buildSelectStatement (ns, model, attribute) {
+  buildSelectStatement (model, searchDoc) {
     const columns = this.fields.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
         const defaultValue = solrDefault[1]
-        let mappedValue = attribute.attributeMapping[solrFieldName]
+        let mappedValue = searchDoc.attributeMapping[solrFieldName]
         if (!_.isUndefined(mappedValue)) {
           if (mappedValue[0] === '@') {
             mappedValue = _.snakeCase(mappedValue.substring(1))
@@ -60,10 +64,11 @@ class SolrService {
       }
     )
 
-    return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
+    debug('>>>', model)
+    return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(model.namespace)}.${_.snakeCase(model.title)}`
   }
 
-  buildCreateViewStatement (ns, models, searchDocs) {
+  buildCreateViewStatement (models, searchDocs) {
     let selects = []
     for (let model of models) {
       let currentSearchDoc = null
@@ -74,11 +79,11 @@ class SolrService {
         }
       }
       if (currentSearchDoc != null) {
-        selects.push(this.buildSelectStatement(ns, model, currentSearchDoc))
+        selects.push(this.buildSelectStatement(model, currentSearchDoc))
       }
     }
 
-    return `CREATE OR REPLACE VIEW ${ns}.solr_data AS \n${selects.join('\nUNION\n')};`
+    return `CREATE OR REPLACE VIEW ${this.viewNamespace}.solr_data AS \n${selects.join('\nUNION\n')};`
   }
 
   executeSQL (sql, cb) {

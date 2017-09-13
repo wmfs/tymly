@@ -15,8 +15,6 @@ const studentsAndStaffModels = require('./fixtures/school-blueprint/test-resourc
 const studentsAndStaffSearchDocs = require('./fixtures/school-blueprint/test-resources/students-and-staff-search-docs.json')
 
 describe('flobot-solr-plugin tests', function () {
-  const ns = 'solr_plugin_test'
-
   let solrService
   let client
 
@@ -27,7 +25,9 @@ describe('flobot-solr-plugin tests', function () {
           path.resolve(__dirname, './../lib'),
           path.resolve(__dirname, './../../flobot-pg-plugin')
         ],
-        blueprintPaths: [],
+        blueprintPaths: [
+          path.resolve(__dirname, './fixtures/school-blueprint')
+        ],
         config: {
           solrIndexFields: [
             'id',
@@ -50,26 +50,31 @@ describe('flobot-solr-plugin tests', function () {
   })
 
   it('should generate a SQL SELECT statement', () => {
-    const select = solrService.buildSelectStatement(ns, studentsModels, studentsSearchDocs)
+    const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
     debug(select)
 
     expect(select).to.be.a('string')
     expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM solr_plugin_test.students')
+      'character_name AS character_name FROM fbot_test.students')
   })
 
   it('should generate a SQL CREATE VIEW statement', () => {
     const sqlString = solrService.buildCreateViewStatement(
-      ns, studentsAndStaffModels, studentsAndStaffSearchDocs)
+      studentsAndStaffModels, studentsAndStaffSearchDocs)
     debug(sqlString)
 
     expect(sqlString).to.be.a('string')
-    expect(sqlString).to.eql('CREATE OR REPLACE VIEW solr_plugin_test.solr_data AS \n' +
+    expect(sqlString).to.eql('CREATE OR REPLACE VIEW fbot.solr_data AS \n' +
       'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM solr_plugin_test.students\n' +
+      'character_name AS character_name FROM fbot_test.students\n' +
       'UNION\n' +
       'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
+      'character_first_name || \' \' || character_last_name AS character_name FROM fbot_test.staff;')
+  })
+
+  it('should have generated a SQL CREATE VIEW statement on flobot boot', () => {
+    debug(solrService.createViewSQL)
+    expect(solrService.createViewSQL).to.be.a('string')
   })
 
   it('should create test resources', function (done) {
@@ -85,7 +90,7 @@ describe('flobot-solr-plugin tests', function () {
 
   it('should create a database view using the test resources', (done) => {
     const createViewStatement = solrService.buildCreateViewStatement(
-      ns, studentsAndStaffModels, studentsAndStaffSearchDocs)
+      studentsAndStaffModels, studentsAndStaffSearchDocs)
 
     solrService.executeSQL(createViewStatement, function (err) {
       expect(err).to.eql(null)
@@ -95,7 +100,7 @@ describe('flobot-solr-plugin tests', function () {
 
   it('should return 19 rows when selecting from the view', (done) => {
     solrService.executeSQL(
-      'SELECT * FROM solr_plugin_test.solr_data ORDER BY character_name ASC;',
+      `SELECT * FROM ${solrService.viewNamespace}.solr_data ORDER BY character_name ASC;`,
       function (err, result) {
         expect(err).to.eql(null)
         expect(result.rowCount).to.eql(19)
