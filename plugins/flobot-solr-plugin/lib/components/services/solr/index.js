@@ -9,7 +9,8 @@ class SolrService {
 
     // const attributes = this.constructSearchAttributeArray(options.blueprintComponents.searchDocs)
     // const models = this.constructModelArray(options.blueprintComponents.models)
-    // const fields = this.constructFieldArray(options.config.solrIndexFields)
+
+    this.fields = this.constructFieldArray(options.config.solrIndexFields)
 
     // TODO: Best way to do this Jez?
 
@@ -45,8 +46,8 @@ class SolrService {
     return fieldArray
   }
 
-  buildSelectStatement (ns, model, attribute, solrFieldDefaults) {
-    const columns = solrFieldDefaults.map(
+  buildSelectStatement (ns, model, attribute) {
+    const columns = this.fields.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
         const defaultValue = solrDefault[1]
@@ -63,7 +64,7 @@ class SolrService {
     return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
   }
 
-  buildCreateViewStatement (ns, models, searchDocs, solrFieldDefault) {
+  buildCreateViewStatement (ns, models, searchDocs) {
     let selects = []
     for (let model of models) {
       let currentSearchDoc = null
@@ -74,7 +75,7 @@ class SolrService {
         }
       }
       if (currentSearchDoc != null) {
-        selects.push(this.buildSelectStatement(ns, model, currentSearchDoc, solrFieldDefault))
+        selects.push(this.buildSelectStatement(ns, model, currentSearchDoc))
       }
     }
 
