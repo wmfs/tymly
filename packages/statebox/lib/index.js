@@ -61,6 +61,19 @@ class Statebox {
     executioner(input, stateMachineName, executionOptions, this.options, callback)
   }
 
+  startExecutionP (input, stateMachineName, executionOptions) {
+    return new Promise((resolve, reject) => {
+      executioner(input, stateMachineName, executionOptions, this.options,
+        (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+    })
+  } // startExecutionP
+
   stopExecution (cause, error, executionName, callback) {
 
   }

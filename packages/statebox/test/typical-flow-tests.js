@@ -4,6 +4,7 @@
 const _ = require('lodash')
 const chai = require('chai')
 const expect = chai.expect
+const assert = require('assert')
 
 // State Resources
 const stateResources = require('./fixtures/state-resources')
@@ -41,16 +42,14 @@ describe('Simple stateMachine test', function () {
   })
 
   it('should execute helloWorld', function (done) {
-    statebox.startExecution(
+    statebox.startExecutionP(
       {},  // input
       'helloWorld', // state machine name
-      {}, // options
-      function (err, result) {
-        expect(err).to.eql(null)
-        executionName = result.executionName
-        done()
-      }
+      {}
     )
+      .then(result => { executionName = result.executionName })
+      .then(() => done())
+      .catch(err => { assert(false, `startExecution failed - ${err}`) })
   })
 
   it('should successfully complete helloWorld execution', function (done) {
@@ -66,17 +65,14 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should execute helloThenWorld', function (done) {
-    statebox.startExecution(
+  it('should execute helloThenWorld', async function () {
+    const result = await statebox.startExecutionP(
       {},  // input
       'helloThenWorld', // state machine name
-      {}, // options
-      function (err, result) {
-        expect(err).to.eql(null)
-        executionName = result.executionName
-        done()
-      }
+      {}
     )
+
+    executionName = result.executionName
   })
 
   it('should successfully complete helloThenWorld execution', function (done) {
