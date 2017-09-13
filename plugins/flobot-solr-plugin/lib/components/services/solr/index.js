@@ -1,7 +1,6 @@
 'use strict'
 
 const _ = require('lodash')
-const debug = require('debug')('flobot-solr-plugin')
 
 class SolrService {
   boot (options, callback) {
