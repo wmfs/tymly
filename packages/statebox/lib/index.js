@@ -119,6 +119,21 @@ class Statebox {
       }
     )
   }
+
+  waitUntilStoppedRunningP (execution) {
+    return new Promise((resolve, reject) => {
+      this.waitUntilStoppedRunning(
+        execution,
+        (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        }
+      )
+    })
+  }
 }
 
 module.exports = Statebox
