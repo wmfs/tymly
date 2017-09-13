@@ -1,4 +1,3 @@
-
 const fs = require('fs')
 const path = require('path')
 const getColumnNames = require('./get-column-names')
@@ -18,7 +17,7 @@ module.exports = function (options, callback) {
 
 async function collect (options) {
   const rootDir = options.sourceDir
-  debug(`Staring to collect file info for ${rootDir}`)
+  debug(`Starting to collect file info for ${rootDir}`)
 
   const info = { }
   const dirs = await directoriesUnder(rootDir)
@@ -29,13 +28,18 @@ async function collect (options) {
     info[path.basename(dirPath)] = action
 
     for (const [filePath, size] of await filesUnder(dirPath)) {
-      debug(`+   ./${path.basename(filePath)}:`)
+      const fileName = path.basename(filePath)
+      debug(`+   ./${fileName}:`)
 
-      const columnNames = await columnNamesAsync(filePath, options)
-      action[upath.normalize(filePath)] = {
-        tableName: path.basename(filePath, path.extname(filePath)),
-        columnNames: columnNames,
-        size: size
+      try {
+        const columnNames = await columnNamesAsync(filePath, options)
+        action[upath.normalize(filePath)] = {
+          tableName: path.basename(filePath, path.extname(filePath)),
+          columnNames: columnNames,
+          size: size
+        }
+      } catch(err) {
+        debug(`    Could not get column names for ${fileName}`)
       }
     } // for ...
   } // for ...
@@ -46,7 +50,7 @@ async function collect (options) {
 function directoriesUnder (rootDir) {
   return directoryContents(
     rootDir,
-    stats => stats.isDirectory,
+    stats => stats.isDirectory(),
     (path, stats) => path
   )
 } // directoriesUnder
