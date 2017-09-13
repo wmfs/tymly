@@ -7,9 +7,7 @@ const STATE_MACHINE_NAME = 'fbotTest_aDayInTheLife'
 describe('Simple Flobot test', function () {
   const flobot = require('./../lib')
   let statebox
-
   this.timeout(5000)
-
   let rupert
 
   it('should create some basic flobot services to run a simple cat blueprint', function (done) {
