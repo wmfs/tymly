@@ -1,16 +1,52 @@
 'use strict'
 
 const _ = require('lodash')
-const debug = require('debug')('flobot-solr-plugin')
 
 class SolrService {
   boot (options, callback) {
     this.client = options.bootedServices.storage.client
+
+    // const attributes = this.constructSearchAttributeArray(options.blueprintComponents.searchDocs)
+    // const models = this.constructModelArray(options.blueprintComponents.models)
+
+    this.fields = this.constructFieldArray(options.config.solrIndexFields)
+
+    // TODO: Best way to do this Jez?
+
+    // const viewStr = this.buildCreateViewStatement('x', models, attributes, fields)
     callback(null)
   }
 
-  buildSelectStatement (ns, model, attribute, solrFieldDefaults) {
-    const columns = solrFieldDefaults.map(
+  constructModelArray (models) {
+    let modelArray = []
+    for (const model in models) {
+      if (models.hasOwnProperty(model)) {
+        modelArray.push(models[model])
+      }
+    }
+    return modelArray
+  }
+
+  constructSearchAttributeArray (searchDocs) {
+    let attributes = []
+    for (const searchDocName in searchDocs) {
+      if (searchDocs.hasOwnProperty(searchDocName)) {
+        attributes.push(searchDocs[searchDocName])
+      }
+    }
+    return attributes
+  }
+
+  constructFieldArray (solrIndexFields) {
+    const fieldArray = []
+    for (const field of solrIndexFields) {
+      fieldArray.push([field, ''])
+    }
+    return fieldArray
+  }
+
+  buildSelectStatement (ns, model, attribute) {
+    const columns = this.fields.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
         const defaultValue = solrDefault[1]
@@ -27,20 +63,18 @@ class SolrService {
     return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(ns)}.${_.snakeCase(model.title)}`
   }
 
-  buildCreateViewStatement (ns, models, attributes, solrFieldDefault) {
+  buildCreateViewStatement (ns, models, searchDocs) {
     let selects = []
     for (let model of models) {
-      let currentAttribute = null
-      for (let attribute of attributes) {
-        if (attribute.modelId === model.title) {
-          currentAttribute = attribute
+      let currentSearchDoc = null
+      for (let searchDoc of searchDocs) {
+        if (searchDoc.modelId === model.id) {
+          currentSearchDoc = searchDoc
           break
         }
       }
-      if (currentAttribute != null) {
-        selects.push(this.buildSelectStatement(ns, model, currentAttribute, solrFieldDefault))
-      } else {
-        debug('Can not find attribute config for model ' + model.title)
+      if (currentSearchDoc != null) {
+        selects.push(this.buildSelectStatement(ns, model, currentSearchDoc))
       }
     }
 

@@ -1,0 +1,8 @@
+{
+  "modelId": "students",
+  "attributeMapping": {
+    "id": "'student#' || student_no",
+    "actorName": "first_name || ' ' || last_name",
+    "characterName": "@characterName"
+  }
+}
