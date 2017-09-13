@@ -24,8 +24,7 @@ class Context {
 
 class Task extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
-    super(stateName, stateMachine, stateDefinition, options)
-    this.stateType = 'Task'
+    super(stateName, stateMachine, stateDefinition, 'Task', options)
     const parts = stateDefinition.Resource.split(':')
     this.resourceType = parts[0]
     switch (this.resourceType) {

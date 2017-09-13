@@ -5,9 +5,8 @@ const async = require('async')
 
 class Parallel extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
-    super(stateName, stateMachine, stateDefinition, options)
+    super(stateName, stateMachine, stateDefinition, 'Parallel', options)
     const _this = this
-    this.stateType = 'Parallel'
     this.branches = []
     stateDefinition.Branches.forEach(
       function (branchDefinition) {

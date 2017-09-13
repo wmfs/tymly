@@ -4,8 +4,7 @@ const debugPackage = require('debug')('statebox')
 
 class Fail extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
-    super(stateName, stateMachine, stateDefinition, options)
-    this.stateType = 'Fail'
+    super(stateName, stateMachine, stateDefinition, 'Fail', options)
     this.cause = stateDefinition.Cause
     this.error = stateDefinition.Error
     this.debug()

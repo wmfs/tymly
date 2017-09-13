@@ -5,10 +5,11 @@ const _ = require('lodash')
 const dottie = require('dottie')
 
 class BaseState {
-  constructor (stateName, stateMachine, stateDefinition, options) {
+  constructor (stateName, stateMachine, stateDefinition, stateType, options) {
     this.name = stateName
     this.stateMachine = stateMachine
     this.stateMachineName = stateMachine.name
+    this.stateType = stateType
     this.definition = stateDefinition
     this.options = options
   }
