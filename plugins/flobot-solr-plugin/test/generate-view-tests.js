@@ -7,8 +7,8 @@ const path = require('path')
 const debug = require('debug')('flobot-solr-plugin')
 
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const students = require('./fixtures/test-models/students.json')
-const studentsAndStaff = require('./fixtures/test-models/students-and-staff.json')
+const students = require('./fixtures/school-blueprint/models/students.json')
+const studentsAndStaff = require('./fixtures/school-blueprint/test-resources/students-and-staff-models.json')
 
 describe('flobot-solr-plugin tests', function () {
   const ns = 'solr_plugin_test'
@@ -29,14 +29,15 @@ describe('flobot-solr-plugin tests', function () {
           path.resolve(__dirname, './../../flobot-pg-plugin')
         ],
         blueprintPaths: [],
-        config: {}
+        config: {
+
+        }
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
 
         client = flobotServices.storage.client
         expect(client).to.not.eql(null)
-
         solrService = flobotServices.solr
         expect(solrService).to.not.eql(null)
 
@@ -90,10 +91,10 @@ describe('flobot-solr-plugin tests', function () {
     expect(sqlString).to.be.a('string')
     expect(sqlString).to.eql('CREATE OR REPLACE VIEW solr_plugin_test.solr_data AS \n' +
       'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_name AS character_name FROM solr_plugin_test.students\n' +
+      'character_name AS character_name FROM solr_plugin_test.students\n' +
       'UNION\n' +
       'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
+      'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
   })
 
   it('should create test resources', function (done) {
