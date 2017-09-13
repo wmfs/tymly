@@ -38,7 +38,7 @@ async function collect (options) {
           columnNames: columnNames,
           size: size
         }
-      } catch(err) {
+      } catch (err) {
         debug(`    Could not get column names for ${fileName}`)
       }
     } // for ...
