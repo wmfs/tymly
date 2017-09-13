@@ -7,16 +7,15 @@ const path = require('path')
 const debug = require('debug')('flobot-solr-plugin')
 
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const students = require('./fixtures/test-models/students.json')
-const studentsAndStaff = require('./fixtures/test-models/students-and-staff.json')
+
+const studentsModels = require('./fixtures/school-blueprint/models/students.json')
+const studentsSearchDocs = require('./fixtures/school-blueprint/search-docs/students.json')
+
+const studentsAndStaffModels = require('./fixtures/school-blueprint/test-resources/students-and-staff-models.json')
+const studentsAndStaffSearchDocs = require('./fixtures/school-blueprint/test-resources/students-and-staff-search-docs.json')
 
 describe('flobot-solr-plugin tests', function () {
   const ns = 'solr_plugin_test'
-  const solrFieldDefaults = [
-    ['id', ''],
-    ['actorName', ''],
-    ['characterName', '']
-  ]
 
   let solrService
   let client
@@ -29,14 +28,19 @@ describe('flobot-solr-plugin tests', function () {
           path.resolve(__dirname, './../../flobot-pg-plugin')
         ],
         blueprintPaths: [],
-        config: {}
+        config: {
+          solrIndexFields: [
+            'id',
+            'actorName',
+            'characterName'
+          ]
+        }
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
 
         client = flobotServices.storage.client
         expect(client).to.not.eql(null)
-
         solrService = flobotServices.solr
         expect(solrService).to.not.eql(null)
 
@@ -46,16 +50,7 @@ describe('flobot-solr-plugin tests', function () {
   })
 
   it('should generate a SQL SELECT statement', () => {
-    const studentsMappings = {
-      'modelId': 'students',
-      'attributeMapping': {
-        'id': '\'student#\' || student_no',
-        'actorName': 'first_name || \' \' || last_name',
-        'characterName': '@characterName'
-      }
-    }
-
-    const select = solrService.buildSelectStatement(ns, students, studentsMappings, solrFieldDefaults)
+    const select = solrService.buildSelectStatement(ns, studentsModels, studentsSearchDocs)
     debug(select)
 
     expect(select).to.be.a('string')
@@ -64,36 +59,17 @@ describe('flobot-solr-plugin tests', function () {
   })
 
   it('should generate a SQL CREATE VIEW statement', () => {
-    const studentsAndStaffMappings = [
-      {
-        'modelId': 'students',
-        'attributeMapping': {
-          'id': '\'student#\' || student_no',
-          'actorName': 'first_name || \' \' || last_name',
-          'characterName': '@characterName'
-        }
-      },
-      {
-        'modelId': 'staff',
-        'attributeMapping': {
-          'id': '\'staff#\' || staff_no',
-          'actorName': 'first_name || \' \' || last_name',
-          'characterName': 'character_first_name || \' \' || character_last_name'
-        }
-      }
-    ]
-
     const sqlString = solrService.buildCreateViewStatement(
-      ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
+      ns, studentsAndStaffModels, studentsAndStaffSearchDocs)
     debug(sqlString)
 
     expect(sqlString).to.be.a('string')
     expect(sqlString).to.eql('CREATE OR REPLACE VIEW solr_plugin_test.solr_data AS \n' +
       'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_name AS character_name FROM solr_plugin_test.students\n' +
+      'character_name AS character_name FROM solr_plugin_test.students\n' +
       'UNION\n' +
       'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
+      'character_first_name || \' \' || character_last_name AS character_name FROM solr_plugin_test.staff;')
   })
 
   it('should create test resources', function (done) {
@@ -108,27 +84,8 @@ describe('flobot-solr-plugin tests', function () {
   })
 
   it('should create a database view using the test resources', (done) => {
-    const studentsAndStaffMappings = [
-      {
-        'modelId': 'students',
-        'attributeMapping': {
-          'id': '\'student#\' || student_no',
-          'actorName': 'first_name || \' \' || last_name',
-          'characterName': '@characterName'
-        }
-      },
-      {
-        'modelId': 'staff',
-        'attributeMapping': {
-          'id': '\'staff#\' || staff_no',
-          'actorName': 'first_name || \' \' || last_name',
-          'characterName': 'character_first_name || \' \' || character_last_name'
-        }
-      }
-    ]
-
     const createViewStatement = solrService.buildCreateViewStatement(
-      ns, studentsAndStaff, studentsAndStaffMappings, solrFieldDefaults)
+      ns, studentsAndStaffModels, studentsAndStaffSearchDocs)
 
     solrService.executeSQL(createViewStatement, function (err) {
       expect(err).to.eql(null)
