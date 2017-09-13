@@ -17,6 +17,7 @@
     "debug": "^2.6.8",
     "lodash": "^4.17.4",
     "make-dir": "^1.0.0",
+    "pg-copy-streams": "^1.2.0",
     "pg-query-stream": "^1.0.0",
     "supercopy": "^0.0.4"
   },
