@@ -2,14 +2,16 @@
 
 const path = require('path')
 const expect = require('chai').expect
+const STATE_MACHINE_NAME = 'fbotTest_aDayInTheLife'
 
-describe('Simple Flobot test', function () {
-  let flobot = require('./../lib')
+describe.only('Simple Flobot test', function () {
+  const flobot = require('./../lib')
+  let statebox
 
   this.timeout(5000)
 
-  let rupertFlobotId
-  let alanFlobotId
+  let rupert
+  let alan
 
   it('should create some basic flobot services to run a simple cat blueprint', function (done) {
     flobot.boot(
@@ -24,30 +26,58 @@ describe('Simple Flobot test', function () {
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
-        flobot = flobotServices.flobots
+        statebox = flobotServices.statebox
         done()
       }
     )
   })
 
-  it('should find cat flow by id', function () {
-    flobot.findFlowById('fbotTest_cat_1_0',
-      function (err, flow) {
+  it('should find cat state machine', function () {
+    const stateMachine = statebox.findStateMachineByName(STATE_MACHINE_NAME)
+    expect(stateMachine.name).to.eql(STATE_MACHINE_NAME)
+  })
+
+  it('should fail finding dog state machine', function () {
+    const stateMachine = statebox.findStateMachineByName('DOGS!')
+    expect(stateMachine).to.be.an('undefined')
+  })
+
+  it('should execute cat state machine', function (done) {
+    statebox.startExecution(
+      {
+        petName: 'Rupert',
+        gender: 'male',
+        hoursSinceLastMotion: 11,
+        hoursSinceLastMeal: 5,
+        petDiary: []
+      },  // input
+      STATE_MACHINE_NAME, // state machine name
+      {}, // options
+      function (err, result) {
         expect(err).to.eql(null)
-        expect(flow.flowId).to.eql('fbotTest_cat_1_0')
+        rupert = result.executionName
+        done()
       }
     )
   })
 
-  it('should fail finding dog flow by id', function () {
-    flobot.findFlowById('fbotTest_dog_1_0',
-      function (err) {
-        expect(err).to.be.an('error')
-        expect(err.message).to.eql("Unable to find flow with id 'fbotTest_dog_1_0'")
-        expect(err.output.statusCode).to.eql(404)
+  it("should successfully complete Rupert's day", function (done) {
+
+    statebox.waitUntilStoppedRunning(
+      rupert,
+      function (err, executionDescription) {
+        console.log('?????', executionDescription)
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
+        expect(executionDescription.currentStateName).to.eql('World')
+        done()
       }
     )
   })
+
+
+  /*
 
   it('should start a Flobot for Rupert the cat.', function (done) {
     flobot.startNewFlobot(
@@ -87,6 +117,8 @@ describe('Simple Flobot test', function () {
       }
     )
   })
+
+
 
   it('should transition Rupert to sitting', function (done) {
     flobot.updateFlobot(
@@ -356,4 +388,5 @@ describe('Simple Flobot test', function () {
       }
     )
   })
+  */
 })
