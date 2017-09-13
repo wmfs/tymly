@@ -1,11 +1,16 @@
 'use strict'
 
 const _ = require('lodash')
-const debug = require('debug')('flobot-solr-plugin')
+// const debug = require('debug')('flobot-solr-plugin')
+const process = require('process')
 
 class SolrService {
   boot (options, callback) {
     this.viewNamespace = 'fbot'
+
+    const solrUrl = process.env.SOLR_URL
+    options.messages.info(`Using Solr... (${solrUrl})`)
+
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
       this.fields = []
       this.createViewSQL = null
@@ -18,7 +23,7 @@ class SolrService {
       this.constructModelArray(options.blueprintComponents.models),
       this.constructSearchAttributeArray(options.blueprintComponents.searchDocs))
 
-    callback(null)
+    this.client.query(this.createViewSQL, [], callback)
   }
 
   constructModelArray (models) {
@@ -63,8 +68,6 @@ class SolrService {
         return `${mappedValue || defaultValue} AS ${_.snakeCase(solrFieldName)}`
       }
     )
-
-    debug('>>>', model)
     return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(model.namespace)}.${_.snakeCase(model.title)}`
   }
 
@@ -84,10 +87,6 @@ class SolrService {
     }
 
     return `CREATE OR REPLACE VIEW ${this.viewNamespace}.solr_data AS \n${selects.join('\nUNION\n')};`
-  }
-
-  executeSQL (sql, cb) {
-    this.client.query(sql, [], cb)
   }
 }
 
