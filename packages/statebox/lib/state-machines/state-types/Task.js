@@ -65,7 +65,7 @@ class Task extends BaseStateType {
             `parentExecutionName: ${executionDescription.parentExecutionName}\n` +
             `rootExecutionName: ${executionDescription.rootExecutionName}\n` +
             `startDate: ${executionDescription.startDate}\n` +
-            `ctx: ${JSON.stringify(executionDescription.startDate)}\n` +
+            `ctx: ${JSON.stringify(executionDescription.ctx)}\n` +
             '------------------------------------------------------------------------------\n'
           )
           // TODO: Sending out error details might leak security info... implement "dev mode" flag?

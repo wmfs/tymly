@@ -11,7 +11,7 @@ const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
-
+const ParallelBranchTracker = require('./Parallel-branch-tracker')
 class Statebox {
   constructor (options) {
     this.options = options || {}
@@ -19,6 +19,7 @@ class Statebox {
       this.options.dao = new MemoryDao(options)
     }
     this.options.executioner = executioner
+    this.options.parallelBranchTracker = new ParallelBranchTracker()
   }
 
   createModuleResource (name, functionClass) {
@@ -50,11 +51,11 @@ class Statebox {
   }
 
   findStateMachineByName (name) {
-    stateMachines.findStateMachineByName(name)
+    return stateMachines.findStateMachineByName(name)
   }
 
   findStateMachines (options) {
-    stateMachines.findStateMachines(options)
+    return stateMachines.findStateMachines(options)
   }
 
   startExecution (input, stateMachineName, executionOptions, callback) {

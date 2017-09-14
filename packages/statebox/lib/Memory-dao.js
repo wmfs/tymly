@@ -63,16 +63,23 @@ class MemoryDao {
     )
   }
 
-  failExecution (executionName, errorMessage, errorCode, callback) {
+  failExecution (executionDescription, errorMessage, errorCode, callback) {
     const _this = this
     process.nextTick(
       function () {
+        const executionName = executionDescription.executionName
         const execution = _this.executions[executionName]
         if (execution) {
           execution.status = 'FAILED'
           execution.errorCode = errorCode
           execution.errorMessage = errorMessage
-          callback(null)
+          if (executionDescription.hasOwnProperty('rootExecutionName')) {
+            _this.markRelatedBranchesAsFailed(
+              executionDescription.rootExecutionName,
+              callback)
+          } else {
+            callback(null)
+          }
         } else {
           // TODO: Something bad happened
           callback(boom.badRequest(`Unable to succeed execution with name '${executionName}'`))
@@ -145,7 +152,7 @@ class MemoryDao {
     )
   }
 
-  markRelatedBranchesAsFailed (executionName, defaultErrorCause, defaultErrorCode, callback) {
+  markRelatedBranchesAsFailed (executionName, callback) {
     const _this = this
     process.nextTick(
       function () {
@@ -153,10 +160,10 @@ class MemoryDao {
         if (execution) {
           execution.status = 'FAILED'
           if (!execution.errorCause) {
-            execution.errorCause = defaultErrorCause
+            execution.errorCause = 'States.BranchFailed'
           }
           if (!execution.errorCode) {
-            execution.errorCode = defaultErrorCode
+            execution.errorCode = 'Failed because a state in a parallel branch has failed'
           }
           callback(null)
         } else {
