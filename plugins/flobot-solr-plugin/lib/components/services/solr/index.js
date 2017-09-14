@@ -1,38 +1,43 @@
 'use strict'
 
-// const debug = require('debug')('flobot-solr-plugin')
+const debug = require('debug')('flobot-solr-plugin')
 const _ = require('lodash')
 const process = require('process')
 const boom = require('boom')
 const request = require('request')
-const defaultSolrIndexFields = require('./solr-index-fields.json')
+const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class SolrService {
   boot (options, callback) {
     this.solrUrl = process.env.SOLR_URL === undefined ? 'http://localhost:8983/solr' : process.env.SOLR_URL
-    options.messages.info(`Using Solr... (${this.solrUrl})`)
+    debug('SOLR_URL: ', process.env.SOLR_URL)
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
-      options.messages.info('WARNING: no search-doc configuration found')
-      this.solrIndexFields = []
+      options.messages.info('WARNING: no search-docs configuration found')
+      this.solrSchemaFields = []
       this.createViewSQL = null
       callback(null)
     } else {
+      options.messages.info(`Using Solr... (${this.solrUrl})`)
+
       this.client = options.bootedServices.storage.client
       if (!this.client) {
         callback(boom.notFound('failed to boot solr service: no database client available'))
       } else {
-        if (options.config.solrIndexFields === undefined) {
-          this.solrIndexFields = SolrService.constructSolrIndexFieldsArray(defaultSolrIndexFields)
+        if (options.config.solrSchemaFields === undefined) {
+          this.solrSchemaFields = SolrService.constructSolrSchemaFieldsArray(defaultSolrSchemaFields)
         } else {
-          this.solrIndexFields = SolrService.constructSolrIndexFieldsArray(options.config.solrIndexFields)
+          this.solrSchemaFields = SolrService.constructSolrSchemaFieldsArray(options.config.solrSchemaFields)
         }
 
         this.createViewSQL = this.buildCreateViewStatement(
           SolrService.constructModelsArray(options.blueprintComponents.models),
           SolrService.constructSearchDocsArray(options.blueprintComponents.searchDocs))
         if (this.createViewSQL) {
-          this.client.query(this.createViewSQL, [], callback)
+          this.client.query(this.createViewSQL, [], () => {
+            debug('Database view created with SQL: ', this.createViewSQL)
+            callback(null)
+          })
         }
       }
     }
@@ -58,16 +63,16 @@ class SolrService {
     return searchDocsArray
   }
 
-  static constructSolrIndexFieldsArray (fields) {
-    const solrIndexFieldsArray = []
+  static constructSolrSchemaFieldsArray (fields) {
+    const solrSchemaFieldsArray = []
     for (const field of fields) {
-      solrIndexFieldsArray.push([field, ''])
+      solrSchemaFieldsArray.push([field, ''])
     }
-    return solrIndexFieldsArray
+    return solrSchemaFieldsArray
   }
 
   buildSelectStatement (model, searchDoc) {
-    const columns = this.solrIndexFields.map(
+    const columns = this.solrSchemaFields.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
         const defaultValue = solrDefault[1]

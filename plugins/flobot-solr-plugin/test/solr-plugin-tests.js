@@ -32,7 +32,7 @@ describe('flobot-solr-plugin tests', function () {
           path.resolve(__dirname, './fixtures/school-blueprint')
         ],
         config: {
-          solrIndexFields: [
+          solrSchemaFields: [
             'id',
             'actorName',
             'characterName'
