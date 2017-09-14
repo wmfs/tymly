@@ -108,9 +108,8 @@ class SolrService {
 
   buildDataImportPost (command, core) {
     const uniqueIdentifier = new Date().getTime()
-    const url = `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`
     return {
-      url: url,
+      url: `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
       form: {
         'clean': true,
         'command': command,

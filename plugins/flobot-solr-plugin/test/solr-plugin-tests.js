@@ -11,8 +11,11 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const studentsModels = require('./fixtures/school-blueprint/models/students.json')
 const studentsSearchDocs = require('./fixtures/school-blueprint/search-docs/students.json')
 
-const studentsAndStaffModels = require('./fixtures/school-blueprint/test-resources/students-and-staff-models.json')
-const studentsAndStaffSearchDocs = require('./fixtures/school-blueprint/test-resources/students-and-staff-search-docs.json')
+// note that models usually inherit their namespace from the blueprint.json file.
+// the studentsAndStaffModels json files have explicitly defined the namespaces as
+// they are used by tests as-is, and so flobot will automatically "inherit" it
+const studentsAndStaffModels = require('./fixtures/test-resources/students-and-staff-models.json')
+const studentsAndStaffSearchDocs = require('./fixtures/test-resources/students-and-staff-search-docs.json')
 
 describe('flobot-solr-plugin tests', function () {
   let solrService
