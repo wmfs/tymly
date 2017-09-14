@@ -19,7 +19,7 @@
     "read-pkg-up": "^2.0.0",
     "split": "^1.0.0",
     "sprintf-js": "^1.0.3",
-    "version": "0.0.4",
+    "statebox": "0.0.4",
     "static-eval": "^1.1.1",
     "underscore-query": "^3.3.2",
     "upath": "^1.0.0",
