@@ -52,6 +52,11 @@ describe('flobot-solr-plugin tests', function () {
     )
   })
 
+  it('should default to local solr instance if not set', () => {
+    expect(solrService.solrUrl).to.be.a('string')
+    expect(solrService.solrUrl).to.eql('http://localhost:8983/solr')
+  })
+
   it('should generate a SQL SELECT statement', () => {
     const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
 
