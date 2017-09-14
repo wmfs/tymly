@@ -137,7 +137,7 @@ class SolrService {
 
   executeSolrDeltaReindex (core, cb) {
     request.post(
-      SolrService.buildDataImportPost('delta-import', core),
+      this.buildDataImportPost('delta-import', core),
       function (err, response, body) {
         if (err) {
           cb(err)
