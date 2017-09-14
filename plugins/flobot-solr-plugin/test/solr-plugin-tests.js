@@ -107,6 +107,18 @@ describe('flobot-solr-plugin tests', function () {
     )
   })
 
+  // it('should instruct apache solr to index data from the view', (done) => {
+  //   solrService.executeSolrFullReindex('addressbase', (err, solrResponse) => {
+  //     expect(err).to.eql(null)
+  //     if (err) {
+  //       debug(err)
+  //     } else {
+  //       debug('total number of database rows indexed: ', solrResponse.statusMessages['Total Rows Fetched'])
+  //     }
+  //     done()
+  //   })
+  // })
+
   it('should cleanup test resources', (done) => {
     sqlScriptRunner(
       './db-scripts/cleanup.sql',

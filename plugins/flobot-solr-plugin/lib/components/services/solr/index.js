@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const debug = require('debug')('flobot-solr-plugin')
+// const debug = require('debug')('flobot-solr-plugin')
 const process = require('process')
 const boom = require('boom')
 const request = require('request')
@@ -14,7 +14,7 @@ class SolrService {
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
       options.messages.info('WARNING: no search-doc configuration found')
-      this.fields = []
+      this.solrIndexFields = []
       this.createViewSQL = null
       callback(null)
     } else {
@@ -23,16 +23,17 @@ class SolrService {
         callback(boom.notFound('failed to boot solr service: no database client available'))
       } else {
         if (options.config.solrIndexFields === undefined) {
-          this.fields = SolrService.constructSolrIndexFieldsArray(defaultSolrIndexFields)
+          this.solrIndexFields = SolrService.constructSolrIndexFieldsArray(defaultSolrIndexFields)
         } else {
-          this.fields = SolrService.constructSolrIndexFieldsArray(options.config.solrIndexFields)
+          this.solrIndexFields = SolrService.constructSolrIndexFieldsArray(options.config.solrIndexFields)
         }
 
         this.createViewSQL = this.buildCreateViewStatement(
           SolrService.constructModelsArray(options.blueprintComponents.models),
           SolrService.constructSearchDocsArray(options.blueprintComponents.searchDocs))
-
-        this.client.query(this.createViewSQL, [], callback)
+        if (this.createViewSQL) {
+          this.client.query(this.createViewSQL, [], callback)
+        }
       }
     }
   }
@@ -57,16 +58,16 @@ class SolrService {
     return searchDocsArray
   }
 
-  static constructSolrIndexFieldsArray (solrIndexFields) {
+  static constructSolrIndexFieldsArray (fields) {
     const solrIndexFieldsArray = []
-    for (const field of solrIndexFields) {
+    for (const field of fields) {
       solrIndexFieldsArray.push([field, ''])
     }
     return solrIndexFieldsArray
   }
 
   buildSelectStatement (model, searchDoc) {
-    const columns = this.fields.map(
+    const columns = this.solrIndexFields.map(
       solrDefault => {
         const solrFieldName = solrDefault[0]
         const defaultValue = solrDefault[1]
@@ -98,62 +99,51 @@ class SolrService {
       }
     }
 
-    return `CREATE OR REPLACE VIEW fbot.solr_data AS \n${selects.join('\nUNION\n')};`
+    if (selects.length !== 0) {
+      return `CREATE OR REPLACE VIEW fbot.solr_data AS \n${selects.join('\nUNION\n')};`
+    } else {
+      return null
+    }
+  }
+
+  buildDataImportPost (command, core) {
+    const uniqueIdentifier = new Date().getTime()
+    const url = `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`
+    return {
+      url: url,
+      form: {
+        'clean': true,
+        'command': command,
+        'commit': true,
+        'core': core,
+        'name': 'dataimport',
+        'optimize': false,
+        'verbose': false
+      }
+    }
   }
 
   executeSolrFullReindex (core, cb) {
-    const uniqueIdentifier = new Date().getTime()
-    const url = `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=on&wt=json`
-
     request.post(
-      {
-        url: url,
-        form: {
-          'clean': true,
-          'command': 'full-import',
-          'commit': true,
-          'core': core,
-          'name': 'dataimport',
-          'optimize': false,
-          'verbose': false
-        }
-      },
+      this.buildDataImportPost('full-import', core),
       function (err, response, body) {
         if (err) {
-          debug('solr dataimport command failed', err)
           cb(err)
         } else {
-          debug(body)
-          cb(null)
+          cb(null, JSON.parse(body))
         }
       }
     )
   }
 
   executeSolrDeltaReindex (core, cb) {
-    const uniqueIdentifier = new Date().getTime()
-    const url = `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=on&wt=json`
-
     request.post(
-      {
-        url: url,
-        form: {
-          'clean': true,
-          'command': 'delta-import',
-          'commit': true,
-          'core': core,
-          'name': 'dataimport',
-          'optimize': false,
-          'verbose': false
-        }
-      },
+      SolrService.buildDataImportPost('delta-import', core),
       function (err, response, body) {
         if (err) {
-          debug('solr dataimport command failed', err)
           cb(err)
         } else {
-          debug(body)
-          cb(null)
+          cb(null, JSON.parse(body))
         }
       }
     )
