@@ -13,6 +13,7 @@ class SolrService {
     options.messages.info(`Using Solr... (${this.solrUrl})`)
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
+      options.messages.info('WARNING: no search-doc configuration found')
       this.fields = []
       this.createViewSQL = null
       callback(null)
