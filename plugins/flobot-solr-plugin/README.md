@@ -1,6 +1,10 @@
 # flobot-solr-plugin
 
-> Plugin which handles interaction with Apache Solr
+> This plugin handles interaction with Apache Solr.
+
+On flobot startup, this plugin searches the loaded blueprints for models that have properties which should be indexed by Apache Solr.  It then creates a database view referencing those properties.  This service also provides functions to instruct Apache Solr to index data from a database table/view.
+
+See the test blueprint in /test/fixtures/school-blueprint for an example of how to do this.
 
 ## <a name="install"></a>Install
 ```bash
