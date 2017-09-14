@@ -1,7 +1,7 @@
 'use strict'
 
-const _ = require('lodash')
 // const debug = require('debug')('flobot-solr-plugin')
+const _ = require('lodash')
 const process = require('process')
 const boom = require('boom')
 const request = require('request')
