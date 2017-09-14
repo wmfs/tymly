@@ -9,7 +9,6 @@ const defaultSolrIndexFields = require('./solr-index-fields.json')
 
 class SolrService {
   boot (options, callback) {
-    this.viewNamespace = 'fbot'
     this.solrUrl = process.env.SOLR_URL === undefined ? 'http://localhost:8983/solr' : process.env.SOLR_URL
     options.messages.info(`Using Solr... (${this.solrUrl})`)
 
@@ -19,50 +18,50 @@ class SolrService {
       callback(null)
     } else {
       this.client = options.bootedServices.storage.client
-
       if (!this.client) {
         callback(boom.notFound('failed to boot solr service: no database client available'))
       } else {
         if (options.config.solrIndexFields === undefined) {
-          this.fields = this.constructFieldArray(defaultSolrIndexFields)
+          this.fields = SolrService.constructSolrIndexFieldsArray(defaultSolrIndexFields)
         } else {
-          this.fields = this.constructFieldArray(options.config.solrIndexFields)
+          this.fields = SolrService.constructSolrIndexFieldsArray(options.config.solrIndexFields)
         }
+
         this.createViewSQL = this.buildCreateViewStatement(
-          this.constructModelArray(options.blueprintComponents.models),
-          this.constructSearchAttributeArray(options.blueprintComponents.searchDocs))
+          SolrService.constructModelsArray(options.blueprintComponents.models),
+          SolrService.constructSearchDocsArray(options.blueprintComponents.searchDocs))
 
         this.client.query(this.createViewSQL, [], callback)
       }
     }
   }
 
-  constructModelArray (models) {
-    let modelArray = []
+  static constructModelsArray (models) {
+    let modelsArray = []
     for (const modelName in models) {
       if (models.hasOwnProperty(modelName)) {
-        modelArray.push(models[modelName])
+        modelsArray.push(models[modelName])
       }
     }
-    return modelArray
+    return modelsArray
   }
 
-  constructSearchAttributeArray (searchDocs) {
-    let attributes = []
+  static constructSearchDocsArray (searchDocs) {
+    let searchDocsArray = []
     for (const searchDocName in searchDocs) {
       if (searchDocs.hasOwnProperty(searchDocName)) {
-        attributes.push(searchDocs[searchDocName])
+        searchDocsArray.push(searchDocs[searchDocName])
       }
     }
-    return attributes
+    return searchDocsArray
   }
 
-  constructFieldArray (solrIndexFields) {
-    const fieldArray = []
+  static constructSolrIndexFieldsArray (solrIndexFields) {
+    const solrIndexFieldsArray = []
     for (const field of solrIndexFields) {
-      fieldArray.push([field, ''])
+      solrIndexFieldsArray.push([field, ''])
     }
-    return fieldArray
+    return solrIndexFieldsArray
   }
 
   buildSelectStatement (model, searchDoc) {
@@ -79,6 +78,7 @@ class SolrService {
         return `${mappedValue || defaultValue} AS ${_.snakeCase(solrFieldName)}`
       }
     )
+
     return `SELECT ${columns.join(', ')} FROM ${_.snakeCase(model.namespace)}.${_.snakeCase(model.title)}`
   }
 
@@ -92,12 +92,12 @@ class SolrService {
           break
         }
       }
-      if (currentSearchDoc != null) {
+      if (currentSearchDoc !== null) {
         selects.push(this.buildSelectStatement(model, currentSearchDoc))
       }
     }
 
-    return `CREATE OR REPLACE VIEW ${this.viewNamespace}.solr_data AS \n${selects.join('\nUNION\n')};`
+    return `CREATE OR REPLACE VIEW fbot.solr_data AS \n${selects.join('\nUNION\n')};`
   }
 
   executeSolrFullReindex (core, cb) {

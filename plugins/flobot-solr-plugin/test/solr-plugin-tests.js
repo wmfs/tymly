@@ -96,7 +96,7 @@ describe('flobot-solr-plugin tests', function () {
   })
 
   it('should return 19 rows when selecting from the view', (done) => {
-    client.query(`SELECT * FROM ${solrService.viewNamespace}.solr_data ORDER BY character_name ASC;`, [],
+    client.query(`SELECT * FROM fbot.solr_data ORDER BY character_name ASC;`, [],
       function (err, result) {
         expect(err).to.eql(null)
         expect(result.rowCount).to.eql(19)
