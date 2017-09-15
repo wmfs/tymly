@@ -8,6 +8,8 @@ const expect = require('chai').expect
 const pg = require('pg')
 const supercopy = require('./../lib')
 const path = require('path')
+const fs = require('fs')
+const converter = require('converter')
 
 describe('Run some basic tests', function () {
   const connectionString = process.env.PG_CONNECTION_STRING
@@ -30,6 +32,29 @@ describe('Run some basic tests', function () {
         done()
       }
     )
+  })
+
+  it('Should check to see if any XML files are present within the input files', function (done) {
+    if (fs.existsSync(__dirname + '/fixtures/examples/people.xml')){
+      console.log('FOUND SOME XML BOYS')
+      done()
+    } else {
+      console.log('DIDNT FIND ANY XML BOYS')
+      done()
+    }
+  })
+
+  it('If XML found should convert to CSV and place within "inserts" subdir', function (done){
+    console.log('*****printing to' + __dirname + '/fixtures/examples/people.xml')
+    let reader = fs.createReadStream(__dirname + '/fixtures/examples/people.xml')
+    let writer = fs.createWriteStream(__dirname + '/fixtures/examples/output.csv')
+    let options = {
+      from: 'xml',
+      to: 'csv'
+    }
+    let convert = converter(options)
+    reader.pipe(convert).pipe(writer)
+    done()
   })
 
   it('Should supercopy some people', function (done) {

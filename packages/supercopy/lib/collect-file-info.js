@@ -38,7 +38,7 @@ module.exports = function (options, callback) {
                         actionItems,
                         function (actionItem, cb2) {
                           const filePath = path.join(dirPath, actionItem)
-
+                          console.log(filePath)
                           fs.lstat(
                             filePath,
                             function (err, fileStats) {
