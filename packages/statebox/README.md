@@ -1,5 +1,5 @@
 # statebox
-> Orchestrate Node functions using Amazon States Language
+> Orchestrate Node functions using [Amazon States Language](https://states-language.net/spec.html)
 
 ## Useful links
 
@@ -20,81 +20,85 @@ const Statebox = require('statebox')
 const statebox = new Statebox()
 
 // STEP 1:
-// Register some 'module' resources (i.e. Javascript 
-// classes with 'init' and 'run' methods) that state 
-// machines can then refer to...
+// Create some 'module' resources (i.e. Javascript 
+// classes with 'run' and optional 'init' methods) 
+// that state machines can then refer to...
 // -------------------------------------------------
 
 statebox.createModuleResources(
   {
     // Simple module to add two numbers together
     add: class Add {
-      init (resourceConfig, env, callback) {
-        callback(null)
-      }
       run (event, context) {
         context.sendTaskSuccess(event.number1 + event.number2)
       }
     },
     // Simple module to subtract one number from another
     subtract: class Subtract {
+      // Init methods are optional, but all allow  
+      // resource-instances to be configured...
       init (resourceConfig, env, callback) {
-        callback(null)
-      }
+          callback(null)
+        }
       run (event, context) {
-        context.sendTaskSuccess(event.number1 + event.number2)
+        context.sendTaskSuccess(event.number1 - event.number2)
       }      
     }
   }
 )
 
 // STEP 2:
-// Create a new 'calculator' state machine
-// using Amazon States Language...
+// Next create a new 'calculator' state
+// machine using Amazon States Language...
 // ---------------------------------------
 
-const info = statebox.createStateMachine(
-  'calculator',
+const info = statebox.createStateMachines(
   {
-    Comment: 'A simple calculator',
-    StartAt: 'OperatorChoice',
-    States: {
-      OperatorChoice: {
-        Type: 'Choice',
-        Choices: [
-          {
-            Variable: '$.operator',
-            StringEquals: '+',
-            Next: 'Add'
-          },
-          {
-            Variable: '$.operator',
-            StringEquals: '-',
-            Next: 'Subtract'
-          }
-        ]
-      },
-      Add: {
-        Type: 'Task',
-        InputPath: '$.numbers',
-        Resource: 'module:add', // i.e something added via createModuleResource()
-        ResultPath : '$.result',
-        End: true
-      },
-      Subtract: {
-        Type: 'Task',
-        InputPath: '$.numbers',
-        Resource: 'module:subtract',
-        ResultPath : '$.result',
-        End: true
+    'calculator': {
+      Comment: 'A simple calculator',
+      StartAt: 'OperatorChoice',
+      States: {
+        OperatorChoice: {
+          Type: 'Choice',
+          Choices: [
+            {
+              Variable: '$.operator',
+              StringEquals: '+',
+              Next: 'Add'
+            },
+            {
+              Variable: '$.operator',
+              StringEquals: '-',
+              Next: 'Subtract'
+            }
+          ]
+        },
+        Add: {
+          Type: 'Task',
+          InputPath: '$.numbers',
+          Resource: 'module:add', // See createModuleResources()
+          ResultPath : '$.result',
+          End: true
+        },
+        Subtract: {
+          Type: 'Task',
+          InputPath: '$.numbers',
+          Resource: 'module:subtract',
+          ResultPath : '$.result',
+          End: true
+        }
       }
-    }
-  }
+    }  
+  },
+  {}, // 'env': An environment/context/sandbox
+  function (err) {
+    // All good-to-go!
+  }    
 )
 
 // STEP 3:
-// Create a new execution on a state machine
-// -----------------------------------------
+// Start a new execution on a state machine
+// ----------------------------------------
 
 statebox.startExecution(
   {
@@ -126,12 +130,9 @@ statebox.startExecution(
   }
 )
 
-// --            ~~ Passing of time ~~~
-// --        TODO: Implement Statebox events
-
 // STEP 4:
 // Look at the results...
-// -----------------------------------------
+// ----------------------
 statebox.describeExecution(
   '01e1e288-9533-11e7-8fec-54d168e2e610',
   function (err, result) {
@@ -153,8 +154,7 @@ statebox.describeExecution(
     //   startDate: '2017-09-10T09:59:50.711Z'
     // }
   }
-)
-    
+)  
 ```
 
 ## <a name='test'></a>Testing

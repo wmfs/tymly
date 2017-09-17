@@ -1,10 +1,6 @@
 'use strict'
 
 module.exports = class A {
-  init (resourceConfig, env, callback) {
-    callback(null)
-  }
-
   run (event, context) {
     const list = event.results
     setTimeout(
