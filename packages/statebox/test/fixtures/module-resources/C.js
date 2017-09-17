@@ -1,15 +1,19 @@
 'use strict'
 
-module.exports = class A {
+module.exports = class C {
+  init (resourceConfig, env, callback) {
+    callback(null)
+  }
+
   run (event, context) {
     const list = event.results
     setTimeout(
       function () {
-        console.log('A')
-        list.push('A')
+        console.log('C')
+        list.push('C')
         context.sendTaskSuccess({results: list})
       },
-      500
+      250
     )
   }
 }

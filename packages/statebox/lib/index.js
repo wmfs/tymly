@@ -22,18 +22,22 @@ class Statebox {
     this.options.parallelBranchTracker = new ParallelBranchTracker()
   }
 
-  createModuleResource (name, functionClass) {
-    resources.createModule(name, functionClass)
+  createModuleResource (moduleName, moduleClass) {
+    resources.createModule(moduleName, moduleClass)
+  }
+
+  createModuleResources (moduleResources) {
+    resources.createModules(moduleResources)
   }
 
   validatStateMachineDefinition (name, definition) {
     stateMachines.validateStateMachineDefinition(name, definition)
   }
 
-  createStateMachine (name, definition, callback) {
-    stateMachines.createStateMachine(
-      name,
-      definition,
+  createStateMachines (stateMachineDefinitions, env, callback) {
+    stateMachines.createStateMachines(
+      stateMachineDefinitions,
+      env,
       this.options,
       callback)
   }

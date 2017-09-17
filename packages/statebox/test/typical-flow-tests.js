@@ -5,8 +5,8 @@ const _ = require('lodash')
 const chai = require('chai')
 const expect = chai.expect
 
-// State Resources
-const stateResources = require('./fixtures/state-resources')
+// Module Resources
+const moduleResources = require('./fixtures/module-resources')
 
 // stateMachines
 const stateMachines = require('./fixtures/state-machines')
@@ -22,20 +22,17 @@ describe('Simple stateMachine test', function () {
     statebox = new Statebox()
   })
 
-  it('should add some state resources', function () {
-    _.forOwn(
-      stateResources,
-      function (stateResource, stateResourceName) {
-        statebox.createModuleResource(stateResourceName, stateResource)
-      }
-    )
+  it('should add some module resources', function () {
+    statebox.createModuleResources(moduleResources)
   })
 
-  it('should add some state machines', function () {
-    _.forOwn(
+  it('should add some state machines', function (done) {
+    statebox.createStateMachines(
       stateMachines,
-      function (stateMachine, stateMachineName) {
-        statebox.createStateMachine(stateMachineName, stateMachine)
+      {},
+      function (err) {
+        expect(err).to.eql(null)
+        done()
       }
     )
   })

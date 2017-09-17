@@ -21,19 +21,30 @@ const statebox = new Statebox()
 
 // STEP 1:
 // Register some 'module' resources (i.e. Javascript 
-// functions) that state machines can refer to...
+// classes with 'init' and 'run' methods) that state 
+// machines can then refer to...
 // -------------------------------------------------
 
-statebox.createModuleResource(
-  'add',
-  function addTwoNumbers (event, context) {
-    context.sendTaskSuccess(event.number1 + event.number2)
-  }
-)
-statebox.createModuleResource(
-  'subtract',
-  function subtractOneNumberFromAnother (event, context) {
-    context.sendTaskSuccess(event.number1 - event.number2)
+statebox.createModuleResources(
+  {
+    // Simple module to add two numbers together
+    add: class Add {
+      init (resourceConfig, env, callback) {
+        callback(null)
+      }
+      run (event, context) {
+        context.sendTaskSuccess(event.number1 + event.number2)
+      }
+    },
+    // Simple module to subtract one number from another
+    subtract: class Subtract {
+      init (resourceConfig, env, callback) {
+        callback(null)
+      }
+      run (event, context) {
+        context.sendTaskSuccess(event.number1 + event.number2)
+      }      
+    }
   }
 )
 

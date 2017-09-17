@@ -5,6 +5,7 @@ const boom = require('boom')
 const jp = require('jsonpath')
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 const process = require('process')
+const _ = require('lodash')
 
 // TODO: http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
 class Context {
@@ -31,10 +32,10 @@ class Task extends BaseStateType {
     switch (this.resourceType) {
       case 'module':
         const moduleName = parts[1]
-        this.resource = resources.findModuleByName(moduleName)
-        if (!this.resource) {
+        this.ResourceClass = resources.findModuleByName(moduleName)
+        if (!this.ResourceClass) {
           // Should be picked-up by stateMachine validation before now
-          throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module '${moduleName}' not found`, moduleName))
+          throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module class '${moduleName}' not found`, moduleName))
         }
         break
     }
@@ -42,6 +43,20 @@ class Task extends BaseStateType {
     this.inputPath = stateDefinition.InputPath || '$'
     this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath)
     this.debug()
+  }
+
+  stateTypeInit (env, callback) {
+    const _this = this
+    this.resource = new this.ResourceClass()
+    if (_.isFunction(this.resource.init)) {
+      this.resource.init(
+        _this.definition.resourceConfig || {},
+        env,
+        callback
+      )
+    } else {
+      callback(null)
+    }
   }
 
   process (executionDescription) {
