@@ -24,9 +24,13 @@ class StateMachine {
         if (_.isFunction(state.stateTypeInit)) {
           state.stateTypeInit(
             env,
-            function () {
-              _this.states[stateName] = state
-              cb()
+            function (err) {
+              if (err) {
+                cb(err)
+              } else {
+                _this.states[stateName] = state
+                cb()
+              }
             }
           )
         } else {

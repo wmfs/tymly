@@ -50,7 +50,7 @@ class Task extends BaseStateType {
     this.resource = new this.ResourceClass()
     if (_.isFunction(this.resource.init)) {
       this.resource.init(
-        _this.definition.resourceConfig || {},
+        _this.definition.ResourceConfig || {},
         env,
         callback
       )
