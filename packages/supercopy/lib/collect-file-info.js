@@ -8,6 +8,13 @@ const debug = require('debug')('supercopy')
 
 module.exports = function (options, callback) {
   const info = {}
+  if (options.hasOwnProperty('truncateFirstTables')) {
+    info.truncates = []
+    for (const t of options.truncateFirstTables) {
+      info.truncates.push(`${options.schemaName}.${t}`)
+    }
+  }
+
   const rootDir = options.sourceDir
   debug(`Staring to collect file info for ${rootDir}`)
 

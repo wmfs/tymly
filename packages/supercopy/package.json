@@ -17,6 +17,7 @@
     "csv-string": "^2.3.2",
     "debug": "^2.6.8",
     "first-line": "^1.0.2",
+    "lodash": "^4.17.4",
     "pg": "^6.4.1",
     "pg-copy-streams": "^1.2.0",
     "upath": "^1.0.0"
