@@ -41,43 +41,47 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should execute helloWorld', function (done) {
-    statebox.startExecutionP(
-      {},  // input
-      'helloWorld', // state machine name
-      {}
-    )
-      .then(result => { executionName = result.executionName })
-      .then(() => done())
-      .catch(err => { assert(false, `startExecution failed - ${err}`) })
+  describe('helloWorld state machine', () => {
+    it('start', (done) => {
+      statebox.startExecutionP(
+        {},  // input
+        'helloWorld', // state machine name
+        {}
+      )
+        .then(result => { executionName = result.executionName })
+        .then(() => done())
+        .catch(err => { assert(false, `startExecution failed - ${err}`) })
+    })
+
+    it('should successfully complete helloWorld execution', (done) => {
+      statebox.waitUntilStoppedRunningP(executionName)
+        .then(executionDescription => {
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('helloWorld')
+          expect(executionDescription.currentStateName).to.eql('Hello World')
+        })
+        .then(() => done())
+    })
   })
 
-  it('should successfully complete helloWorld execution', function (done) {
-    statebox.waitUntilStoppedRunningP(executionName)
-      .then(executionDescription => {
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('helloWorld')
-        expect(executionDescription.currentStateName).to.eql('Hello World')
-      })
-      .then(() => done())
-  })
+  describe('helloThenWorld state machine', () => {
+    it('should execute helloThenWorld', async () => {
+      const result = await statebox.startExecutionP(
+        {},  // input
+        'helloThenWorld', // state machine name
+        {}
+      )
 
-  it('should execute helloThenWorld', async () => {
-    const result = await statebox.startExecutionP(
-      {},  // input
-      'helloThenWorld', // state machine name
-      {}
-    )
+      executionName = result.executionName
+    })
 
-    executionName = result.executionName
-  })
+    it('should successfully complete helloThenWorld execution', async () => {
+      const executionDescription = await statebox.waitUntilStoppedRunningP(executionName)
 
-  it('should successfully complete helloThenWorld execution', async () => {
-    const executionDescription = await statebox.waitUntilStoppedRunningP(executionName)
-
-    expect(executionDescription.status).to.eql('SUCCEEDED')
-    expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
-    expect(executionDescription.currentStateName).to.eql('World')
+      expect(executionDescription.status).to.eql('SUCCEEDED')
+      expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
+      expect(executionDescription.currentStateName).to.eql('World')
+    })
   })
 
   it('should execute helloThenFailure', function (done) {
