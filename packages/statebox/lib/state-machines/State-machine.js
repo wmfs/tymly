@@ -6,7 +6,6 @@ const async = require('async')
 const boom = require('boom')
 
 class StateMachine {
-
   init (stateMachineName, definition, env, options, callback) {
     const _this = this
     this.name = stateMachineName

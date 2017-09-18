@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 'use strict'
 
-const _ = require('lodash')
 const chai = require('chai')
 const expect = chai.expect
 

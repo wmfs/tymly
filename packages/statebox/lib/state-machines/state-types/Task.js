@@ -46,7 +46,6 @@ class Context {
   }
 
   resolveInputPaths (input, template) {
-
     if (_.isObject(input) && _.isObject(template)) {
       const clonedTemplate = _.cloneDeep(template)
       this._resolveInputPaths(input, clonedTemplate)
