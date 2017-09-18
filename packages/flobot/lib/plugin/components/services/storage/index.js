@@ -70,5 +70,7 @@ class MemoryStorageService {
 
 module.exports = {
   serviceClass: MemoryStorageService,
-  resourceConfigRefs: ['modelId']
+  refProperties: {
+    modelId: 'models'
+  }
 }

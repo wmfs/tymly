@@ -104,7 +104,7 @@ describe('Memory storage tests', function () {
         console.log(err)
         expect(err).to.eql(
           { name: 'DuplicatePrimaryKey',
-            message: 'Unable to create mode people because {"employeeNo":"1"} already exists'
+            message: "Unable to create model 'people' because {\"employeeNo\":\"1\"} already exists"
           }
         )
         done()
@@ -131,7 +131,7 @@ describe('Memory storage tests', function () {
       function (err) {
         expect(err).to.eql(
           { name: 'DuplicatePrimaryKey',
-            message: 'Unable to create mode people because {"employeeNo":"2"} already exists'
+            message: 'Unable to create model \'people\' because {"employeeNo":"2"} already exists'
           }
         )
         done()

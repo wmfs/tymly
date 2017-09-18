@@ -183,5 +183,5 @@ class RbacService {
 
 module.exports = {
   serviceClass: RbacService,
-  bootAfter: ['flobots', 'storage']
+  bootAfter: ['statebox', 'flobots', 'storage']
 }

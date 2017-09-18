@@ -35,15 +35,14 @@ class Rbac {
 
     let key
     let inheritList
-
     data.permissions.forEach(
             function (permission) {
               permission.allows.forEach(
 
                     function (allow) {
                       key = [
-                        'flow',
-                        permission.flowId,
+                        'stateMachine',
+                        permission.stateMachineName,
                         allow
                       ].join('.')
 
@@ -87,21 +86,21 @@ class Rbac {
     console.log('----------')
 
     let path
-    let flowId
+    let stateMachineName
     let domain
-    let flow
+    let stateMachine
     let actionName
     let action
     for (let domainName in this.index) {
       domain = this.index[domainName]
 
-      for (flowId in domain) {
-        flow = domain[flowId]
+      for (stateMachineName in domain) {
+        stateMachine = domain[stateMachineName]
 
-        for (actionName in flow) {
-          action = flow[actionName]
+        for (actionName in stateMachine) {
+          action = stateMachine[actionName]
 
-          path = [domainName, flowId, actionName, JSON.stringify(action)].join(' -> ')
+          path = [domainName, stateMachineName, actionName, JSON.stringify(action)].join(' -> ')
           console.log('  ', path)
         }
       }

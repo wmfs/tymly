@@ -5,7 +5,7 @@ const flobot = require('../lib')
 const path = require('path')
 const STATE_MACHINE_NAME = 'fbotTest_upsertACatFindACat_1_0'
 
-describe.only('Memory flobot-storage tests', function () {
+describe('Memory flobot-storage tests', function () {
   this.timeout(5000)
 
   let statebox

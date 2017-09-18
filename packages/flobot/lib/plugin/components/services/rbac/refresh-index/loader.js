@@ -59,7 +59,7 @@ module.exports = function rbacDataLoader (
 
   async.parallel(
         tasks,
-        function (err, results) {
+        function (err) {
           if (err) {
             callback(err)
           } else {
