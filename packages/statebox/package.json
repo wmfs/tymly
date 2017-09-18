@@ -1,12 +1,18 @@
 {
   "name": "statebox",
   "description": "Orchestrate Node functions using Amazon States Language",
-  "keywords": ["fsm", "finite", "state", "machine", "aws"],
-  "version": "0.0.4",
+  "keywords": [
+    "fsm",
+    "finite",
+    "state",
+    "machine",
+    "aws"
+  ],
+  "version": "0.0.5",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "asl-choice-processor": "^0.0.2",
+    "asl-choice-processor": "^0.0.3",
     "async": "^2.5.0",
     "boom": "^5.2.0",
     "debug": "^2.6.8",

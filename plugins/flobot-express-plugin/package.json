@@ -1,7 +1,7 @@
 {
   "name": "flobot-express-plugin",
   "description": "Exposes the Flobot framework via an Express.js web app.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "flobot": "^0.0.13",
-    "flobot-forms-plugin": "^0.0.6",
+    "flobot": "^0.0.14",
+    "flobot-forms-plugin": "^0.0.7",
     "mocha": "^3.5.0",
     "restler": "^3.4.0",
     "safe-buffer": "^5.1.1",

@@ -1,7 +1,7 @@
 {
   "name": "flobot-pg-plugin",
   "description": "Replace Flobot's out-the-box memory storage with PostgreSQL",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -11,17 +11,17 @@
     "dottie": "^2.0.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.1",
-    "pg-delta-file": "^0.0.3",
-    "pg-diff-sync": "^0.0.9",
-    "pg-info": "^0.0.13",
-    "pg-model": "^0.0.7",
-    "pg-telepods": "^0.0.4",
-    "relationize": "^0.0.17",
-    "supercopy": "^0.0.4"
+    "pg-delta-file": "^0.0.4",
+    "pg-diff-sync": "^0.0.10",
+    "pg-info": "^0.0.14",
+    "pg-model": "^0.0.8",
+    "pg-telepods": "^0.0.5",
+    "relationize": "^0.0.18",
+    "supercopy": "^0.0.5"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "flobot": "^0.0.13",
+    "flobot": "^0.0.14",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"
   },
