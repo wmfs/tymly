@@ -42,6 +42,17 @@ class Statebox {
       callback)
   }
 
+  createStateMachinesP (stateMachineDefinitions, env) {
+    return new Promise((resolve, reject) => {
+      this.createStateMachines(stateMachineDefinitions, env, (err, result) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(result)
+      })
+    })
+  }
+
   deleteStateMachine (name) {
     stateMachines.deleteStateMachine(name)
   }
