@@ -121,21 +121,21 @@ describe('PostgreSQL storage tests', function () {
   })
 
   it('Should uninstall test schemas', function (done) {
-      sqlScriptRunner(
-        [
-          'uninstall.sql'
-        ],
+    sqlScriptRunner(
+      [
+        'uninstall.sql'
+      ],
         client,
         function (err) {
           expect(err).to.equal(null)
           done()
         }
       )
-    }
+  }
   )
 
   it('Should end db client', function () {
-      client.end()
-    }
+    client.end()
+  }
   )
 })
