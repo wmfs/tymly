@@ -6,7 +6,8 @@
 ```bash
 $ npm install supercopy --save
 ```
-Because Supercopy uses a native library please make sure you have windows-build-tools installed
+Because Supercopy uses a native library please make sure you have windows-build-tools installed.
+This must be done in Windows PowerShell as admin!!!
 ```bash
 $ npm install -g windows-build-tools
 ```
