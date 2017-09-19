@@ -10,7 +10,7 @@ function preprocess (options, callback) {
   if (!options.triggerElement) {
     return callback()
   }
-  const csvOutput = path.resolve(options.sourceDir, './inserts/adults.csv')
+  const csvOutput = path.resolve(options.sourceDir, './inserts/output.csv')
   convertToCsv(options.triggerElement, options.xmlSourceFile, csvOutput, callback)
 }
 
