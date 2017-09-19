@@ -5,7 +5,9 @@ const assert = require('assert')
 const convertToCsv = require('../lib/convert-to-csv.js')
 const RecordHandler = convertToCsv.RecordHandler
 const createParser = convertToCsv.createParser
-const headerGenerator = convertToCsv.headerGenerator
+const headerHandler = convertToCsv.headerHandler
+const getHeaders = convertToCsv.getHeaders
+const writeHeaders = convertToCsv.writeHeaders
 
 class TextStream {
   constructor () {
@@ -89,14 +91,46 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
   })
 
   describe("header generator", () => {
+    const headerTests = [
+      [
+        "simple one line",
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>",
+        "Name, Address, Footer\n"
+      ],
+      [
+        "two lines",
+        "<Wrap>" +
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
+        "</Wrap>",
+        "Name, Address, Footer\n"
+      ],
+      [
+        "nested markup",
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address><Footer>0</Footer></EstablishmentDetail>",
+        "Name, Line1, Footer\n"
+      ]
+    ]
+
+   for (const test of headerTests) {
+     it(test[0], () => {
+       const outStream = new TextStream()
+       const parser = getHeaders('EstablishmentDetail', outStream)
+       parser.write(test[1])
+       const csv = outStream.text
+       expect(csv).to.equal(test[2])
+     })
+   }
+  })
+
+  it('combine header get, and data get', () => {
     const outStream = new TextStream()
-    const hGen = new headerGenerator('EstablishmentDetail', outStream)
-
-    it("Should grab headers from XML", () => {
-
-      hGen.getHeaders("EstablishmentDetail")
-      expect(outStream).to.equal("Name, Address, Footer")
-    })
+    const headerParser = getHeaders('EstablishmentDetail', outStream)
+    const contentParser = createParser('EstablishmentDetail', outStream)
+    headerParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
+    contentParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
+    const csv = outStream.text
+    expect(csv).to.equal("Name, Line1\nBill's Kebabs, The Street\n")
   })
 
   describe("chewing FSA data", () => {
@@ -110,6 +144,14 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
       convertToCsv('EstablishmentDetail', xmlPath, csvPath, () => {
         expect(fs.existsSync(csvPath)).to.equal(true)
         expect(fs.statSync(csvPath).size).to.not.equal(0)
+
+        const wholeFile = fs.readFileSync(csvPath, 'utf-8')
+        const lines = wholeFile.split('\n')
+        expect(lines.length).to.equal(5)
+
+        expect(lines[0].startsWith('FHRSID, LocalAuthorityBusinessID')).to.equal(true)
+        expect(lines[1].startsWith('584976, 32556')).to.equal(true)
+
         done()
       })
     })
