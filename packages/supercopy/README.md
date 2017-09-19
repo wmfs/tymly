@@ -29,7 +29,7 @@ supercopy(
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
-    truncateFirstTables: ['departments', 'employees'],
+    truncateFirstTables: true,
     debug: true
   },
   function (err) {
@@ -47,7 +47,7 @@ supercopy(
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
-    truncateFirstTables: ['departments', 'employees'],
+    truncateFirstTables: true,
     debug: true,
     triggerElement: 'word-to-split-records-on',
     xmlSourceFile: '/some/dir/with/xml/file'

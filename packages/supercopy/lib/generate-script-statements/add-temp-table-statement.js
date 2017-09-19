@@ -1,3 +1,5 @@
+'use strict'
+
 const _ = require('lodash')
 
 module.exports = function addTempTableStatement (statements, action, schemaName, tableName) {

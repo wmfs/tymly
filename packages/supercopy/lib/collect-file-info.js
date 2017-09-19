@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 const getColumnNames = require('./get-column-names')
@@ -17,10 +19,13 @@ module.exports = function (options, callback) {
 
 async function collect (options) {
   const info = {}
-  if (options.hasOwnProperty('truncateFirstTables')) {
-    info.truncates = []
-    for (const t of options.truncateFirstTables) {
-      info.truncates.push(`${options.schemaName}.${t}`)
+  if (options.hasOwnProperty('truncateTables') && options.truncateTables === true) {
+    if (options.hasOwnProperty('topDownTableOrder') && options.topDownTableOrder.length !== 0) {
+      info.truncateTables = options.topDownTableOrder.slice(0) // clones array
+      info.truncateTables.reverse()
+      debug(info)
+    } else {
+      debug('WARNING: truncateTables is set to true, but topDownTableOrder has not been specified (or is empty) (so truncation will not be carried out)')
     }
   }
 

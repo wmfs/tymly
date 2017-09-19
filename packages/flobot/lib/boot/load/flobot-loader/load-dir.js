@@ -8,7 +8,7 @@ const parseMetaJson = require('./parse-meta-json')
 const loadComponentDir = require('./load-component-dir')
 const fileLoaders = require('./file-loaders/index')
 const applyModifiers = require('./apply-modifiers/index')
-const COMPONENT_DIR_BLACKLIST = ['test']
+const COMPONENT_DIR_BLACKLIST = ['test', 'nodeModules']
 
 module.exports = function loadDir (rootDir, allComponents, options) {
   let quiet
