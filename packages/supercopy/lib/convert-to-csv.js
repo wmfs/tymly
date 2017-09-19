@@ -30,7 +30,7 @@ class RecordHandler {
     }
     if (this.capture) {
       if (!this.first) {
-        this.outputStream.write(', ')
+        this.outputStream.write(',')
       }
       this.outputStream.write(this.buffer)
       this.first = false
@@ -72,7 +72,7 @@ class HeaderHandler {
     }
     if (this.capture) {
       if (!this.first) {
-        this.outputStream.write(', ')
+        this.outputStream.write(',')
       }
       this.outputStream.write(name)
       this.first = false
@@ -125,7 +125,6 @@ function parseXmlFile (triggerElement, xmlFilePath, csvOut, callback) {
 
 function convertToCsv (triggerElement, xmlFilePath, csvFilePath, callback) {
   const csvOut = fs.createWriteStream(csvFilePath)
-
   readXmlHeader(triggerElement, xmlFilePath, csvOut, () => {
     parseXmlFile(triggerElement, xmlFilePath, csvOut, () => {
       csvOut.end()

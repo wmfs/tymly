@@ -68,19 +68,19 @@ describe('Run some basic tests', function () {
   })
 
   it('Should return correctly modified children rows', function (done) {
-    client.query(
-      'select child_no,first_name,last_name from supercopy_test.children order by child_no',
-      function (err, result) {
-        expect(err).to.equal(null)
-        expect(result.rows).to.eql(
-          [
-            {'child_no': 10, 'first_name': 'Lisa', 'last_name': 'Simpson'},
-            {'child_no': 30, 'first_name': 'Bart', 'last_name': 'Simpson'},
-            {'child_no': 70, 'first_name': 'Milhouse', 'last_name': 'Van Houten'}
-          ]
-        )
-        done()
-      }
+      client.query(
+        'select child_no,first_name,last_name from supercopy_test.children order by child_no',
+        function (err, result) {
+          expect(err).to.equal(null)
+          expect(result.rows).to.eql(
+            [
+              {'child_no': 10, 'first_name': 'Lisa', 'last_name': 'Simpson'},
+              {'child_no': 30, 'first_name': 'Bart', 'last_name': 'Simpson'},
+              {'child_no': 70, 'first_name': 'Milhouse', 'last_name': 'Van Houten'}
+            ]
+          )
+          done()
+        }
     )
   })
 

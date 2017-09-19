@@ -6,6 +6,11 @@
 ```bash
 $ npm install supercopy --save
 ```
+Because Supercopy uses a native library please make sure you have windows-build-tools installed
+```bash
+$ npm install -g windows-build-tools
+```
+
 
 ## <a name="usage"></a>Usage
 
@@ -32,8 +37,21 @@ supercopy(
 )
 
 ```
-
-
+If XML files are to be processed before use in Supercopy please include the following in the options
+```javascript
+supercopy(
+  {
+    sourceDir: '/some/dir/with/csv/files',
+    headerColumnNamePkPrefix: '.',
+    topDownTableOrder: ['departments', 'employees'],
+    client: client,
+    schemaName: 'my_schema',
+    truncateFirstTables: ['departments', 'employees'],
+    debug: true,
+    triggerElement: 'word-to-split-records-on',
+    xmlSourceFile: '/some/dir/with/xml/file'
+  }
+```
 ## supercopy(`options`, `callback`)
 
 ### Options
