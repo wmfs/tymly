@@ -6,6 +6,12 @@
 ```bash
 $ npm install supercopy --save
 ```
+Because Supercopy uses a native library please make sure you have windows-build-tools installed.
+This must be done in Windows PowerShell as admin!!!
+```bash
+$ npm install -g windows-build-tools
+```
+
 
 ## <a name="usage"></a>Usage
 
@@ -23,6 +29,7 @@ supercopy(
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
+    truncateFirstTables: ['departments', 'employees'],
     debug: true
   },
   function (err) {
@@ -31,8 +38,21 @@ supercopy(
 )
 
 ```
-
-
+If XML files are to be processed before use in Supercopy please include the following in the options
+```javascript
+supercopy(
+  {
+    sourceDir: '/some/dir/with/csv/files',
+    headerColumnNamePkPrefix: '.',
+    topDownTableOrder: ['departments', 'employees'],
+    client: client,
+    schemaName: 'my_schema',
+    truncateFirstTables: ['departments', 'employees'],
+    debug: true,
+    triggerElement: 'word-to-split-records-on',
+    xmlSourceFile: '/some/dir/with/xml/file'
+  }
+```
 ## supercopy(`options`, `callback`)
 
 ### Options
@@ -44,6 +64,7 @@ supercopy(
 | `topDownTableOrder`   | `[string]` | An array of strings, where each string is a table name. Table inserts will occur in this order and deletes in reverse - use to avoid integrity-constraint errors. If no schema prefix is supplied to a table name, then it's inferred from `schemaName`. 
 | `client`              | `client`   | Either a [pg](https://www.npmjs.com/package/pg) client or pool (something with a `query()` method) that's already connected to a PostgreSQL database.
 | `schemaName`          | `string`   | Identifies a PostgreSQL schema where the tables that are to be affected by this copy be found.
+| `truncateFirstTables` | `[string]` | An array of strings where each string is a table name. All specified tables will be truncated first.
 | `debug`               | `boolean`  | Show debugging information on the console
 
 ### <a name="structure"></a>File structure

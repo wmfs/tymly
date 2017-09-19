@@ -16,10 +16,17 @@ module.exports = function (options, callback) {
 }
 
 async function collect (options) {
+  const info = {}
+  if (options.hasOwnProperty('truncateFirstTables')) {
+    info.truncates = []
+    for (const t of options.truncateFirstTables) {
+      info.truncates.push(`${options.schemaName}.${t}`)
+    }
+  }
+
   const rootDir = options.sourceDir
   debug(`Starting to collect file info for ${rootDir}`)
 
-  const info = { }
   const dirs = await directoriesUnder(rootDir)
   for (const dirPath of dirs) {
     debug(`+ ./${path.basename(dirPath)}:`)

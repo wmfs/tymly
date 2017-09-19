@@ -1,4 +1,5 @@
 {
+  "namespace": "fbot_test",
   "id": "students",
   "title": "Students",
   "description": "List of Students",

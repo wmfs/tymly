@@ -1,0 +1,326 @@
+{
+  "FHRSEstablishment": {
+    "Header": [
+      {
+        "ExtractDate": [
+          "2017-09-15"
+        ],
+        "ItemCount": [
+          "27962"
+        ],
+        "ReturnCode": [
+          "Success"
+        ],
+        "PageNumber": [
+          "2"
+        ],
+        "PageSize": [
+          "10"
+        ],
+        "PageCount": [
+          "2797"
+        ]
+      }
+    ],
+    "EstablishmentCollection": [
+      {
+        "xmlns:xsd": [
+          "http://www.w3.org/2001/XMLSchema"
+        ],
+        "xmlns:xsi": [
+          "http://www.w3.org/2001/XMLSchema-instance"
+        ],
+        "EstablishmentDetail": [
+          {
+            "FHRSID": [
+              "584976"
+            ],
+            "LocalAuthorityBusinessID": [
+              "32556"
+            ],
+            "BusinessName": [
+              "1 Stop Cafe & Fish Bar"
+            ],
+            "BusinessType": [
+              "Takeaway/sandwich shop"
+            ],
+            "BusinessTypeID": [
+              "7844"
+            ],
+            "AddressLine1": [
+              "Coniston House"
+            ],
+            "AddressLine2": [
+              "Neachells Lane"
+            ],
+            "AddressLine3": [
+              "Wolverhampton"
+            ],
+            "AddressLine4": [
+              "West Midlands"
+            ],
+            "PostCode": [
+              "WV13 3RG"
+            ],
+            "RatingValue": [
+              "5"
+            ],
+            "RatingKey": [
+              "fhrs_5_en-gb"
+            ],
+            "RightToReply": [
+              ""
+            ],
+            "RatingDate": [
+              "16 September 2015"
+            ],
+            "LocalAuthorityCode": [
+              "436"
+            ],
+            "LocalAuthorityName": [
+              "Wolverhampton"
+            ],
+            "LocalAuthorityWebSite": [
+              "http://www.wolverhampton.gov.uk/"
+            ],
+            "LocalAuthorityEmailAddress": [
+              "customer.services@wolverhampton.gov.uk"
+            ],
+            "Scores": [
+              {
+                "Hygiene": [
+                  "0"
+                ],
+                "Structural": [
+                  "0"
+                ],
+                "ConfidenceInManagement": [
+                  "0"
+                ]
+              }
+            ],
+            "SchemeType": [
+              "FHRS"
+            ],
+            "NewRatingPending": [
+              "false"
+            ],
+            "Geocode": [
+              {
+                "Longitude": [
+                  "-2.077772"
+                ],
+                "Latitude": [
+                  "52.5878677"
+                ]
+              }
+            ],
+            "Distance": [
+              {
+                "xsi:nil": [
+                  "true"
+                ]
+              }
+            ]
+          },
+          {
+            "FHRSID": [
+              "683069"
+            ],
+            "LocalAuthorityBusinessID": [
+              "2014/00108/COMB"
+            ],
+            "BusinessName": [
+              "1-2-3 Shisha Cafe"
+            ],
+            "BusinessType": [
+              "Restaurant/Cafe/Canteen"
+            ],
+            "BusinessTypeID": [
+              "1"
+            ],
+            "AddressLine1": [
+              "Unit 2"
+            ],
+            "AddressLine2": [
+              "Romney Court"
+            ],
+            "AddressLine3": [
+              "Shepherd's Bush Green"
+            ],
+            "AddressLine4": [
+              "London"
+            ],
+            "PostCode": [
+              "W12 8PY"
+            ],
+            "RatingValue": [
+              "3"
+            ],
+            "RatingKey": [
+              "fhrs_3_en-gb"
+            ],
+            "RightToReply": [
+              ""
+            ],
+            "RatingDate": [
+              "29 June 2017"
+            ],
+            "LocalAuthorityCode": [
+              "513"
+            ],
+            "LocalAuthorityName": [
+              "Hammersmith and Fulham"
+            ],
+            "LocalAuthorityWebSite": [
+              "http://www.lbhf.gov.uk"
+            ],
+            "LocalAuthorityEmailAddress": [
+              "commercialservices@lbhf.gov.uk"
+            ],
+            "Scores": [
+              {
+                "Hygiene": [
+                  "10"
+                ],
+                "Structural": [
+                  "10"
+                ],
+                "ConfidenceInManagement": [
+                  "10"
+                ]
+              }
+            ],
+            "SchemeType": [
+              "FHRS"
+            ],
+            "NewRatingPending": [
+              "false"
+            ],
+            "Geocode": [
+              {
+                "Longitude": [
+                  "-0.222109"
+                ],
+                "Latitude": [
+                  "51.50331"
+                ]
+              }
+            ],
+            "Distance": [
+              {
+                "xsi:nil": [
+                  "true"
+                ]
+              }
+            ]
+          },
+          {
+            "FHRSID": [
+              "439816"
+            ],
+            "LocalAuthorityBusinessID": [
+              "18863"
+            ],
+            "BusinessName": [
+              "10 Cafe Bar"
+            ],
+            "BusinessType": [
+              "Pub/bar/nightclub"
+            ],
+            "BusinessTypeID": [
+              "7843"
+            ],
+            "AddressLine1": [
+              ""
+            ],
+            "AddressLine2": [
+              "10-12 Castle Street"
+            ],
+            "AddressLine3": [
+              "Forfar"
+            ],
+            "AddressLine4": [
+              ""
+            ],
+            "PostCode": [
+              "DD8 3AD"
+            ],
+            "RatingValue": [
+              "Pass"
+            ],
+            "RatingKey": [
+              "fhis_pass_en-gb"
+            ],
+            "RightToReply": [
+              ""
+            ],
+            "RatingDate": [
+              "04 August 2014"
+            ],
+            "LocalAuthorityCode": [
+              "762"
+            ],
+            "LocalAuthorityName": [
+              "Angus"
+            ],
+            "LocalAuthorityWebSite": [
+              "http://www.angus.gov.uk/fhis/"
+            ],
+            "LocalAuthorityEmailAddress": [
+              "ENVHEALTH@angus.gov.uk"
+            ],
+            "Scores": [
+              {
+                "Hygiene": [
+                  {
+                    "xsi:nil": [
+                      "true"
+                    ]
+                  }
+                ],
+                "Structural": [
+                  {
+                    "xsi:nil": [
+                      "true"
+                    ]
+                  }
+                ],
+                "ConfidenceInManagement": [
+                  {
+                    "xsi:nil": [
+                      "true"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "SchemeType": [
+              "FHIS"
+            ],
+            "NewRatingPending": [
+              "false"
+            ],
+            "Geocode": [
+              {
+                "Longitude": [
+                  "-2.888037"
+                ],
+                "Latitude": [
+                  "56.64484"
+                ]
+              }
+            ],
+            "Distance": [
+              {
+                "xsi:nil": [
+                  "true"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 [
   {
+    "namespace": "fbot_test",
     "id": "students",
     "title": "Students",
     "description": "List of Students",
@@ -29,6 +30,7 @@
     "required": ["student_no", "first_name", "last_name"]
   },
   {
+    "namespace": "fbot_test",
     "id": "staff",
     "title": "Staff",
     "description": "List of Staff",
