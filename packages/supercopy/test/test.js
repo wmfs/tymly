@@ -101,6 +101,55 @@ describe('Run some basic tests', function () {
     )
   })
 
+  it('Should supercopy some people, truncating the tables first', function (done) {
+    supercopy(
+      {
+        sourceDir: path.resolve(__dirname, './fixtures/examples/people'),
+        topDownTableOrder: ['children', 'adults'],
+        headerColumnNamePkPrefix: '.',
+        client: client,
+        schemaName: 'supercopy_test',
+        truncateFirstTables: ['children', 'adults'],
+        debug: true
+      },
+      function (err) {
+        expect(err).to.equal(null)
+        done()
+      }
+    )
+  })
+
+  it('Should return correctly modified adult rows (truncated)', function (done) {
+    client.query(
+      'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
+      function (err, result) {
+        expect(err).to.equal(null)
+        expect(result.rows).to.eql(
+          [
+            { adult_no: 40, first_name: 'Marge', last_name: 'Simpson' },
+            { adult_no: 80, first_name: 'Ned', last_name: 'Flanders' }
+          ]
+        )
+        done()
+      }
+    )
+  })
+
+  it('Should return correctly modified children rows (truncated)', function (done) {
+    client.query(
+      'select child_no,first_name,last_name from supercopy_test.children order by child_no',
+      function (err, result) {
+        expect(err).to.equal(null)
+        expect(result.rows).to.eql(
+          [
+            {'child_no': 30, 'first_name': 'Bart', 'last_name': 'Simpson'}
+          ]
+        )
+        done()
+      }
+    )
+  })
+
   it('Should finally drop-cascade the pg_model_test schema', function (done) {
     sqlScriptRunner(
       [
