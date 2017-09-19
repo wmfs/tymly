@@ -179,12 +179,12 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
       supercopy(
         {
           sourceDir: path.resolve(__dirname, './fixtures/xml-examples/people'),
-          topDownTableOrder: ['children', 'adults'],
+          topDownTableOrder: ['adults', 'children'],
           headerColumnNamePkPrefix: '.',
           client: client,
           schemaName: 'supercopy_test',
           debug: true,
-          truncateFirstTables: ['children', 'adults'],
+          truncateFirstTables: true,
           triggerElement: 'person',
           xmlSourceFile: path.resolve(__dirname, './fixtures/test-people.xml')
         },
@@ -202,7 +202,14 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
           expect(err).to.equal(null)
           expect(result.rows).to.eql(
             [
-              { adult_no: 40, first_name: 'Marge', last_name: 'Simpson' }
+              { adult_no: 10, first_name: 'Homer', last_name: 'Simpson' },
+              { adult_no: 20, first_name: 'Marge', last_name: 'Simpson' },
+              { adult_no: 30, first_name: 'Maud', last_name: 'Flanders' },
+              { adult_no: 40, first_name: 'Ned', last_name: 'Flanderz' },
+              { adult_no: 50, first_name: 'Seymour', last_name: 'Skinner' },
+              { adult_no: 60, first_name: 'Charles', last_name: 'Burns' },
+              { adult_no: 70, first_name: 'Waylon', last_name: 'Smithers' },
+              { adult_no: 80, first_name: 'Clancy', last_name: 'Wigum' }
             ]
           )
           done()

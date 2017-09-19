@@ -1,3 +1,4 @@
+'use strict'
 
 // TODO: Known issues with first-line: https://github.com/KenanY/first-line/issues/8
 const firstLine = require('first-line')

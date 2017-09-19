@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 'use strict'
 
 const collectFileInfo = require('./collect-file-info')
