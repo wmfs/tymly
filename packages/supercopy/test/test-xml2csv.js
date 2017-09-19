@@ -93,6 +93,7 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
     const hGen = new headerGenerator('EstablishmentDetail', outStream)
 
     it("Should grab headers from XML", () => {
+
       hGen.getHeaders("EstablishmentDetail")
       expect(outStream).to.equal("Name, Address, Footer")
     })

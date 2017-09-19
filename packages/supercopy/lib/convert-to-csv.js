@@ -52,12 +52,6 @@ class headerGenerator{
     this.headers = new Set()
   }
 
-  writeHeaders () {
-    for(header in this.headers){
-      this.outputStream.write(header + ", ")
-    }
-  }
-
   getHeaders (name) {
     if(this.capture === true){
       console.log('Found header', name)
@@ -85,7 +79,6 @@ function convertToCsv (triggerElement, xmlFilePath, csvFilePath, callback) {
   const xmlIn = fs.createReadStream(xmlFilePath)
   const csvOut = fs.createWriteStream(csvFilePath)
 
-  // create the parser
   parser = createParser(triggerElement, csvOut)
 
   xmlIn.pipe(parser)
