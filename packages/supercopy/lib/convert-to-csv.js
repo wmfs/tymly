@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const expat = require('node-expat')
 
 class RecordHandler {
@@ -26,17 +25,16 @@ class RecordHandler {
       this.capture = false
       this.outputStream.write('\n')
     }
-    if (this.nested !== name){
+    if (this.nested !== name) {
       return
     }
     if (this.capture) {
       if (!this.first) {
-        this.outputStream.write(', ')
+        this.outputStream.write(',')
       }
       this.outputStream.write(this.buffer)
       this.first = false
     }
-
   }
 
   text (data) {
@@ -44,27 +42,45 @@ class RecordHandler {
   }
 }
 
-class headerGenerator{
-  constructor(triggerElement, outputStream){
+class HeaderHandler {
+  constructor (triggerElement, outputStream) {
     this.triggerElement = triggerElement
     this.outputStream = outputStream
+    this.complete = false
+    this.first = true
     this.capture = false
-    this.headers = new Set()
   }
 
-  getHeaders (name) {
-    if(this.capture === true){
-      console.log('Found header', name)
-      this.headers.add(name)
-    }
-    if (name === this.triggerElement){
+  startHandler (name) {
+    if (name === this.triggerElement) {
       this.capture = true
     }
-    this.writeHeaders()
+    this.nested = name
+  }
+
+  endHandler (name) {
+    if (this.complete) {
+      return
+    }
+    if (name === this.triggerElement) {
+      this.capture = false
+      this.complete = true
+      this.outputStream.write('\n')
+    }
+    if (this.nested !== name) {
+      return
+    }
+    if (this.capture) {
+      if (!this.first) {
+        this.outputStream.write(',')
+      }
+      this.outputStream.write(name)
+      this.first = false
+    }
   }
 }
 
-function createParser(triggerElement, outputStream) {
+function createParser (triggerElement, outputStream) {
   const parser = new expat.Parser('UTF-8')
 
   const handler = new RecordHandler(triggerElement, outputStream)
@@ -75,20 +91,49 @@ function createParser(triggerElement, outputStream) {
   return parser
 }
 
-function convertToCsv (triggerElement, xmlFilePath, csvFilePath, callback) {
+function getHeaders (triggerElement, outputStream) {
+  const parser = new expat.Parser('UTF-8')
+
+  const handler = new HeaderHandler(triggerElement, outputStream)
+  parser.on('startElement', name => handler.startHandler(name))
+  parser.on('endElement', name => handler.endHandler(name))
+
+  return parser
+}
+
+function readXmlHeader (triggerElement, xmlFilePath, csvOut, callback) {
   const xmlIn = fs.createReadStream(xmlFilePath)
-  const csvOut = fs.createWriteStream(csvFilePath)
 
-  parser = createParser(triggerElement, csvOut)
+  const headerParser = getHeaders(triggerElement, csvOut)
 
-  xmlIn.pipe(parser)
-  parser.on('close', () => {
-    csvOut.end()
+  xmlIn.pipe(headerParser)
+  headerParser.on('close', () => {
     callback()
+  })
+}
+
+function parseXmlFile (triggerElement, xmlFilePath, csvOut, callback) {
+  const xmlIn = fs.createReadStream(xmlFilePath)
+
+  const contentParser = createParser(triggerElement, csvOut)
+
+  xmlIn.pipe(contentParser)
+  contentParser.on('close', () => {
+    callback()
+  })
+}
+
+function convertToCsv (triggerElement, xmlFilePath, csvFilePath, callback) {
+  const csvOut = fs.createWriteStream(csvFilePath)
+  readXmlHeader(triggerElement, xmlFilePath, csvOut, () => {
+    parseXmlFile(triggerElement, xmlFilePath, csvOut, () => {
+      csvOut.end()
+      callback()
+    })
   })
 }
 
 module.exports = convertToCsv
 convertToCsv.RecordHandler = RecordHandler
 convertToCsv.createParser = createParser
-convertToCsv.headerGenerator = headerGenerator
+convertToCsv.getHeaders = getHeaders

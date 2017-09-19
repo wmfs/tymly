@@ -1,18 +1,22 @@
+/* eslint-env mocha */
+
 const path = require('path')
 const fs = require('fs')
 const expect = require('chai').expect
-const assert = require('assert')
 const convertToCsv = require('../lib/convert-to-csv.js')
 const RecordHandler = convertToCsv.RecordHandler
 const createParser = convertToCsv.createParser
-const headerGenerator = convertToCsv.headerGenerator
+const getHeaders = convertToCsv.getHeaders
+const supercopy = require('../lib/index.js')
+const pg = require('pg')
+const sqlScriptRunner = require('./fixtures/sql-script-runner')
 
 class TextStream {
   constructor () {
-    this.data = ""
+    this.data = ''
   }
 
-  get text() { return this.data }
+  get text () { return this.data }
 
   write (data) {
     this.data += data
@@ -21,10 +25,9 @@ class TextStream {
   }
 }
 
-describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
-  describe("RecordHandler", () => {
-    it("capture text within child elements of EstablishmentDetail", () => {
-
+describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
+  describe('RecordHandler', () => {
+    it('capture text within child elements of EstablishmentDetail', () => {
       const outStream = new TextStream()
       const rh = new RecordHandler('EstablishmentDetail', outStream)
       rh.startHandler('Wrapper')
@@ -42,65 +45,97 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
       rh.endHandler('Wrapper')
 
       const csv = outStream.text
-      expect(csv).to.equal('Top Chip Shop, The Street\n')
+      expect(csv).to.equal('Top Chip Shop,The Street\n')
     })
 
-    it("drive handler from expat", () => {
+    it('drive handler from expat', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\n")
+      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street\n")
     })
 
-    it("line break b/w two records", () => {
+    it('line break b/w two records', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
-        "<EstablishmentDetail><Name>The Shop</Name><Address>The Road</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
+        '<EstablishmentDetail><Name>The Shop</Name><Address>The Road</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\nThe Shop, The Road\n")
+      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street\nThe Shop,The Road\n")
     })
 
-    it("strip extra whitespace ", () => {
+    it('strip extra whitespace ', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
-        "<EstablishmentDetail>\n           <Name>The Shop</Name>    \n      <Address>The Road</Address>            </EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
+        '<EstablishmentDetail>\n           <Name>The Shop</Name>    \n      <Address>The Road</Address>            </EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\nThe Shop, The Road\n")
+      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street\nThe Shop,The Road\n")
     })
 
-    it("handled nested markup", () => {
+    it('handled nested markup', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>     <Line1>Corner of Big Street</Line1>               </Address><Score>0</Score></EstablishmentDetail>")
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs, Corner of Big Street, 0\n")
+      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street,0\n")
     })
   })
 
-  describe("header generator", () => {
+  describe('header generator', () => {
+    const headerTests = [
+      [
+        'simple one line',
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>",
+        'Name,Address,Footer\n'
+      ],
+      [
+        'two lines',
+        '<Wrap>' +
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
+        '</Wrap>',
+        'Name,Address,Footer\n'
+      ],
+      [
+        'nested markup',
+        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address><Footer>0</Footer></EstablishmentDetail>",
+        'Name,Line1,Footer\n'
+      ]
+    ]
+
+    for (const test of headerTests) {
+      it(test[0], () => {
+        const outStream = new TextStream()
+        const parser = getHeaders('EstablishmentDetail', outStream)
+        parser.write(test[1])
+        const csv = outStream.text
+        expect(csv).to.equal(test[2])
+      })
+    }
+  })
+
+  it('combine header get, and data get', () => {
     const outStream = new TextStream()
-    const hGen = new headerGenerator('EstablishmentDetail', outStream)
-
-    it("Should grab headers from XML", () => {
-
-      hGen.getHeaders("EstablishmentDetail")
-      expect(outStream).to.equal("Name, Address, Footer")
-    })
+    const headerParser = getHeaders('EstablishmentDetail', outStream)
+    const contentParser = createParser('EstablishmentDetail', outStream)
+    headerParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
+    contentParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
+    const csv = outStream.text
+    expect(csv).to.equal("Name,Line1\nBill's Kebabs,The Street\n")
   })
 
-  describe("chewing FSA data", () => {
-    it("convert XML to csv", (done) => {
+  describe('chewing FSA data', () => {
+    it('convert XML to csv', (done) => {
       let xmlPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.xml')
       let csvPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.csv')
       if (fs.existsSync(csvPath)) {
@@ -110,51 +145,69 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
       convertToCsv('EstablishmentDetail', xmlPath, csvPath, () => {
         expect(fs.existsSync(csvPath)).to.equal(true)
         expect(fs.statSync(csvPath).size).to.not.equal(0)
+
+        const wholeFile = fs.readFileSync(csvPath, 'utf-8')
+        const lines = wholeFile.split('\n')
+        expect(lines.length).to.equal(5)
+
+        expect(lines[0].startsWith('FHRSID,LocalAuthorityBusinessID')).to.equal(true)
+        expect(lines[1].startsWith('584976,32556')).to.equal(true)
+
         done()
       })
     })
+
+    const connectionString = process.env.PG_CONNECTION_STRING
+    let client
+    it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {
+      client = new pg.Client(connectionString)
+      client.connect()
+
+      sqlScriptRunner(
+        [
+          'uninstall.sql',
+          'install.sql'
+        ],
+        client,
+        function (err) {
+          expect(err).to.equal(null)
+          done()
+        }
+      )
+    })
+    it('Should supercopy some people with XML conversion', function (done) {
+      supercopy(
+        {
+          sourceDir: path.resolve(__dirname, './fixtures/xml-examples/people'),
+          topDownTableOrder: ['children', 'adults'],
+          headerColumnNamePkPrefix: '.',
+          client: client,
+          schemaName: 'supercopy_test',
+          debug: true,
+          truncateFirstTables: ['children', 'adults'],
+          triggerElement: 'person',
+          xmlSourceFile: path.resolve(__dirname, './fixtures/test-people.xml')
+        },
+        function (err) {
+          expect(err).to.equal(null)
+          done()
+        }
+      )
+    })
+
+    it('Should return correctly populated rows', function (done) {
+      client.query(
+        'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
+        function (err, result) {
+          expect(err).to.equal(null)
+          expect(result.rows).to.eql(
+            [
+              { adult_no: 40, first_name: 'Marge', last_name: 'Simpson' }
+            ]
+          )
+          done()
+        }
+      )
+    })
   })
 })
-
-/*
-  it('Should check to see if any XML files are present within the input files', function (done) {
-    expect(fs.existsSync(__dirname + '/fixtures/test-data.xml')).to.equal(true)
-      done()
-  })
-
-  it('If XML found should convert to JSON', function (done) {
-    let xmlPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.xml')
-    let jsonPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.json')
-    let csvPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.csv')
-    convertToCsv.converter({inputPath: xmlPath, outputPath: jsonPath, inputType: 'xml', outputType: 'json'}, function () {
-      expect(fs.existsSync(jsonPath)).to.equal(true)
-      const stats = fs.statSync(jsonPath)
-      expect(fs.statSync(jsonPath).size).to.not.equal(0)
-      done()
-    })
-  })
-
-  it('If Json found should convert to Csv', function (done) {
-    let xmlPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.xml')
-    let jsonPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.json')
-    let csvPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.csv')
-    convertToCsv.converter({inputPath: jsonPath, outputPath: csvPath, inputType: 'json', outputType: 'csv'}, function () {
-      expect(fs.existsSync(csvPath)).to.equal(true)
-      expect(fs.statSync(csvPath).size).to.not.equal(0)
-      done()
-    })
-  })
-
-  it('Should successfully convert to CSV', function(done) {
-    let xmlPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.xml')
-    let jsonPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.json')
-    let csvPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.csv')
-    convertToCsv(xmlPath, function(){
-      expect(fs.existsSync(csvPath))
-      done()
-    })
-
-  })
-
-
- */
