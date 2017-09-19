@@ -9,34 +9,26 @@ class StateboxService {
     this.statebox = new Statebox()
     options.messages.info('Adding resources...')
     if (_.isObject(options.pluginComponents.stateResources)) {
+      const resourceClasses = {}
       _.forOwn(
         options.pluginComponents.stateResources,
-        function (stateResource, stateResourceName) {
-          const StateResourceClass = stateResource.componentModule
-          const stateResourceInstance = new StateResourceClass()
-          _this.statebox.createModuleResource(
-            stateResourceName,
-            stateResourceInstance
-          )
-          options.messages.detail(stateResourceName)
+        function (resource, resourceName) {
+          resourceClasses[resourceName] = resource.componentModule
         }
       )
+      _this.statebox.createModuleResources(resourceClasses)
     }
+
     options.messages.info('Adding state machines...')
     if (_.isObject(options.blueprintComponents.stateMachines)) {
-      _.forOwn(
+      _this.statebox.createStateMachines(
         options.blueprintComponents.stateMachines,
-        function (stateMachineDefinition, stateMachineName) {
-          const qualifiedName = stateMachineName
-          _this.statebox.createStateMachine(
-            stateMachineName,
-            stateMachineDefinition
-          )
-          options.messages.detail(qualifiedName)
-        }
+        options,
+        callback
       )
+    } else {
+      callback(null)
     }
-    callback(null)
   }
 
   findStateMachineByName (name) {
@@ -69,5 +61,9 @@ class StateboxService {
 }
 
 module.exports = {
+  bootAfter: ['storage', 'commands', 'states', 'expression', 'temp'],
+  refProperties: {
+    stateMachineName: 'stateMachines'
+  },
   serviceClass: StateboxService
 }

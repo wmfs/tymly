@@ -60,8 +60,7 @@
               "End": true
             }
           }
-        }
-        ,
+        },
         {
           "StartAt": "Saluting",
           "States": {

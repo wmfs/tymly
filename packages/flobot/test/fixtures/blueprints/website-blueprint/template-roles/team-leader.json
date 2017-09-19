@@ -4,7 +4,7 @@
 
     "grants": [
         {
-            "flowId": "deletePost",
+            "stateMachineName": "deletePost",
             "allows": ["create"]
         }
     ]

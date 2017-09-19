@@ -58,7 +58,7 @@ class MemoryModel {
         if (!err) {
           err = {
             name: 'DuplicatePrimaryKey',
-            message: `Unable to create mode ${_this.modelId} because ${JSON.stringify(whereProperties)} already exists`
+            message: `Unable to create model '${_this.modelId}' because ${JSON.stringify(whereProperties)} already exists`
           }
         }
       }

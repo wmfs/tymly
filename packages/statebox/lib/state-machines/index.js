@@ -1,5 +1,6 @@
 'use strict'
 
+const async = require('async')
 const _ = require('lodash')
 const StateMachine = require('./State-machine')
 
@@ -24,45 +25,71 @@ module.exports.validateStateMachineDefinition = function validateStateMachineDef
   }
 }
 
-module.exports.createStateMachine = function createStateMachine (stateMachineName, definition, options) {
-  function parseStateMachines (topLevel, root) {
+module.exports.createStateMachines = function createStateMachine (stateMachineDefinitions, env, options, callback) {
+  const _this = this
+
+  function parseStateMachines (stateMachineName, topLevel, root) {
     if (_.isArray(root)) {
       root.forEach(
         function (arrayElement) {
-          parseStateMachines(topLevel, arrayElement)
+          parseStateMachines(stateMachineName, topLevel, arrayElement)
         }
       )
     } else if (_.isObject(root)) {
       if (root.hasOwnProperty('StartAt')) {
         if (topLevel) {
-          parsedstateMachines[stateMachineName] = root
+          parsedStateMachines[stateMachineName] = root
         } else {
-          parsedstateMachines[`${stateMachineName}:${root.StartAt}`] = root
+          parsedStateMachines[`${stateMachineName}:${root.StartAt}`] = root
         }
       }
       _.forOwn(
         root,
         function (value, key) {
-          parseStateMachines(false, value)
+          parseStateMachines(stateMachineName, false, value)
         }
       )
     }
   }
 
-  const parsedstateMachines = {}
-  const stateMachineAnalysis = this.validateStateMachineDefinition(stateMachineName, definition)
-
-  if (stateMachineAnalysis.summary.errorCount === 0) {
-    parseStateMachines(true, definition)
-    _.forOwn(
-      parsedstateMachines,
-      function (branchDefinition, branchPath) {
-        stateMachines[branchPath] = new StateMachine(branchPath, branchDefinition, options)
+  const parsedStateMachines = {}
+  _.forOwn(
+    stateMachineDefinitions,
+    function (definition, stateMachineName) {
+      const stateMachineAnalysis = _this.validateStateMachineDefinition(stateMachineName, definition)
+      if (stateMachineAnalysis.summary.errorCount === 0) {
+        parseStateMachines(stateMachineName, true, definition)
       }
-    )
-  }
+    }
+  )
 
-  return stateMachineAnalysis
+  async.eachOf(
+    parsedStateMachines,
+    function (stateMachine, stateMachineName, cb) {
+      const sm = new StateMachine()
+      sm.init(
+        stateMachineName,
+        stateMachine,
+        env,
+        options,
+        function (err) {
+          if (err) {
+            cb(err)
+          } else {
+            stateMachines[stateMachineName] = sm
+            cb(null)
+          }
+        }
+      )
+    },
+    function (err) {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
+    }
+  )
 }
 
 module.exports.deleteStateMachine = function deleteStateMachine (name) {

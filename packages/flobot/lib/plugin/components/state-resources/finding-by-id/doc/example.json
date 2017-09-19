@@ -1,0 +1,13 @@
+{
+  "findingById": {
+    "options": {
+      "modelId": "employees",
+      "target": "employeeDetails",
+      "key": {
+        "$value": {
+          "path": "key"
+        }
+      }
+    }
+  }
+}

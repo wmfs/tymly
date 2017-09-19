@@ -1,5 +1,4 @@
 {
-  "id": "people",
   "title": "People",
   "description": "Isn't this just a list of people?",
   "primaryKey": ["employeeNo"],

@@ -4,14 +4,16 @@ const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
+const STATE_MACHINE_NAME = 'fbotTest_people_1_0'
 
 describe('PostgreSQL storage tests', function () {
   this.timeout(5000)
 
-  let flobotsService
   let registryService
   let tagsService
   let client
+  let statebox
+  let executionName
 
   it('should create some flobot services to test PostgreSQL storage', function (done) {
     flobot.boot(
@@ -25,13 +27,12 @@ describe('PostgreSQL storage tests', function () {
           path.resolve(__dirname, './fixtures/blueprints/space-blueprint')
         ],
 
-        config: {
-        }
+        config: {}
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
         client = flobotServices.storage.client
-        flobotsService = flobotServices.flobots
+        statebox = flobotServices.statebox
         registryService = flobotServices.registry
         tagsService = flobotServices.tags
         done()
@@ -52,47 +53,43 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('should find the simple-storage flow by id', function () {
-    flobotsService.findFlowById('fbotTest_people_1_0',
-      function (err, flow) {
+  it('should find the simple-storage state-machine by name', function () {
+    const stateMachine = statebox.findStateMachineByName(STATE_MACHINE_NAME)
+    expect(stateMachine.name).to.eql(STATE_MACHINE_NAME)
+  })
+
+  it('should start a simple-storage execution', function (done) {
+    statebox.startExecution(
+      {
+        homer: {
+          employeeNo: 1,
+          firstName: 'Homer',
+          lastName: 'Simpson',
+          age: 39
+        }
+      },  // input
+      STATE_MACHINE_NAME, // state machine name
+      {}, // options
+      function (err, result) {
         expect(err).to.eql(null)
-        expect(flow.flowId).to.eql('fbotTest_people_1_0')
+        executionName = result.executionName
+        done()
       }
     )
   })
 
-  it('should start (and complete) a simple-storage Flobot', function (done) {
-    flobotsService.startNewFlobot(
-      'fbotTest_people_1_0',
-      {
-        data: {
-          homer: {
-            employeeNo: 1,
-            firstName: 'Homer',
-            lastName: 'Simpson',
-            age: 39
-          }
-        }
-      },
-      function (err, homer) {
+  it('should successfully a simple-storage execution', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
         expect(err).to.eql(null)
-        expect(homer.flobotId).to.be.a('string')
-        expect(homer.flowId).to.eql('fbotTest_people_1_0')
-        expect(homer.stateId).to.eql('findingById')
-        expect(homer.status).to.eql('finished')
-
-        expect(homer.ctx.homer).to.eql(
-          {
-            employeeNo: 1,
-            firstName: 'Homer',
-            lastName: 'Simpson',
-            age: 39
-          }
-        )
-        expect(homer.ctx.foundHomer.employeeNo).to.eql('1')
-        expect(homer.ctx.foundHomer.firstName).to.eql('Homer')
-        expect(homer.ctx.foundHomer.lastName).to.eql('Simpson')
-        expect(homer.ctx.foundHomer.age).to.eql(39)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
+        expect(executionDescription.currentStateName).to.eql('FindingById')
+        expect(executionDescription.ctx.foundHomer.employeeNo).to.eql('1')
+        expect(executionDescription.ctx.foundHomer.firstName).to.eql('Homer')
+        expect(executionDescription.ctx.foundHomer.lastName).to.eql('Simpson')
+        expect(executionDescription.ctx.foundHomer.age).to.eql(39)
         done()
       }
     )

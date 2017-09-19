@@ -2,10 +2,11 @@
 const debug = require('debug')('statebox')
 const stateTypes = require('./state-types')
 const _ = require('lodash')
+const async = require('async')
 const boom = require('boom')
 
 class StateMachine {
-  constructor (stateMachineName, definition, options) {
+  init (stateMachineName, definition, env, options, callback) {
     const _this = this
     this.name = stateMachineName
     this.definition = definition
@@ -14,11 +15,34 @@ class StateMachine {
     this.options = options
     debug(`Creating '${stateMachineName}' stateMachine (${definition.Comment || 'No stateMachine comment specified'})`)
 
-    _.forOwn(
+    async.eachOf(
       definition.States,
-      function (stateDefinition, stateName) {
+      function (stateDefinition, stateName, cb) {
         const State = stateTypes[stateDefinition.Type]
-        _this.states[stateName] = new State(stateName, _this, stateDefinition, options)
+        const state = new State(stateName, _this, stateDefinition, options)
+        if (_.isFunction(state.stateTypeInit)) {
+          state.stateTypeInit(
+            env,
+            function (err) {
+              if (err) {
+                cb(err)
+              } else {
+                _this.states[stateName] = state
+                cb()
+              }
+            }
+          )
+        } else {
+          _this.states[stateName] = state
+          cb()
+        }
+      },
+      function (err) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null)
+        }
       }
     )
   }

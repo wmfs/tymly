@@ -117,12 +117,7 @@ class PostgresqlStorageService {
 module.exports = {
   schema: schema,
   serviceClass: PostgresqlStorageService,
-
-  configModifier: function flobotsServiceConfigModifier (ctx) {
-    // Filter just to FSM options
-    // --------------------------
-    if (ctx.utils.isFsmOptions(ctx)) {
-      ctx.utils.idNamespacer('modelId', 'models', ctx)
-    }
+  refProperties: {
+    modelId: 'models'
   }
 }

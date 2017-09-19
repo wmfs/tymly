@@ -2,7 +2,7 @@
 const stateMachines = require('./state-machines')
 const boom = require('boom')
 
-module.exports = function startExecution (input, stateMachineName, executionOptions, options, callback) {
+module.exports = function executioner (input, stateMachineName, executionOptions, options, callback) {
   // References
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html

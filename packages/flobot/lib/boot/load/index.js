@@ -4,7 +4,7 @@ const messages = require('./../../startup-messages')
 const path = require('path')
 const _ = require('lodash')
 const discoverBlueprintDirs = require('./discover-blueprint-dirs')
-const extractModifiers = require('./extract-modifiers')
+const extractRefProperties = require('./extract-ref-properties')
 
 const flobotLoader = require('./flobot-loader')
 
@@ -23,6 +23,7 @@ module.exports = function load (options) {
   const pluginComponents = flobotLoader(
     {
       sourcePaths: pluginPaths,
+      processRefProperties: false,
       messages: messages,
       suffix: 'components',
       sourceLabel: 'plugins',
@@ -30,8 +31,6 @@ module.exports = function load (options) {
     }
   )
 
-  // Grab any config-modifying functions supplied via plugins...
-  const modificationFunctions = extractModifiers(pluginComponents)
   let blueprintPaths = discoverBlueprintDirs(pluginPaths)
 
   if (_.isString(options.blueprintPaths)) {
@@ -48,10 +47,8 @@ module.exports = function load (options) {
       sourceLabel: 'blueprints',
       expectedMetaFilename: 'blueprint.json',
       mandatoryMetaKeys: ['namespace'],
-      modifiers: {
-        modificationFunctions: modificationFunctions,
-        pluginComponents: pluginComponents
-      }
+      refProperties: extractRefProperties(pluginComponents),
+      pluginComponents: pluginComponents
     }
   )
 
