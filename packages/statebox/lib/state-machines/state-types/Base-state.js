@@ -59,6 +59,62 @@ class BaseState {
     )
   }
 
+  runTaskSuccess (executionDescription, output) {
+    const _this = this
+    const executionName = executionDescription.executionName
+    let ctx = executionDescription.ctx
+    if (output) {
+      if (this.resultPath) {
+        dottie.set(ctx, this.resultPath, output)
+      } else {
+        ctx = _.defaults(output, ctx)
+      }
+    }
+    const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+    const stateDefinition = stateMachine.findStateDefinitionByName(executionDescription.currentStateName)
+
+    // END
+    if (stateDefinition.End) {
+      this.options.dao.succeedExecution(
+        executionName,
+        ctx,
+        function (err) {
+          if (err) {
+            // TODO: Needs handling as per spec
+            throw new Error(err)
+          } else {
+            const parentExecutionName = executionDescription.parentExecutionName
+            if (parentExecutionName) {
+              // Has a parent flow, so see if the related parallel state can advance
+              const tracker = _this.options.parallelBranchTracker
+              tracker.registerChildExecutionEnd(executionDescription.executionName)
+              const parallelStateStatus = tracker.getParallelTaskStatus(parentExecutionName)
+              if (parallelStateStatus === 'SUCCEEDED') {
+                debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
+                _this.processTaskSuccess(ctx, parentExecutionName)
+              }
+            }
+          }
+        }
+      )
+    } else {
+      // NEXT
+      this.options.dao.setNextState(
+        executionName,
+        stateDefinition.Next,
+        ctx,
+        function (err) {
+          if (err) {
+            // TODO: Needs handling as per spec
+            throw new Error(err)
+          } else {
+            stateMachine.processState(executionName)
+          }
+        }
+      )
+    }
+  }
+
   processTaskSuccess (output, executionName) {
     const _this = this
     this.options.dao.findExecutionByName(
@@ -68,57 +124,7 @@ class BaseState {
           // TODO: Handle this as per spec!
           throw new Error(err)
         } else {
-          let ctx = executionDescription.ctx
-          if (output) {
-            if (_this.resultPath) {
-              dottie.set(ctx, _this.resultPath, output)
-            } else {
-              ctx = _.defaults(output, ctx)
-            }
-          }
-          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-          const stateDefinition = stateMachine.findStateDefinitionByName(executionDescription.currentStateName)
-
-          // END
-          if (stateDefinition.End) {
-            _this.options.dao.succeedExecution(
-              executionName,
-              ctx,
-              function (err) {
-                if (err) {
-                  // TODO: Needs handling as per spec
-                  throw new Error(err)
-                } else {
-                  const parentExecutionName = executionDescription.parentExecutionName
-                  if (parentExecutionName) {
-                    // Has a parent flow, so see if the related parallel state can advance
-                    const tracker = _this.options.parallelBranchTracker
-                    tracker.registerChildExecutionEnd(executionDescription.executionName)
-                    const parallelStateStatus = tracker.getParallelTaskStatus(parentExecutionName)
-                    if (parallelStateStatus === 'SUCCEEDED') {
-                      debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
-                      _this.processTaskSuccess(ctx, parentExecutionName)
-                    }
-                  }
-                }
-              }
-            )
-          } else {
-            // NEXT
-            _this.options.dao.setNextState(
-              executionName,
-              stateDefinition.Next,
-              ctx,
-              function (err) {
-                if (err) {
-                  // TODO: Needs handling as per spec
-                  throw new Error(err)
-                } else {
-                  stateMachine.processState(executionName)
-                }
-              }
-            )
-          }
+          _this.runTaskSuccess(executionDescription, output)
         }
       }
     )

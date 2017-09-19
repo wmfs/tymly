@@ -54,6 +54,19 @@ class StateMachine {
     }
   }
 
+  runState (executionDescription) {
+    const stateNameToRun = executionDescription.currentStateName
+    const stateToRun = this.states[stateNameToRun]
+    if (stateToRun) {
+      debug(`About to process ${stateToRun.stateType} '${stateNameToRun}' in stateMachine '${this.name}' stateMachine (executionName='${executionDescription.executionName}')`)
+      // TODO: Why, if no .process method is defined, does this intermittently not throw an error? Mocha in IDE?
+      stateToRun.process(executionDescription)
+    } else {
+      // TODO: Need to handle trying to run an unknown state (should be picked-up in validation though)
+      throw (boom.badRequest(`Unknown state '${stateNameToRun}' in stateMachine '${this.name}'`))
+    }
+  }
+
   processState (executionName) {
     const _this = this
     this.options.dao.findExecutionByName(
@@ -63,16 +76,7 @@ class StateMachine {
           // TODO: Need to handle errors as per spec!
           throw (err)
         } else {
-          const stateNameToRun = executionDescription.currentStateName
-          const stateToRun = _this.states[stateNameToRun]
-          if (stateToRun) {
-            debug(`About to process ${stateToRun.stateType} '${stateNameToRun}' in stateMachine '${_this.name}' stateMachine (executionName='${executionName}')`)
-            // TODO: Why, if no .process method is defined, does this intermittently not throw an error? Mocha in IDE?
-            stateToRun.process(executionDescription)
-          } else {
-            // TODO: Need to handle trying to run an unknown state (should be picked-up in validation though)
-            throw (boom.badRequest(`Unknown state '${stateNameToRun}' in stateMachine '${_this.name}'`))
-          }
+          _this.runState(executionDescription)
         }
       }
     )

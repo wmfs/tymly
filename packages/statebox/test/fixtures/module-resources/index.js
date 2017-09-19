@@ -1,5 +1,6 @@
 // And export instances
 module.exports = {
+  formFilling: require('./Form-filling'),
   helloWorld: require('./Hello-world'),
   hello: require('./Hello'),
   world: require('./World'),

@@ -6,12 +6,14 @@
 //   https://aws.amazon.com/step-functions/
 //   https://aws.amazon.com/blogs/aws/new-aws-step-functions-build-distributed-applications-using-visual-workstateMachines/
 
+const _ = require('lodash')
 const executioner = require('./executioner')
 const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
+
 class Statebox {
   constructor (options) {
     this.options = options || {}
@@ -79,11 +81,58 @@ class Statebox {
   }
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
-    callback(null)
+    const _this = this
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          executionDescription.ctx = _.defaults(output, executionDescription.ctx)
+          _this.options.dao.setNextState(
+            executionName,
+            executionDescription.currentStateName,
+            executionDescription.ctx,
+            function (err) {
+              if (err) {
+                callback(err)
+              } else {
+                const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+                const stateToRun = stateMachine.states[executionDescription.currentStateName]
+                stateToRun.runTaskSuccess(executionDescription)
+                callback(null)
+              }
+            }
+          )
+        }
+      }
+    )
   }
 
   sendTaskHeartbeat (executionName, output, executionOptions, callback) {
-    callback(null)
+    const _this = this
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          executionDescription.ctx = _.defaults(output, executionDescription.ctx)
+          _this.options.dao.setNextState(
+            executionName,
+            executionDescription.currentStateName,
+            executionDescription.ctx,
+            function (err) {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null, executionDescription)
+              }
+            }
+          )
+        }
+      }
+    )
   }
 
   sendTaskFailure (executionName, output, executionOptions, callback) {
