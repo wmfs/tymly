@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 
+'use strict'
+
 const path = require('path')
 const fs = require('fs')
 const expect = require('chai').expect
@@ -159,7 +161,8 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
 
     const connectionString = process.env.PG_CONNECTION_STRING
     let client
-    it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {
+
+    it('Should initially drop-cascade the supercopy_test schema, if one exists', (done) => {
       client = new pg.Client(connectionString)
       client.connect()
 
@@ -175,7 +178,8 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
         }
       )
     })
-    it('Should supercopy some people with XML conversion', function (done) {
+
+    it('Should supercopy some people with XML conversion', (done) => {
       supercopy(
         {
           sourceDir: path.resolve(__dirname, './fixtures/xml-examples/people'),
@@ -195,7 +199,7 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
       )
     })
 
-    it('Should return correctly populated rows', function (done) {
+    it('Should return correctly populated rows', (done) => {
       client.query(
         'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
         function (err, result) {

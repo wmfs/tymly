@@ -9,16 +9,16 @@ const pg = require('pg')
 const supercopy = require('./../lib')
 const path = require('path')
 
-describe('Run some basic tests', function () {
+describe('Run some basic tests', () => {
   const connectionString = process.env.PG_CONNECTION_STRING
   let client
 
-  it('Should create a new pg client', function () {
+  it('Should create a new pg client', () => {
     client = new pg.Client(connectionString)
     client.connect()
   })
 
-  it('Should initially drop-cascade the supercopy_test schema, if one exists', function (done) {
+  it('Should initially drop-cascade the supercopy_test schema, if one exists', (done) => {
     sqlScriptRunner(
       [
         'uninstall.sql',
@@ -32,7 +32,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should supercopy some people', function (done) {
+  it('Should supercopy some people', (done) => {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/examples/people'),
@@ -49,7 +49,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should return correctly modified adult rows', function (done) {
+  it('Should return correctly modified adult rows', (done) => {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
@@ -72,7 +72,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should return correctly modified children rows', function (done) {
+  it('Should return correctly modified children rows', (done) => {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
@@ -93,7 +93,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should fail supercopy-if some bad-people files', function (done) {
+  it('Should fail supercopy-if some bad-people files', (done) => {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/examples/people-with-an-error'),
@@ -110,7 +110,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should supercopy some people, truncating the tables first', function (done) {
+  it('Should supercopy some people, truncating the tables first', (done) => {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/examples/people'),
@@ -128,7 +128,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should return correctly modified adult rows (truncated)', function (done) {
+  it('Should return correctly modified adult rows (truncated)', (done) => {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
@@ -147,7 +147,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should return correctly modified children rows (truncated)', function (done) {
+  it('Should return correctly modified children rows (truncated)', (done) => {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
@@ -163,7 +163,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should finally drop-cascade the pg_model_test schema', function (done) {
+  it('Should finally drop-cascade the pg_model_test schema', (done) => {
     sqlScriptRunner(
       [
         'uninstall.sql'
