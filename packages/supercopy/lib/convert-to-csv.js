@@ -1,5 +1,4 @@
 const fs = require('fs')
-const path = require('path')
 const expat = require('node-expat')
 
 class RecordHandler {
@@ -26,7 +25,7 @@ class RecordHandler {
       this.capture = false
       this.outputStream.write('\n')
     }
-    if (this.nested !== name){
+    if (this.nested !== name) {
       return
     }
     if (this.capture) {
@@ -43,8 +42,8 @@ class RecordHandler {
   }
 }
 
-class headerHandler{
-  constructor(triggerElement, outputStream){
+class HeaderHandler {
+  constructor (triggerElement, outputStream) {
     this.triggerElement = triggerElement
     this.outputStream = outputStream
     this.complete = false
@@ -53,7 +52,7 @@ class headerHandler{
   }
 
   startHandler (name) {
-    if (name === this.triggerElement){
+    if (name === this.triggerElement) {
       this.capture = true
     }
     this.nested = name
@@ -68,7 +67,7 @@ class headerHandler{
       this.complete = true
       this.outputStream.write('\n')
     }
-    if (this.nested !== name){
+    if (this.nested !== name) {
       return
     }
     if (this.capture) {
@@ -81,7 +80,7 @@ class headerHandler{
   }
 }
 
-function createParser(triggerElement, outputStream) {
+function createParser (triggerElement, outputStream) {
   const parser = new expat.Parser('UTF-8')
 
   const handler = new RecordHandler(triggerElement, outputStream)
@@ -92,10 +91,10 @@ function createParser(triggerElement, outputStream) {
   return parser
 }
 
-function getHeaders(triggerElement, outputStream) {
+function getHeaders (triggerElement, outputStream) {
   const parser = new expat.Parser('UTF-8')
 
-  const handler = new headerHandler(triggerElement, outputStream)
+  const handler = new HeaderHandler(triggerElement, outputStream)
   parser.on('startElement', name => handler.startHandler(name))
   parser.on('endElement', name => handler.endHandler(name))
 
@@ -138,5 +137,4 @@ function convertToCsv (triggerElement, xmlFilePath, csvFilePath, callback) {
 module.exports = convertToCsv
 convertToCsv.RecordHandler = RecordHandler
 convertToCsv.createParser = createParser
-convertToCsv.headerHandler = headerHandler
 convertToCsv.getHeaders = getHeaders

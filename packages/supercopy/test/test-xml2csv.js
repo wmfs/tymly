@@ -1,20 +1,19 @@
+/* eslint-env mocha */
+
 const path = require('path')
 const fs = require('fs')
 const expect = require('chai').expect
-const assert = require('assert')
 const convertToCsv = require('../lib/convert-to-csv.js')
 const RecordHandler = convertToCsv.RecordHandler
 const createParser = convertToCsv.createParser
-const headerHandler = convertToCsv.headerHandler
 const getHeaders = convertToCsv.getHeaders
-const writeHeaders = convertToCsv.writeHeaders
 
 class TextStream {
   constructor () {
-    this.data = ""
+    this.data = ''
   }
 
-  get text() { return this.data }
+  get text () { return this.data }
 
   write (data) {
     this.data += data
@@ -23,10 +22,9 @@ class TextStream {
   }
 }
 
-describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
-  describe("RecordHandler", () => {
-    it("capture text within child elements of EstablishmentDetail", () => {
-
+describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
+  describe('RecordHandler', () => {
+    it('capture text within child elements of EstablishmentDetail', () => {
       const outStream = new TextStream()
       const rh = new RecordHandler('EstablishmentDetail', outStream)
       rh.startHandler('Wrapper')
@@ -47,7 +45,7 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
       expect(csv).to.equal('Top Chip Shop, The Street\n')
     })
 
-    it("drive handler from expat", () => {
+    it('drive handler from expat', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
@@ -57,29 +55,29 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
       expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\n")
     })
 
-    it("line break b/w two records", () => {
+    it('line break b/w two records', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
-        "<EstablishmentDetail><Name>The Shop</Name><Address>The Road</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
+        '<EstablishmentDetail><Name>The Shop</Name><Address>The Road</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
       expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\nThe Shop, The Road\n")
     })
 
-    it("strip extra whitespace ", () => {
+    it('strip extra whitespace ', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
       parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
-        "<EstablishmentDetail>\n           <Name>The Shop</Name>    \n      <Address>The Road</Address>            </EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
+        '<EstablishmentDetail>\n           <Name>The Shop</Name>    \n      <Address>The Road</Address>            </EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
       expect(csv).to.equal("Bill's Kebabs, Corner of Big Street\nThe Shop, The Road\n")
     })
 
-    it("handled nested markup", () => {
+    it('handled nested markup', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
@@ -90,37 +88,37 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
     })
   })
 
-  describe("header generator", () => {
+  describe('header generator', () => {
     const headerTests = [
       [
-        "simple one line",
+        'simple one line',
         "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>",
-        "Name, Address, Footer\n"
+        'Name, Address, Footer\n'
       ],
       [
-        "two lines",
-        "<Wrap>" +
+        'two lines',
+        '<Wrap>' +
         "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
         "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
-        "</Wrap>",
-        "Name, Address, Footer\n"
+        '</Wrap>',
+        'Name, Address, Footer\n'
       ],
       [
-        "nested markup",
+        'nested markup',
         "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address><Footer>0</Footer></EstablishmentDetail>",
-        "Name, Line1, Footer\n"
+        'Name, Line1, Footer\n'
       ]
     ]
 
-   for (const test of headerTests) {
-     it(test[0], () => {
-       const outStream = new TextStream()
-       const parser = getHeaders('EstablishmentDetail', outStream)
-       parser.write(test[1])
-       const csv = outStream.text
-       expect(csv).to.equal(test[2])
-     })
-   }
+    for (const test of headerTests) {
+      it(test[0], () => {
+        const outStream = new TextStream()
+        const parser = getHeaders('EstablishmentDetail', outStream)
+        parser.write(test[1])
+        const csv = outStream.text
+        expect(csv).to.equal(test[2])
+      })
+    }
   })
 
   it('combine header get, and data get', () => {
@@ -133,8 +131,8 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
     expect(csv).to.equal("Name, Line1\nBill's Kebabs, The Street\n")
   })
 
-  describe("chewing FSA data", () => {
-    it("convert XML to csv", (done) => {
+  describe('chewing FSA data', () => {
+    it('convert XML to csv', (done) => {
       let xmlPath = path.join(__dirname, '..', 'test', 'fixtures', 'test-data.xml')
       let csvPath = path.join(__dirname, '..', 'test', 'fixtures', 'output.csv')
       if (fs.existsSync(csvPath)) {
@@ -197,6 +195,5 @@ describe("XML to CSV conversion, for that lovely crunchy FSA data", () => {
     })
 
   })
-
 
  */
