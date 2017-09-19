@@ -214,6 +214,7 @@ describe('Simple stateMachine test', function () {
   it('should prove describeExecution works as expected', function (done) {
     statebox.describeExecution(
       executionName,
+      {},
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')

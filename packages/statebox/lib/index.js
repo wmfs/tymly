@@ -66,16 +66,28 @@ class Statebox {
     executioner(input, stateMachineName, executionOptions, this.options, callback)
   }
 
-  stopExecution (cause, error, executionName, callback) {
-
+  stopExecution (cause, error, executionName, executionOptions, callback) {
+    callback(null)
   }
 
-  listExecutions (callback) {
-
+  listExecutions (executionOptions, callback) {
+    callback(null)
   }
 
-  describeExecution (executionName, callback) {
+  describeExecution (executionName, executionOptions, callback) {
     this.options.dao.findExecutionByName(executionName, callback)
+  }
+
+  sendTaskSuccess (executionName, output, executionOptions, callback) {
+    callback(null)
+  }
+
+  sendTaskHeartbeat (executionName, output, executionOptions, callback) {
+    callback(null)
+  }
+
+  sendTaskFailure (executionName, output, executionOptions, callback) {
+    callback(null)
   }
 
   waitUntilStoppedRunning (executionName, callback) {
@@ -83,7 +95,7 @@ class Statebox {
     const _this = this
     async.doUntil(
       function (cb) {
-        _this.describeExecution(
+        _this.options.dao.findExecutionByName(
           executionName,
           function (err, latestExecutionDescription) {
             if (err) {
