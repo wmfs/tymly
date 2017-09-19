@@ -73,7 +73,7 @@ class MemoryDao {
           execution.status = 'FAILED'
           execution.errorCode = errorCode
           execution.errorMessage = errorMessage
-          if (executionDescription.hasOwnProperty('rootExecutionName')) {
+          if (executionDescription.hasOwnProperty('rootExecutionName') && executionDescription.rootExecutionName) {
             _this.markRelatedBranchesAsFailed(
               executionDescription.rootExecutionName,
               callback)

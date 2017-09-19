@@ -12,7 +12,7 @@ const stateMachines = require('./fixtures/state-machines')
 
 const Statebox = require('./../lib')
 
-describe('Simple stateMachine test', function () {
+describe('Example form-filling tests', function () {
   this.timeout(5000)
   let statebox
   let executionName
@@ -172,36 +172,27 @@ describe('Simple stateMachine test', function () {
       executionName,
       {
         error: 'BIGFAIL',
-        cause: 'Due to some bad thing happening',
+        cause: 'Due to some bad thing happening'
       }, // options
       {}, // executionOptions
-      function (err, executionDescription) {
+      function (err) {
         expect(err).to.eql(null)
         done()
       }
     )
   })
 
-  /*
-  it('should successfully complete form-filling execution', function (done) {
+  it('should show failed form-filling execution', function (done) {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.stateMachineName).to.eql('formFilling')
-        expect(executionDescription.currentStateName).to.eql('World')
-        expect(executionDescription.ctx).to.eql(
-          {
-            formData: {
-              name: 'Rupert'
-            },
-            some: 'payload'
-          }
-        )
+        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.ctx).to.eql({})
         done()
       }
     )
   })
-*/
 })

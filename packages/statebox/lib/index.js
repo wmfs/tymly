@@ -109,6 +109,22 @@ class Statebox {
     )
   }
 
+  sendTaskFailure (executionName, options, executionOptions, callback) {
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+          const stateToRun = stateMachine.states[executionDescription.currentStateName]
+          stateToRun.runTaskFailure(executionDescription, options)
+          callback(null)
+        }
+      }
+    )
+  }
+
   sendTaskHeartbeat (executionName, output, executionOptions, callback) {
     const _this = this
     this.options.dao.findExecutionByName(
@@ -133,10 +149,6 @@ class Statebox {
         }
       }
     )
-  }
-
-  sendTaskFailure (executionName, output, executionOptions, callback) {
-    callback(null)
   }
 
   waitUntilStoppedRunning (executionName, callback) {

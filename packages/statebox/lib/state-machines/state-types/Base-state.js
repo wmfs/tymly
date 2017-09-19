@@ -33,6 +33,22 @@ class BaseState {
     )
   }
 
+  runTaskFailure (executionDescription, options) {
+    const executionName = executionDescription.executionName
+    const tracker = this.options.parallelBranchTracker
+    tracker.registerChildExecutionFail(executionName)
+    this.options.dao.failExecution(
+      executionDescription,
+      options.cause,
+      options.error,
+      function (err) {
+        if (err) {
+          throw new Error(err)
+        }
+      }
+    )
+  }
+
   processTaskFailure (options, executionName) {
     const _this = this
     this.options.dao.findExecutionByName(
@@ -42,18 +58,7 @@ class BaseState {
           // TODO: Handle this as per spec!
           throw (err)
         } else {
-          const tracker = _this.options.parallelBranchTracker
-          tracker.registerChildExecutionFail(executionName)
-          _this.options.dao.failExecution(
-            executionDescription,
-            options.cause,
-            options.error,
-            function (err) {
-              if (err) {
-                throw new Error(err)
-              }
-            }
-          )
+          _this.runTaskFailure(executionDescription, options)
         }
       }
     )
