@@ -8,6 +8,7 @@ const expect = require('chai').expect
 const pg = require('pg')
 const supercopy = require('./../lib')
 const path = require('path')
+const fs = require('fs')
 
 describe('Run some basic tests', function () {
   const connectionString = process.env.PG_CONNECTION_STRING
