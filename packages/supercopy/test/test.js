@@ -8,7 +8,6 @@ const expect = require('chai').expect
 const pg = require('pg')
 const supercopy = require('./../lib')
 const path = require('path')
-const fs = require('fs')
 
 describe('Run some basic tests', function () {
   const connectionString = process.env.PG_CONNECTION_STRING
@@ -68,7 +67,7 @@ describe('Run some basic tests', function () {
   })
 
   it('Should return correctly modified children rows', function (done) {
-      client.query(
+    client.query(
         'select child_no,first_name,last_name from supercopy_test.children order by child_no',
         function (err, result) {
           expect(err).to.equal(null)

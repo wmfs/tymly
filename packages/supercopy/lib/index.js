@@ -16,7 +16,6 @@ function preprocess (options, callback) {
 }
 
 module.exports = function supercopy (options, callback) {
-
   preprocess(options, () => {
     collectFileInfo(options, function (err, fileInfo) {
       if (err) {
@@ -32,5 +31,4 @@ module.exports = function supercopy (options, callback) {
       }
     })
   })
-
 }

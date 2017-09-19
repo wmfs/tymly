@@ -176,7 +176,6 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
       )
     })
     it('Should supercopy some people with XML conversion', function (done) {
-
       supercopy(
         {
           sourceDir: path.resolve(__dirname, './fixtures/xml-examples/people'),
@@ -211,5 +210,4 @@ describe('XML to CSV conversion, for that lovely crunchy FSA data', () => {
       )
     })
   })
-
 })
