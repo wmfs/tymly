@@ -16,6 +16,7 @@
     "pg-info": "^0.0.14",
     "pg-model": "^0.0.8",
     "pg-telepods": "^0.0.5",
+    "process": "^0.11.10",
     "relationize": "^0.0.18",
     "supercopy": "^0.0.5"
   },
