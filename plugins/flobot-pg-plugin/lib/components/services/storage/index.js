@@ -10,6 +10,7 @@ const pgInfo = require('pg-info')
 const pgDiffSync = require('pg-diff-sync')
 const pgModel = require('pg-model')
 
+const pgStatementRunner = require('./pg-statement-runner')
 const pgScriptRunner = require('./pg-script-runner')
 
 class PostgresqlStorageService {
@@ -67,11 +68,11 @@ class PostgresqlStorageService {
                 callback(err)
               } else {
                 const statements = pgDiffSync(
-                    currentDbStructure,
-                    expectedDbStructure
+                  currentDbStructure,
+                  expectedDbStructure
                 )
 
-                pgScriptRunner(
+                pgStatementRunner(
                   _this.client,
                   statements,
                   function (err) {
@@ -101,7 +102,15 @@ class PostgresqlStorageService {
                           )
                         }
                       )
-                      callback(null)
+
+                      options.messages.info('Loading seed data:')
+                      let scripts = []
+                      _.forEach(options.blueprintComponents.seedData, (data) => {
+                        scripts.push(data.filePath)
+                        options.messages.detail(data.filename)
+                      })
+
+                      pgScriptRunner(scripts, _this.client, callback)
                     }
                   }
                 )

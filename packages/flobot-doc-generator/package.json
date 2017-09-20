@@ -1,7 +1,7 @@
 {
   "name": "flobot-doc-generator",
   "description": "For generating Flobot documentation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -10,7 +10,7 @@
     "documentation": "^5.0.1",
     "ejs": "^2.5.6",
     "extend": "^3.0.0",
-    "flobot": "^0.0.13",
+    "flobot": "^0.0.14",
     "lodash": "^4.17.4",
     "sprintf": "^0.1.5",
     "upath": "^1.0.0"

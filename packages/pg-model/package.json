@@ -1,7 +1,7 @@
 {
   "name": "pg-model",
   "description": "Takes a relational database structure and returns model objects for noSQL-like abilities.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Tim Needham",
   "keywords": [
     "nosql",
@@ -20,7 +20,7 @@
     "chai-subset": "^1.5.0",
     "mocha": "^3.5.0",
     "pg": "^6.4.1",
-    "pg-diff-sync": "^0.0.9",
+    "pg-diff-sync": "^0.0.10",
     "standard": "^10.0.3"
   },
   "scripts": {
