@@ -8,9 +8,8 @@ const addUpsertStatements = require('./add-upsert-statements')
 const debug = require('debug')('supercopy')
 
 module.exports = function generateScriptStatements (fileInfo, options) {
-  debug(fileInfo)
   const scriptStatements = ['BEGIN;']
-  addTruncateStatements(scriptStatements, fileInfo)
+  addTruncateStatements(scriptStatements, fileInfo, options)
   addDeleteStatements(scriptStatements, fileInfo, options)
   addInsertStatements(scriptStatements, fileInfo, options)
   addUpdateStatements(scriptStatements, fileInfo, options)

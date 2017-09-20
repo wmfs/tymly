@@ -1,3 +1,4 @@
+'use strict'
 
 const fs = require('fs')
 const async = require('async')
@@ -8,10 +9,13 @@ const debug = require('debug')('supercopy')
 
 module.exports = function (options, callback) {
   const info = {}
-  if (options.hasOwnProperty('truncateFirstTables')) {
-    info.truncates = []
-    for (const t of options.truncateFirstTables) {
-      info.truncates.push(`${options.schemaName}.${t}`)
+  if (options.hasOwnProperty('truncateTables') && options.truncateTables === true) {
+    if (options.hasOwnProperty('topDownTableOrder') && options.topDownTableOrder.length !== 0) {
+      info.truncateTables = options.topDownTableOrder.slice(0) // clones array
+      info.truncateTables.reverse()
+      debug(info)
+    } else {
+      debug('WARNING: truncateTables is set to true, but topDownTableOrder has not been specified (or is empty) (so truncation will not be carried out)')
     }
   }
 

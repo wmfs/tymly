@@ -1,2 +1,3 @@
-.child_no,first_name,last_name
-30,Bart,Simpson
+.child_no,first_name,last_name,father_no,mother_no
+50,Todd,Flanders,40,30
+70,Milhouse,Van Houten,,
