@@ -25,21 +25,10 @@ flobot.boot(
     // Flobot is extended via plugins, each in-turn offer 'services' and other components...
     pluginPaths: [
       '/flobot/plugins/flobot-express-plugin',  // For accessing Flobot over HTTP/REST etc.
-      '/flobot/plugins/flobot-import-plugin',   // Adds import-from-CSV capabilities
+      '/flobot/plugins/flobot-etl-plugin',   // Adds import-from-CSV capabilities
       '/flobot/plugins/flobot-pg-plugin'   // Persist to PostgreSQL instead of the default in-memory solution 
     ],
     
-    // Config that will be offered to each of the plugins...
-    config: {
-    
-      // Of use to the 'flobot-mongodb-plugin'
-      mongodbConnection: {
-        host: 'localhost',
-        port: 27017,
-        database: 'flobotTest'
-      }
-                 
-    }
   },
   
   // Callback once everything has booted (or not)

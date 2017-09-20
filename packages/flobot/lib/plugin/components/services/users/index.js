@@ -4,6 +4,7 @@ const _ = require('lodash')
 const async = require('async')
 const schema = require('./schema.json')
 const boom = require('boom')
+const debug = require('debug')('users')
 
 class UsersService {
   boot (options, callback) {
@@ -67,6 +68,7 @@ class UsersService {
         roleIds,
 
         function (roleId, cb) {
+          debug(`Adding user '${userId}' into role '${roleId}'`)
           _this.roleMembershipModel.upsert(
             {
               roleId: roleId,

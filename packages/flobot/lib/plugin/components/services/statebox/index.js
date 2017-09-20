@@ -43,16 +43,28 @@ class StateboxService {
     this.statebox.startExecution(input, stateMachineName, executionOptions, callback)
   }
 
-  stopExecution (cause, error, executionName, callback) {
-    this.statebox.stopExecution(cause, error, executionName, callback)
+  stopExecution (cause, error, executionName, executionOptions, callback) {
+    this.statebox.stopExecution(cause, error, executionName, executionOptions, callback)
   }
 
-  listExecutions (callback) {
-    this.statebox.listExecutions(callback)
+  listExecutions (executionOptions, callback) {
+    this.statebox.listExecutions(executionOptions, callback)
   }
 
-  describeExecution (executionName, callback) {
-    this.statebox.listExecutions(executionName, callback)
+  describeExecution (executionName, executionOptions, callback) {
+    this.statebox.describeExecution(executionName, executionOptions, callback)
+  }
+
+  sendTaskSuccess (executionName, output, executionOptions, callback) {
+    this.statebox.sendTaskSuccess(executionName, output, executionOptions, callback)
+  }
+
+  sendTaskHeartbeat (executionName, output, executionOptions, callback) {
+    this.statebox.sendTaskHeartbeat(executionName, output, executionOptions, callback)
+  }
+
+  sendTaskFailure (executionName, output, executionOptions, callback) {
+    this.statebox.sendTaskFailure(executionName, output, executionOptions, callback)
   }
 
   waitUntilStoppedRunning (executionName, callback) {
