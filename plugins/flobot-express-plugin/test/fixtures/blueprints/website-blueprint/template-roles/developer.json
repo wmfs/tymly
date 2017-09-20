@@ -3,7 +3,7 @@
 
     "grants": [
         {
-            "flowId": "createPost",
+            "stateMachineName": "createPost",
             "allows": ["cancel"]
         }
     ]

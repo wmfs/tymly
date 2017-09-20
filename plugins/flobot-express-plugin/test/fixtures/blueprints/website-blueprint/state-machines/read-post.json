@@ -1,0 +1,30 @@
+{
+  "Comment": "Read a post in its entirety",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "tags": [
+    "website",
+    "posts"
+  ],
+  "StartAt": "Logging",
+  "States": {
+    "Logging": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "template": "Read post!"
+      },
+      "Resource": "module:logging",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$everyone",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}

@@ -17,7 +17,7 @@ class ExpressServerService {
     options.messages.info('Created Express.js app')
 
     // Make Flobot Control available to routes
-    app.set('flobotServices', options.bootedServices)
+    app.set('services', options.bootedServices)
 
     // Allow CORS
     app.use(

@@ -1,7 +1,7 @@
 module.exports = {
-  getFlobot: require('./get-flobot'),
-  startNewFlobot: require('./start-new-flobot'),
-  updateFlobot: require('./update-flobot'),
-  cancelFlobot: require('./cancel-flobot'),
+  startExecution: require('./start-execution'),
+  describeExecution: require('./describe-execution'),
+  sendTaskSuccess: require('./send-task-success'),
+  stopExecution: require('./stop-execution'),
   getUserRemit: require('./get-user-remit')
 }

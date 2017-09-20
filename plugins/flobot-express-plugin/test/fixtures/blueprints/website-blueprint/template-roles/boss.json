@@ -6,11 +6,11 @@
 
     "grants": [
         {
-            "flowId": "purgeSite",
+            "stateMachineName": "purgeSite",
             "allows": ["create"]
         },
         {
-            "flowId": "deletePost",
+            "stateMachineName": "deletePost",
             "allows": ["cancel"]
         }
     ]
