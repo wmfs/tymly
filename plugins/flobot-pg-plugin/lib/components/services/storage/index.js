@@ -103,11 +103,13 @@ class PostgresqlStorageService {
                         }
                       )
 
-                      options.messages.info('Loading seed data:')
+                      options.messages.info('Seed data:')
                       let scripts = []
                       _.forEach(options.blueprintComponents.seedData, (data) => {
-                        scripts.push(data.filePath)
-                        options.messages.detail(data.filename)
+                        if (data.ext === '.sql') {
+                          scripts.push(data.filePath)
+                          options.messages.detail(data.filename)
+                        }
                       })
 
                       pgScriptRunner(scripts, _this.client, callback)
