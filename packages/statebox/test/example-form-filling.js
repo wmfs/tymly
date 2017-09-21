@@ -195,4 +195,22 @@ describe('Example form-filling tests', function () {
       }
     )
   })
+
+  it('should start form-filling state machine, and respond once finished \'FormFilling\'', function (done) {
+    statebox.startExecution(
+      {},  // input
+      'formFilling', // state machine name
+      {
+        sendResponse: 'FormFilling'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        executionName = executionDescription.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
+        expect(executionDescription.stateMachineName).to.eql('formFilling')
+        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        done()
+      }
+    )
+  })
 })

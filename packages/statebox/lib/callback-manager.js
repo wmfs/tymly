@@ -7,19 +7,17 @@ class CallbackManager {
   }
 
   addCallback (eventName, executionName, callback) {
-    if (!this.callbacks.hasOwnProperty(eventName)) {
-      this.callbacks[eventName] = {}
-    }
-    this.callbacks[eventName][executionName] = {
+    this.callbacks[executionName] = {
+      eventName: eventName,
       timestamp: new Date(),
       callback: callback
     }
   }
 
   getAndRemoveCallback (eventName, executionName) {
-    if (this.callbacks.hasOwnProperty(eventName) && this.callbacks[eventName].hasOwnProperty(executionName)) {
-      const callback = this.callbacks[eventName][executionName].callback
-      delete this.callbacks[eventName][executionName]
+    if (this.callbacks.hasOwnProperty(executionName) && this.callbacks[executionName].eventName === eventName) {
+      const callback = this.callbacks[executionName].callback
+      delete this.callbacks[executionName]
       return callback
     }
   }

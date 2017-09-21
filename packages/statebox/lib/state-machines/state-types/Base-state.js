@@ -68,7 +68,7 @@ class BaseState {
               if (err) {
                 throw new Error(err)
               } else {
-                const registeredCallback = callbackManager.getAndRemoveCallback('onCompletion', executionName)
+                const registeredCallback = callbackManager.getAndRemoveCallback('$ON_COMPLETION', executionName)
                 if (registeredCallback) {
                   registeredCallback(null, failedExecutionDescription)
                 }
@@ -116,7 +116,7 @@ class BaseState {
               }
             } else {
               // No branching, so finished everything... might need to call a callback?
-              const registeredCallback = callbackManager.getAndRemoveCallback('onCompletion', executionName)
+              const registeredCallback = callbackManager.getAndRemoveCallback('$ON_COMPLETION', executionName)
               if (registeredCallback) {
                 registeredCallback(null, succeededExecutionDescription)
               }

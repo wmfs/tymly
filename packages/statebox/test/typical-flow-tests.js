@@ -63,12 +63,12 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should execute helloWorld, but receive SUCCEEDED response {sendResponse: \'onCompletion\'}', function (done) {
+  it("should execute helloWorld, but receive SUCCEEDED response {sendResponse: '$ON_COMPLETION'}", function (done) {
     statebox.startExecution(
       {},  // input
       'helloWorld', // state machine name
       {
-        sendResponse: 'onCompletion'
+        sendResponse: '$ON_COMPLETION'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -109,9 +109,10 @@ describe('Simple stateMachine test', function () {
       {},  // input
       'helloThenFailure', // state machine name
       {}, // options
-      function (err, result) {
+      function (err, executionDescription) {
         expect(err).to.eql(null)
-        executionName = result.executionName
+        executionName = executionDescription.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
         done()
       }
     )
@@ -132,12 +133,12 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it("should execute helloThenFailure, but receive FAILED response {sendResponse: 'onCompletion'}", function (done) {
+  it("should execute helloThenFailure, but receive FAILED response {sendResponse: '$ON_COMPLETION'}", function (done) {
     statebox.startExecution(
       {},  // input
       'helloThenFailure', // state machine name
       {
-        sendResponse: 'onCompletion'
+        sendResponse: '$ON_COMPLETION'
       }, // options
       function (err, result) {
         expect(err).to.eql(null)

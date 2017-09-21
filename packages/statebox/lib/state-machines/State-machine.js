@@ -4,6 +4,7 @@ const stateTypes = require('./state-types')
 const _ = require('lodash')
 const async = require('async')
 const boom = require('boom')
+const callbackManager = require('./../callback-manager')
 
 class StateMachine {
   init (stateMachineName, definition, env, options, callback) {
@@ -61,6 +62,10 @@ class StateMachine {
       debug(`About to process ${stateToRun.stateType} '${stateNameToRun}' in stateMachine '${this.name}' stateMachine (executionName='${executionDescription.executionName}')`)
       // TODO: Why, if no .process method is defined, does this intermittently not throw an error? Mocha in IDE?
       stateToRun.process(executionDescription)
+      const registeredCallback = callbackManager.getAndRemoveCallback(stateNameToRun, executionDescription.executionName)
+      if (registeredCallback) {
+        registeredCallback(null, executionDescription)
+      }
     } else {
       // TODO: Need to handle trying to run an unknown state (should be picked-up in validation though)
       throw (boom.badRequest(`Unknown state '${stateNameToRun}' in stateMachine '${this.name}'`))
