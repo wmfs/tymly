@@ -1,12 +1,11 @@
 
 # Tymly [![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-_An open source low-code platform that's built for collaboration_
+_An open source low-code platform - that's built for collaboration_
 
 ## <a name="environment-variables"></a>Environment
 This here is a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-single-repository-for-all-your-companys-projects/). All of the [packages](https://github.com/wmfs/tymly/tree/master/packages) and [plugins](https://github.com/wmfs/tymly/tree/master/plugins) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
-
-* __Ordinarily you should refer to each package's specific installation instructions.__
+Ordinarily, you should refer to each package's specific installation instructions.
 
 ### Node.js
 
