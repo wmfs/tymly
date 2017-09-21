@@ -12,6 +12,17 @@ This here is a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-
 
 Tymly is constructed from a collection of __[Node.js](https://nodejs.org/en/)__ packages. To use any of them you'll need to have  Node __Version 8.4.0__ (or above) installed. 
 
+### Windows build tools
+
+For those wanting to run/develop Tymly on Windows, please install __Windows Build Tools__: 
+
+```bash
+$ npm install --global windows-build-tools
+```
+
+* Please see the pakage's [documentation](https://www.npmjs.com/package/windows-build-tools) for further guidance.
+* As per the console messages, it does take quite a while to install!
+
 ### Lerna
 
 We use the __[Lerna](https://lernajs.io/)__ multi-repository tool for managing Tymly's constituent [Node.js](https://nodejs.org/en/) packages. To quickly install all of Tymly's dependencies (along with other useful multi-package capabilities related to testing and publishing) you'll need to install Lerna:    
