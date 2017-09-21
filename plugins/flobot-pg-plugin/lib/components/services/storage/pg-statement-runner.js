@@ -1,25 +1,29 @@
 const async = require('async')
 
-module.exports = function pgScriptRunner (client, statements, callback) {
-  if (statements.length > 0 && statements[0] !== 'BEGIN') {
-    statements.unshift('BEGIN')
+module.exports = function pgScriptRunner (client, statementsAndParams, callback) {
+  if (statementsAndParams.length > 0 && statementsAndParams[0].sql !== 'BEGIN') {
+    statementsAndParams.unshift({
+      'sql': 'BEGIN',
+      'params': []
+    })
   }
 
-  if (statements[statements.length - 1] !== 'END;') {
-    statements.push('END;')
+  if (statementsAndParams.length > 0 && statementsAndParams[statementsAndParams.length - 1].sql !== 'END;') {
+    statementsAndParams.push({
+      'sql': 'END;',
+      'params': []
+    })
   }
 
   let i = -1
   async.eachSeries(
-    statements,
-    function (statement, cb) {
+    statementsAndParams,
+    function (data, cb) {
       i++
 
-      // console.log(`${i}: ${statement}`)
-
       client.query(
-        statement,
-        [],
+        data.sql,
+        data.params,
         cb
       )
     },
@@ -29,7 +33,7 @@ module.exports = function pgScriptRunner (client, statements, callback) {
         console.error('scriptRunner fail!')
         console.error('------------------')
         console.error()
-        console.error(JSON.stringify(statements[i], null, 2))
+        console.error(JSON.stringify(statementsAndParams[i], null, 2))
         console.error(err)
         console.error('')
         client.query(

@@ -58,9 +58,7 @@ module.exports = function pathExploder (sourcePaths, options) {
               }
             )
           } else {
-            console.log('@@@@@@', options)
             options.messages.warning(`The directory at path ${rawPart} yielded no content `)
-            console.log('>>>>>>', 'Warning: ' + rawPart + ' yielded no content', options)
           }
         }
       )
