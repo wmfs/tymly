@@ -1,14 +1,14 @@
 {
-  "name": "people",
-  "description": "Process the CSV file.",
+  "Comment": "Process the CSV file.",
   "version": "1.0",
-  "initialStateId": "processingCsvFiles",
+  "StartAt": "ProcessingCsvFiles",
   "instigators": [
     "user"
   ],
-  "fsm": {
-    "processingCsvFiles": {
-      "options": {
+  "States": {
+    "ProcessingCsvFiles": {
+      "Type": "Task",
+      "ResourceConfig": {
         "parser": {
           "quote": "\"",
           "delimiter": ",",
@@ -70,7 +70,10 @@
             }
           }
         }
-      }
+      },
+      "Resource": "module:processingCsvFiles",
+      "End": true
+
     }
   }
 }
