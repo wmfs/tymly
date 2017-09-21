@@ -20,7 +20,7 @@ For those wanting to run/develop Tymly on Windows, please install __Windows Buil
 $ npm install --global windows-build-tools
 ```
 
-* Please see the pakage's [documentation](https://www.npmjs.com/package/windows-build-tools) for further guidance.
+* Please see the package's [documentation](https://www.npmjs.com/package/windows-build-tools) for further guidance.
 * As per the console messages, it does take quite a while to install!
 
 ### Lerna
