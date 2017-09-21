@@ -41,9 +41,10 @@ describe('Simple stateMachine test', function () {
       {},  // input
       'helloWorld', // state machine name
       {}, // options
-      function (err, result) {
+      function (err, executionDescription) {
         expect(err).to.eql(null)
-        executionName = result.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
+        executionName = executionDescription.executionName
         done()
       }
     )
@@ -57,6 +58,21 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('helloWorld')
         expect(executionDescription.currentStateName).to.eql('Hello World')
+        done()
+      }
+    )
+  })
+
+  it('should execute helloWorld, but receive SUCCEEDED response {sendResponse: \'onCompletion\'}', function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloWorld', // state machine name
+      {
+        sendResponse: 'onCompletion'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
@@ -111,6 +127,22 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.currentStateName).to.eql('Failure')
         expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
         expect(executionDescription.errorMessage).to.eql('But at least it was expected')
+        done()
+      }
+    )
+  })
+
+  it("should execute helloThenFailure, but receive FAILED response {sendResponse: 'onCompletion'}", function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloThenFailure', // state machine name
+      {
+        sendResponse: 'onCompletion'
+      }, // options
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        expect(result.status).to.eql('FAILED')
         done()
       }
     )

@@ -3,6 +3,7 @@ const debugPackage = require('debug')('statebox')
 const stateMachines = require('./../../state-machines')
 const _ = require('lodash')
 const dottie = require('dottie')
+const callbackManager = require('./../../callback-manager')
 
 class BaseState {
   constructor (stateName, stateMachine, stateDefinition, options) {
@@ -33,7 +34,7 @@ class BaseState {
     )
   }
 
-  runTaskFailure (executionDescription, options) {
+  runTaskFailure (executionDescription, options, callback) {
     const executionName = executionDescription.executionName
     const tracker = this.options.parallelBranchTracker
     tracker.registerChildExecutionFail(executionName)
@@ -41,9 +42,11 @@ class BaseState {
       executionDescription,
       options.cause,
       options.error,
-      function (err) {
+      function (err, failedExecutionDescription) {
         if (err) {
-          throw new Error(err)
+          callback(err)
+        } else {
+          callback(null, failedExecutionDescription)
         }
       }
     )
@@ -58,7 +61,20 @@ class BaseState {
           // TODO: Handle this as per spec!
           throw (err)
         } else {
-          _this.runTaskFailure(executionDescription, options)
+          _this.runTaskFailure(
+            executionDescription,
+            options,
+            function (err, failedExecutionDescription) {
+              if (err) {
+                throw new Error(err)
+              } else {
+                const registeredCallback = callbackManager.getAndRemoveCallback('onCompletion', executionName)
+                if (registeredCallback) {
+                  registeredCallback(null, failedExecutionDescription)
+                }
+              }
+            }
+          )
         }
       }
     )
@@ -83,7 +99,7 @@ class BaseState {
       this.options.dao.succeedExecution(
         executionName,
         ctx,
-        function (err) {
+        function (err, succeededExecutionDescription) {
           if (err) {
             // TODO: Needs handling as per spec
             throw new Error(err)
@@ -97,6 +113,12 @@ class BaseState {
               if (parallelStateStatus === 'SUCCEEDED') {
                 debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
                 _this.processTaskSuccess(ctx, parentExecutionName)
+              }
+            } else {
+              // No branching, so finished everything... might need to call a callback?
+              const registeredCallback = callbackManager.getAndRemoveCallback('onCompletion', executionName)
+              if (registeredCallback) {
+                registeredCallback(null, succeededExecutionDescription)
               }
             }
           }

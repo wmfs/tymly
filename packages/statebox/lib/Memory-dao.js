@@ -54,7 +54,7 @@ class MemoryDao {
         if (execution) {
           execution.ctx = ctx
           execution.status = 'SUCCEEDED'
-          callback(null)
+          callback(null, execution)
         } else {
           // TODO: Something bad happened
           callback(boom.badRequest(`Unable to succeed execution with name '${executionName}'`))
@@ -76,9 +76,16 @@ class MemoryDao {
           if (executionDescription.hasOwnProperty('rootExecutionName') && executionDescription.rootExecutionName) {
             _this.markRelatedBranchesAsFailed(
               executionDescription.rootExecutionName,
-              callback)
+              function (err) {
+                if (err) {
+                  callback(err)
+                } else {
+                  callback(null, execution)
+                }
+              }
+            )
           } else {
-            callback(null)
+            callback(null, execution)
           }
         } else {
           // TODO: Something bad happened

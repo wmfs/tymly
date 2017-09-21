@@ -1,7 +1,8 @@
 'use strict'
 const stateMachines = require('./state-machines')
 const boom = require('boom')
-
+const _ = require('lodash')
+const callbackManager = require('./callback-manager')
 module.exports = function executioner (input, stateMachineName, executionOptions, options, callback) {
   // References
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html
@@ -20,10 +21,18 @@ module.exports = function executioner (input, stateMachineName, executionOptions
           callback(err)
         } else {
           stateMachineToExecute.processState(executionDescription.executionName)
-          callback(
-            null,
-            executionDescription
-          )
+          if (_.isObject(executionOptions) && executionOptions.hasOwnProperty('sendResponse') && executionOptions.sendResponse !== 'immediately') {
+            callbackManager.addCallback(
+              executionOptions.sendResponse,
+              executionDescription.executionName,
+              callback
+            )
+          } else {
+            callback(
+              null,
+              executionDescription
+            )
+          }
         }
       }
     )
