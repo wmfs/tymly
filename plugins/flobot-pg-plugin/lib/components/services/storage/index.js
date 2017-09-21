@@ -1,8 +1,11 @@
 'use strict'
 
+const debug = require('debug')('flobot-pg-plugin')
+
 const _ = require('lodash')
 const schema = require('./schema.json')
 const process = require('process')
+const async = require('async')
 
 const pg = require('pg')
 const relationize = require('relationize')
@@ -11,7 +14,7 @@ const pgDiffSync = require('pg-diff-sync')
 const pgModel = require('pg-model')
 
 const pgStatementRunner = require('./pg-statement-runner')
-const pgScriptRunner = require('./pg-script-runner')
+const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
   boot (options, callback) {
@@ -67,10 +70,18 @@ class PostgresqlStorageService {
               if (err) {
                 callback(err)
               } else {
-                const statements = pgDiffSync(
+                let statements = pgDiffSync(
                   currentDbStructure,
                   expectedDbStructure
                 )
+
+                for (let i = 0, statementLength = statements.length; i < statementLength; i++) {
+                  let s = statements[i]
+                  statements[i] = {
+                    'sql': s,
+                    'params': []
+                  }
+                }
 
                 pgStatementRunner(
                   _this.client,
@@ -103,14 +114,51 @@ class PostgresqlStorageService {
                         }
                       )
 
-                      options.messages.info('Loading seed data:')
-                      let scripts = []
-                      _.forEach(options.blueprintComponents.seedData, (data) => {
-                        scripts.push(data.filePath)
-                        options.messages.detail(data.filename)
-                      })
+                      if (options.blueprintComponents.seedData) {
+                        options.messages.info('Loading seed data:')
+                        async.eachSeries(
+                          options.blueprintComponents.seedData,
+                          (seedData, cb) => {
+                            const name = seedData.namespace + '_' + seedData.name
+                            options.messages.detail(name)
 
-                      pgScriptRunner(scripts, _this.client, callback)
+                            // generate upsert sql statement
+                            const sql = generateUpsertStatement(_this.models[name], seedData)
+                            debug('load', name, 'seed-data sql: ', sql)
+
+                            // generate a single array of parameters which each
+                            // correspond with a placeholder in the upsert sql statement
+                            let params = []
+                            _.forEach(seedData.data, (row) => {
+                              params = params.concat(row)
+                            })
+                            debug('load', name, 'seed-data params: ', params)
+
+                            pgStatementRunner(
+                              _this.client,
+                              [{
+                                'sql': sql,
+                                'params': params
+                              }],
+                              function (err) {
+                                if (err) {
+                                  cb(err)
+                                } else {
+                                  cb(null)
+                                }
+                              }
+                            )
+                          },
+                          (err) => {
+                            if (err) {
+                              callback(err)
+                            } else {
+                              callback(null)
+                            }
+                          })
+                      } else {
+                        callback(null)
+                      }
                     }
                   }
                 )

@@ -1,16 +1,26 @@
 
 # Tymly [![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-_An open source low-code platform that's built for collaboration_
+_An open source low-code platform - that's built for collaboration_
 
 ## <a name="environment-variables"></a>Environment
 This here is a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-single-repository-for-all-your-companys-projects/). All of the [packages](https://github.com/wmfs/tymly/tree/master/packages) and [plugins](https://github.com/wmfs/tymly/tree/master/plugins) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
-
-* __Ordinarily you should refer to each package's specific installation instructions.__
+Ordinarily, you should refer to each package's specific installation instructions.
 
 ### Node.js
 
 Tymly is constructed from a collection of __[Node.js](https://nodejs.org/en/)__ packages. To use any of them you'll need to have  Node __Version 8.4.0__ (or above) installed. 
+
+### Windows build tools
+
+For those wanting to run/develop Tymly on Windows, please install __Windows Build Tools__: 
+
+```bash
+$ npm install --global windows-build-tools
+```
+
+* Please see the package's [documentation](https://www.npmjs.com/package/windows-build-tools) for further guidance.
+* As per the console messages, it does take quite a while to install!
 
 ### Lerna
 

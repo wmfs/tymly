@@ -16,12 +16,13 @@
     "pg-info": "^0.0.14",
     "pg-model": "^0.0.8",
     "pg-telepods": "^0.0.5",
+    "process": "^0.11.10",
     "relationize": "^0.0.18",
     "supercopy": "^0.0.5"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "flobot": "^0.0.14",
+    "flobot": "0.0.14",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"
   },
