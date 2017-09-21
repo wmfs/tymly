@@ -4,10 +4,11 @@
 const _ = require('lodash')
 
 module.exports = function generateUpsertStatement (model, object) {
-  let statement = `INSERT INTO ${object.namespace}.${_.snakeCase(object.name)} (${object.propertyNames.join(', ')}) VALUES `
   const columnCount = object.propertyNames.length
+  const rowCount = object.data.length
 
-  for (let row = 1, rowCount = object.data.length; row <= rowCount; row++) {
+  let statement = `INSERT INTO ${object.namespace}.${_.snakeCase(object.name)} (${object.propertyNames.join(', ')}) VALUES `
+  for (let row = 1; row <= rowCount; row++) {
     let valueLine = '('
     for (let col = 1; col <= columnCount; col++) {
       valueLine += '$' + (col + ((row - 1) * columnCount))
@@ -26,5 +27,6 @@ module.exports = function generateUpsertStatement (model, object) {
   }
 
   statement += ` ON CONFLICT (${model.pkColumnNames.join((', '))}) DO NOTHING;`
+
   return statement
 }
