@@ -13,6 +13,7 @@ const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
+const routes = require('./routes/index')
 
 class Statebox {
   constructor (options) {
@@ -81,29 +82,16 @@ class Statebox {
   }
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
-    const _this = this
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
         if (err) {
           callback(err)
         } else {
-          executionDescription.ctx = _.defaults(output, executionDescription.ctx)
-          _this.options.dao.setNextState(
-            executionName,
-            executionDescription.currentStateName,
-            executionDescription.ctx,
-            function (err) {
-              if (err) {
-                callback(err)
-              } else {
-                const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-                const stateToRun = stateMachine.states[executionDescription.currentStateName]
-                stateToRun.runTaskSuccess(executionDescription)
-                callback(null)
-              }
-            }
-          )
+          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+          const stateToRun = stateMachine.states[executionDescription.currentStateName]
+          stateToRun.runTaskSuccess(executionDescription, output)
+          callback(null)
         }
       }
     )
@@ -149,6 +137,23 @@ class Statebox {
         }
       }
     )
+  }
+
+  addExpressApi (express, app, jwtCheck) {
+    // Statebox routes
+    // ---------------
+    let router = express.Router()
+    router.post('/', jwtCheck, routes.startExecution)
+    router.get('/:executionName', jwtCheck, routes.describeExecution)
+    router.put('/:executionName', jwtCheck, routes.executionAction)
+    router.delete('/:executionName', jwtCheck, routes.stopExecution)
+    app.use('/executions', router)
+
+    // Remit routes
+    // ------------
+    router = express.Router()
+    router.get('/', jwtCheck, routes.getUserRemit)
+    app.use('/remit', router)
   }
 
   waitUntilStoppedRunning (executionName, callback) {

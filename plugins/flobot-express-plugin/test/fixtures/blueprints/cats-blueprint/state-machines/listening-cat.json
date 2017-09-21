@@ -11,6 +11,7 @@
     "Listening": {
       "Type": "Task",
       "Resource": "module:listening",
+      "ResultPath": "$.formData",
       "Next": "Sleeping"
     },
     "Sleeping": {
