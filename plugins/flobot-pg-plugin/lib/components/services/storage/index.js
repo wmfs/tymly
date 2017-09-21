@@ -151,7 +151,7 @@ class PostgresqlStorageService {
                                 }
                               )
                             } else {
-                              options.messages.detail(`WARNING: no model found for seed-data ${name}`)
+                              options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
                               cb(null)
                             }
                           },
