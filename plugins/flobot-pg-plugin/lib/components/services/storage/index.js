@@ -156,6 +156,8 @@ class PostgresqlStorageService {
                               callback(null)
                             }
                           })
+                      } else {
+                        callback(null)
                       }
                     }
                   }
