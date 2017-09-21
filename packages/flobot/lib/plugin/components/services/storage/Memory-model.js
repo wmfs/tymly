@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')('flobot')
+// const debug = require('debug')('flobot')
 const uuid = require('uuid')
 const _ = require('lodash')
 
@@ -10,7 +10,6 @@ require('underscore-query')(_)
 
 class MemoryModel {
   constructor (modelDefinition) {
-    debug(modelDefinition)
     this.name = modelDefinition.name
     this.namespace = modelDefinition.namespace
 

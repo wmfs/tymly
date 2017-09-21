@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 
 describe('Simple Flobot test', function () {
-  this.timeout(8000)
+  this.timeout(5000)
 
   it('should create some basic flobot services', function (done) {
     flobot.boot(
