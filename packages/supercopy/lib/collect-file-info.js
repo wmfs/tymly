@@ -1,3 +1,4 @@
+'use strict'
 
 const fs = require('fs')
 const async = require('async')
@@ -8,6 +9,16 @@ const debug = require('debug')('supercopy')
 
 module.exports = function (options, callback) {
   const info = {}
+  if (options.hasOwnProperty('truncateTables') && options.truncateTables === true) {
+    if (options.hasOwnProperty('topDownTableOrder') && options.topDownTableOrder.length !== 0) {
+      info.truncateTables = options.topDownTableOrder.slice(0) // clones array
+      info.truncateTables.reverse()
+      debug(info)
+    } else {
+      debug('WARNING: truncateTables is set to true, but topDownTableOrder has not been specified (or is empty) (so truncation will not be carried out)')
+    }
+  }
+
   const rootDir = options.sourceDir
   debug(`Staring to collect file info for ${rootDir}`)
 
@@ -38,7 +49,7 @@ module.exports = function (options, callback) {
                         actionItems,
                         function (actionItem, cb2) {
                           const filePath = path.join(dirPath, actionItem)
-
+                          console.log(filePath)
                           fs.lstat(
                             filePath,
                             function (err, fileStats) {

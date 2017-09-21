@@ -1,17 +1,29 @@
 /* eslint-env mocha */
 
+'use strict'
+
+const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const process = require('process')
 
 describe('Simple Flobot test', function () {
-  this.timeout(5000)
+  this.timeout(8000)
 
-  it('should run with valid blueprint and plugin paths', function (done) {
-    process.env.FLOBOT_BLUEPRINTS_PATH = path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')
-    process.env.FLOBOT_PLUGINS_PATH = path.resolve(__dirname, './fixtures/plugins/cats-plugin')
-    let flobotRunner = require('./../lib')
-    expect(flobotRunner).to.be.an('object')
-    done()
+  it('should create some basic flobot services', function (done) {
+    flobot.boot(
+      {
+        pluginPaths: [
+          path.resolve(__dirname, './../../../plugins/flobot-pg-plugin')
+        ],
+        blueprintPaths: [
+          path.resolve(__dirname, './../../../../../blueprints/indices-multi-deprivation-blueprint')
+        ]
+      },
+      function (err, flobotServices) {
+        expect(err).to.eql(null)
+
+        done()
+      }
+    )
   })
 })

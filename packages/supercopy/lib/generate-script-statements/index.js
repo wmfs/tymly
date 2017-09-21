@@ -1,5 +1,6 @@
 'use strict'
 
+const addTruncateStatements = require('./add-truncate-statements')
 const addDeleteStatements = require('./add-delete-statements')
 const addInsertStatements = require('./add-insert-statements')
 const addUpdateStatements = require('./add-update-statements')
@@ -8,6 +9,7 @@ const debug = require('debug')('supercopy')
 
 module.exports = function generateScriptStatements (fileInfo, options) {
   const scriptStatements = ['BEGIN;']
+  addTruncateStatements(scriptStatements, fileInfo, options)
   addDeleteStatements(scriptStatements, fileInfo, options)
   addInsertStatements(scriptStatements, fileInfo, options)
   addUpdateStatements(scriptStatements, fileInfo, options)

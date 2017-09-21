@@ -1,7 +1,7 @@
 {
   "name": "pg-info",
   "description": "Grabs metadata from a PostgreSQL database",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "Tim Needham",
   "keywords": [
     "postgresql"

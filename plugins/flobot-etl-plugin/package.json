@@ -1,18 +1,18 @@
 {
   "name": "flobot-etl-plugin",
   "description": "A collection of states for helping with Extract, Transform and Load tasks.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Aron Moore",
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "^5.2.0",
     "debug": "^2.6.8",
-    "smithereens": "^0.0.6"
+    "smithereens": "^0.0.7"
   },
   "devDependencies": {
     "chai": "^4.1.0",
     "csvtojson": "^1.1.7",
-    "flobot": "^0.0.13",
+    "flobot": "0.0.14",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"
   },

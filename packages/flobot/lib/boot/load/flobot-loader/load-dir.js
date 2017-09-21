@@ -7,7 +7,7 @@ const _ = require('lodash')
 const parseMetaJson = require('./parse-meta-json')
 const loadComponentDir = require('./load-component-dir')
 const fileLoaders = require('./file-loaders/index')
-const COMPONENT_DIR_BLACKLIST = ['test']
+const COMPONENT_DIR_BLACKLIST = ['test', 'nodeModules']
 const processRefProperties = require('./process-ref-properties')
 
 module.exports = function loadDir (rootDir, allComponents, options) {

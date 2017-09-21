@@ -9,6 +9,7 @@ const chai = require('chai')
 const expect = chai.expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const path = require('path')
+const fs = require('fs')
 let client
 
 // Make a Postgres client
@@ -106,6 +107,12 @@ describe('Run the basic-usage example',
         }
       )
     })
+
+    it('Should check for deletes csv',
+      function (done) {
+        expect(fs.existsSync('packages/pg-telepods/test/output/deletes/census.csv')).to.equal(true)
+        done()
+      })
 
     it('Should uninstall test schemas',
       function (done) {

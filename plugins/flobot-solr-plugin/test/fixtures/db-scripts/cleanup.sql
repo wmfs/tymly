@@ -1,1 +1,4 @@
-DROP SCHEMA IF EXISTS solr_plugin_test CASCADE;
+DROP VIEW IF EXISTS fbot.solr_data;
+
+DROP TABLE IF EXISTS fbot_test.students;
+DROP TABLE IF EXISTS fbot_test.staff;

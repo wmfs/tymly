@@ -1,7 +1,7 @@
 {
   "name": "flobot-forms-plugin",
   "description": "Adds some form capabilities to Flobot",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "flobot": "^0.0.13",
+    "flobot": "0.0.14",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"
   },
