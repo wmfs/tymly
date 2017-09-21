@@ -25,9 +25,21 @@ class MemoryStorageService {
       }
     )
 
-    if (options.blueprintComponents.seedData) {
+    const seedData = options.blueprintComponents.seedData
+    if (seedData) {
       options.messages.info('Loading seed data:')
+      _.forEach(seedData, (modelSeedData) => {
+        const name = modelSeedData.namespace + '_' + modelSeedData.name
+        const model = _this.models[name]
+        if (model) {
+          options.messages.detail(name)
 
+          model.upsert()
+        } else {
+          options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
+          callback(null)
+        }
+      })
     } else {
       callback(null)
     }
