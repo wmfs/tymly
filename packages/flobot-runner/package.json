@@ -8,7 +8,7 @@
     "boom": "^5.2.0",
     "config": "^1.26.1",
     "debug": "^2.6.8",
-    "flobot": "^0.0.14",
+    "flobot": "0.0.14",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
     "safe-buffer": "^5.1.1"
