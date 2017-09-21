@@ -13,7 +13,7 @@ describe('Simple Flobot test', function () {
     flobot.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './../../../plugins/flobot-pg-plugin')
+          // path.resolve(__dirname, './../../../plugins/flobot-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../../../../../blueprints/indices-multi-deprivation-blueprint')

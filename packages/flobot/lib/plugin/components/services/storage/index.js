@@ -25,7 +25,12 @@ class MemoryStorageService {
       }
     )
 
-    callback(null)
+    if (options.blueprintComponents.seedData) {
+      options.messages.info('Loading seed data:')
+
+    } else {
+      callback(null)
+    }
   }
 
   fileImporter (action, modelId, rootDir, fileInfo, importReport, callback) {

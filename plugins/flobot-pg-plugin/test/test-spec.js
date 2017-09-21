@@ -24,7 +24,8 @@ describe('PostgreSQL storage tests', function () {
 
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/people-blueprint'),
-          path.resolve(__dirname, './fixtures/blueprints/space-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/space-blueprint'),
+          path.resolve(__dirname, './fixtures/blueprints/test1-blueprint')
         ],
 
         config: {
@@ -136,11 +137,9 @@ describe('PostgreSQL storage tests', function () {
           done()
         }
       )
-  }
-  )
+  })
 
   it('Should end db client', function () {
     client.end()
-  }
-  )
+  })
 })

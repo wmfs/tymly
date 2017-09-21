@@ -7,7 +7,7 @@ module.exports = function generateUpsertStatement (model, object) {
   const columnCount = object.propertyNames.length
   const rowCount = object.data.length
 
-  let statement = `INSERT INTO ${object.namespace}.${_.snakeCase(object.name)} (${object.propertyNames.join(', ')}) VALUES `
+  let statement = `INSERT INTO ${_.snakeCase(object.namespace)}.${_.snakeCase(object.name)} (${object.propertyNames.join(', ')}) VALUES `
   for (let row = 1; row <= rowCount; row++) {
     let valueLine = '('
     for (let col = 1; col <= columnCount; col++) {
