@@ -1,6 +1,5 @@
 'use strict'
 const smithereens = require('smithereens')
-const schema = require('./schema.json')
 const debug = require('debug')('processingCsvFiles')
 
 class ProcessingCsvFiles {

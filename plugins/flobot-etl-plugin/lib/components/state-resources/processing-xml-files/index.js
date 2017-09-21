@@ -1,26 +1,40 @@
 'use strict'
-
-const schema = require('./schema.json')
-const debug = require('debug')('processingXmlFiles')
+// const smithereens = require('smithereens')
+const debug = require('debug')('processingCsvFiles')
 
 class ProcessingXmlFiles {
-  init (stateConfig, options, callback) {
+  init (resourceConfig, env, callback) {
+    this.parser = resourceConfig.parser
+    this.dirSplits = resourceConfig.dirSplits
+    this.fileSplits = resourceConfig.fileSplits
     callback(null)
   }
 
-  enter (flobot, data, callback) {
-    debug(`Flobot ${flobot.flobotId} is entering state 'processingXmlFiles`)
-    callback(null)
-  }
-
-  leave (flobot, data, callback) {
-    debug(`Flobot ${flobot.flobotId} is leaving state 'processingXmlFiles'`)
-    callback(null)
+  run (event, context) {
+    debug(`Execution ${context.executionName} is entering state 'processingXmlFiles - enabling debug for 'smithereens' is a good idea too!`)
+    // smithereens(
+    //   event.sourceFilePaths,
+    //   {
+    //     outputDirRootPath: event.outputDirRootPath,
+    //     parser: this.parser,
+    //     dirSplits: this.dirSplits,
+    //     fileSplits: this.fileSplits
+    //   },
+    //   function (err, manifest) {
+    //     if (err) {
+    //       context.sendTaskFailure(
+    //         {
+    //           error: 'smithereenFail',
+    //           cause: err
+    //         }
+    //       )
+    //     } else {
+    //       context.sendTaskSuccess()
+    //     }
+    //   }
+    // )
+    context.sendTaskSuccess()
   }
 }
 
-module.exports = {
-  autoNudge: true,
-  stateClass: ProcessingXmlFiles,
-  schema: schema
-}
+module.exports = ProcessingXmlFiles
