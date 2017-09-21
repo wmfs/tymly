@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 
+'use strict'
+
 const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
