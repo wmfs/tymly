@@ -29,7 +29,7 @@ supercopy(
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
-    truncateFirstTables: true,
+    truncateTables: true,
     debug: true
   },
   function (err) {
@@ -47,7 +47,7 @@ supercopy(
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
-    truncateFirstTables: true,
+    truncateTables: true,
     debug: true,
     triggerElement: 'word-to-split-records-on',
     xmlSourceFile: '/some/dir/with/xml/file'
@@ -64,7 +64,7 @@ supercopy(
 | `topDownTableOrder`   | `[string]` | An array of strings, where each string is a table name. Table inserts will occur in this order and deletes in reverse - use to avoid integrity-constraint errors. If no schema prefix is supplied to a table name, then it's inferred from `schemaName`. 
 | `client`              | `client`   | Either a [pg](https://www.npmjs.com/package/pg) client or pool (something with a `query()` method) that's already connected to a PostgreSQL database.
 | `schemaName`          | `string`   | Identifies a PostgreSQL schema where the tables that are to be affected by this copy be found.
-| `truncateFirstTables` | `[string]` | An array of strings where each string is a table name. All specified tables will be truncated first.
+| `truncateTables`      | `boolean`  | A flag to indicate whether or not to truncate tables before supercopying into them
 | `debug`               | `boolean`  | Show debugging information on the console
 
 ### <a name="structure"></a>File structure
