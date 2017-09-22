@@ -39,7 +39,7 @@ describe('Simple CSV and flobot test', function () {
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: '$ON_COMPLETION'
+        sendResponse: 'COMPLETE'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
