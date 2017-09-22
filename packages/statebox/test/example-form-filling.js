@@ -53,14 +53,14 @@ describe('Example form-filling tests', function () {
     setTimeout(done, 250)
   })
 
-  it('should prove state machine is still running (i.e. waiting for an external update)', function (done) {
+  it('should prove state machine is still running (i.e. waiting for an external heartbeat update)', function (done) {
     statebox.describeExecution(
       executionName,
       {},
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.ctx).to.eql({})
+        expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         done()
       }
@@ -123,11 +123,13 @@ describe('Example form-filling tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         expect(executionDescription.currentStateName).to.eql('World')
+        expect(executionDescription.currentResource).to.eql('module:world')
         expect(executionDescription.ctx).to.eql(
           {
             formData: {
               name: 'Rupert'
             },
+            formId: 'fillThisFormInHuman!',
             some: 'payload'
           }
         )
@@ -160,7 +162,7 @@ describe('Example form-filling tests', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.ctx).to.eql({})
+        expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         done()
       }
@@ -190,18 +192,19 @@ describe('Example form-filling tests', function () {
         expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         expect(executionDescription.currentStateName).to.eql('FormFilling')
-        expect(executionDescription.ctx).to.eql({})
+        expect(executionDescription.currentResource).to.eql('module:formFilling')
+        expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
         done()
       }
     )
   })
 
-  it('should start form-filling state machine, and respond once finished \'FormFilling\'', function (done) {
+  it('should start form-filling state machine, and respond just as machine enters \'FormFilling\'', function (done) {
     statebox.startExecution(
       {},  // input
       'formFilling', // state machine name
       {
-        sendResponse: 'FormFilling'
+        sendResponse: 'ENTERING:FormFilling'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -209,6 +212,26 @@ describe('Example form-filling tests', function () {
         expect(executionDescription.status).to.eql('RUNNING')
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.currentResource).to.eql('module:formFilling')
+        done()
+      }
+    )
+  })
+
+  it('should start form-filling state machine, and respond once all the code in \'FormFilling\' has run', function (done) {
+    statebox.startExecution(
+      {},  // input
+      'formFilling', // state machine name
+      {
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        executionName = executionDescription.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
+        expect(executionDescription.stateMachineName).to.eql('formFilling')
+        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.currentResource).to.eql('module:formFilling')
         done()
       }
     )

@@ -6,6 +6,7 @@ class Choice extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
     super(stateName, stateMachine, stateDefinition, options)
     this.stateType = 'Choice'
+    this.states = stateMachine.states
     this.calculateNextState = aslChoiceProcessor(stateDefinition)
     this.debug()
   }
@@ -13,7 +14,8 @@ class Choice extends BaseStateType {
   process (executionDescription) {
     const executionName = executionDescription.executionName
     const nextStateName = this.calculateNextState(executionDescription.ctx)
-    this.updateCurrentStateName(nextStateName, executionName)
+    const nextResource = this.states[nextStateName].definition.Resource
+    this.updateCurrentStateName(nextStateName, nextResource, executionName)
   }
 }
 

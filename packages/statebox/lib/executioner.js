@@ -2,7 +2,7 @@
 const stateMachines = require('./state-machines')
 const boom = require('boom')
 const _ = require('lodash')
-const callbackManager = require('./callback-manager')
+
 module.exports = function executioner (input, stateMachineName, executionOptions, options, callback) {
   // References
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html
@@ -10,9 +10,11 @@ module.exports = function executioner (input, stateMachineName, executionOptions
   // TODO: Test 'input' conforms
   // TODO: Note API usually requires a string, but object seems better for Statebox?
   const stateMachineToExecute = stateMachines.findStateMachineByName(stateMachineName)
+  const currentResource = stateMachineToExecute.definition.States[stateMachineToExecute.startAt].Resource
   if (stateMachineToExecute) {
     options.dao.createNewExecution(
       stateMachineToExecute.startAt,
+      currentResource,
       input,
       stateMachineName,
       executionOptions,
@@ -22,7 +24,7 @@ module.exports = function executioner (input, stateMachineName, executionOptions
         } else {
           stateMachineToExecute.processState(executionDescription.executionName)
           if (_.isObject(executionOptions) && executionOptions.hasOwnProperty('sendResponse') && executionOptions.sendResponse !== 'immediately') {
-            callbackManager.addCallback(
+            options.callbackManager.addCallback(
               executionOptions.sendResponse,
               executionDescription.executionName,
               callback

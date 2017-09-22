@@ -3,7 +3,6 @@ const debugPackage = require('debug')('statebox')
 const stateMachines = require('./../../state-machines')
 const _ = require('lodash')
 const dottie = require('dottie')
-const callbackManager = require('./../../callback-manager')
 
 class BaseState {
   constructor (stateName, stateMachine, stateDefinition, options) {
@@ -18,10 +17,11 @@ class BaseState {
     debugPackage(` - Created '${this.name}' ${this.stateType} within stateMachine '${this.stateMachine.name}'`)
   }
 
-  updateCurrentStateName (nextStateName, executionName) {
+  updateCurrentStateName (nextStateName, nextResource, executionName) {
     const _this = this
     this.options.dao.updateCurrentStateName(
       nextStateName,
+      nextResource,
       executionName,
       function (err) {
         if (err) {
@@ -52,6 +52,45 @@ class BaseState {
     )
   }
 
+  runTaskHeartbeat (executionDescription, output, callback) {
+    const executionName = executionDescription.executionName
+    const tracker = this.options.parallelBranchTracker
+    tracker.registerChildExecutionFail(executionName)
+    executionDescription.ctx = _.defaults(output, executionDescription.ctx)
+    this.options.dao.setNextState(
+      executionName, // executionName
+      executionDescription.currentStateName, // nextStateName
+      executionDescription.currentResource, // nextResource
+      executionDescription.ctx, // ctx
+      function (err) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null, executionDescription)
+        }
+      }
+    )
+  }
+
+  processTaskHeartbeat (output, executionName, callback) {
+    const _this = this
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          // TODO: Handle this as per spec!
+          throw (err)
+        } else {
+          _this.runTaskHeartbeat(
+            executionDescription,
+            output,
+            callback
+          )
+        }
+      }
+    )
+  }
+
   processTaskFailure (options, executionName) {
     const _this = this
     this.options.dao.findExecutionByName(
@@ -68,7 +107,7 @@ class BaseState {
               if (err) {
                 throw new Error(err)
               } else {
-                const registeredCallback = callbackManager.getAndRemoveCallback('$ON_COMPLETION', executionName)
+                const registeredCallback = _this.options.callbackManager.getAndRemoveCallback('COMPLETE', executionName)
                 if (registeredCallback) {
                   registeredCallback(null, failedExecutionDescription)
                 }
@@ -116,7 +155,7 @@ class BaseState {
               }
             } else {
               // No branching, so finished everything... might need to call a callback?
-              const registeredCallback = callbackManager.getAndRemoveCallback('$ON_COMPLETION', executionName)
+              const registeredCallback = _this.options.callbackManager.getAndRemoveCallback('COMPLETE', executionName)
               if (registeredCallback) {
                 registeredCallback(null, succeededExecutionDescription)
               }
@@ -126,10 +165,12 @@ class BaseState {
       )
     } else {
       // NEXT
+      const nextResource = stateMachine.findStateDefinitionByName(stateDefinition.Next).Resource
       this.options.dao.setNextState(
-        executionName,
-        stateDefinition.Next,
-        ctx,
+        executionName, // executionName
+        stateDefinition.Next, // nextStateName
+        nextResource,
+        ctx, // ctx
         function (err) {
           if (err) {
             // TODO: Needs handling as per spec

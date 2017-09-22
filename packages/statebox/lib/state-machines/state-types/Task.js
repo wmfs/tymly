@@ -22,6 +22,10 @@ class Context {
     this.task.processTaskFailure(options, this.executionName)
   }
 
+  sendTaskHeartbeat (output, callback) {
+    this.task.processTaskHeartbeat(output, this.executionName, callback)
+  }
+
   _resolveInputPaths (input, root) {
     // TODO: Support string-paths inside arrays
     const _this = this
@@ -59,28 +63,33 @@ class Context {
 class Task extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
     super(stateName, stateMachine, stateDefinition, options)
-    this.stateType = 'Task'
-    const parts = stateDefinition.Resource.split(':')
-    this.resourceType = parts[0]
-    switch (this.resourceType) {
-      case 'module':
-        const moduleName = parts[1]
-        this.ResourceClass = resources.findModuleByName(moduleName)
-        if (!this.ResourceClass) {
-          // Should be picked-up by stateMachine validation before now
-          throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module class '${moduleName}' not found`, moduleName))
-        }
-        break
-    }
+    if (stateDefinition.Resource) {
+      this.stateType = 'Task'
+      const parts = stateDefinition.Resource.split(':')
+      this.resourceType = parts[0]
+      switch (this.resourceType) {
+        case 'module':
+          const moduleName = parts[1]
+          this.ResourceClass = resources.findModuleByName(moduleName)
+          if (!this.ResourceClass) {
+            // Should be picked-up by stateMachine validation before now
+            throw (boom.badRequest(`Unable to bind Task '${stateName}' in stateMachine '${this.stateMachineName}' - module class '${moduleName}' not found`, moduleName))
+          }
+          break
+      }
 
-    this.inputPath = stateDefinition.InputPath || '$'
-    this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath)
-    this.debug()
+      this.inputPath = stateDefinition.InputPath || '$'
+      this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath)
+    } else {
+      throw (boom.badRequest(`Unable to create Task '${stateName}' in stateMachine '${this.stateMachineName}' - no 'Resource' property set?`))
+    }
   }
 
   stateTypeInit (env, callback) {
     const _this = this
     this.resource = new this.ResourceClass()
+    this.resourceExpectsDoneCallback = this.resource.run.length === 3
+
     if (_.isFunction(this.resource.init)) {
       this.resource.init(
         _this.definition.ResourceConfig || {},
@@ -92,7 +101,7 @@ class Task extends BaseStateType {
     }
   }
 
-  process (executionDescription) {
+  process (executionDescription, optionalDoneCallback) {
     const _this = this
     const input = jp.value(executionDescription.ctx, this.inputPath)
     const context = new Context(executionDescription, this)
@@ -102,7 +111,8 @@ class Task extends BaseStateType {
         try {
           _this.resource.run(
             input,
-            context
+            context,
+            optionalDoneCallback
           )
         } catch (e) {
           console.error(

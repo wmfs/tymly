@@ -8,13 +8,14 @@ class MemoryDao {
     this.executions = {}
   }
 
-  createNewExecution (startAt, input, stateMachineName, executionOptions, callback) {
+  createNewExecution (startAt, startResource, input, stateMachineName, executionOptions, callback) {
     this.uuid++
     const executionName = this.uuid.toString()
     const executionDescription = {
       executionName: executionName,
       ctx: input,
       currentStateName: startAt,
+      currentResource: startResource,
       stateMachineName: stateMachineName,
       status: 'RUNNING',
       parentExecutionName: executionOptions.parentExecutionName,
@@ -95,7 +96,7 @@ class MemoryDao {
     )
   }
 
-  setNextState (executionName, nextStateName, ctx, callback) {
+  setNextState (executionName, nextStateName, nextResource, ctx, callback) {
     const _this = this
     process.nextTick(
       function () {
@@ -103,6 +104,7 @@ class MemoryDao {
         if (execution) {
           execution.ctx = ctx
           execution.currentStateName = nextStateName
+          execution.currentResource = nextResource
           callback(null)
         } else {
           // TODO: Something bad happened
@@ -112,13 +114,14 @@ class MemoryDao {
     )
   }
 
-  updateCurrentStateName (stateName, executionName, callback) {
+  updateCurrentStateName (stateName, currentResource, executionName, callback) {
     const _this = this
     process.nextTick(
       function () {
         const execution = _this.executions[executionName]
         if (execution) {
           execution.currentStateName = stateName
+          execution.currentResource = currentResource
           callback(null)
         } else {
           // TODO: Something bad happened

@@ -21,8 +21,10 @@ class CallbackManager {
       return callback
     }
   }
+
+  hasEvent (eventName, executionName) {
+    return this.callbacks.hasOwnProperty(executionName) && this.callbacks[executionName].eventName === eventName
+  }
 }
 
-const callbackManager = new CallbackManager()
-
-module.exports = callbackManager
+module.exports = CallbackManager
