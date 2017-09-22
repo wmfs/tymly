@@ -188,7 +188,6 @@ class MemoryModel {
     if (output.length > 0) {
       doc = output[0]
     }
-
     callback(null, doc)
   }
 

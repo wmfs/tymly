@@ -1,0 +1,11 @@
+{
+  "propertyNames": [
+    "name",
+    "type"
+  ],
+  "data": [
+    [ "Arcturus", "Red Giant" ],
+    [ "Proxima Centauri", "Red Dwarf" ],
+    [ "Sirius B", "White Dwarf" ]
+  ]
+}

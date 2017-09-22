@@ -1,0 +1,18 @@
+{
+  "id": "star",
+  "title": "Star",
+  "description": "A list of stars",
+  "primaryKey": ["name"],
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique star name"
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of star"
+    }
+ },
+  "required": ["name", "type"]
+}
