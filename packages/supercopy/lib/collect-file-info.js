@@ -20,7 +20,7 @@ module.exports = function (options, callback) {
   }
 
   const rootDir = options.sourceDir
-  debug(`Staring to collect file info for ${rootDir}`)
+  debug(`Starting to collect file info for ${rootDir}`)
 
   fs.readdir(rootDir, function (err, items) {
     if (err) {
