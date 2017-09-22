@@ -5,10 +5,17 @@ module.exports = class FormFilling {
     callback(null)
   }
 
-  run (event, context) {
+  run (event, context, done) {
     context.sendTaskHeartbeat(
       {
-        formIdToShowToHuman: this.formId
+        formIdToShowHuman: this.formId
+      },
+      function (err, executionDescription) {
+        if (err) {
+          throw new Error(err)
+        } else {
+          done(executionDescription)
+        }
       }
     )
   }

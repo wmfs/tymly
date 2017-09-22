@@ -41,10 +41,15 @@ describe('Simple forms tests', function () {
       {},  // input
       STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: 'FormFilling'
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.currentResource).to.eql('module:formFilling')
+        expect(executionDescription.stateMachineName).to.eql('fbotTest_simpleForm_1_0')
+        expect(executionDescription.status).to.eql('RUNNING')
+        expect(executionDescription.ctx).to.eql({ formIdToShowHuman: 'fbotTest_simpleForm_1_0' })
         done()
       }
     )
