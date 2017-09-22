@@ -10,8 +10,8 @@ module.exports = function executioner (input, stateMachineName, executionOptions
   // TODO: Test 'input' conforms
   // TODO: Note API usually requires a string, but object seems better for Statebox?
   const stateMachineToExecute = stateMachines.findStateMachineByName(stateMachineName)
-  const currentResource = stateMachineToExecute.definition.States[stateMachineToExecute.startAt].Resource
   if (stateMachineToExecute) {
+    const currentResource = stateMachineToExecute.definition.States[stateMachineToExecute.startAt].Resource
     options.dao.createNewExecution(
       stateMachineToExecute.startAt,
       currentResource,
