@@ -25,6 +25,7 @@ class ImportingCsvFiles {
         topDownTableOrder: this.topDownTableOrder,
         client: this.client,
         schemaName: _.snakeCase(this.flowNamespace),
+        truncateFirstTables: true,
         debug: true
       },
       function (err) {
