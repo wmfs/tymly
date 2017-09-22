@@ -448,7 +448,7 @@ class FlobotsService {
 
 module.exports = {
   serviceClass: FlobotsService,
-  bootAfter: ['storage', 'commands', 'states', 'expression', 'temp'],
+  bootAfter: ['storage', 'commands', 'expression', 'temp'],
   configModifier: function flobotsServiceConfigModifier (ctx) {
     ctx.utils.idNamespacer('flowId', 'flows', ctx)
   }

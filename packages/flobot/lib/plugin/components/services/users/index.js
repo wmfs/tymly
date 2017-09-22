@@ -12,8 +12,8 @@ class UsersService {
     this.messages = options.messages
 
     this.rbac = options.bootedServices.rbac
-    this.flobotsService = options.bootedServices.flobots
-    this.flows = this.flobotsService.flows
+    this.stateboxService = options.bootedServices.statebox
+    this.stateMachines = this.stateboxService.stateMachines
 
     if (options.bootedServices.hasOwnProperty('forms')) {
       // TODO: This is grim. Should be a hook?
@@ -144,7 +144,7 @@ class UsersService {
     this.userMembershipsCache.reset()
   }
 
-  onAuthorizationHook (flobot, options, callback) {
+  onAuthorizationHook (executionDescription, options, callback) {
     const _this = this
     const userId = options.userId
 
@@ -156,25 +156,25 @@ class UsersService {
         } else {
           const action = options.action
 
-          let flowId
-          if (flobot) {
-            flowId = flobot.flowId
+          let stateMachineName
+          if (executionDescription) {
+            stateMachineName = executionDescription.stateMachineName
           } else {
-            flowId = options.flowId
+            stateMachineName = executionDescription.stateMachineName
           }
 
           const authorized = _this.rbac.checkRoleAuthorization(
             userId,
-            flobot,
+            executionDescription,
             roles,
             'flow',
-            flowId,
+            stateMachineName,
             action)
 
           if (authorized) {
             callback(null)
           } else {
-            callback(boom.forbidden('No roles permit this action', {userId: userId, flowId: flowId}))
+            callback(boom.forbidden('No roles permit this action', {userId: userId, stateMachineName: stateMachineName}))
           }
         }
       }
@@ -186,7 +186,7 @@ class UsersService {
   }
 
   /**
-   * Returns a list of Flows a user has the correct credentials to start, along with any form-definitions they can interact with. Useful for client apps wanting to configure themselves around an individual.
+   * Returns a list of state-machines a user has the correct credentials to start, along with any form-definitions they can interact with. Useful for client apps wanting to configure themselves around an individual.
    * @param {string} userId Specifies which useId to return a remit-object for
    * @param {Function} callback Called with a 'remit' object
    * @returns {undefined}
@@ -195,7 +195,7 @@ class UsersService {
    *   'Dave',
    *   function (err, remit) {
    *     // remit is an object:
-   *     //  flobotsUserCanCreate: []
+   *     //  stateMachinesUserCanStart: []
    *     //  forms: {}
    *   }
    * )
@@ -204,7 +204,7 @@ class UsersService {
     const _this = this
 
     const remit = {
-      flobotsUserCanCreate: [], // TODO: Should this be 'flowsUserCanCreate'?
+      stateMachinesUserCanStart: [],
       forms: {}
     }
 
@@ -221,9 +221,9 @@ class UsersService {
         } else {
           let formFillingStates
 
-          for (let flowId in _this.flows) {
-            if (_this.flows.hasOwnProperty(flowId)) {
-              flow = _this.flows[flowId]
+          for (let stateMachineName in _this.flows) {
+            if (_this.flows.hasOwnProperty(stateMachineName)) {
+              flow = _this.flows[stateMachineName]
 
               // Can this user create a Flobot for this flow?
               if (UsersService.userCreatableFlow(flow) && _this.rbac.checkRoleAuthorization(
@@ -233,12 +233,12 @@ class UsersService {
                 },
                 roles,
                 'flow',
-                flowId,
+                stateMachineName,
                 'startNewFlobot')
                 ) {
-                remit.flobotsUserCanCreate.push(
+                remit.stateMachinesUserCanStart.push(
                   {
-                    flowId: flowId,
+                    stateMachineName: stateMachineName,
                     label: flow.label,
                     description: flow.description
                   }
@@ -257,7 +257,7 @@ class UsersService {
                       schema: form.schema
                     }
                   } else {
-                    console.log('WARNING: Flow ' + flowId + ' refers to an unknown formId ' + formFillingState.formId)
+                    console.log('WARNING: Flow ' + stateMachineName + ' refers to an unknown formId ' + formFillingState.formId)
                   }
                 }
               }
@@ -274,5 +274,5 @@ class UsersService {
 module.exports = {
   schema: schema,
   serviceClass: UsersService,
-  bootAfter: ['caches', 'flobots', 'rbac']
+  bootAfter: ['caches', 'statebox', 'rbac']
 }

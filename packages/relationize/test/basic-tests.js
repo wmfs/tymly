@@ -162,7 +162,6 @@ describe('Run some basic tests', function (done) {
       },
         function (err, dbStructure) {
           expect(err).to.equal(null)
-          console.log(JSON.stringify(dbStructure, null, 2))
           expect(dbStructure).to.containSubset(
             {
               'schemas': {

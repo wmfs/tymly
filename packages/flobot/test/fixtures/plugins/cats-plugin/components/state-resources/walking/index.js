@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = class Walking {
-  boot (config, options, callback) {
+  init (resourceConfig, env, callback) {
     callback(null)
   }
 

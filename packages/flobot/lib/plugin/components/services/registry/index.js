@@ -167,5 +167,5 @@ class RegistryService {
 module.exports = {
   serviceClass: RegistryService,
   bootAfter: ['storage'],
-  bootBefore: ['flobots']
+  bootBefore: ['statebox']
 }

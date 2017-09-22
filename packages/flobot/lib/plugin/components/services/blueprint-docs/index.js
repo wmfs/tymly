@@ -93,5 +93,5 @@ class BlueprintDocsService {
 module.exports = {
   serviceClass: BlueprintDocsService,
   bootAfter: ['storage'],
-  bootBefore: ['flobots', 'statebox']
+  bootBefore: ['statebox']
 }
