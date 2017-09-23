@@ -9,6 +9,7 @@ describe('Simple forms tests', function () {
   this.timeout(5000)
 
   let statebox
+  let executionName
 
   it('should create some basic flobot services to test the UI plugin', function (done) {
     flobot.boot(
@@ -36,7 +37,7 @@ describe('Simple forms tests', function () {
     expect(stateMachine.name).to.eql(STATE_MACHINE_NAME)
   })
 
-  it('should execute cat state machine', function (done) {
+  it('should start a form-filling execution', function (done) {
     statebox.startExecution(
       {},  // input
       STATE_MACHINE_NAME, // state machine name
@@ -45,124 +46,100 @@ describe('Simple forms tests', function () {
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
+        executionName = executionDescription.executionName
         expect(executionDescription.currentStateName).to.eql('FormFilling')
         expect(executionDescription.currentResource).to.eql('module:formFilling')
         expect(executionDescription.stateMachineName).to.eql('fbotTest_simpleForm_1_0')
         expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.ctx).to.eql({ formIdToShowHuman: 'fbotTest_simpleForm_1_0' })
+        expect(executionDescription.ctx).to.eql(
+          {
+            formIdToShowHuman: 'fbotTest_simpleForm_1_0'
+          }
+        )
+        done()
+      }
+    )
+  })
+
+  it('should sendTaskSuccess (i.e. some form data)', function (done) {
+    statebox.sendTaskSuccess(
+      executionName,
+      {
+        formData: {
+          name: 'Rupert',
+          email: 'rupert@flobotjs.io'
+        }
+      }, // output
+      {}, // executionOptions
+      function (err) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should start a new form-filling execution (but details defaulted from before)', function (done) {
+    statebox.startExecution(
+      {
+        key: {
+          email: 'rupert@flobotjs.io'
+        }
+      },  // input
+      STATE_MACHINE_NAME, // state machine name
+      {
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        executionName = executionDescription.executionName
+        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.currentResource).to.eql('module:formFilling')
+        expect(executionDescription.stateMachineName).to.eql('fbotTest_simpleForm_1_0')
+        expect(executionDescription.status).to.eql('RUNNING')
+        expect(executionDescription.ctx).to.eql(
+          {
+            commentData: {
+              _executionName: '1',
+              formData: {
+                email: 'rupert@flobotjs.io',
+                name: 'Rupert'
+              }
+            },
+            formIdToShowHuman: 'fbotTest_simpleForm_1_0',
+            key: {
+              email: 'rupert@flobotjs.io'
+            }
+          }
+        )
         done()
       }
     )
   })
 
   /*
-    it('should execute a state machine to illustrate a simple form-filling flow', function (done) {
-      statebox.startNewFlobot(
-        'fbotTest_simpleForm_1_0',
-        {},
-        function (err, formFillingFlobot) {
-          expect(err).to.eql(null)
-
-          expect(formFillingFlobot.flobotId).to.be.a('string')
-
-          expect(formFillingFlobot.flowId).to.eql('fbotTest_simpleForm_1_0')
-          expect(formFillingFlobot.stateId).to.eql('formFilling')
-          expect(formFillingFlobot.status).to.eql('waitingForHumanInput')
-
-          expect(formFillingFlobot.ctx.formIdToShowToHuman).to.eql('fbotTest_simpleForm_1_0')
-          expect(formFillingFlobot.ctx.formDefaultDataPath).to.eql('commentData')
-
-          expect(formFillingFlobot.ctx.commentData).to.eql(undefined)
-
-          flobotId = formFillingFlobot.flobotId
-
-          done()
-        }
-      )
-    })
-
-    it('should simulate a user responding with some form-collected data', function (done) {
-      statebox.updateFlobot(
-        flobotId,
-        {
-          data: {
-            name: 'Rupert',
-            email: 'rupert@flobotjs.com',
-            comment: 'A stunning cat.'
-          }
-        },
-        function (err, updatedFlobot) {
-          expect(err).to.eql(null)
-          expect(updatedFlobot.flobotId).to.be.a('string')
-          expect(updatedFlobot.status).to.eql('finished')
-          expect(updatedFlobot.stateId).to.eql('upserting')
-
-          expect(updatedFlobot.ctx.commentData.name).to.eql('Rupert')
-          expect(updatedFlobot.ctx.commentData.email).to.eql('rupert@flobotjs.com')
-          expect(updatedFlobot.ctx.commentData.comment).to.eql('A stunning cat.')
-
-          done()
-        }
-      )
-    })
-
-    it('should show form defaulted with previous data', function (done) {
-      statebox.startNewFlobot(
-        'fbotTest_simpleForm_1_0',
-        {
-          data: {
-            key: {
-              email: 'rupert@flobotjs.com'
+      it('should simulate a user updating a doc with form-collected data', function (done) {
+        statebox.updateFlobot(
+          flobotId,
+          {
+            data: {
+              name: 'Rupert',
+              email: 'rupert@flobotjs.com',
+              comment: 'A rather stunning cat.'
             }
+          },
+          function (err, updatedFlobot) {
+            expect(err).to.eql(null)
+            expect(updatedFlobot.flobotId).to.be.a('string')
+            expect(updatedFlobot.status).to.eql('finished')
+            expect(updatedFlobot.stateId).to.eql('upserting')
+
+            expect(updatedFlobot.ctx.commentData.name).to.eql('Rupert')
+            expect(updatedFlobot.ctx.commentData.email).to.eql('rupert@flobotjs.com')
+            expect(updatedFlobot.ctx.commentData.comment).to.eql('A rather stunning cat.')
+
+            done()
           }
-        },
-        function (err, formUpdatingFlobot) {
-          expect(err).to.eql(null)
-          expect(formUpdatingFlobot.flobotId).to.be.a('string')
-
-          expect(formUpdatingFlobot.flowId).to.eql('fbotTest_simpleForm_1_0')
-          expect(formUpdatingFlobot.stateId).to.eql('formFilling')
-          expect(formUpdatingFlobot.status).to.eql('waitingForHumanInput')
-
-          expect(formUpdatingFlobot.ctx.formIdToShowToHuman).to.eql('fbotTest_simpleForm_1_0')
-
-          expect(formUpdatingFlobot.ctx.formIdToShowToHuman).to.eql('fbotTest_simpleForm_1_0')
-          expect(formUpdatingFlobot.ctx.formDefaultDataPath).to.eql('commentData')
-
-          expect(formUpdatingFlobot.ctx.commentData.name).to.eql('Rupert')
-          expect(formUpdatingFlobot.ctx.commentData.email).to.eql('rupert@flobotjs.com')
-          expect(formUpdatingFlobot.ctx.commentData.comment).to.eql('A stunning cat.')
-
-          flobotId = formUpdatingFlobot.flobotId
-
-          done()
-        }
-      )
-    })
-
-    it('should simulate a user updating a doc with form-collected data', function (done) {
-      statebox.updateFlobot(
-        flobotId,
-        {
-          data: {
-            name: 'Rupert',
-            email: 'rupert@flobotjs.com',
-            comment: 'A rather stunning cat.'
-          }
-        },
-        function (err, updatedFlobot) {
-          expect(err).to.eql(null)
-          expect(updatedFlobot.flobotId).to.be.a('string')
-          expect(updatedFlobot.status).to.eql('finished')
-          expect(updatedFlobot.stateId).to.eql('upserting')
-
-          expect(updatedFlobot.ctx.commentData.name).to.eql('Rupert')
-          expect(updatedFlobot.ctx.commentData.email).to.eql('rupert@flobotjs.com')
-          expect(updatedFlobot.ctx.commentData.comment).to.eql('A rather stunning cat.')
-
-          done()
-        }
-      )
-    })
-    */
+        )
+      })
+      */
 })

@@ -1,10 +1,12 @@
 'use strict'
 const boom = require('boom')
-
+const debug = require('debug')('findingOne')
 module.exports = class FindingOne {
   init (resourceConfig, env, callback) {
     this.modelId = resourceConfig.modelId
-    this.filterTemplate = resourceConfig.filter || {}
+    this.filterTemplate = {
+      filter: resourceConfig.filter || {}
+    }
     const models = env.bootedServices.storage.models
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
@@ -16,6 +18,7 @@ module.exports = class FindingOne {
 
   run (event, context) {
     const filter = context.resolveInputPaths(event, this.filterTemplate)
+    debug(`Filtering model '${this.modelId}' ${JSON.stringify(filter)} - (executionName='${context.executionName}')`)
     this.model.findOne(
       filter,
       function (err, doc) {

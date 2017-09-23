@@ -99,7 +99,7 @@ describe('Example form-filling tests', function () {
     )
   })
 
-  it('should sendTaskSuccess', function (done) {
+  it('should sendTaskSuccess (i.e. some form data)', function (done) {
     statebox.sendTaskSuccess(
       executionName,
       {
