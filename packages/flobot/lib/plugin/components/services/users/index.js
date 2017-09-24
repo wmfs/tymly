@@ -231,7 +231,7 @@ class UsersService {
                 UsersService.userCreatableFlow(state.stateMachine) &&
                 _this.rbac.checkRoleAuthorization(
                   userId,
-                  {userId: userId},
+                  {}, // Context {userId: userId},
                   roles,
                   'stateMachine',
                   stateMachineName,

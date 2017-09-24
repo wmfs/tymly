@@ -145,10 +145,9 @@ class RbacService {
             if (roleMatch) {
               return true
             } else {
-              // Allow if $owner...;
+              // TODO: $owner is actually a finer-grained restriction over usual roles. Not this.
               const contextOwner = RbacService.getUserIdFromContext(ctx)
-
-              if (requiredRoleList.indexOf('$everyone') !== -1 && _.isString(contextOwner) && _.isString(userId) && (contextOwner === userId)) {
+              if (requiredRoleList.indexOf('$owner') !== -1 && _.isString(contextOwner) && _.isString(userId) && (contextOwner === userId)) {
                 return true
               } else {
                 return false
