@@ -67,7 +67,7 @@ describe('Example form-filling tests', function () {
     )
   })
 
-  it('should send in a heartbeat update', function (done) {
+  it('should send in a heartbeat update (i.e. some par-filled form data)', function (done) {
     statebox.sendTaskHeartbeat(
       executionName,
       {
@@ -99,7 +99,7 @@ describe('Example form-filling tests', function () {
     )
   })
 
-  it('should sendTaskSuccess (i.e. some form data)', function (done) {
+  it('should sendTaskSuccess (i.e. some completed form data)', function (done) {
     statebox.sendTaskSuccess(
       executionName,
       {
@@ -199,25 +199,6 @@ describe('Example form-filling tests', function () {
     )
   })
 
-  it('should start form-filling state machine, and respond just as machine enters \'FormFilling\'', function (done) {
-    statebox.startExecution(
-      {},  // input
-      'formFilling', // state machine name
-      {
-        sendResponse: 'ENTERING:FormFilling'
-      }, // options
-      function (err, executionDescription) {
-        expect(err).to.eql(null)
-        executionName = executionDescription.executionName
-        expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.stateMachineName).to.eql('formFilling')
-        expect(executionDescription.currentStateName).to.eql('FormFilling')
-        expect(executionDescription.currentResource).to.eql('module:formFilling')
-        done()
-      }
-    )
-  })
-
   it('should start form-filling state machine, and respond once all the code in \'FormFilling\' has run', function (done) {
     statebox.startExecution(
       {},  // input
@@ -232,6 +213,81 @@ describe('Example form-filling tests', function () {
         expect(executionDescription.stateMachineName).to.eql('formFilling')
         expect(executionDescription.currentStateName).to.eql('FormFilling')
         expect(executionDescription.currentResource).to.eql('module:formFilling')
+        done()
+      }
+    )
+  })
+
+  it('should stop execution (i.e. simulates a user clicking cancel on this execution)', function (done) {
+    statebox.stopExecution(
+      'Form flow cancelled by user',
+      'CANCELLED',
+      executionName,
+      {},
+      function (err) {
+        expect(err).to.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should prove state machine has stopped (i.e. cancelled by a user)', function (done) {
+    statebox.describeExecution(
+      executionName,
+      {},
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('STOPPED')
+        expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
+        expect(executionDescription.stateMachineName).to.eql('formFilling')
+        done()
+      }
+    )
+  })
+
+  it('should reject success on a stopped state machine', function (done) {
+    statebox.sendTaskSuccess(
+      executionName,
+      {
+        formData: {
+          name: 'Rupert'
+        }
+      }, // output
+      {}, // executionOptions
+      function (err) {
+        expect(err).to.be.an('error')
+        done()
+      }
+    )
+  })
+
+  it('should reject failure on a stopped state machine', function (done) {
+    statebox.sendTaskFailure(
+      executionName,
+      {
+        formData: {
+          name: 'Rupert'
+        }
+      }, // output
+      {}, // executionOptions
+      function (err) {
+        expect(err).to.be.an('error')
+        done()
+      }
+    )
+  })
+
+  it('should reject heartbeat on a stopped state machine', function (done) {
+    statebox.sendTaskHeartbeat(
+      executionName,
+      {
+        formData: {
+          name: 'Rupert'
+        }
+      }, // output
+      {}, // executionOptions
+      function (err) {
+        expect(err).to.be.an('error')
         done()
       }
     )

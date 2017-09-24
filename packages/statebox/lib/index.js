@@ -70,8 +70,30 @@ class Statebox {
     executioner(input, stateMachineName, executionOptions, this.options, callback)
   }
 
-  stopExecution (cause, error, executionName, executionOptions, callback) {
-    callback(null)
+  stopExecution (cause, errorCode, executionName, executionOptions, callback) {
+    const _this = this
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          if (executionDescription.status === 'RUNNING') {
+            _this.options.dao.stopExecution(
+              cause,
+              errorCode,
+              executionName,
+              executionOptions,
+              callback
+            )
+          } else {
+            callback(
+              new Error(`Execution is not running, and cannot be stopped (executionName='${executionName}')`)
+            )
+          }
+        }
+      }
+    )
   }
 
   listExecutions (executionOptions, callback) {
@@ -89,10 +111,16 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-          const stateToRun = stateMachine.states[executionDescription.currentStateName]
-          stateToRun.runTaskSuccess(executionDescription, output)
-          callback(null)
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskSuccess(executionDescription, output)
+            callback(null)
+          } else {
+            callback(
+              new Error(`Success has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
         }
       }
     )
@@ -105,10 +133,16 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-          const stateToRun = stateMachine.states[executionDescription.currentStateName]
-          stateToRun.runTaskFailure(executionDescription, options)
-          callback(null)
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskFailure(executionDescription, options)
+            callback(null)
+          } else {
+            callback(
+              new Error(`Failure has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
         }
       }
     )
@@ -121,9 +155,15 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-          const stateToRun = stateMachine.states[executionDescription.currentStateName]
-          stateToRun.runTaskHeartbeat(executionDescription, output, callback)
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskHeartbeat(executionDescription, output, callback)
+          } else {
+            callback(
+              new Error(`Heartbeat has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
         }
       }
     )

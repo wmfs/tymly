@@ -30,6 +30,28 @@ class MemoryDao {
     )
   }
 
+  stopExecution (cause, errorCode, executionName, executionOptions, callback) {
+    const _this = this
+    process.nextTick(
+      function () {
+        const execution = _this.executions[executionName]
+        if (execution) {
+          execution.status = 'STOPPED'
+          if (!execution.errorCause) {
+            execution.errorCause = cause
+          }
+          if (!execution.errorCode) {
+            execution.errorCode = errorCode
+          }
+          callback(null)
+        } else {
+          // TODO: Something bad happened
+          callback(boom.badRequest(`Unable to update state name for execution with name '${executionName}'`))
+        }
+      }
+    )
+  }
+
   findExecutionByName (executionName, callback) {
     const _this = this
     process.nextTick(
