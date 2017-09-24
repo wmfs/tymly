@@ -148,7 +148,7 @@ class RbacService {
               // Allow if $owner...;
               const contextOwner = RbacService.getUserIdFromContext(ctx)
 
-              if (contextOwner && userId && contextOwner === userId) {
+              if (requiredRoleList.indexOf('$everyone') !== -1 && _.isString(contextOwner) && _.isString(userId) && (contextOwner === userId)) {
                 return true
               } else {
                 return false
