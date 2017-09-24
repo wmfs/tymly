@@ -8,14 +8,14 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
+  "StartAt": "FormFilling",
   "States": {
-    "Logging": {
+    "FormFilling": {
       "Type": "Task",
       "ResourceConfig": {
-        "template": "Delete post!"
+        "formId": "deletePostForm"
       },
-      "Resource": "module:logging",
+      "Resource": "module:formFilling",
       "End": true
     }
   }

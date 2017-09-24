@@ -35,6 +35,10 @@ class StateboxService {
     return this.statebox.findStateMachineByName(name)
   }
 
+  findStates (options) {
+    return this.statebox.findStates(options)
+  }
+
   findStateMachines (options) {
     return this.statebox.findStateMachines(options)
   }

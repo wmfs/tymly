@@ -1,8 +1,8 @@
 
 module.exports = function getUsersRemit (req, res) {
-  const flobotServices = req.app.get('flobotServices')
-  const authService = flobotServices.auth
-  const usersService = flobotServices.users
+  const services = req.app.get('services')
+  const authService = services.auth
+  const usersService = services.users
   const boom = require('boom')
   const userId = authService.extractUserIdFromRequest(req)
 

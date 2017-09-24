@@ -8,14 +8,14 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
+  "StartAt": "FormFilling",
   "States": {
-    "Logging": {
+    "FormFilling": {
       "Type": "Task",
       "ResourceConfig": {
-        "template": "Read post!"
+        "formId": "readForm"
       },
-      "Resource": "module:logging",
+      "Resource": "module:formFilling",
       "End": true
     }
   },

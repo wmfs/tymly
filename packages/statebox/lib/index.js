@@ -66,6 +66,10 @@ class Statebox {
     return stateMachines.findStateMachines(options)
   }
 
+  findStates (options) {
+    return stateMachines.findStates(options)
+  }
+
   startExecution (input, stateMachineName, executionOptions, callback) {
     executioner(input, stateMachineName, executionOptions, this.options, callback)
   }

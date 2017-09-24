@@ -7,14 +7,14 @@
   "tags": [
     "website"
   ],
-  "StartAt": "Logging",
+  "StartAt": "FormFilling",
   "States": {
-    "Logging": {
+    "FormFilling": {
       "Type": "Task",
       "ResourceConfig": {
-        "template": "Purge site!"
+        "formId": "purgeForm"
       },
-      "Resource": "module:logging",
+      "Resource": "module:formFilling",
       "End": true
     }
   }

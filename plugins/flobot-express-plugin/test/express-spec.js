@@ -26,7 +26,7 @@ describe('Simple Express tests', function () {
 
   let app
   let adminToken
-  // let irrelevantToken
+  let irrelevantToken
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
   const executionsUrl = `http://localhost:${PORT}/executions/`
@@ -47,16 +47,16 @@ describe('Simple Express tests', function () {
     )
   })
 
-  // it('should create a usable token for Steve', function () {
-  //   irrelevantToken = jwt.sign(
-  //     {},
-  //     new Buffer(secret, 'base64'),
-  //     {
-  //       subject: 'Steve',
-  //       audience: audience
-  //     }
-  //   )
-  // })
+  it('should create a usable token for Steve', function () {
+    irrelevantToken = jwt.sign(
+      {},
+      new Buffer(secret, 'base64'),
+      {
+        subject: 'Steve',
+        audience: audience
+      }
+    )
+  })
 
   it('should create some basic flobot services to run a simple cat blueprint', function (done) {
     flobot.boot(
@@ -69,7 +69,8 @@ describe('Simple Express tests', function () {
         ],
 
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/cats-blueprint'),
+          path.resolve(__dirname, './fixtures/blueprints/website-blueprint')
         ],
 
         config: {
@@ -288,7 +289,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it('should successfully complete Alans\'s awakening', function (done) {
+  it("should successfully complete Alans's awakening", function (done) {
     statebox.waitUntilStoppedRunning(
       alan,
       function (err, executionDescription) {
@@ -312,49 +313,85 @@ describe('Simple Express tests', function () {
     )
   })
 
+  it('should create another new Alan execution', function (done) {
+    rest.postJson(
+      executionsUrl,
+      {
+        namespace: 'fbotTest',
+        stateMachineName: 'listeningCat',
+        version: '1.0',
+        input: {
+          petName: 'Alan',
+          gender: 'male',
+          petDiary: []
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(201)
+      expect(executionDescription.status).to.eql('RUNNING')
+      expect(executionDescription.currentStateName).to.eql('WakingUp')
+      expect(executionDescription.ctx.petName).to.eql('Alan')
+      alan = executionDescription.executionName
+      done()
+    })
+  })
+
+  it('should cancel a new Alan flobot', function (done) {
+    rest.del(
+      executionsUrl + alan,
+      sendToken(adminToken)
+    ).on('complete', function (rupert, res) {
+      expect(res.statusCode).to.equal(204)
+      done()
+    })
+  })
+
+  it('should get stopped Alan execution-description', function (done) {
+    rest.get(
+      executionsUrl + '/' + alan,
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(200)
+      expect(executionDescription.ctx.petName).to.equal('Alan')
+      expect(executionDescription.status).to.equal('STOPPED')
+      expect(executionDescription.errorCode).to.equal('STOPPED')
+      expect(executionDescription.errorCause).to.equal('Execution stopped externally')
+      done()
+    })
+  })
+
+  it("should get an admin's remit", function (done) {
+    rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
+      console.log('>>>>>>>>', remit)
+      expect(res.statusCode).to.equal(200)
+      done()
+    })
+  })
+
+  it("should get a normal user's remit", function (done) {
+    rest.get(remitUrl, sendToken(irrelevantToken)).on('complete', function (remit, res) {
+      console.log('>>>>>>>>', remit)
+      expect(res.statusCode).to.equal(200)
+      done()
+    })
+  })
+
   /*
-      it('should cancel a new Alan flobot', function (done) {
-        rest.del(
-            executionsUrl + alanFlobotId,
-          sendToken(adminToken)).on('complete', function (rupert, res) {
-            expect(res.statusCode).to.equal(204)
-            done()
-          })
-      })
-
-      it("should fail getting Alan, now that he's been cancelled", function (done) {
-        rest.get(executionsUrl + alanFlobotId, sendToken(adminToken)).on('complete', function (err, res) {
-          expect(res.statusCode).to.equal(404)
-          expect(err.error).to.eql('Not Found')
-          expect(err.message).to.be.a('string')
-          done()
+        it('should fail to create a new Rupert flobot (irrelevant roles)', function (done) {
+          rest.postJson(
+            executionsUrl,
+            {
+              namespace: 'fbotTest',
+              stateMachineName: 'cat',
+              version: '1.0',
+              data: {petName: 'Rupert'}
+            }, sendToken(irrelevantToken)).on('complete', function (err, res) {
+              expect(res.statusCode).to.equal(403)
+              expect(err.error).to.equal('Forbidden')
+              expect(err.message).to.equal('No roles permit this action')
+              done()
+            })
         })
-      })
-
-      it('should fail to create a new Rupert flobot (irrelevant roles)', function (done) {
-        rest.postJson(
-          executionsUrl,
-          {
-            namespace: 'fbotTest',
-            stateMachineName: 'cat',
-            version: '1.0',
-            data: {petName: 'Rupert'}
-          }, sendToken(irrelevantToken)).on('complete', function (err, res) {
-            expect(res.statusCode).to.equal(403)
-            expect(err.error).to.equal('Forbidden')
-            expect(err.message).to.equal('No roles permit this action')
-            done()
-          })
-      })
-
-      // GET USER'S "REMIT"
-      // ------------------
-
-      it("should get the user's remit", function (done) {
-        rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
-          expect(res.statusCode).to.equal(200)
-          done()
-        })
-      })
-      */
+        */
 })

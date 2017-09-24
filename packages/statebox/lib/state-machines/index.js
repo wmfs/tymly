@@ -25,6 +25,25 @@ module.exports.validateStateMachineDefinition = function validateStateMachineDef
   }
 }
 
+module.exports.findStates = function findStates (options) {
+  const states = []
+  _.forOwn(
+    stateMachines,
+    function (stateMachine) {
+      _.forOwn(
+        stateMachine.states,
+        function (state) {
+          const resource = state.definition.Resource
+          if (resource && options.resourceToFind === resource) {
+            states.push(state)
+          }
+        }
+      )
+    }
+  )
+  return states
+}
+
 module.exports.createStateMachines = function createStateMachine (stateMachineDefinitions, env, options, callback) {
   const _this = this
 
@@ -99,6 +118,7 @@ module.exports.describeStateMachine = function describeStateMachine (name) {
 }
 
 module.exports.listStateMachines = function listStateMachines () {
+  return stateMachines
 }
 
 module.exports.findStateMachineByName = function findStateMachineByName (name) {
