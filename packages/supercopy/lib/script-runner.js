@@ -23,9 +23,11 @@ module.exports = function scriptRunner (statements, client, options, callback) {
         )
         const fileStream = fs.createReadStream(filename)
         fileStream.on('error', function (err) {
+          console.error(err)
           onceCb(err)
         })
         fileStream.pipe(stream).on('finish', onceCb).on('error', function (err) {
+          console.error(err)
           onceCb(err)
         })
       } else {
@@ -39,18 +41,18 @@ module.exports = function scriptRunner (statements, client, options, callback) {
     },
     function (err) {
       if (err) {
-        console.log('')
-        console.log('scriptRunner fail!')
-        console.log('------------------')
-        console.log()
-        console.log(JSON.stringify(statements[i], null, 2))
-        console.log(err)
-        console.log('')
+        console.error('')
+        console.error('scriptRunner fail!')
+        console.error('------------------')
+        console.error()
+        console.error(JSON.stringify(statements[i], null, 2))
+        console.error(err)
+        console.error('')
         client.query(
           'ROLLBACK;',
           function (rollbackErr) {
             if (rollbackErr) {
-              console.log('FAILED TO ROLLBACK AS WELL! ' + rollbackErr)
+              console.error('FAILED TO ROLLBACK AS WELL! ' + rollbackErr)
             } else {
               console.log('ROLLBACK SUCCESSFUL.')
             }

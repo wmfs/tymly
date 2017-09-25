@@ -20,7 +20,6 @@
     "node-expat": "^2.3.16",
     "pg": "^6.4.1",
     "pg-copy-streams": "^1.2.0",
-    "process": "^0.11.10",
     "upath": "^1.0.0"
   },
   "devDependencies": {
