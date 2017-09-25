@@ -27,7 +27,7 @@ describe('PostgreSQL storage tests', function () {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/people-blueprint'),
           path.resolve(__dirname, './fixtures/blueprints/space-blueprint'),
-          path.resolve(__dirname, './fixtures/blueprints/test1-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/seed-data-blueprint')
         ],
 
         config: {}
@@ -123,17 +123,43 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
+  it('should find the seed-data state-machine by name', function () {
+    const stateMachine = statebox.findStateMachineByName('fbotTest_seedDataTest_1_0')
+    expect(stateMachine.name).to.eql('fbotTest_seedDataTest_1_0')
+  })
+
+  it('should start a seed-data execution', function (done) {
+    statebox.startExecution(
+      {
+        idToFind: 3
+      },  // input
+      'fbotTest_seedDataTest_1_0', // state machine name
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.ctx.foundTitle.title).to.eql('Miss')
+        expect(executionDescription.currentStateName).to.eql('FindingById')
+        expect(executionDescription.currentResource).to.eql('module:findingById')
+        expect(executionDescription.stateMachineName).to.eql('fbotTest_seedDataTest_1_0')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
   it('Should uninstall test schemas', function (done) {
     sqlScriptRunner(
       [
         'uninstall.sql'
       ],
-        client,
-        function (err) {
-          expect(err).to.equal(null)
-          done()
-        }
-      )
+      client,
+      function (err) {
+        expect(err).to.equal(null)
+        done()
+      }
+    )
   })
 
   it('Should end db client', function () {
