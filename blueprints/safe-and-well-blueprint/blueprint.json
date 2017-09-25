@@ -1,0 +1,9 @@
+{
+  "name": "safeAndWell",
+  "namespace": "wmfs",
+  "version": "1.0",
+  "label": "Safe and Well",
+  "author": "Tim Needham",
+  "description": "Originally ported from Activity Assistant Workbook XML.",
+  "tags": []
+}

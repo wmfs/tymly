@@ -1,0 +1,11 @@
+{
+  "label": "Ordnance Survey Admin",
+  "description": "Run any Ordnance Survey-related flows",
+
+  "grants": [
+    {
+      "flowId": "*",
+      "allows": ["*"]
+    }
+  ]
+}

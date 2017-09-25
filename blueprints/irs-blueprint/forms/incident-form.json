@@ -1,0 +1,4581 @@
+{
+  "version": "1.0",
+  "label": "A form for editing 'incident' models",
+  "form": [
+    {},
+    {
+      "type": "help",
+      "helpvalue": "<h3>Incident times</h3>"
+    },
+    {
+      "key": "lateCall",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        },
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Estimated interval from:</h3>"
+    },
+    {
+      "key": "ignDisc",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Immediately",
+        "2": "Under 5 minutes",
+        "3": "5 to 30 minutes",
+        "4": "Over 30 minutes and up to 2 hours",
+        "5": "Over 2 hours"
+      },
+      "notitle": false
+    },
+    {
+      "key": "discFirstcall",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Immediately",
+        "2": "Under 5 minutes",
+        "3": "5 to 30 minutes",
+        "4": "Over 30 minutes and up to 2 hours",
+        "5": "Over 2 hours"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Other times</h3>"
+    },
+    {
+      "key": "firstcall",
+      "type": "datepicker",
+      "readonly": true,
+      "notitle": false
+    },
+    {
+      "key": "underControl",
+      "type": "datepicker",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "lastAppRtn",
+      "type": "datepicker",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire discovery</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>If smoke alarm detected fire and alerted a person, choose        \t\t\t\r\n        \t\t\t<em>Automatic detector / alarm system</em>.</p>\r\n        \t\t\t\r\n        \t\t\t<p>If person discovered fire and then manually activated \n        \t\t\tbreak glass call point, choose <em>Person</em>.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "discoveredBy",
+      "type": "select",
+      "titleMap": {
+        "1": "Person",
+        "2": "Automatic detector / alarm system",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Property type</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Select the type of the property or location where the fire started.</p>\r\n\n\t\t\t\t\t<p>If fire spread from a secondary fire to an FDR location, record the\n\t\t\t\t\tFDR location here.</p>\n\t\t\t\t\t\n\t\t\t\t\t<p>If fire spread from one FDR location to another, choose the first\n\t\t\t\t\tFDR location here.</p>\n\r\n\t\t\t\t\t<p>If the property was an <acronym title=\"House of Multiple Occupation\">HMO</acronym>, choose the option from this list.</p>\r\n\r\n\t\t\t\t\t<p>If the fire started in a non-residential building (e.g. shop or surgery), you need to record the type/use of the building.</p>\r\n        \t\t"
+    },
+    {
+      "key": "propertyType",
+      "type": "select",
+      "titleMap": {
+        "VEHICLES": "Vehicles",
+        "OUTDOORS": "Outdoors",
+        "BUILDINGS": "Buildings"
+      },
+      "notitle": false
+    },
+    {
+      "key": "mvRecyclingFac",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Tick if the property is a recycling facility"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "tenure",
+      "type": "select",
+      "titleMap": {
+        "RP": "Rented privately",
+        "RL": "Rented, landlord not known",
+        "RH": "Rented from housing association",
+        "RC": "Rented from the council",
+        "OO": "Owner occupied",
+        "NK": "Not known"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Location details</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Record details of the location where the fire started.</p>       \t\t\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "placeFireStarted",
+      "type": "select",
+      "titleMap": {
+        "34": "Boot",
+        "35": "Driver / Passenger area",
+        "36": "Engine",
+        "37": "Fuel tank",
+        "38": "Other inside / Cargo area",
+        "39": "Wheels / Brakes",
+        "40": "Crew area",
+        "41": "Engine room",
+        "42": "Passenger area",
+        "43": "Driver area",
+        "44": "Power unit",
+        "45": "Cargo area",
+        "46": "Cockpit",
+        "47": "Wing",
+        "53": "Car deck (ferries)",
+        "54": "Deck cargo",
+        "55": "Hold / Cargo area",
+        "56": "Restaurant / Buffet carriage",
+        "70": "On or near tracks or paths",
+        "71": "In open area next to housing",
+        "72": "Near amenity or recreation structure",
+        "73": "Military live firing range",
+        "74": "Military training area",
+        "NO_ALARM": "No smoke / fire alarm actuated or Call Handling Centre error",
+        "INTERNAL": "Inside building",
+        "EXTERNAL": "External part of building",
+        "99-4": "Other",
+        "17-2": "Boiler room",
+        "0-2": "Not known"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>HMO type</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>The property type that you have selected is an <acronym \r\n        \t\t\t\ttitle=\"House of Multiple Occupation\">HMO</acronym> property.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "multiOcc",
+      "type": "select",
+      "titleMap": {
+        "1": "Yes: Shared Bathroom",
+        "2": "Yes: Shared Bathroom and Kitchen",
+        "3": "Yes: No shared facilities"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did the fire occur in a communal area?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>If the fire didn't occur in a specific flat / maisonette, \n        \t\t\tbut in a communal area such as a shared\thallway or bin room, \n        \t\t\tselect <em>Yes</em> here.</p>\n        \t\t"
+    },
+    {
+      "key": "communalArea",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br><img src=\"placeholder-map-widget.png\" alt=\"Placeholder map!\">"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br><img src=\"placeholder-proximity-widget.jpg\" alt=\"Placeholder proximity!\">"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Location details</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Record details of the property and where the fire started.</p>\r\n\r\n\t\t\t\t\t<p>If the building construction at the property influenced the fire then record it.</p>\r\n        \t\t"
+    },
+    {
+      "key": "occupied",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Yes - used / occupied",
+        "3": "No - unused / unoccupied (vacant) / void",
+        "4": "No - under construction"
+      },
+      "notitle": false
+    },
+    {
+      "key": "placeFireStarted",
+      "type": "select",
+      "titleMap": {
+        "34": "Boot",
+        "35": "Driver / Passenger area",
+        "36": "Engine",
+        "37": "Fuel tank",
+        "38": "Other inside / Cargo area",
+        "39": "Wheels / Brakes",
+        "40": "Crew area",
+        "41": "Engine room",
+        "42": "Passenger area",
+        "43": "Driver area",
+        "44": "Power unit",
+        "45": "Cargo area",
+        "46": "Cockpit",
+        "47": "Wing",
+        "53": "Car deck (ferries)",
+        "54": "Deck cargo",
+        "55": "Hold / Cargo area",
+        "56": "Restaurant / Buffet carriage",
+        "70": "On or near tracks or paths",
+        "71": "In open area next to housing",
+        "72": "Near amenity or recreation structure",
+        "73": "Military live firing range",
+        "74": "Military training area",
+        "NO_ALARM": "No smoke / fire alarm actuated or Call Handling Centre error",
+        "INTERNAL": "Inside building",
+        "EXTERNAL": "External part of building",
+        "99-4": "Other",
+        "17-2": "Boiler room",
+        "0-2": "Not known"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "constructionInvolved",
+      "type": "select",
+      "titleMap": {
+        "1": "Yes - Timber framed",
+        "2": "Yes - Cladding",
+        "3": "Yes - Sandwich panels",
+        "4": "Yes - Atria",
+        "5": "Yes - Thatch",
+        "6": "Yes - Large single storey retail premises",
+        "10": "No",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "startedInBin",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Building details</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Assess the safety of the building at the fire</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>Report on whether there were any Fire Safety issues that \n        \t\t\tcontributed to risk at the incident.</p>        \t\t\n        \t\t"
+    },
+    {
+      "key": "escapeMeans",
+      "type": "select",
+      "titleMap": {
+        "1": "OK - no visible concerns",
+        "2": "Exits locked",
+        "3": "Exits blocked (e.g. Materials stored blocking exit)",
+        "4": "Exit route blocked by smoke / flames",
+        "5": "Poor implementation e.g. doors swing the wrong way",
+        "6": "Contents contributing to abnormal fire spread /smoke production",
+        "98": "Not applicable",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "compartmentation",
+      "type": "select",
+      "titleMap": {
+        "1": "Stopped/checked spread",
+        "2": "Breached - current building work",
+        "3": "Breached - previous building work",
+        "4": "Breached - fire doors left open or incorrectly fitted",
+        "5": "Damage to compartmentation",
+        "6": "Fire spread through gaps or voids in construction",
+        "90": "No compartmentation in building",
+        "98": "Not applicable to this fire",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>What was the approximate size of the\r\n        \t\troom / area / compartment of origin?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>This refers to where the fire started (e.g. the kitchen,\r\n        \t\t\tbedroom or office).</p> \r\n\r\n\t\t\t\t\t<p>Assess the horizontal area.</p>        \t\t\r\n        \t\t"
+    },
+    {
+      "key": "originRoomArea",
+      "type": "select",
+      "titleMap": {
+        "0": "None",
+        "1": "Under 5",
+        "2": "6 - 10",
+        "3": "11 - 20",
+        "4": "21 - 50",
+        "5": "51 - 100",
+        "6": "101 - 200",
+        "12": "Over 200"
+      },
+      "notitle": false
+    },
+    {
+      "key": "originRoomArea200",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>What was the approximate size of the\r\n        \t\tfloor of origin?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>If the fire started in an individual flat, just give a \n        \t\t\tmeasure of the floor size in that flat.</p>\r\n\r\n\t\t\t\t\t<p>Assess the horizontal area.</p>        \t\t\r\n        \t\t"
+    },
+    {
+      "key": "originFloorArea",
+      "type": "select",
+      "titleMap": {
+        "0": "None",
+        "1": "Under 5",
+        "2": "6 - 10",
+        "3": "11 - 20",
+        "4": "21 - 50",
+        "5": "51 - 100",
+        "6": "101 - 200",
+        "12": "Over 200"
+      },
+      "notitle": false
+    },
+    {
+      "key": "originFloorArea200",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Number of floors in building</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Roof/loft space for storage = NOT a floor</p>\r\n\r\n\t\t\t\t\t<p>Roof/loft space converted to room = a floor</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<p>Basement = a floor</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "numFlrs",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numFlrsBelowGrd",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Floor of ignition</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Ground floor = 0</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<p>Below ground / basement = use minus sign and count down</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<p>Roof / loft space used for storage = 999</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "flrOrigin",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "flrOriginTxt",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was there involvement of any road vehicles?</h3>"
+    },
+    {
+      "key": "vehicleInvolved",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Vehicle details</h3>"
+    },
+    {
+      "key": "makeModel",
+      "type": "select",
+      "titleMap": {
+        "OTHER": "Other road vehicles",
+        "CARS": "Cars",
+        "AGRICULTURAL": "Agricultural and construction vehicles"
+      },
+      "notitle": false
+    },
+    {
+      "key": "colour",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "fuel",
+      "type": "select",
+      "titleMap": {
+        "1": "Petrol, not fuel injected",
+        "2": "Petrol, fuel injected",
+        "3": "Petrol, not known if injected",
+        "4": "Diesel/other oil",
+        "5": "Electric",
+        "6": "LPG",
+        "9": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "regTypeId",
+      "type": "select",
+      "titleMap": {
+        "UNKNOWN": "Unknown",
+        "UK_OLD_STYLE": "UK (Old style e.g. W654 HGY)",
+        "UK_NEW_STYLE": "UK (New style e.g. DV45 HGF)",
+        "FOREIGN_OR_PERSONALISED": "Foreign / personalised"
+      },
+      "notitle": false
+    },
+    {
+      "key": "yearManuf",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "regNum",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "chassisNum",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Vehicle details</h3>"
+    },
+    {
+      "key": "mvFireSource",
+      "type": "select",
+      "titleMap": {
+        "81053_0-2": "Shortcut to Not known",
+        "81052_99-4": "Shortcut to Other",
+        "81051_39": "Shortcut to Wheels / Brakes",
+        "81050_38": "Shortcut to Other inside / Cargo area",
+        "81049_37": "Shortcut to Fuel tank",
+        "81048_36": "Shortcut to Engine",
+        "81047_35": "Shortcut to Driver / Passenger area",
+        "81046_34": "Shortcut to Boot"
+      },
+      "notitle": false
+    },
+    {
+      "key": "mvRepMissing",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "key": "mvAbandoned",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Did the vehicle appear to be abandoned?"
+    },
+    {
+      "key": "mvVehicleLoc",
+      "type": "select",
+      "titleMap": {
+        "PUBLIC_ROADWAY": "Public Roadway",
+        "PARKLAND": "Parkland",
+        "OPEN_LAND": "Open Land",
+        "GRASSLAND": "Grassland"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "otherInfo",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was the fire caused by an RTC?</h3>"
+    },
+    {
+      "key": "causedByRtc",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>RTC vehicle involvement</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>Small vehicles - includes those that can be driven using a \n        \t\t\tnormal driver's license, such as a car, van or minibus and also \n        \t\t\tincludes caravans and mobility scooters, etc.</p>\n\n\t\t\t\t\t<p>Large vehicles - includes Lorries, buses and coaches etc., \n\t\t\t\t\talong with agricultural and construction vehicles.</p>\n\n\t\t\t\t\t<p>Motorbikes, mopeds and bicycles should be counted in the \n\t\t\t\t\tthird box.</p>\n        \t\t"
+    },
+    {
+      "key": "numSmallVeh",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numLargeVeh",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numMotorbikeVeh",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did the police attend the incident?</h3>"
+    },
+    {
+      "key": "rtcPoliceAttended",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did the Brigade extricate any of these\n                people from their vehicles?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n                \t<p>Extrication here refers to the removal of people from \n                \tvehicles using tools.</p>\n                "
+    },
+    {
+      "key": "extricationsOccurred",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>People extricated from vehicles</h3>"
+    },
+    {
+      "key": "incidentExtrications",
+      "add": "Add RTC extrication",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>RTC Extrication</h3>"
+        },
+        {
+          "key": "incidentExtrications[].vehicleType",
+          "type": "select",
+          "titleMap": {
+            "1": "Road vehicles",
+            "2": "Agricultural and construction vehicles (not equipment)"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentExtrications[].vehiclePosition",
+          "type": "select",
+          "titleMap": {
+            "1": "On wheels",
+            "2": "On roof",
+            "3": "On side",
+            "99": "Other"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentExtrications[].methodUsed",
+          "type": "select",
+          "titleMap": {
+            "1": "Dashboard roll",
+            "2": "Roof removal",
+            "3": "Roof flap (vehicle on side)",
+            "4": "B post rip",
+            "5": "Side removal (vehicle on roof)",
+            "99": "Other space creation",
+            "99-3": "Lifting vehicle",
+            "99-2": "Door / side removal (vehicle on wheels)"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentExtrications[].timeTaken",
+          "type": "select",
+          "titleMap": {
+            "1": "Up to 15 minutes",
+            "2": "16 - 30 minutes",
+            "3": "31 - 45 minutes",
+            "4": "46 - 60 minutes",
+            "5": "Over 60 minutes"
+          },
+          "notitle": false
+        }
+      ],
+      "title": "RTC Extrications"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Owners / Occupiers</h3>"
+    },
+    {
+      "key": "contacts",
+      "add": "Add owner / occupier",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Personal Details</h3>"
+        },
+        {
+          "key": "contacts[].titleId",
+          "type": "select",
+          "titleMap": {
+            "SIR": "Sir",
+            "SIR_MADAM": "Sir/Madam",
+            "REVEREND": "Reverend",
+            "MS": "Ms.",
+            "MR": "Mr",
+            "MR_MRS": "Mr and Mrs",
+            "MRS": "Mrs",
+            "MISS": "Miss",
+            "LORD": "Lord",
+            "DR": "Dr."
+          },
+          "notitle": false
+        },
+        {
+          "key": "contacts[].firstName",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].lastName",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].company",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].contactTypeId",
+          "type": "select",
+          "titleMap": {
+            "TENANT": "Tenant",
+            "OWNER": "Owner",
+            "OTHER": "Other",
+            "MISC": "Miscellaneous",
+            "LANDLORD": "Landlord",
+            "EMPLOYER": "Employer"
+          },
+          "notitle": false
+        },
+        {
+          "key": "contacts[].homeTelephone1",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].notes",
+          "type": "textarea",
+          "readonly": false,
+          "notitle": false
+        }
+      ],
+      "title": "Occupier"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was there involvement of any \r\n                hazardous or dangerous materials?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "                \t\r\n                \t<p>This includes:</p>\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t<li>Explosives (e.g. fireworks etc., in storage or in transit)</li>\r\n\t\t\t\t\t\t<li>Flammable products (e.g. acetylene, petrol, diesel etc.)</li>\r\n\t\t\t\t\t\t<li>Other dangerous substances (e.g. asbestos, acids etc.)</li>\r\n\t\t\t\t\t</ul>\n\t\t\t\t\t\n\t\t\t\t\t<p>Don't include hazardous or dangerous materials introduced\n\t\t\t\t\tto start the fire.</p> \r\n                "
+    },
+    {
+      "key": "hazmatsInvolved",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Hazardous and dangerous materials</h3>"
+    },
+    {
+      "key": "incidentHazmats",
+      "add": "Add Hazardous Material",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Hazardous and Dangerous Materials</h3>"
+        },
+        {
+          "key": "incidentHazmats[].type",
+          "type": "select",
+          "titleMap": {
+            "110": "Other Explosives",
+            "120": "Other Compressed Gases",
+            "130": "Other Flammable Liquids",
+            "140": "Other Flammable Solids",
+            "150": "Other Oxidising Materials",
+            "160": "Other Toxic Materials",
+            "170": "Other Radioactive Materials",
+            "180": "Other Corrosive Materials",
+            "190": "Other Class 9 Dangerous Goods",
+            "1001": "Acetylene",
+            "1005": "Ammonia",
+            "1017": "Chlorine",
+            "1072": "Oxygen, compressed",
+            "1073": "Oxygen, refrigerated liquid",
+            "1075": "LPG",
+            "1202": "Diesel fuel",
+            "1203": "Petrol",
+            "1223": "Kerosene",
+            "1789": "Hydrochloric acid",
+            "1823": "Sodium hydroxide solid",
+            "1824": "Sodium hydroxide solution",
+            "1830": "Sulphuric acid (over 51%)",
+            "2031": "Nitric acid",
+            "2590": "Asbestos",
+            "2796": "Sulphuric acid (51% or less)",
+            "9999-1": "Gases",
+            "210-2": "Other Environment-polluting Substances",
+            "210-1": "Other Harmful / Irritant Substances",
+            "0333": "Fireworks",
+            "0301": "Ammunition"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentHazmats[].un",
+          "type": "number",
+          "readonly": false,
+          "notitle": false
+        }
+      ],
+      "title": "Hazardous Materials"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was there a smoke / heat detector or \r\n                fire alarm system present in the property?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n                \t<p>Include domestic smoke alarms here, but not break glass\n                \tsystems as they are not automatic.</p>\n                "
+    },
+    {
+      "key": "autoAlarm",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Alarm information</h3>"
+    },
+    {
+      "key": "alarmType",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "2": "Smoke detector/alarm - 1 year battery",
+        "3": "Smoke detector/alarm - long life battery",
+        "4": "Smoke detector/alarm - mains",
+        "5": "Smoke detector/alarm - mains and battery",
+        "6": "Smoke detector/alarm - battery type unknown",
+        "7": "Mains security system including smoke detector/alarm",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "alarmLocation",
+      "type": "select",
+      "titleMap": {
+        "1": "In room of origin of fire",
+        "2": "On same floor as fire",
+        "3": "Different floor from fire"
+      },
+      "notitle": false
+    },
+    {
+      "key": "alarmOperate",
+      "type": "select",
+      "titleMap": {
+        "1": "No",
+        "2": "Yes, but did not raise alarm",
+        "3": "Yes and raised alarm"
+      },
+      "notitle": false
+    },
+    {
+      "key": "alarmNoOp",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Alarm battery missing",
+        "2": "Alarm battery defective",
+        "3": "System not set up correctly",
+        "4": "System damaged by fire",
+        "5": "Fire products did not reach detector",
+        "6": "Fault in system",
+        "9": "System turned off",
+        "10": "Fire in area not covered by system",
+        "11": "Detector removed",
+        "12": "Alerted by other means",
+        "20": "Alarm was raised before the system operated",
+        "21": "No person in earshot",
+        "22": "Occupants did not respond",
+        "23": "No other person responded",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Were there any firefighting systems \r\n                installed at the property?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Include active / automatic systems in the property that \n                \tyou know about (e.g. sprinklers).</p>\n\n\t\t\t\t\t<p>Include any manual facilities that you used (e.g. dry risers, \n\t\t\t\t\tfirefighting lifts / shafts).</p>\r\n                "
+    },
+    {
+      "key": "fixedFfSys",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Firefighting systems</h3>"
+    },
+    {
+      "key": "incidentFfSystems",
+      "add": "Add firefighting system",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Firefighting System</h3>"
+        },
+        {
+          "key": "incidentFfSystems[].systemId",
+          "type": "select",
+          "titleMap": {
+            "MANUAL_SYSTEMS": "Manual facilities",
+            "ACTIVE_SYSTEMS": "Active / Automatic systems"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Active System</h3>"
+        },
+        {
+          "key": "incidentFfSystems[].locationId",
+          "type": "select",
+          "titleMap": {
+            "1": "In room of origin of fire",
+            "2": "On same floor as fire",
+            "3": "Different floor from fire"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentFfSystems[].didOperate",
+          "type": "radios",
+          "titleMap": [
+            {
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "name": [
+                "No"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "key": "incidentFfSystems[].numOperatedId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "0 or Not applicable",
+            "2": "1",
+            "3": "2",
+            "4": "3",
+            "5": "4",
+            "6": "5",
+            "7": "More than 5"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentFfSystems[].impactId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "Extinguished",
+            "2": "Contained/controlled",
+            "3": "Did not contain/control"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentFfSystems[].asFailureReasonId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "3": "System not set up correctly",
+            "4": "System damaged by fire",
+            "6": "Fault in system",
+            "9": "System turned off",
+            "10": "Fire products didn't reach detector",
+            "98": "Not applicable",
+            "99": "Other"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Manual Facilities</h3>"
+        },
+        {
+          "key": "incidentFfSystems[].working",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            },
+            {
+              "value": "U",
+              "name": [
+                "Don't know"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "key": "incidentFfSystems[].ffFailureReasonId",
+          "type": "select",
+          "titleMap": {
+            "1": "Poor maintenance",
+            "2": "Vandalism",
+            "3": "Damaged by fire"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Finished</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "<br>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Please click 'Finish' to save details of this system.</h3>"
+        }
+      ],
+      "title": "Firefighting systems"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Firefighting methods</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "preArrivalMainAction",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "None",
+        "3": "Removal from heat source",
+        "4": "Fuel supply disconnected (turned off)",
+        "5": "Smothering",
+        "6": "Water from bucket/container",
+        "7": "Water from garden hose",
+        "8": "Used hosereel",
+        "9": "Fire extinguisher",
+        "10": "Beating",
+        "20": "Work team",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "postArrivalMainAction",
+      "type": "select",
+      "titleMap": {
+        "99": "Other methods",
+        "SMALL_MEANS": "Small means",
+        "PORTABLE": "Extinguishers",
+        "OTHER": "Hosereel and jets",
+        "NON_PORTABLE": "Non-portable/fixed sources",
+        "NONE": "None"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "ffDelay",
+      "type": "select",
+      "titleMap": {
+        "1": "No delay",
+        "2": "Delay due to: Sent to wrong direction / address",
+        "3": "Delay due to: Vehicle access problems",
+        "4": "Delay due to: Accessing fire - large site",
+        "5": "Delay due to: Accessing fire - due to building type e.g. high rise building",
+        "6": "Delay due to: Accessing fire - security doors/other security measures",
+        "7": "Delay due to: Location of fire not immediately evident",
+        "8": "Delay due to: Civil disturbance",
+        "9": "Delay due to: Attack on Firefighters",
+        "3-2": "Delay due to: Traffic delays"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>B.A., hosereels and jets</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n\t\t\t\t\t<p>The following are items of equipment commonly used at\n\t\t\t\t\tfire incidents. Enter the quantity used of each in the \n\t\t\t\t\tboxes provided.</p>\n\t\t\t\t\t\n\t\t\t\t\t<p>Don't include covering / safety jets if they were\n\t\t\t\t\tcharged but otherwise unused.</p>\n\t\t\t\t"
+    },
+    {
+      "key": "eqpmtBa",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtHosereel",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtMainJet",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtFoamMed",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtFoamHi",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtMonitorJet",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "eqpmtMonitorAerial",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did you use any other equipment at the incident?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Other than B.A., hosereels and jets you have already included,\n        \t\t\tinclude any other equipment crucial to your activity at the \n        \t\t\tincident.</p>\n        \t\t\t\n        \t\t\t<p>Consider both Brigade equipment and equipment provided at the\n        \t\t\tsite (e.g. fire blankets, buckets or extinguishers).</p>\n        \t\t\t\n        \t\t\t<p>For example, if a piece of equipment allowed you to rescue or \n        \t\t\textricate someone then it is important to record this here.</p>\r\n        \t\t"
+    },
+    {
+      "key": "equipmentUsed",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Equipment used</h3>"
+    },
+    {
+      "key": "incidentEquipment",
+      "add": "Add equipment",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Equipment</h3>"
+        },
+        {
+          "key": "incidentEquipment[].type",
+          "type": "select",
+          "titleMap": {
+            "SITE": "Site equipment",
+            "BRIGADE": "Brigade equipment"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Brigade equipment</h3>"
+        },
+        {
+          "key": "incidentEquipment[].numberUsed",
+          "type": "number",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Site equipment</h3>"
+        },
+        {
+          "key": "incidentEquipment[].impact",
+          "type": "select",
+          "titleMap": {
+            "1": "Extinguished fire",
+            "2": "Contained fire",
+            "3": "Did not contain fire",
+            "4": "Made incident worse",
+            "5": "None",
+            "99": "Other"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Finished</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "<br>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Please click 'Finish' to save details of this equipment.</h3>"
+        }
+      ],
+      "title": "Equipment used"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Likely cause</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Indicate a likely or probable cause of the fire.</p>\r\n                \t\r\n                \t<p><i>Not known</i> should only be used if a Fire Investigation\n                \tOfficer\thas been contacted.</p>\r\n                "
+    },
+    {
+      "key": "likelyCause",
+      "type": "radios",
+      "titleMap": [
+        {
+          "name": [
+            "Accidental"
+          ]
+        },
+        {
+          "name": [
+            "Deliberate"
+          ]
+        },
+        {
+          "name": [
+            "Not known"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "fireCausedBy",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Child (0 - 9)",
+        "2": "Youth (10 - 17)",
+        "3": "Adult (18 - 64)",
+        "4": "Elderly (65 plus)",
+        "5": "Person, unknown age",
+        "6": "Animal",
+        "98": "Faults in system or appliance",
+        "99": "Natural occurrences (e.g. lightning strikes)",
+        "0-1": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Human factors</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "alcoholDrugs",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Are there signs that the incident was alcohol / drugs related?"
+    },
+    {
+      "key": "humanFactors",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "99-11",
+          "name": "Other"
+        },
+        {
+          "value": "99-10",
+          "name": "Electricity or gas supply cut off"
+        },
+        {
+          "value": "9-2",
+          "name": "Excessive and dangerous storage"
+        },
+        {
+          "value": "8-6",
+          "name": "Falling asleep / asleep"
+        },
+        {
+          "value": "7-8",
+          "name": "Person blind / visually impaired"
+        },
+        {
+          "value": "7-7",
+          "name": "Other medical condition / illness"
+        },
+        {
+          "value": "7-4",
+          "name": "Person deaf / partially deaf"
+        },
+        {
+          "value": "7-1",
+          "name": "Mental health issues"
+        },
+        {
+          "value": "6-9",
+          "name": "Temporary lack of physical mobility"
+        },
+        {
+          "value": "5-3",
+          "name": "Distraction"
+        },
+        {
+          "value": "4-5",
+          "name": "Other disability"
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "humanFactorsText",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Age</h3>"
+    },
+    {
+      "key": "accidentalAgeMode",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Age</h3>"
+    },
+    {
+      "key": "accidentalAge",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Age</h3>"
+    },
+    {
+      "key": "accidentalAgeGuessId",
+      "type": "select",
+      "titleMap": {
+        "1": "0 - 4 years",
+        "2": "5 - 9 years",
+        "3": "10 - 17 years",
+        "4": "18 - 24 years",
+        "5": "25 - 44 years",
+        "6": "45 - 64 years",
+        "7": "65 - 79 years",
+        "8": "80+ years"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Gender</h3>"
+    },
+    {
+      "key": "accidentalGender",
+      "type": "select",
+      "titleMap": {
+        "M": "Male",
+        "F": "Female",
+        "D": "Don't know"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Ethnicity</h3>"
+    },
+    {
+      "key": "accidentalEthnicMode",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "S",
+          "name": [
+            "Self classification"
+          ]
+        },
+        {
+          "value": "U",
+          "name": [
+            "Firefighter (user) defined"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Ethnicity</h3>"
+    },
+    {
+      "key": "accidentalEthnicSelfId",
+      "type": "select",
+      "titleMap": {
+        "WHITE": "White",
+        "MIXED": "Mixed",
+        "CHINESE": "Chinese or other ethnic group",
+        "BLACK": "Black or Black British",
+        "ASIAN": "Asian or Asian British"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Ethnicity</h3>"
+    },
+    {
+      "key": "accidentalEthnicUserId",
+      "type": "select",
+      "titleMap": {
+        "WHITE_BRITISH": "White British",
+        "OTHER": "Other",
+        "OTHER_EURO": "Other European",
+        "CHINESE": "Chinese",
+        "ASIAN": "Asian",
+        "AFRICAN_CARIBBEAN": "African or Afro-Caribbean"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Details of the household</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Number of rooms in the individual dwelling</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Request the number or estimate if necessary - exclude bathrooms, toilets, halls, landings or storage areas.</h3>"
+    },
+    {
+      "key": "accidentalNumRooms",
+      "type": "select",
+      "titleMap": {
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8+"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Details of the household</h3>"
+    },
+    {
+      "key": "loneParent",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Lone parent with child(ren) under 18"
+    },
+    {
+      "key": "lonePerson",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Person living alone"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Number of residents in the dwelling</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Record the number of residents who live in the dwelling.</h3>"
+    },
+    {
+      "key": "accidentalResidents",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Of this number, record the number of residents in each age group.</h3>"
+    },
+    {
+      "key": "accidentalResident0004",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident0509",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident1017",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident1824",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident2544",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident4564",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident6579",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "accidentalResident8099",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Details of the household</h3>"
+    },
+    {
+      "key": "accidentalSmoking",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Is there evidence that there are smokers in the household?"
+    },
+    {
+      "key": "accidentalPrevious",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Has household had a fire when Brigade was not notified?"
+    },
+    {
+      "key": "accidentalDeaf",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Was anyone in the household deaf or hard of hearing?"
+    },
+    {
+      "key": "accidentalDeafAlarm",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Cause</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>Think about the activity, fault or action that led to\n        \t\t\tthere being a fire.</p>\n        \t\t\t\n        \t\t\t<p>Avoid using 'Not Known', as there are general options\n        \t\t\tthat you can use if necessary.</p>\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "cause",
+      "type": "select",
+      "titleMap": {
+        "NOT_KNOWN": "Not known",
+        "DELIBERATE_UNKNOWN_OWNER": "Deliberate",
+        "ACCIDENTAL": "Accidental"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Source of ignition</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n                \t<p>Source of ignition is the heat source that directly started\n                \tthe fire at the property / location you are reporting on.\n                \tIf this is a cooking fire you would record the appliance that\n                \twas being used.</p>\n                \t\n                \t<p>Remember, if a firework is put through a letterbox or a\n                \tlighted rag is put into a car, the source of ignition is\n                \tthe firework or the rag as these directly started the fire at \n                \tthe property you are reporting on.</p>\n                "
+    },
+    {
+      "key": "applianceSource",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "68": "Chimney",
+        "71": "Other appliance or equipment",
+        "79": "Spread from secondary fire",
+        "99": "Other",
+        "WET": "Wet hay / straw",
+        "VEHICLES": "Vehicles only",
+        "SMOKING": "Smoking Related (incl. cigarette lighters)",
+        "OTHER": "Other domestic style appliance",
+        "OFFICE": "Office equipment",
+        "NATURAL": "Natural occurrence",
+        "NAKED": "Naked flame",
+        "MATCHES": "Matches, candles, incense burners etc.",
+        "INDUSTRIAL": "Industrial equipment",
+        "HEATING": "Heating equipment",
+        "FUEL": "Fuel / chemical related",
+        "FIREWORKS": "Fireworks",
+        "ELECTRIC": "Electric Lighting",
+        "ELECTRICITY": "Electricity supply",
+        "COOKING": "Cooking appliance",
+        "BOMBS": "Bombs and explosives"
+      },
+      "notitle": false
+    },
+    {
+      "key": "mvSmokingRel",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Tick if the source of ignition is smoking related"
+    },
+    {
+      "key": "applianceMakeModel",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "appliancePower",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "1": "Gas - mains",
+        "2": "Gas - cylinder",
+        "3": "Electric",
+        "98": "Not applicable",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secFireStartedInBin",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "key": "throughLetterbox",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Ignited materials</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>The item or material first ignited refers to the first \r\n                \titem ignited by the source of ignition.</p>\r\n\r\n\t\t\t\t\t<p>If you are reporting on a building fire, record the first\n\t\t\t\t\tpart of the building or item belonging to the building that \n\t\t\t\t\twas set on fire or suffered damage.</p>                 \r\n                "
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "firstIgnDesc",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "WOOD": "Wood",
+        "VEGETATION": "Vegetation",
+        "STRUCTURAL/FIXTURES/FITTINGS": "Structural / Fixtures / Fittings - Internal",
+        "RUBBISH/WASTE/RECYCLING": "Rubbish / Waste / Recycling",
+        "PAPER/CARDBOARD": "Paper / Cardboard",
+        "HUMAN": "Human Person",
+        "FURNITURE/FURNISHINGS": "Furniture / Furnishings (incl. vehicles)",
+        "FOOD": "Food (incl. cooking oil / fat)",
+        "FOAM,": "Foam, rubber, plastic (in storage)",
+        "EXTERNAL": "Structural / Fixtures / Fittings - External",
+        "EXPLOSIVES,": "Explosives, gas, chemicals",
+        "DECORATION/CELEBRATION": "Decoration / celebration",
+        "CLOTHING/TEXTILES": "Clothing / Textiles",
+        "ANIMAL": "Animal",
+        "99-3": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "materialDevDesc",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "WOOD": "Wood",
+        "VEGETATION": "Vegetation",
+        "STRUCTURAL/FIXTURES/FITTINGS": "Structural / Fixtures / Fittings - Internal",
+        "RUBBISH/WASTE/RECYCLING": "Rubbish / Waste / Recycling",
+        "PAPER/CARDBOARD": "Paper / Cardboard",
+        "HUMAN": "Human Person",
+        "FURNITURE/FURNISHINGS": "Furniture / Furnishings (incl. vehicles)",
+        "FOOD": "Food (incl. cooking oil / fat)",
+        "FOAM,": "Foam, rubber, plastic (in storage)",
+        "EXTERNAL": "Structural / Fixtures / Fittings - External",
+        "EXPLOSIVES,": "Explosives, gas, chemicals",
+        "DECORATION/CELEBRATION": "Decoration / celebration",
+        "CLOTHING/TEXTILES": "Clothing / Textiles",
+        "ANIMAL": "Animal",
+        "99-3": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire details</h3>"
+    },
+    {
+      "key": "accelerantUsed",
+      "type": "select",
+      "titleMap": {
+        "1": "No",
+        "5": "Yes, gases",
+        "6": "Yes, petrol/oil products",
+        "7": "Yes, paint, varnish, resins, creosote",
+        "8": "Yes, chemicals",
+        "99": "Other"
+      },
+      "notitle": false
+    },
+    {
+      "key": "multiSeat",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Multi-seated fire?"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did any of the following lead to rapid \n                fire growth?</h3>"
+    },
+    {
+      "key": "rapidBackdraft",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Backdraft"
+    },
+    {
+      "key": "rapidFlashover",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Flashover"
+    },
+    {
+      "key": "rapidWind",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Strong wind"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Did any explosions occur?</h3>"
+    },
+    {
+      "key": "explOccur",
+      "type": "radios",
+      "titleMap": [
+        {
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Explosions</h3>"
+    },
+    {
+      "key": "incidentExplosions",
+      "add": "Add explosion",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "key": "incidentExplosions[].timeId",
+          "type": "select",
+          "titleMap": {
+            "2": "Yes, before fire",
+            "3": "Yes, during fire",
+            "4": "Yes, both before and during",
+            "5": "Yes, sequence not known"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentExplosions[].materialTypeId",
+          "type": "select",
+          "titleMap": {
+            "2": "Fireworks",
+            "3": "Ammunition",
+            "4": "Other explosives",
+            "5": "Gases",
+            "6": "Flammable liquids",
+            "7": "Flammable solids",
+            "8": "Acetylene"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentExplosions[].containerTypeId",
+          "type": "select",
+          "titleMap": {
+            "1": "None",
+            "2": "Bottles",
+            "3": "Cylinders",
+            "4": "Cans",
+            "5": "Drums",
+            "6": "Tank/s",
+            "7": "Pipe/Pipeline",
+            "99": "Other"
+          },
+          "notitle": false
+        }
+      ],
+      "title": "Explosions"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>At the property, was there any \r\n\t\t\t\tdirect burning (fire / flames)?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>If there were no flames, only heat and smoke damage, then <em>No</em>\r\n\t\t\t\t\tshould be selected here.</p>\n\t\t\t\t\t\n\t\t\t\t\t<p>If oil in a pan was on fire, record <em>Yes</em> here.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "damBurn",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire and heat damage on arrival</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Assess the extent of FIRE and HEAT damage when you arrived.</p>\r\n\t\t\t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "fireSizeOnArrival",
+      "type": "select",
+      "titleMap": {
+        "1": "Limited to item 1st ignited",
+        "2": "Limited to room of origin",
+        "3": "Limited to deck of origin",
+        "4": "Limited to 2 decks",
+        "5": "Affecting more than 2 floors (not whole building)",
+        "6": "Whole building",
+        "10": "Whole vehicle",
+        "11": "Affecting more than 2 decks, not whole boat",
+        "12": "Whole boat",
+        "13": "Driver's area only",
+        "14": "Single carriage",
+        "15": "More than one carriage, not whole train",
+        "16": "Whole train",
+        "17": "Engine/Engines",
+        "18": "Cockpit",
+        "19": "Over half the aircraft",
+        "20": "Whole aircraft",
+        "22": "Driver/Passenger compartment",
+        "23": "Separate luggage compartment of vehicle",
+        "24": "Engine compartment",
+        "25": "Fuel tank",
+        "26": "Roof/Roof rack (exterior to vehicle)",
+        "27": "Wheels/Tyres/Brakes/Axles/Bearings",
+        "30": "Roof space only",
+        "31": "Roof space and other floors(s)",
+        "32": "External roof only",
+        "33": "Whole roof (including roof space)",
+        "98": "Not applicable",
+        "4-2": "Limited to 2 floors (not whole building)",
+        "3-2": "Limited to floor of origin (not whole building)"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire and heat damage at end of incident</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Assess the extent of damage caused by FIRE and HEAT at \r\n\t\t\t\t\tthe end of the incident.</p>\r\n\t\t\t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "fireHeatDamOnStop",
+      "type": "select",
+      "titleMap": {
+        "1": "Limited to item 1st ignited",
+        "2": "Limited to room of origin",
+        "3": "Limited to deck of origin",
+        "4": "Limited to 2 decks",
+        "5": "Affecting more than 2 floors (not whole building)",
+        "6": "Whole building",
+        "10": "Whole vehicle",
+        "11": "Affecting more than 2 decks, not whole boat",
+        "12": "Whole boat",
+        "13": "Driver's area only",
+        "14": "Single carriage",
+        "15": "More than one carriage, not whole train",
+        "16": "Whole train",
+        "17": "Engine/Engines",
+        "18": "Cockpit",
+        "19": "Over half the aircraft",
+        "20": "Whole aircraft",
+        "22": "Driver/Passenger compartment",
+        "23": "Separate luggage compartment of vehicle",
+        "24": "Engine compartment",
+        "25": "Fuel tank",
+        "26": "Roof/Roof rack (exterior to vehicle)",
+        "27": "Wheels/Tyres/Brakes/Axles/Bearings",
+        "30": "Roof space only",
+        "31": "Roof space and other floors(s)",
+        "32": "External roof only",
+        "33": "Whole roof (including roof space)",
+        "98": "Not applicable",
+        "4-2": "Limited to 2 floors (not whole building)",
+        "3-2": "Limited to floor of origin (not whole building)"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Damage to other / adjacent property</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n\t\t\t\t\t<p>If there was any damage beyond the first primary (FDR) \n\t\t\t\t\tproperty that ignited, record when this occurred and \n\t\t\t\t\thow far away the property was.</p>\n\n\t\t\t\t\t<p>This includes any fire, heat or smoke damage, as well as \n\t\t\t\t\tany other damage that may have resulted, for example from water.</p>\n\n\t\t\t\t\t<p>Include damage to other properties in the same block of flats \n\t\t\t\t\tor other businesses in the same office block.</p>\t\t\t\t\n\t\t\t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>At arrival:</h3>"
+    },
+    {
+      "key": "damAdjOnArrivalDistance",
+      "type": "select",
+      "titleMap": {
+        "1": "No other property affected",
+        "2": "up to 1 metre (e.g. next door / adjoining property)",
+        "3": "1 - 5 metres",
+        "4": "5 - 10 metres",
+        "5": "10 - 15 metres",
+        "6": "Over 15 metres"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>At the end of the incident:</h3>"
+    },
+    {
+      "key": "damAdjOnStopDistance",
+      "type": "select",
+      "titleMap": {
+        "1": "No other property affected",
+        "2": "up to 1 metre (e.g. next door / adjoining property)",
+        "3": "1 - 5 metres",
+        "4": "5 - 10 metres",
+        "5": "10 - 15 metres",
+        "6": "Over 15 metres"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Damage Beyond...</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Detail damage to other properties:</h3>"
+    },
+    {
+      "key": "fireDamBeyond",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Fire damage"
+    },
+    {
+      "key": "heatDamBeyond",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Heat damage"
+    },
+    {
+      "key": "smkDamBeyond",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Smoke damage"
+    },
+    {
+      "key": "othDamBeyond",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Other damage"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Damage Beyond...</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Extra Information</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>If other properties were affected by the damage spread,\r\n\t\t\t\t\trecord how many.</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<p>In the free text box describe the damage, along with any\r\n\t\t\t\t\trelevant addresses or registration details etc.</p>\t\t\t\r\n\t\t\t\t"
+    },
+    {
+      "key": "numBldg",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numVeh",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numOther",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "damageBeyondTxt",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Area damaged by direct burning (fire)</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Enter the area damaged in square metres.</p>                \r\n                "
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "areaDamBurn",
+      "type": "select",
+      "titleMap": {
+        "0": "None",
+        "2": "6 - 10",
+        "3": "11 - 20",
+        "4": "21 - 50",
+        "5": "51 - 100",
+        "6": "101 - 200",
+        "12": "Over 200",
+        "1-3": "3 - 5",
+        "1-2": "1 - 2",
+        "1-1": "Under 1"
+      },
+      "notitle": false
+    },
+    {
+      "key": "areaDamBurn200",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Total area damaged by fire, heat,\r\n                 smoke and water.</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Enter the area damaged in square metres.</p>                \r\n                "
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "areaDamOther",
+      "type": "select",
+      "titleMap": {
+        "0": "None",
+        "2": "6 - 10",
+        "3": "11 - 20",
+        "4": "21 - 50",
+        "5": "51 - 100",
+        "6": "101 - 200",
+        "12": "Over 200",
+        "1-3": "3 - 5",
+        "1-2": "1 - 2",
+        "1-1": "Under 1"
+      },
+      "notitle": false
+    },
+    {
+      "key": "areaDamOther200",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>At the incident, were there any\r\n        \t\tattacks on firefighters?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>\"Attack\" means any aggressive acts, such as objects thrown,\r\n        \t\t\tverbal or physical abuse or harassment.</p>\n\n        \t\t\t<p>This includes attacks on the way to an incident, at an\n        \t\t\tincident, or whilst returning from an incident.</p>\n        \t\t\t        \t\t\t\n        \t\t\t<p>Complete this information in line with the near hit \n        \t\t\treporting procedures described in Standing Order 19/3 \n        \t\t\t(Section 2.5).</p>\r\n        \t\t"
+    },
+    {
+      "key": "ffAttacks",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Attacks on firefighters</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t        \t\t<p>Enter the type of attack and record any resulting injuries.</p>\r\n\t\r\n\t\t\t\t\t<p>Record injury as serious if someone had to go to hospital\n\t\t\t\t\tfor treatment.</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<p>If there were no resulting injuries, leave as '0'.</p>\t\t\t\t\t        \t\t\r\n        \t\t"
+    },
+    {
+      "key": "ffAttackType",
+      "type": "select",
+      "titleMap": {
+        "1": "Objects thrown at firefighters/appliances",
+        "2": "Physical abuse",
+        "3": "Verbal abuse",
+        "4": "Harassment",
+        "5": "Other acts of aggression"
+      },
+      "notitle": false
+    },
+    {
+      "key": "ffAttackNumSlightInj",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "ffAttackNumSevereInj",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Attacks on firefighters</h3>"
+    },
+    {
+      "key": "ffAttackEqpmtDam",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "FRS equipment damaged?"
+    },
+    {
+      "key": "ffAttackBuildingDam",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "FRS buildings damaged?"
+    },
+    {
+      "key": "ffAttackPoliceContacted",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Were the Police contacted about the incident?"
+    },
+    {
+      "key": "ffAttackAmbContacted",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Did you have to contact an Ambulance?"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "appliancesInvolved",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "ffAttackNarrative",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was there anyone in the building at\r\n        \t\tthe time of the fire?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>Answer to the best of your knowledge.</p>\n        \t\t\r\n        \t\t\t<p>This refers to anybody in the entire building / property\r\n        \t\t\tfrom the time the fire was discovered.</p>\r\n\r\n\t\t\t\t\t<p>This includes anyone in an office block or block of flats.</p>\r\n        \t\t"
+    },
+    {
+      "key": "personsInvolved",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>People who evacuated from the building \r\n        \t\tunharmed</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Evacuation = people moving from a dangerous place to \r\n        \t\t\tsomewhere safe.</p>\r\n        \t\t\t\r\n        \t\t\t<p>WITH Brigade assistance differs from a rescue and includes:</p>  \r\n\r\n   \t\t\t\t\t<ul>\r\n   \t\t\t\t\t\t<li>People 'led or ushered to safety' by Brigade personnel \r\n   \t\t\t\t\t\twho were not physically rescued.</li>\r\n   \t\t\t\t\t\t<li>An evacuation co-ordinated by Brigade personnel.</li>\r\n   \t\t\t\t\t</ul>\r\n   \t\t\t\t\t\r\n   \t\t\t\t\t<p>DO NOT include any casualties or rescues here.</p>        \t\t\t\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>How many people evacuated / left the building unharmed:</h3>"
+    },
+    {
+      "key": "numEvacueesUnass",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numEvacueesAss",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Evacuation details</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>Time for evacuation is an estimate from the time that the \r\n        \t\t\tfire was discovered.</p>\r\n\r\n\t\t\t\t\t<p>If the evacuation process was delayed for any reason, \r\n\t\t\t\t\t(e.g. exits blocked), then answer <em>Yes</em> to \r\n\t\t\t\t\t<em>Was there any delay?</em></p>        \t\t\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "evacTime",
+      "type": "select",
+      "titleMap": {
+        "0": "Not known",
+        "2": "Under 5 minutes",
+        "3": "5 to 30 minutes",
+        "4": "Over 30 minutes and up to 2 hours",
+        "5": "Over 2 hours",
+        "98": "Not applicable"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "evacDelay",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        },
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "evacDelayReason",
+      "type": "select",
+      "titleMap": {
+        "DELAY_DUE_TO": "Delay due to:"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Were there any rescues, casualties\r\n        \t\tor fatalities?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n        \t\t\t<p>Casualties include:</p>\n        \t\t\t\n        \t\t\t<ul>\n        \t\t\t\t<li>Anyone who received first aid or medical treatment \n        \t\t\t\tat the scene.</li>\n        \t\t\t\t\n        \t\t\t\t<li>Anyone who required more medical treatment than \n        \t\t\t\tcould be given at the scene (e.g. they went to \n        \t\t\t\thospital).</li>\n        \t\t\t\t\n        \t\t\t\t<li>Anyone advised to attend hospital or see a doctor \n        \t\t\t\tfor a precautionary check, even if they did not \n        \t\t\t\tattend.</li>\n        \t\t\t</ul>\n        \t\t"
+    },
+    {
+      "key": "rescuesOrCasualties",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Casualties, fatalities and rescues</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>This is a count of people, so remember that an individual \n        \t\t\tshould only be recorded once on this screen.</p>\n\n\t\t\t\t\t<p>If a casualty was also rescued, just count them once as a \n\t\t\t\t\tcasualty on this page. When you fill in the casualty \n\t\t\t\t\tdetails, you can record that the person was also rescued.</p>   \n\t\t\t\t\t\n\t\t\t\t\t<p>Non-fatal casualties include anyone advised to attend a \n\t\t\t\t\tprecautionary check, regardless of whether they went.</p> \t\t\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>At the incident, how many people were:</h3>"
+    },
+    {
+      "key": "numCasFatal",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numCasNonFatal",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "numPerRescueOnly",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Casualties & Rescues</h3>"
+    },
+    {
+      "key": "incidentCasualties",
+      "add": "Add casualty/rescue",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Casualty / rescue status</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "\n\t\t\t\t\t<p>Which person from the count page are you recording?</p>\t\t\t\t\n\t\t\t\t"
+        },
+        {
+          "key": "incidentCasualties[].type",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "F",
+              "name": [
+                "Fatal casualty"
+              ]
+            },
+            {
+              "value": "C",
+              "name": [
+                "Non-fatal casualty (including a casualty who was rescued)"
+              ]
+            },
+            {
+              "value": "R",
+              "name": [
+                "Rescued but not injured"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "key": "incidentCasualties[].rescuerRoleId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "Firefighter on duty",
+            "2": "Other emergency service personnel",
+            "3": "Resident / Occupant",
+            "4": "Passer by / pedestrian",
+            "5": "Driver",
+            "6": "Passenger",
+            "7": "Visitor",
+            "8": "Other FRS personnel on duty",
+            "9": "Employee in workplace",
+            "10": "Customer in shop",
+            "99-2": "Other"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Personal Details</h3>"
+        },
+        {
+          "key": "incidentCasualties[].title",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].firstName",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].lastName",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].age",
+          "type": "number",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].gender",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "M",
+              "name": [
+                "Male"
+              ]
+            },
+            {
+              "value": "F",
+              "name": [
+                "Female"
+              ]
+            },
+            {
+              "value": "U",
+              "name": [
+                "Unknown"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Ethnicity</h3>"
+        },
+        {
+          "key": "incidentCasualties[].classificationType",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Self classification"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "Firefighter (user) defined"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Self classification</h3>"
+        },
+        {
+          "key": "incidentCasualties[].ethnicSelfId",
+          "type": "select",
+          "titleMap": {
+            "WHITE": "White",
+            "MIXED": "Mixed",
+            "CHINESE": "Chinese or other ethnic group",
+            "BLACK": "Black or Black British",
+            "ASIAN": "Asian or Asian British"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Firefighter classification</h3>"
+        },
+        {
+          "key": "incidentCasualties[].ethnicUserId",
+          "type": "select",
+          "titleMap": {
+            "WHITE_BRITISH": "White British",
+            "OTHER": "Other",
+            "OTHER_EURO": "Other European",
+            "CHINESE": "Chinese",
+            "ASIAN": "Asian",
+            "AFRICAN_CARIBBEAN": "African or Afro-Caribbean"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Casualty / rescue situation</h3>"
+        },
+        {
+          "key": "incidentCasualties[].startLocationId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "Room, cabin or compartment of origin",
+            "2": "Different room, cabin or compartment on floor of origin",
+            "3": "Floor above origin",
+            "4": "Two or more floors above origin",
+            "5": "One floor below origin",
+            "6": "Two or more floors below origin",
+            "7": "Outside building, vehicle etc of origin",
+            "8": "Seat of fire unknown or multi-seated (and above not applicable)",
+            "9": "Location of person unknown",
+            "98": "Not applicable",
+            "99": "Other location"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].foundLocationId",
+          "type": "select",
+          "titleMap": {
+            "1": "Room, cabin or compartment of origin",
+            "2": "Different room, cabin or compartment on floor of origin",
+            "3": "Floor above origin",
+            "4": "Two or more floors above origin",
+            "5": "One floor below origin",
+            "6": "Two or more floors below origin",
+            "7": "Outside building, vehicle etc of origin",
+            "8": "Seat of fire unknown or multi-seated (and above not applicable)",
+            "9": "Location of person unknown",
+            "98": "Not applicable",
+            "99": "Other location"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Did the injury occur as a result of the fire, heat or smoke?</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "\n\t\t\t\t\t<p>Choose Yes if the injury was due to the effects of the fire e.g. smoke inhalation, or shock due to the fire; or due to escaping the incident e.g. a twisted ankle escaping a smoke filled car; or if you advised a precautionary check due to the incident.</p>\n\t\t\t\t\t\n\t\t\t\t\t<p>Choose No if the injury would have occurred even if the fire had not happened.  For example a person had a stroke and then the fire started; or the person was injured in an RTC and there was subsequently a fire.</p>\t\t\t\n\t\t\t\t"
+        },
+        {
+          "key": "incidentCasualties[].fireRelated",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            },
+            {
+              "value": "U",
+              "name": [
+                "Not known"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Did the Brigade provide oxygen to this \n\t\t\t\tperson at the scene?</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "\n\t\t\t\t\t<p>This includes oxygen therapy and \n\t\t\t\t\t<acronym title=\"Bag Valve Masks\">BVM</acronym>.</p>\n\t\t\t\t"
+        },
+        {
+          "key": "incidentCasualties[].oxygenProvided",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Injury details</h3>"
+        },
+        {
+          "key": "incidentCasualties[].injSeverityId",
+          "type": "select",
+          "titleMap": {
+            "1": "Person went to hospital for treatment",
+            "3": "First aid given at scene (including oxygen)",
+            "4": "Precautionary check given / recommended",
+            "4-1": "Person went to hospital for precautionary check"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].injNatureId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "PHYSICAL": "Physical Injuries (cuts, bruises, fractures etc.)",
+            "OVERCOME": "Overcome by gas, smoke or fumes",
+            "OTHER": "Other specified injury",
+            "COMBINATION": "Combination of burns and overcome by gas, smoke or fumes",
+            "BURNS": "Burns or scalds"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].injCircumstanceId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "TRAPPED": "Trapped or unaware",
+            "RESCUE": "Rescue / escape attempts",
+            "OTHER": "Other circumstances",
+            "IMMOBILITY": "Immobility",
+            "DUE": "Due to fire"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].injAlsoRescued",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Fatality details</h3>"
+        },
+        {
+          "key": "incidentCasualties[].fatEstablishmentId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "Thought to be already dead when Firefighter arrived",
+            "2": "Unable to resuscitate, confirmed dead at scene",
+            "3": "Unable to resuscitate at scene, confirmed dead at hospital",
+            "4": "Alive on leaving scene, but died later"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].fatCauseId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "PHYSICAL": "Physical Injuries (cuts, bruises, fractures etc.)",
+            "OVERCOME": "Overcome by gas, smoke or fumes",
+            "OTHER": "Other specified injury",
+            "COMBINATION": "Combination of burns and overcome by gas, smoke or fumes",
+            "BURNS": "Burns or scalds"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].fatCircumstanceId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "TRAPPED": "Trapped or unaware",
+            "RESCUE": "Rescue / escape attempts",
+            "OTHER": "Other circumstances",
+            "IMMOBILITY": "Immobility",
+            "DUE": "Due to fire"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].fatAlsoRescued",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            },
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Rescue details</h3>"
+        },
+        {
+          "key": "incidentCasualties[].resCircumstanceId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "TRAPPED": "Trapped or unaware",
+            "RESCUE": "Rescue / escape attempts",
+            "OTHER": "Other circumstances",
+            "IMMOBILITY": "Immobility",
+            "DUE": "Due to fire"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].resRescuerId",
+          "type": "select",
+          "titleMap": {
+            "0": "Rescuer not known",
+            "1": "Firefighter without breathing apparatus",
+            "2": "Firefighter with breathing apparatus",
+            "3": "Other without breathing apparatus",
+            "4": "Other with breathing apparatus"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].resLocationId",
+          "type": "select",
+          "titleMap": {
+            "1": "Room, cabin or compartment of origin",
+            "2": "Different room, cabin or compartment on floor of origin",
+            "3": "Floor above origin - includes mezzanine above floor of origin",
+            "4": "Two or more floors above origin",
+            "5": "One floor below origin - includes stairway leading down from floor",
+            "6": "Two or more floors below origin",
+            "7": "Roof",
+            "8": "Outside building, vehicle etc. of origin",
+            "98": "Not applicable",
+            "99": "Other"
+          },
+          "notitle": false
+        },
+        {
+          "key": "incidentCasualties[].resMethodId",
+          "type": "select",
+          "titleMap": {
+            "0": "Not known",
+            "1": "Ladder",
+            "2": "Aerial appliance",
+            "6": "Rescue with fire service lines e.g. lowered from height",
+            "7": "Supported / Carried / Led out",
+            "8": "Extricated",
+            "9": "Released",
+            "11": "Specialist rope rescue",
+            "12": "Boat",
+            "13": "Other organisation's resources e.g. helicopter,  etc.",
+            "99": "Other method"
+          },
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Casualty / rescue other notes</h3>"
+        },
+        {
+          "key": "incidentCasualties[].details",
+          "type": "textarea",
+          "readonly": false,
+          "notitle": false
+        }
+      ],
+      "title": "Casualties/Rescues"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Are there any further investigations?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n            \t\t<p>This includes attendance by a Fire Investigation Officer or\n            \t\tby the Police, as well as any other investigations (e.g. Fire\n            \t\tSafety).</p>\n            \t"
+    },
+    {
+      "key": "furtherInv",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Further investigation details</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\n            \t\t<p>To add extra notes or information, such as officer names\n            \t\tor a police number, use the 'Add annotation' function on the\n            \t\tControl Panel.</p>\n            \t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Further investigations to be carried out by...</h3>"
+    },
+    {
+      "key": "fireBrigadeInvestigation",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "name": " No "
+        },
+        {
+          "name": " Yes "
+        }
+      ],
+      "title": "Fire Investigation Officer"
+    },
+    {
+      "key": "policeInvestigation",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "name": " No "
+        },
+        {
+          "name": " Yes "
+        }
+      ],
+      "title": "Police investigation"
+    },
+    {
+      "key": "otherInvestigation",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "name": " No "
+        },
+        {
+          "name": " Yes "
+        }
+      ],
+      "title": "Other investigation"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Commercial Hot Strike</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "chsDone",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Commercial Hot Strike</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "chsNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Why did it take so long to get to the site?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "primaryReason",
+      "type": "select",
+      "titleMap": {
+        "TRAINING": "Training",
+        "ROAD_CONDS": "Road conditions",
+        "PBA": "PBA",
+        "OTHER_STATION_AREA": "Other Station Area",
+        "MDT": "MDT/Sat Nav Fault",
+        "CHG_ADDR": "Change of Address",
+        "APPLIANCE": "Appliance"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secReasonRoadCond",
+      "type": "select",
+      "titleMap": {
+        "WEATHER": "Weather",
+        "TIME_HEAVY_TRAFFIC": "Heavy traffic due to time of day",
+        "ROADWORKS": "Roadworks",
+        "OTHER": "Other",
+        "INCIDENT_HEAVY_TRAFFIC": "Heavy traffic due to incident",
+        "ACCESS_RESTRCITED": "Access restricted eg. parked cars"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secReasonMdt",
+      "type": "select",
+      "titleMap": {
+        "SATNAV_DELAY": "Delay for sat nav route",
+        "OTHER": "Other",
+        "MSG_NT_RECVD": "Turn out message not received",
+        "BOOKING_MOBILE": "Booking mobile",
+        "BOOKING_ATTD": "Booking in attendance"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secReasonAppliance",
+      "type": "select",
+      "titleMap": {
+        "START_FAILURE": "Failed to start",
+        "OTHER": "Other",
+        "LOW_AIR_PRESS": "Low air pressure"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secReasonTraining",
+      "type": "select",
+      "titleMap": {
+        "WATER": "Water",
+        "W@H": "W@H",
+        "RTC": "RTC",
+        "OTHER": "Other",
+        "HAZMATS": "Hazmats",
+        "BA": "BA"
+      },
+      "notitle": false
+    },
+    {
+      "key": "secReasonPba",
+      "type": "select",
+      "titleMap": {
+        "SCHOOL_VISIT": "School visit",
+        "SAW": "Safe and well",
+        "SAFETY_WALK": "Safety talk",
+        "OTHER": "Other",
+        "COMMT_EVENT": "Community event"
+      },
+      "notitle": false
+    },
+    {
+      "key": "roadCondOther",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "mdtOther",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "applianceOther",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "trainingOther",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "pbaOther",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "appFleetNumber",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "stationArea",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Conclusion</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Roll number</h3>"
+    },
+    {
+      "key": "oic2RollNum",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "completedRollNum",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "actions",
+      "items": [
+        {
+          "type": "button",
+          "style": "btn-default",
+          "title": "Cancel",
+          "onClick": "vm.cancelFlobot()"
+        },
+        {
+          "type": "submit",
+          "style": "btn-info",
+          "title": "OK"
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "type": "object",
+    "properties": {
+      "lateCall": {
+        "type": "string",
+        "title": "Was this a late call?"
+      },
+      "ignDisc": {
+        "type": "string",
+        "title": "Ignition to discovery"
+      },
+      "discFirstcall": {
+        "type": "string",
+        "title": "Discovery to first call"
+      },
+      "firstcall": {
+        "type": "string",
+        "format": "date-time",
+        "title": "First call to Brigade"
+      },
+      "underControl": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Under control"
+      },
+      "lastAppRtn": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Last callsign released"
+      },
+      "discoveredBy": {
+        "type": "string",
+        "title": "How was the fire first discovered?"
+      },
+      "propertyType": {
+        "type": "string",
+        "title": "Property / location type"
+      },
+      "mvRecyclingFac": {
+        "type": "string",
+        "title": "Tick if the property is a recycling facility"
+      },
+      "tenure": {
+        "type": "string",
+        "title": "Dwelling tenure"
+      },
+      "placeFireStarted": {
+        "type": "string",
+        "title": "Where at the property did the fire start?"
+      },
+      "multiOcc": {
+        "type": "string",
+        "title": "What were the characteristics of the HMO property?"
+      },
+      "communalArea": {
+        "type": "string",
+        "title": "Did the fire occur in a communal area?"
+      },
+      "occupied": {
+        "type": "string",
+        "title": "Is the property normally occupied / used?"
+      },
+      "constructionInvolved": {
+        "type": "string",
+        "title": "Did anything about the building construction affect the fire?"
+      },
+      "startedInBin": {
+        "type": "string",
+        "title": "Did the fire start in a domestic wheelie bin?"
+      },
+      "escapeMeans": {
+        "type": "string",
+        "title": "Means of escape in the building"
+      },
+      "compartmentation": {
+        "type": "string",
+        "title": "Compartmentation of the building"
+      },
+      "originRoomArea": {
+        "type": "string",
+        "title": "Room area (in square metres)"
+      },
+      "originRoomArea200": {
+        "type": "number",
+        "title": "Area above 200 square metres:"
+      },
+      "originFloorArea": {
+        "type": "string",
+        "title": "Floor area (in square metres)"
+      },
+      "originFloorArea200": {
+        "type": "number",
+        "title": "Area above 200 square metres:"
+      },
+      "numFlrs": {
+        "type": "number",
+        "title": "Total count of floors in the building"
+      },
+      "numFlrsBelowGrd": {
+        "type": "number",
+        "title": "How many of these were below ground?"
+      },
+      "flrOrigin": {
+        "type": "number",
+        "title": "Floor where fire started"
+      },
+      "flrOriginTxt": {
+        "type": "string",
+        "title": "Other details"
+      },
+      "vehicleInvolved": {
+        "type": "string",
+        "title": "Was there involvement of any road vehicles?"
+      },
+      "makeModel": {
+        "type": "string",
+        "title": "Make / Model"
+      },
+      "colour": {
+        "type": "string",
+        "title": "Colour"
+      },
+      "fuel": {
+        "type": "string",
+        "title": "Fuel Type"
+      },
+      "regTypeId": {
+        "type": "string",
+        "title": "Registration Type"
+      },
+      "yearManuf": {
+        "type": "number",
+        "title": "Year of manufacture"
+      },
+      "regNum": {
+        "type": "string",
+        "title": "Registration Number"
+      },
+      "chassisNum": {
+        "type": "string",
+        "title": "VIN / Chassis Number (if known)"
+      },
+      "mvFireSource": {
+        "type": "string",
+        "title": "Part of vehicle where fire started"
+      },
+      "mvRepMissing": {
+        "type": "string",
+        "title": "Had the vehicle been reported missing to the police?"
+      },
+      "mvAbandoned": {
+        "type": "string",
+        "title": "Did the vehicle appear to be abandoned?"
+      },
+      "mvVehicleLoc": {
+        "type": "string",
+        "title": "Vehicle Location?"
+      },
+      "otherInfo": {
+        "type": "string",
+        "title": "Other vehicle information"
+      },
+      "causedByRtc": {
+        "type": "string",
+        "title": "Was the fire caused by an RTC?"
+      },
+      "numSmallVeh": {
+        "type": "number",
+        "title": "Number of cars / small vehicles involved"
+      },
+      "numLargeVeh": {
+        "type": "number",
+        "title": "Number of large vehicles involved (e.g. lorry)"
+      },
+      "numMotorbikeVeh": {
+        "type": "number",
+        "title": "Number of motorbikes / mopeds / bicycles involved"
+      },
+      "rtcPoliceAttended": {
+        "type": "string",
+        "title": "Did the police attend the incident?"
+      },
+      "extricationsOccurred": {
+        "type": "string",
+        "title": "Did the Brigade extricate any of these people from their vehicles?"
+      },
+      "incidentExtrications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "vehicleType": {
+              "type": "string",
+              "title": "Vehicle type"
+            },
+            "vehiclePosition": {
+              "type": "string",
+              "title": "Position of vehicle"
+            },
+            "methodUsed": {
+              "type": "string",
+              "title": "Main extrication method used"
+            },
+            "timeTaken": {
+              "type": "string",
+              "title": "How long was the person trapped for?"
+            }
+          }
+        }
+      },
+      "contacts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "titleId": {
+              "type": "string",
+              "title": "Title"
+            },
+            "firstName": {
+              "type": "string",
+              "title": "First name"
+            },
+            "lastName": {
+              "type": "string",
+              "title": "Last name"
+            },
+            "company": {
+              "type": "string",
+              "title": "Company name"
+            },
+            "contactTypeId": {
+              "type": "string",
+              "title": "Contact type"
+            },
+            "homeTelephone1": {
+              "type": "string",
+              "title": "Telephone"
+            },
+            "notes": {
+              "type": "string",
+              "title": "Notes"
+            }
+          }
+        }
+      },
+      "hazmatsInvolved": {
+        "type": "string",
+        "title": "Was there involvement of any hazardous or dangerous \n                \tmaterials?"
+      },
+      "incidentHazmats": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Hazardous Material"
+            },
+            "un": {
+              "type": "number",
+              "title": "UN number (if known)"
+            }
+          }
+        }
+      },
+      "autoAlarm": {
+        "type": "string",
+        "title": "Was there a smoke / heat detector or \n                \tfire alarm system present in the property?"
+      },
+      "alarmType": {
+        "type": "string",
+        "title": "Type of Alarm"
+      },
+      "alarmLocation": {
+        "type": "string",
+        "title": "Location of Alarm"
+      },
+      "alarmOperate": {
+        "type": "string",
+        "title": "Did the alarm operate?"
+      },
+      "alarmNoOp": {
+        "type": "string",
+        "title": "Failure Reason"
+      },
+      "fixedFfSys": {
+        "type": "string",
+        "title": "Were there any firefighting systems \n                \tinstalled at the property?"
+      },
+      "incidentFfSystems": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "systemId": {
+              "type": "string",
+              "title": "System type"
+            },
+            "locationId": {
+              "type": "string",
+              "title": "Location of system"
+            },
+            "didOperate": {
+              "type": "number",
+              "title": "Did system operate?"
+            },
+            "numOperatedId": {
+              "type": "string",
+              "title": "How many (heads) operated?"
+            },
+            "impactId": {
+              "type": "string",
+              "title": "Impact on fire"
+            },
+            "asFailureReasonId": {
+              "type": "string",
+              "title": "Failure reason"
+            },
+            "working": {
+              "type": "string",
+              "title": "Was facility working?"
+            },
+            "ffFailureReasonId": {
+              "type": "string",
+              "title": "Failure reason"
+            }
+          }
+        }
+      },
+      "preArrivalMainAction": {
+        "type": "string",
+        "title": "Main firefighting action BEFORE ARRIVAL OF Brigade"
+      },
+      "postArrivalMainAction": {
+        "type": "string",
+        "title": "Main firefighting action BY Brigade"
+      },
+      "ffDelay": {
+        "type": "string",
+        "title": "Was there any delay in starting firefighting?"
+      },
+      "eqpmtBa": {
+        "type": "number",
+        "title": "B.A."
+      },
+      "eqpmtHosereel": {
+        "type": "number",
+        "title": "Hosereel - water"
+      },
+      "eqpmtMainJet": {
+        "type": "number",
+        "title": "Main jet - water"
+      },
+      "eqpmtFoamMed": {
+        "type": "number",
+        "title": "Foam - PRL tank"
+      },
+      "eqpmtFoamHi": {
+        "type": "number",
+        "title": "Foam - high expansion"
+      },
+      "eqpmtMonitorJet": {
+        "type": "number",
+        "title": "Monitor - ground"
+      },
+      "eqpmtMonitorAerial": {
+        "type": "number",
+        "title": "Monitor - aerial"
+      },
+      "equipmentUsed": {
+        "type": "string",
+        "title": "Did you use any other equipment at the incident?"
+      },
+      "incidentEquipment": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Equipment used"
+            },
+            "numberUsed": {
+              "type": "number",
+              "title": "Number used"
+            },
+            "impact": {
+              "type": "string",
+              "title": "Impact on fire"
+            }
+          }
+        }
+      },
+      "likelyCause": {
+        "type": "number",
+        "title": "Motive:"
+      },
+      "fireCausedBy": {
+        "type": "string",
+        "title": "Caused by:"
+      },
+      "alcoholDrugs": {
+        "type": "string",
+        "title": "Are there signs that the incident was alcohol / drugs related?"
+      },
+      "humanFactors": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "title": "Did any human factors contribute to the cause, spread\n                    or resulting injuries from the fire?"
+      },
+      "humanFactorsText": {
+        "type": "string",
+        "title": "Other human factor description"
+      },
+      "accidentalAgeMode": {
+        "type": "string",
+        "title": "Do you know the exact age of the person involved or main householder?"
+      },
+      "accidentalAge": {
+        "type": "number",
+        "title": "Age of person concerned"
+      },
+      "accidentalAgeGuessId": {
+        "type": "string",
+        "title": "Estimated age of person concerned"
+      },
+      "accidentalGender": {
+        "type": "string",
+        "title": "What was the person's gender?"
+      },
+      "accidentalEthnicMode": {
+        "type": "string",
+        "title": "Specify the ethnicity of the person concerned using one of these methods"
+      },
+      "accidentalEthnicSelfId": {
+        "type": "string",
+        "title": "Ethnicity self classification"
+      },
+      "accidentalEthnicUserId": {
+        "type": "string",
+        "title": "Firefighter defined ethnicity"
+      },
+      "accidentalNumRooms": {
+        "type": "string",
+        "title": "Number of rooms"
+      },
+      "loneParent": {
+        "type": "string",
+        "title": "Lone parent with child(ren) under 18"
+      },
+      "lonePerson": {
+        "type": "string",
+        "title": "Person living alone"
+      },
+      "accidentalResidents": {
+        "type": "number",
+        "title": "Number of people in the individual dwelling"
+      },
+      "accidentalResident0004": {
+        "type": "number",
+        "title": "0 - 4 years"
+      },
+      "accidentalResident0509": {
+        "type": "number",
+        "title": "5 - 9 years"
+      },
+      "accidentalResident1017": {
+        "type": "number",
+        "title": "10 - 17 years"
+      },
+      "accidentalResident1824": {
+        "type": "number",
+        "title": "18 - 24 years"
+      },
+      "accidentalResident2544": {
+        "type": "number",
+        "title": "25 - 44 years"
+      },
+      "accidentalResident4564": {
+        "type": "number",
+        "title": "45 - 64 years"
+      },
+      "accidentalResident6579": {
+        "type": "number",
+        "title": "65 - 79 years"
+      },
+      "accidentalResident8099": {
+        "type": "number",
+        "title": "80+ years"
+      },
+      "accidentalSmoking": {
+        "type": "string",
+        "title": "Is there evidence that there are smokers in the household?"
+      },
+      "accidentalPrevious": {
+        "type": "string",
+        "title": "Has household had a fire when Brigade was not notified?"
+      },
+      "accidentalDeaf": {
+        "type": "string",
+        "title": "Was anyone in the household deaf or hard of hearing?"
+      },
+      "accidentalDeafAlarm": {
+        "type": "string",
+        "title": "Did they have a special smoke / fire alarm installed?"
+      },
+      "cause": {
+        "type": "string",
+        "title": "What caused / led to the fire?"
+      },
+      "applianceSource": {
+        "type": "string",
+        "title": "What was the source of ignition?"
+      },
+      "mvSmokingRel": {
+        "type": "string",
+        "title": "Tick if the source of ignition is smoking related"
+      },
+      "applianceMakeModel": {
+        "type": "string",
+        "title": "Appliance make / model"
+      },
+      "appliancePower": {
+        "type": "string",
+        "title": "What powered the source of ignition?"
+      },
+      "secFireStartedInBin": {
+        "type": "string",
+        "title": "Did the secondary fire start in a household wheelie bin?"
+      },
+      "throughLetterbox": {
+        "type": "string",
+        "title": "Was the source of ignition introduced through a letterbox?"
+      },
+      "firstIgnDesc": {
+        "type": "string",
+        "title": "What item or material was ignited first?"
+      },
+      "materialDevDesc": {
+        "type": "string",
+        "title": "What item or material was mainly responsible for the spread of fire?"
+      },
+      "accelerantUsed": {
+        "type": "string",
+        "title": "Was there an accelerant introduced?"
+      },
+      "multiSeat": {
+        "type": "string",
+        "title": "Multi-seated fire?"
+      },
+      "rapidBackdraft": {
+        "type": "string",
+        "title": "Backdraft"
+      },
+      "rapidFlashover": {
+        "type": "string",
+        "title": "Flashover"
+      },
+      "rapidWind": {
+        "type": "string",
+        "title": "Strong wind"
+      },
+      "explOccur": {
+        "type": "number",
+        "title": "Did any explosions occur?"
+      },
+      "incidentExplosions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "timeId": {
+              "type": "string",
+              "title": "When did the explosion occur?"
+            },
+            "materialTypeId": {
+              "type": "string",
+              "title": "What caused the explosion?"
+            },
+            "containerTypeId": {
+              "type": "string",
+              "title": "Were any containers involved?"
+            }
+          }
+        }
+      },
+      "damBurn": {
+        "type": "string",
+        "title": "Was there damage from direct burning\n\t\t\t\t\t(fire)?"
+      },
+      "fireSizeOnArrival": {
+        "type": "string",
+        "title": "What was the extent of FIRE and HEAT damage when you arrived?"
+      },
+      "fireHeatDamOnStop": {
+        "type": "string",
+        "title": "What was the extent of the FIRE and HEAT damage by\r\n                    the end of the incident?"
+      },
+      "damAdjOnArrivalDistance": {
+        "type": "string",
+        "title": "If any adjacent properties were damaged at the\n                    time you arrived, how far away were they (m)?"
+      },
+      "damAdjOnStopDistance": {
+        "type": "string",
+        "title": "If any adjacent properties were damaged by the end of\n                    the incident, how far away were they (m)?"
+      },
+      "fireDamBeyond": {
+        "type": "string",
+        "title": "Fire damage"
+      },
+      "heatDamBeyond": {
+        "type": "string",
+        "title": "Heat damage"
+      },
+      "smkDamBeyond": {
+        "type": "string",
+        "title": "Smoke damage"
+      },
+      "othDamBeyond": {
+        "type": "string",
+        "title": "Other damage"
+      },
+      "numBldg": {
+        "type": "number",
+        "title": "Number of other buildings damaged"
+      },
+      "numVeh": {
+        "type": "number",
+        "title": "Number of vehicles damaged"
+      },
+      "numOther": {
+        "type": "number",
+        "title": "Number of other locations damaged"
+      },
+      "damageBeyondTxt": {
+        "type": "string",
+        "title": "Details of other damage"
+      },
+      "areaDamBurn": {
+        "type": "string",
+        "title": "Area damaged by direct burning (in square metres)"
+      },
+      "areaDamBurn200": {
+        "type": "number",
+        "title": "Area above 200 square metres:"
+      },
+      "areaDamOther": {
+        "type": "string",
+        "title": "Total area damaged (in square metres)"
+      },
+      "areaDamOther200": {
+        "type": "number",
+        "title": "Area above 200 square metres:"
+      },
+      "ffAttacks": {
+        "type": "string",
+        "title": "At the incident, were there any attacks on \n\t                firefighters?"
+      },
+      "ffAttackType": {
+        "type": "string",
+        "title": "Type of attack"
+      },
+      "ffAttackNumSlightInj": {
+        "type": "number",
+        "title": "Number of slight injuries to FRS personnel due to attack"
+      },
+      "ffAttackNumSevereInj": {
+        "type": "number",
+        "title": "Number of serious injuries to FRS personnel due to attack"
+      },
+      "ffAttackEqpmtDam": {
+        "type": "string",
+        "title": "FRS equipment damaged?"
+      },
+      "ffAttackBuildingDam": {
+        "type": "string",
+        "title": "FRS buildings damaged?"
+      },
+      "ffAttackPoliceContacted": {
+        "type": "string",
+        "title": "Were the Police contacted about the incident?"
+      },
+      "ffAttackAmbContacted": {
+        "type": "string",
+        "title": "Did you have to contact an Ambulance?"
+      },
+      "appliancesInvolved": {
+        "type": "number",
+        "title": "How many appliances / crews were involved in the attack?"
+      },
+      "ffAttackNarrative": {
+        "type": "string",
+        "title": "Description of events"
+      },
+      "personsInvolved": {
+        "type": "string",
+        "title": "Was there anyone in the building at the time of the fire?"
+      },
+      "numEvacueesUnass": {
+        "type": "number",
+        "title": "Without Brigade assistance, and not a casualty or physically rescued?"
+      },
+      "numEvacueesAss": {
+        "type": "number",
+        "title": "With Brigade assistance, but not a casualty or physically rescued?"
+      },
+      "evacTime": {
+        "type": "string",
+        "title": "Estimated time for the completion of the\r\n                    evacuation"
+      },
+      "evacDelay": {
+        "type": "string",
+        "title": "Was there any delay?"
+      },
+      "evacDelayReason": {
+        "type": "string",
+        "title": "Reason for this delay?"
+      },
+      "rescuesOrCasualties": {
+        "type": "string",
+        "title": "Were there any rescues, casualties or fatalities?"
+      },
+      "numCasFatal": {
+        "type": "number",
+        "title": "Fatal casualties"
+      },
+      "numCasNonFatal": {
+        "type": "number",
+        "title": "Non-fatal casualties (including a casualty who was rescued)"
+      },
+      "numPerRescueOnly": {
+        "type": "number",
+        "title": "Rescued but not a casualty"
+      },
+      "incidentCasualties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Status"
+            },
+            "rescuerRoleId": {
+              "type": "string",
+              "title": "Who was this casualty / rescue?"
+            },
+            "title": {
+              "type": "string",
+              "title": "Title"
+            },
+            "firstName": {
+              "type": "string",
+              "title": "First name"
+            },
+            "lastName": {
+              "type": "string",
+              "title": "Last name"
+            },
+            "age": {
+              "type": "number",
+              "title": "Age"
+            },
+            "gender": {
+              "type": "string",
+              "title": "Gender"
+            },
+            "classificationType": {
+              "type": "string",
+              "title": "Was the victim's ethnicity self-classified?"
+            },
+            "ethnicSelfId": {
+              "type": "string",
+              "title": "Ethnicity self classification"
+            },
+            "ethnicUserId": {
+              "type": "string",
+              "title": "Firefighter defined ethnicity"
+            },
+            "startLocationId": {
+              "type": "string",
+              "title": "Where was the person when the fire started?"
+            },
+            "foundLocationId": {
+              "type": "string",
+              "title": "Where did you find the person?"
+            },
+            "fireRelated": {
+              "type": "string",
+              "title": "Did the injury occur as a result of the fire, heat or smoke?"
+            },
+            "oxygenProvided": {
+              "type": "string",
+              "title": "Did the Brigade provide oxygen to this person at the scene?"
+            },
+            "injSeverityId": {
+              "type": "string",
+              "title": "The severity of the injury"
+            },
+            "injNatureId": {
+              "type": "string",
+              "title": "The nature of the injury"
+            },
+            "injCircumstanceId": {
+              "type": "string",
+              "title": "The circumstances leading to the injury"
+            },
+            "injAlsoRescued": {
+              "type": "string",
+              "title": "Was this casualty also rescued?"
+            },
+            "fatEstablishmentId": {
+              "type": "string",
+              "title": "Establishment of death"
+            },
+            "fatCauseId": {
+              "type": "string",
+              "title": "The cause of death"
+            },
+            "fatCircumstanceId": {
+              "type": "string",
+              "title": "The circumstances leading to the fatality"
+            },
+            "fatAlsoRescued": {
+              "type": "string",
+              "title": "Was this fatality also rescued?"
+            },
+            "resCircumstanceId": {
+              "type": "string",
+              "title": "The circumstances leading to the rescue"
+            },
+            "resRescuerId": {
+              "type": "string",
+              "title": "Who rescued the victim?"
+            },
+            "resLocationId": {
+              "type": "string",
+              "title": "Where was the individual rescued from?"
+            },
+            "resMethodId": {
+              "type": "string",
+              "title": "What rescue method was used?"
+            },
+            "details": {
+              "type": "string",
+              "title": "Any further details of this casualty / rescue"
+            }
+          }
+        }
+      },
+      "furtherInv": {
+        "type": "string",
+        "title": "Are there any further investigations?"
+      },
+      "fireBrigadeInvestigation": {
+        "type": "number",
+        "title": "Fire Investigation Officer"
+      },
+      "policeInvestigation": {
+        "type": "number",
+        "title": "Police investigation"
+      },
+      "otherInvestigation": {
+        "type": "number",
+        "title": "Other investigation"
+      },
+      "chsDone": {
+        "type": "string",
+        "title": "Was a Commercial Hot Strike carried out?"
+      },
+      "chsNotes": {
+        "type": "string",
+        "title": "Officer to write down brief notes about why CHS was or was not carried out"
+      },
+      "primaryReason": {
+        "type": "string",
+        "title": "Primary Reason"
+      },
+      "secReasonRoadCond": {
+        "type": "string",
+        "title": "Secondary Reason"
+      },
+      "secReasonMdt": {
+        "type": "string",
+        "title": "Secondary Reason"
+      },
+      "secReasonAppliance": {
+        "type": "string",
+        "title": "Secondary Reason"
+      },
+      "secReasonTraining": {
+        "type": "string",
+        "title": "Secondary Reason"
+      },
+      "secReasonPba": {
+        "type": "string",
+        "title": "Secondary Reason"
+      },
+      "roadCondOther": {
+        "type": "string",
+        "title": "More Information"
+      },
+      "mdtOther": {
+        "type": "string",
+        "title": "More Information"
+      },
+      "applianceOther": {
+        "type": "string",
+        "title": "More Information"
+      },
+      "trainingOther": {
+        "type": "string",
+        "title": "More Information"
+      },
+      "pbaOther": {
+        "type": "string",
+        "title": "More Information"
+      },
+      "appFleetNumber": {
+        "type": "string",
+        "title": "Appliance fleet number (Please specify)"
+      },
+      "stationArea": {
+        "type": "string",
+        "title": "Station Area (Please specify)"
+      },
+      "oic2RollNum": {
+        "type": "number",
+        "title": "Person in charge of fire"
+      },
+      "completedRollNum": {
+        "type": "number",
+        "title": "Roll number of person completing form"
+      }
+    }
+  }
+}

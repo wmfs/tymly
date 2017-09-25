@@ -1,0 +1,9 @@
+{
+  "name": "primary",
+  "namespace": "wmfs",
+  "version": "1.0",
+  "label": "Primary Fire (FDR)",
+  "author": "Tim Needham",
+  "description": "Originally ported from Activity Assistant Workbook XML.",
+  "tags": []
+}

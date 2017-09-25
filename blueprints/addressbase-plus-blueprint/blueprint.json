@@ -1,0 +1,12 @@
+{
+  "namespace": "ordnanceSurvey",
+  "name": "addressbasePlus",
+  "version": "1.0",
+
+  "label": "Addressbase Plus",
+  "author": "Reece Brend",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Flobot blueprint to support ordnance survey's addressbase plus",
+  "tags": ["address", "addressbase", "gazetteer"]
+}

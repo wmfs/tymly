@@ -1,0 +1,20 @@
+{
+  "name": "refreshFromCsvFile",
+  "description": "Blueprint to import indices of multiple deprivation data from a CSV file into the model",
+  "version": "1.0",
+  "initialStateId": "importingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "fsm": {
+    "importingCsvFiles": {
+      "options": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "imd"
+        ],
+        "truncateTables": true
+      }
+    }
+  }
+}

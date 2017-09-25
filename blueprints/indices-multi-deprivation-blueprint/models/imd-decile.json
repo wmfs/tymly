@@ -1,0 +1,22 @@
+{
+  "title": "imd-decile",
+  "description": "Index of multiple deprivation per area - seed data",
+  "primaryKey": [
+    "id"
+  ],
+  "type": "object",
+  "properties": {
+    "id" : {
+      "type": "integer",
+      "description": "An id for the index of multiple deprivation"
+    },
+    "decile": {
+      "type": "integer",
+      "description": "A decile from [1] is the 10% most deprived to [10] being the 10% least deprived."
+    },
+    "label": {
+      "type": "string",
+      "description": "A label to describe the index of multiple deprivation"
+    }
+  }
+}

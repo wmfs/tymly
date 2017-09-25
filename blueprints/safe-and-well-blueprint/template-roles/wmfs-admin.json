@@ -1,0 +1,11 @@
+{
+  "label": "WMFS Admin",
+  "description": "Run any flow in the WMFS namespace",
+
+  "grants": [
+    {
+      "flowId": "*",
+      "allows": ["*"]
+    }
+  ]
+}
