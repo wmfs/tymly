@@ -2,9 +2,11 @@
 
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
 const expect = require('chai').expect
-const convertToCsv = require('../lib/convert-to-csv.js')
 const endOfLine = require('os').EOL
+const convertToCsv = require('../lib/convert-to-csv.js')
 const RecordHandler = convertToCsv.RecordHandler
 const createParser = convertToCsv.createParser
 const getHeaders = convertToCsv.getHeaders
@@ -23,7 +25,7 @@ class TextStream {
   }
 }
 
-describe('XML Parses Tests', () => {
+describe('XML Parser Tests', () => {
   describe('RecordHandler', () => {
     it('capture text within child elements of EstablishmentDetail', () => {
       const outStream = new TextStream()
@@ -130,5 +132,27 @@ describe('XML Parses Tests', () => {
     contentParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
     const csv = outStream.text
     expect(csv).to.equal(`Name,Line1${endOfLine}Bill's Kebabs,The Street${endOfLine}`)
+  })
+
+  it('convert an XML file to a CSV file', (done) => {
+    let xmlPath = path.join(__dirname, 'fixtures', 'input-data', 'establishment.xml')
+    let csvPath = path.join(__dirname, 'output', 'establishment.csv')
+    if (fs.existsSync(csvPath)) {
+      fs.unlinkSync(csvPath)
+    }
+
+    convertToCsv('EstablishmentDetail', xmlPath, csvPath, () => {
+      expect(fs.existsSync(csvPath)).to.equal(true)
+      expect(fs.statSync(csvPath).size).to.not.equal(0)
+
+      const wholeFile = fs.readFileSync(csvPath, 'utf-8')
+      const lines = wholeFile.split(endOfLine)
+      expect(lines.length).to.equal(5)
+
+      expect(lines[0].startsWith('FHRSID,LocalAuthorityBusinessID')).to.equal(true)
+      expect(lines[1].startsWith('584976,32556')).to.equal(true)
+
+      done()
+    })
   })
 })

@@ -4,9 +4,7 @@
 
 const debug = require('debug')('supercopy')
 const path = require('path')
-const fs = require('fs')
 const expect = require('chai').expect
-const convertToCsv = require('../lib/convert-to-csv.js')
 const supercopy = require('../lib/index.js')
 const pg = require('pg')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
@@ -30,28 +28,6 @@ describe('Supercopy data from an xml file', () => {
         done()
       }
     )
-  })
-
-  it('convert XML file to a CSV file', (done) => {
-    let xmlPath = path.join(__dirname, 'fixtures', 'input-data', 'establishment.xml')
-    let csvPath = path.join(__dirname, 'output', 'establishment.csv')
-    if (fs.existsSync(csvPath)) {
-      fs.unlinkSync(csvPath)
-    }
-
-    convertToCsv('EstablishmentDetail', xmlPath, csvPath, () => {
-      expect(fs.existsSync(csvPath)).to.equal(true)
-      expect(fs.statSync(csvPath).size).to.not.equal(0)
-
-      const wholeFile = fs.readFileSync(csvPath, 'utf-8')
-      const lines = wholeFile.split('\n')
-      expect(lines.length).to.equal(5)
-
-      expect(lines[0].startsWith('FHRSID,LocalAuthorityBusinessID')).to.equal(true)
-      expect(lines[1].startsWith('584976,32556')).to.equal(true)
-
-      done()
-    })
   })
 
   it('Should supercopy some people with XML conversion', (done) => {
