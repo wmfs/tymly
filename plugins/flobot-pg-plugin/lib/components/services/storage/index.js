@@ -120,34 +120,40 @@ class PostgresqlStorageService {
                           options.blueprintComponents.seedData,
                           (seedData, cb) => {
                             const name = seedData.namespace + '_' + seedData.name
-                            options.messages.detail(name)
+                            const model = _this.models[name]
+                            if (model) {
+                              options.messages.detail(name)
 
-                            // generate upsert sql statement
-                            const sql = generateUpsertStatement(_this.models[name], seedData)
-                            debug('load', name, 'seed-data sql: ', sql)
+                              // generate upsert sql statement
+                              const sql = generateUpsertStatement(model, seedData)
+                              debug('load', name, 'seed-data sql: ', sql)
 
-                            // generate a single array of parameters which each
-                            // correspond with a placeholder in the upsert sql statement
-                            let params = []
-                            _.forEach(seedData.data, (row) => {
-                              params = params.concat(row)
-                            })
-                            debug('load', name, 'seed-data params: ', params)
+                              // generate a single array of parameters which each
+                              // correspond with a placeholder in the upsert sql statement
+                              let params = []
+                              _.forEach(seedData.data, (row) => {
+                                params = params.concat(row)
+                              })
+                              debug('load', name, 'seed-data params: ', params)
 
-                            pgStatementRunner(
-                              _this.client,
-                              [{
-                                'sql': sql,
-                                'params': params
-                              }],
-                              function (err) {
-                                if (err) {
-                                  cb(err)
-                                } else {
-                                  cb(null)
+                              pgStatementRunner(
+                                _this.client,
+                                [{
+                                  'sql': sql,
+                                  'params': params
+                                }],
+                                function (err) {
+                                  if (err) {
+                                    cb(err)
+                                  } else {
+                                    cb(null)
+                                  }
                                 }
-                              }
-                            )
+                              )
+                            } else {
+                              options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
+                              cb(null)
+                            }
                           },
                           (err) => {
                             if (err) {

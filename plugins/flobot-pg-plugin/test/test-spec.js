@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 
+'use strict'
+
 const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
@@ -24,7 +26,8 @@ describe('PostgreSQL storage tests', function () {
 
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/people-blueprint'),
-          path.resolve(__dirname, './fixtures/blueprints/space-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/space-blueprint'),
+          path.resolve(__dirname, './fixtures/blueprints/test1-blueprint')
         ],
 
         config: {}
@@ -131,11 +134,9 @@ describe('PostgreSQL storage tests', function () {
           done()
         }
       )
-  }
-  )
+  })
 
   it('Should end db client', function () {
     client.end()
-  }
-  )
+  })
 })

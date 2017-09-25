@@ -20,7 +20,7 @@ module.exports = function (options, callback) {
   }
 
   const rootDir = options.sourceDir
-  debug(`Staring to collect file info for ${rootDir}`)
+  debug(`Starting to collect file info for ${rootDir}`)
 
   fs.readdir(rootDir, function (err, items) {
     if (err) {
@@ -49,7 +49,6 @@ module.exports = function (options, callback) {
                         actionItems,
                         function (actionItem, cb2) {
                           const filePath = path.join(dirPath, actionItem)
-                          console.log(filePath)
                           fs.lstat(
                             filePath,
                             function (err, fileStats) {

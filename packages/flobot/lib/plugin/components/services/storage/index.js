@@ -1,4 +1,6 @@
 'use strict'
+
+const debug = require('debug')('flobot')
 const boom = require('boom')
 const _ = require('lodash')
 const MemoryModel = require('./Memory-model')
@@ -25,7 +27,35 @@ class MemoryStorageService {
       }
     )
 
-    callback(null)
+    const seedData = options.blueprintComponents.seedData
+    if (seedData) {
+      options.messages.info('Loading seed data:')
+      _.forEach(seedData, (modelSeedData) => {
+        const name = modelSeedData.namespace + '_' + modelSeedData.name
+        const model = _this.models[name]
+        if (model) {
+          options.messages.detail(name)
+          _.forEach(modelSeedData.data, (row) => {
+            // construct document
+            const doc = {}
+            const documentPropertyNames = modelSeedData.propertyNames
+            for (let i = 0, colCount = documentPropertyNames.length; i < colCount; i++) {
+              doc[documentPropertyNames[i]] = row[i]
+            }
+
+            // persist document
+            debug('persisting document', doc)
+            model.upsert(doc, {}, () => {}) // In-memory is sync really (so this is OK)
+          })
+          callback(null)
+        } else {
+          options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
+          callback(null)
+        }
+      })
+    } else {
+      callback(null)
+    }
   }
 
   fileImporter (action, modelId, rootDir, fileInfo, importReport, callback) {

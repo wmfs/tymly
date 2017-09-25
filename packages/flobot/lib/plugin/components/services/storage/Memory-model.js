@@ -1,6 +1,9 @@
 'use strict'
+
+// const debug = require('debug')('flobot')
 const uuid = require('uuid')
 const _ = require('lodash')
+
 require('underscore-query')(_)
 
 // TODO: This could be a useful module in its own right?
@@ -185,7 +188,6 @@ class MemoryModel {
     if (output.length > 0) {
       doc = output[0]
     }
-
     callback(null, doc)
   }
 
