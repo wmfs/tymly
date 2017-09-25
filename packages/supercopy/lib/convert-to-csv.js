@@ -1,5 +1,6 @@
 const fs = require('fs')
 const expat = require('node-expat')
+const endOfLine = require('os').EOL
 
 class RecordHandler {
   /**
@@ -35,7 +36,7 @@ class RecordHandler {
     if (name === this.triggerElement) {
       // If this end element is the trigger element, make "capture" false, and start a new line (If we have reached the end of a trigger element we have finished recording this record)
       this.capture = false
-      this.outputStream.write('\n')
+      this.outputStream.write(endOfLine)
     }
     if (this.nested !== name) {
       // If $nested is not the same as $name then break out of this condition
@@ -86,7 +87,7 @@ class HeaderHandler {
     if (name === this.triggerElement) {
       this.capture = false
       this.complete = true
-      this.outputStream.write('\n')
+      this.outputStream.write(endOfLine)
     }
     // If we are nested break out
     if (this.nested !== name) {

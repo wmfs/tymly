@@ -24,7 +24,7 @@ const client = new pg.Client('postgres://postgres:postgres@localhost:5432/my_tes
 
 supercopy(
   {
-    sourceDir: '/some/dir/with/csv/files',
+    sourceDir: '/dir/that/holds/deletes/inserts/updates/and/upserts/dirs',
     headerColumnNamePkPrefix: '.',
     topDownTableOrder: ['departments', 'employees'],
     client: client,
@@ -38,19 +38,18 @@ supercopy(
 )
 
 ```
-If XML files are to be processed before use in Supercopy please include the following in the options
+If you want to import data from an XML file, you will need to configure supercopy like this...
 ```javascript
 supercopy(
   {
-    sourceDir: '/some/dir/with/csv/files',
-    headerColumnNamePkPrefix: '.',
+    sourceDir: '/dir/in/which/generated/csv/file/will/be/placed',
     topDownTableOrder: ['departments', 'employees'],
     client: client,
     schemaName: 'my_schema',
     truncateTables: true,
     debug: true,
     triggerElement: 'word-to-split-records-on',
-    xmlSourceFile: '/some/dir/with/xml/file'
+    xmlSourceFile: '/path/to/target/xml/file'
   }
 ```
 ## supercopy(`options`, `callback`)
@@ -59,7 +58,7 @@ supercopy(
 
 | Property              | Type       | Notes |
 | --------              | ----       | ------ |
-| `sourceDir`           | `function` | An absolute path pointing to a directory containing CSV files. See the [File Structure](#structure) section for more details.
+| `sourceDir`           | `function` | An absolute path pointing to a directory containing action folders. See the [File Structure](#structure) section for more details.
 | `headerColumnNamePkPrefix` | `string` | When conjuring an `update` statement, Supercopy will need to know which columns in the CSV file constitute a primary key. It does this by expecting the first line of each file to be a header containing `,` delimited column names. However, column names prefixed with this value should be deemed a primary-key column. Only use in update CSV-file headers.|
 | `topDownTableOrder`   | `[string]` | An array of strings, where each string is a table name. Table inserts will occur in this order and deletes in reverse - use to avoid integrity-constraint errors. If no schema prefix is supplied to a table name, then it's inferred from `schemaName`. 
 | `client`              | `client`   | Either a [pg](https://www.npmjs.com/package/pg) client or pool (something with a `query()` method) that's already connected to a PostgreSQL database.

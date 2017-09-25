@@ -1,2 +1,1 @@
 DROP SCHEMA IF EXISTS supercopy_test CASCADE;
-

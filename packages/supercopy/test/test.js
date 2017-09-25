@@ -18,7 +18,7 @@ describe('Run some basic tests', () => {
     client.connect()
   })
 
-  it('Should initially drop-cascade the supercopy_test schema, if one exists', (done) => {
+  it('Should load some test data', (done) => {
     sqlScriptRunner(
       [
         'uninstall.sql',
@@ -35,7 +35,7 @@ describe('Run some basic tests', () => {
   it('Should supercopy some people', (done) => {
     supercopy(
       {
-        sourceDir: path.resolve(__dirname, './fixtures/examples/people'),
+        sourceDir: path.resolve(__dirname, './fixtures/input-data/people'),
         topDownTableOrder: ['adults', 'children'],
         headerColumnNamePkPrefix: '.',
         client: client,
@@ -96,7 +96,7 @@ describe('Run some basic tests', () => {
   it('Should fail supercopy-if some bad-people files', (done) => {
     supercopy(
       {
-        sourceDir: path.resolve(__dirname, './fixtures/examples/people-with-an-error'),
+        sourceDir: path.resolve(__dirname, './fixtures/input-data/people-with-an-error'),
         topDownTableOrder: ['adults', 'children'],
         headerColumnNamePkPrefix: '.',
         client: client,
@@ -113,7 +113,7 @@ describe('Run some basic tests', () => {
   it('Should supercopy some people, truncating the tables first', (done) => {
     supercopy(
       {
-        sourceDir: path.resolve(__dirname, './fixtures/examples/people'),
+        sourceDir: path.resolve(__dirname, './fixtures/input-data/people'),
         topDownTableOrder: ['adults', 'children'],
         headerColumnNamePkPrefix: '.',
         client: client,
@@ -163,7 +163,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should finally drop-cascade the pg_model_test schema', (done) => {
+  it('Should cleanup the test data', (done) => {
     sqlScriptRunner(
       [
         'uninstall.sql'
