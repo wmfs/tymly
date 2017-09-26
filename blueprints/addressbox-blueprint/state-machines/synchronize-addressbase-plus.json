@@ -1,14 +1,16 @@
 {
-  "name": "synchronizeAddressbasePlus",
-  "description": "Synchronizes addressbase plus data with address box.",
+  "Comment": "Synchronizes addressbase plus data with address box.",
   "version": "1.0",
-  "initialStateId": "synchronizingTable",
+  "StartAt": "SynchronizingTable",
   "instigators": [
     "user"
   ],
-  "fsm": {
-    "synchronizingTable": {
-      "options": {
+  "States": {
+    "SynchronizingTable": {
+      "Type": "Task",
+      "Resource": "module:synchronizingTable",
+      "InputPath": "$.outputDir",
+      "ResourceConfig": {
         "transformerFunctionName": "wmfs_addressbasePlusConverter",
         "source": {
           "tableName": "ordnance_survey.addressbase_holding",
@@ -22,14 +24,13 @@
           "uprn": "uprn"
         }
       },
-      "events": {
-        "synchronizedTable": {
-          "to": "exportingCsvDeltaFile"
-        }
-      }
+      "Next": "ExportingCsvDeltaFile"
     },
-    "exportingCsvDeltaFile": {
-      "options": {
+    "ExportingCsvDeltaFile": {
+      "Type": "Task",
+      "Resource": "module:exportingCsvDeltaFile",
+      "InputPath": "$.outputFilePath",
+      "ResourceConfig": {
         "since": "2000-07-16T20:37:26.847Z",
         "createdColumnName": "_created",
         "modifiedColumnName": "_modified",
@@ -60,7 +61,8 @@
             ]
           }
         ]
-      }
+      },
+      "End": true
     }
   }
 }

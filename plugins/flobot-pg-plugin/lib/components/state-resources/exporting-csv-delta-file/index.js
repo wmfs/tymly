@@ -2,25 +2,24 @@
  * Created by Aron.Moore on 12/07/2017.
  */
 'use strict'
-const schema = require('./schema.json')
 const generateDelta = require('pg-delta-file')
 
 class ExportingCsvDeltaFile {
-  init (stateConfig, options, callback) {
-    this.client = options.services.storage.client
-    this.since = stateConfig.options.since
-    this.createdColumnName = stateConfig.options.createdColumnName
-    this.modifiedColumnName = stateConfig.options.modifiedColumnName
-    this.tables = stateConfig.options.tables
+  init (resourceConfig, env, callback) {
+    this.client = env.bootedServices.storage.client
+    this.since = resourceConfig.since
+    this.createdColumnName = resourceConfig.createdColumnName
+    this.modifiedColumnName = resourceConfig.modifiedColumnName
+    this.tables = resourceConfig.tables
     callback(null)
   }
 
-  enter (flobot, data, callback) {
+  run (event, context) {
     generateDelta(
       {
         client: this.client,
         since: this.since,
-        outputFilepath: flobot.ctx.outputFilepath,
+        outputFilepath: outputFilepath,
         actionAliases: this.actionAliases,
         createdColumnName: this.createdColumnName,
         modifiedColumnName: this.modifiedColumnName,
@@ -28,23 +27,18 @@ class ExportingCsvDeltaFile {
       },
       function (err) {
         if (err) {
-          console.log('error')
-          callback(err)
+          context.sendTaskFailure(
+            {
+              error: 'generateDeltaFail',
+              cause: err
+            }
+          )
         } else {
-          console.log('done')
-          callback(null)
+          context.sendTaskSuccess()
         }
       }
     )
   }
-
-  leave (flobot, data, callback) {
-    callback(null)
-  }
 }
 
-module.exports = {
-  autoNudge: true,
-  stateClass: ExportingCsvDeltaFile,
-  schema: schema
-}
+module.exports = ExportingCsvDeltaFile
