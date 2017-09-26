@@ -5,7 +5,7 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'ridge_refreshFromCsvFile_1_0'
+const STATE_MACHINE_NAME = 'dclg_refreshFromCsvFile_1_0'
 
 describe('data import', function () {
   this.timeout(5000)
@@ -32,7 +32,7 @@ describe('data import', function () {
     )
   })
 
-  it('should create and populate the ridge.imd database table', function (done) {
+  it('should create and populate the dclg.imd database table', function (done) {
     statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input')
