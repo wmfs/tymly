@@ -12,6 +12,7 @@
   "States": {
     "FindingById": {
       "Type": "Task",
+      "Resource": "module:findingById",
       "ResourceConfig": {
         "modelId": "incident",
         "target": "formData",
@@ -25,6 +26,7 @@
     },
     "FormFilling": {
       "Type": "Task",
+      "Resource": "module:formFilling",
       "ResourceConfig": {
         "formId": "incidentForm",
         "target": "formData"
@@ -33,6 +35,7 @@
     },
     "Upserting": {
       "Type": "Task",
+      "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "incident",
         "doc": {
