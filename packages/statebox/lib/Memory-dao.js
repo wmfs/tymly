@@ -18,6 +18,7 @@ class MemoryDao {
       currentResource: startResource,
       stateMachineName: stateMachineName,
       status: 'RUNNING',
+      instigatingClient: executionOptions.instigatingClient,
       parentExecutionName: executionOptions.parentExecutionName,
       rootExecutionName: executionOptions.rootExecutionName,
       startDate: new Date().toISOString()

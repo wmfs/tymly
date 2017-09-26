@@ -115,9 +115,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        namespace: 'fbotTest',
-        stateMachineName: 'cat',
-        version: '1.0',
+        stateMachineName: 'fbotTest_cat_1_0',
         data: {petName: 'Rupert'}
       }
     ).on(
@@ -164,15 +162,19 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        namespace: 'fbotTest',
-        stateMachineName: 'cat',
-        version: '1.0',
+        stateMachineName: 'fbotTest_cat_1_0',
         input: {
           petName: 'Rupert',
           gender: 'male',
           hoursSinceLastMotion: 11,
           hoursSinceLastMeal: 5,
           petDiary: []
+        },
+        options: {
+          instigatingClient: {
+            appName: 'flobot-express-plugin',
+            domain: 'express-spec.js'
+          }
         }
       },
       sendToken(adminToken)
@@ -181,6 +183,7 @@ describe('Simple Express tests', function () {
       expect(executionDescription.status).to.eql('RUNNING')
       expect(executionDescription.currentStateName).to.eql('WakingUp')
       expect(executionDescription.ctx.petName).to.eql('Rupert')
+      expect(executionDescription.instigatingClient).to.eql({ appName: 'flobot-express-plugin', domain: 'express-spec.js' })
       rupert = executionDescription.executionName
       done()
     })
@@ -221,9 +224,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        namespace: 'fbotTest',
-        stateMachineName: 'listeningCat',
-        version: '1.0',
+        stateMachineName: 'fbotTest_listeningCat_1_0',
         input: {
           petName: 'Alan',
           gender: 'male',
@@ -317,9 +318,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        namespace: 'fbotTest',
-        stateMachineName: 'listeningCat',
-        version: '1.0',
+        stateMachineName: 'fbotTest_listeningCat_1_0',
         input: {
           petName: 'Alan',
           gender: 'male',
