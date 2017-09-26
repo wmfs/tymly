@@ -107,7 +107,7 @@ This is where FlobotJS __Blueprints__ come in. The actual content of a Blueprint
 | `/flows` | Flow definitions defined in JSON files |
 | `/functions` | One file per Node.js module (which should export a single function). |
 | `/registryKeys` | A collection of JSON files which are used to create entries in the Flobot registry. |
-| `/models` | One JSON file per model (contents to be a JSON schema for defining the model&#39;s data structure) |
+| `/state-machines` | One JSON file per model (contents to be a JSON schema for defining the model&#39;s data structure) |
 | `/tags` | JSON files providing &#39;tags&#39; which are used throughout Flobot to help categorise things and aid discovery |
 | `/images` | A place to put images that can be served-up in Forms and similar |
 | `/forms` | One JSON file per Form (currently need to be in [Schemaform](http://schemaform.io/) format) |

@@ -59,8 +59,8 @@ module.exports = function generateEditorFlow (filepath, blueprintPath) {
     }
   }
 
-  // Create JSON file, in /flows directory name _-editor.json
-  fs.writeFile(path.join(filepath, '../../flows', modelName + '-editor.json'), JSON.stringify(flow, null, 2), function (err) {
+  // Create JSON file, in /state-machines directory name _-editor.json
+  fs.writeFile(path.join(filepath, '../../state-machines', modelName + '-editor.json'), JSON.stringify(flow, null, 2), function (err) {
     if (err) {
       console.log(err)
     } else {

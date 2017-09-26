@@ -28,7 +28,7 @@ class Model {
     this.pkPropertyIds = _.map(this.pkColumnNames, function (columnName) { return _.camelCase(columnName) })
     this.attributeIds = _.difference(this.propertyIds, this.pkPropertyIds)
 
-    this.subDocIds = [] // Populated once all models are available
+    this.subDocIds = [] // Populated once all state-machines are available
     this.fkColumnNames = []
     this.fkPropertyIds = []
     _.forOwn(
@@ -44,7 +44,7 @@ class Model {
     )
     this.attributeIdsWithoutfkPropertyIds = _.difference(this.attributeIds, this.fkPropertyIds)
 
-    this.subModels = {}// Added once all models are available
+    this.subModels = {}// Added once all state-machines are available
     this.deleteMissingSql = 'DELETE FROM ' + this.fullTableName + ' WHERE '
     if (this.pkColumnNames.length === 1) {
       this.deleteMissingSql += this.pkColumnNames[0] + ' != ANY($1)'

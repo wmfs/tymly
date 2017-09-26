@@ -33,7 +33,7 @@ class RbacService {
   }
 
   /**
-   * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying models (e.g. `fbot_permission_1_0`, `fbot_role_1_0` and `fbot_membership_1_0`)
+   * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `fbot_permission_1_0`, `fbot_role_1_0` and `fbot_membership_1_0`)
    * @param {Function} callback Called with a standard error
    * @returns {undefined}
    * @example

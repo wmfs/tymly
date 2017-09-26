@@ -14,7 +14,7 @@ describe('Memory storage tests', function () {
   let planets
   let star
 
-  it('should create some out-the-box flobot services to test memory storage models', function (done) {
+  it('should create some out-the-box flobot services to test memory storage state-machines', function (done) {
     flobot.boot(
       {
         blueprintPaths: [

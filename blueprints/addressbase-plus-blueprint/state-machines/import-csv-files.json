@@ -1,17 +1,19 @@
 {
-  "name": "import-csv-files",
-  "description": "import gazetteer data",
+  "Comment": "import gazetteer data",
   "version": "1.0",
-  "initialStateId": "processingCsvFiles",
+  "StartAt": "ProcessingCsvFiles",
   "tags": [
     "gazetteer"
   ],
   "instigators": [
     "user"
   ],
-  "fsm": {
-    "processingCsvFiles": {
-      "options": {
+  "States": {
+    "ProcessingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$",
+      "Resource": "module:processingCsvFiles",
+      "ResourceConfig": {
         "parser": {
           "quote": "\"",
           "delimiter": ",",
@@ -357,21 +359,21 @@
           }
         }
       },
-      "events": {
-        "csvFilesProcessed": {
-          "to": "importingCsvFiles"
-        }
-      }
+      "Next": "ImportingCsvFiles"
     },
 
-    "importingCsvFiles": {
-      "options": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
         "headerColumnNamePkPrefix": ".",
         "topDownTableOrder": [
           "addressbase_holding"
         ],
         "truncateTables": true
-      }
+      },
+      "End": true
     }
   }
 }

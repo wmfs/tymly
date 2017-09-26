@@ -45,7 +45,7 @@ module.exports = function pgModel (options) {
     }
   )
 
-  // Add sub-models
+  // Add sub-state-machines
   _.forOwn(
     models,
     function (namespace, namespaceId) {

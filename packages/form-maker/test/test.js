@@ -31,7 +31,7 @@ describe('Run some basic tests', function () {
   })
 
   it('Should have created an editor flow file', function (done) {
-    glob(path.join(__dirname, blueprintPath + '/flows/*-editor.json'), function (err, files) {
+    glob(path.join(__dirname, blueprintPath + '/state-machines/*-editor.json'), function (err, files) {
       expect(err).to.equal(null)
       expect(files).to.not.equal(null)
       done()

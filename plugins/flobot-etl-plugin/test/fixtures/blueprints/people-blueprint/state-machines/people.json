@@ -8,6 +8,7 @@
   "States": {
     "ProcessingCsvFiles": {
       "Type": "Task",
+      "Resource": "module:processingCsvFiles",
       "ResourceConfig": {
         "parser": {
           "quote": "\"",
@@ -71,9 +72,7 @@
           }
         }
       },
-      "Resource": "module:processingCsvFiles",
       "End": true
-
     }
   }
 }
