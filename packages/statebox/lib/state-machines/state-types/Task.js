@@ -11,6 +11,7 @@ const _ = require('lodash')
 class Context {
   constructor (executionDescription, task) {
     this.executionName = executionDescription.executionName
+    this.stateMachineMeta = task.stateMachine.meta
     this.task = task
   }
 

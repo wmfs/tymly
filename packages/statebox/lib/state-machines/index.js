@@ -44,9 +44,7 @@ module.exports.findStates = function findStates (options) {
   return states
 }
 
-module.exports.createStateMachines = function createStateMachines (stateMachineDefinitions, env, options, callback) {
-  const _this = this
-
+module.exports.createStateMachine = function createStateMachines (stateMachineName, stateMachineDefinition, stateMachineMeta, env, options, callback) {
   function parseStateMachines (stateMachineName, topLevel, root) {
     if (_.isArray(root)) {
       root.forEach(
@@ -72,15 +70,7 @@ module.exports.createStateMachines = function createStateMachines (stateMachineD
   }
 
   const parsedStateMachines = {}
-  _.forOwn(
-    stateMachineDefinitions,
-    function (definition, stateMachineName) {
-      const stateMachineAnalysis = _this.validateStateMachineDefinition(stateMachineName, definition)
-      if (stateMachineAnalysis.summary.errorCount === 0) {
-        parseStateMachines(stateMachineName, true, definition)
-      }
-    }
-  )
+  parseStateMachines(stateMachineName, true, stateMachineDefinition)
 
   async.eachOf(
     parsedStateMachines,
@@ -89,6 +79,7 @@ module.exports.createStateMachines = function createStateMachines (stateMachineD
       sm.init(
         stateMachineName,
         stateMachine,
+        stateMachineMeta,
         env,
         options,
         function (err) {
@@ -108,6 +99,24 @@ module.exports.createStateMachines = function createStateMachines (stateMachineD
         callback(null)
       }
     }
+  )
+}
+
+module.exports.createStateMachines = function createStateMachines (stateMachineDefinitions, env, options, callback) {
+  const _this = this
+  async.eachOf(
+    stateMachineDefinitions,
+    function (stateMachineDefinition, stateMachineName, cb) {
+      _this.createStateMachine(
+        stateMachineName,
+        stateMachineDefinition,
+        {}, // stateMachineMeta
+        env,
+        options,
+        cb
+      )
+    },
+    callback
   )
 }
 

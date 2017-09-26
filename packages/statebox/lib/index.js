@@ -38,6 +38,16 @@ class Statebox {
     stateMachines.validateStateMachineDefinition(name, definition)
   }
 
+  createStateMachine (stateMachineName, stateMachineDefinition, stateMachineMeta, env, callback) {
+    stateMachines.createStateMachine(
+      stateMachineName,
+      stateMachineDefinition,
+      stateMachineMeta,
+      env,
+      this.options,
+      callback)
+  }
+
   createStateMachines (stateMachineDefinitions, env, callback) {
     stateMachines.createStateMachines(
       stateMachineDefinitions,
