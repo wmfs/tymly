@@ -8,8 +8,8 @@
   "States": {
     "SynchronizingTable": {
       "Type": "Task",
-      "Resource": "module:synchronizingTable",
       "InputPath": "$.outputDir",
+      "Resource": "module:synchronizingTable",
       "ResourceConfig": {
         "transformerFunctionName": "wmfs_addressbasePlusConverter",
         "source": {
@@ -28,8 +28,8 @@
     },
     "ExportingCsvDeltaFile": {
       "Type": "Task",
-      "Resource": "module:exportingCsvDeltaFile",
       "InputPath": "$.outputFilePath",
+      "Resource": "module:exportingCsvDeltaFile",
       "ResourceConfig": {
         "since": "2000-07-16T20:37:26.847Z",
         "createdColumnName": "_created",

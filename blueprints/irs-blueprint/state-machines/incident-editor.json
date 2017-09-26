@@ -12,11 +12,11 @@
   "States": {
     "FindingById": {
       "Type": "Task",
+      "InputPath": "$.key",
+      "Resource": "module:findingById",
       "ResourceConfig": {
         "modelId": "incident"
       },
-      "InputPath": "$.key",
-      "Resource": "module:findingById",
       "ResultPath": "$.formData",
       "Next": "FormFilling"
     },
@@ -31,11 +31,11 @@
     },
     "Upserting": {
       "Type": "Task",
+      "InputPath": "$.formData",
       "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "incident"
       },
-      "InputPath": "$.formData",
       "End": true
     }
   }

@@ -8,6 +8,8 @@
   "States": {
     "ImportingCsvFiles": {
       "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
       "ResourceConfig": {
         "modelId": "imd",
         "headerColumnNamePkPrefix": ".",
@@ -16,8 +18,6 @@
         ],
         "truncateTables": true
       },
-      "Resource": "module:importingCsvFiles",
-      "InputPath": "$.sourceDir",
       "End": true
     }
   }

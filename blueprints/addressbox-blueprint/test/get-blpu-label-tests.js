@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+
 'use strict'
 
 const chai = require('chai')
@@ -28,6 +29,7 @@ describe('Process label tests', function () {
     }
     expect(getBlpuLabel(data)).to.be.eql('Organisation, Hello You! 1A-2B, 121 Alphington Road, Exeter, EX2 8JD')
   })
+
   it('Should get a label with retired organisation, post town and post code null', function () {
     const data = {
       laOrganisation: '',
@@ -50,6 +52,7 @@ describe('Process label tests', function () {
     }
     expect(getBlpuLabel(data)).to.be.eql('Hello You! 1A-2B, 121 Alphington Road, Exeter')
   })
+
   it('Should get a label with organisation when street_locality and sao_text are null (not empty!)', function () {
     const data = {
       laOrganisation: 'organisation',
