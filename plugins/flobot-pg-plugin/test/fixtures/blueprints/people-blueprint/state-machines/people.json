@@ -5,20 +5,20 @@
   "States": {
     "Upserting": {
       "Type": "Task",
+      "InputPath": "$.homer",
+      "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "people"
       },
-      "Resource": "module:upserting",
-      "InputPath": "$.homer",
       "Next": "FindingById"
     },
     "FindingById": {
       "Type": "Task",
+      "InputPath": "$.homer.employeeNo",
+      "Resource": "module:findingById",
       "ResourceConfig": {
         "modelId": "people"
       },
-      "InputPath": "$.homer.employeeNo",
-      "Resource": "module:findingById",
       "ResultPath": "$.foundHomer",
       "End": true
     }

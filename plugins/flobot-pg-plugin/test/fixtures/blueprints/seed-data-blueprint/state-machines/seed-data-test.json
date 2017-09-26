@@ -6,11 +6,11 @@
   "States": {
     "FindingById": {
       "Type": "Task",
+      "InputPath": "$.idToFind",
+      "Resource": "module:findingById",
       "ResourceConfig": {
         "modelId": "title"
       },
-      "InputPath": "$.idToFind",
-      "Resource": "module:findingById",
       "ResultPath": "$.foundTitle",
       "End": true
     }

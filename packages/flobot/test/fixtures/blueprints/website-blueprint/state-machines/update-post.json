@@ -1,7 +1,8 @@
 {
   "label": "Update website post",
-  "description": "Change an existing post",
+  "Comment": "Change an existing post",
   "version": "1.0",
+  "StartAt": "Logging",
   "instigators": [
     "user"
   ],
@@ -9,14 +10,13 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
   "States": {
     "Logging": {
       "Type": "Task",
+      "Resource": "module:logging",
       "ResourceConfig": {
         "template": "Update post!"
       },
-      "Resource": "module:logging",
       "End": true
     }
   },

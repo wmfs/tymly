@@ -12,10 +12,10 @@
   "States": {
     "FormFilling": {
       "Type": "Task",
+      "Resource": "module:formFilling",
       "ResourceConfig": {
         "formId": "deletePostForm"
       },
-      "Resource": "module:formFilling",
       "End": true
     }
   }
