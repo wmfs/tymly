@@ -24,8 +24,9 @@ class StateboxService {
       const machines = Object.entries(options.blueprintComponents.stateMachines)
 
       const createMachine = (index) => {
-        if (index === machines.length)
+        if (index === machines.length) {
           return callback(null)
+        }
 
         const [name, definition] = machines[index]
         const meta = {

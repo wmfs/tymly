@@ -5,18 +5,18 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'dclg_refreshFromCsvFile_1_0'
+const STATE_MACHINE_NAME = 'wmfs_incidentEditor_1_0'
 
 describe('data import', function () {
   this.timeout(5000)
-
   let statebox
 
   it('should startup flobot', function (done) {
     flobot.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-pg-plugin')
+          require.resolve('flobot-forms-plugin'),
+          require.resolve('flobot')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
@@ -32,11 +32,9 @@ describe('data import', function () {
     )
   })
 
-  it('should create and populate the dclg.imd database table', function (done) {
+  it('should perform the state machine', function (done) {
     statebox.startExecution(
-      {
-        sourceDir: path.resolve(__dirname, './fixtures/input')
-      },  // input
+      {},  // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
