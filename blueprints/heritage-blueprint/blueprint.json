@@ -1,11 +1,11 @@
 {
-  "namespace": "RIDGE",
+  "namespace": "wmfs",
   "name": "heritage-blueprint",
   "version": "1.0",
   "label": "heritage-blueprint",
-  "author": "WMFS",
+  "author": "Reece Brend",
 
   "organisation": "West Midlands Fire Service",
-  "description": "Flobot blueprint to Gets the heritage attribute for use in RIDGE models",
+  "description": "Blueprint to Gets the heritage attribute for use in RIDGE models",
   "tags": []
 }
