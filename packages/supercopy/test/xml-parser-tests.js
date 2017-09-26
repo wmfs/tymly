@@ -26,8 +26,8 @@ class TextStream {
   }
 }
 
-describe('XML Parser Tests', () => {
-  describe('RecordHandler', () => {
+describe('XML Parser Tests', function () {
+  describe('RecordHandler', function () {
     it('capture text within child elements of EstablishmentDetail', () => {
       const outStream = new TextStream()
       const rh = new RecordHandler('EstablishmentDetail', outStream)

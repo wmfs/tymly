@@ -11,23 +11,27 @@ const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
 
-describe('Run some basic tests', () => {
+describe('Run some basic tests', function () {
+  this.timeout(5000)
+
   const connectionString = process.env.PG_CONNECTION_STRING
   let client
 
-  it('Should create a new pg client', () => {
+  it('Should create a new pg client', function () {
     client = new pg.Client(connectionString)
     client.connect()
   })
 
-  it('Should remove output directory if it exists already', (done) => {
+  it('Should remove output directory ahead of csv tests, if it exists already', function (done) {
     const outputPath = path.resolve(__dirname, './output')
     if (fs.existsSync(outputPath)) {
-      rimraf(outputPath, done)
+      rimraf(outputPath, {}, done)
+    } else {
+      done()
     }
   })
 
-  it('Should load some test data', (done) => {
+  it('Should load some test data', function (done) {
     sqlScriptRunner(
       [
         'uninstall.sql',
@@ -41,7 +45,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should supercopy some people', (done) => {
+  it('Should supercopy some people', function (done) {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input-data/people'),
@@ -58,7 +62,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should return correctly modified adult rows', (done) => {
+  it('Should return correctly modified adult rows', function (done) {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
@@ -81,7 +85,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should return correctly modified children rows', (done) => {
+  it('Should return correctly modified children rows', function (done) {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
@@ -102,7 +106,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should fail supercopy-if some bad-people files', (done) => {
+  it('Should fail supercopy-if some bad-people files', function (done) {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input-data/people-with-an-error'),
@@ -119,7 +123,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should supercopy some people, truncating the tables first', (done) => {
+  it('Should supercopy some people, truncating the tables first', function (done) {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input-data/people'),
@@ -137,7 +141,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should return correctly modified adult rows (truncated)', (done) => {
+  it('Should return correctly modified adult rows (truncated)', function (done) {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
@@ -156,7 +160,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should return correctly modified children rows (truncated)', (done) => {
+  it('Should return correctly modified children rows (truncated)', function (done) {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
@@ -172,7 +176,7 @@ describe('Run some basic tests', () => {
     )
   })
 
-  it('Should cleanup the test data', (done) => {
+  it('Should cleanup the test data', function (done) {
     sqlScriptRunner(
       [
         'uninstall.sql'
