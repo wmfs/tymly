@@ -12,38 +12,30 @@
   "States": {
     "FindingById": {
       "Type": "Task",
-      "Resource": "module:findingById",
       "ResourceConfig": {
-        "modelId": "incident",
-        "target": "formData",
-        "key": {
-          "$value": {
-            "path": "key"
-          }
-        }
+        "modelId": "incident"
       },
+      "InputPath": "$.key",
+      "Resource": "module:findingById",
+      "ResultPath": "$.formData",
       "Next": "FormFilling"
     },
     "FormFilling": {
       "Type": "Task",
       "Resource": "module:formFilling",
       "ResourceConfig": {
-        "formId": "incidentForm",
-        "target": "formData"
+        "formId": "incidentForm"
       },
+      "ResultPath": "$",
       "Next": "Upserting"
     },
     "Upserting": {
       "Type": "Task",
       "Resource": "module:upserting",
       "ResourceConfig": {
-        "modelId": "incident",
-        "doc": {
-          "$value": {
-            "path": "formData"
-          }
-        }
+        "modelId": "incident"
       },
+      "InputPath": "$.formData",
       "End": true
     }
   }

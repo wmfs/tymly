@@ -12,38 +12,30 @@
   "States": {
     "FindingById": {
       "Type": "Task",
-      "Resource": "module:findingById",
       "ResourceConfig": {
-        "modelId": "safeAndWellVisit",
-        "target": "formData",
-        "key": {
-          "$value": {
-            "path": "key"
-          }
-        }
+        "modelId": "safeAndWellVisit"
       },
+      "InputPath": "$.key",
+      "Resource": "module:findingById",
+      "ResultPath": "$.formData",
       "Next": "FormFilling"
     },
     "FormFilling": {
       "Type": "Task",
       "Resource": "module:formFilling",
       "ResourceConfig": {
-        "formId": "safeAndWellVisitForm",
-        "target": "formData"
+        "formId": "safeAndWellVisitForm"
       },
+      "ResultPath": "$",
       "Next": "Upserting"
     },
     "Upserting": {
       "Type": "Task",
       "Resource": "module:upserting",
       "ResourceConfig": {
-        "modelId": "safeAndWellVisit",
-        "doc": {
-          "$value": {
-            "path": "formData"
-          }
-        }
+        "modelId": "safeAndWellVisit"
       },
+      "InputPath": "$.formData",
       "End": true
     }
   }
