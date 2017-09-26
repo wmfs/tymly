@@ -1,0 +1,24 @@
+{
+  "Comment": "Blueprint to import indices of multiple deprivation data from a CSV file into the model",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "modelId": "imd",
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "imd"
+        ],
+        "truncateTables": true
+      },
+      "Resource": "module:importingCsvFiles",
+      "InputPath": "$.sourceDir",
+      "End": true
+    }
+  }
+}

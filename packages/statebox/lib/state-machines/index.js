@@ -44,7 +44,7 @@ module.exports.findStates = function findStates (options) {
   return states
 }
 
-module.exports.createStateMachines = function createStateMachine (stateMachineDefinitions, env, options, callback) {
+module.exports.createStateMachines = function createStateMachines (stateMachineDefinitions, env, options, callback) {
   const _this = this
 
   function parseStateMachines (stateMachineName, topLevel, root) {

@@ -21,6 +21,10 @@ class StateboxService {
 
     options.messages.info('Adding state machines...')
     if (_.isObject(options.blueprintComponents.stateMachines)) {
+      for (const sm of options.blueprintComponents.stateMachines) {
+
+      }
+
       _this.statebox.createStateMachines(
         options.blueprintComponents.stateMachines,
         options,
