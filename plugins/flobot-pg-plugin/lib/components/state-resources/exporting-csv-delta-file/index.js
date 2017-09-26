@@ -8,6 +8,7 @@ class ExportingCsvDeltaFile {
   init (resourceConfig, env, callback) {
     this.client = env.bootedServices.storage.client
     this.since = resourceConfig.since
+    this.actionAliases = resourceConfig.actionAliases
     this.createdColumnName = resourceConfig.createdColumnName
     this.modifiedColumnName = resourceConfig.modifiedColumnName
     this.tables = resourceConfig.tables
@@ -19,7 +20,7 @@ class ExportingCsvDeltaFile {
       {
         client: this.client,
         since: this.since,
-        outputFilepath: outputFilepath,
+        outputFilepath: event.outputFilepath,
         actionAliases: this.actionAliases,
         createdColumnName: this.createdColumnName,
         modifiedColumnName: this.modifiedColumnName,

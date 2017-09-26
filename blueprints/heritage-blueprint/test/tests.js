@@ -6,11 +6,10 @@ const chai = require('./../node_modules/chai')
 const expect = chai.expect
 const path = require('path')
 const flobot = require('flobot')
-const Statebox = require('statebox')
 
 describe('Heritage tests', function () {
+  let statebox
   this.timeout(5000)
-  let statebox = new Statebox()
 
   it('should startup flobot', function (done) {
     flobot.boot(

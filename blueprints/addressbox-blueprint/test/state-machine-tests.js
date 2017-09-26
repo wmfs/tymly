@@ -26,7 +26,6 @@ describe('data processing', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
-
         done()
       }
     )

@@ -115,7 +115,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        namespace: 'fbot',
+        namespace: 'fbotTest',
         stateMachineName: 'cat',
         version: '1.0',
         data: {petName: 'Rupert'}

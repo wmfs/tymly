@@ -9,7 +9,6 @@ const reducedFlatData = require('./fixtures/flatTest.json')
 const flatData = require('./fixtures/flat.json')
 
 describe('General addressbox tests', function () {
-
   it('Should test flat label with reduced json fields', function () {
     const label = getBlpuLabel(reducedFlatData)
     expect(label).to.be.eql('Organisation, Flat 2 1A-2B, 121 Alphington Road, Exeter, EX2 8JD')

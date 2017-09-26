@@ -48,8 +48,6 @@ describe('Run the basic-usage example', function () {
         schemas: ['pginfo_people_test', 'pginfo_planets_test', 'pginfo_not_exists']
       },
         function (err, info) {
-          console.log(JSON.stringify(info, null, 2))
-
           expect(err).to.equal(null)
           expect(info).to.containSubset(
             {

@@ -12,7 +12,6 @@
     "flobot-pg-plugin": "0.0.5"
   },
   "scripts": {
-    "start": "node ./lib/index.js",
     "lint": "standard",
     "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
