@@ -1,11 +1,11 @@
 {
-    "label": "fbotTest Admin",
-    "description": "Do anything in the FlobotTest namespace",
+  "label": "fbotTest Admin",
+  "description": "Do anything in the FlobotTest namespace",
 
-    "grants": [
-        {
-            "flowId": "*",
-            "allows": ["*"]
-        }
-    ]
+  "grants": [
+    {
+      "stateMachineName": "*",
+      "allows": ["*"]
+    }
+  ]
 }
