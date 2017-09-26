@@ -3,9 +3,6 @@
  */
 'use strict'
 const supercopy = require('supercopy')
-const _ = require('lodash')
-const debug = require('debug')('importingCsvFiles')
-const schema = require('./schema.json')
 
 class ImportingCsvFiles {
   init (resourceConfig, env, callback) {
