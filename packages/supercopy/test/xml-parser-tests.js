@@ -21,6 +21,7 @@ class TextStream {
   write (data) {
     this.data += data
   }
+
   end () {
   }
 }
@@ -52,17 +53,17 @@ describe('XML Parser Tests', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
-      parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>")
+      parser.write('<Wrapper><EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street" + endOfLine)
+      expect(csv).to.equal('Bill\'s Kebabs,Corner of Big Street' + endOfLine)
     })
 
     it('line break b/w two records', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
-      parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
+      parser.write('<Wrapper><EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>' +
         '<EstablishmentDetail><Name>The Shop</Name><Address>The Road</Address></EstablishmentDetail><Footer>Copyright</Footer></Wrapper>')
 
       const csv = outStream.text
@@ -73,7 +74,7 @@ describe('XML Parser Tests', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
-      parser.write("<Wrapper><EstablishmentDetail><Name>Bill's Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>" +
+      parser.write('<Wrapper><EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>Corner of Big Street</Address></EstablishmentDetail>' +
         `<EstablishmentDetail>${endOfLine}           <Name>The Shop</Name>    ${endOfLine}      <Address>The Road</Address>            </EstablishmentDetail><Footer>Copyright</Footer></Wrapper>`)
 
       const csv = outStream.text
@@ -84,10 +85,10 @@ describe('XML Parser Tests', () => {
       const outStream = new TextStream()
 
       const parser = createParser('EstablishmentDetail', outStream)
-      parser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>     <Line1>Corner of Big Street</Line1>               </Address><Score>0</Score></EstablishmentDetail>")
+      parser.write('<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>     <Line1>Corner of Big Street</Line1>               </Address><Score>0</Score></EstablishmentDetail>')
 
       const csv = outStream.text
-      expect(csv).to.equal("Bill's Kebabs,Corner of Big Street,0" + endOfLine)
+      expect(csv).to.equal('Bill\'s Kebabs,Corner of Big Street,0' + endOfLine)
     })
   })
 
@@ -95,20 +96,20 @@ describe('XML Parser Tests', () => {
     const headerTests = [
       [
         'simple one line',
-        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>",
+        '<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>',
         'Name,Address,Footer' + endOfLine
       ],
       [
         'two lines',
         '<Wrap>' +
-        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
-        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>" +
+        '<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>' +
+        '<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address>The Street</Address><Footer>0</Footer></EstablishmentDetail>' +
         '</Wrap>',
         'Name,Address,Footer' + endOfLine
       ],
       [
         'nested markup',
-        "<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address><Footer>0</Footer></EstablishmentDetail>",
+        '<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address><Line1>The Street</Line1></Address><Footer>0</Footer></EstablishmentDetail>',
         'Name,Line1,Footer' + endOfLine
       ]
     ]
@@ -128,8 +129,8 @@ describe('XML Parser Tests', () => {
     const outStream = new TextStream()
     const headerParser = getHeaders('EstablishmentDetail', outStream)
     const contentParser = createParser('EstablishmentDetail', outStream)
-    headerParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
-    contentParser.write("<EstablishmentDetail><Name>Bill's Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>")
+    headerParser.write('<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>')
+    contentParser.write('<EstablishmentDetail><Name>Bill\'s Kebabs</Name><Address><Line1>The Street</Line1></Address></EstablishmentDetail>')
     const csv = outStream.text
     expect(csv).to.equal(`Name,Line1${endOfLine}Bill's Kebabs,The Street${endOfLine}`)
   })

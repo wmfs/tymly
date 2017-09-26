@@ -8,6 +8,8 @@ const expect = require('chai').expect
 const pg = require('pg')
 const supercopy = require('./../lib')
 const path = require('path')
+const fs = require('fs')
+const rimraf = require('rimraf')
 
 describe('Run some basic tests', () => {
   const connectionString = process.env.PG_CONNECTION_STRING
@@ -16,6 +18,13 @@ describe('Run some basic tests', () => {
   it('Should create a new pg client', () => {
     client = new pg.Client(connectionString)
     client.connect()
+  })
+
+  it('Should remove output directory if it exists already', (done) => {
+    const outputPath = path.resolve(__dirname, './output')
+    if (fs.existsSync(outputPath)) {
+      rimraf(outputPath, done)
+    }
   })
 
   it('Should load some test data', (done) => {
@@ -56,15 +65,15 @@ describe('Run some basic tests', () => {
         expect(err).to.equal(null)
         expect(result.rows).to.eql(
           [
-            { adult_no: 10, first_name: 'Homer', last_name: 'Simpson' },
-            { adult_no: 20, first_name: 'Marge', last_name: 'Simpson' },
-            { adult_no: 30, first_name: 'Maud', last_name: 'Flanders' },
-            { adult_no: 40, first_name: 'Ned', last_name: 'Flanders' },
-            { adult_no: 50, first_name: 'Seymour', last_name: 'Skinner' },
-            { adult_no: 60, first_name: 'Charles', last_name: 'Burns' },
-            { adult_no: 80, first_name: 'Clancy', last_name: 'Wiggum' },
-            { adult_no: 90, first_name: 'Abraham', last_name: 'Simpson' },
-            { adult_no: 100, first_name: 'Mona', last_name: 'Simpson' }
+            {adult_no: 10, first_name: 'Homer', last_name: 'Simpson'},
+            {adult_no: 20, first_name: 'Marge', last_name: 'Simpson'},
+            {adult_no: 30, first_name: 'Maud', last_name: 'Flanders'},
+            {adult_no: 40, first_name: 'Ned', last_name: 'Flanders'},
+            {adult_no: 50, first_name: 'Seymour', last_name: 'Skinner'},
+            {adult_no: 60, first_name: 'Charles', last_name: 'Burns'},
+            {adult_no: 80, first_name: 'Clancy', last_name: 'Wiggum'},
+            {adult_no: 90, first_name: 'Abraham', last_name: 'Simpson'},
+            {adult_no: 100, first_name: 'Mona', last_name: 'Simpson'}
           ]
         )
         done()
@@ -135,11 +144,11 @@ describe('Run some basic tests', () => {
         expect(err).to.equal(null)
         expect(result.rows).to.eql(
           [
-            { adult_no: 30, first_name: 'Maud', last_name: 'Flanders' },
-            { adult_no: 40, first_name: 'Ned', last_name: 'Flanders' },
-            { adult_no: 80, first_name: 'Clancy', last_name: 'Wiggum' },
-            { adult_no: 90, first_name: 'Abraham', last_name: 'Simpson' },
-            { adult_no: 100, first_name: 'Mona', last_name: 'Simpson' }
+            {adult_no: 30, first_name: 'Maud', last_name: 'Flanders'},
+            {adult_no: 40, first_name: 'Ned', last_name: 'Flanders'},
+            {adult_no: 80, first_name: 'Clancy', last_name: 'Wiggum'},
+            {adult_no: 90, first_name: 'Abraham', last_name: 'Simpson'},
+            {adult_no: 100, first_name: 'Mona', last_name: 'Simpson'}
           ]
         )
         done()

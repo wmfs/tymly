@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 const boom = require('boom')
-const debug = require('debug')('flobotExpressPlugin')
+const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
   const services = req.app.get('services')
