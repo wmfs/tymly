@@ -21,15 +21,31 @@ class StateboxService {
 
     options.messages.info('Adding state machines...')
     if (_.isObject(options.blueprintComponents.stateMachines)) {
-      for (const sm of options.blueprintComponents.stateMachines) {
+      const machines = Object.entries(options.blueprintComponents.stateMachines)
 
-      }
+      const createMachine = (index) => {
+        if (index === machines.length)
+          return callback(null)
 
-      _this.statebox.createStateMachines(
-        options.blueprintComponents.stateMachines,
-        options,
-        callback
-      )
+        const [name, definition] = machines[index]
+        const meta = {
+          name: name,
+          namespace: definition.namespace,
+          schemaName: _.snakeCase(definition.namespace),
+          comment: definition.comment,
+          version: definition.version
+        }
+
+        _this.statebox.createStateMachine(
+          name,
+          definition,
+          meta,
+          options,
+          () => createMachine(index + 1)
+        )
+      } // createMachine
+
+      createMachine(0)
     } else {
       callback(null)
     }
