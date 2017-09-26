@@ -1,6 +1,6 @@
 {
   "name": "tymly",
-  "description": "An open source low-code platform - that's built for collaboration",
+  "description": "An open source low-code platform - that's lerna built for collaboration",
   "version": "0.0.0",
   "author": "Tim Needham",
   "devDependencies": {
@@ -17,5 +17,6 @@
   },
   "bugs": {
     "url": "https://github.com/wmfs/tymly/issues"
-  }
+  },
+  "dependencies": {}
 }

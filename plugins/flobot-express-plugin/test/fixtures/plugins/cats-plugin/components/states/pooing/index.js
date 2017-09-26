@@ -13,7 +13,7 @@ class Pooing {
 
   leave (flobot, data, callback) {
     const ctx = flobot.ctx
-    console.log(' * All finished, ' + ctx.petName + '? ;-)')
+    console.log(' * All finished, ' + ctx.petName + '? -)')
     callback(null)
   }
 }

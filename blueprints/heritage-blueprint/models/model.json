@@ -1,0 +1,8 @@
+{
+  "title": "heritage-getter",
+  "description": "Gets the heritage attribute for use in RIDGE models",
+  "primaryKey": [],
+  "type": "object",
+  "properties": []
+}
+

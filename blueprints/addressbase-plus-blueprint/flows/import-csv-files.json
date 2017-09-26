@@ -1,0 +1,377 @@
+{
+  "name": "import-csv-files",
+  "description": "import gazetteer data",
+  "version": "1.0",
+  "initialStateId": "processingCsvFiles",
+  "tags": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "fsm": {
+    "processingCsvFiles": {
+      "options": {
+        "parser": {
+          "quote": "\"",
+          "delimiter": ",",
+          "newline": "\r\n",
+          "skipFirstLine": false,
+          "trimWhitespace": true
+        },
+        "dirSplits": [
+          {
+            "columnIndex": 2,
+            "valueToDirMap": {
+              "U": "upserts",
+              "D": "deletes",
+              "I": "upserts"
+            }
+          }
+        ],
+        "fileSplits": {
+          "columnIndex": 2,
+          "valueToFileMap": {
+            "U&I": {
+              "filename": "addressbase-holding",
+              "outputColumns": [
+                {
+                  "name": ".uprn",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "hash_sum",
+                  "type": "hash"
+                },
+                {
+                  "name": "udprn",
+                  "columnIndex": 1
+                },
+                {
+                  "name": "state",
+                  "columnIndex": 3
+                },
+                {
+                  "name": "state_date",
+                  "columnIndex": 4
+                },
+                {
+                  "name": "class",
+                  "columnIndex": 5
+                },
+                {
+                  "name": "parent_uprn",
+                  "columnIndex": 6
+                },
+                {
+                  "name": "x",
+                  "columnIndex": 7
+                },
+                {
+                  "name": "y",
+                  "columnIndex": 8
+                },
+                {
+                  "name": "longitude",
+                  "columnIndex": 9
+                },
+                {
+                  "name": "latitude",
+                  "columnIndex": 10
+                },
+                {
+                  "name": "rpc",
+                  "columnIndex": 11
+                },
+                {
+                  "name": "local_custodian_code",
+                  "columnIndex": 12
+                },
+                {
+                  "name": "country",
+                  "columnIndex": 13
+                },
+                {
+                  "name": "la_start_date",
+                  "columnIndex": 14
+                },
+                {
+                  "name": "last_update_date",
+                  "columnIndex": 15
+                },
+                {
+                  "name": "entry_date",
+                  "columnIndex": 16
+                },
+                {
+                  "name": "rm_organisation_name",
+                  "columnIndex": 17
+                },
+                {
+                  "name": "la_organisation",
+                  "columnIndex": 18
+                },
+                {
+                  "name": "department_name",
+                  "columnIndex": 19
+                },
+                {
+                  "name": "legal_name",
+                  "columnIndex": 20
+                },
+                {
+                  "name": "sub_building_name",
+                  "columnIndex": 21
+                },
+                {
+                  "name": "building_name",
+                  "columnIndex": 22
+                },
+                {
+                  "name": "building_number",
+                  "columnIndex": 23
+                },
+                {
+                  "name": "sao_start_number",
+                  "columnIndex": 24
+                },
+                {
+                  "name": "sao_start_suffix",
+                  "columnIndex": 25
+                },
+                {
+                  "name": "sao_end_number",
+                  "columnIndex": 26
+                },
+                {
+                  "name": "sao_end_suffix",
+                  "columnIndex": 27
+                },
+                {
+                  "name": "sao_text",
+                  "columnIndex": 28
+                },
+                {
+                  "name": "alt_language_sao_text",
+                  "columnIndex": 29
+                },
+                {
+                  "name": "pao_start_number",
+                  "columnIndex": 30
+                },
+                {
+                  "name": "pao_start_suffix",
+                  "columnIndex": 31
+                },
+                {
+                  "name": "pao_end_number",
+                  "columnIndex": 32
+                },
+                {
+                  "name": "pao_end_suffix",
+                  "columnIndex": 33
+                },
+                {
+                  "name": "pao_text",
+                  "columnIndex": 34
+                },
+                {
+                  "name": "alt_language_pao_text",
+                  "columnIndex": 35
+                },
+                {
+                  "name": "usrn",
+                  "columnIndex": 36
+                },
+                {
+                  "name": "usrn_match_indicator",
+                  "columnIndex": 37
+                },
+                {
+                  "name": "area_name",
+                  "columnIndex": 38
+                },
+                {
+                  "name": "level",
+                  "columnIndex": 39
+                },
+                {
+                  "name": "official_flag",
+                  "columnIndex": 40
+                },
+                {
+                  "name": "os_address_toid",
+                  "columnIndex": 41
+                },
+                {
+                  "name": "os_address_toid_version",
+                  "columnIndex": 42
+                },
+                {
+                  "name": "os_road_link_toid",
+                  "columnIndex": 43
+                },
+                {
+                  "name": "os_road_link_toid_version",
+                  "columnIndex": 44
+                },
+                {
+                  "name": "os_topo_toid",
+                  "columnIndex": 45
+                },
+                {
+                  "name": "os_topo_toid_version",
+                  "columnIndex": 46
+                },
+                {
+                  "name": "voa_ct_record",
+                  "columnIndex": 47
+                },
+                {
+                  "name": "voa_ndr_record",
+                  "columnIndex": 48
+                },
+                {
+                  "name": "street_description",
+                  "columnIndex": 49
+                },
+                {
+                  "name": "alt_language_street_description",
+                  "columnIndex": 50
+                },
+                {
+                  "name": "dependent_thoroughfare",
+                  "columnIndex": 51
+                },
+                {
+                  "name": "thoroughfare",
+                  "columnIndex": 52
+                },
+                {
+                  "name": "welsh_dependent_thoroughfare",
+                  "columnIndex": 53
+                },
+                {
+                  "name": "welsh_thoroughfare",
+                  "columnIndex": 54
+                },
+                {
+                  "name": "double_dependent_locality",
+                  "columnIndex": 55
+                },
+                {
+                  "name": "dependent_locality",
+                  "columnIndex": 56
+                },
+                {
+                  "name": "locality",
+                  "columnIndex": 57
+                },
+                {
+                  "name": "welsh_dependent_locality",
+                  "columnIndex": 58
+                },
+                {
+                  "name": "welsh_double_dependent_locality",
+                  "columnIndex": 59
+                },
+                {
+                  "name": "town_name",
+                  "columnIndex": 60
+                },
+                {
+                  "name": "administrative_area",
+                  "columnIndex": 61
+                },
+                {
+                  "name": "post_town",
+                  "columnIndex": 62
+                },
+                {
+                  "name": "welsh_post_town",
+                  "columnIndex": 63
+                },
+                {
+                  "name": "postcode",
+                  "columnIndex": 64
+                },
+                {
+                  "name": "postcode_locator",
+                  "columnIndex": 65
+                },
+                {
+                  "name": "postcode_type",
+                  "columnIndex": 66
+                },
+                {
+                  "name": "delivery_point_suffix",
+                  "columnIndex": 67
+                },
+                {
+                  "name": "addressbase_portal",
+                  "columnIndex": 68
+                },
+                {
+                  "name": "po_box_number",
+                  "columnIndex": 69
+                },
+                {
+                  "name": "ward_code",
+                  "columnIndex": 70
+                },
+                {
+                  "name": "parish_code",
+                  "columnIndex": 71
+                },
+                {
+                  "name": "rm_start_date",
+                  "columnIndex": 72
+                },
+                {
+                  "name": "multi_occ_count",
+                  "columnIndex": 73
+                },
+                {
+                  "name": "voa_ndrp_desc_code",
+                  "columnIndex": 74
+                },
+                {
+                  "name": "voa_ndr_scat_code",
+                  "columnIndex": 75
+                },
+                {
+                  "name": "alt_language",
+                  "columnIndex": 76
+                }
+              ]
+            },
+            "D": {
+              "filename": "addressbase-holding",
+              "outputColumns": [
+                {
+                  "name": "uprn",
+                  "columnIndex": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "events": {
+        "csvFilesProcessed": {
+          "to": "importingCsvFiles"
+        }
+      }
+    },
+
+    "importingCsvFiles": {
+      "options": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "addressbase_holding"
+        ],
+        "truncateTables": true
+      }
+    }
+  }
+}

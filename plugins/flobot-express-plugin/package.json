@@ -13,11 +13,12 @@
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "flobot": "^0.0.14",
+    "flobot": "0.0.14",
     "flobot-forms-plugin": "^0.0.7",
     "mocha": "^3.5.0",
     "restler": "^3.4.0",

@@ -1,0 +1,2829 @@
+{
+  "version": "1.0",
+  "label": "A form for editing 'safeAndWellVisit' models",
+  "form": [
+    {},
+    {
+      "type": "help",
+      "helpvalue": "<br><img src=\"placeholder-address-widget.png\" alt=\"Placeholder address!\">"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referrals already exist for this address</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>A list of the previous visits that have been entered on the system for this address are\r\n\t\t\t\t\t\tdisplayed below. This should help to identify referrals already entered onto the system, and avoid\r\n\t\t\t\t\t\tduplicates being added.</p>\r\n\t\t\t\t\t<p>If the referral has already been added and you wish to stop this workbook, please press the Cancel button,\r\n\t\t\t\t\t\totherwise continue through the workbook as usual.</p>\t\r\n\t\t\t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<code>:ws.HSC_GET_PREVIOUS_REFERRALS_SYNOPSIS(\r\n\t\t\t                \t\t\t\t\t\t\t:dataitem.REPORT.RR_UPRN,\r\n\t\t\t                \t\t\t\t\t\t\t:report_id)</code>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br><img src=\"placeholder-map-widget.png\" alt=\"Placeholder map!\">"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Station Confirmation</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<code>:CONCAT('The Brigade Area has been identified as: ', :ws.${aa.workbooks.hsc.ws.getBrigadeFromXandYServiceName}(:dataitem.REPORT.RR_EASTINGS,:dataitem.REPORT.RR_NORTHINGS))</code>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Refer to Specialist Team</h3>"
+    },
+    {
+      "key": "vpoReferrals",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "VPO",
+          "name": "Vulnerable Persons Officer (VPO)"
+        },
+        {
+          "value": "DEAF_TEAM",
+          "name": "Deaf Team"
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Contacts</h3>"
+    },
+    {
+      "key": "contacts",
+      "add": "Add contact",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Contact Details</h3>"
+        },
+        {
+          "key": "contacts[].contactTypeId",
+          "type": "select",
+          "titleMap": {
+            "HSC_RELATIVE": "Relative",
+            "HSC_OTHER_AGENCY": "Other Agency",
+            "HSC_FRIEND": "Friend",
+            "HSC_CLIENT": "Client",
+            "HSC_CARER": "Carer"
+          },
+          "notitle": false
+        },
+        {
+          "key": "contacts[].primaryContact",
+          "type": "radiobuttons",
+          "titleMap": [
+            {
+              "value": "N",
+              "name": " No "
+            },
+            {
+              "value": "Y",
+              "name": " Yes "
+            }
+          ],
+          "title": "Is this the primary contact for this referral?"
+        },
+        {
+          "key": "contacts[].titleId",
+          "type": "select",
+          "titleMap": {
+            "SIR": "Sir",
+            "SIR_MADAM": "Sir/Madam",
+            "REVEREND": "Reverend",
+            "MS": "Ms.",
+            "MR": "Mr",
+            "MR_MRS": "Mr and Mrs",
+            "MRS": "Mrs",
+            "MISS": "Miss",
+            "LORD": "Lord",
+            "DR": "Dr."
+          },
+          "notitle": false
+        },
+        {
+          "key": "contacts[].firstNames",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].lastName",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].dob",
+          "type": "datepicker",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].address",
+          "type": "radiobuttons",
+          "titleMap": [
+            {
+              "value": "N",
+              "name": " No "
+            },
+            {
+              "value": "Y",
+              "name": " Yes "
+            }
+          ],
+          "title": "Is contact address same as the Safe and Well address?"
+        },
+        {
+          "key": "contacts[].freeAddress",
+          "type": "textarea",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Contact Details</h3>"
+        },
+        {
+          "key": "contacts[].mobileTelephone",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].telephone1",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].telephone2",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].fax",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].pager",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].email",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "contacts[].notes",
+          "type": "textarea",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "type": "help",
+          "helpvalue": "<h3>Community Membership</h3>"
+        },
+        {
+          "key": "contacts[].membershipHsc",
+          "type": "radiobuttons",
+          "titleMap": [
+            {
+              "value": "N",
+              "name": " No "
+            },
+            {
+              "value": "Y",
+              "name": " Yes "
+            }
+          ],
+          "title": "Is this contact interested in becoming a Community Member?"
+        },
+        {
+          "key": "contacts[].communityMemberInterests",
+          "type": "checkboxes",
+          "titleMap": [
+            {
+              "value": "CM_VOLUNTEERING",
+              "name": "Volunteering"
+            },
+            {
+              "value": "CM_NEWSLETTERS",
+              "name": "Newsletters/Safety and awareness campaigns"
+            },
+            {
+              "value": "CM_FS_OPEN_DAYS",
+              "name": "Fire Station Open Days"
+            },
+            {
+              "value": "CM_FOCUS_GROUPS",
+              "name": "Consultation/Focus Groups"
+            },
+            {
+              "value": "CM_CADETS",
+              "name": "Fire Cadets/Youth Emergency Services"
+            }
+          ],
+          "notitle": false
+        },
+        {
+          "key": "contacts[].contactMethod",
+          "type": "select",
+          "titleMap": {
+            "CMC_POST": "Post",
+            "CMC_EMAIL": "Email"
+          },
+          "notitle": false
+        }
+      ],
+      "title": "Contact Details"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Communication Attempts</h3>"
+    },
+    {
+      "key": "communicationAttempts",
+      "add": "Add communication",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Log customer contact</h3>"
+        },
+        {
+          "type": "help",
+          "helpvalue": "\r\n\t\t\t\t\r\n\t               \t<p>Please record details of any contact or attempted contact with the customer.</p>\r\n\t\t\t\t"
+        },
+        {
+          "type": "help",
+          "helpvalue": "Smartlist..."
+        },
+        {
+          "key": "communicationAttempts[].hcId",
+          "type": "text"
+        },
+        {
+          "key": "communicationAttempts[].commDate",
+          "type": "datepicker",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "communicationAttempts[].commDirectionId",
+          "type": "select",
+          "titleMap": {
+            "VISIT_OUT": "Visit to customer",
+            "VISIT_IN": "Visit from customer",
+            "TXT_OUT": "Text to customer",
+            "TXT_IN": "Text from customer",
+            "TELEPHONE_OUT": "Telephone call to customer",
+            "TELEPHONE_IN": "Telephone call from customer",
+            "LETTER_OUT": "Letter sent",
+            "LETTER_IN": "Letter received",
+            "EMAIL_OUT": "Email to customer",
+            "EMAIL_IN": "Email from customer"
+          },
+          "notitle": false
+        },
+        {
+          "key": "communicationAttempts[].commOutcomeId",
+          "type": "select",
+          "titleMap": {
+            "REFERRAL_REMOVED": "Referral cancelled",
+            "QUALITY_ASSURANCE": "Quality Assurance taken",
+            "POSTPONE_REFERRAL": "Postpone referral",
+            "OTHER": "Other outcome",
+            "NO_FURTHER_ACTION": "No further action",
+            "NO_ANSWER": "No answer",
+            "MESSAGE_LEFT": "Voicemail/Message left",
+            "CALL_BACK_LATER": "Call back at a later date",
+            "APPOINTMENT_BOOKED": "Appointment booked"
+          },
+          "notitle": false
+        },
+        {
+          "key": "communicationAttempts[].referralNotes",
+          "type": "textarea",
+          "readonly": false,
+          "notitle": false
+        }
+      ],
+      "title": "Attempted communication"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Would you like to review the Referral?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "initiativeReference",
+      "type": "text"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referral: Occupier Risk Profile</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Do the occupants of the property fit any of the following criteria?</p> \r\n \t\t\t\t\t<p>Only check one option.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "occupierRiskProfile",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "HSC_YOUNG_FAMILY",
+          "name": "Young family with a child aged 3 and under"
+        },
+        {
+          "value": "HSC_SINGLE_25_TO_44",
+          "name": "Single person aged 25 to 44"
+        },
+        {
+          "value": "HSC_OCC_RISK_PROFILES_NN",
+          "name": "Occupier risk profiles not known"
+        },
+        {
+          "value": "HSC_OCC_RISK_PROFILES_NA",
+          "name": "No occupier risk profile"
+        },
+        {
+          "value": "HSC_OCC_OVER_65",
+          "name": "Any occupier aged 65 or over"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referral: Occupier Risk Factors</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Are any of the risk factors evident for any of the occupiers of the property?</p>\r\n \t\t\t\t\t <p>Check each statement that applies.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "occupierRiskFactor",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "HSC_OCC_UNEMPLOYED",
+          "name": "Unemployed for 12 months or more"
+        },
+        {
+          "value": "HSC_OCC_SUBSTANCE_USE",
+          "name": "Drug or alcohol dependent"
+        },
+        {
+          "value": "HSC_OCC_SMOKER",
+          "name": "Smokes in the property"
+        },
+        {
+          "value": "HSC_OCC_RISK_FACTORS_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "HSC_OCC_RISK_FACTORS_NA",
+          "name": "No occupier risk factors"
+        },
+        {
+          "value": "HSC_OCC_PREVIOUS_FIRE",
+          "name": "Had a fire before"
+        },
+        {
+          "value": "HSC_OCC_MENTAL_HEALTH",
+          "name": "Mental health conditions"
+        },
+        {
+          "value": "HSC_OCC_DEMENTIA",
+          "name": "Dementia"
+        },
+        {
+          "value": "HSC_OCC_CARE",
+          "name": "Receives care"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referral: Occupier Mobility</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Are there any occupiers who may have difficulty responding to an emergency?</p> \r\n \t\t\t\t\t<p>Check each statement that applies.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "referralOccupierMobility",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "VISION",
+          "name": "Visual impairment"
+        },
+        {
+          "value": "OTHER",
+          "name": "Other difficulty in responding concern"
+        },
+        {
+          "value": "MOBILITY_C",
+          "name": "Mobility(C) Requires assistance / special equipment"
+        },
+        {
+          "value": "MOBILITY_B",
+          "name": "Mobility(B) Requires assistance to vacate"
+        },
+        {
+          "value": "MOBILITY_A",
+          "name": "Mobility (A) Slow to vacate"
+        },
+        {
+          "value": "HSC_DIFFICULTY_RESPONDING_NN",
+          "name": "Difficulty in responding concerns not known"
+        },
+        {
+          "value": "HSC_DIFFICULTY_RESPONDING_NA",
+          "name": "No difficulty in responding concerns"
+        },
+        {
+          "value": "HEARING",
+          "name": "Hearing impairement"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Property Risk Factors</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Are any of the property risk factors evident?</p>\r\n \t\t\t\t\t <p>Select each statement that applies.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "propertyRiskFactors",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "HSC_PROP_SMOKE_ALARMS",
+          "name": "No working smoke detectors"
+        },
+        {
+          "value": "HSC_PROP_RENTED",
+          "name": "Rented accommodation"
+        },
+        {
+          "value": "HSC_PROP_FIRE_EVIDENCE",
+          "name": "Evidence of previous fires"
+        },
+        {
+          "value": "HSC_PROP_DISORGANISED",
+          "name": "Evidence of disorganised living, excessive or dangerous storage"
+        },
+        {
+          "value": "HSC_PROP_ARSON",
+          "name": "Imminent risk of arson"
+        },
+        {
+          "value": "HSC_PROPERTY_RISK_FACTORS_NN",
+          "name": "Property risk factors not known"
+        },
+        {
+          "value": "HSC_PROPERTY_RISK_FACTORS_NA",
+          "name": "No property risk factors"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Means Test</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Tick yes if an occupier is in receipt of any of the following benefits:</p>\r\n\t\t\t\t\t<p>Income Support, Jobseekers Allowance (income based).</p>\r\n\t\t\t\t\t<p>Income based Support & Employment Allowance (Oct 08).</p>\r\n\t\t\t\t\t<p>Have a valid NHS tax exemption certificate AND you or your partner receives Tax Credit.</p>\r\n\t\t\t\t\t<p>Disability living allowance care or mobility component for a disabled child.</p>\r\n\t\t\t\t\t<p>Housing benefit, Pension Credits</p>\r\n\t\t\t\t\t<p>Council tax benefit (not council tax discounts)</p>\t\t\t\t\t\r\n\t\t\t\t"
+    },
+    {
+      "key": "meansTested",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referral Notes</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Information to include additional risk and other contact details.<br/>\r\n\t\t\t\t\te.g. Bed Dependant / Medical Oxygen / Hearing impaired alarm may be required etc.</p>\t\r\n\t\t\t\t"
+    },
+    {
+      "key": "contactCentreNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "notes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referral details</h3>"
+    },
+    {
+      "key": "referralGenerated",
+      "type": "datepicker",
+      "readonly": true,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Partner details</h3>"
+    },
+    {
+      "key": "jointVisit",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Joint visit required (with partner)?"
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "initiativeReference",
+      "type": "text"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Would you like to add/review an Appointment?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>If you wish to add or view an appointment time, click 'Yes', otherwise click 'No'.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Would you like to begin/review the Assessment?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>If you wish to begin or review the assessment, click 'Yes', otherwise click 'No'.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Appointments</h3>"
+    },
+    {
+      "key": "appointment",
+      "type": "datepicker",
+      "readonly": true,
+      "notitle": false
+    },
+    {
+      "key": "appointmentStatus",
+      "type": "select",
+      "titleMap": {
+        "REASON_NOT_PROVIDED": "Reason not provided",
+        "OPERATIONAL_COMMITMENTS": "Operational commitments",
+        "NO_OCCUPIER_RESPONSE": "Appointment not completed no response from occupier",
+        "NO_ENG_LANG_OCCUPANT": "No English speaking occupant present",
+        "NO_ADULTS_PRESENT": "No adults present",
+        "INCORRECT_ADDRESS": "Incorrect address details on system",
+        "INCONVENIENT_TIME": "Inconvenient time",
+        "HSC_PLACED_ON_HOLD": "HSC placed on hold at occupier request",
+        "HSC_ALREADY_COMPLETED": "HSC already completed",
+        "EX_UNLAWFUL_ACTIVITY": "Exceptional circumstances: Unlawful Activity",
+        "EX_OTER": "Exceptional circumstances: Other",
+        "EX_DANGEROUS_ANIMALS": "Exceptional circumstances: Dangerous Animals",
+        "EX_AGGRESSIVE_OCCUPANT": "Exceptional circumstances: Aggressive Occupant",
+        "CANCELLED_PARTNER_REQUEST": "Cancelled at Partner Agency request",
+        "ACCESS_REFUSED": "Accessed Refused"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Appointments</h3>"
+    },
+    {
+      "key": "appointments",
+      "add": "Add appointment",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Appointments</h3>"
+        },
+        {
+          "key": "appointments[].appointmentDate",
+          "type": "datepicker",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "appointments[].password",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "appointments[].cancelReason",
+          "type": "select",
+          "titleMap": {
+            "REASON_NOT_PROVIDED": "Reason not provided",
+            "OPERATIONAL_COMMITMENTS": "Operational commitments",
+            "NO_OCCUPIER_RESPONSE": "Appointment not completed no response from occupier",
+            "NO_ENG_LANG_OCCUPANT": "No English speaking occupant present",
+            "NO_ADULTS_PRESENT": "No adults present",
+            "INCORRECT_ADDRESS": "Incorrect address details on system",
+            "INCONVENIENT_TIME": "Inconvenient time",
+            "HSC_PLACED_ON_HOLD": "HSC placed on hold at occupier request",
+            "HSC_ALREADY_COMPLETED": "HSC already completed",
+            "EX_UNLAWFUL_ACTIVITY": "Exceptional circumstances: Unlawful Activity",
+            "EX_OTER": "Exceptional circumstances: Other",
+            "EX_DANGEROUS_ANIMALS": "Exceptional circumstances: Dangerous Animals",
+            "EX_AGGRESSIVE_OCCUPANT": "Exceptional circumstances: Aggressive Occupant",
+            "CANCELLED_PARTNER_REQUEST": "Cancelled at Partner Agency request",
+            "ACCESS_REFUSED": "Accessed Refused"
+          },
+          "notitle": false
+        }
+      ],
+      "title": "Appointment Details"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Would you like to begin/review the Assessment?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>If you wish to begin or review the assessment, click 'Yes', otherwise click 'No'.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "watch",
+      "type": "text"
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "initiativeReference",
+      "type": "text"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Assessment Details</h3>"
+    },
+    {
+      "key": "actualAssessmentDate",
+      "type": "datepicker",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "agentId",
+      "type": "select",
+      "titleMap": {
+        "PARTNER": "Partner",
+        "NON_STATION": "Non-Station based personnel",
+        "FF": "Station based personnel"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "initiativeReference",
+      "type": "text"
+    },
+    {
+      "key": "assessor1",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "assessor2",
+      "type": "text",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Assessment Station</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n        \t\t\t<p>The crew's home station that completed this visit or, for non-station based personnel, the station area where the visit has taken place.</p>\r\n        \t\t\t<p>The station selected here will be allocated the risk points for this assessment.</p>\r\n        \t\t"
+    },
+    {
+      "type": "help",
+      "helpvalue": "Smartlist..."
+    },
+    {
+      "key": "watch",
+      "type": "text"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Was the occupier's signature obtained?</h3>"
+    },
+    {
+      "key": "signature",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes, signature obtained"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No, signature NOT obtained"
+          ]
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Occupier agrees to sharing of information with Partners?</h3>"
+    },
+    {
+      "key": "shareInfo",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes, occupier agrees to share information"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No, occupier does NOT wish to share information"
+          ]
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Occupier feels safe?</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Please rate how safe the occupier feels, from 1 (Strongly disagree) to 6 (Strongly agree).</p>                    \r\n               \t"
+    },
+    {
+      "key": "safeInHome",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "name": "1 Strongly disagree",
+          "value": 1
+        },
+        {
+          "name": "2",
+          "value": 2
+        },
+        {
+          "name": "3",
+          "value": 3
+        },
+        {
+          "name": "4",
+          "value": 4
+        },
+        {
+          "name": "5",
+          "value": 5
+        },
+        {
+          "name": "6 Strongly agree",
+          "value": 6
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Tenure</h3>"
+    },
+    {
+      "key": "tenureId",
+      "type": "select",
+      "titleMap": {
+        "RP": "Rented privately",
+        "RL": "Rented, landlord not known",
+        "RH": "Rented from housing association",
+        "RC": "Rented from the council",
+        "OO": "Owner occupied",
+        "NK": "Not known"
+      },
+      "notitle": false
+    },
+    {
+      "key": "housingAssociationId",
+      "type": "select",
+      "titleMap": {
+        "ZENITH_DEVELOPMENT_PARTNERSHIP": "Zenith Development Partnership Ltd",
+        "YEW_TREES": "Yew Trees",
+        "YARDLEY_GREAT_TRUST": "Yardley Great Trust",
+        "WORDSLEY_HOUSING_SOCIETY": "Wordsley Housing Society",
+        "WOODHOUSE_COURT": "Woodhouse Court",
+        "WOLVERHAMPTON_HOUSING": "Wolverhampton Housing",
+        "WILLIAM_SUTTON_TRUST": "William Sutton Trust",
+        "WILLIAM_SHERIDAN_HO": "William Sheridan Ho",
+        "WHITLEY_COURT": "Whitley Court",
+        "WHITEFRIARS_HOMES_LTD": "Whitefriars Homes Ltd",
+        "WATMOS_COMMUNITY_HOMES_LTD": "Watmos Community Homes Ltd",
+        "WATERLOO_HOUSING_ASSOCIATION_L": "Waterloo Housing Association Ltd",
+        "WARREN_FARM_LODGE": "Warren Farm Lodge",
+        "WALSALL_HOUSING_GROUP": "Walsall Housing Group",
+        "WALKER_GRANGE": "Walker Grange",
+        "T_M_O_LTD": "T M O Ltd",
+        "TRIDENT_HOUSING_SOCIETY_LTD": "Trident Housing Society Ltd",
+        "TRIDENT_HOUSING_ASSOCIATION_LT": "Trident Housing Association Ltd",
+        "TENNESSEE_SHELTERED_HOUSING": "Tennessee Sheltered Housing",
+        "ST_JOHNS_CLOSE": "St Johns Close",
+        "ST_CLEMENTS_COURT_SHELTERED_HO": "St Clements Court Sheltered Housing Scheme",
+        "ST_BASILS": "St Basils",
+        "STONHAM_HOUSING_ASSOCIATION_": "Stonham Housing Association ",
+        "STEWART_COURT_SHELTERED_HOUSIN": "Stewart Court Sheltered Housing",
+        "SOLIHULL_MBC": "Solihull MBC",
+        "SOLIHULL_CARE_HOUSING_ASSOCIAT": "Solihull Care Housing Association Ltd",
+        "SMALLHEATH_PARK_HOUSING_CO-OPE": "Smallheath Park Housing Co-operative",
+        "SIR_JOSIAH_MASON_TRUST": "Sir Josiah Mason Trust",
+        "SERVITE_HOUSING": "Servite Housing",
+        "SANDWELL_HOMES": "Sandwell Homes",
+        "SANDBANK_TENNANT_MANAGEMENT_OR": "Sandbank Tennant Management Organisation Ltd",
+        "SANCTUARY_HOUSING_ASSOCIATION": "Sanctuary Housing Association",
+        "SACKVILLE_HOUSE": "Sackville House",
+        "ROBINS_COURT": "Robins Court",
+        "RAMP_HOUSING_ASSOCIATION": "Ramp Housing Association",
+        "PRINCETHORPE_COURT": "Princethorpe Court",
+        "PRIME_FOCUS": "Prime Focus",
+        "PHOENIX_HOUSE": "Phoenix House",
+        "PEVEREL_MANAGEMENT_SERVICES_LT": "Peverel Management Services Ltd",
+        "PATTERSON_COURT": "Patterson Court",
+        "ORBIT_HOUSING_ASSOCIATION": "Orbit Housing Association",
+        "OPTIMA_COMMUNITY_ASSOCIATION_L": "Optima Community Association Ltd",
+        "OAK_TREE_HOUSE": "Oak Tree House",
+        "OAKLEAF_HOUSING": "Oakleaf Housing",
+        "NEW_OUTLOOK_HOUSING_ASSOCIATIO": "New Outlook Housing Association Ltd",
+        "NETHERTON_LODGE": "Netherton Lodge",
+        "NEHEMIAH_HOUSING_ASSOCIATION": "Nehemiah Housing Association",
+        "MUIRHEAD_HOUSE": "Muirhead House",
+        "MOTIVATIONS_ACTIVITY_PROJECTS": "Motivations Activity Projects",
+        "MOSELEY_AND_DISTRICT_CHURCHES_": "Moseley And District Churches Housing Association Ltd",
+        "MILNES_WALKER_COURT": "Milnes Walker Court",
+        "MILL_HOUSE_SHELTERED_HOUSING": "Mill House Sheltered Housing",
+        "MIDLAND_HEART_LTD": "Midland Heart Ltd",
+        "MIDLAND_HEART_HOUSING_ASSOCIAT": "Midland Heart Housing Association ",
+        "MIDLAND_AREA_HOUSING_ASSOCIATI": "Midland Area Housing Association Ltd",
+        "MERCIAN_HOUSING_ASSOCIATION_LT": "Mercian Housing Association Ltd",
+        "MANTON_HOUSE": "Manton House",
+        "LINK_HOUSING_AID_CENTRE": "Link Housing Aid Centre",
+        "LENCHS_TRUST": "Lenchs Trust",
+        "LENCH'S_TRUST": "Lench's Trust",
+        "LEAMORE_RESIDENTS_ASSOCIATION": "Leamore Residents Association",
+        "KING_EDWARDS_WHARF": "King Edwards Wharf",
+        "KINGSFORD_COURT_LTD": "Kingsford Court Ltd",
+        "JEPHSON_HOMES_HOUSING_ASSOCIAT": "Jephson Homes Housing Association",
+        "JAMES_MEMORIAL_HOMES": "James Memorial Homes",
+        "HUMANE_HOUSING_AND_SUPPORT": "Humane Housing and Support",
+        "HOUSING_21": "Housing 21",
+        "HOLMWOOD_TENANTS_CO-OPERATIVE": "Holmwood Tenants Co-operative",
+        "HIGHFIELD_PLACE": "Highfield Place",
+        "HIBISCUS_HOUSE": "Hibiscus House",
+        "HEANTUN_HOUSING_ASSOCIATION": "Heantun Housing Association",
+        "HA_OTHER": "Other",
+        "HAYLING_GROVE_SHELTERED_HOUSIN": "Hayling Grove Sheltered Housing",
+        "HAVEN_COURT": "Haven Court",
+        "HARVEY_COURT": "Harvey Court",
+        "HARROWBY_COURT_SHELTERED_HOUSI": "Harrowby Court Sheltered Housing",
+        "HARMONY_HOUSE": "Harmony House",
+        "HARDEN_HOUSING_ASSOCIATION_MID": "Harden Housing Association Midlands Ltd",
+        "HARBORNE_PARISH_LANDS_CHARITY": "Harborne Parish Lands Charity",
+        "HANOVER_HOUSING_ASSOCIATION_": "Hanover Housing Association ",
+        "HAMAC_HOUSING_ASSOCIATION_LTD": "Hamac Housing Association Ltd",
+        "GUINNESS_NORTHERN_COUNTIES": "Guinness Northern Counties",
+        "GUILLEMARD_COURT": "Guillemard Court",
+        "GRACEWELL_HOMES_FOSTER_TRUST": "Gracewell Homes Foster Trust",
+        "GERRALD_STREET_SHELTERED_HOUSI": "Gerrald Street Sheltered Housing",
+        "GEORGE_SIMMONS_HOUSE": "George Simmons House",
+        "FUTURE_HOUSING_AND_COMMUNITY_C": "Future Housing And Community Care Association Ltd",
+        "FRY_HOUSING_TRUST": "Fry Housing Trust",
+        "FRANK_WALSH_HOUSE_RESIDENTIAL_": "Frank Walsh House Residential Care",
+        "FOCUS_HOUSING_GROUP": "Focus Housing Group",
+        "FOCUS_HOUSING_ASSOCIATION": "Focus Housing Association",
+        "FOCUS_HOUSING_ASSCIATION": "Focus Housing Assciation",
+        "FCH_HOUSING_ASSOCIATION": "Fch Housing Association",
+        "FARMCOTE_LODGE": "Farmcote Lodge",
+        "FAMILY_HOUSING_ASSOCIATION_BIR": "Family Housing Association Birmingham Ltd",
+        "EXTRA_CARE_CHARITABLE_TRUST": "Extra Care Charitable Trust",
+        "EXTRACARE_CHARITABLE_TRUST": "Extracare Charitable Trust",
+        "EDWIN_ROGERS_HOUSE_SHELTERED_H": "Edwin Rogers House Sheltered Housing",
+        "EDGWOOD_COURT": "Edgwood Court",
+        "DUDLEY_COUNTY_COUNCIL": "Dudley County Council",
+        "DOVETON_HOUSE": "Doveton House",
+        "DOVEHOUSE_COURT_LTD": "Dovehouse Court Ltd",
+        "DEERHURST_COURT": "Deerhurst Court",
+        "CRESCENT_TMO": "Crescent Tmo",
+        "CREATIVE_SUPPORT_LTD": "Creative Support Ltd",
+        "COX_ACCOMMODATION": "Cox Accommodation",
+        "COVEN_COURT_SHELTERED_HOUSING": "Coven Court Sheltered Housing",
+        "COVENTRY_CYRENIANS_LTD": "Coventry Cyrenians Ltd",
+        "COTTERILLS_FARM_TENANTS_MANAGE": "Cotterills Farm Tenants Management Co-operative Ltd",
+        "COTTAGE_FARM_LODGE_SHELTERED_H": "Cottage Farm Lodge Sheltered Housing",
+        "COPTHORNE_LODGE": "Copthorne Lodge",
+        "CHURCH_HOUSING_ASSOCIATION_LTD": "Church Housing Association Ltd",
+        "CHURCH_HOUSING_ASSOCIATION_GRO": "Church Housing Association Group",
+        "CHISWICK_HOUSE": "Chiswick House",
+        "CHADD_HOUSING_ASSOCIATION": "Chadd Housing Association",
+        "CARRS_LANE_HOMES_FOR_THE_ELDER": "Carrs Lane Homes For The Elderly",
+        "CARA_IRISH_HOUSING_ASSOCIATION": "Cara Irish Housing Association",
+        "CALDMORE_AREA_HOUSING_ASSOCIAT": "Caldmore Area Housing Association Ltd",
+        "BROMFORD_HOUSING_ASSOCIATION": "Bromford Housing Association",
+        "BROMFORD_CARINTHIA_HOUSING_ASS": "Bromford Carinthia Housing Association ",
+        "BROMFORD_BLANNING_HOUSING_ASSO": "Bromford Blanning Housing Association",
+        "BRAEBURN_HOUSE": "Braeburn House",
+        "BOURNVILLE_VILLAGE_DEVELOPMENT": "Bournville Village Developments Ltd",
+        "BLACK_COUNTRY_HOUSING_ASSOCIAT": "Black Country Housing Association Ltd",
+        "BLACK_COUNTRY_HOUSING_AND_COMM": "Black Country Housing and Community Services Group Ltd",
+        "BIRMINGHAM_JEWISH_HOUSING_ASSO": "Birmingham Jewish Housing Association Ltd",
+        "BIRMINGHAM_HOUSING_DEPARTMENT": "Birmingham City Council",
+        "BIRMINGHAM_FRIENDSHIP_HOUSING_": "Birmingham Friendship Housing Association",
+        "BIRCHFIELD_SHELTERED_HOUSING": "Birchfield Sheltered Housing",
+        "BEECHDALE_COMMUNITY_HOUSING_AS": "Beechdale Community Housing Association",
+        "BCHS": "BCHS",
+        "ASTON_BROOK_HOUSING_ASSOCIATIO": "Aston Brook Housing Association",
+        "ASTONBROOK_HOUSING_ASSOCIATION": "Astonbrook Housing Association",
+        "ASRA_MIDLANDS": "Asra Midlands",
+        "ASRA_MIDLANDS_HOUSING_ASSOCIAT": "Asra Midlands Housing Association",
+        "ASHRAM_HOUSING_ASSOCIATION": "Ashram Housing Association",
+        "APSLEY_HOUSE_BLACK_COUNTRY_HOU": "Apsley House Black Country Housing Association Ltd",
+        "ANDERTON_PARK": "Anderton Park",
+        "ANCHOR_HOMES": "Anchor Homes",
+        "ALPHA_HOUSING_CO-OPERATIVE_LTD": "Alpha Housing Co-operative Ltd",
+        "ALBERT_WEEDHALL_CENTRE": "Albert Weedhall Centre",
+        "ADVANCE_HOUSING_ASSOCIATION": "Advance Housing Association",
+        "ADULLAM_HOMES_HOUSING_ASSOCIAT": "Adullam Homes Housing Association Ltd",
+        "ACCORD_HOUSING": "Accord Housing",
+        "ACCORD_HOUSING_GROUP_LTD": "Accord Housing Group Ltd",
+        "ACCORD_HOUSING_ASSOCIATION_LTD": "Accord Housing Association Ltd",
+        "ABBEYFIELD_U_K_SOLIHULL": "Abbeyfield U K Solihull",
+        "ABBEYFIELD_HOUSING": "Abbeyfield Housing",
+        "ABBEYFIELD_HOUSE": "Abbeyfield House",
+        "ABBEYFIELD_HOUSE_": "Abbeyfield House "
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Property Type</h3>"
+    },
+    {
+      "key": "propertyTypeId",
+      "type": "select",
+      "titleMap": {
+        "MOBILE_HOME": "Mobile Home",
+        "MAISONETTE": "Maisonette",
+        "HOUSE": "House",
+        "HALLS_OF_RESIDENCE": "Halls of Residence",
+        "FLAT": "Flat"
+      },
+      "notitle": false
+    },
+    {
+      "key": "hmo",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        },
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "shelteredHousing",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        },
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Ethnicity</h3>"
+    },
+    {
+      "key": "ethnicityId",
+      "type": "select",
+      "titleMap": {
+        "WHITE": "White",
+        "OTHER_ETHNIC_GROUP": "Other ethnic group",
+        "NO_DISCLOSURE": "Occupier does not wish to share",
+        "MIXED": "Mixed/Multiple ethnic groups",
+        "BLACK": "Black/African/Caribbean/Black British",
+        "ASIAN": "Asian /Asian British"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Occupancy</h3>"
+    },
+    {
+      "key": "age04Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age04Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age514Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age514Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age1524Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age1524Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age2544Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age2544Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age4564Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age4564Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age6579Male",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age6579Female",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age80PlusMale",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "age80PlusFemale",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Benefits/Care</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Is the occupier in receipt of any of the folowing?</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "hscBenefits",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "HSC_ASSESSMENT_BENEFITS_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "HSC_ASSESSMENT_BENEFITS_NA",
+          "name": "None"
+        },
+        {
+          "value": "HAB_MEANS_TESTED",
+          "name": "Means test - benefits"
+        },
+        {
+          "value": "HAB_CARE",
+          "name": "Care"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Hazards</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Are any of the Fire Hazards listed below evident in the property?</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "sawFireHazards",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_PREVENTION_NA",
+          "name": "Not applicable"
+        },
+        {
+          "value": "SAW_OVERLOADED_PLUGS",
+          "name": "Plug sockets/adaptors overloaded"
+        },
+        {
+          "value": "SAW_ELECTRIC_BLANKETS",
+          "name": "Electric blankets"
+        },
+        {
+          "value": "SAW_ELECTRICAL_INTAKE",
+          "name": "Defective electrical intake"
+        },
+        {
+          "value": "SAW_ELECTRICAL_DEVICES",
+          "name": "Electrical devices suitable and fit for purpose"
+        },
+        {
+          "value": "SAW_CLOTHES_DRYING",
+          "name": "Clothes dried dangerously"
+        },
+        {
+          "value": "SAW_CLEAN_TOASTER",
+          "name": "Toaster clean and under kitchen units"
+        },
+        {
+          "value": "SAW_CLEAN_KITCHEN",
+          "name": "Kitchen, cooker, grill pan and utensils clean"
+        },
+        {
+          "value": "SAW_CHIP_PAN",
+          "name": "Chip/Fat pan in use"
+        },
+        {
+          "value": "SAW_CANDLES",
+          "name": "Candles used inappropriately"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Hazards: Smoking</h3>"
+    },
+    {
+      "key": "smokers",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes (not in bed)"
+          ]
+        },
+        {
+          "value": "B",
+          "name": [
+            "Yes (and in bed)"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "vapourSmoker",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "fireEvidence",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Hazards: Additional Information</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Please provide any further information that may be useful in respect of the fire hazards present in this property.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "fireHazardsNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Individual Risks</h3>"
+    },
+    {
+      "key": "difficultyResponding",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Difficulty responding to an emergency</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n\t\t\t\t\t<p>Please provide the reasons for responding difficulties...</p>\r\n\t\t\t\t\t<br/>\r\n\t\t\t\t\t<p><b>Mobility Risk Levels</b></p>\r\n                \t<p>Mobility - A: Occupier will be slow to vacate the property (e.g. wheel chair, walking stick).</p>\r\n                \t<p>Mobility - B: Occupier will require assistance to vacate the property (e.g. bed bound).</p>\r\n                \t<p>Mobility - C: Occupier will require assistance and special Tech Rescue equipment to vacate the property (e.g. bariatric).</p>\r\n                \t<p>Further information about the risk must be recorded on the next page.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "diffResp",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "VISION",
+          "name": "Visual impairment"
+        },
+        {
+          "value": "OTHER",
+          "name": "Other difficulty in responding concern"
+        },
+        {
+          "value": "MOBILITY_C",
+          "name": "Mobility(C) Requires assistance / special equipment"
+        },
+        {
+          "value": "MOBILITY_B",
+          "name": "Mobility(B) Requires assistance to vacate"
+        },
+        {
+          "value": "MOBILITY_A",
+          "name": "Mobility (A) Slow to vacate"
+        },
+        {
+          "value": "HSC_DIFFICULTY_RESPONDING_NN",
+          "name": "Difficulty in responding concerns not known"
+        },
+        {
+          "value": "HSC_DIFFICULTY_RESPONDING_NA",
+          "name": "No difficulty in responding concerns"
+        },
+        {
+          "value": "HEARING",
+          "name": "Hearing impairement"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Difficulty Responding: Additional Information</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Please provide further details about why the occupier may have difficulty in responding in an emergency.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "difficultyRespNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Safety Tutoring</h3>"
+    },
+    {
+      "key": "fireSafetyTutoring",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "youthServicesConsent",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "youthServicesNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Additional Risks</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>These are risks which may have an adverse effect on Operational activities at the property.<br/>\r\n                \te.g. hoarding - poor storage of gas cylinders - animals that may be dangerous in an operational\r\n                \tsituation.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "addnRisks",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "TRIP_HAZARDS",
+          "name": "Trip hazards in the dwelling"
+        },
+        {
+          "value": "PORTABLE_HEATERS",
+          "name": "Portable heaters (LPG/Paraffin)"
+        },
+        {
+          "value": "MISSING_INTERNAL_DOORS",
+          "name": "Missing internal doors"
+        },
+        {
+          "value": "MEDICAL_OXYGEN",
+          "name": "Medical Oxygen"
+        },
+        {
+          "value": "DANGEROUS_ANIMALS",
+          "name": "Dangerous Animals/Pets"
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "key": "disorganisedLiving",
+      "type": "select",
+      "titleMap": {
+        "SEVERE_HOARDING": "Severe hoarding, significantly increases fire risk and affects the occupiers safe exit, or affects Fire-fighter safety",
+        "EXCESSIVE_STORAGE": "Excessive or dangerous storage",
+        "EXCESSIVE_STORAGE_SAFE_EXIT": "Excessive or dangerous storage affecting occupiers safe exit, or affects Fire-fighter safety",
+        "EXCESSIVE_STORAGE_NONE": "No evidence"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Risks: Additional Information</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Please provide further details about why the occupier may have difficulty in responding in an emergency.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "additionalRiskNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Planning</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Was any of the following advice discussed?</p>\r\n                \t<p>Check all that apply.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "sad",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SMOKING_SAFETY",
+          "name": "Smoking safety"
+        },
+        {
+          "value": "SMOKE_ALARM_SAFETY",
+          "name": "Smoke alarm testing"
+        },
+        {
+          "value": "NIGHT_TIME_SAFETY",
+          "name": "Night time routine"
+        },
+        {
+          "value": "HSC_KITCHEN_SAFETY",
+          "name": "Kitchen Safety"
+        },
+        {
+          "value": "ESCAPE_SAFETY",
+          "name": "Escape plan"
+        },
+        {
+          "value": "ELECTIRCAL_SAFETY",
+          "name": "Electrical safety"
+        },
+        {
+          "value": "CANDLE_SAFETY",
+          "name": "Candle safety"
+        },
+        {
+          "value": "CALLING_999_SAFETY",
+          "name": "Calling the Fire Service"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Does anyone in the household own or have access to a vehicle?</h3>"
+    },
+    {
+      "key": "vehicleAccess",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Drivers in the household</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Please provide the number of drivers that live at the property who are...</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "youngDrivers",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "oldDrivers",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Safe Vehicle</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>On your vehice, do you regularly carry out...</p>\r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "safeVehicle",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_TYRE_CHECK",
+          "name": "Tyre checks"
+        },
+        {
+          "value": "SAW_SAFETY_CHECK",
+          "name": "Safety and Maintenance checks"
+        },
+        {
+          "value": "SAW_ROAD_SAFETY_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_ROAD_SAFETY_NA",
+          "name": "None"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Safe Tyres</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Mark tyres where further inspection and advice from a tyre specialist, should be sought.</p>\r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "safeTyres",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_ROAD_SAFETY_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_ROAD_SAFETY_NA",
+          "name": "None"
+        },
+        {
+          "value": "OFFSIDE_REAR",
+          "name": "Off-side rear"
+        },
+        {
+          "value": "OFFSIDE_FRONT",
+          "name": "Off-side Front"
+        },
+        {
+          "value": "NEARSIDE_REAR",
+          "name": "Near-side rear"
+        },
+        {
+          "value": "NEARSIDE_FRONT",
+          "name": "Near-side front"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Safe Driver</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Discuss the importance of always wearing a <b>seatbelt</b> in the car as a passenger and a driver.</p>\r\n\t\t\t\t\t<p>Discuss driving under the influence or <b>drink/drugs</b>(prescription and non-prescription), reinforce dangers and UK law.</p>\r\n\t\t\t\t\t<p>Discuss the importance of keeping to the <b>speed limits</b>, stopping distances and the impact on survival rates.</p>\r\n\t\t\t\t\t<p>Discuss the dangers of being <b>distracted</b> when driving, including mobile phones.</p>\r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "safeDriver",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "TRAVEL_WITH_CHILDREN",
+          "name": "Travel with children in the car"
+        },
+        {
+          "value": "SAW_DRIVER_NA",
+          "name": "Not applicable"
+        },
+        {
+          "value": "CAR_SEAT_ADVICE",
+          "name": "Car seat guidance given"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Pedestrian/Cycle/Motorcycle Safety</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Have any of the following been discussed...</p>\r\n \t\t\t\t\t<p><b>Pedestrian Safety</b> - Discuss information in booklet.</p>\r\n \t\t\t\t\t<p><b>Cycle Safety</b> - Discuss the importance of wearing a safety helmet/bright clothes and cycle lights.</p>\r\n \t\t\t\t\t<p><b>Motorcycle Safety</b> - Discuss the importance of wearing correct PPE. Helmet & clear scratch free visor, Leathers, boots & gloves.</p>\r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "travelSafety",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_SAFETY_NA",
+          "name": "Not applicable"
+        },
+        {
+          "value": "SAW_PEDESTRIAN_SAFETY",
+          "name": "Pedestrian Safety"
+        },
+        {
+          "value": "SAW_MOTORCYCLE_SAFETY",
+          "name": "Motorcycle Safety"
+        },
+        {
+          "value": "SAW_CYCLE_SAFETY",
+          "name": "Cycle Safety"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Winter Warmth</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Does the property have...</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "winterWarmer",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_WINTER_WARMER_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_WINTER_WARMER_NA",
+          "name": "None"
+        },
+        {
+          "value": "SAW_INSULATION",
+          "name": "Loft insulation"
+        },
+        {
+          "value": "SAW_HEATING",
+          "name": "Adequate heating"
+        },
+        {
+          "value": "SAW_CAVITY_WALL",
+          "name": "Cavity wall insulation"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Employment</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Is anyone in the household, <b>of employable age</b>...</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "employment",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_VOLUNTEERING",
+          "name": "Currently volunteering"
+        },
+        {
+          "value": "SAW_TRAINING_SCHEME",
+          "name": "Currently in a training scheme"
+        },
+        {
+          "value": "SAW_LONG_TERM_UNEMPLOYED",
+          "name": "Currently unemployed for a period in excess of 12 months"
+        },
+        {
+          "value": "SAW_EMPLOYMENT_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_EMPLOYMENT_NA",
+          "name": "Not applicable"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Physical Health</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Does the occupier have any concerns with any of the following...</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "sawPhysicalHealth",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_RISK_FALL",
+          "name": "At risk from a fall and requires a falls referral"
+        },
+        {
+          "value": "SAW_PHYS_HEALTH",
+          "name": "Physical health"
+        },
+        {
+          "value": "SAW_PHYSICAL_HEALTH_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_PHYSICAL_HEALTH_NA",
+          "name": "None"
+        },
+        {
+          "value": "SAW_DIABETES",
+          "name": "Requires a referral to a weight loss/healthy eating/exercise program"
+        },
+        {
+          "value": "SAW_DAILY_ROUTINE",
+          "name": "Problems completing daily routines i.e. opening jars, walking etc."
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Mental Health/Wellbeing</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Does anyone in the household suffer from...</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "wellbeing",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_WELLBEING_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_WELLBEING_NA",
+          "name": "None"
+        },
+        {
+          "value": "SAW_MEM_LOSS",
+          "name": "Memory loss/dementia/Alzheimer's"
+        },
+        {
+          "value": "SAW_LONELINESS",
+          "name": "Loneliness"
+        },
+        {
+          "value": "SAW_LEARNING_DISABILITY",
+          "name": "Learning disability"
+        },
+        {
+          "value": "SAW_DEPRESSION",
+          "name": "Depression"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "key": "swemwbs",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "name": "1",
+          "value": 1
+        },
+        {
+          "name": "2",
+          "value": 2
+        },
+        {
+          "name": "3",
+          "value": 3
+        },
+        {
+          "name": "4",
+          "value": 4
+        },
+        {
+          "name": "5",
+          "value": 5
+        },
+        {
+          "name": "6",
+          "value": 6
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Lifestyle Behaviours and Substance Use</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n \t\t\t\t\t<p>Does anyone in the household...</p>\r\n \t\t\t\t\t<p>Please provde details for each checked item. <br/>\r\n \t\t\t\t\te.g. <b>Alcohol</b> - how many units in a single session/per week.<br/>\r\n \t\t\t\t\t<b>Prescription or non-prescription medication</b> - what are they, and are there any side effects?</p> \r\n \t\t\t\t\t<p>Check all that apply.</p> \r\n \t\t\t\t"
+    },
+    {
+      "key": "lifestyle",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "SAW_LIFESTYLE_NN",
+          "name": "Not known"
+        },
+        {
+          "value": "SAW_LIFESTYLE_NA",
+          "name": "Not applicable"
+        },
+        {
+          "value": "SAW_DRUGS",
+          "name": "Prescription or Non-Prescription medication"
+        },
+        {
+          "value": "SAW_DRINK_ALCOHOL",
+          "name": "Drink alcohol"
+        }
+      ],
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Protection Equipment</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Before this visit...</p>                \t\r\n\t\t\t\t"
+    },
+    {
+      "key": "beforeCorrectAlarms",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "key": "beforeIncorrectAlarms",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Fire Protection Equipment</h3>"
+    },
+    {
+      "key": "equipment",
+      "add": "Add equipment",
+      "style": {
+        "add": "btn-success"
+      },
+      "items": [
+        {
+          "type": "help",
+          "helpvalue": "<h3>Equipment</h3>"
+        },
+        {
+          "key": "equipment[].typeId",
+          "type": "select",
+          "titleMap": {
+            "SMOKE_ALARM": "Smoke Alarm",
+            "MAILBOX_PROTECTION": "Mailbox protection system flexible fire bag",
+            "HEARING_IMPAIRED_ALARM": "Hearing Impaired Alarm",
+            "FIRE_RETARDANT_BEDDING_THROW": "Fire retardant bedding: Throw",
+            "FIRE_RETARDANT_BEDDING_SINGLE": "Fire retardant bedding: Single",
+            "FIRE_RETARDANT_BEDDING_DOUBLE": "Fire retardant bedding: Double",
+            "DOMESTRIC_SUPPRESSION": "Domestic portable suppression system",
+            "DEEP_FAT_FRYER": "Deep fat fryer"
+          },
+          "notitle": false
+        },
+        {
+          "key": "equipment[].equipmentFitted",
+          "type": "radios",
+          "titleMap": [
+            {
+              "value": "N",
+              "name": [
+                "No"
+              ]
+            },
+            {
+              "value": "Y",
+              "name": [
+                "Yes"
+              ]
+            }
+          ],
+          "notitle": true
+        },
+        {
+          "key": "equipment[].numberFitted",
+          "type": "number",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "equipment[].makeModelId",
+          "type": "select",
+          "titleMap": {
+            "NOTAPPLICABLE": "Not Applicable",
+            "FIREANGEL": "Fire Angel"
+          },
+          "notitle": false
+        },
+        {
+          "key": "equipment[].batchNo",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "equipment[].serialNo",
+          "type": "text",
+          "readonly": false,
+          "notitle": false
+        },
+        {
+          "key": "equipment[].fittingMethodId",
+          "type": "select",
+          "titleMap": {
+            "SCREW": "Screw",
+            "GLUE": "Glue"
+          },
+          "notitle": false
+        },
+        {
+          "key": "equipment[].dateFitted",
+          "type": "datepicker",
+          "readonly": false,
+          "notitle": false
+        }
+      ],
+      "title": "Provide details of any equipment fitted or to be fitted"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Educational Material</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Educational material includes Fire Safety literature, Smoke Alarm instructions, Translation booklet or any other material that may be appropriate.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "educationalMaterial",
+      "type": "radios",
+      "titleMap": [
+        {
+          "value": "Y",
+          "name": [
+            "Yes"
+          ]
+        },
+        {
+          "value": "N",
+          "name": [
+            "No"
+          ]
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Carbon Monoxide Awareness</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Carbon Monoxide</h3>"
+    },
+    {
+      "key": "reading",
+      "type": "number",
+      "readonly": false,
+      "notitle": false
+    },
+    {
+      "key": "heatingMethod",
+      "type": "select",
+      "titleMap": {
+        "CO_WOOD_BURNER": "Wood Burner",
+        "CO_OTHER": "Other",
+        "CO_OIL": "Oil",
+        "CO_GAS": "Gas",
+        "CO_ELECTRIC": "Electric",
+        "CO_COAL": "Coal"
+      },
+      "notitle": false
+    },
+    {
+      "key": "cookingMethod",
+      "type": "select",
+      "titleMap": {
+        "CO_WOOD_BURNER": "Wood Burner",
+        "CO_OTHER": "Other",
+        "CO_OIL": "Oil",
+        "CO_GAS": "Gas",
+        "CO_ELECTRIC": "Electric",
+        "CO_COAL": "Coal"
+      },
+      "notitle": false
+    },
+    {
+      "key": "appliancesOn",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<br>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Gas Certificate</h3>"
+    },
+    {
+      "key": "gasCertificate",
+      "type": "select",
+      "titleMap": {
+        "Y": "Yes",
+        "U": "Unknown",
+        "N": "No"
+      },
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Command Questions</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Referrals</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p><b>Vulnerable Person</b><br/>\r\n                \t\tSelect if any additional actions are required for VPO/Ops Information/Data Management.  \r\n                \t\tPlease specify any details in the notes box provided.</p>\r\n                \t\t<br/>\r\n                \t\t<p><b>Only complex cases that cannot be handled by stations should be referred to a VPO.</b></p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "vulnerablePerson",
+      "type": "radiobuttons",
+      "titleMap": [
+        {
+          "value": "N",
+          "name": " No "
+        },
+        {
+          "value": "Y",
+          "name": " Yes "
+        }
+      ],
+      "title": "Vulnerable person - additional actions required"
+    },
+    {
+      "key": "vulnerableReferrals",
+      "type": "checkboxes",
+      "titleMap": [
+        {
+          "value": "VPO_REFER",
+          "name": "VPO Referral"
+        },
+        {
+          "value": "ADULT_FIRESETTER_REFER",
+          "name": "Adult Firesetter Referral"
+        }
+      ],
+      "notitle": false
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Notes</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>Please provide any further information that may be useful in respect to this assessment,\r\n                \t\tincluding any follow up actions that may be necessary.</p>\r\n\t\t\t\t"
+    },
+    {
+      "key": "assessmentNotes",
+      "type": "textarea",
+      "readonly": false,
+      "notitle": true
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Summary: Finished</h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>That concludes the information required for this Safe and Well visit.</p>\r\n                \t<p>For future reference, the Id of this workbook is displayed below.</p>\r\n                \t<br/>\r\n                \t<p>Please click Finish to complete this workbook.</p>\r\n                \r\n                "
+    },
+    {
+      "type": "help",
+      "helpvalue": "<h3>Summary: Equipment Outstanding </h3>"
+    },
+    {
+      "type": "help",
+      "helpvalue": "\r\n                \t<p>There are still items of equipment that need to be fitted for this HSC.</p>\r\n                \t<p>Until all items have been fitted, this workbook will remain open and no points will be allocated.</p>\r\n                \t<br/>\r\n                \t<p>To complete this information, ensure that all items of equipment are recorded as being fitted, \r\n                \tand then click Finish.</p>\r\n                \r\n                "
+    },
+    {
+      "type": "actions",
+      "items": [
+        {
+          "type": "button",
+          "style": "btn-default",
+          "title": "Cancel",
+          "onClick": "vm.cancelFlobot()"
+        },
+        {
+          "type": "submit",
+          "style": "btn-info",
+          "title": "OK"
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "type": "object",
+    "properties": {
+      "vpoReferrals": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "title": "Refer to?"
+      },
+      "contacts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "contactTypeId": {
+              "type": "string",
+              "title": "Contact type"
+            },
+            "primaryContact": {
+              "type": "string",
+              "title": "Is this the primary contact for this referral?"
+            },
+            "titleId": {
+              "type": "string",
+              "title": "Title"
+            },
+            "firstNames": {
+              "type": "string",
+              "title": "First name"
+            },
+            "lastName": {
+              "type": "string",
+              "title": "Last name"
+            },
+            "dob": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Date of birth"
+            },
+            "freeAddress": {
+              "type": "string",
+              "title": "Address"
+            },
+            "mobileTelephone": {
+              "type": "string",
+              "title": "Mobile Tel No"
+            },
+            "telephone1": {
+              "type": "string",
+              "title": "Daytime Tel No"
+            },
+            "telephone2": {
+              "type": "string",
+              "title": "Evening Tel No"
+            },
+            "fax": {
+              "type": "string",
+              "title": "Fax"
+            },
+            "pager": {
+              "type": "string",
+              "title": "Pager"
+            },
+            "email": {
+              "type": "string",
+              "title": "Email"
+            },
+            "notes": {
+              "type": "string",
+              "title": "Notes"
+            },
+            "contactMethod": {
+              "type": "string",
+              "title": "Preferred method of contact"
+            }
+          }
+        }
+      },
+      "communicationAttempts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "hcId": {
+              "type": "number"
+            },
+            "commDate": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Date/time of contact attempt"
+            },
+            "commDirectionId": {
+              "type": "string",
+              "title": "Type of contact"
+            },
+            "commOutcomeId": {
+              "type": "string",
+              "title": "Outcome of contact"
+            },
+            "referralNotes": {
+              "type": "string",
+              "title": "Notes"
+            }
+          }
+        }
+      },
+      "initiativeReference": {
+        "type": "string"
+      },
+      "occupierRiskProfile": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "occupierRiskFactor": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "referralOccupierMobility": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "propertyRiskFactors": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "meansTested": {
+        "type": "string",
+        "title": "Are the occupiers in receipt of any benefits?"
+      },
+      "contactCentreNotes": {
+        "type": "string",
+        "title": "Contact Centre Only Notes"
+      },
+      "notes": {
+        "type": "string",
+        "title": "Referral Notes"
+      },
+      "referralGenerated": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Date/time referral requested"
+      },
+      "jointVisit": {
+        "type": "string",
+        "title": "Joint visit required (with partner)?"
+      },
+      "appointment": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Appointment date/time"
+      },
+      "appointmentStatus": {
+        "type": "string",
+        "title": "Reason for rescheduling this appointment"
+      },
+      "appointments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "appointmentDate": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Appointment date/time"
+            },
+            "password": {
+              "type": "string",
+              "title": "Client password"
+            },
+            "cancelReason": {
+              "type": "string",
+              "title": "Cancel Reason"
+            }
+          }
+        }
+      },
+      "watch": {
+        "type": "string"
+      },
+      "actualAssessmentDate": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Actual date and time of visit"
+      },
+      "agentId": {
+        "type": "string",
+        "title": "Completed by"
+      },
+      "assessor1": {
+        "type": "string",
+        "title": "Assessor 1 roll number"
+      },
+      "assessor2": {
+        "type": "string",
+        "title": "Assessor 2 roll number"
+      },
+      "signature": {
+        "type": "string"
+      },
+      "shareInfo": {
+        "type": "string"
+      },
+      "safeInHome": {
+        "type": "number",
+        "title": "I feel safe in my home?"
+      },
+      "tenureId": {
+        "type": "string",
+        "title": "Tenure"
+      },
+      "housingAssociationId": {
+        "type": "string",
+        "title": "Housing Association"
+      },
+      "propertyTypeId": {
+        "type": "string",
+        "title": "Property type"
+      },
+      "hmo": {
+        "type": "string",
+        "title": "HMO?"
+      },
+      "shelteredHousing": {
+        "type": "string",
+        "title": "Sheltered Accommodation?"
+      },
+      "ethnicityId": {
+        "type": "string",
+        "title": "Occupier Ethnicity?"
+      },
+      "age04Male": {
+        "type": "number",
+        "title": "Male: 0 - 4"
+      },
+      "age04Female": {
+        "type": "number",
+        "title": "Female: 0 - 4"
+      },
+      "age514Male": {
+        "type": "number",
+        "title": "Male: 5 - 14"
+      },
+      "age514Female": {
+        "type": "number",
+        "title": "Female: 5 - 14"
+      },
+      "age1524Male": {
+        "type": "number",
+        "title": "Male: 15 - 24"
+      },
+      "age1524Female": {
+        "type": "number",
+        "title": "Female: 15 - 24"
+      },
+      "age2544Male": {
+        "type": "number",
+        "title": "Male: 25 - 44"
+      },
+      "age2544Female": {
+        "type": "number",
+        "title": "Female: 25 - 44"
+      },
+      "age4564Male": {
+        "type": "number",
+        "title": "Male: 45 - 64"
+      },
+      "age4564Female": {
+        "type": "number",
+        "title": "Female: 45 - 64"
+      },
+      "age6579Male": {
+        "type": "number",
+        "title": "Male: 65 - 79"
+      },
+      "age6579Female": {
+        "type": "number",
+        "title": "Female: 65 - 79"
+      },
+      "age80PlusMale": {
+        "type": "number",
+        "title": "Male: 80+"
+      },
+      "age80PlusFemale": {
+        "type": "number",
+        "title": "Female: 80+"
+      },
+      "hscBenefits": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "sawFireHazards": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "smokers": {
+        "type": "string",
+        "title": "Does anyone smoke inside the property?"
+      },
+      "vapourSmoker": {
+        "type": "string",
+        "title": "Does anyone use electronic/vapour cigarettes?"
+      },
+      "fireEvidence": {
+        "type": "string",
+        "title": "Is there evidence / history of fire (including cigarette burns)?"
+      },
+      "fireHazardsNotes": {
+        "type": "string",
+        "title": "Please provide details"
+      },
+      "difficultyResponding": {
+        "type": "string",
+        "title": "Would anyone have difficulty responding to an emergency?"
+      },
+      "diffResp": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "difficultyRespNotes": {
+        "type": "string",
+        "title": "Please provide details"
+      },
+      "fireSafetyTutoring": {
+        "type": "string",
+        "title": "Is fire safety tutoring required?"
+      },
+      "youthServicesConsent": {
+        "type": "string",
+        "title": "Does the parent/guardian consent to being contacted by Youth Services?"
+      },
+      "youthServicesNotes": {
+        "type": "string",
+        "title": "Please provide details"
+      },
+      "addnRisks": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "title": "Are any of the following hazards present which may have an impact at an incident?"
+      },
+      "disorganisedLiving": {
+        "type": "string",
+        "title": "Is there any evidence of Disorganised Living?"
+      },
+      "additionalRiskNotes": {
+        "type": "string",
+        "title": "Please provide details"
+      },
+      "sad": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "vehicleAccess": {
+        "type": "string"
+      },
+      "youngDrivers": {
+        "type": "number",
+        "title": "Aged between 17 to 24?"
+      },
+      "oldDrivers": {
+        "type": "number",
+        "title": "Aged over 70?"
+      },
+      "safeVehicle": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "safeTyres": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "safeDriver": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "travelSafety": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "winterWarmer": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "employment": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "sawPhysicalHealth": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "wellbeing": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "swemwbs": {
+        "type": "number",
+        "title": "Complete a SWEBWBS?"
+      },
+      "lifestyle": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "beforeCorrectAlarms": {
+        "type": "number",
+        "title": "How many smoke alarms were working <b>and</b> correctly sited?"
+      },
+      "beforeIncorrectAlarms": {
+        "type": "number",
+        "title": "How many smoke alarms were not correctly fitted <b>or</b> not sited correctly?"
+      },
+      "equipment": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "typeId": {
+              "type": "string",
+              "title": "Equipment fitted or to be fitted"
+            },
+            "equipmentFitted": {
+              "type": "string",
+              "title": "Has this equipment been fitted?"
+            },
+            "numberFitted": {
+              "type": "number",
+              "title": "Number fitted"
+            },
+            "makeModelId": {
+              "type": "string",
+              "title": "Make"
+            },
+            "batchNo": {
+              "type": "string",
+              "title": "Batch No"
+            },
+            "serialNo": {
+              "type": "string",
+              "title": "Serial No"
+            },
+            "fittingMethodId": {
+              "type": "string",
+              "title": "Fitting method"
+            },
+            "dateFitted": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Date fitted"
+            }
+          }
+        }
+      },
+      "educationalMaterial": {
+        "type": "string",
+        "title": "Was educational material supplied?"
+      },
+      "reading": {
+        "type": "number",
+        "title": "Carbon Monoxide reading"
+      },
+      "heatingMethod": {
+        "type": "string",
+        "title": "Primary heating method"
+      },
+      "cookingMethod": {
+        "type": "string",
+        "title": "Primary cooking method"
+      },
+      "appliancesOn": {
+        "type": "string",
+        "title": "Were there any cooking or heating appliances on at the time of visit"
+      },
+      "gasCertificate": {
+        "type": "string",
+        "title": "Gas Appliances; have the occupiers got a gas safety certificate"
+      },
+      "vulnerablePerson": {
+        "type": "string",
+        "title": "Vulnerable person - additional actions required"
+      },
+      "vulnerableReferrals": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "title": "Check all that apply"
+      },
+      "assessmentNotes": {
+        "type": "string"
+      }
+    }
+  }
+}

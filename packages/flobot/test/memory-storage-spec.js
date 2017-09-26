@@ -12,6 +12,7 @@ describe('Memory storage tests', function () {
 
   let people
   let planets
+  let star
 
   it('should create some out-the-box flobot services to test memory storage models', function (done) {
     flobot.boot(
@@ -26,6 +27,7 @@ describe('Memory storage tests', function () {
         const models = flobotServices.storage.models
         people = models.fbotTest_people
         planets = models.fbotTest_planets
+        star = models.fbotTest_star
         done()
       }
     )
@@ -104,7 +106,7 @@ describe('Memory storage tests', function () {
         console.log(err)
         expect(err).to.eql(
           { name: 'DuplicatePrimaryKey',
-            message: 'Unable to create mode people because {"employeeNo":"1"} already exists'
+            message: "Unable to create model 'people' because {\"employeeNo\":\"1\"} already exists"
           }
         )
         done()
@@ -131,7 +133,7 @@ describe('Memory storage tests', function () {
       function (err) {
         expect(err).to.eql(
           { name: 'DuplicatePrimaryKey',
-            message: 'Unable to create mode people because {"employeeNo":"2"} already exists'
+            message: 'Unable to create model \'people\' because {"employeeNo":"2"} already exists'
           }
         )
         done()
@@ -163,6 +165,22 @@ describe('Memory storage tests', function () {
       function (err, doc) {
         expect(err).to.equal(null)
         expect(doc).to.equal(undefined)
+        done()
+      }
+    )
+  })
+
+  it('should find a star (reference table loaded as seed data) via primary key', function (done) {
+    star.findById(
+      'Proxima Centauri',
+      function (err, doc) {
+        expect(err).to.equal(null)
+        expect(doc).to.containSubset(
+          {
+            'name': 'Proxima Centauri',
+            'type': 'Red Dwarf'
+          }
+        )
         done()
       }
     )

@@ -20,13 +20,11 @@ describe('RBAC tests', function () {
     flobot.boot(
       {
         pluginPaths: [],
-
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/website-blueprint')
         ],
 
         config: {
-
           staticRootDir: path.resolve(__dirname, './output'),
 
           auth: {
@@ -56,7 +54,7 @@ describe('RBAC tests', function () {
         null, // userId
         null, // ctx
         [], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_readPost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
@@ -68,7 +66,7 @@ describe('RBAC tests', function () {
         'john.smith', // userId
         null, // ctx
         [], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_createPost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
@@ -80,7 +78,7 @@ describe('RBAC tests', function () {
         undefined, // userId
         null, // ctx
         [], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_createPost_1_0', // resourceName
         'create' // action
       )).to.equal(false)
@@ -92,7 +90,7 @@ describe('RBAC tests', function () {
         'molly', // userId
         {userId: 'molly'}, // ctx
         [], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_updatePost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
@@ -104,7 +102,7 @@ describe('RBAC tests', function () {
         'john.doe', // userId
         null, // ctx
         ['fbotTest_developer'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(true)
@@ -116,7 +114,7 @@ describe('RBAC tests', function () {
         'john.doe', // userId
         null, // ctx
         ['spaceCadet', 'IRRELEVANT!'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(false)
@@ -128,7 +126,7 @@ describe('RBAC tests', function () {
         null, // userId
         null, // ctx
         ['fbot_developer'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_deletePost_1_0', // resourceName
         'create' // action
       )).to.equal(false)
@@ -140,7 +138,7 @@ describe('RBAC tests', function () {
         null, // userId
         null, // ctx
         ['fbotTest_boss'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(true)
@@ -152,7 +150,7 @@ describe('RBAC tests', function () {
         'molly', // userId
         null, // ctx
         ['fbotTest_fbotTestAdmin'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_purgeSite_1_0', // resourceName
         'create' // action
       )).to.equal(true)
@@ -164,7 +162,7 @@ describe('RBAC tests', function () {
         'molly', // userId
         null, // ctx
         ['fbotTest_fbotTestReadOnly'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_purgeSite_1_0', // resourceName
         'get' // action
       )).to.equal(true)
@@ -176,7 +174,7 @@ describe('RBAC tests', function () {
         'molly', // userId
         null, // ctx
         ['fbotTest_fbotTestReadOnly'], // roles
-        'flow', // resourceType
+        'stateMachine', // resourceType
         'fbotTest_purgeSite_1_0', // resourceName
         'create' // action
       )).to.equal(false)

@@ -3,7 +3,7 @@
 
     "grants": [
         {
-            "flowId": "*",
+            "stateMachineName": "*",
             "allows": ["get"]
         }
     ]

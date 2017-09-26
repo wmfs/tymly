@@ -1,5 +1,7 @@
 'use strict'
 
+const debug = require('debug')('flobot-pg-plugin')
+
 const _ = require('lodash')
 const schema = require('./schema.json')
 const process = require('process')
@@ -12,7 +14,7 @@ const pgDiffSync = require('pg-diff-sync')
 const pgModel = require('pg-model')
 
 const pgStatementRunner = require('./pg-statement-runner')
-const generateUpsert = require('./generate-upsert-statement')
+const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
   boot (options, callback) {
@@ -112,40 +114,57 @@ class PostgresqlStorageService {
                         }
                       )
 
-                      options.messages.info('Loading seed data:')
-                      async.eachSeries(
-                        options.blueprintComponents.seedData,
-                        (seedData, cb) => {
-                          options.messages.detail(seedData.namespace + '_' + seedData.name)
+                      if (options.blueprintComponents.seedData) {
+                        options.messages.info('Loading seed data:')
+                        async.eachSeries(
+                          options.blueprintComponents.seedData,
+                          (seedData, cb) => {
+                            const name = seedData.namespace + '_' + seedData.name
+                            const model = _this.models[name]
+                            if (model) {
+                              options.messages.detail(name)
 
-                          const sql = generateUpsert(_this.models[seedData.namespace + '_' + seedData.name], seedData)
-                          let params = []
-                          _.forEach(seedData.data, (row) => {
-                            params = params.concat(row)
-                          })
+                              // generate upsert sql statement
+                              const sql = generateUpsertStatement(model, seedData)
+                              debug('load', name, 'seed-data sql: ', sql)
 
-                          pgStatementRunner(
-                            _this.client,
-                            [{
-                              'sql': sql,
-                              'params': params
-                            }],
-                            function (err) {
-                              if (err) {
-                                cb(err)
-                              } else {
-                                cb(null)
-                              }
+                              // generate a single array of parameters which each
+                              // correspond with a placeholder in the upsert sql statement
+                              let params = []
+                              _.forEach(seedData.data, (row) => {
+                                params = params.concat(row)
+                              })
+                              debug('load', name, 'seed-data params: ', params)
+
+                              pgStatementRunner(
+                                _this.client,
+                                [{
+                                  'sql': sql,
+                                  'params': params
+                                }],
+                                function (err) {
+                                  if (err) {
+                                    cb(err)
+                                  } else {
+                                    cb(null)
+                                  }
+                                }
+                              )
+                            } else {
+                              options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
+                              cb(null)
                             }
-                          )
-                        },
-                        (err) => {
-                          if (err) {
-                            callback(err)
-                          } else {
-                            callback(null)
-                          }
-                        })
+                          },
+                          (err) => {
+                            if (err) {
+                              callback(err)
+                            } else {
+                              callback(null)
+                            }
+                          })
+                      } else {
+                        callback(null)
+                      }
                     }
                   }
                 )
@@ -161,12 +180,7 @@ class PostgresqlStorageService {
 module.exports = {
   schema: schema,
   serviceClass: PostgresqlStorageService,
-
-  configModifier: function flobotsServiceConfigModifier (ctx) {
-    // Filter just to FSM options
-    // --------------------------
-    if (ctx.utils.isFsmOptions(ctx)) {
-      ctx.utils.idNamespacer('modelId', 'models', ctx)
-    }
+  refProperties: {
+    modelId: 'models'
   }
 }

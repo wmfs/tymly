@@ -1,0 +1,83 @@
+{
+  "Comment": "A day in the life of a cat",
+  "StartAt": "WakingUp",
+  "States": {
+    "WakingUp": {
+      "Type": "Task",
+      "Resource": "module:wakingUp",
+      "Next": "Sitting"
+    },
+    "Sitting": {
+      "Type": "Task",
+      "Resource": "module:sitting",
+      "Next": "Thinking"
+    },
+    "Thinking": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.hoursSinceLastMotion",
+          "NumericGreaterThan": "3",
+          "Next": "WalkingToCatLitter"
+        },
+        {
+          "Variable": "$.hoursSinceLastMeal",
+          "NumericGreaterThan": "2",
+          "Next": "WalkingToFood"
+        }
+      ],
+      "Default": "Sleeping"
+    },
+    "WalkingToCatLitter": {
+      "Type": "Task",
+      "Resource": "module:walking",
+      "Next": "UsingCatLitter"
+    },
+    "UsingCatLitter": {
+      "Type": "Task",
+      "Resource": "module:usingCatLitter",
+      "Next": "Sitting"
+    },
+    "WalkingToFood": {
+      "Type": "Task",
+      "Resource": "module:walking",
+      "Next": "Eating"
+    },
+    "Eating": {
+      "Type": "Task",
+      "Resource": "module:eating",
+      "Next": "Washing"
+    },
+    "Washing": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "Licking",
+          "States": {
+            "Licking": {
+              "Type": "Task",
+              "Resource": "module:licking",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Saluting",
+          "States": {
+            "Saluting": {
+              "Type": "Task",
+              "Resource": "module:saluting",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "Sitting"
+    },
+    "Sleeping": {
+      "Type": "Task",
+      "Resource": "module:sleeping",
+      "End": true
+    }
+  }
+}

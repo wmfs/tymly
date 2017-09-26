@@ -7,8 +7,8 @@ const _ = require('lodash')
 const parseMetaJson = require('./parse-meta-json')
 const loadComponentDir = require('./load-component-dir')
 const fileLoaders = require('./file-loaders/index')
-const applyModifiers = require('./apply-modifiers/index')
 const COMPONENT_DIR_BLACKLIST = ['test', 'nodeModules']
+const processRefProperties = require('./process-ref-properties')
 
 module.exports = function loadDir (rootDir, allComponents, options) {
   let quiet
@@ -87,13 +87,8 @@ module.exports = function loadDir (rootDir, allComponents, options) {
       }
     )
 
-    if (options.hasOwnProperty('modifiers')) {
-      applyModifiers(
-        options.modifiers.modificationFunctions,
-        rootComponents,
-        options.modifiers.pluginComponents,
-        parsedMetaJson
-      )
+    if (options.hasOwnProperty('refProperties')) {
+      processRefProperties(rootComponents, options.refProperties, options.pluginComponent, parsedMetaJson)
     }
 
     // Extracted a list of component types / keys

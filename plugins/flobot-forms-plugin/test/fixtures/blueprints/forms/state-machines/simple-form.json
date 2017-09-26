@@ -1,0 +1,45 @@
+{
+  "Comment": "A state-machine to help illustrate a user completing a simple form",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "FindingOne",
+  "States": {
+    "FindingOne": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "modelId": "simpleForm",
+        "filter": {
+          "where": {
+            "email": {
+              "equals": "$.email"
+            }
+          }
+        }
+      },
+      "Resource": "module:findingOne",
+      "InputPath": "$.key",
+      "ResultPath": "$.commentData",
+      "Next": "FormFilling"
+    },
+    "FormFilling": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "formId": "simpleForm"
+      },
+      "Resource": "module:formFilling",
+      "ResultPath": "$.commentData",
+      "Next": "Upserting"
+    },
+    "Upserting": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "modelId": "simpleForm"
+      },
+      "Resource": "module:upserting",
+      "InputPath": "$.commentData",
+      "End": true
+    }
+  }
+}

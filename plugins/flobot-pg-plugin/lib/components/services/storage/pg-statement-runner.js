@@ -1,5 +1,7 @@
 const async = require('async')
 
+// note that statementsAndParams should be an array of objects, where each
+// object has a sql (string) property and a params (array) property
 module.exports = function pgScriptRunner (client, statementsAndParams, callback) {
   if (statementsAndParams.length > 0 && statementsAndParams[0].sql !== 'BEGIN') {
     statementsAndParams.unshift({

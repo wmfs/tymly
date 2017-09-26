@@ -1,0 +1,33 @@
+{
+  "Comment": "Upsert a cat. Find a cat.",
+  "StartAt": "Upserting",
+  "version": "1.0",
+  "States": {
+    "Upserting": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "modelId": "cat"
+      },
+      "Resource": "module:upserting",
+      "InputPath": "$.catDoc",
+      "Next": "FindingOne"
+    },
+    "FindingOne": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "modelId": "cat",
+        "filter": {
+          "where": {
+            "name": {
+              "equals": "$.name"
+            }
+          }
+        }
+      },
+      "Resource": "module:findingOne",
+      "InputPath": "$.catDoc",
+      "ResultPath": "$.catDocFromStorage",
+      "End": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "propertyNames": [
+    "id",
+    "title"
+  ],
+  "data": [
+    [ 1, "Mr." ],
+    [ 2, "Mrs." ],
+    [ 3, "Miss" ],
+    [ 4, "Ms." ],
+    [ 5, "Dr." ]
+  ]
+}

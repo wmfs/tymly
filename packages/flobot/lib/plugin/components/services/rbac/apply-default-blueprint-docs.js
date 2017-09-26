@@ -1,3 +1,4 @@
+'use strict'
 const async = require('async')
 
 module.exports = function applyBlueprintDocs (options, callback) {
@@ -11,7 +12,7 @@ module.exports = function applyBlueprintDocs (options, callback) {
 
   function makePermissionDoc (docId, docSource) {
     return {
-      flowId: docSource.flowId,
+      stateMachineName: docSource.stateMachineName,
       roleId: docSource.roleId,
       allows: docSource.allows
     }
@@ -33,9 +34,8 @@ module.exports = function applyBlueprintDocs (options, callback) {
   const docTasks = []
 
   options.messages.info('Applying unknown Blueprint documents')
-
-    // Grab role-templates, default role-memberships and default role-grants
-    // ---------------------------------------------------------------------
+  // Grab role-templates, default role-memberships and default role-grants
+  // ---------------------------------------------------------------------
 
   let templateRole
   const templateRoles = options.blueprintComponents.templateRoles
@@ -53,74 +53,72 @@ module.exports = function applyBlueprintDocs (options, callback) {
           docMaker: makeTemplateRoleDoc
 
         }
-            )
+      )
 
       if (templateRole.hasOwnProperty('grants')) {
         templateRole.grants.forEach(
-                    function (grant) {
-                      const source = grant
-                      source.roleId = templateRoleId
-
-                      docTasks.push(
-                        {
-                          domain: 'roleGrant',
-                          docId: templateRoleId + '_' + grant.flowId,
-                          docSource: source,
-                          dao: permissionModel,
-                          docMaker: makePermissionDoc
-                        }
-                        )
-                    }
-                )
+          function (grant) {
+            const source = grant
+            source.roleId = templateRoleId
+            docTasks.push(
+              {
+                domain: 'roleGrant',
+                docId: templateRoleId + '_' + grant.stateMachineName,
+                docSource: source,
+                dao: permissionModel,
+                docMaker: makePermissionDoc
+              }
+            )
+          }
+        )
       }
 
       if (templateRole.hasOwnProperty('roleMemberships')) {
         templateRole.roleMemberships.forEach(
-                    function (roleMemberId) {
-                      docTasks.push(
-                        {
-                          domain: 'roleMembership',
-                          docId: templateRoleId + '_' + roleMemberId,
-                          docSource: {
-                            templateRoleId: templateRoleId,
-                            roleMemberId: templateRole.namespace + '_' + roleMemberId
-                          },
-                          dao: roleMembershipModel,
-                          docMaker: makeRoleMembershipDoc
-                        }
-                        )
-                    }
-
-                )
+          function (roleMemberId) {
+            docTasks.push(
+              {
+                domain: 'roleMembership',
+                docId: templateRoleId + '_' + roleMemberId,
+                docSource: {
+                  templateRoleId: templateRoleId,
+                  roleMemberId: templateRole.namespace + '_' + roleMemberId
+                },
+                dao: roleMembershipModel,
+                docMaker: makeRoleMembershipDoc
+              }
+            )
+          }
+        )
       }
     }
   }
 
-    // Grab restrictions from flows
-    // ----------------------------
+  // Grab restrictions from state machines
+  // -------------------------------------
 
-  let flow
-  const flows = options.blueprintComponents.flows
-  if (flows) {
-    for (let flowId in flows) {
-      flow = flows[flowId]
-      if (flow.hasOwnProperty('restrictions')) {
-        flow.restrictions.forEach(
-                    function (restriction) {
-                      const source = restriction
-                      source.flowId = flowId
+  let stateMachine
+  const stateMachines = options.blueprintComponents.stateMachines
+  if (stateMachines) {
+    for (let stateMachineName in stateMachines) {
+      stateMachine = stateMachines[stateMachineName]
+      if (stateMachine.hasOwnProperty('restrictions')) {
+        stateMachine.restrictions.forEach(
+          function (restriction) {
+            const source = restriction
+            source.stateMachineName = stateMachineName
 
-                      docTasks.push(
-                        {
-                          domain: 'flowRestriction',
-                          docId: flowId + '_' + restriction.roleId,
-                          docSource: source,
-                          dao: permissionModel,
-                          docMaker: makePermissionDoc
-                        }
-                        )
-                    }
-                )
+            docTasks.push(
+              {
+                domain: 'stateMachineRestriction',
+                docId: stateMachineName + '_' + restriction.roleId,
+                docSource: source,
+                dao: permissionModel,
+                docMaker: makePermissionDoc
+              }
+            )
+          }
+        )
       }
     }
   }
@@ -128,66 +126,64 @@ module.exports = function applyBlueprintDocs (options, callback) {
   const knownDocs = {}
 
   async.forEach(
-        ['templateRole', 'roleGrant', 'flowRestriction', 'roleMembership'],
+    ['templateRole', 'roleGrant', 'stateMachineRestriction', 'roleMembership'],
 
-        function (domain, cb) {
-          blueprintDocs.getDomainDocIds(
-                domain,
-                function (err, docIds) {
+    function (domain, cb) {
+      blueprintDocs.getDomainDocIds(
+        domain,
+        function (err, docIds) {
+          if (err) {
+            cb(err)
+          } else {
+            knownDocs[domain] = docIds
+            cb(null)
+          }
+        }
+      )
+    },
+
+    function (err) {
+      if (err) {
+        callback(err)
+      } else {
+        // So now we have all the known docIds, grouped by domain, and all
+        // docs required from the blueprints... so for all unknown docs, go make them.
+
+        async.forEach(
+          docTasks,
+          function (task, cb) {
+            if (knownDocs[task.domain].indexOf(task.docId) === -1) {
+              // Unknown!
+              const doc = task.docMaker(task.docId, task.docSource)
+              task.dao.create(
+                doc,
+                {},
+                function (err) {
                   if (err) {
                     cb(err)
                   } else {
-                    knownDocs[domain] = docIds
-                    cb(null)
+                    blueprintDocs.registerDocument(
+                      task.domain,
+                      task.docId,
+                      cb
+                    )
                   }
                 }
-            )
-        },
-
-        function (err) {
-          if (err) {
-            callback(err)
-          } else {
-                // So now we have all the known docIds, grouped by domain, and all
-                // docs required from the blueprints... so for all unknown docs, go make them.
-
-            async.forEach(
-                    docTasks,
-                    function (task, cb) {
-                      if (knownDocs[task.domain].indexOf(task.docId) === -1) {
-                            // Unknown!
-
-                        const doc = task.docMaker(task.docId, task.docSource)
-
-                        task.dao.create(
-                                doc,
-                          {},
-                                function (err) {
-                                  if (err) {
-                                    cb(err)
-                                  } else {
-                                    blueprintDocs.registerDocument(
-                                            task.domain,
-                                            task.docId,
-                                            cb
-                                        )
-                                  }
-                                }
-                            )
-                      } else {
-                            // Known!
-                        cb(null)
-                      }
-                    },
-                    function (err) {
-                      if (err) {
-                        callback(err)
-                      } else {
-                        callback(null)
-                      }
-                    }
-                )
+              )
+            } else {
+              // Known!
+              cb(null)
+            }
+          },
+          function (err) {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null)
+            }
           }
-        }
-    )
+        )
+      }
+    }
+  )
 }

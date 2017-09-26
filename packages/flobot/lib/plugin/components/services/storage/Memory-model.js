@@ -1,6 +1,9 @@
 'use strict'
+
+// const debug = require('debug')('flobot')
 const uuid = require('uuid')
 const _ = require('lodash')
+
 require('underscore-query')(_)
 
 // TODO: This could be a useful module in its own right?
@@ -58,7 +61,7 @@ class MemoryModel {
         if (!err) {
           err = {
             name: 'DuplicatePrimaryKey',
-            message: `Unable to create mode ${_this.modelId} because ${JSON.stringify(whereProperties)} already exists`
+            message: `Unable to create model '${_this.modelId}' because ${JSON.stringify(whereProperties)} already exists`
           }
         }
       }
@@ -185,7 +188,6 @@ class MemoryModel {
     if (output.length > 0) {
       doc = output[0]
     }
-
     callback(null, doc)
   }
 

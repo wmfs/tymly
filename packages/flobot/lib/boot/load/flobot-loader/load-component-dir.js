@@ -7,8 +7,15 @@ module.exports = function loadComponentDir (blueprintMeta, originalKey, rootDirP
   let loaded
 
   try {
-    let source = require(rootDirPath)
-    source = _.cloneDeep(source)
+    // Looks weird to differentiate class exports
+    const raw = require(rootDirPath)
+    const cloned = _.cloneDeep(raw)
+    let source
+    if (_.keys(raw) === _.keys(cloned)) {
+      source = cloned
+    } else {
+      source = raw
+    }
 
     const keyParts = []
     if (blueprintMeta) {

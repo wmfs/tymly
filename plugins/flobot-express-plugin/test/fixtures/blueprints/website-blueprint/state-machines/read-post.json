@@ -1,0 +1,30 @@
+{
+  "Comment": "Read a post in its entirety",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "tags": [
+    "website",
+    "posts"
+  ],
+  "StartAt": "FormFilling",
+  "States": {
+    "FormFilling": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "formId": "readForm"
+      },
+      "Resource": "module:formFilling",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$everyone",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}

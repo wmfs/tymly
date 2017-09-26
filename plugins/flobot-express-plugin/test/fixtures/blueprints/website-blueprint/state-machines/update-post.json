@@ -1,0 +1,31 @@
+{
+  "label": "Update website post",
+  "description": "Change an existing post",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "tags": [
+    "website",
+    "posts"
+  ],
+  "StartAt": "FormFilling",
+  "States": {
+    "FormFilling": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "formId": "updatePostForm"
+      },
+      "Resource": "module:formFilling",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$owner",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}

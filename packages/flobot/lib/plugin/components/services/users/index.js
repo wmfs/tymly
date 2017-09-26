@@ -4,6 +4,7 @@ const _ = require('lodash')
 const async = require('async')
 const schema = require('./schema.json')
 const boom = require('boom')
+const debug = require('debug')('users')
 
 class UsersService {
   boot (options, callback) {
@@ -11,8 +12,8 @@ class UsersService {
     this.messages = options.messages
 
     this.rbac = options.bootedServices.rbac
-    this.flobotsService = options.bootedServices.flobots
-    this.flows = this.flobotsService.flows
+    this.statebox = options.bootedServices.statebox
+    this.stateMachines = this.statebox.stateMachines
 
     if (options.bootedServices.hasOwnProperty('forms')) {
       // TODO: This is grim. Should be a hook?
@@ -26,7 +27,6 @@ class UsersService {
 
     if (options.config.hasOwnProperty('defaultUsers')) {
       async.forEachOf(
-
         options.config.defaultUsers,
 
         function (roles, userId, cb) {
@@ -67,6 +67,7 @@ class UsersService {
         roleIds,
 
         function (roleId, cb) {
+          debug(`Adding user '${userId}' into role '${roleId}'`)
           _this.roleMembershipModel.upsert(
             {
               roleId: roleId,
@@ -142,7 +143,7 @@ class UsersService {
     this.userMembershipsCache.reset()
   }
 
-  onAuthorizationHook (flobot, options, callback) {
+  onAuthorizationHook (executionDescription, options, callback) {
     const _this = this
     const userId = options.userId
 
@@ -154,37 +155,40 @@ class UsersService {
         } else {
           const action = options.action
 
-          let flowId
-          if (flobot) {
-            flowId = flobot.flowId
+          let stateMachineName
+          if (executionDescription) {
+            stateMachineName = executionDescription.stateMachineName
           } else {
-            flowId = options.flowId
+            stateMachineName = executionDescription.stateMachineName
           }
 
           const authorized = _this.rbac.checkRoleAuthorization(
             userId,
-            flobot,
+            executionDescription,
             roles,
             'flow',
-            flowId,
+            stateMachineName,
             action)
 
           if (authorized) {
             callback(null)
           } else {
-            callback(boom.forbidden('No roles permit this action', {userId: userId, flowId: flowId}))
+            callback(boom.forbidden('No roles permit this action', {
+              userId: userId,
+              stateMachineName: stateMachineName
+            }))
           }
         }
       }
     )
   }
 
-  static userCreatableFlow (flow) {
-    return flow.hasOwnProperty('instigators') && flow.instigators.indexOf('user') !== -1
+  static userCreatableFlow (stateMachine) {
+    return _.isArray(stateMachine.definition.instigators) && stateMachine.definition.instigators.indexOf('user') !== -1
   }
 
   /**
-   * Returns a list of Flows a user has the correct credentials to start, along with any form-definitions they can interact with. Useful for client apps wanting to configure themselves around an individual.
+   * Returns a list of state-machines a user has the correct credentials to start, along with any form-definitions they can interact with. Useful for client apps wanting to configure themselves around an individual.
    * @param {string} userId Specifies which useId to return a remit-object for
    * @param {Function} callback Called with a 'remit' object
    * @returns {undefined}
@@ -193,7 +197,7 @@ class UsersService {
    *   'Dave',
    *   function (err, remit) {
    *     // remit is an object:
-   *     //  flobotsUserCanCreate: []
+   *     //  stateMachinesUserCanStart: []
    *     //  forms: {}
    *   }
    * )
@@ -202,14 +206,9 @@ class UsersService {
     const _this = this
 
     const remit = {
-      flobotsUserCanCreate: [], // TODO: Should this be 'flowsUserCanCreate'?
+      stateMachinesUserCanStart: [],
       forms: {}
     }
-
-    let flow
-    let stateId
-    let formFillingState
-    let form
 
     this.getUserRoles(
       userId,
@@ -217,53 +216,58 @@ class UsersService {
         if (err) {
           callback(err)
         } else {
-          let formFillingStates
+          const formFillingStates = _this.statebox.findStates(
+            {
+              resourceToFind: 'module:formFilling'
+            }
+          )
 
-          for (let flowId in _this.flows) {
-            if (_this.flows.hasOwnProperty(flowId)) {
-              flow = _this.flows[flowId]
+          let firstError
 
-              // Can this user create a Flobot for this flow?
-              if (UsersService.userCreatableFlow(flow) && _this.rbac.checkRoleAuthorization(
-                userId,
-                {
-                  userId: userId
-                },
-                roles,
-                'flow',
-                flowId,
-                'startNewFlobot')
-                ) {
-                remit.flobotsUserCanCreate.push(
+          formFillingStates.forEach(
+            function (state) {
+              const stateMachineName = state.stateMachine.name
+              if (
+                UsersService.userCreatableFlow(state.stateMachine) &&
+                _this.rbac.checkRoleAuthorization(
+                  userId,
+                  {}, // Context {userId: userId},
+                  roles,
+                  'stateMachine',
+                  stateMachineName,
+                  'create'
+                )) {
+                remit.stateMachinesUserCanStart.push(
                   {
-                    flowId: flowId,
-                    label: flow.label,
-                    description: flow.description
+                    stateMachineName: stateMachineName,
+                    label: stateMachineName,
+                    description: state.stateMachine.definition.Comment || 'No comment?'
                   }
                 )
 
-                formFillingStates = flow.findStatesByClassName('formFilling')
+                const formId = state.definition.ResourceConfig.formId
+                const form = _this.forms[formId]
 
-                for (stateId in formFillingStates) {
-                  formFillingState = formFillingStates[stateId]
-                  form = _this.forms[formFillingState.formId]
-
-                  if (form) {
-                    remit.forms[formFillingState.formId] = {
-                      label: form.label,
-                      form: form.form,
-                      schema: form.schema
-                    }
-                  } else {
-                    console.log('WARNING: Flow ' + flowId + ' refers to an unknown formId ' + formFillingState.formId)
+                if (form) {
+                  remit.forms[formId] = {
+                    label: form.label,
+                    form: form.form,
+                    schema: form.schema
+                  }
+                } else {
+                  if (!firstError) {
+                    firstError = new Error(`State machine '${stateMachineName}' refers to an unknown formId '${formId}'`)
                   }
                 }
               }
             }
+          )
+          if (firstError) {
+            callback(firstError)
+          } else {
+            callback(null, remit)
           }
         }
-
-        callback(null, remit)
       }
     )
   }
@@ -272,5 +276,5 @@ class UsersService {
 module.exports = {
   schema: schema,
   serviceClass: UsersService,
-  bootAfter: ['caches', 'flobots', 'rbac']
+  bootAfter: ['caches', 'statebox', 'rbac']
 }

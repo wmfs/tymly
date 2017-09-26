@@ -1,14 +1,14 @@
 {
   "plural": "permissions",
 
-  "primaryKey": ["roleId", "flowId"],
+  "primaryKey": ["roleId", "stateMachineName"],
 
   "description": "Assign Flow permissions to roles",
   "type": "object",
 
   "properties": {
 
-    "flowId": {
+    "stateMachineName": {
       "type": "string"
     },
 
@@ -25,6 +25,6 @@
 
   },
 
-  "required": ["flowId", "roleId"]
+  "required": ["stateMachineName", "roleId"]
 
 }

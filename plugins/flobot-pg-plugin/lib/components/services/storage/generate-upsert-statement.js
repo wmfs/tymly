@@ -1,13 +1,17 @@
 'use strict'
 
 // const debug = require('debug')('flobot-pg-plugin')
-const _ = require('lodash')
 
+// generates a postgres SQL INSERT statement that looks something like...
+//    INSERT INTO schema.table_name (column1, column2)
+//    VALUES ($1, $2), ($3, $4), ($5, $6)
+//    ON CONFLICT (id) DO NOTHING;
 module.exports = function generateUpsertStatement (model, object) {
-  let statement = `INSERT INTO ${object.namespace}.${_.snakeCase(object.name)} (${object.propertyNames.join(', ')}) VALUES `
   const columnCount = object.propertyNames.length
+  const rowCount = object.data.length
 
-  for (let row = 1, rowCount = object.data.length; row <= rowCount; row++) {
+  let statement = `INSERT INTO ${model.fullTableName} (${object.propertyNames.join(', ')}) VALUES `
+  for (let row = 1; row <= rowCount; row++) {
     let valueLine = '('
     for (let col = 1; col <= columnCount; col++) {
       valueLine += '$' + (col + ((row - 1) * columnCount))
@@ -26,5 +30,6 @@ module.exports = function generateUpsertStatement (model, object) {
   }
 
   statement += ` ON CONFLICT (${model.pkColumnNames.join((', '))}) DO NOTHING;`
+
   return statement
 }

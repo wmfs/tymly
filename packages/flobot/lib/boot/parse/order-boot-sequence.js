@@ -33,11 +33,17 @@ module.exports = function bootSequenceOrder (serviceComponents) {
               targetComponent = serviceComponents[bootBeforeService]
               if (targetComponent) {
                 targetBootAfters = targetComponent.componentModule.bootAfter || []
-              }
-
-              if (targetBootAfters.indexOf(serviceName) === -1) {
-                targetBootAfters.push(serviceName)
-                targetComponent.bootAfter = targetBootAfters
+                if (targetBootAfters.indexOf(serviceName) === -1) {
+                  targetBootAfters.push(serviceName)
+                  targetComponent.bootAfter = targetBootAfters
+                }
+              } else {
+                messages.error(
+                  {
+                    name: 'bootOrderFail',
+                    message: `Unable to boot '${serviceName}' service before unknown service '${bootBeforeService}'`
+                  }
+                )
               }
             }
           )
@@ -65,7 +71,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
               messages.error(
                 {
                   name: 'unknownService',
-                  message: 'Unable to ensure the ' + fromServiceName + ' service boots after the ' + serviceName + " service (unknown service component '" + serviceName + "' )"
+                  message: 'Unable to ensure the ' + fromServiceName + ' service boots after the ' + serviceName + ' service (unknown service component \'' + serviceName + '\' )'
                 }
               )
             }

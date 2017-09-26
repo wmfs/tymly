@@ -29,10 +29,11 @@ describe('Simple Express tests', function () {
   let irrelevantToken
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
-  const flobotsUrl = `http://localhost:${PORT}/flobots/`
+  const executionsUrl = `http://localhost:${PORT}/executions/`
   const remitUrl = `http://localhost:${PORT}/remit/`
-  let rupertFlobotId
-  let alanFlobotId
+  let rupert
+  let alan
+  let statebox
   const Buffer = require('safe-buffer').Buffer
 
   it('should create a usable admin token for Dave', function () {
@@ -68,7 +69,8 @@ describe('Simple Express tests', function () {
         ],
 
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/cats-blueprint'),
+          path.resolve(__dirname, './fixtures/blueprints/website-blueprint')
         ],
 
         config: {
@@ -91,6 +93,7 @@ describe('Simple Express tests', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         app = flobotServices.server.app
+        statebox = flobotServices.statebox
         flobotServices.rbac.rbac.debug()
         done()
       }
@@ -110,35 +113,45 @@ describe('Simple Express tests', function () {
 
   it('should fail to create a new Flobot without a JWT', function (done) {
     rest.postJson(
-      flobotsUrl,
+      executionsUrl,
       {
         namespace: 'fbot',
-        flowName: 'cat',
+        stateMachineName: 'cat',
         version: '1.0',
         data: {petName: 'Rupert'}
-      }).on('complete', function (rupert, res) {
+      }
+    ).on(
+      'complete',
+      function (rupert, res) {
         expect(res.statusCode).to.equal(401)
         done()
-      })
+      }
+    )
   })
 
   it('should fail updating a Flobot without a JWT', function (done) {
     rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'stretch'}).on('complete', function (badFlobot, res) {
-        expect(res.statusCode).to.equal(401)
-        done()
-      })
-  })
-
-  it('should fail getting a Flobot without a JWT', function (done) {
-    rest.get(flobotsUrl + rupertFlobotId).on('complete', function (badFlobot, res) {
+      executionsUrl + '/' + alan,
+      {
+        action: 'SendTaskHeartbeat',
+        output: {
+          sound: 'Car engine'
+        }
+      }
+    ).on('complete', function (errHtml, res) {
       expect(res.statusCode).to.equal(401)
       done()
     })
   })
 
-  it("should fail getting the user's remit without a JWT", function (done) {
+  it('should fail getting a Flobot without a JWT', function (done) {
+    rest.get(executionsUrl + rupert).on('complete', function (badFlobot, res) {
+      expect(res.statusCode).to.equal(401)
+      done()
+    })
+  })
+
+  it('should fail getting the user\'s remit without a JWT', function (done) {
     rest.get(remitUrl).on('complete', function (remit, res) {
       expect(res.statusCode).to.equal(401)
       done()
@@ -147,262 +160,238 @@ describe('Simple Express tests', function () {
 
   // VALID JWTs SHOULD WORK
   // ----------------------
-  it('should create a new Rupert flobot', function (done) {
+  it('should create a new Rupert execution', function (done) {
     rest.postJson(
-      flobotsUrl,
+      executionsUrl,
       {
         namespace: 'fbotTest',
-        flowName: 'cat',
+        stateMachineName: 'cat',
         version: '1.0',
-        data: {petName: 'Rupert'}
-      }, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(201)
-        expect(rupert.flobot.flobotId).to.be.a('string')
-        expect(rupert.flobot.flowId).to.eql('fbotTest_cat_1_0')
-        expect(rupert.flobot.ctx.petName).to.be.eql('Rupert')
-        expect(rupert.flobot.stateId).to.eql('sleeping')
-        expect(rupert.flobot.stateEnterTime).to.be.a('string')
-        rupertFlobotId = rupert.flobot.flobotId
-        done()
-      })
+        input: {
+          petName: 'Rupert',
+          gender: 'male',
+          hoursSinceLastMotion: 11,
+          hoursSinceLastMeal: 5,
+          petDiary: []
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(201)
+      expect(executionDescription.status).to.eql('RUNNING')
+      expect(executionDescription.currentStateName).to.eql('WakingUp')
+      expect(executionDescription.ctx.petName).to.eql('Rupert')
+      rupert = executionDescription.executionName
+      done()
+    })
   })
 
-  it('should transition Rupert to sitting', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'stretch'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('sitting')
-        done()
-      })
-  })
-
-  it("should tranistion to walking (because we explicitly took the 'thingsToDo' event)", function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'thingsToDo'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('walking')
-        done()
-      })
-  })
-
-  it("should transition Rupert back to sitting (auto-pick the 'stop' event)", function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('sitting')
-        done()
-      })
-  })
-
-  it('should fail to transition Rupert away from sitting (no implicit event to infer)', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {}, sendToken(adminToken)).on('complete', function (err, res) {
-        expect(res.statusCode).to.equal(500)
-        expect(err.error).to.eql('Internal Server Error')
-        done()
-      })
-  })
-
-  it('should fail to transition Rupert due to trying an unknown event', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'needThatCatnip'}, sendToken(adminToken)).on('complete', function (err, res) {
-        expect(res.statusCode).to.equal(500)
-        expect(err.error).to.eql('Internal Server Error')
-        done()
-      })
-  })
-
-  it('should see Rupert eating Meal #1... an automated and uninterruptible process. Should be purring at the end.', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'hungry'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('purring')
-        done()
-      })
-  })
-
-  it('should see Rupert going for meal #2 and still be purring by the end of it.', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'hungry'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('purring')
-        done()
-      })
-  })
-
-  it('should see Rupert moaning at the end of Meal #3.', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'hungry'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('moaning')
-        done()
-      })
-  })
-
-  it('should see a moaning Rupert stropping-off to the litter box', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'stropOff', data: {destination: 'litter box'}}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('walking')
-        done()
-      })
-  })
-
-  it('should have Rupert sitting again', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'stop'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('sitting')
-        done()
-      })
-  })
-
-  it('should have Rupert pooing', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'squat'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('pooing')
-        done()
-      })
-  })
-
-  it('should have Rupert sitting again', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'smugness'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('sitting')
-        done()
-      })
-  })
-
-  it('should go back to sleep', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'allTooMuch'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('running')
-        expect(rupert.flobot.stateId).to.eql('sleeping')
-        done()
-      })
-  })
-
-  it('should get a sleeping Rupert', function (done) {
-    rest.get(flobotsUrl + rupertFlobotId, sendToken(adminToken)).on('complete', function (rupert, res) {
+  it('should get Rupert execution description', function (done) {
+    rest.get(
+      executionsUrl + '/' + rupert,
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
       expect(res.statusCode).to.equal(200)
-      expect(rupert.flobot.status).to.be.eql('running')
-      expect(rupert.flobot.stateId).to.eql('sleeping')
+      expect(executionDescription.ctx.petName).to.equal('Rupert')
       done()
     })
   })
 
-  it('should fail getting an unknown cat', function (done) {
-    rest.get(flobotsUrl + 'BADKITTY', sendToken(adminToken)).on('complete', function (err, res) {
-      expect(res.statusCode).to.equal(404)
-      expect(err.error).to.eql('Not Found')
-      expect(err.message).to.eql("No flobot with id 'BADKITTY' could be found.")
-      done()
-    })
-  })
-
-  it('should finish with Rupert retiring for the evening', function (done) {
-    rest.putJson(
-        flobotsUrl + rupertFlobotId,
-      {eventId: 'turnIn'}, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(200)
-        expect(rupert.flobot.status).to.be.eql('finished')
-        expect(rupert.flobot.stateId).to.eql('retiring')
+  it('should successfully complete Rupert\'s day', function (done) {
+    statebox.waitUntilStoppedRunning(
+      rupert,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.stateMachineName).to.eql('fbotTest_cat_1_0')
+        expect(executionDescription.currentStateName).to.eql('Sleeping')
+        expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
+        expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)
+        expect(executionDescription.ctx.gender).to.eql('male')
+        expect(executionDescription.ctx.petDiary).to.be.an('array')
+        expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Rupert is waking up!')
+        expect(executionDescription.ctx.petDiary[2]).to.equal('Rupert is walking... where\'s he off to?')
+        expect(executionDescription.ctx.petDiary[6]).to.equal('Shh, Rupert is eating...')
         done()
-      })
+      }
+    )
   })
 
-  it("should fail getting Rupert, now that he's retired for the evening", function (done) {
-    rest.get(flobotsUrl + rupertFlobotId, sendToken(adminToken)).on('complete', function (err, res) {
-      expect(res.statusCode).to.equal(404)
-      expect(err.error).to.eql('Not Found')
-      expect(err.message).to.be.a('string')
-      done()
-    })
-  })
-
-  it('should create a new Alan flobot', function (done) {
+  it('should create a new Alan execution', function (done) {
     rest.postJson(
-      flobotsUrl,
+      executionsUrl,
       {
         namespace: 'fbotTest',
-        flowName: 'cat',
+        stateMachineName: 'listeningCat',
         version: '1.0',
-        data: {petName: 'Alan'}
-      }, sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(201)
-        expect(rupert.flobot.ctx.petName).to.be.eql('Alan')
-        alanFlobotId = rupert.flobot.flobotId
+        input: {
+          petName: 'Alan',
+          gender: 'male',
+          petDiary: []
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(201)
+      expect(executionDescription.status).to.eql('RUNNING')
+      expect(executionDescription.currentStateName).to.eql('WakingUp')
+      expect(executionDescription.ctx.petName).to.eql('Alan')
+      alan = executionDescription.executionName
+      done()
+    })
+  })
+
+  it('should wait a while', function (done) {
+    setTimeout(done, 250)
+  })
+
+  it('should update Alan execution with a heartbeat', function (done) {
+    rest.putJson(
+      executionsUrl + '/' + alan,
+      {
+        action: 'SendTaskHeartbeat',
+        output: {
+          sound: 'Car engine'
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(200)
+      expect(executionDescription.status).to.equal('RUNNING')
+      expect(executionDescription.currentStateName).to.equal('Listening')
+      expect(executionDescription.ctx.sound).to.equal('Car engine')
+      done()
+    })
+  })
+
+  it('should wait a while longer', function (done) {
+    setTimeout(done, 250)
+  })
+
+  it('should sendTaskSuccess() to the Alan execution', function (done) {
+    rest.putJson(
+      executionsUrl + '/' + alan,
+      {
+        action: 'SendTaskSuccess',
+        output: {
+          order: [
+            {
+              product: 'Fresh Tuna',
+              quantity: 25
+            }
+          ]
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(200)
+      done()
+    })
+  })
+
+  it("should successfully complete Alans's awakening", function (done) {
+    statebox.waitUntilStoppedRunning(
+      alan,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.stateMachineName).to.eql('fbotTest_listeningCat_1_0')
+        expect(executionDescription.currentStateName).to.eql('Sleeping')
+        expect(executionDescription.ctx.gender).to.eql('male')
+        expect(executionDescription.ctx.petDiary).to.be.an('array')
+        expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Alan is waking up!')
+        expect(executionDescription.ctx.petDiary[1]).to.equal('Alan is listening for something... what will he hear?')
+        expect(executionDescription.ctx.petDiary[2]).to.equal('Sweet dreams Alan! x')
+        expect(executionDescription.ctx.formData.order[0]).to.eql(
+          {
+            product: 'Fresh Tuna',
+            quantity: 25
+          }
+        )
         done()
-      })
+      }
+    )
+  })
+
+  it('should create another new Alan execution', function (done) {
+    rest.postJson(
+      executionsUrl,
+      {
+        namespace: 'fbotTest',
+        stateMachineName: 'listeningCat',
+        version: '1.0',
+        input: {
+          petName: 'Alan',
+          gender: 'male',
+          petDiary: []
+        }
+      },
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(201)
+      expect(executionDescription.status).to.eql('RUNNING')
+      expect(executionDescription.currentStateName).to.eql('WakingUp')
+      expect(executionDescription.ctx.petName).to.eql('Alan')
+      alan = executionDescription.executionName
+      done()
+    })
   })
 
   it('should cancel a new Alan flobot', function (done) {
     rest.del(
-        flobotsUrl + alanFlobotId,
-      sendToken(adminToken)).on('complete', function (rupert, res) {
-        expect(res.statusCode).to.equal(204)
-        done()
-      })
-  })
-
-  it("should fail getting Alan, now that he's been cancelled", function (done) {
-    rest.get(flobotsUrl + alanFlobotId, sendToken(adminToken)).on('complete', function (err, res) {
-      expect(res.statusCode).to.equal(404)
-      expect(err.error).to.eql('Not Found')
-      expect(err.message).to.be.a('string')
+      executionsUrl + alan,
+      sendToken(adminToken)
+    ).on('complete', function (rupert, res) {
+      expect(res.statusCode).to.equal(204)
       done()
     })
   })
 
-  it('should fail to create a new Rupert flobot (irrelevant roles)', function (done) {
-    rest.postJson(
-      flobotsUrl,
-      {
-        namespace: 'fbotTest',
-        flowName: 'cat',
-        version: '1.0',
-        data: {petName: 'Rupert'}
-      }, sendToken(irrelevantToken)).on('complete', function (err, res) {
-        expect(res.statusCode).to.equal(403)
-        expect(err.error).to.equal('Forbidden')
-        expect(err.message).to.equal('No roles permit this action')
-        done()
-      })
+  it('should get stopped Alan execution-description', function (done) {
+    rest.get(
+      executionsUrl + '/' + alan,
+      sendToken(adminToken)
+    ).on('complete', function (executionDescription, res) {
+      expect(res.statusCode).to.equal(200)
+      expect(executionDescription.ctx.petName).to.equal('Alan')
+      expect(executionDescription.status).to.equal('STOPPED')
+      expect(executionDescription.errorCode).to.equal('STOPPED')
+      expect(executionDescription.errorCause).to.equal('Execution stopped externally')
+      done()
+    })
   })
 
-  // GET USER'S "REMIT"
-  // ------------------
-
-  it("should get the user's remit", function (done) {
+  it("should get an admin's remit", function (done) {
     rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
+      console.log('>>>>>>>>', remit)
       expect(res.statusCode).to.equal(200)
       done()
     })
   })
+
+  it("should get a normal user's remit", function (done) {
+    rest.get(remitUrl, sendToken(irrelevantToken)).on('complete', function (remit, res) {
+      console.log('>>>>>>>>', remit)
+      expect(res.statusCode).to.equal(200)
+      done()
+    })
+  })
+
+  /*
+        it('should fail to create a new Rupert flobot (irrelevant roles)', function (done) {
+          rest.postJson(
+            executionsUrl,
+            {
+              namespace: 'fbotTest',
+              stateMachineName: 'cat',
+              version: '1.0',
+              data: {petName: 'Rupert'}
+            }, sendToken(irrelevantToken)).on('complete', function (err, res) {
+              expect(res.statusCode).to.equal(403)
+              expect(err.error).to.equal('Forbidden')
+              expect(err.message).to.equal('No roles permit this action')
+              done()
+            })
+        })
+        */
 })

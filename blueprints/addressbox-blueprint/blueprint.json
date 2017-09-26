@@ -1,0 +1,12 @@
+{
+  "namespace": "wmfs",
+  "name": "addressbox",
+  "version": "1.0",
+
+  "label": "Addressbox",
+  "author": "Reece Brend",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Flobot blueprint for gazetteer management",
+  "tags": ["gazetteer"]
+}

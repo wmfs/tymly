@@ -26,12 +26,8 @@ class FormsService {
 
 module.exports = {
   serviceClass: FormsService,
-
-  configModifier: function flobotsServiceConfigModifier (ctx) {
-    if (ctx.utils.isFsmOptions(ctx)) {
-      ctx.utils.idNamespacer('formId', 'forms', ctx)
-    }
+  refProperties: {
+    formId: 'forms'
   },
-
   bootBefore: ['flobots', 'rbac']
 }

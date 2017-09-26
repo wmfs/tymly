@@ -1,0 +1,20 @@
+{
+  "id": "title",
+  "title": "Title",
+  "description": "Reference Data test table",
+  "primaryKey": ["id"],
+  "type": "object",
+  "properties": {
+
+    "id": {
+      "type": "number"
+    },
+
+    "title": {
+      "type": "string"
+    }
+  },
+
+  "indexes": [],
+  "required": ["title"]
+}

@@ -1,0 +1,18 @@
+{
+  "Comment": "Do some basic CRUD things.",
+  "StartWith": "Upserting",
+  "States": {
+
+    "Upserting": {
+      "Type": "Task",
+      "Resource": "module:upserting",
+      "Next": "Finding"
+    },
+
+    "Finding": {
+      "Type": "Task",
+      "Resource": "module:findingById",
+      "End": true
+    }
+  }
+}

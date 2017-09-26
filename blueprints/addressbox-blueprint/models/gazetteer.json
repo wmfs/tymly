@@ -1,0 +1,263 @@
+{
+  "title": "Gazetteer",
+  "description": "The Vision Gazetteer",
+  "primaryKey": [
+    "uprn"
+  ],
+  "type": "object",
+  "properties": {
+    "uprn": {
+      "type": "integer",
+      "maxLength": 14,
+      "description": "A gazetteer URN"
+    },
+    "originHashSum": {
+      "type": "string",
+      "description": "Hash as assigned to the row in Addressbase Plus"
+    },
+    "counter": {
+      "type": "integer",
+      "minLength": 1,
+      "description": "A generated sequence number which is combined with the URN to identify the address (Minimum=1)"
+    },
+    "addressLabel": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "An address label assembles from various elements"
+    },
+    "addressDescription": {
+      "type": "string",
+      "description": "An address description"
+    },
+    "businessName": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Stores the Business Name of the address if applicable"
+    },
+    "buildingName": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Stores the name of a building if applicable"
+    },
+    "buildingNumber": {
+      "type": "string",
+      "maxLength": 15,
+      "description": "Stores the number of a building if applicable"
+    },
+    "streetName1": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "The first Street name of the property"
+    },
+    "areaName1": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "The local area (e.g. Town, Suburb)"
+    },
+    "areaName2": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "The main area (e.g. County, State)"
+    },
+    "postcode": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "The Postcode"
+    },
+    "postTown": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "The Post Town"
+    },
+    "postCounty": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "The Post County"
+    },
+    "actualX": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.01,
+      "description": "The X grid co-ordinate (Easting)"
+    },
+    "actualY": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.01,
+      "description": "The Y grid co-ordinate (Northing)"
+    },
+    "routingX": {
+      "type": "number",
+      "multipleOf": 0.01,
+      "maxLength": 8,
+      "description": "The Easting co-ordinate of an access-point for the address"
+    },
+    "routingY": {
+      "type": "number",
+      "multipleOf": 0.01,
+      "maxLength": 9,
+      "description": "The Northing co-ordinate of an access-point for the address"
+    },
+    "mapbookRef": {
+      "type": "string",
+      "maxLength": 15,
+      "description": "Map book reference of premise"
+    },
+    "lpiKey": {
+      "type": "string",
+      "maxLength": 14,
+      "description": "NLPG Land and Property Identifier key"
+    },
+    "ssi": {
+      "type": "array",
+      "description": "Linking of GI section to gazetteer entries",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ssiKey": {
+            "type": "integer",
+            "maxLength": 12,
+            "description": "A key that identifies a specific piece of SSI"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "ssiKey",
+          "notes"
+        ]
+      }
+    },
+    "ssiLink": {
+      "type": "array",
+      "description": "Linking of GI section to gazetteer entries",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ssiKey": {
+            "type": "integer",
+            "maxLength": 12,
+            "description": "A key that identifies a specific piece of SSI"
+          }
+        },
+        "required": [
+          "ssiKey"
+        ]
+      }
+    },
+    "responses": {
+      "type": "array",
+      "description": "Contains turnout information relating to specific gazetteer entries",
+      "items": {
+        "type": "object",
+        "properties": {
+          "responseCode": {
+            "type": "string",
+            "maxLength": 30,
+            "description": "The name of the response classification (to match with those set-up within Vision"
+          }
+        },
+        "required": [
+          "uprn",
+          "responseCode"
+        ]
+      }
+    },
+    "locations": {
+      "type": "array",
+      "description": "Access points for gazetteer entries",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Name / title for this access point. 2nd part of primary key"
+          },
+          "xCoordinate": {
+            "type": "number",
+            "multipleOf": 0.01,
+            "maxLength": 8,
+            "description": "X grid coordinate of access point"
+          },
+          "yCoordinate": {
+            "type": "number",
+            "multipleOf": 0.01,
+            "maxLength": 9,
+            "description": "Y grid coordinate of access point"
+          },
+          "responseCode": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Trunout information for the Vision command and control system for the access point"
+          }
+        },
+        "required": [
+          "name",
+          "XCoordinate",
+          "YCoordinate",
+          "responseCode"
+        ]
+      }
+    },
+    "alarms": {
+      "type": "array",
+      "description": "Details of fire alarms at gazetteer locations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "The alarm code (identification code for this alarm). 2nd part of primary key"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Free text information for this alarm"
+          },
+          "provider": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "The alarm company"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    },
+    "routing": {
+      "type": "array",
+      "description": "The purpose of this record is to maintain ROUTINGX and ROUTINGY values in the gazetteer table",
+      "items": {
+        "type": "object",
+        "properties": {
+          "xCoordinate": {
+            "type": "number",
+            "maxLength": 8,
+            "multipleOf": 0.01,
+            "description": "X grid coordinate of access point"
+          },
+          "yCoordinate": {
+            "type": "number",
+            "maxLength": 9,
+            "multipleOf": 0.01,
+            "description": "Y grid coordinate of access point"
+          }
+        },
+        "required": [
+          "XCoordinate",
+          "YCoordinate"
+        ]
+      }
+    }
+  },
+  "required": [
+    "uprn",
+    "counter",
+    "addressLabel"
+  ]
+}

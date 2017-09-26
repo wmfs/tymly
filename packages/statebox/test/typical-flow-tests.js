@@ -4,29 +4,11 @@
 const chai = require('chai')
 const expect = chai.expect
 
-// Functions
-const helloWorldFunction = require('./fixtures/functions/hello-world')
-const helloFunction = require('./fixtures/functions/hello')
-const worldFunction = require('./fixtures/functions/world')
-const addFunction = require('./fixtures/functions/add')
-const subtractFunction = require('./fixtures/functions/subtract')
-const a = require('./fixtures/functions/a')
-const b = require('./fixtures/functions/b')
-const c = require('./fixtures/functions/c')
-const d = require('./fixtures/functions/d')
-const e = require('./fixtures/functions/e')
-const f = require('./fixtures/functions/f')
-const g = require('./fixtures/functions/g')
+// Module Resources
+const moduleResources = require('./fixtures/module-resources')
 
 // stateMachines
-const helloWorldStateMachine = require('./fixtures/state-machines/hello-world.json')
-const helloThenWorldStateMachine = require('./fixtures/state-machines/hello-then-world.json')
-const calculatorStateMachine = require('./fixtures/state-machines/calculator.json')
-const calculatorWithInputPathsStateMachine = require('./fixtures/state-machines/calculator-with-input-paths.json')
-const passStateMachine = require('./fixtures/state-machines/pass-state-machine.json')
-const failStateMachine = require('./fixtures/state-machines/fail-state-machine.json')
-const parallelStateMachine = require('./fixtures/state-machines/parallel-state-machine.json')
-const parallelFailStateMachine = require('./fixtures/state-machines/parallel-fail-state-machine.json')
+const stateMachines = require('./fixtures/state-machines')
 
 const Statebox = require('./../lib')
 
@@ -39,39 +21,18 @@ describe('Simple stateMachine test', function () {
     statebox = new Statebox()
   })
 
-  it('should add some modules', function () {
-    statebox.createModuleResource('helloWorld', helloWorldFunction)
-    statebox.createModuleResource('hello', helloFunction)
-    statebox.createModuleResource('world', worldFunction)
-    statebox.createModuleResource('add', addFunction)
-    statebox.createModuleResource('subtract', subtractFunction)
-    statebox.createModuleResource('a', a)
-    statebox.createModuleResource('b', b)
-    statebox.createModuleResource('c', c)
-    statebox.createModuleResource('d', d)
-    statebox.createModuleResource('e', e)
-    statebox.createModuleResource('f', f)
-    statebox.createModuleResource('g', g)
+  it('should add some module resources', function () {
+    statebox.createModuleResources(moduleResources)
   })
 
-  it('should create a new helloWorld stateMachine', function () {
-    statebox.createStateMachine(
-      'helloWorld',
-      helloWorldStateMachine
-    )
-  })
-
-  it('should create a new helloThenWorld stateMachine', function () {
-    statebox.createStateMachine(
-      'helloThenWorld',
-      helloThenWorldStateMachine
-    )
-  })
-
-  it('should create a new calculator stateMachine', function () {
-    statebox.createStateMachine(
-      'calculator',
-      calculatorStateMachine
+  it('should add some state machines', function (done) {
+    statebox.createStateMachines(
+      stateMachines,
+      {},
+      function (err) {
+        expect(err).to.eql(null)
+        done()
+      }
     )
   })
 
@@ -80,9 +41,10 @@ describe('Simple stateMachine test', function () {
       {},  // input
       'helloWorld', // state machine name
       {}, // options
-      function (err, result) {
+      function (err, executionDescription) {
         expect(err).to.eql(null)
-        executionName = result.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
+        executionName = executionDescription.executionName
         done()
       }
     )
@@ -96,6 +58,22 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('helloWorld')
         expect(executionDescription.currentStateName).to.eql('Hello World')
+        expect(executionDescription.currentResource).to.eql('module:helloWorld')
+        done()
+      }
+    )
+  })
+
+  it("should execute helloWorld, but receive SUCCEEDED response {sendResponse: 'COMPLETE'}", function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloWorld', // state machine name
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
@@ -122,6 +100,53 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
         expect(executionDescription.currentStateName).to.eql('World')
+        expect(executionDescription.currentResource).to.eql('module:world')
+        done()
+      }
+    )
+  })
+
+  it('should execute helloThenFailure', function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloThenFailure', // state machine name
+      {}, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        executionName = executionDescription.executionName
+        expect(executionDescription.status).to.eql('RUNNING')
+        done()
+      }
+    )
+  })
+
+  it('should successfully fail helloThenFailure execution 2', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.stateMachineName).to.eql('helloThenFailure')
+        expect(executionDescription.currentStateName).to.eql('Failure')
+        expect(executionDescription.currentResource).to.eql('module:failure')
+        expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
+        expect(executionDescription.errorMessage).to.eql('But at least it was expected')
+        done()
+      }
+    )
+  })
+
+  it("should execute helloThenFailure, but receive FAILED response {sendResponse: 'COMPLETE'}", function (done) {
+    statebox.startExecution(
+      {},  // input
+      'helloThenFailure', // state machine name
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        expect(result.status).to.eql('FAILED')
         done()
       }
     )
@@ -144,7 +169,7 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should successfully complete calculator execution', function (done) {
+  it('should successfully complete calculator execution (add)', function (done) {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
@@ -152,6 +177,7 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Add')
+        expect(executionDescription.currentResource).to.eql('module:add')
         expect(executionDescription.ctx.result).to.eql(5)
         done()
       }
@@ -175,7 +201,7 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should successfully complete calculator execution', function (done) {
+  it('should successfully complete calculator execution (subtract)', function (done) {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
@@ -183,16 +209,10 @@ describe('Simple stateMachine test', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.stateMachineName).to.eql('calculator')
         expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.currentResource).to.eql('module:subtract')
         expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
-    )
-  })
-
-  it('should create a new calculator (with input paths) stateMachine', function () {
-    statebox.createStateMachine(
-      'calculatorWithInputPathsStateMachine',
-      calculatorWithInputPathsStateMachine
     )
   })
 
@@ -205,7 +225,7 @@ describe('Simple stateMachine test', function () {
         },
         operator: '-'
       },  // input
-      'calculatorWithInputPathsStateMachine', // state machine name
+      'calculatorWithInputPaths', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -215,14 +235,15 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should successfully complete calculator (with input paths) execution', function (done) {
+  it('should successfully complete calculator (with input paths) execution (subtract)', function (done) {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPathsStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
         expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.currentResource).to.eql('module:subtract')
         expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
@@ -232,21 +253,16 @@ describe('Simple stateMachine test', function () {
   it('should prove describeExecution works as expected', function (done) {
     statebox.describeExecution(
       executionName,
+      {},
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPathsStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
         expect(executionDescription.currentStateName).to.eql('Subtract')
+        expect(executionDescription.currentResource).to.eql('module:subtract')
         expect(executionDescription.ctx.result).to.eql(1)
         done()
       }
-    )
-  })
-
-  it('should create a new pass stateMachine ', function () {
-    statebox.createStateMachine(
-      'passStateMachine',
-      passStateMachine
     )
   })
 
@@ -255,7 +271,7 @@ describe('Simple stateMachine test', function () {
       {
         georefOf: 'Home'
       },
-      'passStateMachine', // state machine name
+      'pass', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -271,8 +287,9 @@ describe('Simple stateMachine test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('passStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('pass')
         expect(executionDescription.currentStateName).to.eql('PassState')
+        expect(executionDescription.currentResource).to.eql(undefined)
         expect(executionDescription.ctx).to.eql(
           {
             georefOf: 'Home',
@@ -287,17 +304,10 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should create a new fail stateMachine ', function () {
-    statebox.createStateMachine(
-      'failStateMachine',
-      failStateMachine
-    )
-  })
-
   it('should execute fail stateMachine', function (done) {
     statebox.startExecution(
       {},
-      'failStateMachine', // state machine name
+      'fail', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -313,8 +323,9 @@ describe('Simple stateMachine test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.stateMachineName).to.eql('failStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('fail')
         expect(executionDescription.currentStateName).to.eql('FailState')
+        expect(executionDescription.currentResource).to.eql(undefined)
         expect(executionDescription.errorMessage).to.eql('Invalid response.')
         expect(executionDescription.errorCode).to.eql('ErrorA')
         done()
@@ -322,40 +333,33 @@ describe('Simple stateMachine test', function () {
     )
   })
 
-  it('should create a new parallel stateMachine ', function () {
-    //
-    //                        |
-    //                    Parallel1
-    //                    |       |
-    //                    A       B
-    //                (+4 secs)   |
-    //                 |      Parallel2
-    //                 |      |       |
-    //                 |      C       D
-    //                 |  (+2 secs)   |
-    //                 |      |       E
-    //                 |      |       |
-    //                 |      ---------
-    //                 |          |
-    //                 |          F
-    //                 |          |
-    //                 ------------
-    //                       |
-    //                       G
-    // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
-
-    statebox.createStateMachine(
-      'parallelStateMachine',
-      parallelStateMachine
-    )
-  })
+  //
+  //                        |
+  //                    Parallel1
+  //                    |       |
+  //                    A       B
+  //                (+4 secs)   |
+  //                 |      Parallel2
+  //                 |      |       |
+  //                 |      C       D
+  //                 |  (+2 secs)   |
+  //                 |      |       E
+  //                 |      |       |
+  //                 |      ---------
+  //                 |          |
+  //                 |          F
+  //                 |          |
+  //                 ------------
+  //                       |
+  //                       G
+  // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
 
   it('should execute parallel stateMachine', function (done) {
     statebox.startExecution(
       {
         results: []
       },
-      'parallelStateMachine', // state machine name
+      'parallel', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -371,17 +375,11 @@ describe('Simple stateMachine test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('parallelStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('parallel')
         expect(executionDescription.currentStateName).to.eql('G')
+        expect(executionDescription.currentResource).to.eql('module:g')
         done()
       }
-    )
-  })
-
-  it('should create a new parallel-failing stateMachine', function () {
-    statebox.createStateMachine(
-      'parallelFailStateMachine',
-      parallelFailStateMachine
     )
   })
 
@@ -390,7 +388,7 @@ describe('Simple stateMachine test', function () {
       {
         results: []
       },
-      'parallelFailStateMachine', // state machine name
+      'parallelFail', // state machine name
       {}, // options
       function (err, result) {
         expect(err).to.eql(null)
@@ -406,8 +404,9 @@ describe('Simple stateMachine test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.stateMachineName).to.eql('parallelFailStateMachine')
+        expect(executionDescription.stateMachineName).to.eql('parallelFail')
         expect(executionDescription.currentStateName).to.eql('Parallel1')
+        expect(executionDescription.currentResource).to.eql(undefined)
         expect(executionDescription.errorCause).to.eql('States.BranchFailed')
         expect(executionDescription.errorCode).to.eql('Failed because a state in a parallel branch has failed')
         done()

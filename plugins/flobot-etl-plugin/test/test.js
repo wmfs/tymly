@@ -6,10 +6,11 @@ const expect = require('chai').expect
 const glob = require('glob')
 const _ = require('lodash')
 const csv = require('csvtojson')
+const STATE_MACHINE_NAME = 'fbotTest_people_1_0'
 
 describe('Simple CSV and flobot test', function () {
   this.timeout(5000)
-  let flobotsService
+  let statebox
 
   it('should start Flobot service', function (done) {
     flobot.boot(
@@ -23,28 +24,27 @@ describe('Simple CSV and flobot test', function () {
       },
       function (err, flobotServices) {
         expect(err).to.eql(null)
-        flobotsService = flobotServices.flobots
+        statebox = flobotServices.statebox
         done()
       }
     )
   })
 
-  it('should run a Flobot to process CSV file', function (done) {
-    flobotsService.startNewFlobot(
-      'fbotTest_people_1_0',
+  it('should run a new execution to process CSV file', function (done) {
+    statebox.startExecution(
       {
-        data: {
-          sourceFilePaths: path.resolve(__dirname, 'fixtures', 'people.csv'),
-          outputDirRootPath: path.resolve(__dirname, 'fixtures', 'output'),
-          sourceDir: path.resolve(__dirname, 'fixtures', 'output')
-        }
-      },
-      function (err, data) {
+        sourceFilePaths: path.resolve(__dirname, 'fixtures', 'people.csv'),
+        outputDirRootPath: path.resolve(__dirname, 'fixtures', 'output'),
+        sourceDir: path.resolve(__dirname, 'fixtures', 'output')
+      },  // input
+      STATE_MACHINE_NAME, // state machine name
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
+      function (err, executionDescription) {
         expect(err).to.eql(null)
-        expect(data.status).to.eql('finished')
-        expect(data.flowId).to.be.a('string')
-        expect(data.flowId).to.eql('fbotTest_people_1_0')
-        expect(data.stateId).to.eql('processingCsvFiles')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentStateName).to.eql('ProcessingCsvFiles')
         done()
       }
     )

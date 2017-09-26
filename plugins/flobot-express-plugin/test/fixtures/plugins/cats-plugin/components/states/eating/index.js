@@ -7,7 +7,7 @@ class Eating {
 
   enter (flobot, data, callback) {
     const ctx = flobot.ctx
-    ctx.mealCount ++
+    ctx.mealCount++
 
     console.log(' * Rupert is ready for meal #' + ctx.mealCount + '!')
 

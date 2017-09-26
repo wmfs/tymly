@@ -92,5 +92,5 @@ class FunctionsService {
 
 module.exports = {
   serviceClass: FunctionsService,
-  bootBefore: ['flobots']
+  bootBefore: ['statebox']
 }

@@ -1,0 +1,30 @@
+{
+  "Comment": "Add a pearl-of-wisdom to a thread",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "tags": [
+    "website",
+    "posts"
+  ],
+  "StartAt": "FormFilling",
+  "States": {
+    "FormFilling": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "formId": "createPostForm"
+      },
+      "Resource": "module:formFilling",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}
