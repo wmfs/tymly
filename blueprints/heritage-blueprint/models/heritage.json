@@ -1,0 +1,20 @@
+{
+  "title": "heritage",
+  "description": "Gets the heritage attribute for use in RIDGE models",
+  "primaryKey": [
+    "uprn"
+  ],
+  "type": "object",
+  "properties": {
+    "uprn": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string"
+    }
+  }
+}
+

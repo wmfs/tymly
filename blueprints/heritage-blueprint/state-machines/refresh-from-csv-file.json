@@ -1,0 +1,24 @@
+{
+  "Comment": "state-machine to get heritage list for RIDGE model",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "modelId": "heritage",
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "heritage"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+  }
+}
