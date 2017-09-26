@@ -44,7 +44,7 @@ describe('data import', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.currentStateName).to.eql('ProcessingCsvFiles')
+        expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
         done()
       }
     )

@@ -17,15 +17,13 @@ class ImportingCsvFiles {
   }
 
   run (event, context) {
-    console.log('---->\n', context)
-    debug(`Flobot ${flobot.flobotId} has entered state 'importingCsvFiles - enabling debug for 'supercopy' is a good idea too!`)
     supercopy(
       {
-        sourceDir: event.sourceDir,
+        sourceDir: event,
         headerColumnPkPrefix: this.headerColumnPkPrefix,
         topDownTableOrder: this.topDownTableOrder,
         client: this.client,
-        schemaName: _.snakeCase(this.stateMachineNS), // this need to change
+        schemaName: context.stateMachineMeta.schemaName,
         truncateTables: this.truncateTables,
         debug: true
       },
