@@ -1,0 +1,20 @@
+{
+  "title": "fire-incident",
+  "description": "1 Year Fire Incident model",
+  "primaryKey": ["ID"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique ID for 1 Year Fire Incident records"
+    },
+    "label": {
+      "type": "string",
+      "description": "Label to match with ID field"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Associated score"
+    }
+  }
+}

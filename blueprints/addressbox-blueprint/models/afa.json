@@ -1,0 +1,20 @@
+{
+  "title": "afa",
+  "description": "1 Year Automated Fire Alarm model",
+  "primaryKey": ["ID"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique ID for 1 Year Automated Fire Alarm records"
+    },
+    "label": {
+      "type": "string",
+      "description": "Label to match with ID field"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Associated score"
+    }
+  }
+}

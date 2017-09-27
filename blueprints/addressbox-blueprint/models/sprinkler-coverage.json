@@ -1,0 +1,20 @@
+{
+  "title": "sprinkler-coverage",
+  "description": "Sprinkler Coverage model",
+  "primaryKey": ["ID"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique ID for Sprinkler Coverage records"
+    },
+    "label": {
+      "type": "string",
+      "description": "Label to match with ID field"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Associated score"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "propertyNames": [
+    "id",
+    "label",
+    "score"
+  ],
+  "data": [
+    [0, "0", 0],
+    [1, "1", 6],
+    [2, "Multiple", 16]
+  ]
+}
