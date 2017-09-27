@@ -1,0 +1,16 @@
+{
+    "title": "fs-management",
+    "description": "fs-management model",
+    "primaryKey": ["ID"],
+    "type": "object",
+    "properties": {
+    "ID": {
+        "type": "integer",
+        "description": "Unique ID for fs-management records"
+    },
+    "LABEL": {
+        "type": "string",
+        "description": "Label to match with ID field"
+    }
+    }
+}

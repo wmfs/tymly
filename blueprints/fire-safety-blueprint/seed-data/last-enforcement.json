@@ -1,0 +1,15 @@
+{
+  "propertyNames": [
+    "ID",
+    "LABEL"
+  ],
+  "data": [
+    [0, "None"],
+    [1, "Satisfactory"],
+    [2, "No Revisit"],
+    [3, "Revisit"],
+    [4, "Alterations Notice"],
+    [5, "Enforcement"],
+    [6, "Prohibition"]
+  ]
+}

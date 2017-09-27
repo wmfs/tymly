@@ -1,0 +1,11 @@
+{
+  "namespace": "wmfs",
+  "name": "fire-safety-blueprint",
+  "version": "1.0",
+  "label": "fire-safety-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Flobot blueprint to process fire-safety data from a csv file",
+  "tags": []
+}

@@ -1,0 +1,16 @@
+{
+  "title": "last-enforcement",
+  "description": "last-enforcement model",
+  "primaryKey": ["ID"],
+  "type": "object",
+  "properties": {
+    "ID": {
+      "type": "integer",
+      "description": "Unique ID for last-enforcement records"
+    },
+    "LABEL": {
+      "type": "string",
+      "description": "Label to match with ID field"
+    }
+  }
+}
