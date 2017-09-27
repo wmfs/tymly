@@ -1,0 +1,21 @@
+{
+  "title": "building",
+  "description": "Data on buildings for properties",
+  "primaryKey": [
+    "uprn"
+  ],
+  "properties": {
+    "uprn": {
+      "type": "string"
+    },
+    "footprint": {
+      "type": "integer"
+    },
+    "floors": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    }
+  }
+}

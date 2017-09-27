@@ -1,24 +1,28 @@
 {
   "name": "building-blueprint",
-  "description": "Additional building-related attributes",
   "version": "0.0.1",
-  "author": "Tim Needham",
+  "author": "Reece Brend",
+  "dependencies": {},
   "devDependencies": {
     "chai": "^4.1.0",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
+    "debug": "^2.6.8",
     "flobot": "0.0.14",
-    "flobot-pg-plugin": "0.0.5"
+    "flobot-pg-plugin": "0.0.5",
+    "statebox": "0.0.5"
   },
   "scripts": {
-    "lint": "standard"
+    "start": "node ./lib/index.js",
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wmfs/tymly"
+    "url": "https://github.com/wmfs/tymly/blueprints/building-blueprint"
   },
   "bugs": {
-    "url": "https://github.com/wmfs/tymly/issues"
+    "url": "https://github.com/wmfs/tymly/blueprints/building-blueprint/issues"
   }
 }
