@@ -15,6 +15,14 @@
     "score": {
       "type": "integer",
       "description": "Associated score"
+    },
+    "lowerBound": {
+      "type": "integer",
+      "description": "Lower bound for matching the score"
+    },
+    "upperBound": {
+      "type": "integer",
+      "description": "Upper bound for matching the score"
     }
   }
 }
