@@ -5,12 +5,14 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
+const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
+const Statebox = require('statebox')
 
-describe('data processing', function () {
+
+describe('data import', function () {
   this.timeout(5000)
 
-  let statebox
+  let statebox = new Statebox()
 
   it('should startup flobot', function (done) {
     flobot.boot(
@@ -26,18 +28,16 @@ describe('data processing', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
+
         done()
       }
     )
   })
 
-  it('should create and populate the ridge.imd database table', function (done) {
-    this.skip()
-
+  it('should create and populate the wmfs.fire-safety database table', function (done) {
     statebox.startExecution(
       {
-        outputDir: path.resolve(__dirname, './output'),
-        outputFilePath: path.resolve(__dirname, './output/delta.csv')
+        sourceDir: path.resolve(__dirname, './fixtures/input')
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {

@@ -2,7 +2,6 @@
 const adjustStructure = require('./utils/adjust-structure')
 const combineNumbersAndSuffixes = require('./utils/combine-numbers-and-suffixes')
 module.exports = function getBlpuLabel (addressbasePlusProperties) {
-  console.log(addressbasePlusProperties)
   let addressLines = []
   let adjustedData = adjustStructure(addressbasePlusProperties)
   if (adjustedData.get('organisation') !== null) {

@@ -14,6 +14,7 @@ describe('Blueprint Tests', function () {
   const OUTPUT_AND_INPUT_DIR = path.resolve(__dirname, './output')
 
   let statebox
+  this.timeout(5000)
 
   it('should startup flobot so that we can test the blueprint', function (done) {
     flobot.boot(

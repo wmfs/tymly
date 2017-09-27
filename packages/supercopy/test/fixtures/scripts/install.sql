@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE SCHEMA IF NOT EXISTS supercopy_test;
 
 DROP TABLE IF EXISTS supercopy_test.children;
@@ -66,3 +68,5 @@ VALUES
  (40, 'Rod', 'Flanders', 40, 30),
  (50, 'Tod', 'Flanders', 40, 30),
  (60, 'Nelson', 'Muntz', NULL, NULL);
+
+COMMIT;

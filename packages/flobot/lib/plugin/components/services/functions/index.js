@@ -91,7 +91,6 @@ function isFunction (candidate) {
   return typeof candidate === 'function'
 }
 
-
 module.exports = {
   serviceClass: FunctionsService,
   bootBefore: ['statebox']

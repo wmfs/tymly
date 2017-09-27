@@ -1,0 +1,23 @@
+{
+  "Comment": "state-machine to import the extra attributes to the Addressbox model.",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "modelId": "gazetteer",
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "gazetteer"
+        ]
+      },
+      "End": true
+    }
+  }
+}

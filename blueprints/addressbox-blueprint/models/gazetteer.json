@@ -253,6 +253,18 @@
           "YCoordinate"
         ]
       }
+    },
+    "numAutomaticFireAlarm": {
+      "type": "integer",
+      "description": "Number of automatic fire alarms in the past 12 months."
+    },
+    "numFireIncident": {
+      "type": "integer",
+      "description": "Number of fire incidents in the past 12 months."
+    },
+    "sprinklerCoverage": {
+      "type": "integer",
+      "description": "Building sprinkler coverage percentage."
     }
   },
   "required": [

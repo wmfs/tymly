@@ -2,15 +2,14 @@
 
 'use strict'
 
-const flobot = require('flobot')
+const chai = require('./../node_modules/chai')
+const expect = chai.expect
 const path = require('path')
-const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
+const flobot = require('flobot')
 
-describe('data processing', function () {
-  this.timeout(5000)
-
+describe('Add extra attributes tests', function () {
   let statebox
+  this.timeout(5000)
 
   it('should startup flobot', function (done) {
     flobot.boot(
@@ -26,27 +25,25 @@ describe('data processing', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
+
         done()
       }
     )
   })
 
-  it('should create and populate the ridge.imd database table', function (done) {
-    this.skip()
-
+  it('should execute importingCsvFiles', function (done) {
     statebox.startExecution(
       {
-        outputDir: path.resolve(__dirname, './output'),
-        outputFilePath: path.resolve(__dirname, './output/delta.csv')
-      },  // input
-      STATE_MACHINE_NAME, // state machine name
+        sourceDir: path.resolve(__dirname, './fixtures/input')
+      },
+      'wmfs_refreshExtraAttributesFromCsv_1_0',
       {
         sendResponse: 'COMPLETE'
-      }, // options
+      },
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
+        expect(executionDescription.currentStateName).to.equal('ImportingCsvFiles')
         done()
       }
     )
