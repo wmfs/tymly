@@ -8,7 +8,6 @@ const expect = require('chai').expect
 const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
 const Statebox = require('statebox')
 
-
 describe('data import', function () {
   this.timeout(5000)
 
