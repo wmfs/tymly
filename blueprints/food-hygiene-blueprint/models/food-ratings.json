@@ -1,6 +1,5 @@
 {
-  "id": "ratings",
-  "title": "Ratings",
+  "title": "food-ratings",
   "description": "Food and hygiene ratings",
   "primaryKey": ["fhrsid"],
   "type": "object",
@@ -42,7 +41,8 @@
       "type": "string"
     },
     "rating_date": {
-      "type": "date-time"
+      "type": "string",
+      "format": "date-time"
     },
     "local_authority_code": {
       "type": "string"
