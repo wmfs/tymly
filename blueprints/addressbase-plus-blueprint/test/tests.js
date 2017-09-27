@@ -5,6 +5,7 @@
 const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
+const fs = require('fs')
 
 describe('Blueprint Tests', function () {
   const STATE_MACHINE_NAME = 'ordnanceSurvey_importCsvFiles_1_0'
@@ -12,8 +13,11 @@ describe('Blueprint Tests', function () {
     path.resolve(__dirname, './fixtures/sample-data/exeter-sample-data-20.csv')
   ]
   const OUTPUT_AND_INPUT_DIR = path.resolve(__dirname, './output')
+  const UPSERTS_DIR = path.resolve(OUTPUT_AND_INPUT_DIR, './upserts')
 
   let statebox
+  let client
+
   this.timeout(5000)
 
   it('should startup flobot so that we can test the blueprint', function (done) {
@@ -33,14 +37,10 @@ describe('Blueprint Tests', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
+        client = flobotServices.storage.client
         done()
       }
     )
-  })
-
-  it('should find the state-machine by name', function () {
-    const stateMachine = statebox.findStateMachineByName(STATE_MACHINE_NAME)
-    expect(stateMachine.name).to.eql(STATE_MACHINE_NAME)
   })
 
   it('should execute the state-machine', function (done) {
@@ -65,5 +65,66 @@ describe('Blueprint Tests', function () {
         done()
       }
     )
+  })
+
+  it('should have created an output folder containing an upserts folder', function (done) {
+    fs.stat(OUTPUT_AND_INPUT_DIR, function (err, outputStats) {
+      expect(err).to.eql(null)
+      if (err) {
+        console.log(OUTPUT_AND_INPUT_DIR, outputStats)
+        done(err)
+      } else {
+        fs.stat(UPSERTS_DIR, function (err, upsertsStats) {
+          expect(err).to.eql(null)
+          if (err) {
+            console.log(UPSERTS_DIR, upsertsStats)
+            done(err)
+          } else {
+            done()
+          }
+        })
+      }
+    })
+  })
+
+  it('should have created a manifest.json file', function (done) {
+    const MANIFEST_FILE = path.resolve(OUTPUT_AND_INPUT_DIR, './manifest.json')
+    fs.stat(MANIFEST_FILE, function (err, manifestStats) {
+      expect(err).to.eql(null)
+      if (err) {
+        console.log(MANIFEST_FILE, manifestStats)
+        done(err)
+      } else {
+        done()
+      }
+    })
+  })
+
+  it('should have created an addressbase-holding.csv file', function (done) {
+    const CSV_FILE = path.resolve(UPSERTS_DIR, './addressbase-holding.csv')
+    fs.stat(CSV_FILE, function (err, csvStats) {
+      expect(err).to.eql(null)
+      if (err) {
+        console.log(CSV_FILE, csvStats)
+        done(err)
+      } else {
+        done()
+      }
+    })
+  })
+
+  it('should return 20 rows when selecting from the newly populated table', function (done) {
+    client.query(`SELECT uprn, hash_sum FROM ordnance_survey.addressbase_holding ORDER BY uprn ASC;`, [],
+      function (err, result) {
+        expect(err).to.eql(null)
+        expect(result.rowCount).to.eql(20)
+        expect(result.rows[8].uprn).to.eql('100040214823')
+        done()
+      }
+    )
+  })
+
+  it('Should shutdown database connection', function () {
+    client.end()
   })
 })
