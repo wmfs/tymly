@@ -8,13 +8,15 @@
   "States": {
     "ImportingCsvFiles": {
       "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
       "ResourceConfig": {
-        "schemaName": "fsa",
-        "sourceDir": "C:\\Users\\meena.hoda\\Documents\\FSA\\Data\\csv",
-        "topDownTableOrder": ["ratings"],
+        "modelId": "foodRatings",
+        "topDownTableOrder": [
+          "food_ratings"
+        ],
         "truncateTables": true
       },
-      "Resource": "module:importingCsvFiles",
       "End": true
     }
   }
