@@ -1,12 +1,12 @@
 {
   "namespace": "wmfs",
-  "name": "addressbox",
+  "name": "building-blueprint",
   "version": "1.0",
 
-  "label": "Addressbox",
+  "label": "building-blueprint",
   "author": "Reece Brend",
 
   "organisation": "West Midlands Fire Service",
-  "description": "Flobot blueprint for gazetteer management",
+  "description": "Flobot blueprint for building attributes",
   "tags": ["gazetteer"]
 }

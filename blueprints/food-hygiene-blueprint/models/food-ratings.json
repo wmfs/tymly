@@ -1,0 +1,88 @@
+{
+  "title": "food-ratings",
+  "description": "Food and hygiene ratings",
+  "primaryKey": ["fhrsid"],
+  "type": "object",
+  "properties": {
+    "fhrsid": {
+      "type": "number"
+    },
+    "local_authority_business_id": {
+      "type": "string"
+    },
+    "business_name": {
+      "type": "string"
+    },
+    "business_type": {
+      "type": "string"
+    },
+    "business_type_id": {
+      "type": "integer"
+    },
+    "address_line_1": {
+      "type": "string"
+    },
+    "address_line_2": {
+      "type": "string"
+    },
+    "address_line_3": {
+      "type": "string"
+    },
+    "address_line_4": {
+      "type": "string"
+    },
+    "postcode": {
+      "type": "string"
+    },
+    "rating_value": {
+      "type": "string"
+    },
+    "rating_key": {
+      "type": "string"
+    },
+    "rating_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "local_authority_code": {
+      "type": "string"
+    },
+    "local_authority_name": {
+      "type": "string"
+    },
+    "local_authority_website": {
+      "type": "string"
+    },
+    "local_authority_email_address": {
+      "type": "string"
+    },
+    "hygiene": {
+      "type": "integer"
+    },
+    "structural": {
+      "type": "integer"
+    },
+    "confidence_in_management": {
+      "type": "integer"
+    },
+    "scheme_type": {
+      "type": "string"
+    },
+    "new_rating_pending": {
+      "type": "string"
+    },
+    "longitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001
+    },
+    "latitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001
+    }
+  },
+  "required": [
+    "fhrsid"
+  ]
+}

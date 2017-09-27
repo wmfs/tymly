@@ -1,0 +1,14 @@
+{
+  "propertyNames": [
+    "id",
+    "label",
+    "score",
+    "lowerBound",
+    "upperBound"
+  ],
+  "data": [
+    [0, "0", 0, 0, 0],
+    [1, "1", 6, 1, 1],
+    [2, "Multiple", 16, 1, 999]
+  ]
+}

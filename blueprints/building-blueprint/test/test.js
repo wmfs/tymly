@@ -33,7 +33,7 @@ describe('data import', function () {
     )
   })
 
-  it('should create and populate the wmfs.fire-safety database table', function (done) {
+  it('should create and populate the wmfs.building database table', function (done) {
     statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input')

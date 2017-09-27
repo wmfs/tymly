@@ -17,6 +17,10 @@
     "label": {
       "type": "string",
       "description": "A label to describe the index of multiple deprivation"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Associated score"
     }
   }
 }

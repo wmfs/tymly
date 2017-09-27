@@ -1,12 +1,12 @@
 {
-  "title": "last-enforcement",
-  "description": "last-enforcement model",
-  "primaryKey": ["ID"],
+  "title": "ea-food-standards",
+  "description": "EA Food Standards model",
+  "primaryKey": ["id"],
   "type": "object",
   "properties": {
     "id": {
       "type": "integer",
-      "description": "Unique ID for last-enforcement records"
+      "description": "Unique ID for EA Food Standards records"
     },
     "label": {
       "type": "string",

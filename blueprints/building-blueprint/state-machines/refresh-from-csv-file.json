@@ -1,0 +1,24 @@
+{
+  "Comment": "Blueprint to import building data from a CSV file into the model",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "modelId": "building",
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "building"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+  }
+}

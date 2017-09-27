@@ -2,11 +2,14 @@
   "propertyNames": [
     "id",
     "decile",
-    "label"
+    "label",
+    "score"
   ],
   "data": [
-    [ 1, 1, "first" ],
-    [ 2, 2, "second" ],
-    [ 3, 3, "third" ]
+    [ 1, 1, "Affluent", 5 ],
+    [ 2, 2, "Well off", 10 ],
+    [ 3, 3, "Average", 15 ],
+    [ 4, 4, "Deprived", 20 ],
+    [ 5, 5, "Very Deprived", 25 ]
   ]
 }

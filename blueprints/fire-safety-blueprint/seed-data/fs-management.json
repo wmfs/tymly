@@ -1,14 +1,15 @@
 {
     "propertyNames": [
-        "ID",
-        "LABEL"
+        "id",
+        "label",
+        "score"
     ],
     "data": [
-        [0, "Not Available"],
-        [1, "Very Low"],
-        [2, "Low"],
-        [3, "Average"],
-        [4, "High"],
-        [5, "Very High"]
+        [0, "Not Available", 0],
+        [1, "Very Low", 32],
+        [2, "Low", 16],
+        [3, "Average", 0],
+        [4, "High", -8],
+        [5, "Very High", -16]
     ]
 }

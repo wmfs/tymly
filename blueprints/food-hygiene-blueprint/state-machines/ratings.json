@@ -1,0 +1,21 @@
+{
+  "Comment": "Blueprint to import food and hygiene ratings data from a CSV file into the model.",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "ResourceConfig": {
+        "schemaName": "fsa",
+        "sourceDir": "C:\\Users\\meena.hoda\\Documents\\FSA\\Data\\csv",
+        "topDownTableOrder": ["ratings"],
+        "truncateTables": true
+      },
+      "Resource": "module:importingCsvFiles",
+      "End": true
+    }
+  }
+}
