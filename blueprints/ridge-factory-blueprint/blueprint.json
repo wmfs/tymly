@@ -1,0 +1,11 @@
+{
+  "namespace": "wmfs",
+  "name": "ridge-factory-blueprint",
+  "version": "1.0",
+  "label": "ridge-factory-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Flobot blueprint to calculate the RIDGE model for factories.",
+  "tags": []
+}
