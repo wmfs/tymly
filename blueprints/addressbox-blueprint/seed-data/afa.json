@@ -3,8 +3,8 @@
     "id",
     "label",
     "score",
-    "lowerBound",
-    "upperBound"
+    "lower_bound",
+    "upper_bound"
   ],
   "data": [
     [0, "0", 0, 0, 0],
