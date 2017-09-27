@@ -2,12 +2,14 @@
   "propertyNames": [
     "id",
     "label",
-    "score"
+    "score",
+    "lower_bound",
+    "upper_bound"
   ],
   "data": [
-    [0, "2 or less star rating", 8],
-    [1, "3-4 star rating", 6],
-    [2, "5 star rating", 2],
-    [3, "N/A", 0]
+    [0, "2 or less star rating", 8, 0, 2],
+    [1, "3-4 star rating", 6, 3, 4],
+    [2, "5 star rating", 2, 5, 5],
+    [3, "N/A", 0, null, null]
   ]
 }
