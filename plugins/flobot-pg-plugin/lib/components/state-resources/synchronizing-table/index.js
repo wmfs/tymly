@@ -3,51 +3,47 @@
  */
 'use strict'
 const startTelepods = require('pg-telepods')
-const schema = require('./schema.json')
 const getFunction = require('flobot/lib/getFunction.js')
 
 class SynchronizingTable {
-  init (stateConfig, options, callback) {
+  init (resourceConfig, env, callback) {
     console.log('Init Synchronizing table')
-    this.client = options.services.storage.client
-    this.source = stateConfig.options.source
-    this.target = stateConfig.options.target
-    this.join = stateConfig.options.join
-    this.transformFunction = getFunction(options, stateConfig.options.transformerFunctionName)
+    this.client = env.bootedServices.storage.client
+    this.source = resourceConfig.source
+    this.target = resourceConfig.target
+    this.join = resourceConfig.join
+    this.transformFunction = getFunction(
+      env,
+      resourceConfig.transformerFunctionName
+    )
     callback(null)
   }
 
-  enter (flobot, data, callback) {
+  run (event, context) {
     console.log('Enter Synchronizing table')
     startTelepods(
       {
         client: this.client,
-        outputDir: flobot.ctx.outputDir,
+        outputDir: event,
         source: this.source,
         target: this.target,
         join: this.join,
         transformFunction: this.transformFunction
       },
-      function (err, stats) {
+      function (err) {
         if (err) {
-          console.log('error')
-          callback(err)
+          context.sendTaskFailure(
+            {
+              error: 'startTelepodsFail',
+              cause: err
+            }
+          )
         } else {
-          console.log('Leaving Synchronizing table')
-          callback(null)
+          context.sendTaskSuccess()
         }
       }
     )
   }
-
-  leave (flobot, data, callback) {
-    console.log('Leave Synchronizing table')
-    callback(null)
-  }
 }
 
-module.exports = {
-  autoNudge: true,
-  stateClass: SynchronizingTable,
-  schema: schema
-}
+module.exports = SynchronizingTable

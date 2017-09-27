@@ -1,7 +1,6 @@
 'use strict'
 
 module.exports = function combineNumbersAndSuffixes (startNumber, startSuffix, endNumber, endSuffix) {
-  console.log(startNumber, startSuffix, endNumber, endSuffix)
   let label = null
 
   if (startNumber === undefined) {

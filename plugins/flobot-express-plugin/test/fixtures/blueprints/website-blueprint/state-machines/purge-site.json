@@ -11,10 +11,10 @@
   "States": {
     "FormFilling": {
       "Type": "Task",
+      "Resource": "module:formFilling",
       "ResourceConfig": {
         "formId": "purgeForm"
       },
-      "Resource": "module:formFilling",
       "End": true
     }
   }

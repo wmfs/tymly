@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+
 'use strict'
 
 const chai = require('chai')
@@ -12,6 +13,7 @@ describe('General addressbox tests', function () {
     const label = getBlpuLabel(reducedFlatData)
     expect(label).to.be.eql('Organisation, Flat 2 1A-2B, 121 Alphington Road, Exeter, EX2 8JD')
   })
+
   it('Should test flat label', function () {
     const label = getBlpuLabel(flatData)
     expect(label).to.be.eql('Flat 2, 121 Alphington Road, Exeter, EX2 8JD')

@@ -1,6 +1,7 @@
 {
   "Comment": "Read a post in its entirety",
   "version": "1.0",
+  "StartAt": "Logging",
   "instigators": [
     "user"
   ],
@@ -8,14 +9,13 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
   "States": {
     "Logging": {
       "Type": "Task",
+      "Resource": "module:logging",
       "ResourceConfig": {
         "template": "Read post!"
       },
-      "Resource": "module:logging",
       "End": true
     }
   },

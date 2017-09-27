@@ -1,39 +1,44 @@
+'use strict'
+
+const _ = require('lodash')
 const boom = require('boom')
-const debug = require('debug')('flobotExpressPlugin')
+const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
   const services = req.app.get('services')
   const authService = services.auth
   const statebox = services.statebox
-  let stateExecutionName
+  const stateMachineName = req.body.stateMachineName
 
-  if (req.body.hasOwnProperty('stateExecutionName')) {
-    stateExecutionName = req.body.stateExecutionName
+  let input = req.body.input
+  if (input) {
+    input = _.cloneDeep(input)
   } else {
-    stateExecutionName = [
-      req.body.namespace,
-      req.body.stateMachineName,
-      req.body.version.split('.').join('_')
-    ].join('_')
+    input = {}
   }
 
-  const options = JSON.parse(JSON.stringify(req.body))
+  let options = req.body.options
+  if (options) {
+    options = _.cloneDeep(options)
+  } else {
+    options = {}
+  }
 
-  options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
+  // options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
   options.action = 'startExecution'
-  options.stateExecutionName = stateExecutionName
+  options.stateMachineName = stateMachineName
 
   const userId = authService.extractUserIdFromRequest(req)
   if (userId) {
     options.userId = userId
   }
 
-  debug(`Request to '${options.action}' on '${options.stateExecutionName}' (by user '${options.userId}')`)
+  debug(`Request to '${options.action}' on '${options.stateMachineName}' (by user '${options.userId}')`)
 
   statebox.startExecution(
-    options.input || {},
-    stateExecutionName,
-    {},
+    input,
+    stateMachineName,
+    options,
     function (err, executionDescription) {
       if (err) {
         let boomErr

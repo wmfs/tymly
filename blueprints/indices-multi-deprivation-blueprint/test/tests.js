@@ -26,7 +26,6 @@ describe('data import', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
-
         done()
       }
     )

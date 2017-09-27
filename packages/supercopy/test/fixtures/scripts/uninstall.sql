@@ -1,1 +1,3 @@
+BEGIN;
 DROP SCHEMA IF EXISTS supercopy_test CASCADE;
+COMMIT;

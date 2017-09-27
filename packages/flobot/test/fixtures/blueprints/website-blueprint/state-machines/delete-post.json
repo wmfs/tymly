@@ -1,6 +1,7 @@
 {
   "Comment": "Workflow to remove a website post",
   "version": "1.0",
+  "StartAt": "Logging",
   "instigators": [
     "user"
   ],
@@ -8,14 +9,13 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
   "States": {
     "Logging": {
       "Type": "Task",
+      "Resource": "module:logging",
       "ResourceConfig": {
         "template": "Delete post!"
       },
-      "Resource": "module:logging",
       "End": true
     }
   }

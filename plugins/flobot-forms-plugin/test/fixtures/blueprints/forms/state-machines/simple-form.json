@@ -8,6 +8,8 @@
   "States": {
     "FindingOne": {
       "Type": "Task",
+      "InputPath": "$.key",
+      "Resource": "module:findingOne",
       "ResourceConfig": {
         "modelId": "simpleForm",
         "filter": {
@@ -18,27 +20,25 @@
           }
         }
       },
-      "Resource": "module:findingOne",
-      "InputPath": "$.key",
       "ResultPath": "$.commentData",
       "Next": "FormFilling"
     },
     "FormFilling": {
       "Type": "Task",
+      "Resource": "module:formFilling",
       "ResourceConfig": {
         "formId": "simpleForm"
       },
-      "Resource": "module:formFilling",
       "ResultPath": "$.commentData",
       "Next": "Upserting"
     },
     "Upserting": {
       "Type": "Task",
+      "InputPath": "$.commentData",
+      "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "simpleForm"
       },
-      "Resource": "module:upserting",
-      "InputPath": "$.commentData",
       "End": true
     }
   }

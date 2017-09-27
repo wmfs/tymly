@@ -1,6 +1,7 @@
 {
   "Comment": "Add a pearl-of-wisdom to a thread",
   "version": "1.0",
+  "StartAt": "Logging",
   "instigators": [
     "user"
   ],
@@ -8,14 +9,13 @@
     "website",
     "posts"
   ],
-  "StartAt": "Logging",
   "States": {
     "Logging": {
       "Type": "Task",
+      "Resource": "module:logging",
       "ResourceConfig": {
         "template": "Create post!"
       },
-      "Resource": "module:logging",
       "End": true
     }
   },

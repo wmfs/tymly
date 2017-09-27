@@ -1,5 +1,7 @@
 'use strict'
 
 module.exports = function getFunction (options, funcName) {
-  return options.services.functions.functions[funcName].func
+  const services = options.services || options.bootedServices
+
+  return services.functions.functions[funcName].func
 }

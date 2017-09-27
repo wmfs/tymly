@@ -1,15 +1,16 @@
 /* eslint-env mocha */
+
 'use strict'
 
-const chai = require('./../node_modules/chai')
-const expect = chai.expect
-const path = require('path')
 const flobot = require('flobot')
-const Statebox = require('statebox')
+const path = require('path')
+const expect = require('chai').expect
+const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
 
-describe('Heritage tests', function () {
+describe('data processing', function () {
   this.timeout(5000)
-  let statebox = new Statebox()
+
+  let statebox
 
   it('should startup flobot', function (done) {
     flobot.boot(
@@ -25,25 +26,27 @@ describe('Heritage tests', function () {
       function (err, flobotServices) {
         expect(err).to.eql(null)
         statebox = flobotServices.statebox
-
         done()
       }
     )
   })
 
-  it('should execute importingCsvFiles', function (done) {
+  it('should create and populate the ridge.imd database table', function (done) {
+    this.skip()
+
     statebox.startExecution(
       {
-        sourceDir: path.resolve(__dirname, './fixtures/input')
-      },
-      'wmfs_refreshFromCsvFile_1_0',
+        outputDir: path.resolve(__dirname, './output'),
+        outputFilePath: path.resolve(__dirname, './output/delta.csv')
+      },  // input
+      STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
-      },
+      }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.currentStateName).to.equal('ImportingCsvFiles')
+        expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
         done()
       }
     )

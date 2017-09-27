@@ -22,30 +22,27 @@ class FunctionsService {
       }
     }
 
-    let func
-    let functionInfo
-    let args
-
     const functions = dottie.get(options, 'blueprintComponents.functions')
 
     if (functions) {
       options.messages.info('Adding functions')
 
-      for (let functionId in functions) {
-        if (functions.hasOwnProperty(functionId)) {
-          func = functions[functionId](ctx) // Closures in play!
-          args = this.getFunctionParameters(func)
-          functionInfo = {
-            functionId: functionId,
-            func: func,
-            args: args,
-            functionIsAsync: (args.length > 0 && args[args.length - 1] === 'callback')
-          }
-
-          this.functions[functionId] = functionInfo
-
-          options.messages.detail(functionId + ' (' + args.join(',') + ')')
+      for (const [functionId, functionGenerator] of Object.entries(functions)) {
+        if (!isFunction(functionGenerator)) {
+          continue
         }
+        const func = functionGenerator(ctx) // Closures in play!
+        const args = FunctionsService.getFunctionParameters(func)
+        const functionInfo = {
+          functionId: functionId,
+          func: func,
+          args: args,
+          functionIsAsync: (args.length > 0 && args[args.length - 1] === 'callback')
+        }
+
+        this.functions[functionId] = functionInfo
+
+        options.messages.detail(functionId + ' (' + args.join(',') + ')')
       }
     }
 
@@ -73,7 +70,7 @@ class FunctionsService {
    * var argList = functions.getFunctionParameters(function (a,b,c){})
    * console.log(argList) // ['a','b','c']
    */
-  getFunctionParameters (func) {
+  static getFunctionParameters (func) {
     const fnStr = func.toString().replace(STRIP_COMMENTS, '')
     const argsList = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')'))
     const result = argsList.match(ARGUMENT_NAMES)
@@ -88,6 +85,10 @@ class FunctionsService {
       return stripped
     }
   }
+}
+
+function isFunction (candidate) {
+  return typeof candidate === 'function'
 }
 
 module.exports = {

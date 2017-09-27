@@ -5,15 +5,17 @@
   "States": {
     "Upserting": {
       "Type": "Task",
+      "InputPath": "$.catDoc",
+      "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "cat"
       },
-      "Resource": "module:upserting",
-      "InputPath": "$.catDoc",
       "Next": "FindingOne"
     },
     "FindingOne": {
       "Type": "Task",
+      "InputPath": "$.catDoc",
+      "Resource": "module:findingOne",
       "ResourceConfig": {
         "modelId": "cat",
         "filter": {
@@ -24,8 +26,6 @@
           }
         }
       },
-      "Resource": "module:findingOne",
-      "InputPath": "$.catDoc",
       "ResultPath": "$.catDocFromStorage",
       "End": true
     }

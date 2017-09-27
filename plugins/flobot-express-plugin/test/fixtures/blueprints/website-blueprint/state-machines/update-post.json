@@ -13,10 +13,10 @@
   "States": {
     "FormFilling": {
       "Type": "Task",
+      "Resource": "module:formFilling",
       "ResourceConfig": {
         "formId": "updatePostForm"
       },
-      "Resource": "module:formFilling",
       "End": true
     }
   },
