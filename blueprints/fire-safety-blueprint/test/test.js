@@ -5,13 +5,13 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
-const Statebox = require('statebox')
 
 describe('data import', function () {
   this.timeout(5000)
 
-  let statebox = new Statebox()
+  const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
+
+  let statebox
 
   it('should startup flobot', function (done) {
     flobot.boot(

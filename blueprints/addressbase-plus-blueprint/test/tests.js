@@ -8,6 +8,8 @@ const path = require('path')
 const fs = require('fs')
 
 describe('Blueprint Tests', function () {
+  this.timeout(5000)
+
   const STATE_MACHINE_NAME = 'ordnanceSurvey_importCsvFiles_1_0'
   const LIST_OF_CSV_SOURCE_FILES = [
     path.resolve(__dirname, './fixtures/sample-data/exeter-sample-data-20.csv')
@@ -17,8 +19,6 @@ describe('Blueprint Tests', function () {
 
   let statebox
   let client
-
-  this.timeout(5000)
 
   it('should startup flobot so that we can test the blueprint', function (done) {
     flobot.boot(
