@@ -129,9 +129,13 @@ describe('Blueprint Tests', function () {
     client.query(`SELECT uprn, hash_sum FROM ordnance_survey.addressbase_holding ORDER BY uprn ASC;`, [],
       function (err, result) {
         expect(err).to.eql(null)
-        expect(result.rowCount).to.eql(20)
-        expect(result.rows[8].uprn).to.eql('100040214823')
-        done()
+        if (err) {
+          done(err)
+        } else {
+          expect(result.rowCount).to.eql(20)
+          expect(result.rows[8].uprn).to.eql('100040214823')
+          done()
+        }
       }
     )
   })
