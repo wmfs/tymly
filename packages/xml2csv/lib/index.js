@@ -4,13 +4,16 @@ const fs = require('fs')
 const sax = require('sax')
 const dottie = require('dottie')
 const _ = require('lodash')
+var endOfLine = require('os').EOL
 
 module.exports = function (options, callback) {
   const source = fs.createReadStream(options.xmlPath)
   const output = fs.createWriteStream(options.csvPath)
   const saxStream = sax.createStream(true)
 
-  saxStream.on('error', function () { console.log('ERR') })
+  saxStream.on('error', function () {
+    console.log('ERR')
+  })
 
   let count = 0
   let accepting = false
@@ -70,7 +73,7 @@ function writeHeadersToFile (headerMap, outputStream) {
   let headerString = ''
   for (let [idx, header] of headerMap.entries()) {
     if (idx === headerMap.length - 1) { // it's the last entry
-      headerString += header[1] + '\n'
+      headerString += header[1] + endOfLine
     } else {
       headerString += header[1] + ', '
     }
@@ -86,12 +89,12 @@ function writeRecordToFile (record, headerMap, outputStream) {
       if (idx === headerMap.length - 1) { // it's the last entry
         if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
           if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[3]][header[0]] + '"\n'
+            recordString += '"' + record[header[3]][header[0]] + '"' + endOfLine
           } else { // it's a number or date
-            recordString += record[header[3]][header[0]] + '\n'
+            recordString += record[header[3]][header[0]] + endOfLine
           }
         } else { // it does not contain a value for property
-          recordString += '\n'
+          recordString += endOfLine
         }
       } else { // it is not the last entry
         if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
@@ -108,12 +111,12 @@ function writeRecordToFile (record, headerMap, outputStream) {
       if (idx === headerMap.length - 1) { // it's the last entry
         if (record.hasOwnProperty(header[0])) { // it does contain a value for property
           if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[0]] + '"\n'
+            recordString += '"' + record[header[0]] + '"' + endOfLine
           } else { // it's a number or date
-            recordString += record[header[0]] + '\n'
+            recordString += record[header[0]] + endOfLine
           }
         } else { // it does not contain a value for property
-          recordString += '\n'
+          recordString += endOfLine
         }
       } else { // it is not the last entry
         if (record.hasOwnProperty(header[0])) { // it does contain a value for property
