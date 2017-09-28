@@ -1,10 +1,11 @@
 {
-    "label": "Get anything in the FlobotTest namespace... useful for dashboards",
-
-    "grants": [
-        {
-            "stateMachineName": "*",
-            "allows": ["get"]
-        }
-    ]
+  "label": "Get anything in the FlobotTest namespace... useful for dashboards",
+  "grants": [
+    {
+      "stateMachineName": "*",
+      "allows": [
+        "get"
+      ]
+    }
+  ]
 }

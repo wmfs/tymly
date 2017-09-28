@@ -1,10 +1,11 @@
 {
-    "label": "Developer",
-
-    "grants": [
-        {
-            "stateMachineName": "createPost",
-            "allows": ["cancel"]
-        }
-    ]
+  "label": "Developer",
+  "grants": [
+    {
+      "stateMachineName": "createPost",
+      "allows": [
+        "cancel"
+      ]
+    }
+  ]
 }

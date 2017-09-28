@@ -7,6 +7,9 @@ const _ = require('lodash')
 var endOfLine = require('os').EOL
 
 module.exports = function (options, callback) {
+
+  
+
   const source = fs.createReadStream(options.xmlPath)
   const output = fs.createWriteStream(options.csvPath)
   const saxStream = sax.createStream(true)
