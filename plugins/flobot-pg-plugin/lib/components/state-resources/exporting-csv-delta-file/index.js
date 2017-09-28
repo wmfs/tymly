@@ -20,7 +20,7 @@ class ExportingCsvDeltaFile {
       {
         client: this.client,
         since: this.since,
-        outputFilepath: event.outputFilepath,
+        outputFilepath: event,
         actionAliases: this.actionAliases,
         createdColumnName: this.createdColumnName,
         modifiedColumnName: this.modifiedColumnName,
