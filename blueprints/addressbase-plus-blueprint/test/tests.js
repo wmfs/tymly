@@ -16,6 +16,7 @@ describe('Blueprint Tests', function () {
   ]
   const OUTPUT_AND_INPUT_DIR = path.resolve(__dirname, './output')
   const UPSERTS_DIR = path.resolve(OUTPUT_AND_INPUT_DIR, './upserts')
+  const MANIFEST_FILE = path.resolve(OUTPUT_AND_INPUT_DIR, './manifest.json')
 
   let statebox
   let client
@@ -88,13 +89,24 @@ describe('Blueprint Tests', function () {
   })
 
   it('should have created a manifest.json file', function (done) {
-    const MANIFEST_FILE = path.resolve(OUTPUT_AND_INPUT_DIR, './manifest.json')
     fs.stat(MANIFEST_FILE, function (err, manifestStats) {
       expect(err).to.eql(null)
       if (err) {
         console.log(MANIFEST_FILE, manifestStats)
         done(err)
       } else {
+        done()
+      }
+    })
+  })
+
+  it('should be a line count of 20 in the manifest file ', function (done) {
+    fs.readFile(MANIFEST_FILE, 'utf8', function (err, data) {
+      if (err) {
+        done(err)
+      } else {
+        let manifest = JSON.parse(data)
+
         done()
       }
     })
