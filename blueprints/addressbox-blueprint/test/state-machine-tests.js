@@ -35,11 +35,12 @@ describe('data processing', function () {
   it('should create and populate the ridge.imd database table', function (done) {
     const outputRoot = path.resolve(__dirname, './output')
     fse.removeSync(outputRoot)
+    const deltaFile = path.resolve(outputRoot, './delta.csv')
 
     statebox.startExecution(
       {
         outputDir: path.resolve(outputRoot, './sync'),
-        outputFilePath: path.resolve(outputRoot, '.delta.csv')
+        outputFilePath: deltaFile
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {
@@ -49,6 +50,7 @@ describe('data processing', function () {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.currentStateName).to.eql('ExportingCsvDeltaFile')
+        expect(fse.existsSync(deltaFile)).to.be.ok
         done()
       }
     )
