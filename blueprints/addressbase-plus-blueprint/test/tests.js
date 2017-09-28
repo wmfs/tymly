@@ -106,7 +106,7 @@ describe('Blueprint Tests', function () {
         done(err)
       } else {
         let manifest = JSON.parse(data)
-
+        expect(manifest.counts.byDir.upserts).to.eql(20)
         done()
       }
     })
