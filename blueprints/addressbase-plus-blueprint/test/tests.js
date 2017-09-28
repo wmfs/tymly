@@ -126,7 +126,7 @@ describe('Blueprint Tests', function () {
   })
 
   it('should return 20 rows when selecting from the newly populated table', function (done) {
-    client.query(`SELECT uprn, hash_sum FROM ordnance_survey.addressbase_holding ORDER BY uprn ASC;`, [],
+    client.query('SELECT uprn, hash_sum FROM ordnance_survey.addressbase_holding ORDER BY uprn ASC;', [],
       function (err, result) {
         expect(err).to.eql(null)
         if (err) {
