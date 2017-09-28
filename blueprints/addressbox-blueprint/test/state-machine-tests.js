@@ -50,7 +50,7 @@ describe('data processing', function () {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.currentStateName).to.eql('ExportingCsvDeltaFile')
-        expect(fse.existsSync(deltaFile)).to.be.true
+        expect(fse.existsSync(deltaFile)).to.eql(true)
         done()
       }
     )
