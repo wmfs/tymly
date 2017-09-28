@@ -1,0 +1,35 @@
+{
+	"name": "xml2csv",
+	"description": "Convert XML file to CSV file",
+	"version": "0.0.7",
+	"keywords": [
+		"xml",
+		"convert",
+		"csv"
+	],
+	"author": "Tim Needham",
+	"main": "./lib/index.js",
+	"dependencies": {
+		"dottie": "^2.0.0",
+		"lodash": "^4.17.4",
+		"sax": "^1.2.4"
+	},
+	"devDependencies": {
+		"chai": "^4.1.0",
+		"chai-subset": "^1.5.0",
+		"mocha": "^3.5.0",
+		"standard": "^10.0.3"
+	},
+	"scripts": {
+		"lint": "standard",
+		"test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tymly/smithereens"
+	},
+	"bugs": {
+		"url": "https://github.com/wmfs/tymly/issues"
+	}
+}

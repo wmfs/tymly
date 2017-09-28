@@ -1,0 +1,25 @@
+<People>
+    <Person>
+        <Name>Maggie</Name>
+        <Age>3</Age>
+        <Gender>Female</Gender>
+        <Siblings>
+            <Brother>Bart</Brother>
+            <Sister>Lisa</Sister>
+        </Siblings>
+    </Person>
+    <Person>
+        <Name>Lisa</Name>
+        <Age>3</Age>
+        <Gender>Female</Gender>
+        <Siblings>
+            <Brother>Bart</Brother>
+            <Sister>Maggie</Sister>
+        </Siblings>
+    </Person>
+    <Person>
+        <Name>Marge</Name>
+        <Age>45</Age>
+        <Gender>Female</Gender>
+    </Person>
+</People>
