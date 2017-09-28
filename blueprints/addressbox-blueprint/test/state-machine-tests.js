@@ -81,20 +81,20 @@ describe('State machine tests', function () {
         done()
       }
     })
+  })
 
-    it('should return 20 rows when selecting from the newly populated table', function (done) {
-      client.query(`SELECT uprn FROM wmfs.gazetteer ORDER BY uprn ASC;`, [],
-        function (err, result) {
-          expect(err).to.eql(null)
-          if (err) {
-            done(err)
-          } else {
-            expect(result.rowCount).to.eql(20)
-            expect(result.rows[12].uprn).to.eql('100040220305')
-            done()
-          }
+  it('should return 20 rows when selecting from the newly populated table', function (done) {
+    client.query('SELECT uprn FROM wmfs.gazetteer ORDER BY uprn ASC;', [],
+      function (err, result) {
+        expect(err).to.eql(null)
+        if (err) {
+          done(err)
+        } else {
+          expect(result.rowCount).to.eql(20)
+          expect(result.rows[11].uprn).to.eql('100040220305')
+          done()
         }
-      )
-    })
+      }
+    )
   })
 })
