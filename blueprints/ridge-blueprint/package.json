@@ -1,5 +1,5 @@
 {
-  "name": "ridge-factory-blueprint",
+  "name": "ridge-blueprint",
   "version": "0.0.1",
   "author": "Meena Hoda",
   "dependencies": {},
@@ -20,9 +20,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wmfs/tymly/blueprints/ridge-factory-blueprint"
+    "url": "https://github.com/wmfs/tymly/blueprints/ridge-blueprint"
   },
   "bugs": {
-    "url": "https://github.com/wmfs/tymly/blueprints/ridge-factory-blueprint/issues"
+    "url": "https://github.com/wmfs/tymly/blueprints/ridge-blueprint/issues"
   }
 }

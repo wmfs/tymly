@@ -4,35 +4,15 @@ const debug = require('debug')('processingCsvFiles')
 
 class ProcessingXmlFiles {
   init (resourceConfig, env, callback) {
-    this.parser = resourceConfig.parser
-    this.dirSplits = resourceConfig.dirSplits
-    this.fileSplits = resourceConfig.fileSplits
+    console.log('-->resourceConfig',resourceConfig)
+    this.rootXMLElement = resourceConfig.rootXMLElement
+    this.headerMap = resourceConfig.headerMap
     callback(null)
   }
 
   run (event, context) {
-    debug(`Execution ${context.executionName} is entering state 'processingXmlFiles - enabling debug for 'smithereens' is a good idea too!`)
-    // smithereens(
-    //   event.sourceFilePaths,
-    //   {
-    //     outputDirRootPath: event.outputDirRootPath,
-    //     parser: this.parser,
-    //     dirSplits: this.dirSplits,
-    //     fileSplits: this.fileSplits
-    //   },
-    //   function (err, manifest) {
-    //     if (err) {
-    //       context.sendTaskFailure(
-    //         {
-    //           error: 'smithereenFail',
-    //           cause: err
-    //         }
-    //       )
-    //     } else {
-    //       context.sendTaskSuccess()
-    //     }
-    //   }
-    // )
+    console.log('-->event', event)
+    console.log('woooo')
     context.sendTaskSuccess()
   }
 }

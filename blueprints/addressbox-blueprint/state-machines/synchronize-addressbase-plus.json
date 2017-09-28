@@ -28,7 +28,7 @@
     },
     "ExportingCsvDeltaFile": {
       "Type": "Task",
-      "InputPath": "$.outputFilePath",
+      "InputPath": "$.outputFilepath",
       "Resource": "module:exportingCsvDeltaFile",
       "ResourceConfig": {
         "since": "2000-07-16T20:37:26.847Z",
