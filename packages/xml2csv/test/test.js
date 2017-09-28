@@ -11,7 +11,7 @@ describe('Run some basic tests', function () {
     xml2csv(
       {
         xmlPath: path.resolve(__dirname, 'fixtures', 'simpsons.xml'),
-        csvPath: path.resolve(__dirname, 'fixtures', 'simpsons.csv'),
+        csvPath: path.resolve(__dirname, 'output', 'simpsons.csv'),
         rootXMLElement: 'Person',
         headerMap: [
           ['Name', 'name', 'string'],

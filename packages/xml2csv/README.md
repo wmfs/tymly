@@ -64,12 +64,12 @@ name, age, gender, brother, sister
 
 ### Options
 
-| Property              | Type       | Notes |
-| --------              | ----       | ------ |
-| `xmlPath`           | `string` | A path to the xml input file.
-| `csvPath` | `string` | A path to the csv output file.
-| `rootXMLElement`   | `string` | The XML root tag for each record, element to split records on in XML file. 
-| `headerMap`              | `[array]`   | See the [Header Map](#headerMap) section for more details.
+| Property              | Type      | Notes  |
+| --------              | ----      | -----  |
+| `xmlPath`             | `string`  | A path to the xml input file.
+| `csvPath`             | `string`  | The path and filename of the generated CSV output file (note that any intermediate folders will be created).
+| `rootXMLElement`      | `string`  | The XML root tag for each record, element to split records on in XML file.
+| `headerMap`           | `[array]` | See the [Header Map](#headerMap) section for more details.
 
 ### <a name="headerMap"></a>options.headerMap
 

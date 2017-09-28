@@ -4,72 +4,82 @@ const fs = require('fs')
 const sax = require('sax')
 const dottie = require('dottie')
 const _ = require('lodash')
-var endOfLine = require('os').EOL
+const endOfLine = require('os').EOL
+const path = require('path')
+const mkdirp = require('mkdirp')
+const debug = require('debug')
 
 module.exports = function (options, callback) {
+  const outputPath = path.dirname(options.csvPath)
+  mkdirp(outputPath, (err) => {
+    if (err) {
+      debug(err)
+      callback(err)
+    } else {
+      const source = fs.createReadStream(options.xmlPath)
+      const output = fs.createWriteStream(options.csvPath)
+      const saxStream = sax.createStream(true)
 
-  
+      saxStream.on('error', function () {
+        console.log('ERR')
+      })
 
-  const source = fs.createReadStream(options.xmlPath)
-  const output = fs.createWriteStream(options.csvPath)
-  const saxStream = sax.createStream(true)
+      let count = 0
+      let accepting = false
+      let currentObj
+      let pathParts = []
+      let pathPartsString
 
-  saxStream.on('error', function () {
-    console.log('ERR')
+      writeHeadersToFile(options.headerMap, output)
+
+      saxStream.on(
+        'opentag',
+        function (t) {
+          if (t.name === options.rootXMLElement) {
+            accepting = true
+            pathParts = []
+            currentObj = {}
+          } else {
+            if (accepting) {
+              pathParts.push(t.name)
+              pathPartsString = pathParts.join('.')
+            }
+          }
+        }
+      )
+
+      saxStream.on(
+        'text',
+        function (text) {
+          if (accepting) {
+            if (text.trim() !== '\n' && text.trim() !== '') {
+              dottie.set(currentObj, pathPartsString, text)
+            }
+          }
+        }
+      )
+
+      saxStream.on(
+        'closetag',
+        function (tagName) {
+          if (tagName === options.rootXMLElement) {
+            writeRecordToFile(currentObj, options.headerMap, output)
+            count++
+            accepting = false
+            currentObj = {}
+          } else {
+            pathParts.pop()
+          }
+        }
+      )
+
+      saxStream.on('end', function () {
+        callback(null, {count: count})
+      })
+
+      source.pipe(saxStream)
+    }
   })
-
-  let count = 0
-  let accepting = false
-  let currentObj
-  let pathParts = []
-  let pathPartsString
-
-  writeHeadersToFile(options.headerMap, output)
-
-  saxStream.on(
-    'opentag',
-    function (t) {
-      if (t.name === options.rootXMLElement) {
-        accepting = true
-        pathParts = []
-        currentObj = {}
-      } else {
-        if (accepting) {
-          pathParts.push(t.name)
-          pathPartsString = pathParts.join('.')
-        }
-      }
-    }
-  )
-
-  saxStream.on(
-    'text',
-    function (text) {
-      if (accepting) {
-        if (text.trim() !== '\n' && text.trim() !== '') {
-          dottie.set(currentObj, pathPartsString, text)
-        }
-      }
-    }
-  )
-
-  saxStream.on(
-    'closetag',
-    function (tagName) {
-      if (tagName === options.rootXMLElement) {
-        writeRecordToFile(currentObj, options.headerMap, output)
-        count++
-        accepting = false
-        currentObj = {}
-      } else {
-        pathParts.pop()
-      }
-    }
-  )
-
-  saxStream.on('end', function () { callback(null, {count: count}) })
-
-  source.pipe(saxStream)
 }
 
 function writeHeadersToFile (headerMap, outputStream) {
