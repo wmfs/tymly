@@ -5,10 +5,11 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
 
 describe('data processing', function () {
   this.timeout(5000)
+
+  const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
 
   let statebox
 

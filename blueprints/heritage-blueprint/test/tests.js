@@ -8,8 +8,11 @@ const path = require('path')
 const flobot = require('flobot')
 
 describe('Heritage tests', function () {
-  let statebox
   this.timeout(5000)
+
+  const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
+
+  let statebox
 
   it('should startup flobot', function (done) {
     flobot.boot(
@@ -36,7 +39,7 @@ describe('Heritage tests', function () {
       {
         sourceDir: path.resolve(__dirname, './fixtures/input')
       },
-      'wmfs_refreshFromCsvFile_1_0',
+      STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },

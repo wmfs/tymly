@@ -10,8 +10,7 @@
     "debug": "^2.6.8",
     "flobot": "0.0.14",
     "flobot-pg-plugin": "0.0.5",
-    "flobot-etl-plugin": "0.0.5",
-    "statebox": "0.0.5"
+    "flobot-etl-plugin": "0.0.5"
   },
   "scripts": {
     "start": "node ./lib/index.js",

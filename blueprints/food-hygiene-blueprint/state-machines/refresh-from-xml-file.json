@@ -8,10 +8,9 @@
   "States": {
     "ProcessingXmlFiles": {
       "Type": "Task",
-      "InputPath": "$.xmlPath",
+      "InputPath": "$",
       "Resource": "module:processingXmlFiles",
       "ResourceConfig": {
-        "csvPath": "",
         "rootXMLElement": "EstablishmentDetail",
         "headerMap": [
           ["FHRSID", "fhrsid", "integer"],

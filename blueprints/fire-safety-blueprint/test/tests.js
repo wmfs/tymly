@@ -5,19 +5,18 @@
 const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'wmfs_refreshFromXmlFile_1_0'
-const Statebox = require('statebox')
 
 describe('data import', function () {
   this.timeout(5000)
 
-  let statebox = new Statebox()
+  const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
+
+  let statebox
 
   it('should startup flobot', function (done) {
     flobot.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-etl-plugin'),
           require.resolve('flobot-pg-plugin')
         ],
         blueprintPaths: [
@@ -34,11 +33,9 @@ describe('data import', function () {
     )
   })
 
-  it('should create and populate the wmfs.food_ratings database table', function (done) {
+  it('should create and populate the wmfs.fire-safety database table', function (done) {
     statebox.startExecution(
       {
-        xmlPath: path.resolve(__dirname, './fixtures/food_ratings.xml'),
-        csvPath: path.resolve(__dirname, './input/food_ratings.csv'),
         sourceDir: path.resolve(__dirname, './fixtures/input')
       },  // input
       STATE_MACHINE_NAME, // state machine name
