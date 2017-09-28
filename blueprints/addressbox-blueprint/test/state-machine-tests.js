@@ -4,6 +4,7 @@
 
 const flobot = require('flobot')
 const path = require('path')
+const fse = require('fs-extra')
 const expect = require('chai').expect
 const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
 
@@ -32,12 +33,13 @@ describe('data processing', function () {
   })
 
   it('should create and populate the ridge.imd database table', function (done) {
-    this.skip()
+    const outputRoot = path.resolve(__dirname, './output')
+    fse.removeSync(outputRoot)
 
     statebox.startExecution(
       {
-        outputDir: path.resolve(__dirname, './output'),
-        outputFilePath: path.resolve(__dirname, './output/delta.csv')
+        outputDir: path.resolve(outputRoot, './sync'),
+        outputFilePath: path.resolve(outputRoot, '.delta.csv')
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {
@@ -46,7 +48,7 @@ describe('data processing', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
+        expect(executionDescription.currentStateName).to.eql('ExportingCsvDeltaFile')
         done()
       }
     )
