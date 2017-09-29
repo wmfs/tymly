@@ -18,4 +18,6 @@ before_script:
 env:
   global:
     - PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432
-    - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file
+    - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
+    - DEBUG_COLORS=false
+
