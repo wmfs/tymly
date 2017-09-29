@@ -18,6 +18,9 @@ module.exports = function smithereens (sourceFilePaths, options, callback) {
     sourceFilePaths = [sourceFilePaths]
   }
 
+  debug('sourceFilePaths:' + JSON.stringify(sourceFilePaths, null, 2))
+  debug('options:' + JSON.stringify(options, null, 2))
+
   // Configure parser
   const parserOptions = options.parser
   parserOptions.objectMode = true
