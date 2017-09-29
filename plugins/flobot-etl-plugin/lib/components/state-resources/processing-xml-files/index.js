@@ -29,8 +29,6 @@ class ProcessingXmlFiles {
         }
       }
     )
-
-    context.sendTaskSuccess()
   }
 }
 
