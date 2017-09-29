@@ -92,7 +92,6 @@ describe('Blueprint Tests', function () {
     fs.stat(MANIFEST_FILE, function (err, manifestStats) {
       expect(err).to.eql(null)
       if (err) {
-        console.log(MANIFEST_FILE, manifestStats)
         done(err)
       } else {
         done()
@@ -106,6 +105,7 @@ describe('Blueprint Tests', function () {
         done(err)
       } else {
         let manifest = JSON.parse(data)
+        console.log(JSON.stringify(manifest, null, 2))
         expect(manifest.counts.byDir.upserts).to.eql(20)
         done()
       }
