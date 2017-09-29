@@ -21,7 +21,6 @@ class FileWriter extends Writable {
         if (err) {
           callback(err)
         } else {
-          console.log('INCOMING>>>' + incomingCsvLine + '|' + '\n\n')
           info.writeStream.write(info.transformer.transform(incomingCsvLine), function (err) {
             if (err) {
               callback(err)
