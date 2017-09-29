@@ -49,7 +49,14 @@ describe('Blueprint Tests', function () {
       {
         sourceFilePaths: LIST_OF_CSV_SOURCE_FILES,
         outputDirRootPath: OUTPUT_AND_INPUT_DIR,
-        sourceDir: OUTPUT_AND_INPUT_DIR
+        sourceDir: OUTPUT_AND_INPUT_DIR,
+        parser: {
+          quote: '"',
+          delimiter: ',',
+          newline: '\r\n',
+          skipFirstLine: false,
+          trimWhitespace: true
+        }
       },
       STATE_MACHINE_NAME,
       {
