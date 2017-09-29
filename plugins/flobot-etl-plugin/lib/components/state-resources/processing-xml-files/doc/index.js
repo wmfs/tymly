@@ -1,5 +1,5 @@
 
 module.exports = {
-  description: 'Smash CSV files into more manageable files based on column values - just a thin wrapper over [Smithereens](https://www.npmjs.com/package/smithereens)',
+  description: 'Takes an XML file and converts it to CSV',
   example: require('./example.json')
 }

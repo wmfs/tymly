@@ -1,6 +1,5 @@
 'use strict'
 const xml2csv = require('xml2csv')
-const debug = require('debug')('processingCsvFiles')
 
 class ProcessingXmlFiles {
   init (resourceConfig, env, callback) {
@@ -12,11 +11,11 @@ class ProcessingXmlFiles {
   run (event, context) {
     xml2csv(
       {
-      xmlPath: event.xmlPath,
-      csvPath: event.csvPath,
-      rootXMLElement: this.rootXMLElement,
-      headerMap: this.headerMap
-    },
+        xmlPath: event.xmlPath,
+        csvPath: event.csvPath,
+        rootXMLElement: this.rootXMLElement,
+        headerMap: this.headerMap
+      },
       function (err) {
         if (err) {
           context.sendTaskFailure(
