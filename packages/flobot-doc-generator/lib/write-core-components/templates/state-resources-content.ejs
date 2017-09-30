@@ -1,0 +1,10 @@
+## State config
+<% if (config) { %>
+```json
+<%- JSON.stringify(doc.example, null, 2) %>
+```
+<%= config %>
+<% } else {%>
+- This state doesn't require any configuration.
+<% }%>
+

@@ -74,7 +74,7 @@ module.exports = function loadDir (rootDir, allComponents, options) {
                 loaded = loadComponentDir(parsedMetaJson, key, path.join(componentDir, filename))
 
                 if (includeDocumentation) {
-                  loaded.content.componentModule.doc = require(path.join(loaded.content.rootDirPath, 'doc'))
+                  loaded.content.doc = require(path.join(loaded.content.rootDirPath, 'doc'))
                 }
               }
 

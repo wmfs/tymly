@@ -5,7 +5,10 @@ const ejs = require('ejs')
 const configTemplate = fs.readFileSync(path.resolve(__dirname, './templates/config.ejs'))
 
 module.exports = function (rootDir, inventory) {
-  const ctx = {}
+  const flobotPackagePath = path.resolve(require.resolve('flobot'), './../../package.json')
+  const ctx = {
+    flobotPackage: require(flobotPackagePath)
+  }
 
   const toml = ejs.render(
     configTemplate.toString(),

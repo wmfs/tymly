@@ -104,13 +104,13 @@ This is where FlobotJS __Blueprints__ come in. The actual content of a Blueprint
 
 | Directory | Description |
 | --------- | ----------- |
-| `/flows` | Flow definitions defined in JSON files |
 | `/functions` | One file per Node.js module (which should export a single function). |
 | `/registryKeys` | A collection of JSON files which are used to create entries in the Flobot registry. |
-| `/state-machines` | One JSON file per model (contents to be a JSON schema for defining the model&#39;s data structure) |
+| `/models` | One JSON file per model (contents to be a JSON schema for defining the model&#39;s data structure) |
 | `/tags` | JSON files providing &#39;tags&#39; which are used throughout Flobot to help categorise things and aid discovery |
 | `/images` | A place to put images that can be served-up in Forms and similar |
 | `/forms` | One JSON file per Form (currently need to be in [Schemaform](http://schemaform.io/) format) |
+| `/search-docs` | Each JSON file is used to translates a model document into standard properties for searching. |
 
 Given an organisation could potentially attract hundreds of flows, blueprints can logically group together related flows (perhaps into teams or functional areas) to help make things more manageable.
 Blueprints also help with versioning, collaboration (on Github or similar) and interoperability. 
@@ -121,7 +121,7 @@ The FlobotJS framework can load any number of blueprints at startup, potentially
 
 ## Plugins
 
-FlobotJS takes a batteries-included approach and hopefully ships with enough [State Classes](#states) to cover-off most of the the duller business processes out there. To help try and keep things minimal and manageable Flobot employs a __plugin__ architecture.
+FlobotJS takes a batteries-included approach and hopefully ships with enough [State Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there. To help try and keep things minimal and manageable Flobot employs a __plugin__ architecture.
 A FlobotJS plugin extends the core framework with related State Classes (along with other internal components required to run them).
 
 __Please see the [list of core plugins](/reference/#list-of-plugins) to get a feel for what plugins are all about__

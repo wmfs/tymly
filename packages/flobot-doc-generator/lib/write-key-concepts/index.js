@@ -16,7 +16,7 @@ module.exports = function (rootDir, inventory) {
   for (let serviceName in services) {
     if (services.hasOwnProperty(serviceName)) {
       service = services[serviceName][0]
-      blueprintDirs = service.componentModule.doc.blueprintDirs
+      blueprintDirs = service.doc.blueprintDirs
       if (blueprintDirs) {
         for (let dirName in blueprintDirs) {
           if (blueprintDirs.hasOwnProperty(dirName)) {

@@ -25,14 +25,14 @@ This page contains an inventory of all the main types of component supplied via 
 | [<%=plugin.label %>](<%=plugin.url %>) | <%=plugin.description %> |
 <% }); -%>
 
-## List of State Classes
+## List of State Resources
 
-> Flows are built from states, and states themselves are an instance of a state class
+> Task states can refer to resources, here is a list of all the included State Resources....
 
 | State Class | Description | Plugin |
 | ----------- | ----------- | ------ |
-<% states.forEach(function(state){ -%>
-| [<%=state.name %>](<%=state.target %>) | <%=state.description %> | [ <%=state.plugin.label %>](<%=state.plugin.url %>) |
+<% stateResources.forEach(function(stateResource){ -%>
+| [<%=stateResource.name %>](<%=stateResource.target %>) | <%=stateResource.description %> | [ <%=stateResource.plugin.label %>](<%=stateResource.plugin.url %>) |
 <% }); -%>
 
 ## List of commands

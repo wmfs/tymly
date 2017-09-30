@@ -36,9 +36,8 @@ module.exports = function (rootDir, inventory, callback) {
           componentList,
 
           function (component, cb2) {
-            const description = component.componentModule.doc.description || '__No description!__'
+            const description = component.doc.description || '__No description!__'
             pluginInfo = getPluginInfoFromComponentPath(component.rootDirPath)
-
             docWriter(
               component.rootDirPath,
               componentTypeName,
@@ -56,9 +55,10 @@ module.exports = function (rootDir, inventory, callback) {
                   ctx[componentTypeName].push(
                     {
                       name: componentName,
+                      kebabName: _.kebabCase(componentName),
                       description: description,
                       plugin: pluginInfo,
-                      target: componentTypeName + '/' + _.kebabCase(pluginInfo.label) + '-' + _.kebabCase(componentName)
+                      target: _.kebabCase(componentTypeName) + '/' + _.kebabCase(pluginInfo.label) + '-' + _.kebabCase(componentName)
                     }
                   )
                   cb2(null)
@@ -100,7 +100,7 @@ module.exports = function (rootDir, inventory, callback) {
   }
 
   const components = [
-    {componentName: 'states', singular: 'state', weight: 1000},
+    {componentName: 'stateResources', singular: 'stateResource', weight: 1000},
     {componentName: 'commands', singular: 'command', weight: 1010},
     {componentName: 'services', singular: 'service', weight: 1020}
   ]

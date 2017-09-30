@@ -11,7 +11,7 @@ const contentProcessors = require('./content-processors')
 const contentTemplates = {
   services: fs.readFileSync(path.resolve(__dirname, './templates/services-content.ejs')).toString(),
   commands: fs.readFileSync(path.resolve(__dirname, './templates/commands-content.ejs')).toString(),
-  states: fs.readFileSync(path.resolve(__dirname, './templates/states-content.ejs')).toString()
+  stateResources: fs.readFileSync(path.resolve(__dirname, './templates/state-resources-content.ejs')).toString()
 }
 
 module.exports = function docWriter (componentRootPath, componentTypeName, pluginInfo, componentId, componentTypeSingular, componentDescription, weight, component, inventory, callback) {
@@ -80,7 +80,8 @@ module.exports = function docWriter (componentRootPath, componentTypeName, plugi
     componentTypeSingular: componentTypeSingular,
     pluginInfo: pluginInfo,
     componentDescription: componentDescription,
-    weight: weight
+    weight: weight,
+    doc: component.doc
   }
 
   const headerMd = ejs.render(
@@ -94,20 +95,24 @@ module.exports = function docWriter (componentRootPath, componentTypeName, plugi
   )
 
   ctx = _.defaults(ctx, component.componentModule)
-  contentProcessors[componentTypeName](ctx, inventory, function (err) {
-    if (err) {
-      callback(err)
-    } else {
-      const contentMd = ejs.render(
-        contentTemplates[componentTypeName],
-        ctx
-      )
+  if (contentProcessors[componentTypeName]) {
+    contentProcessors[componentTypeName](ctx, inventory, function (err) {
+      if (err) {
+        callback(err)
+      } else {
+        const contentMd = ejs.render(
+          contentTemplates[componentTypeName],
+          ctx
+        )
 
-      console.log('  Writing ' + filePath)
+        console.log('  Writing ' + filePath)
 
-      fs.writeFileSync(filePath, headerMd + contentMd + footerMd)
+        fs.writeFileSync(filePath, headerMd + contentMd + footerMd)
 
-      callback(null, filePath)
-    }
-  })
+        callback(null, filePath)
+      }
+    })
+  } else {
+    throw new Error(`No content processor for component type '${componentTypeName}'`)
+  }
 }
