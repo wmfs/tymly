@@ -8,6 +8,7 @@ module.exports = function (ctx) {
     const output = {
       uprn: sourceRow.uprn,
       counter: 1,
+      class: sourceRow.class,
       actualX: sourceRow.x,
       actualY: sourceRow.y,
       businessName: sourceRow.legalName,

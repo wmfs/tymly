@@ -20,6 +20,11 @@
       "minLength": 1,
       "description": "A generated sequence number which is combined with the URN to identify the address (Minimum=1)"
     },
+    "class": {
+      "type": "string",
+      "maxLength": 6,
+      "description": "Classification of the address record. Source: Contributing Local Authority"
+    },
     "addressLabel": {
       "type": "string",
       "maxLength": 500,
