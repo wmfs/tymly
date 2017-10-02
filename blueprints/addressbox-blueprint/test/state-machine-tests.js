@@ -9,7 +9,7 @@ const fs = require('fs')
 const scriptRunner = require('./fixtures/sql-script-runner')
 
 describe('State machine tests', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
   const OUTPUT_DIR_PATH = path.resolve(__dirname, './output')
