@@ -13,5 +13,9 @@
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
     "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "moment": "^2.18.1",
+    "username": "^3.0.0"
   }
 }

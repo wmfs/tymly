@@ -5,6 +5,7 @@ const path = require('path')
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
 const gitDetails = require('../lib/git_details.js')
+const whereAndWhen = require('../lib/where_and_when.js')
 
 const searchRoot = path.resolve(__dirname, './fixtures/packages')
 
@@ -46,4 +47,11 @@ it ('Gather git details', () => {
   expect(gitDeets.repository).to.match(/tymly/)
   expect(gitDeets.branch).to.be.a('string')
   expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
+})
+
+it ('Where and when', () => {
+  const ww = whereAndWhen()
+  expect(ww.user).to.be.a('string')
+  expect(ww.hostname).to.be.a('string')
+  expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
 })
