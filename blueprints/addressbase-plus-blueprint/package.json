@@ -2,14 +2,14 @@
   "name": "addressbase-plus-blueprint",
   "version": "0.0.1",
   "author": "Jasvinder Bahra",
-  "dependencies": {},
   "devDependencies": {
     "chai": "^4.1.0",
     "debug": "^2.6.8",
     "flobot": "0.0.14",
     "flobot-pg-plugin": "0.0.5",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "rimraf": "^2.6.2"
   },
   "scripts": {
     "lint": "standard",

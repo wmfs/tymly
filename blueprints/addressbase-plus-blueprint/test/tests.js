@@ -6,9 +6,10 @@ const expect = require('chai').expect
 const flobot = require('flobot')
 const path = require('path')
 const fs = require('fs')
+const rimraf = require('rimraf')
 
 describe('Blueprint Tests', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'ordnanceSurvey_importCsvFiles_1_0'
   const LIST_OF_CSV_SOURCE_FILES = [
@@ -20,6 +21,15 @@ describe('Blueprint Tests', function () {
 
   let statebox
   let client
+
+  it('Should remove output directory ahead of tests, if it exists already', function (done) {
+    const outputPath = path.resolve(__dirname, './output')
+    if (fs.existsSync(outputPath)) {
+      rimraf(outputPath, {}, done)
+    } else {
+      done()
+    }
+  })
 
   it('should startup flobot so that we can test the blueprint', function (done) {
     flobot.boot(
@@ -138,6 +148,15 @@ describe('Blueprint Tests', function () {
         }
       }
     )
+  })
+
+  it('Should remove output directory now tests are complete', function (done) {
+    const outputPath = path.resolve(__dirname, './output')
+    if (fs.existsSync(outputPath)) {
+      rimraf(outputPath, {}, done)
+    } else {
+      done()
+    }
   })
 
   it('Should shutdown database connection', function () {
