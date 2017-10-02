@@ -1,0 +1,7 @@
+{
+  "label": "terrestrial",
+  "description": "A terrestrial planet",
+  "styling": {
+    "background-color": "#5F5F5F "
+  }
+}

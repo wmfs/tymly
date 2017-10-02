@@ -1,0 +1,27 @@
+{
+    "plural": "roles",
+
+    "primaryKey": ["roleId"],
+
+  "description": "A list of roles to be used in Tymly ACL",
+  "type": "object",
+
+    "properties": {
+
+        "roleId": {
+            "type": "string"
+        },
+
+        "label": {
+            "type": "string"
+        },
+
+        "description": {
+            "type": "string"
+        }
+
+    },
+
+  "required": ["roleId", "label"]
+
+}

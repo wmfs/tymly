@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "test1",
+  "version": "1.0",
+
+  "label": "Test1",
+  "author": "Jasvinder Bahra",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint with a reference table model which is seeded on boot.",
+  "tags": ["test"]
+
+}

@@ -1,0 +1,34 @@
+{
+  "name": "tymly-runner",
+  "description": "A tool for running tymlys",
+  "version": "0.0.5",
+  "author": "Reece Brend",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "boom": "^5.2.0",
+    "config": "^1.26.1",
+    "debug": "^2.6.8",
+    "tymly": "0.0.14",
+    "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
+    "safe-buffer": "^5.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "start": "node ./lib/index.js",
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

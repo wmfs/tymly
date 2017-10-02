@@ -5,7 +5,7 @@
 const chai = require('./../node_modules/chai')
 const expect = chai.expect
 const path = require('path')
-const flobot = require('flobot')
+const tymly = require('tymly')
 
 describe('Heritage tests', function () {
   this.timeout(5000)
@@ -15,21 +15,21 @@ describe('Heritage tests', function () {
   let statebox
   let client
 
-  it('should startup flobot', function (done) {
-    flobot.boot(
+  it('should startup tymly', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-pg-plugin')
+          require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
-        client = flobotServices.storage.client
+        statebox = tymlyServices.statebox
+        client = tymlyServices.storage.client
         done()
       }
     )

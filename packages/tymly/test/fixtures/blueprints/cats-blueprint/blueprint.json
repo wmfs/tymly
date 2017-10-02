@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "cats",
+  "version": "1.0",
+
+  "label": "Cats",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to help model cat behaviour...",
+  "tags": ["cats", "pets"]
+
+}

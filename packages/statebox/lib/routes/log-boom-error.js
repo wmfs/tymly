@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-module.exports = function logBoomError (boomErr, flobot) {
+module.exports = function logBoomError (boomErr, tymly) {
   let message = '--------------------------------------------------------------------------------------\n'
   message += `|${boomErr.output.statusCode}: ${boomErr.output.payload.error}\n`
   message += `|${boomErr.message}\n`

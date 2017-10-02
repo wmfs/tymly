@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "welcome-email",
+  "version": "1.0",
+
+  "label": "Welcome email!",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "A blueprint to test sending emails",
+  "tags": ["emails", "alert"]
+
+}

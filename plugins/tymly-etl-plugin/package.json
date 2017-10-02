@@ -1,0 +1,33 @@
+{
+  "name": "tymly-etl-plugin",
+  "description": "A collection of states for helping with Extract, Transform and Load tasks.",
+  "version": "0.0.5",
+  "author": "Aron Moore",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "boom": "^5.2.0",
+    "debug": "^2.6.8",
+    "glob": "^7.1.2",
+    "smithereens": "0.0.7",
+    "xml2csv": "0.0.7"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "csvtojson": "^1.1.7",
+    "tymly": "0.0.14",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

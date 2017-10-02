@@ -1,0 +1,28 @@
+{
+  "exportingCsvDeltaFile": {
+    "options": {
+      "since": "2000-07-16T20:37:26.847Z",
+      "createdColumnName": "_created",
+      "modifiedColumnName": "_modified",
+      "actionAliases": {
+        "insert": "u",
+        "update": "u",
+        "delete": "d"
+      },
+      "tables": [
+        {
+          "tableName": "people",
+          "csvColumns": [
+            "PERSON",
+            "$ACTION",
+            "$ROW_NUM",
+            "@social_security_id",
+            "@first_name",
+            "@last_name",
+            "@age"
+          ]
+        }
+      ]
+    }
+  }
+}

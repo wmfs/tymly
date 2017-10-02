@@ -1,4 +1,4 @@
-module.exports = function cancelFlobotRoute (req, res) {
+module.exports = function cancelTymlyRoute (req, res) {
   const boom = require('boom')
   const services = req.app.get('services')
   const authService = services.auth

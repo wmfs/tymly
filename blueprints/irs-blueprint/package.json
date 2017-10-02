@@ -8,8 +8,8 @@
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
     "debug": "^2.6.8",
-    "flobot": "0.0.14",
-    "flobot-forms-plugin": "0.0.7"
+    "tymly": "0.0.14",
+    "tymly-forms-plugin": "0.0.7"
   },
   "scripts": {
     "start": "node ./lib/index.js",

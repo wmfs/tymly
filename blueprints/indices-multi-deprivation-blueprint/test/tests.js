@@ -2,7 +2,7 @@
 
 'use strict'
 
-const flobot = require('flobot')
+const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 
@@ -14,21 +14,21 @@ describe('data import', function () {
   let statebox
   let client
 
-  it('should startup flobot', function (done) {
-    flobot.boot(
+  it('should startup tymly', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-pg-plugin')
+          require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
-        client = flobotServices.storage.client
+        statebox = tymlyServices.statebox
+        client = tymlyServices.storage.client
         done()
       }
     )

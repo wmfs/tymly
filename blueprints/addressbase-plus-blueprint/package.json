@@ -5,8 +5,8 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "debug": "^2.6.8",
-    "flobot": "0.0.14",
-    "flobot-pg-plugin": "0.0.5",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
     "rimraf": "^2.6.2"

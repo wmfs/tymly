@@ -3,7 +3,7 @@
 'use strict'
 
 const expect = require('chai').expect
-const flobot = require('flobot')
+const tymly = require('tymly')
 const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
@@ -31,12 +31,12 @@ describe('Blueprint Tests', function () {
     }
   })
 
-  it('should startup flobot so that we can test the blueprint', function (done) {
-    flobot.boot(
+  it('should startup tymly so that we can test the blueprint', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './../../../plugins/flobot-etl-plugin'),
-          path.resolve(__dirname, './../../../plugins/flobot-pg-plugin')
+          path.resolve(__dirname, './../../../plugins/tymly-etl-plugin'),
+          path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
         ],
 
         blueprintPaths: [
@@ -45,10 +45,10 @@ describe('Blueprint Tests', function () {
 
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
-        client = flobotServices.storage.client
+        statebox = tymlyServices.statebox
+        client = tymlyServices.storage.client
         done()
       }
     )

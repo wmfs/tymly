@@ -1,5 +1,5 @@
 # Form-maker
-> Automatically generates form schema and editor flow for all models specified in a [FlobotJS](http://www.flobotjs.io) blueprint.
+> Automatically generates form schema and editor flow for all models specified in a [TymlyJS](http://www.tymlyjs.io) blueprint.
 
 ## <a name="tests"></a>Tests
 ```bash
@@ -21,4 +21,4 @@ formMaker (
 ```
 
 ## <a name="license"></a>License
-[MIT](https://github.com/wmfs/flobot-runner/blob/master/LICENSE)
+[MIT](https://github.com/wmfs/tymly-runner/blob/master/LICENSE)

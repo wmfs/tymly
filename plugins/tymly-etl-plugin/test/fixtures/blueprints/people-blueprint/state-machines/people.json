@@ -1,0 +1,78 @@
+{
+  "Comment": "Process the CSV file.",
+  "version": "1.0",
+  "StartAt": "ProcessingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ProcessingCsvFiles": {
+      "Type": "Task",
+      "Resource": "module:processingCsvFiles",
+      "ResourceConfig": {
+        "parser": {
+          "quote": "\"",
+          "delimiter": ",",
+          "newline": "\n",
+          "skipFirstLine": true,
+          "trimWhitespace": true
+        },
+        "dirSplits": [
+          {
+            "columnIndex": 4,
+            "valueToDirMap": {
+              "u": "upserts",
+              "d": "delete",
+              "x": "upserts"
+            }
+          }
+        ],
+        "fileSplits": {
+          "columnIndex": 4,
+          "valueToFileMap": {
+            "u": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": ".social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            },
+            "x": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": ".social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            },
+            "d": {
+              "filename": "people",
+              "outputColumns": [
+                {
+                  "name": "social_security_id",
+                  "columnIndex": 0
+                },
+                {
+                  "name": "action",
+                  "columnIndex": 4
+                }
+              ]
+            }
+          }
+        }
+      },
+      "End": true
+    }
+  }
+}
