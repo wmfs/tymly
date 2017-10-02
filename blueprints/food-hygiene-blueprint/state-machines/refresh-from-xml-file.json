@@ -46,7 +46,6 @@
       "InputPath": "$.sourceDir",
       "Resource": "module:importingCsvFiles",
       "ResourceConfig": {
-        "modelId": "foodRatings",
         "topDownTableOrder": [
           "food_ratings"
         ],

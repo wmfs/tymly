@@ -77,7 +77,6 @@ describe('data import', function () {
         if (err) {
           done(err)
         } else {
-          console.log(result.rows)
           expect(result.rows).to.eql(
             [
               {
