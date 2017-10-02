@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "author": "Liliana Judge",
   "devDependencies": {
+    "async": "^2.5.0",
     "chai": "^4.1.0",
     "flobot": "0.0.14",
     "flobot-pg-plugin": "0.0.5",

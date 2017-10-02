@@ -6,6 +6,7 @@ const flobot = require('flobot')
 const path = require('path')
 const expect = require('chai').expect
 const fs = require('fs')
+const scriptRunner = require('./fixtures/sql-script-runner')
 
 describe('State machine tests', function () {
   this.timeout(5000)
@@ -35,6 +36,10 @@ describe('State machine tests', function () {
         done()
       }
     )
+  })
+
+  it('should create a set of database test data', function (done) {
+    scriptRunner([ 'setup.sql' ], client, done)
   })
 
   it('should create and populate the wmfs.gazetteer database table', function (done) {
@@ -96,5 +101,9 @@ describe('State machine tests', function () {
         }
       }
     )
+  })
+
+  it('should cleanup test data', function (done) {
+    scriptRunner([ 'cleanup.sql' ], client, done)
   })
 })
