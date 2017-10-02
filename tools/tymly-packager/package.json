@@ -1,0 +1,17 @@
+{
+  "name": "tymly-packager",
+  "version": "0.0.1",
+  "description": "Gathers up Tymly into a deployable package",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && mocha"
+  },
+  "author": "Jez Higgins",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "standard": "^10.0.3"
+  }
+}
