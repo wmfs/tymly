@@ -6,7 +6,8 @@
   ],
   "properties": {
     "uprn": {
-      "type": "string"
+      "type": "integer",
+      "maxLength": 12
     },
     "footprint": {
       "type": "integer",

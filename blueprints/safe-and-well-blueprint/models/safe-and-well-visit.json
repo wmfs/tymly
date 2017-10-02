@@ -27,7 +27,8 @@
       "format": "date-time"
     },
     "uprn": {
-      "type": "number"
+      "type": "number",
+      "maxLength": 12
     },
     "x": {
       "type": "number"

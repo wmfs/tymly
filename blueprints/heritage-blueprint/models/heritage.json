@@ -7,7 +7,8 @@
   "type": "object",
   "properties": {
     "uprn": {
-      "type": "string"
+      "type": "integer",
+      "maxLength": 12
     },
     "address": {
       "type": "string"

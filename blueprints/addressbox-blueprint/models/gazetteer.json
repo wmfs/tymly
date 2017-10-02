@@ -8,7 +8,7 @@
   "properties": {
     "uprn": {
       "type": "integer",
-      "maxLength": 14,
+      "maxLength": 12,
       "description": "A gazetteer URN"
     },
     "originHashSum": {
