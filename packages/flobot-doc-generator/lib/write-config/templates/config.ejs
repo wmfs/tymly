@@ -1,6 +1,6 @@
 baseurl = "https://wmfs.github.io/"
 languageCode = "en-us"
-title = "FlobotJS Documentation"
+title = "Tymly Documentation"
 theme = "hugo-material-docs"
 metadataformat = "yaml"
 canonifyurls = true
@@ -10,7 +10,7 @@ googleAnalytics = "UA-90924394-1"
 [params]
 	# General information
 	author = "Tim Needham"
-	description = "A low-code platform for Node.js"
+	description = "An open source low-code platform - that's built for collaboration"
 	copyright = "MIT"
 
 	# Repository
@@ -19,12 +19,12 @@ googleAnalytics = "UA-90924394-1"
 
 	version = "<%= flobotPackage.version %>"
 	logo = "images/logo.png"
-	favicon = ""
+	favicon = "images/favicon.png"
 
 	permalink = "#"
 
 	# Custom assets
-	custom_css = []
+	custom_css = ["tymly.css"]
 	custom_js  = []
 
 	# Syntax highlighting theme
@@ -32,7 +32,7 @@ googleAnalytics = "UA-90924394-1"
 
 	[params.palette]
     	primary = "teal"
-    	accent  = "cyan"
+    	accent  = "blue-grey"
 
     [params.font]
     	text = "Ubuntu"
@@ -45,7 +45,7 @@ googleAnalytics = "UA-90924394-1"
 
 
 [[menu.main]]
-	name   = "Welcome!"
+	name   = "Introduction"
 	url    = "/"
 	weight = 0
 

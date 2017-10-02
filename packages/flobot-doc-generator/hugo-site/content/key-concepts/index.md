@@ -4,15 +4,147 @@ title: Key Concepts
 weight: 10
 ---
 
-## Flows
+## Blueprints
 
-__Everything in FlobotJS is built around a flow.__
+In Tymly, a "__blueprint__" describes related functionality that adds value to an organization.
+Typically a blueprint will describe all the workflows, rules and forms affecting a business function or team - but they're equally suited to describing open data and ETL pipelines.
 
-- An organisation is likely to contain hundreds of business processes. In FlobotJS, each of these processes can be modelled as a "__flow__". Flows can underpin something as simple as a user searching for a document through to  a complex multi-team endeavour.
+![Cartoon illustration of people looking inside a Blueprint](/images/inside-a-blueprint.png#center)
 
-- Flows may involve lots of people or may require no human input at all. It's likely an employee's role will require interaction with several flows - but probably not all of them.
+Blueprints equate to a directory containing a simple `blueprint.json` file and one-or-more sub-directories:
 
-- Flows play nicely with industry representations such as [State Diagrams](https://en.wikipedia.org/wiki/State_diagram), [Activity Diagrams](https://en.wikipedia.org/wiki/Activity_diagram) and [Business Process Diagrams](http://www.bpmn.org/).
+| Sub-directory | Description |
+| ------------- | ----------- |
+| `/functions` | Blueprints are predominantly declarative - preferring JSON definitions over hand-coded functions. But for those times when only code will do, blueprints can supply supplemental Javascript functions too. |
+| `/registry-keys` | Consider a blueprint that defines a simple workflow that sends a Tweet - what Twitter username/password should be used? This is where _Registry Keys_ come in useful... a simple key/value store inside Tymly, where keys are declared inside this sub-directory. To help conjure administrative screens and help validation, the required value content is described using JSON Schema. |
+| `/state-machines` | Each JSON file inside this sub-directory will be used to conjure a State Machine for orchestrating a workflow. Tymly uses the open [Amazon State Language](https://states-language.net/spec.html) to describe State Machines. |
+| `/models` | This sub-directory deals with the `M` portion of `MVC` - each JSON file in here defines a data model that can be subsequently used by a State Machine. Nested documents are supported along with a couple of extensions to help describe database indexes and primary keys. Tymly uses the JSON Schema standard for describing data models. |
+| `/tags` | JSON files providing &#39;tags&#39; which are used throughout Flobot to help categorise things and aid discovery |
+| `/images` | A place to put images that can be served-up in Forms and similar |
+| `/forms` | One JSON file per Form (currently need to be in [Schemaform](http://schemaform.io/) format) |
+| `/search-docs` | Each JSON file is used to translates a model document into standard properties for searching. |
+
+## State Machines
+
+Everything that happens inside Tymly happens because a finite-[State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) triggered it. If Tymly were to be considered in terms of Model, View, Controller... then State Machines are all about the _Controller_.
+Tymly uses the open [Amazon States Specification](https://states-language.net/spec.html) to define State Machines inside blueprints - as such, the following State Machine constructs are supported:
+
+<table >
+    <tr>
+        <th>Sequential</th>
+        <th>Choice</th>
+        <th>Parallel</th>
+    </tr>
+    <tr>
+        <td><img src="/images/sequential-states.png"/></td>
+        <td><img src="/images/choice-states.png"/></td>
+        <td><img src="/images/parallel-states.png"></td>
+    </tr>
+<tr>
+<td>
+<pre style="margin:0; padding:1em;">
+{
+ "States": {
+  "Load": {
+   "Type": "Task",
+   "Resource": "module:findingById",
+   "InputPath": "$.key",
+   "Next": "Form"
+  },
+  "Form": {
+   "Type": "Task",
+   "Resource": "module:formFilling",
+   "ResultPath": "$.formData",
+   "Next": "Save"
+  },
+  "Save": {
+   "Type": "Task",
+   "Resource": "module:upserting",
+   "InputPath": "$.formData",
+   "End": "True"
+  }
+ }
+}
+</pre>
+</td>
+
+<td>
+<pre style="margin:0;padding:1em;">
+{
+ "States": {
+  "ConsiderLanguage": {
+   "Type": "Choice",
+   "Choices": [
+    {
+     "Variable": "$.language",
+     "StringEquals": "Spanish"
+     "Next": "SpanishGreeting"
+    }
+   ],
+   "Default": "EnglishGreeting"
+  },
+  "SpanishGreeting": {
+   "Type": "Task",
+   "Resource": "module:logging",
+   "ResourceConfig": {
+    "template": "Hola"
+   },
+   "End": "True"
+  },
+  "EnglishGreeting": {
+   "Type": "Task",
+   "Resource": "module:logging",
+   "ResourceConfig": {
+    "template": "Hello"
+   },
+   "End": "True"
+  }
+ }
+}
+</pre>
+</td>
+
+<td>
+<pre style="margin:0;padding:1em;">
+{
+ "States": {
+  "ParallelThings": {
+   "Type": "Parallel",
+   "Branches": [
+    {
+     "StartAt": "ProcessAvatar",
+     "States": {
+      "ProcessAvatar" : {
+       "Type": "Task",
+       "Resource": "module:crop"
+       "End": true
+      }
+     }
+    },
+    {
+     "StartAt": "CreateAccount",
+     "States": {
+      "CreateAccount" : {
+       "Type": "Task",
+       "Resource": "module:onboard"
+       "End": true
+      }
+     }
+    }
+   ],
+   "Next": "SendWelcomeEmail"
+  }
+  "SendWelcomeEmail": {
+   "Type": "Task",
+   "Resource": "module:sendEmail"
+   "End": true
+  }
+ }
+}
+</pre>
+</td>
+</tr>
+</table>
 
 ### The booking-someone-sick flow
 
@@ -51,7 +183,7 @@ __For a full list of states that are currently available out-of-the-box, please 
 At this point it _might_  be useful to think of things in terms of a railway network...
 
 {{< note title="Analogy alert!" >}}
-  
+
 - __Flows__ can be seen as the railway track - connecting states together in a very controlled way
 
 - __States__ can be seen as the railway stations - they're reached by travelling around flows. Journeys start at the _initial_ state.
@@ -61,17 +193,17 @@ At this point it _might_  be useful to think of things in terms of a railway net
 {{< /note >}}
 
 Flobots are always persisted as a simple document so that they can survive server restarts.
-This is an example of what might be persisted for a Flobot travelling around the __booking-someone-sick__ flow from earlier: 
+This is an example of what might be persisted for a Flobot travelling around the __booking-someone-sick__ flow from earlier:
 
 ``` JSON
-{ 
-    "_id" : "586e42ade923c119c4a4a85b", 
+{
+    "_id" : "586e42ade923c119c4a4a85b",
     "createdAt" : "2017-01-05T12:57:17.701+0000",
-    "userId" : "john.doe@flobotjs.io", 
-    "status" : "running", 
-    "flowId" : "booking-someone-sick", 
-    "stateId" : "notifyingOperationsRoom", 
-    "stateEnterTime" : "2017-01-05T12:57:17.686+0000", 
+    "userId" : "john.doe@flobotjs.io",
+    "status" : "running",
+    "flowId" : "booking-someone-sick",
+    "stateId" : "notifyingOperationsRoom",
+    "stateEnterTime" : "2017-01-05T12:57:17.686+0000",
     "ctx" : {
         "formData" : {
             "employeeNumber": 372711,
@@ -88,34 +220,12 @@ Property         | Description
 ---------------- | ---------------------------------
 `_id`            | Uniquely identifies a Flobot
 `createdAt`      | When the Flobot was first instigated
-`userId`         | If the Flobot was instigated by a human, then this is the userId of that person 
+`userId`         | If the Flobot was instigated by a human, then this is the userId of that person
 `status`         | Always one of `starting`, `running`, `waitingForHumanInput` or `finished`
 `flowId`         | Identifies which flow this Flobot is travelling around
 `stateId`        | Indicates the state that this Flobot is currently in
 `stateEnterTime` | The timestamp of when the Flobot entered its current state
 `ctx`            | This is a simple key/value store that's unique to each Flobot. In analogy terms, this is a good place to store the speed of a train. This __context__ is available to all states to read-from/write-to as they require. In this way, inter-state communication is possible - but within context of each ~~train~~ Flobot.
-
-<hr>
-
-## Blueprints
-
-On their own, flow definitions aren't enough... for everything to spark, states need to be fed things like data models, form layouts, images, custom logic, templates etc.
-This is where FlobotJS __Blueprints__ come in. The actual content of a Blueprint is beyond the scope of this article, but just to say Blueprints themselves are nothing special, just a simple folder structure:
-
-| Directory | Description |
-| --------- | ----------- |
-| `/functions` | One file per Node.js module (which should export a single function). |
-| `/registryKeys` | A collection of JSON files which are used to create entries in the Flobot registry. |
-| `/models` | One JSON file per model (contents to be a JSON schema for defining the model&#39;s data structure) |
-| `/tags` | JSON files providing &#39;tags&#39; which are used throughout Flobot to help categorise things and aid discovery |
-| `/images` | A place to put images that can be served-up in Forms and similar |
-| `/forms` | One JSON file per Form (currently need to be in [Schemaform](http://schemaform.io/) format) |
-| `/search-docs` | Each JSON file is used to translates a model document into standard properties for searching. |
-
-Given an organisation could potentially attract hundreds of flows, blueprints can logically group together related flows (perhaps into teams or functional areas) to help make things more manageable.
-Blueprints also help with versioning, collaboration (on Github or similar) and interoperability. 
-
-The FlobotJS framework can load any number of blueprints at startup, potentially serving all back-office functionality from a single server.
 
 <hr>
 
