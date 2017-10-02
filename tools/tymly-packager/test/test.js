@@ -4,6 +4,7 @@ const path = require('path')
 
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
+const gitDetails = require('../lib/git_details.js')
 
 const searchRoot = path.resolve(__dirname, './fixtures/packages')
 
@@ -15,7 +16,7 @@ describe('Package gathering', () => {
   ]
 
   for (const [ label, fixture, results ] of tests) {
-    it(`Walk directory, ${label}`, async () => {
+    it(label, async () => {
       const packages = await gatherPackages(path.join(searchRoot, fixture))
 
       expect(packages).to.deep.equal(results)
@@ -37,5 +38,12 @@ describe('Generate manifest version numbers', () => {
       expect(versions).to.deep.equal(results)
     }) // it ...
   } // for ...
-
 }) // describe
+
+it ('Gather git details', () => {
+  const gitDeets = gitDetails()
+  expect(gitDeets.repository).to.match(/github.com/)
+  expect(gitDeets.repository).to.match(/tymly/)
+  expect(gitDeets.branch).to.be.a('string')
+  expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
+})
