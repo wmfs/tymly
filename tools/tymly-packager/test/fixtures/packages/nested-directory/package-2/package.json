@@ -1,6 +1,6 @@
 {
-  "name": "package-2",
-  "version": "1.0.0",
+  "name": "package-B",
+  "version": "1.0.b",
   "description": "do nothing package with no dependencies",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
