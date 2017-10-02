@@ -19,7 +19,7 @@ Blueprints equate to a directory containing a simple `blueprint.json` file and o
 | `/registry-keys` | Consider a blueprint that defines a simple workflow that sends a Tweet - what Twitter username/password should be used? This is where _Registry Keys_ come in useful... a simple key/value store inside Tymly, where keys are declared inside this sub-directory. To help conjure administrative screens and help validation, the required value content is described using JSON Schema. |
 | `/state-machines` | Each JSON file inside this sub-directory will be used to conjure a State Machine for orchestrating a workflow. Tymly uses the open [Amazon State Language](https://states-language.net/spec.html) to describe State Machines. |
 | `/models` | This sub-directory deals with the `M` portion of `MVC` - each JSON file in here defines a data model that can be subsequently used by a State Machine. Nested documents are supported along with a couple of extensions to help describe database indexes and primary keys. Tymly uses the JSON Schema standard for describing data models. |
-| `/tags` | JSON files providing &#39;tags&#39; which are used throughout Flobot to help categorise things and aid discovery |
+| `/tags` | JSON files providing &#39;tags&#39; which are used throughout Tymly to help categorise things and aid discovery |
 | `/images` | A place to put images that can be served-up in Forms and similar |
 | `/forms` | One JSON file per Form (currently need to be in [Schemaform](http://schemaform.io/) format) |
 | `/search-docs` | Each JSON file is used to translates a model document into standard properties for searching. |
@@ -133,7 +133,7 @@ Tymly uses the open [Amazon States Specification](https://states-language.net/sp
     }
    ],
    "Next": "SendWelcomeEmail"
-  }
+  },
   "SendWelcomeEmail": {
    "Type": "Task",
    "Resource": "module:sendEmail"
@@ -164,7 +164,7 @@ The flow represented in the diagram below allows an Operator (or more accurately
 
 ## States
 
-Each of the circles in the previous diagram are known as __States__.  Each Flobot flow contains all the necessary information to assemble a [Finite State Machine] (https://en.wikipedia.org/wiki/State_diagram) (__FSM__), that being:
+Each of the circles in the previous diagram are known as __States__.  Each Tymly flow contains all the necessary information to assemble a [Finite State Machine] (https://en.wikipedia.org/wiki/State_diagram) (__FSM__), that being:
 
 - A list of possible states (an FSM can be in exactly one of a finite number of states at any given time)
 
@@ -172,13 +172,13 @@ Each of the circles in the previous diagram are known as __States__.  Each Flobo
 
 - Which state the FSM should find itself in as it starts (i.e. the flow's _initial_ state)
 
-FlobotJS provides a pool of different [State Classes](/reference/#list-of-state-classes), each state in a flow will be associated with a particular _State Class_. It's possible to deliver a good chunk of back-office functionality with surprisingly few State Classes.
+TymlyJS provides a pool of different [State Classes](/reference/#list-of-state-classes), each state in a flow will be associated with a particular _State Class_. It's possible to deliver a good chunk of back-office functionality with surprisingly few State Classes.
 
 __For a full list of states that are currently available out-of-the-box, please see the [list of core states](/reference/#list-of-state-classes).__
 
 <hr>
 
-## Flobots
+## Tymlys
 
 At this point it _might_  be useful to think of things in terms of a railway network...
 
@@ -188,18 +188,18 @@ At this point it _might_  be useful to think of things in terms of a railway net
 
 - __States__ can be seen as the railway stations - they're reached by travelling around flows. Journeys start at the _initial_ state.
 
-- __Flobots__ therefore can be seen as trains as they move from state-to-state. A single flow can have any number of Flobots making their way around it.
+- __Tymlys__ therefore can be seen as trains as they move from state-to-state. A single flow can have any number of Tymlys making their way around it.
 
 {{< /note >}}
 
-Flobots are always persisted as a simple document so that they can survive server restarts.
-This is an example of what might be persisted for a Flobot travelling around the __booking-someone-sick__ flow from earlier:
+Tymlys are always persisted as a simple document so that they can survive server restarts.
+This is an example of what might be persisted for a Tymly travelling around the __booking-someone-sick__ flow from earlier:
 
 ``` JSON
 {
     "_id" : "586e42ade923c119c4a4a85b",
     "createdAt" : "2017-01-05T12:57:17.701+0000",
-    "userId" : "john.doe@flobotjs.io",
+    "userId" : "john.doe@tymlyjs.io",
     "status" : "running",
     "flowId" : "booking-someone-sick",
     "stateId" : "notifyingOperationsRoom",
@@ -218,26 +218,26 @@ The various properties in this example document are described in the table below
 
 Property         | Description
 ---------------- | ---------------------------------
-`_id`            | Uniquely identifies a Flobot
-`createdAt`      | When the Flobot was first instigated
-`userId`         | If the Flobot was instigated by a human, then this is the userId of that person
+`_id`            | Uniquely identifies a Tymly
+`createdAt`      | When the Tymly was first instigated
+`userId`         | If the Tymly was instigated by a human, then this is the userId of that person
 `status`         | Always one of `starting`, `running`, `waitingForHumanInput` or `finished`
-`flowId`         | Identifies which flow this Flobot is travelling around
-`stateId`        | Indicates the state that this Flobot is currently in
-`stateEnterTime` | The timestamp of when the Flobot entered its current state
-`ctx`            | This is a simple key/value store that's unique to each Flobot. In analogy terms, this is a good place to store the speed of a train. This __context__ is available to all states to read-from/write-to as they require. In this way, inter-state communication is possible - but within context of each ~~train~~ Flobot.
+`flowId`         | Identifies which flow this Tymly is travelling around
+`stateId`        | Indicates the state that this Tymly is currently in
+`stateEnterTime` | The timestamp of when the Tymly entered its current state
+`ctx`            | This is a simple key/value store that's unique to each Tymly. In analogy terms, this is a good place to store the speed of a train. This __context__ is available to all states to read-from/write-to as they require. In this way, inter-state communication is possible - but within context of each ~~train~~ Tymly.
 
 <hr>
 
 ## Plugins
 
-FlobotJS takes a batteries-included approach and hopefully ships with enough [State Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there. To help try and keep things minimal and manageable Flobot employs a __plugin__ architecture.
-A FlobotJS plugin extends the core framework with related State Classes (along with other internal components required to run them).
+TymlyJS takes a batteries-included approach and hopefully ships with enough [State Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there. To help try and keep things minimal and manageable Tymly employs a __plugin__ architecture.
+A TymlyJS plugin extends the core framework with related State Classes (along with other internal components required to run them).
 
 __Please see the [list of core plugins](/reference/#list-of-plugins) to get a feel for what plugins are all about__
 
-FlobotJS's current library of state classes is certainly far from exhaustive and organisations will undoubtedly have specialist requirements of their own.
-It's straightforward to write a new plugin for FlobotJS and add missing capabilities.
+TymlyJS's current library of state classes is certainly far from exhaustive and organisations will undoubtedly have specialist requirements of their own.
+It's straightforward to write a new plugin for TymlyJS and add missing capabilities.
 
 
 
