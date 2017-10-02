@@ -2,25 +2,25 @@
   "title": "fire-safety",
   "description": "Data on fire safety protocols for properties in Gazetteer",
   "primaryKey": [
-    "UPRN"
+    "uprn"
     ],
   "type": "object",
   "properties": {
-    "UPRN": {
+    "uprn": {
       "type": "integer",
       "maxLength": 12
     },
-    "FS_MANAGEMENT": {
+    "fsManagement": {
       "type": "integer"
     },
-    "LAST_ENFORCEMENT": {
+    "lastEnforcement": {
       "type": "integer"
     },
-    "BUILDING_REGS_IGNORED": {
+    "buildingRegsIgnored": {
       "type": "string"
     }
   },
   "required": [
-    "UPRN"
+    "uprn"
     ]
 }

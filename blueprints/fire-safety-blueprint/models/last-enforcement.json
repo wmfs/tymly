@@ -1,7 +1,9 @@
 {
   "title": "last-enforcement",
   "description": "last-enforcement model",
-  "primaryKey": ["ID"],
+  "primaryKey": [
+    "ID"
+  ],
   "type": "object",
   "properties": {
     "id": {
