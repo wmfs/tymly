@@ -1,10 +1,10 @@
 const cp = require('child_process')
 
-function git(command) {
+function git (command) {
   return cp.execSync(`git ${command}`).toString()
 } // git
 
-function gitDetails() {
+function gitDetails () {
   return {
     repository: git('config --get remote.origin.url'),
     branch: git('rev-parse --abbrev-ref HEAD'),

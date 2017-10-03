@@ -1,13 +1,13 @@
 const path = require('path')
 const fs = require('fs')
 
-function readVersionNumber(pkg) {
+function readVersionNumber (pkg) {
   const jsonFile = path.join(pkg, 'package.json')
   const json = JSON.parse(fs.readFileSync(jsonFile))
   return [ json.name, json.version ]
 } // readVersionNumbers
 
-function readVersionNumbers(searchRoot, packages) {
+function readVersionNumbers (searchRoot, packages) {
   const versions = { }
 
   for (const pkg of packages) {

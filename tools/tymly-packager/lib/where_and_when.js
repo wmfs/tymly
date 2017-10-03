@@ -2,7 +2,7 @@ const username = require('username').sync
 const hostname = require('os').hostname
 const moment = require('moment')
 
-function whereAndWhen() {
+function whereAndWhen () {
   const now = moment()
 
   return {

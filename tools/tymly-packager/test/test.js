@@ -41,7 +41,7 @@ describe('Generate manifest version numbers', () => {
   } // for ...
 }) // describe
 
-it ('Gather git details', () => {
+it('Gather git details', () => {
   const gitDeets = gitDetails()
   expect(gitDeets.repository).to.match(/github.com/)
   expect(gitDeets.repository).to.match(/tymly/)
@@ -49,10 +49,9 @@ it ('Gather git details', () => {
   expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
 })
 
-it ('Where and when', () => {
+it('Where and when', () => {
   const ww = whereAndWhen()
   expect(ww.user).to.be.a('string')
   expect(ww.hostname).to.be.a('string')
   expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
 })
-
