@@ -33,8 +33,8 @@ describe('Generate manifest version numbers', () => {
   ]
 
   for (const [ label, packages, results ] of tests) {
-    it(label, async () => {
-      const versions = await readVersionNumbers(searchRoot, packages)
+    it(label, () => {
+      const versions = readVersionNumbers(searchRoot, packages)
 
       expect(versions).to.deep.equal(results)
     }) // it ...
