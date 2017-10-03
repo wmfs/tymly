@@ -9,6 +9,7 @@ const readVersionNumbers = require('../lib/read_version_numbers.js')
 const gitDetails = require('../lib/git_details.js')
 const whereAndWhen = require('../lib/where_and_when.js')
 const packPackages = require('../lib/pack_packages.js')
+const createManifest = require('../lib/create_manifest.js')
 
 const pristine = path.resolve(__dirname, './fixtures/packages')
 const searchRoot = path.resolve(__dirname, './fixtures/working')
@@ -45,7 +46,7 @@ describe('Bundler tests', function () {
         expect(packages).to.deep.equal(results)
       }) // it ...
     } // for ...
-  }) // describe ...
+  }) // gathering packages
 
   describe('Read version numbers', () => {
     const tests = [
@@ -79,7 +80,7 @@ describe('Bundler tests', function () {
         expect(versions).to.deep.equal(results)
       }) // it ...
     } // for ...
-  }) // describe
+  }) // version numbers
 
   it('Gather git details', () => {
     const gitDeets = gitDetails()
@@ -87,13 +88,29 @@ describe('Bundler tests', function () {
     expect(gitDeets.repository).to.match(/tymly/)
     expect(gitDeets.branch).to.be.a('string')
     expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
-  })
+  }) // git details
 
   it('Where and when', () => {
     const ww = whereAndWhen()
     expect(ww.user).to.be.a('string')
     expect(ww.hostname).to.be.a('string')
     expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
+  }) // where and when
+
+  it('manifest', () => {
+    const manifest = createManifest([
+      {directory: 'package-1', name: 'package-A', version: '1.0.5'},
+      {directory: 'package-2', name: 'package-B', version: '1.0.9'}
+    ])
+
+    expect(manifest).to.be.an('object')
+    expect(manifest.packages).to.be.an('array')
+    expect(manifest.packages.length).to.equal(2)
+    expect(manifest.packages[0]).to.deep.equal({'package-A': '1.0.5'})
+    expect(manifest.git).to.be.an('object')
+    expect(manifest.user).to.be.a('string')
+    expect(manifest.hostname).to.be.a('string')
+    expect(manifest.timestamp).to.be.a('string')
   })
 
   describe('Bundling up a deployment', function () {
@@ -126,12 +143,12 @@ describe('Bundler tests', function () {
       describe(label, function () {
         this.timeout(10000)
 
-        it('run npm pack in each package directory', async () => {
+        it('pack up each package', async () => {
           const tarballs = await packPackages(path.join(searchRoot, fixture), packages)
 
           expect(tarballs).to.deep.equal(expectedTarballs)
         })
-      })
+      }) // describe ...
     } // for ...
-  })
+  }) // bundling for deploy
 })
