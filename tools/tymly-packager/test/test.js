@@ -17,8 +17,8 @@ describe('Package gathering', () => {
   ]
 
   for (const [ label, fixture, results ] of tests) {
-    it(label, async () => {
-      const packages = await gatherPackages(path.join(searchRoot, fixture))
+    it(label, () => {
+      const packages = gatherPackages(path.join(searchRoot, fixture))
 
       expect(packages).to.deep.equal(results)
     }) // it ...
@@ -55,3 +55,4 @@ it ('Where and when', () => {
   expect(ww.hostname).to.be.a('string')
   expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
 })
+
