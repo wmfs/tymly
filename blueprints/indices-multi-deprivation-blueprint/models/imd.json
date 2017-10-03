@@ -1,0 +1,237 @@
+{
+  "title": "imd",
+  "description": "Statistics on relative deprivation in small areas in England, as supplied by the Office of National Statistics (https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015).",
+  "primaryKey": [
+    "lsoaCode2011"
+  ],
+  "type": "object",
+  "properties": {
+    "lsoaCode2011" : {
+      "type": "string"
+    },
+    "lsoaName2011" : {
+      "type": "string"
+    },
+    "localAuthorityDistrictCode2013" : {
+      "type": "string"
+    },
+    "localAuthorityDistrictName2013" : {
+      "type": "string"
+    },
+    "indexOfMultipleDeprivationScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "indexOfMultipleDeprivationRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "indexOfMultipleDeprivationDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "incomeRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeDecile" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "employmentScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "employmentRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "employmentDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "educationSkillsAndTrainingScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "educationSkillsAndTrainingRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "educationSkillsAndTrainingDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "healthDeprivationAndDisabilityScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "healthDeprivationAndDisabilityRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "healthDeprivationAndDisabilityDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "crimeScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "crimeRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "crimeDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "barriersToHousingAndServicesScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "barriersToHousingAndServicesRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "barriersToHousingAndServicesDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "livingEnvironmentScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "livingEnvironmentRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "livingEnvironmentDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeDeprivationAffectingChildrenIndexScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "incomeDeprivationAffectingChildrenIndexRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeDeprivationAffectingChildrenIndexDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeDeprivationAffectingOlderPeopleScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "incomeDeprivationAffectingOlderPeopleRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "incomeDeprivationAffectingOlderPeopleDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "childrenAndYoungPeopleSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "childrenAndYoungPeopleSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "childrenAndYoungPeopleSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "adultSkillsSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "adultSkillsSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "adultSkillsSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "geographicalBarriersSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "geographicalBarriersSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "geographicalBarriersSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "widerBarriersSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "widerBarriersSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "widerBarriersSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "indoorsSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "indoorsSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "indoorsSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "outdoorsSubdomainScore" : {
+      "type": "number",
+      "multipleOf": 0.001
+    },
+    "outdoorsSubdomainRank" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "outdoorsSubdomainDecile" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "totalPopulationMid2012" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "dependentChildrenAged015Mid2012" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "populationAged1659Mid2012" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "olderPopulationAged60AndOverMid2012" : {
+      "type": "number",
+      "multipleOf": 1
+    },
+    "workingAgePopulation185964" : {
+      "type": "number",
+      "multipleOf": 0.01
+    }
+  },
+  "required": [
+    "lsoaCode2011"
+  ]
+}

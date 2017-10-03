@@ -1,0 +1,630 @@
+{
+  "plural": "safeAndWellVisits",
+  "description": "Model auto-generated via workbook2blueprint",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "number"
+    },
+    "closed": {
+      "type": "string"
+    },
+    "workbookCompleted": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "searchableKeyword": {
+      "type": "string"
+    },
+    "contactId": {
+      "type": "number"
+    },
+    "primaryContactId": {
+      "type": "number"
+    },
+    "appointment": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uprn": {
+      "type": "number",
+      "maxLength": 12
+    },
+    "x": {
+      "type": "number"
+    },
+    "y": {
+      "type": "number"
+    },
+    "addressLabel": {
+      "type": "string"
+    },
+    "mosaicType": {
+      "type": "number"
+    },
+    "recommendedStation": {
+      "type": "number"
+    },
+    "riskScore": {
+      "type": "number"
+    },
+    "referralRiskScore": {
+      "type": "number"
+    },
+    "futureContact": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "number"
+    },
+    "createdBy": {
+      "type": "string"
+    },
+    "createdTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "wardName": {
+      "type": "string"
+    },
+    "wakeDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "vpoReferrals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Refer to?"
+    },
+    "communityMemberInterests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Interested in?"
+    },
+    "initiativeReference": {
+      "type": "string"
+    },
+    "occupierRiskProfile": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "occupierRiskFactor": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "referralOccupierMobility": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "propertyRiskFactors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contactCentreNotes": {
+      "type": "string",
+      "title": "Contact Centre Only Notes"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Referral Notes"
+    },
+    "referralGenerated": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Date/time referral requested"
+    },
+    "jointVisit": {
+      "type": "string",
+      "title": "Joint visit required (with partner)?"
+    },
+    "appointmentStatus": {
+      "type": "string",
+      "title": "Reason for rescheduling this appointment"
+    },
+    "hscBenefits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sawFireHazards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diffResp": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "addnRisks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Are any of the following hazards present which may have an impact at an incident?"
+    },
+    "sad": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safeVehicle": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safeTyres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safeDriver": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "travelSafety": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "winterWarmer": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "employment": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sawPhysicalHealth": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "wellbeing": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lifestyle": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hsaPartnerQ": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Partner Questions"
+    },
+    "vulnerableReferrals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Check all that apply"
+    },
+    "meansTested": {
+      "type": "string",
+      "title": "Are the occupiers in receipt of any benefits?"
+    },
+    "actualAssessmentDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "station": {
+      "type": "number"
+    },
+    "watch": {
+      "type": "string"
+    },
+    "agentId": {
+      "type": "string",
+      "title": "Completed by"
+    },
+    "assessor1": {
+      "type": "string",
+      "title": "Assessor 1 roll number"
+    },
+    "assessor2": {
+      "type": "string",
+      "title": "Assessor 2 roll number"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "shareInfo": {
+      "type": "string"
+    },
+    "safeInHome": {
+      "type": "number",
+      "title": "I feel safe in my home?"
+    },
+    "tenureId": {
+      "type": "string",
+      "title": "Tenure"
+    },
+    "housingAssociationId": {
+      "type": "string",
+      "title": "Housing Association"
+    },
+    "propertyTypeId": {
+      "type": "string",
+      "title": "Property type"
+    },
+    "hmo": {
+      "type": "string",
+      "title": "HMO?"
+    },
+    "shelteredHousing": {
+      "type": "string",
+      "title": "Sheltered Accommodation?"
+    },
+    "ethnicityId": {
+      "type": "string",
+      "title": "Occupier Ethnicity?"
+    },
+    "age04Male": {
+      "type": "number",
+      "title": "Male: 0 - 4"
+    },
+    "age04Female": {
+      "type": "number",
+      "title": "Female: 0 - 4"
+    },
+    "age514Male": {
+      "type": "number",
+      "title": "Male: 5 - 14"
+    },
+    "age514Female": {
+      "type": "number",
+      "title": "Female: 5 - 14"
+    },
+    "age1524Male": {
+      "type": "number",
+      "title": "Male: 15 - 24"
+    },
+    "age1524Female": {
+      "type": "number",
+      "title": "Female: 15 - 24"
+    },
+    "age2544Male": {
+      "type": "number",
+      "title": "Male: 25 - 44"
+    },
+    "age2544Female": {
+      "type": "number",
+      "title": "Female: 25 - 44"
+    },
+    "age4564Male": {
+      "type": "number",
+      "title": "Male: 45 - 64"
+    },
+    "age4564Female": {
+      "type": "number",
+      "title": "Female: 45 - 64"
+    },
+    "age6579Male": {
+      "type": "number",
+      "title": "Male: 65 - 79"
+    },
+    "age6579Female": {
+      "type": "number",
+      "title": "Female: 65 - 79"
+    },
+    "age80PlusMale": {
+      "type": "number",
+      "title": "Male: 80+"
+    },
+    "age80PlusFemale": {
+      "type": "number",
+      "title": "Female: 80+"
+    },
+    "smokers": {
+      "type": "string",
+      "title": "Does anyone smoke inside the property?"
+    },
+    "vapourSmoker": {
+      "type": "string",
+      "title": "Does anyone use electronic/vapour cigarettes?"
+    },
+    "fireEvidence": {
+      "type": "string",
+      "title": "Is there evidence / history of fire (including cigarette burns)?"
+    },
+    "fireHazardsNotes": {
+      "type": "string",
+      "title": "Please provide details"
+    },
+    "difficultyResponding": {
+      "type": "string",
+      "title": "Would anyone have difficulty responding to an emergency?"
+    },
+    "difficultyRespNotes": {
+      "type": "string",
+      "title": "Please provide details"
+    },
+    "fireSafetyTutoring": {
+      "type": "string",
+      "title": "Is fire safety tutoring required?"
+    },
+    "youthServicesConsent": {
+      "type": "string",
+      "title": "Does the parent/guardian consent to being contacted by Youth Services?"
+    },
+    "youthServicesNotes": {
+      "type": "string",
+      "title": "Please provide details"
+    },
+    "disorganisedLiving": {
+      "type": "string",
+      "title": "Is there any evidence of Disorganised Living?"
+    },
+    "additionalRiskNotes": {
+      "type": "string",
+      "title": "Please provide details"
+    },
+    "vehicleAccess": {
+      "type": "string"
+    },
+    "youngDrivers": {
+      "type": "number",
+      "title": "Aged between 17 to 24?"
+    },
+    "oldDrivers": {
+      "type": "number",
+      "title": "Aged over 70?"
+    },
+    "swemwbs": {
+      "type": "number",
+      "title": "Complete a SWEBWBS?"
+    },
+    "beforeCorrectAlarms": {
+      "type": "number",
+      "title": "How many smoke alarms were working <b>and</b> correctly sited?"
+    },
+    "beforeIncorrectAlarms": {
+      "type": "number",
+      "title": "How many smoke alarms were not correctly fitted <b>or</b> not sited correctly?"
+    },
+    "educationalMaterial": {
+      "type": "string",
+      "title": "Was educational material supplied?"
+    },
+    "vulnerablePerson": {
+      "type": "string",
+      "title": "Vulnerable person - additional actions required"
+    },
+    "assessmentNotes": {
+      "type": "string"
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contactTypeId": {
+            "type": "string",
+            "title": "Contact type"
+          },
+          "primaryContact": {
+            "type": "string",
+            "title": "Is this the primary contact for this referral?"
+          },
+          "titleId": {
+            "type": "string",
+            "title": "Title"
+          },
+          "firstNames": {
+            "type": "string",
+            "title": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Last name"
+          },
+          "dob": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date of birth"
+          },
+          "freeAddress": {
+            "type": "string",
+            "title": "Address"
+          },
+          "mobileTelephone": {
+            "type": "string",
+            "title": "Mobile Tel No"
+          },
+          "telephone1": {
+            "type": "string",
+            "title": "Daytime Tel No"
+          },
+          "telephone2": {
+            "type": "string",
+            "title": "Evening Tel No"
+          },
+          "fax": {
+            "type": "string",
+            "title": "Fax"
+          },
+          "pager": {
+            "type": "string",
+            "title": "Pager"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "notes": {
+            "type": "string",
+            "title": "Notes"
+          },
+          "contactMethod": {
+            "type": "string",
+            "title": "Preferred method of contact"
+          }
+        }
+      }
+    },
+    "appointments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "appointmentDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Appointment date/time"
+          },
+          "password": {
+            "type": "string",
+            "title": "Client password"
+          },
+          "cancelReason": {
+            "type": "string",
+            "title": "Cancel Reason"
+          }
+        }
+      }
+    },
+    "reading": {
+      "type": "number",
+      "title": "Carbon Monoxide reading"
+    },
+    "heatingMethod": {
+      "type": "string",
+      "title": "Primary heating method"
+    },
+    "cookingMethod": {
+      "type": "string",
+      "title": "Primary cooking method"
+    },
+    "appliancesOn": {
+      "type": "string",
+      "title": "Were there any cooking or heating appliances on at the time of visit"
+    },
+    "gasCertificate": {
+      "type": "string",
+      "title": "Gas Appliances; have the occupiers got a gas safety certificate"
+    },
+    "communicationAttempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hcId": {
+            "type": "number"
+          },
+          "commDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date/time of contact attempt"
+          },
+          "commDirectionId": {
+            "type": "string",
+            "title": "Type of contact"
+          },
+          "commOutcomeId": {
+            "type": "string",
+            "title": "Outcome of contact"
+          },
+          "referralNotes": {
+            "type": "string",
+            "title": "Notes"
+          }
+        }
+      }
+    },
+    "satisfactoryService": {
+      "type": "string"
+    },
+    "alarmTestFrequency": {
+      "type": "number"
+    },
+    "reducedFireHazards": {
+      "type": "string"
+    },
+    "escapePlan": {
+      "type": "string"
+    },
+    "escapePlanAware": {
+      "type": "string"
+    },
+    "feelSafer": {
+      "type": "string"
+    },
+    "improveService": {
+      "type": "string"
+    },
+    "equipment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "typeId": {
+            "type": "string",
+            "title": "Equipment fitted or to be fitted"
+          },
+          "equipmentFitted": {
+            "type": "string",
+            "title": "Has this equipment been fitted?"
+          },
+          "numberFitted": {
+            "type": "number",
+            "title": "Number fitted"
+          },
+          "makeModelId": {
+            "type": "string",
+            "title": "Make"
+          },
+          "batchNo": {
+            "type": "string",
+            "title": "Batch No"
+          },
+          "serialNo": {
+            "type": "string",
+            "title": "Serial No"
+          },
+          "fittingMethodId": {
+            "type": "string",
+            "title": "Fitting method"
+          },
+          "dateFitted": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date fitted"
+          }
+        }
+      }
+    }
+  }
+}

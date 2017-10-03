@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "website",
+  "version": "1.0",
+
+  "label": "Website",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to help test ACL roles.",
+  "tags": ["acl", "roles", "permissions"]
+
+}

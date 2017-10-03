@@ -1,0 +1,30 @@
+{
+  "name": "addressbox-blueprint",
+  "description": "Tymly blueprint for gazetteer management",
+  "version": "0.0.1",
+  "author": "Liliana Judge",
+  "devDependencies": {
+    "async": "^2.5.0",
+    "chai": "^4.1.0",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5",
+    "fs-extra": "^4.0.2",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/addressbox-blueprint"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/addressbox-blueprint/issues"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}

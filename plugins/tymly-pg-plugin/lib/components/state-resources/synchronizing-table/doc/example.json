@@ -1,0 +1,18 @@
+{
+  "synchronizingTable": {
+    "options": {
+      "transformerFunctionName": "someBlueprintFunction",
+      "source": {
+        "tableName": "someNamespace.some_table_name",
+        "hashSumColumnName": "hash_sum"
+      },
+      "target": {
+        "tableName": "someNamespace.another_table_name",
+        "hashSumColumnName": "origin_hash_sum"
+      },
+      "join": {
+        "source_pk_column": "target_pk_column"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "propertyNames": [
+    "id",
+    "label",
+    "score"
+  ],
+  "data": [
+    [0, "None", 16],
+    [1, "Satisfactory", -16],
+    [2, "No Revisit", 8],
+    [3, "Revisit", 16],
+    [4, "Alterations Notice", 32],
+    [5, "Enforcement", 64],
+    [6, "Prohibition", 100]
+  ]
+}

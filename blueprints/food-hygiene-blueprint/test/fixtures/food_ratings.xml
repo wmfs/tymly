@@ -1,0 +1,149 @@
+﻿<?xml version="1.0"?>
+<FHRSEstablishment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Header>
+        <ExtractDate>2017-09-22</ExtractDate>
+        <ItemCount>6324</ItemCount>
+        <ReturnCode>Success</ReturnCode>
+    </Header>
+    <EstablishmentCollection>
+        <EstablishmentDetail>
+            <FHRSID>670211</FHRSID>
+            <LocalAuthorityBusinessID>PI/000615818</LocalAuthorityBusinessID>
+            <BusinessName>Business 1</BusinessName>
+            <BusinessType>Restaurant/Cafe/Canteen</BusinessType>
+            <BusinessTypeID>1</BusinessTypeID>
+            <AddressLine1>1 ABC Street</AddressLine1>
+            <AddressLine2>Birmingham</AddressLine2>
+            <PostCode>B5 5TH</PostCode>
+            <RatingValue>5</RatingValue>
+            <RatingKey>fhrs_5_en-GB</RatingKey>
+            <RatingDate>2014-12-12</RatingDate>
+            <LocalAuthorityCode>402</LocalAuthorityCode>
+            <LocalAuthorityName>Birmingham</LocalAuthorityName>
+            <LocalAuthorityWebSite>http://www.birmingham.gov.uk/environmental-health</LocalAuthorityWebSite>
+            <LocalAuthorityEmailAddress>email@birmingham.gov.uk</LocalAuthorityEmailAddress>
+            <Scores>
+                <Hygiene>5</Hygiene>
+                <Structural>5</Structural>
+                <ConfidenceInManagement>5</ConfidenceInManagement>
+            </Scores>
+            <SchemeType>FHRS</SchemeType>
+            <NewRatingPending>False</NewRatingPending>
+            <Geocode>
+                <Longitude>-1.82057600000000</Longitude>
+                <Latitude>52.41739500000000</Latitude>
+            </Geocode>
+        </EstablishmentDetail>
+        <EstablishmentDetail>
+            <FHRSID>912722</FHRSID>
+            <LocalAuthorityBusinessID>PI/000631313</LocalAuthorityBusinessID>
+            <BusinessName>Business 2</BusinessName>
+            <BusinessType>Other catering premises</BusinessType>
+            <BusinessTypeID>7841</BusinessTypeID>
+            <AddressLine1>2 ABC Street</AddressLine1>
+            <AddressLine2>Birmingham</AddressLine2>
+            <PostCode>B1 3HE</PostCode>
+            <RatingValue>5</RatingValue>
+            <RatingKey>fhrs_5_en-GB</RatingKey>
+            <RatingDate>2016-09-07</RatingDate>
+            <LocalAuthorityCode>402</LocalAuthorityCode>
+            <LocalAuthorityName>Birmingham</LocalAuthorityName>
+            <LocalAuthorityWebSite>http://www.birmingham.gov.uk/environmental-health</LocalAuthorityWebSite>
+            <LocalAuthorityEmailAddress>email@birmingham.gov.uk</LocalAuthorityEmailAddress>
+            <Scores>
+                <Hygiene>5</Hygiene>
+                <Structural>0</Structural>
+                <ConfidenceInManagement>5</ConfidenceInManagement>
+            </Scores>
+            <SchemeType>FHRS</SchemeType>
+            <NewRatingPending>False</NewRatingPending>
+            <Geocode>
+                <Longitude>-1.99132100000000</Longitude>
+                <Latitude>52.42513400000000</Latitude>
+            </Geocode>
+        </EstablishmentDetail>
+        <EstablishmentDetail>
+            <FHRSID>800341</FHRSID>
+            <LocalAuthorityBusinessID>PI/000626847</LocalAuthorityBusinessID>
+            <BusinessName>Business 3</BusinessName>
+            <BusinessType>Retailers - other</BusinessType>
+            <BusinessTypeID>4613</BusinessTypeID>
+            <AddressLine1>3 ABC Street</AddressLine1>
+            <AddressLine2>Weoley</AddressLine2>
+            <AddressLine3>Birmingham</AddressLine3>
+            <PostCode>B31 2NN</PostCode>
+            <RatingValue>Exempt</RatingValue>
+            <RatingKey>fhrs_exempt_en-GB</RatingKey>
+            <RatingDate>2015-08-11</RatingDate>
+            <LocalAuthorityCode>402</LocalAuthorityCode>
+            <LocalAuthorityName>Birmingham</LocalAuthorityName>
+            <LocalAuthorityWebSite>http://www.birmingham.gov.uk/environmental-health</LocalAuthorityWebSite>
+            <LocalAuthorityEmailAddress>email@birmingham.gov.uk</LocalAuthorityEmailAddress>
+            <Scores />
+            <SchemeType>FHRS</SchemeType>
+            <NewRatingPending>False</NewRatingPending>
+            <Geocode>
+                <Longitude>-1.92216700000000</Longitude>
+                <Latitude>52.41560700000000</Latitude>
+            </Geocode>
+        </EstablishmentDetail>
+        <EstablishmentDetail>
+            <FHRSID>853976</FHRSID>
+            <LocalAuthorityBusinessID>PI/000598851</LocalAuthorityBusinessID>
+            <BusinessName>Business 4</BusinessName>
+            <BusinessType>Other catering premises</BusinessType>
+            <BusinessTypeID>7841</BusinessTypeID>
+            <AddressLine1>Stall 5</AddressLine1>
+            <AddressLine2>34 ABC Street</AddressLine2>
+            <AddressLine3>Birmingham</AddressLine3>
+            <PostCode>B5 4RQ</PostCode>
+            <RatingValue>4</RatingValue>
+            <RatingKey>fhrs_4_en-GB</RatingKey>
+            <RatingDate>2016-03-08</RatingDate>
+            <LocalAuthorityCode>402</LocalAuthorityCode>
+            <LocalAuthorityName>Birmingham</LocalAuthorityName>
+            <LocalAuthorityWebSite>http://www.birmingham.gov.uk/environmental-health</LocalAuthorityWebSite>
+            <LocalAuthorityEmailAddress>nick.lowe@birmingham.gov.uk</LocalAuthorityEmailAddress>
+            <Scores>
+                <Hygiene>5</Hygiene>
+                <Structural>5</Structural>
+                <ConfidenceInManagement>10</ConfidenceInManagement>
+            </Scores>
+            <SchemeType>FHRS</SchemeType>
+            <NewRatingPending>False</NewRatingPending>
+            <Geocode>
+                <Longitude>-1.99509900000000</Longitude>
+                <Latitude>52.47612200000000</Latitude>
+            </Geocode>
+        </EstablishmentDetail>
+        <EstablishmentDetail>
+            <FHRSID>601580</FHRSID>
+            <LocalAuthorityBusinessID>PI/000462752</LocalAuthorityBusinessID>
+            <BusinessName>2 M'S</BusinessName>
+            <BusinessType>Retailers - other</BusinessType>
+            <BusinessTypeID>4613</BusinessTypeID>
+            <AddressLine1>10A Northfield Road</AddressLine1>
+            <AddressLine2>Harborne</AddressLine2>
+            <AddressLine3>Birmingham</AddressLine3>
+            <PostCode>B17 0SS</PostCode>
+            <RatingValue>5</RatingValue>
+            <RatingKey>fhrs_5_en-GB</RatingKey>
+            <RatingDate>2017-03-01</RatingDate>
+            <LocalAuthorityCode>402</LocalAuthorityCode>
+            <LocalAuthorityName>Birmingham</LocalAuthorityName>
+            <LocalAuthorityWebSite>http://www.birmingham.gov.uk/environmental-health</LocalAuthorityWebSite>
+            <LocalAuthorityEmailAddress>nick.lowe@birmingham.gov.uk</LocalAuthorityEmailAddress>
+            <Scores>
+                <Hygiene>5</Hygiene>
+                <Structural>5</Structural>
+                <ConfidenceInManagement>5</ConfidenceInManagement>
+            </Scores>
+            <SchemeType>FHRS</SchemeType>
+            <NewRatingPending>False</NewRatingPending>
+            <Geocode>
+                <Longitude>-1.96557800000000</Longitude>
+                <Latitude>52.45580100000000</Latitude>
+            </Geocode>
+        </EstablishmentDetail>
+	</EstablishmentCollection>
+</FHRSEstablishment>

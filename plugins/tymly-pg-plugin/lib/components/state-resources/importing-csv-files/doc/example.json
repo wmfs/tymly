@@ -1,0 +1,10 @@
+{
+  "importingCsvFiles": {
+    "options": {
+      "headerColumnNamePkPrefix": ".",
+      "topDownTableOrder": [
+        "addressbase_holding"
+      ]
+    }
+  }
+}

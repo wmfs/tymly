@@ -1,0 +1,28 @@
+{
+  "title": "ea-food-standards",
+  "description": "EA Food Standards model",
+  "primaryKey": ["id"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique ID for EA Food Standards records"
+    },
+    "label": {
+      "type": "string",
+      "description": "Label to match with ID field"
+    },
+    "score": {
+      "type": "integer",
+      "description": "Associated score"
+    },
+    "lowerBound": {
+      "type": "integer",
+      "description": "Lower bound for matching the score"
+    },
+    "upperBound": {
+      "type": "integer",
+      "description": "Upper bound for matching the score"
+    }
+  }
+}

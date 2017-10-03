@@ -1,0 +1,27 @@
+{
+  "name": "safe-and-well-visit-blueprint",
+  "version": "0.0.1",
+  "author": "Jasvinder Bahra",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
+    "debug": "^2.6.8",
+    "tymly": "0.0.14",
+    "tymly-forms-plugin": "0.0.7"
+  },
+  "scripts": {
+    "start": "node ./lib/index.js",
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/safe-and-well-visit-blueprint"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/safe-and-well-visit-blueprint/issues"
+  }
+}

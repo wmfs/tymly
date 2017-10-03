@@ -1,26 +1,24 @@
 'use strict'
 const debug = require('debug')('statebox')
-const functionClasses = {}
+const moduleClasses = {}
+const _ = require('lodash')
 
 module.exports.findModuleByName = function findModuleByName (name) {
-  return functionClasses[name]
+  return moduleClasses[name]
 }
 
 // Adds a class for creating
-module.exports.createModule = function createModule (name, stateFunction) {
-  const ModuleResource = function ModuleResource (executionName, state) {
-    const _this = this
-    this.schemaName = _this.schemaName
-    this.client = _this.client
-    this.executionName = executionName
-    this.state = state
-  }
+module.exports.createModule = function createModule (moduleName, moduleClass) {
+  moduleClasses[moduleName] = moduleClass
+  debug(`Add module class '${moduleName}'`)
+}
 
-  ModuleResource.prototype.run = stateFunction
-  ModuleResource.prototype.sendTaskSuccess = function (output) {
-    this.state.processTaskSuccess(output, this.executionName)
-  }
-
-  functionClasses[name] = ModuleResource
-  debug(`Created module resource '${name}'`)
+module.exports.createModules = function createModules (resourceModules) {
+  const _this = this
+  _.forOwn(
+    resourceModules,
+    function (moduleClass, moduleName) {
+      _this.createModule(moduleName, moduleClass)
+    }
+  )
 }

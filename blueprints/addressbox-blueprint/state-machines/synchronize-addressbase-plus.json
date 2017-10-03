@@ -1,0 +1,68 @@
+{
+  "Comment": "Synchronizes addressbase plus data with address box.",
+  "version": "1.0",
+  "StartAt": "SynchronizingTable",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "SynchronizingTable": {
+      "Type": "Task",
+      "InputPath": "$.outputDir",
+      "Resource": "module:synchronizingTable",
+      "ResourceConfig": {
+        "transformerFunctionName": "wmfs_addressbasePlusConverter",
+        "source": {
+          "tableName": "ordnance_survey.addressbase_holding",
+          "hashSumColumnName": "hash_sum"
+        },
+        "target": {
+          "tableName": "wmfs.gazetteer",
+          "hashSumColumnName": "origin_hash_sum"
+        },
+        "join": {
+          "uprn": "uprn"
+        }
+      },
+      "Next": "ExportingCsvDeltaFile"
+    },
+    "ExportingCsvDeltaFile": {
+      "Type": "Task",
+      "InputPath": "$.outputFilepath",
+      "Resource": "module:exportingCsvDeltaFile",
+      "ResourceConfig": {
+        "since": "2000-07-16T20:37:26.847Z",
+        "createdColumnName": "_created",
+        "modifiedColumnName": "_modified",
+        "tables": [
+          {
+            "tableName": "wmfs.gazetteer",
+            "csvColumns": [
+              76,
+              "U",
+              "$ROW_NUM",
+              "@uprn",
+              1,
+              "@business_name",
+              "@building_name",
+              "@building_number",
+              "@street_name_1",
+              "@area_name_1",
+              "@area_name_2",
+              "@postcode",
+              "@post_town",
+              "@post_county",
+              "@actual_x",
+              "@actual_y",
+              "@routing_x",
+              "@routing_y",
+              "@mapbook_ref",
+              "@lpi_key"
+            ]
+          }
+        ]
+      },
+      "End": true
+    }
+  }
+}

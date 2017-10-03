@@ -1,0 +1,26 @@
+{
+
+  "name": "sendWelcomeEmail",
+    "description": "A flow to help illustrate sending an email",
+  "version": "1.0",
+  "instigators": ["user"],
+  "initialStateId": "sendingEmail",
+  "initialCtx": {},
+
+  "fsm": {
+
+    "sendingEmail": {
+      "options": {
+        "to": {
+          "$env": {
+            "variableName": "TYMLY_WELCOME_RECIPIENTS",
+            "failIfNotSet": true
+          }
+        },
+        "subject": "Welcome to Tymly!",
+        "text": "Congratulations... you are now part of the wonderful world of Tymly! <3"
+      }
+    }
+
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "namespace": "fsa",
+  "name": "food-hygiene-blueprint",
+  "version": "1.0",
+  "label": "food-hygiene-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to process food and hygiene ratings from a XML file, which can be retrieved from URL_HERE.",
+  "tags": []
+}

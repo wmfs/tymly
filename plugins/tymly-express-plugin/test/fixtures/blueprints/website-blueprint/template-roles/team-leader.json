@@ -1,0 +1,11 @@
+{
+    "label": "Team leader",
+    "roleMemberships": ["developer"],
+
+    "grants": [
+        {
+            "stateMachineName": "deletePost",
+            "allows": ["create"]
+        }
+    ]
+}

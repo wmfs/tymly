@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "school",
+  "version": "1.0",
+
+  "label": "School",
+  "author": "Martina Henry",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to support Solr tests",
+  "tags": ["student", "staff"]
+
+}

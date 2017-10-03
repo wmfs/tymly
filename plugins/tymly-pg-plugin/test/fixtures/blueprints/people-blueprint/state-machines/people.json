@@ -1,0 +1,26 @@
+{
+  "Comment": "Do some basic CRUD things.",
+  "StartAt": "Upserting",
+  "version": "1.0",
+  "States": {
+    "Upserting": {
+      "Type": "Task",
+      "InputPath": "$.homer",
+      "Resource": "module:upserting",
+      "ResourceConfig": {
+        "modelId": "people"
+      },
+      "Next": "FindingById"
+    },
+    "FindingById": {
+      "Type": "Task",
+      "InputPath": "$.homer.employeeNo",
+      "Resource": "module:findingById",
+      "ResourceConfig": {
+        "modelId": "people"
+      },
+      "ResultPath": "$.foundHomer",
+      "End": true
+    }
+  }
+}

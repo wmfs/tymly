@@ -1,0 +1,11 @@
+{
+  "namespace": "wmfs",
+  "name": "ridge-blueprint",
+  "version": "1.0",
+  "label": "ridge-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to calculate the RIDGE models.",
+  "tags": []
+}

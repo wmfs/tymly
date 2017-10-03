@@ -1,0 +1,65 @@
+[
+  {
+    "namespace": "fbot_test",
+    "id": "students",
+    "title": "Students",
+    "description": "List of Students",
+    "primaryKey": ["student_no"],
+    "type": "object",
+    "properties": {
+      "student_no": {
+        "type": "number"
+      },
+      "first_name": {
+        "type": "string",
+        "description": "Student's first name"
+      },
+      "last_name": {
+        "type": "string"
+      },
+      "characterName": {
+        "type": "string"
+      }
+    },
+    "indexes": [
+      {
+        "columns": ["student_no"],
+        "unique": true
+      }
+    ],
+    "required": ["student_no", "first_name", "last_name"]
+  },
+  {
+    "namespace": "fbot_test",
+    "id": "staff",
+    "title": "Staff",
+    "description": "List of Staff",
+    "primaryKey": ["staff_no"],
+    "type": "object",
+    "properties": {
+      "staff_no": {
+        "type": "number"
+      },
+      "first_name": {
+        "type": "string",
+        "description": "Staff's first name"
+      },
+      "last_name": {
+        "type": "string"
+      },
+      "character_first_name": {
+        "type": "string"
+      },
+      "character_last_name": {
+        "type": "string"
+      }
+    },
+    "indexes": [
+      {
+        "columns": ["staff_no"],
+        "unique": true
+      }
+    ],
+    "required": ["staff_no", "first_name", "last_name"]
+  }
+]

@@ -1,4 +1,3 @@
-
 const Writable = require('stream').Writable
 
 class FileWriter extends Writable {

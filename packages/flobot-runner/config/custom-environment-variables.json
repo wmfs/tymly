@@ -1,7 +1,0 @@
-{
-  "blueprintPaths": "FLOBOT_BLUEPRINTS_PATH",
-  "pluginPaths": "FLOBOT_PLUGINS_PATH",
-  "config.serverPort": "FLOBOT_SERVER_PORT",
-  "config.auth.secret": "FLOBOT_AUTH_SECRET",
-  "config.auth.audience": "FLOBOT_AUTH_AUDIENCE"
-}

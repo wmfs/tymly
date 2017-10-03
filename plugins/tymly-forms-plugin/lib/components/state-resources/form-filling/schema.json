@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "formId": {
+      "type": "string",
+      "description": "The id of a form in the current namespace that a human needs to interact with"
+    },
+    "target": {
+      "type": "string",
+      "description": "A '.' delimited path to where data that's submitted via the form should be set on the Tymly context"
+    }
+  },
+  "required": ["formId"]
+}

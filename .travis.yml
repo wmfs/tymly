@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "8"
+  - "8.5"
 
 services:
   - postgresql
@@ -13,8 +13,16 @@ sudo: false
 dist: trusty
 
 before_script:
+  - echo 'Europe/London' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
   - lerna bootstrap
+
+before_install:
+  - export TZ=Europe/London
 
 env:
   global:
     - PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432
+    - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
+    - DEBUG_COLORS=false
+

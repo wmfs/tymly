@@ -1,0 +1,105 @@
+{
+  "name": "cat",
+  "description": "What cats do.",
+  "version": "1.0",
+  "initialStateId": "sleeping",
+  "tags": ["pet", "cat"],
+  "instigators": ["user"],
+  "initialCtx": {
+    "mealCount": 0
+  },
+  "fsm": {
+
+    "sleeping": {
+      "options": {},
+      "events": {
+        "stretch": {"to": "sitting"},
+        "turnIn": {"to": "retiring"}
+      }
+    },
+
+    "sitting": {
+      "options": {},
+      "events": {
+        "lifeIsBad": {"to": "moaning"},
+        "allTooMuch": {"to": "sleeping"},
+        "squat": {"to": "pooing"},
+        "thingsToDo": {"to": "walking"},
+        "hungry": {"to": "eating"},
+        "lifeIsGood": {"to": "purring"}
+      }
+    },
+
+    "purring": {
+      "options": {},
+      "events": {
+        "lifeIsBad": {"to": "moaning"},
+        "calmDown": {"to": "sitting"},
+        "hungry": {"to": "eating"}
+      }
+    },
+
+    "eating": {
+      "options": {},
+      "events": {
+        "eatStarter": {"to": "eatingBiscuits"}
+      }
+    },
+
+    "pooing": {
+      "options": {},
+      "events": {
+        "smugness": {"to": "sitting"},
+        "stubbornness": {"to": "moaning"}
+      }
+    },
+
+    "walking": {
+      "options": {},
+      "events": {
+        "stop": {"to": "sitting"}
+      }
+    },
+
+    "moaning": {
+      "options": {},
+      "events": {
+        "lifeIsGood": {"to": "purring"},
+        "justLooking": {"to": "sitting"},
+        "stropOff": {"to": "walking"}
+      }
+    },
+
+    "eatingBiscuits": {
+      "options": {},
+      "events": {
+        "eatMain": {"to": "eatingTuna"}
+      }
+    },
+
+    "eatingTuna": {
+      "options": {},
+      "events": {
+        "eatDessert": {"to": "drinkingWater"}
+      }
+    },
+
+    "drinkingWater": {
+      "options": {
+        "threshold": "@registry.mealThreshold"
+      },
+      "events": {
+        "finished": [
+          {"to": "purring", "when": "mealCount < threshold"},
+          {"to": "moaning"}
+        ]
+      }
+    },
+
+    "retiring": {
+      "config": {}
+    }
+
+
+  }
+}

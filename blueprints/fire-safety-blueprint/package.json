@@ -1,0 +1,27 @@
+{
+  "name": "fire-safety-blueprint",
+  "version": "0.0.1",
+  "author": "Reece Brend",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
+    "debug": "^2.6.8",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5"
+  },
+  "scripts": {
+    "start": "node ./lib/index.js",
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly/blueprints/fire-safety-blueprint"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/blueprints/fire-safety-blueprint/issues"
+  }
+}

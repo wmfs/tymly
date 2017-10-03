@@ -17,5 +17,8 @@
   },
   "bugs": {
     "url": "https://github.com/wmfs/tymly/issues"
+  },
+  "dependencies": {
+    "mocha": "^3.5.3"
   }
 }

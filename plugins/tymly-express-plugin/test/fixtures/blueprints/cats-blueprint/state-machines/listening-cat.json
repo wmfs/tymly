@@ -1,0 +1,23 @@
+{
+  "Comment": "A listening Cat!",
+  "version": "1.0",
+  "StartAt": "WakingUp",
+  "States": {
+    "WakingUp": {
+      "Type": "Task",
+      "Resource": "module:wakingUp",
+      "Next": "Listening"
+    },
+    "Listening": {
+      "Type": "Task",
+      "Resource": "module:listening",
+      "ResultPath": "$.formData",
+      "Next": "Sleeping"
+    },
+    "Sleeping": {
+      "Type": "Task",
+      "Resource": "module:sleeping",
+      "End": true
+    }
+  }
+}

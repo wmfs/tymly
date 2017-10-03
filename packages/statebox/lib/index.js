@@ -11,6 +11,9 @@ const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
+const ParallelBranchTracker = require('./Parallel-branch-tracker')
+const routes = require('./routes/index')
+const CallbackManager = require('./Callback-manager')
 
 class Statebox {
   constructor (options) {
@@ -19,20 +22,36 @@ class Statebox {
       this.options.dao = new MemoryDao(options)
     }
     this.options.executioner = executioner
+    this.options.callbackManager = new CallbackManager()
+    this.options.parallelBranchTracker = new ParallelBranchTracker()
   }
 
-  createModuleResource (name, functionClass) {
-    resources.createModule(name, functionClass)
+  createModuleResource (moduleName, moduleClass) {
+    resources.createModule(moduleName, moduleClass)
+  }
+
+  createModuleResources (moduleResources) {
+    resources.createModules(moduleResources)
   }
 
   validatStateMachineDefinition (name, definition) {
     stateMachines.validateStateMachineDefinition(name, definition)
   }
 
-  createStateMachine (name, definition, callback) {
+  createStateMachine (stateMachineName, stateMachineDefinition, stateMachineMeta, env, callback) {
     stateMachines.createStateMachine(
-      name,
-      definition,
+      stateMachineName,
+      stateMachineDefinition,
+      stateMachineMeta,
+      env,
+      this.options,
+      callback)
+  }
+
+  createStateMachines (stateMachineDefinitions, env, callback) {
+    stateMachines.createStateMachines(
+      stateMachineDefinitions,
+      env,
       this.options,
       callback)
   }
@@ -50,27 +69,135 @@ class Statebox {
   }
 
   findStateMachineByName (name) {
-    stateMachines.findStateMachineByName(name)
+    return stateMachines.findStateMachineByName(name)
   }
 
   findStateMachines (options) {
-    stateMachines.findStateMachines(options)
+    return stateMachines.findStateMachines(options)
+  }
+
+  findStates (options) {
+    return stateMachines.findStates(options)
   }
 
   startExecution (input, stateMachineName, executionOptions, callback) {
     executioner(input, stateMachineName, executionOptions, this.options, callback)
   }
 
-  stopExecution (cause, error, executionName, callback) {
-
+  stopExecution (cause, errorCode, executionName, executionOptions, callback) {
+    const _this = this
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          if (executionDescription.status === 'RUNNING') {
+            _this.options.dao.stopExecution(
+              cause,
+              errorCode,
+              executionName,
+              executionOptions,
+              callback
+            )
+          } else {
+            callback(
+              new Error(`Execution is not running, and cannot be stopped (executionName='${executionName}')`)
+            )
+          }
+        }
+      }
+    )
   }
 
-  listExecutions (callback) {
-
+  listExecutions (executionOptions, callback) {
+    callback(null)
   }
 
-  describeExecution (executionName, callback) {
+  describeExecution (executionName, executionOptions, callback) {
     this.options.dao.findExecutionByName(executionName, callback)
+  }
+
+  sendTaskSuccess (executionName, output, executionOptions, callback) {
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskSuccess(executionDescription, output)
+            callback(null)
+          } else {
+            callback(
+              new Error(`Success has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
+        }
+      }
+    )
+  }
+
+  sendTaskFailure (executionName, options, executionOptions, callback) {
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskFailure(executionDescription, options)
+            callback(null)
+          } else {
+            callback(
+              new Error(`Failure has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
+        }
+      }
+    )
+  }
+
+  sendTaskHeartbeat (executionName, output, executionOptions, callback) {
+    this.options.dao.findExecutionByName(
+      executionName,
+      function (err, executionDescription) {
+        if (err) {
+          callback(err)
+        } else {
+          if (executionDescription.status === 'RUNNING') {
+            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+            const stateToRun = stateMachine.states[executionDescription.currentStateName]
+            stateToRun.runTaskHeartbeat(executionDescription, output, callback)
+          } else {
+            callback(
+              new Error(`Heartbeat has been rejected because execution is not running (executionName='${executionName}')`)
+            )
+          }
+        }
+      }
+    )
+  }
+
+  addExpressApi (express, app, jwtCheck) {
+    // Statebox routes
+    // ---------------
+    let router = express.Router()
+    router.post('/', jwtCheck, routes.startExecution)
+    router.get('/:executionName', jwtCheck, routes.describeExecution)
+    router.put('/:executionName', jwtCheck, routes.executionAction)
+    router.delete('/:executionName', jwtCheck, routes.stopExecution)
+    app.use('/executions', router)
+
+    // Remit routes
+    // ------------
+    router = express.Router()
+    router.get('/', jwtCheck, routes.getUserRemit)
+    app.use('/remit', router)
   }
 
   waitUntilStoppedRunning (executionName, callback) {
@@ -78,7 +205,7 @@ class Statebox {
     const _this = this
     async.doUntil(
       function (cb) {
-        _this.describeExecution(
+        _this.options.dao.findExecutionByName(
           executionName,
           function (err, latestExecutionDescription) {
             if (err) {

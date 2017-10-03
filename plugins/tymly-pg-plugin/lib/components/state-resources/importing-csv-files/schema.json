@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "headerColumnNamePkPrefix":{
+      "type": "string",
+      "description": "Used to denote primary key columns when dealing with update/upsert files. Please see the [options](https://github.com/wmfs/tymly/tree/master/supercopy#options) section in [Supercopy](https://github.com/wmfs/tymly/tree/master/supercopy) for more details."
+    },
+    "topDownTableOrder": {
+      "type": "array",
+      "description": "Used to resolve foreign-key constraint issues - will be deprecated in favour of something more automatic. Please see the [options](https://github.com/wmfs/tymly/tree/master/supercopy#options) section in [Supercopy](https://github.com/wmfs/tymly/tree/master/supercopy) for more details."
+    }
+  }
+}

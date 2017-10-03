@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "transformerFunctionName": {
+      "type": "string",
+      "description": "Identifies which blueprint function should be used to undertake transformation duties. See [pg-telepods](https://github.com/wmfs/tymly/tree/master/pg-telepods) for more information."
+    },
+    "source": {
+      "type": "object",
+      "description": "Used to define a source table along with any other attributes (such as a hash sum column) for where data is to be sourced from. See [pg-telepods](https://github.com/wmfs/tymly/tree/master/pg-telepods) for more information."
+    },
+    "target": {
+      "type": "object",
+      "description": "Likewise, defines a target table with similar attributes explaining where data is to sent to. See [pg-telepods](https://github.com/wmfs/tymly/tree/master/pg-telepods) for more information."
+    },
+    "join": {
+      "type": "object",
+      "description": "A simple object denoting how primary keys on both tables are related - where `key` values are the name of a column on the source table and its `value` is a column on the target table"
+    }
+  }
+}

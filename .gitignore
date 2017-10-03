@@ -1,6 +1,8 @@
 
 ## Node ###
 
+\#*
+
 # Logs
 logs
 *.log
@@ -83,3 +85,4 @@ package-deps.json
 .yo-rc.json
 
 package-lock.json
+lerna-debug.log

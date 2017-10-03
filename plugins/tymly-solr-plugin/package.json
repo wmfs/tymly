@@ -1,0 +1,32 @@
+{
+  "name": "tymly-solr-plugin",
+  "description": "Plugin which handles interaction with Apache Solr",
+  "version": "0.0.3",
+  "author": "Jasvinder Bahra",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "async": "^2.5.0",
+    "boom": "^5.2.0",
+    "debug": "^3.0.1",
+    "lodash": "^4.17.4",
+    "process": "^0.11.10",
+    "request": "^2.82.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "tymly": "0.0.14",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "lint": "standard"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

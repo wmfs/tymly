@@ -1,0 +1,17 @@
+{
+    "label": "Boss",
+    "description": "Like a Boss!",
+
+    "roleMemberships": ["teamLeader"],
+
+    "grants": [
+        {
+            "stateMachineName": "purgeSite",
+            "allows": ["create"]
+        },
+        {
+            "stateMachineName": "deletePost",
+            "allows": ["cancel"]
+        }
+    ]
+}

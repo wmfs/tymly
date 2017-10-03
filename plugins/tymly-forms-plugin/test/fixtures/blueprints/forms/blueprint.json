@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "forms",
+  "version": "1.0",
+
+  "label": "Search",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "A blueprint to test the Forms service.",
+  "tags": ["forms", "ui"]
+
+}

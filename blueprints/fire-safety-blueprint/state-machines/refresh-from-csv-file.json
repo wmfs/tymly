@@ -1,0 +1,24 @@
+{
+  "Comment": "Blueprint to import fire-safety data from a CSV file into the model",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "fire_safety",
+          "building_incident_stats"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+  }
+}

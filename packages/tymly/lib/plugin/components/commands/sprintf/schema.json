@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "template": {
+      "type": "string",
+      "description": "A string template that can contain `%s`, `%d` and similar placeholders"
+
+    },
+    "inputPaths": {
+      "type": "array",
+      "description": "An array of strings - the values of which should be '.' delimited paths pointing to values on the Tymly context. These context values will be combined as per the `template` to return the output string. See [vsprintf](https://github.com/alexei/sprintf.js#javascript-vsprintf) for more info."
+    }
+
+  },
+  "required": ["template"]
+}

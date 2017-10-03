@@ -1,0 +1,26 @@
+{
+  "name": "addressbase-plus-blueprint",
+  "version": "0.0.1",
+  "author": "Jasvinder Bahra",
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "debug": "^2.6.8",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
+    "rimraf": "^2.6.2"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly/blueprints/addressbase-plus-blueprint"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/blueprints/addressbase-plus-blueprint/issues"
+  }
+}

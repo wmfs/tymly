@@ -17,13 +17,19 @@ module.exports = function scriptRunner (statements, client, options, callback) {
         const tableAndCols = components[1]
         const filename = components[2]
         const newStatement = `COPY ${tableAndCols} FROM STDIN CSV HEADER;`
-        debug(`Running: ${newStatement} -- (${filename})`)
+        debug(`Stream-Copy: ${newStatement} -- (${filename})`)
         const stream = client.query(
           copyFrom(newStatement)
         )
         const fileStream = fs.createReadStream(filename)
-        fileStream.on('error', onceCb)
-        fileStream.pipe(stream).on('finish', onceCb).on('error', onceCb)
+        fileStream.on('error', function (err) {
+          console.error(err)
+          onceCb(err)
+        })
+        fileStream.pipe(stream).on('finish', onceCb).on('error', function (err) {
+          console.error(err)
+          onceCb(err)
+        })
       } else {
         debug(`Running: ${statement}`)
         client.query(

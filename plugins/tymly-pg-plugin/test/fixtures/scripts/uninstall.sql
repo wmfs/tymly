@@ -1,0 +1,1 @@
+DROP SCHEMA IF EXISTS fbot_test CASCADE;

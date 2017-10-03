@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "modelId": {
+      "type": "string",
+      "description": "This is the id of a model within the current namespace which will be used to upsert the document."
+    },
+    "doc": {
+      "type": "object",
+      "description": "The document that needs storing. Use __commands__ such as `$value` and similar to dynamically access Tymly context"
+    }
+  },
+  "required": ["modelId", "doc"]
+}

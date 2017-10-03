@@ -1,0 +1,65 @@
+{
+  "title": "factory",
+  "description": "RIDGE model for Factories",
+  "primaryKey": [
+    "uprn"
+  ],
+  "type": "object",
+  "properties": {
+    "uprn": {
+      "type": "integer",
+      "maxLength": 12
+    },
+    "riskScore": {
+      "type": "integer",
+      "description": "Overall property risk score"
+    },
+    "foodHygiene": {
+      "type": "integer",
+      "description": "Food Standards Agency score"
+    },
+    "fireSafety": {
+      "type": "integer",
+      "description": "Fire Safety score"
+    },
+    "imd": {
+      "type": "integer",
+      "description": "Index of multiple deprivation"
+    },
+    "lastEnforcement": {
+      "type": "integer",
+      "description": "Last Enforcement score"
+    },
+    "autoFireAlarm": {
+      "type": "integer",
+      "description": "1 year Automatic Fire Alarm"
+    },
+    "fireIncident": {
+      "type": "integer",
+      "description": "1 year Fire Incident"
+    },
+    "buildingsRegsCommentIgnored": {
+      "type": "integer",
+      "description": "Building Reg's Comments Ignored (y/n)"
+    },
+    "heritage": {
+      "type": "integer",
+      "description": "Building Heritage Site"
+    },
+    "sprinklerCoverage": {
+      "type": "integer",
+      "description": "Sprinkler Coverage"
+    },
+    "buildingHeight": {
+      "type": "integer",
+      "description": "Number of floors"
+    },
+    "buildingFootprint": {
+      "type": "integer",
+      "description": "Size of building"
+    }
+  },
+  "required": [
+    "uprn"
+  ]
+}

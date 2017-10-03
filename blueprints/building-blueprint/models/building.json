@@ -1,0 +1,33 @@
+{
+  "title": "building",
+  "description": "Data on buildings for properties",
+  "primaryKey": [
+    "uprn"
+  ],
+  "properties": {
+    "uprn": {
+      "type": "integer",
+      "maxLength": 12
+    },
+    "footprint": {
+      "type": "number",
+      "maxLength": 6,
+      "multipleOf": 0.01,
+      "description": "The area of the building in sq. meters."
+    },
+    "floors": {
+      "type": "integer",
+      "description": "Number of floors in the building."
+    },
+    "height": {
+      "type": "number",
+      "maxLength": 4,
+      "multipleOf": 0.01,
+      "description": "Height of the building."
+    },
+    "sprinklerCoverage": {
+      "type": "integer",
+      "description": "Percentage of sprinkler coverage of the building."
+    }
+  }
+}

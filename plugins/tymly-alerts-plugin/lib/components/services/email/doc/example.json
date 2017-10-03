@@ -1,0 +1,17 @@
+{
+  "email": {
+    "from": "someone<someone@tymlyjs.com>",
+    "transport": {
+      "host": "smtp.some-server",
+      "port": 587,
+      "secure": false,
+      "auth": {
+        "user": "someone@tymlyjs.com",
+        "pass": "secret!"
+      },
+      "tls": {
+        "ciphers": "SSLv3"
+      }
+    }
+  }
+}

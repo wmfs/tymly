@@ -1,9 +1,0 @@
-{
-  "type": "object",
-  "properties": {
-    "text": {
-      "description": "A value to send to the console"
-    }
-  },
-  "required": []
-}

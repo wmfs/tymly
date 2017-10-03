@@ -1,0 +1,11 @@
+{
+  "label": "Addressbox Admin",
+  "description": "Run any Addressbox-related flows",
+
+  "grants": [
+    {
+      "stateMachineName": "*",
+      "allows": ["*"]
+    }
+  ]
+}

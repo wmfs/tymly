@@ -1,0 +1,16 @@
+{
+  "Comment": "A simple two-state machine, which will fail on the second state",
+  "StartAt": "Hello",
+  "States": {
+    "Hello": {
+      "Type": "Task",
+      "Resource": "module:hello",
+      "Next": "Failure"
+    },
+    "Failure": {
+      "Type": "Task",
+      "Resource": "module:failure",
+      "End": true
+    }
+  }
+}
