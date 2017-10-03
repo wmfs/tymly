@@ -30,7 +30,7 @@ function gatherPackages (searchRoot) {
   const rootName = path.basename(searchDir)
 
   const directories = searchDirectories(searchDir)
-  const packages = directories.map(dir => path.relative(searchDir, dir)).map(dir => dir || rootName)
+  const packages = directories.map(dir => path.relative(searchDir, dir)).map(dir => dir || path.join('..', rootName))
   return packages
 } // gatherPackages
 

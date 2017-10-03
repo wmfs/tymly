@@ -11,8 +11,8 @@ const searchRoot = path.resolve(__dirname, './fixtures/packages')
 
 describe('Package gathering', () => {
   const tests = [
-    ['one top level package', 'simple-package', ['simple-package']],
-    ['package with node_modules', 'package-with-node-modules', ['package-with-node-modules']],
+    ['one top level package', 'simple-package', ['../simple-package']],
+    ['package with node_modules', 'package-with-node-modules', ['../package-with-node-modules']],
     ['nested including a directory to ignore', 'nested-directory', ['package-1', 'package-2']]
   ]
 
