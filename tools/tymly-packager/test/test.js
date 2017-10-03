@@ -24,12 +24,12 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '../simple-package'}]
+        [{directory: '.'}]
       ],
       [
         'package with node_modules',
         'package-with-node-modules',
-        [{directory: '../package-with-node-modules'}]
+        [{directory: '.'}]
       ],
       [
         'nested including a directory to ignore',
@@ -51,27 +51,30 @@ describe('Bundler tests', function () {
     const tests = [
       [
         'one top level package',
-        [{directory: 'simple-package'}],
-        [{directory: 'simple-package', name: 'simple-package', version: '1.0.0'}]
+        'simple-package',
+        [{directory: '.'}],
+        [{directory: '.', name: 'simple-package', version: '1.0.0'}]
       ],
       [
         'package with node_modules',
-        [{directory: 'package-with-node-modules'}],
-        [{directory: 'package-with-node-modules', name: 'package-with-node-modules', version: '0.0.0'}]
+        'package-with-node-modules',
+        [{directory: '.'}],
+        [{directory: '.', name: 'package-with-node-modules', version: '0.0.0'}]
       ],
       [
         'nested including a directory to ignore',
-        [{directory: 'nested-directory/package-1'}, {directory: 'nested-directory/package-2'}],
+        'nested-directory',
+        [{directory: 'package-1'}, {directory: 'package-2'}],
         [
-          {directory: 'nested-directory/package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'nested-directory/package-2', name: 'package-B', version: '1.0.9'}
+          {directory: 'package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'package-2', name: 'package-B', version: '1.0.9'}
         ]
       ]
     ]
 
-    for (const [label, packages, results] of tests) {
+    for (const [label, fixture, packages, results] of tests) {
       it(label, () => {
-        const versions = readVersionNumbers(searchRoot, packages)
+        const versions = readVersionNumbers(path.join(searchRoot, fixture), packages)
 
         expect(versions).to.deep.equal(results)
       }) // it ...
@@ -97,31 +100,34 @@ describe('Bundler tests', function () {
     const tests = [
       [
         'one top level package',
-        [{directory: 'simple-package', name: 'simple-package', version: '1.0.0'}],
-        ['simple-package/simple-package-1.0.0.tgz']
+        'simple-package',
+        [{directory: '.', name: 'simple-package', version: '1.0.0'}],
+        ['simple-package-1.0.0.tgz']
       ],
       [
         'package with node_modules',
-        [{directory: 'package-with-node-modules', name: 'package-with-node-modules', version: '0.0.0'}],
-        ['package-with-node-modules/package-with-node-modules-0.0.0.tgz']
+        'package-with-node-modules',
+        [{directory: '.', name: 'package-with-node-modules', version: '0.0.0'}],
+        ['package-with-node-modules-0.0.0.tgz']
       ],
       [
         'nested including a directory to ignore',
+        'nested-directory',
         [
-          {directory: 'nested-directory/package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'nested-directory/package-2', name: 'package-B', version: '1.0.9'}
+          {directory: 'package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'package-2', name: 'package-B', version: '1.0.9'}
         ],
-        ['nested-directory/package-1/package-A-1.0.5.tgz', 'nested-directory/package-2/package-B-1.0.9.tgz']
+        ['package-1/package-A-1.0.5.tgz', 'package-2/package-B-1.0.9.tgz']
       ]
 
     ]
 
-    for (const [label, packages, expectedTarballs] of tests) {
+    for (const [label, fixture, packages, expectedTarballs] of tests) {
       describe(label, function () {
         this.timeout(10000)
 
         it('run npm pack in each package directory', async () => {
-          const tarballs = await packPackages(searchRoot, packages)
+          const tarballs = await packPackages(path.join(searchRoot, fixture), packages)
 
           expect(tarballs).to.deep.equal(expectedTarballs)
         })
