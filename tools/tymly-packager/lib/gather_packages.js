@@ -27,12 +27,11 @@ function searchDirectories (directory) {
 
 function gatherPackages (searchRoot) {
   const searchDir = path.normalize(searchRoot)
-  const rootName = path.basename(searchDir)
 
   const directories = searchDirectories(searchDir)
   const packages = directories
     .map(dir => path.relative(searchDir, dir))
-    .map(dir => dir || path.join('..', rootName))
+    .map(dir => dir || '.')
     .map(dir => { return { directory: dir } })
   return packages
 } // gatherPackages
