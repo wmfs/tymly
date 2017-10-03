@@ -14,22 +14,22 @@ module.exports = function sendTaskHeartbeat (statebox, req, res, env) {
   )
 }
 
-// statebox.updateFlobot(
-//       req.params.flobotId,
+// statebox.updateTymly(
+//       req.params.tymlyId,
 //       options,
-//       function (err, flobot) {
+//       function (err, tymly) {
 //         if (err) {
 //           let boomErr
 //           if (err.isBoom) {
 //             boomErr = err
 //           } else {
-//             boomErr = boom.internal('Flobot returned an error while attempting to update', err)
+//             boomErr = boom.internal('Tymly returned an error while attempting to update', err)
 //           }
 //           res.status(boomErr.output.statusCode).send(boomErr.output.payload)
 //         } else {
 //           res.status(200).send(
 //             {
-//               flobot: flobot
+//               tymly: tymly
 //             }
 //               )
 //         }

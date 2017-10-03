@@ -1,0 +1,18 @@
+{
+  "Comment": "Find title by id.",
+  "version": "1.0",
+  "StartAt": "FindingById",
+  "instigators": ["user"],
+  "States": {
+    "FindingById": {
+      "Type": "Task",
+      "InputPath": "$.idToFind",
+      "Resource": "module:findingById",
+      "ResourceConfig": {
+        "modelId": "title"
+      },
+      "ResultPath": "$.foundTitle",
+      "End": true
+    }
+  }
+}

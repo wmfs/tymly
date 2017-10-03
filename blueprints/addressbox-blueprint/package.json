@@ -1,12 +1,13 @@
 {
   "name": "addressbox-blueprint",
-  "description": "Flobot blueprint for gazetteer management",
+  "description": "Tymly blueprint for gazetteer management",
   "version": "0.0.1",
   "author": "Liliana Judge",
   "devDependencies": {
+    "async": "^2.5.0",
     "chai": "^4.1.0",
-    "flobot": "0.0.14",
-    "flobot-pg-plugin": "0.0.5",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5",
     "fs-extra": "^4.0.2",
     "mocha": "^3.5.0",
     "standard": "^10.0.3"

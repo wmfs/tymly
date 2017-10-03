@@ -10,7 +10,9 @@
       "maxLength": 12
     },
     "footprint": {
-      "type": "integer",
+      "type": "number",
+      "maxLength": 6,
+      "multipleOf": 0.01,
       "description": "The area of the building in sq. meters."
     },
     "floors": {
@@ -18,18 +20,12 @@
       "description": "Number of floors in the building."
     },
     "height": {
-      "type": "integer",
+      "type": "number",
+      "maxLength": 4,
+      "multipleOf": 0.01,
       "description": "Height of the building."
     },
-    "one_yr_fire_alarm": {
-      "type": "integer",
-      "description": "Number of actuated fire alarms in the past 12 months."
-    },
-    "one_yr_incident": {
-      "type": "integer",
-      "description": "Number of fire incidents in the past 12 months."
-    },
-    "sprinkler_coverage": {
+    "sprinklerCoverage": {
       "type": "integer",
       "description": "Percentage of sprinkler coverage of the building."
     }

@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+        "modelId": {
+            "type": "string",
+          "description": "This is the id of a model within the current namespace from which a single document will be fetched."
+
+        },
+      "target": {
+        "type": "string",
+        "description": "This is a '.' delimited path of where the fetched document should be set on the Tymly context."
+      },
+
+      "filter": {
+        "type": "object",
+        "description": "Use to find the correct doc to return."
+      }
+
+    },
+    "required": ["modelId", "target"]
+}

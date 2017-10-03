@@ -1,6 +1,6 @@
 # blueprint
 
-> Flobot blueprint generated via yo flobot:blueprint
+> Tymly blueprint generated via yo tymly:blueprint
 
 ## <a name="license"></a>License
 

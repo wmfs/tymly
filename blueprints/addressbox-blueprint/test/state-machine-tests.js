@@ -2,13 +2,14 @@
 
 'use strict'
 
-const flobot = require('flobot')
+const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const fs = require('fs')
+const scriptRunner = require('./fixtures/sql-script-runner')
 
 describe('State machine tests', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'wmfs_synchronizeAddressbasePlus_1_0'
   const OUTPUT_DIR_PATH = path.resolve(__dirname, './output')
@@ -17,24 +18,28 @@ describe('State machine tests', function () {
   let statebox
   let client
 
-  it('should startup flobot', function (done) {
-    flobot.boot(
+  it('should startup tymly', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-pg-plugin')
+          require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
-        client = flobotServices.storage.client
+        statebox = tymlyServices.statebox
+        client = tymlyServices.storage.client
         done()
       }
     )
+  })
+
+  it('should create a set of database test data', function (done) {
+    scriptRunner([ 'setup.sql' ], client, done)
   })
 
   it('should create and populate the wmfs.gazetteer database table', function (done) {
@@ -96,5 +101,9 @@ describe('State machine tests', function () {
         }
       }
     )
+  })
+
+  it('should cleanup test data', function (done) {
+    scriptRunner([ 'cleanup.sql' ], client, done)
   })
 })

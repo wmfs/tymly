@@ -1,0 +1,14 @@
+{
+
+  "namespace": "fbotTest",
+  "name": "storage",
+  "version": "1.0",
+
+  "label": "Storage",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to help test storage plugins.",
+  "tags": ["storage"]
+
+}

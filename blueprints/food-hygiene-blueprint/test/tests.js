@@ -2,34 +2,34 @@
 
 'use strict'
 
-const flobot = require('flobot')
+const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 
 describe('data import', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'fsa_refreshFromXmlFile_1_0'
 
   let statebox
   let client
 
-  it('should startup flobot', function (done) {
-    flobot.boot(
+  it('should startup tymly', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-etl-plugin'),
-          require.resolve('flobot-pg-plugin')
+          require.resolve('tymly-etl-plugin'),
+          require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
-        client = flobotServices.storage.client
+        statebox = tymlyServices.statebox
+        client = tymlyServices.storage.client
         done()
       }
     )
@@ -58,7 +58,7 @@ describe('data import', function () {
   it('Should be the correct data in the database', function (done) {
     client.query(
       'select fhrsid, local_authority_business_id, business_name, business_type, business_type_id, address_line_1, ' +
-      'address_line_2, address_line_3, address_line_4, postcode, rating_value, rating_key, rating_date, ' +
+      'address_line_2, address_line_3, address_line_4, postcode, rating_value, rating_key, TO_CHAR(rating_date, \'DD/MM/YYYY\') AS rating_date, ' +
       'local_authority_code, local_authority_name, local_authority_website, local_authority_email_address, ' +
       'hygiene, structural, confidence_in_management, scheme_type, new_rating_pending, longitude, latitude ' +
       'from fsa.food_ratings order by fhrsid;',
@@ -82,7 +82,7 @@ describe('data import', function () {
                 postcode: 'B17 0SS',
                 rating_value: '5',
                 rating_key: 'fhrs_5_en-GB',
-                rating_date: new Date('2017-03-01T00:00:00.000Z'),
+                rating_date: '01/03/2017',
                 local_authority_code: '402',
                 local_authority_name: 'Birmingham',
                 local_authority_website: 'http://www.birmingham.gov.uk/environmental-health',
@@ -108,7 +108,7 @@ describe('data import', function () {
                 postcode: 'B5 5TH',
                 rating_value: '5',
                 rating_key: 'fhrs_5_en-GB',
-                rating_date: new Date('2014-12-12T00:00:00.000Z'),
+                rating_date: '12/12/2014',
                 local_authority_code: '402',
                 local_authority_name: 'Birmingham',
                 local_authority_website: 'http://www.birmingham.gov.uk/environmental-health',
@@ -134,7 +134,7 @@ describe('data import', function () {
                 postcode: 'B31 2NN',
                 rating_value: 'Exempt',
                 rating_key: 'fhrs_exempt_en-GB',
-                rating_date: new Date('2015-08-10T23:00:00.000Z'),
+                rating_date: '11/08/2015',
                 local_authority_code: '402',
                 local_authority_name: 'Birmingham',
                 local_authority_website: 'http://www.birmingham.gov.uk/environmental-health',
@@ -160,7 +160,7 @@ describe('data import', function () {
                 postcode: 'B5 4RQ',
                 rating_value: '4',
                 rating_key: 'fhrs_4_en-GB',
-                rating_date: new Date('2016-03-08T00:00:00.000Z'),
+                rating_date: '08/03/2016',
                 local_authority_code: '402',
                 local_authority_name: 'Birmingham',
                 local_authority_website: 'http://www.birmingham.gov.uk/environmental-health',
@@ -186,7 +186,7 @@ describe('data import', function () {
                 postcode: 'B1 3HE',
                 rating_value: '5',
                 rating_key: 'fhrs_5_en-GB',
-                rating_date: new Date('2016-09-06T23:00:00.000Z'),
+                rating_date: '07/09/2016',
                 local_authority_code: '402',
                 local_authority_name: 'Birmingham',
                 local_authority_website: 'http://www.birmingham.gov.uk/environmental-health',

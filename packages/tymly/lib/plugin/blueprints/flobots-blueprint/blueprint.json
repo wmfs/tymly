@@ -1,0 +1,15 @@
+{
+
+  "namespace": "fbot",
+  "name": "core",
+  "version": "1.0",
+
+  "label": "Tymly Blueprint",
+  "author": "Tim Needham",
+
+  "organisation": "Tymlys",
+  "description": "Blueprint providing core Tymly components",
+
+  "tags": ["tymly", "fbot", "core"]
+
+}

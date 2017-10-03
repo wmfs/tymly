@@ -1,0 +1,27 @@
+{
+  "plural": "tags",
+
+  "primaryKey": ["name"],
+
+  "description": "Tags used to help explore/categorize flows and tymlys",
+  "type": "object",
+
+  "properties": {
+
+    "name": {
+      "type": "string"
+    },
+
+    "label": {
+      "type": "string"
+    },
+
+    "styling": {
+      "type": "object"
+    }
+
+  },
+
+  "required": ["name", "label"]
+
+}

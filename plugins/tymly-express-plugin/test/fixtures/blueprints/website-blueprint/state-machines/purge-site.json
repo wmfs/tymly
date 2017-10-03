@@ -1,0 +1,21 @@
+{
+  "Comment": "Take it all down... NOW!!!",
+  "version": "1.0",
+  "instigators": [
+    "user"
+  ],
+  "tags": [
+    "website"
+  ],
+  "StartAt": "FormFilling",
+  "States": {
+    "FormFilling": {
+      "Type": "Task",
+      "Resource": "module:formFilling",
+      "ResourceConfig": {
+        "formId": "purgeForm"
+      },
+      "End": true
+    }
+  }
+}

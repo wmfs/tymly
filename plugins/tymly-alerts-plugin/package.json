@@ -1,0 +1,29 @@
+{
+  "name": "tymly-alerts-plugin",
+  "description": "Adds some alerting options to the Tymly framework",
+  "version": "0.0.7",
+  "author": "Tim Needham",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "boom": "^5.2.0",
+    "debug": "^2.6.8",
+    "nodemailer": "^2.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "tymly": "0.0.14",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3"
+  },
+  "scripts": {
+    "lint": "standard"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

@@ -6,6 +6,6 @@
   "author": "WMFS",
 
   "organisation": "West Midlands Fire Service",
-  "description": "Flobot blueprint to process fire-safety data from a csv file",
+  "description": "Tymly blueprint to process fire-safety data from a csv file",
   "tags": []
 }

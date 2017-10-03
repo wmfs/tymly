@@ -13,7 +13,12 @@ sudo: false
 dist: trusty
 
 before_script:
+  - echo 'Europe/London' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
   - lerna bootstrap
+
+before_install:
+  - export TZ=Europe/London
 
 env:
   global:

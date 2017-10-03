@@ -2,7 +2,7 @@
 
 'use strict'
 
-const flobot = require('flobot')
+const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 
@@ -14,20 +14,20 @@ describe('data import', function () {
   let statebox
   let executionName
 
-  it('should startup flobot', function (done) {
-    flobot.boot(
+  it('should startup tymly', function (done) {
+    tymly.boot(
       {
         pluginPaths: [
-          require.resolve('flobot-forms-plugin')
+          require.resolve('tymly-forms-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
         config: {}
       },
-      function (err, flobotServices) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
-        statebox = flobotServices.statebox
+        statebox = tymlyServices.statebox
 
         done()
       }
@@ -61,7 +61,7 @@ describe('data import', function () {
       {
         formData: {
           name: 'Rupert',
-          email: 'rupert@flobotjs.io'
+          email: 'rupert@tymlyjs.io'
         }
       }, // output
       {}, // executionOptions

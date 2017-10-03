@@ -1,6 +1,6 @@
 # Addressbox Blueprint
 
-> Flobot blueprint for gazetteer management.
+> Tymly blueprint for gazetteer management.
 
 Creates a blpu label using the previous chimp python script logic.
 

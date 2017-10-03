@@ -1,0 +1,82 @@
+{
+  "id": "planets",
+  "title": "Planet",
+  "description": "A list of planets",
+  "primaryKey": ["name"],
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique planet name"
+    },
+    "title": {
+      "type": "string",
+      "description": "The display-label of the planet"
+    },
+    "type": {
+      "description": "What type of planet is this?",
+      "type": "string"
+    },
+    "diameter": {
+      "description": "The diameter of the planet, in metres",
+      "type": "number"
+    },
+    "color": {
+      "description": "What color is this planet?",
+      "type": "number"
+    },
+    "url": {
+      "type": "string",
+      "description": "Further reading available here!"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "moons": {
+      "type": "array",
+      "description": "Moons go around planets.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The display-label of the moon"
+          },
+          "discoveredBy": {
+            "type": "string",
+            "description": "Name of the person who discovered the moon"
+          },
+          "discoveryYear": {
+            "type": "integer",
+            "description": "Year the moon was discovered (e.g. 1804)"
+          },
+          "craters": {
+            "type": "array",
+            "description": "Moons have craters",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "The display-label of the crater"
+                },
+                "diameter": {
+                  "type": "integer",
+                  "description": "Diameter of the crater, in metres"
+                }
+              },
+              "required": ["name", "title"]
+            }
+          }
+        },
+        "required": ["name", "title"]
+      }
+    }
+
+  },
+  "required": ["name", "title"]
+}

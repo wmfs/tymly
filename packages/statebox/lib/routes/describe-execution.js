@@ -1,5 +1,5 @@
 const boom = require('boom')
-const debug = require('debug')('flobotExpressPlugin')
+const debug = require('debug')('tymlyExpressPlugin')
 
 module.exports = function describeExecution (req, res) {
   const services = req.app.get('services')
@@ -8,7 +8,7 @@ module.exports = function describeExecution (req, res) {
 
   // {
   //   userId: authService.extractUserIdFromRequest(req),
-  //     onAuthorizationHook: flobotServices.users.onAuthorizationHook.bind(flobotServices.users),
+  //     onAuthorizationHook: tymlyServices.users.onAuthorizationHook.bind(tymlyServices.users),
   //   action: 'describeExecution'
   // },
 

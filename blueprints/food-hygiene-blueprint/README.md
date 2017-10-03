@@ -1,6 +1,6 @@
 # blueprint
 
-> A FlobotJS blueprint to support "Food Hygiene Ratings" open data as produced by the Food Standards Agency
+> A TymlyJS blueprint to support "Food Hygiene Ratings" open data as produced by the Food Standards Agency
 
 ## About the data
 

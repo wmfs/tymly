@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "since": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The moment-in-time (e.g. an _epoch_) that the exported CSV file should contain changes since"
+    },
+    "actionAliases": {
+      "type": "object",
+      "description": "Maps the necessary action (`insert`, `update` or `delete`) to a value to include in the outgoing CSV line (see the dynamic `$ACTION` column)."
+    },
+    "tables": {
+      "type": "array",
+      "description": "An array of objects that contain a `table` object... which in turn define how to assemble each CSV line. Please see [pg-delta-file](https://github.com/wmfs/tymly/tree/master/pg-delta-file) for more information."
+    }
+  },
+  "required": ["since"]
+}
+
+
+
+

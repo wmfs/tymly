@@ -16,7 +16,7 @@ module.exports = function generateFormSchema (filepath, content) {
         type: 'button',
         style: 'btn-default',
         title: 'Cancel',
-        onClick: 'vm.cancelFlobot()'
+        onClick: 'vm.cancelTymly()'
       },
       {
         type: 'submit',

@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "description": "A '.' delimited path pointing to a value on the Tymly context"
+    }
+
+  },
+  "required": ["path"]
+}

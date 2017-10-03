@@ -1,0 +1,30 @@
+{
+  "namespace": "fbot_test",
+  "id": "students",
+  "title": "Students",
+  "description": "List of Students",
+  "primaryKey": ["student_no"],
+  "type": "object",
+  "properties": {
+    "student_no": {
+      "type": "number"
+    },
+    "first_name": {
+      "type": "string",
+      "description": "Student's first name"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "characterName": {
+      "type": "string"
+    }
+  },
+  "indexes": [
+    {
+      "columns": ["student_no"],
+      "unique": true
+    }
+  ],
+  "required": ["student_no", "first_name", "last_name"]
+}

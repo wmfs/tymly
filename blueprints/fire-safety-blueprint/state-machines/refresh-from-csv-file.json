@@ -11,10 +11,10 @@
       "InputPath": "$.sourceDir",
       "Resource": "module:importingCsvFiles",
       "ResourceConfig": {
-        "modelId": "fireSafety",
         "headerColumnNamePkPrefix": ".",
         "topDownTableOrder": [
-          "fire_safety"
+          "fire_safety",
+          "building_incident_stats"
         ],
         "truncateTables": true
       },
