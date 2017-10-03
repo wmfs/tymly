@@ -4,7 +4,8 @@ const whereAndWhen = require('./where_and_when.js')
 function createManifest (packages) {
   const ww = whereAndWhen()
   const gitDeets = gitDetails()
-  const pckDeets = packages.map(pkg => { return { [pkg.name]: pkg.version } })
+  const pckDeets = { }
+  packages.forEach(pkg => { pckDeets[pkg.name] = pkg.version })
 
   return {
     user: ww.user,

@@ -1,5 +1,7 @@
 /* eslint-env mocha */
-const expect = require('chai').expect
+const chai = require('chai')
+chai.use(require('chai-string'))
+const expect = chai.expect
 const path = require('path')
 const rimraf = require('rimraf')
 const copydir = require('copy-dir')
@@ -10,6 +12,7 @@ const gitDetails = require('../lib/git_details.js')
 const whereAndWhen = require('../lib/where_and_when.js')
 const packPackages = require('../lib/pack_packages.js')
 const createManifest = require('../lib/create_manifest.js')
+const buildBundle = require('../lib/build_bundle.js')
 
 const pristine = path.resolve(__dirname, './fixtures/packages')
 const searchRoot = path.resolve(__dirname, './fixtures/working')
@@ -18,6 +21,10 @@ describe('Bundler tests', function () {
   before(() => {
     rimraf.sync(searchRoot)
     copydir.sync(pristine, searchRoot)
+  })
+
+  after(() => {
+    rimraf.sync(searchRoot)
   })
 
   describe('Package gathering', () => {
@@ -86,7 +93,9 @@ describe('Bundler tests', function () {
     const gitDeets = gitDetails()
     expect(gitDeets.repository).to.match(/github.com/)
     expect(gitDeets.repository).to.match(/tymly/)
+    expect(gitDeets.repository).to.not.endWith('\n')
     expect(gitDeets.branch).to.be.a('string')
+    expect(gitDeets.branch).to.not.endWith('\n')
     expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
   }) // git details
 
@@ -104,9 +113,8 @@ describe('Bundler tests', function () {
     ])
 
     expect(manifest).to.be.an('object')
-    expect(manifest.packages).to.be.an('array')
-    expect(manifest.packages.length).to.equal(2)
-    expect(manifest.packages[0]).to.deep.equal({'package-A': '1.0.5'})
+    expect(manifest.packages).to.be.an('object')
+    expect(manifest.packages['package-A']).to.equal('1.0.5')
     expect(manifest.git).to.be.an('object')
     expect(manifest.user).to.be.a('string')
     expect(manifest.hostname).to.be.a('string')
@@ -119,13 +127,15 @@ describe('Bundler tests', function () {
         'one top level package',
         'simple-package',
         [{directory: '.', name: 'simple-package', version: '1.0.0'}],
-        ['simple-package-1.0.0.tgz']
+        ['simple-package-1.0.0.tgz'],
+        2
       ],
       [
         'package with node_modules',
         'package-with-node-modules',
         [{directory: '.', name: 'package-with-node-modules', version: '0.0.0'}],
-        ['package-with-node-modules-0.0.0.tgz']
+        ['package-with-node-modules-0.0.0.tgz'],
+        30
       ],
       [
         'nested including a directory to ignore',
@@ -134,19 +144,28 @@ describe('Bundler tests', function () {
           {directory: 'package-1', name: 'package-A', version: '1.0.5'},
           {directory: 'package-2', name: 'package-B', version: '1.0.9'}
         ],
-        ['package-1/package-A-1.0.5.tgz', 'package-2/package-B-1.0.9.tgz']
+        ['package-1/package-A-1.0.5.tgz', 'package-2/package-B-1.0.9.tgz'],
+        3
       ]
 
     ]
 
-    for (const [label, fixture, packages, expectedTarballs] of tests) {
+    for (const [label, fixture, packages, expectedTarballs, expectedFiles] of tests) {
       describe(label, function () {
         this.timeout(10000)
 
+        const fixtureRoot = path.join(searchRoot, fixture)
+
         it('pack up each package', async () => {
-          const tarballs = await packPackages(path.join(searchRoot, fixture), packages)
+          const tarballs = await packPackages(fixtureRoot, packages)
 
           expect(tarballs).to.deep.equal(expectedTarballs)
+        })
+
+        it('make the bundle', async () => {
+          const filesInBundle = await buildBundle(fixtureRoot, packages, expectedTarballs)
+
+          expect(filesInBundle).to.equal(expectedFiles)
         })
       }) // describe ...
     } // for ...

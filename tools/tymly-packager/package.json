@@ -15,6 +15,7 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
+    "chai-string": "^1.4.0",
     "copy-dir": "^0.3.0",
     "lodash.clone": "^4.5.0",
     "moment": "^2.18.1",

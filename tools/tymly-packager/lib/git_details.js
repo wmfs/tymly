@@ -1,7 +1,7 @@
 const cp = require('child_process')
 
 function git (command) {
-  return cp.execSync(`git ${command}`).toString()
+  return cp.execSync(`git ${command}`).toString().trim()
 } // git
 
 function gitDetails () {
