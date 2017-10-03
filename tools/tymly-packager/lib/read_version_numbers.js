@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const clone = require('lodash.clone')
 
 function readVersionNumber (pkg) {
   const jsonFile = path.join(pkg, 'package.json')
@@ -8,15 +9,19 @@ function readVersionNumber (pkg) {
 } // readVersionNumbers
 
 function readVersionNumbers (searchRoot, packages) {
-  const versions = { }
+  const updatedPackages = [ ]
 
   for (const pkg of packages) {
-    const [name, version] = readVersionNumber(path.join(searchRoot, pkg))
+    const [name, version] = readVersionNumber(path.join(searchRoot, pkg.directory))
 
-    versions[name] = version
+    const update = clone(pkg)
+    update.name = name
+    update.version = version
+
+    updatedPackages.push(update)
   } // for ...
 
-  return versions
+  return updatedPackages
 } // readVersionNumbers
 
 module.exports = readVersionNumbers

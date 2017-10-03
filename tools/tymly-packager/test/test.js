@@ -1,57 +1,131 @@
 /* eslint-env mocha */
 const expect = require('chai').expect
 const path = require('path')
+const rimraf = require('rimraf')
+const copydir = require('copy-dir')
 
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
 const gitDetails = require('../lib/git_details.js')
 const whereAndWhen = require('../lib/where_and_when.js')
+const packPackages = require('../lib/pack_packages.js')
 
-const searchRoot = path.resolve(__dirname, './fixtures/packages')
+const pristine = path.resolve(__dirname, './fixtures/packages')
+const searchRoot = path.resolve(__dirname, './fixtures/working')
 
-describe('Package gathering', () => {
-  const tests = [
-    ['one top level package', 'simple-package', ['../simple-package']],
-    ['package with node_modules', 'package-with-node-modules', ['../package-with-node-modules']],
-    ['nested including a directory to ignore', 'nested-directory', ['package-1', 'package-2']]
-  ]
+describe('Bundler tests', function () {
+  before(() => {
+    rimraf.sync(searchRoot)
+    copydir.sync(pristine, searchRoot)
+  })
 
-  for (const [ label, fixture, results ] of tests) {
-    it(label, () => {
-      const packages = gatherPackages(path.join(searchRoot, fixture))
+  describe('Package gathering', () => {
+    const tests = [
+      [
+        'one top level package',
+        'simple-package',
+        [{directory: '../simple-package'}]
+      ],
+      [
+        'package with node_modules',
+        'package-with-node-modules',
+        [{directory: '../package-with-node-modules'}]
+      ],
+      [
+        'nested including a directory to ignore',
+        'nested-directory',
+        [{directory: 'package-1'}, {directory: 'package-2'}]
+      ]
+    ]
 
-      expect(packages).to.deep.equal(results)
-    }) // it ...
-  } // for ...
-}) // describe ...
+    for (const [label, fixture, results] of tests) {
+      it(label, () => {
+        const packages = gatherPackages(path.join(searchRoot, fixture))
 
-describe('Generate manifest version numbers', () => {
-  const tests = [
-    ['one top level package', ['simple-package'], {'simple-package': '1.0.0'}],
-    ['package with node_modules', ['package-with-node-modules'], {'package-with-node-modules': '0.0.0'}],
-    ['nested including a directory to ignore', ['nested-directory/package-1', 'nested-directory/package-2'], {'package-A': '1.0.a', 'package-B': '1.0.b'}]
-  ]
+        expect(packages).to.deep.equal(results)
+      }) // it ...
+    } // for ...
+  }) // describe ...
 
-  for (const [ label, packages, results ] of tests) {
-    it(label, () => {
-      const versions = readVersionNumbers(searchRoot, packages)
+  describe('Read version numbers', () => {
+    const tests = [
+      [
+        'one top level package',
+        [{directory: 'simple-package'}],
+        [{directory: 'simple-package', name: 'simple-package', version: '1.0.0'}]
+      ],
+      [
+        'package with node_modules',
+        [{directory: 'package-with-node-modules'}],
+        [{directory: 'package-with-node-modules', name: 'package-with-node-modules', version: '0.0.0'}]
+      ],
+      [
+        'nested including a directory to ignore',
+        [{directory: 'nested-directory/package-1'}, {directory: 'nested-directory/package-2'}],
+        [
+          {directory: 'nested-directory/package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'nested-directory/package-2', name: 'package-B', version: '1.0.9'}
+        ]
+      ]
+    ]
 
-      expect(versions).to.deep.equal(results)
-    }) // it ...
-  } // for ...
-}) // describe
+    for (const [label, packages, results] of tests) {
+      it(label, () => {
+        const versions = readVersionNumbers(searchRoot, packages)
 
-it('Gather git details', () => {
-  const gitDeets = gitDetails()
-  expect(gitDeets.repository).to.match(/github.com/)
-  expect(gitDeets.repository).to.match(/tymly/)
-  expect(gitDeets.branch).to.be.a('string')
-  expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
-})
+        expect(versions).to.deep.equal(results)
+      }) // it ...
+    } // for ...
+  }) // describe
 
-it('Where and when', () => {
-  const ww = whereAndWhen()
-  expect(ww.user).to.be.a('string')
-  expect(ww.hostname).to.be.a('string')
-  expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
+  it('Gather git details', () => {
+    const gitDeets = gitDetails()
+    expect(gitDeets.repository).to.match(/github.com/)
+    expect(gitDeets.repository).to.match(/tymly/)
+    expect(gitDeets.branch).to.be.a('string')
+    expect(gitDeets.commit).to.match(/[0-9a-f]{7}/)
+  })
+
+  it('Where and when', () => {
+    const ww = whereAndWhen()
+    expect(ww.user).to.be.a('string')
+    expect(ww.hostname).to.be.a('string')
+    expect(ww.timestamp).to.match(/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/)
+  })
+
+  describe('Bundling up a deployment', function () {
+    const tests = [
+      [
+        'one top level package',
+        [{directory: 'simple-package', name: 'simple-package', version: '1.0.0'}],
+        ['simple-package/simple-package-1.0.0.tgz']
+      ],
+      [
+        'package with node_modules',
+        [{directory: 'package-with-node-modules', name: 'package-with-node-modules', version: '0.0.0'}],
+        ['package-with-node-modules/package-with-node-modules-0.0.0.tgz']
+      ],
+      [
+        'nested including a directory to ignore',
+        [
+          {directory: 'nested-directory/package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'nested-directory/package-2', name: 'package-B', version: '1.0.9'}
+        ],
+        ['nested-directory/package-1/package-A-1.0.5.tgz', 'nested-directory/package-2/package-B-1.0.9.tgz']
+      ]
+
+    ]
+
+    for (const [label, packages, expectedTarballs] of tests) {
+      describe(label, function () {
+        this.timeout(10000)
+
+        it('run npm pack in each package directory', async () => {
+          const tarballs = await packPackages(searchRoot, packages)
+
+          expect(tarballs).to.deep.equal(expectedTarballs)
+        })
+      })
+    } // for ...
+  })
 })
