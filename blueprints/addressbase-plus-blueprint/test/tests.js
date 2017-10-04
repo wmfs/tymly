@@ -104,6 +104,7 @@ describe('Blueprint Tests', function () {
       if (err) {
         done(err)
       } else {
+        console.log(MANIFEST_FILE, manifestStats)
         done()
       }
     })
@@ -151,9 +152,8 @@ describe('Blueprint Tests', function () {
   })
 
   it('Should remove output directory now tests are complete', function (done) {
-    const outputPath = path.resolve(__dirname, './output')
-    if (fs.existsSync(outputPath)) {
-      rimraf(outputPath, {}, done)
+    if (fs.existsSync(OUTPUT_AND_INPUT_DIR)) {
+      rimraf(OUTPUT_AND_INPUT_DIR, {}, done)
     } else {
       done()
     }

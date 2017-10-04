@@ -6,11 +6,12 @@
   "devDependencies": {
     "async": "^2.5.0",
     "chai": "^4.1.0",
-    "tymly": "0.0.14",
-    "tymly-pg-plugin": "0.0.5",
     "fs-extra": "^4.0.2",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3"
+    "rimraf": "^2.6.2",
+    "standard": "^10.0.3",
+    "tymly": "0.0.14",
+    "tymly-pg-plugin": "0.0.5"
   },
   "scripts": {
     "lint": "standard",
