@@ -14,49 +14,49 @@
       "type": "integer",
       "description": "Overall property risk score"
     },
-    "foodHygiene": {
+    "foodHygieneScore": {
       "type": "integer",
-      "description": "Food Standards Agency score"
+      "description": "Food standards hygiene score"
     },
-    "fireSafety": {
+    "fireSafetyScore": {
       "type": "integer",
-      "description": "Fire Safety score"
+      "description": "Fire safety score"
     },
-    "imd": {
+    "imdScore": {
       "type": "integer",
-      "description": "Index of multiple deprivation"
+      "description": "Index of multiple deprivation score"
     },
-    "lastEnforcement": {
+    "lastEnforcementScore": {
       "type": "integer",
-      "description": "Last Enforcement score"
+      "description": "Last enforcement score"
     },
-    "autoFireAlarm": {
+    "autoFireAlarmScore": {
       "type": "integer",
-      "description": "1 year Automatic Fire Alarm"
+      "description": "1 year automatic fire alarm score"
     },
-    "fireIncident": {
+    "fireIncidentScore": {
       "type": "integer",
-      "description": "1 year Fire Incident"
+      "description": "1 year fire incident score"
     },
-    "buildingsRegsCommentIgnored": {
+    "buildingsRegsCommentIgnoredScore": {
       "type": "integer",
-      "description": "Building Reg's Comments Ignored (y/n)"
+      "description": "Building reg's comments ignored score"
     },
-    "heritage": {
+    "heritageScore": {
       "type": "integer",
-      "description": "Building Heritage Site"
+      "description": "Building heritage site score"
     },
-    "sprinklerCoverage": {
+    "sprinklerCoverageScore": {
       "type": "integer",
-      "description": "Sprinkler Coverage"
+      "description": "Sprinkler coverage score"
     },
-    "buildingHeight": {
+    "buildingHeightScore": {
       "type": "integer",
-      "description": "Number of floors"
+      "description": "Number of floors score"
     },
-    "buildingFootprint": {
+    "buildingFootprintScore": {
       "type": "integer",
-      "description": "Size of building"
+      "description": "Size of building score"
     }
   },
   "required": [
