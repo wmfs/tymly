@@ -1,0 +1,84 @@
+{
+  "title": "cqc",
+  "description": "Gets data from a CQC CSV file and pushes it into the Tymly DB",
+  "primaryKey": [
+    "location_id"
+  ],
+  "type": "object",
+  "properties": {
+    "location_id": {
+      "type": "string",
+      "maxLength": 12
+    },
+    "location_name": {
+      "type": "string"
+    },
+    "care_home": {
+      "type": "string",
+      "maxLength": 1
+    },
+    "location_type": {
+      "type": "string"
+    },
+    "location_primary_inspection_category": {
+      "type": "string"
+    },
+    "location_street_address": {
+      "type": "string"
+    },
+    "location_address_line_2": {
+      "type": "string"
+    },
+    "location_city": {
+      "type": "string"
+    },
+    "location_post_code": {
+      "type": "string"
+    },
+    "location_local_authority": {
+      "type": "string"
+    },
+    "location_region": {
+      "type": "string"
+    },
+    "location_ccg_code": {
+      "type": "string",
+      "maxLength": 9
+    },
+    "location_ccg": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "key_question": {
+      "type": "string"
+    },
+    "latest_rating": {
+      "type": "string"
+    },
+    "publication_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_type": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "provider_id": {
+      "type": "string"
+    },
+    "provider_name": {
+      "type": "string"
+    },
+    "brand_id": {
+      "type": "string",
+      "maxLength": 5
+    },
+    "brand_name": {
+      "type": "string"
+    }
+  }
+}
