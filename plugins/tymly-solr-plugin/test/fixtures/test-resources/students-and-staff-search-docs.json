@@ -5,7 +5,10 @@
       "id": "'student#' || student_no",
       "actorName": "first_name || ' ' || last_name",
       "characterName": "@characterName"
-    }
+    },
+    "namespace": "fbotTest",
+    "id": "students",
+    "name": "students"
   },
   {
     "modelId": "staff",
@@ -13,6 +16,9 @@
       "id": "'staff#' || staff_no",
       "actorName": "first_name || ' ' || last_name",
       "characterName": "character_first_name || ' ' || character_last_name"
-    }
+    },
+    "namespace": "fbotTest",
+    "id": "staff",
+    "name": "staff"
   }
 ]
