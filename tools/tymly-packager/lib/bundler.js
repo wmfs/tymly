@@ -5,9 +5,9 @@ const buildBundle = require('./build_bundle.js')
 const fs = require('fs')
 const path = require('path')
 
-function packageDetails (dir, logger) {
+function packageDetails (dir, absoluteDir, logger) {
   logger(`Bundling ${dir} ...`)
-  const packages = readVersionNumbers(dir, gatherPackages(dir))
+  const packages = readVersionNumbers(absoluteDir, gatherPackages(dir))
   logger(`... found ${packages.length} packages`)
   return packages
 } // packageDetails
@@ -17,10 +17,11 @@ function cleanUpTarballs (dir, tarballs) {
 } // cleanUpTarballs
 
 async function bundleForDeploy (dir, logger = () => {}) {
-  const packages = packageDetails(dir, logger)
-  const tarballs = await packPackages(dir, packages, logger)
-  await buildBundle(dir, packages, tarballs, logger)
-  cleanUpTarballs(dir, tarballs)
+  const absoluteDir = path.resolve(dir)
+  const packages = packageDetails(dir, absoluteDir, logger)
+  const tarballs = await packPackages(absoluteDir, packages, logger)
+  await buildBundle(absoluteDir, packages, tarballs, logger)
+  cleanUpTarballs(absoluteDir, tarballs)
 } // bundleForDeploy
 
 module.exports = bundleForDeploy

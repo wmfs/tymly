@@ -65,7 +65,7 @@ async function buildBundle (searchRoot, packages, tarballs, logger = () => {}) {
   const tgzName = path.join(searchRoot, 'bundle.tgz')
   await createBundle(bundle, tgzName)
   const count = await countEntries(tgzName)
-  logger(`... ${tgzName} containing ${count} files`)
+  logger(`... bundle.tgz containing ${count} files`)
 
   cleanUp(workDir)
 
