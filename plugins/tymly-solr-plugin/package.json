@@ -16,10 +16,12 @@
     "chai": "^3.2.0",
     "tymly": "0.0.14",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "tymly-pg-plugin": "0.0.5"
   },
   "scripts": {
-    "lint": "standard"
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
   },
   "license": "MIT",
   "repository": {

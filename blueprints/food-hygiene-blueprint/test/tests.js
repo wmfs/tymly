@@ -5,11 +5,14 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+// const fs = require('fs')
+// const rimraf = require('rimraf')
 
 describe('data import', function () {
   this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'fsa_refreshFromXmlFile_1_0'
+  const OUTPUT_DIR = path.resolve(__dirname, './output')
 
   let statebox
   let client
@@ -40,7 +43,7 @@ describe('data import', function () {
       {
         xmlPath: path.resolve(__dirname, './fixtures/food_ratings.xml'),
         csvPath: path.resolve(__dirname, './output/inserts/food_ratings.csv'),
-        sourceDir: path.resolve(__dirname, './output')
+        sourceDir: OUTPUT_DIR
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {
@@ -206,4 +209,13 @@ describe('data import', function () {
       }
     )
   })
+
+  // TODO: package that converts a CSV file into an XML file appears to be tardy releasing file locks, which causes code that deletes output folder to fail
+  // it('Should remove output directory now tests are complete', function (done) {
+  //   if (fs.existsSync(OUTPUT_DIR)) {
+  //     rimraf(OUTPUT_DIR, {}, done)
+  //   } else {
+  //     done()
+  //   }
+  // })
 })

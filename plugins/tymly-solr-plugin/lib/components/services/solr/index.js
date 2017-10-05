@@ -9,8 +9,11 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class SolrService {
   boot (options, callback) {
-    this.solrUrl = process.env.SOLR_URL === undefined ? 'http://localhost:8983/solr' : process.env.SOLR_URL
-    debug('SOLR_URL: ', process.env.SOLR_URL)
+    this.solrUrl = process.env.SOLR_URL
+    if (this.solrUrl === undefined) {
+      this.solrUrl = 'http://localhost:8983/solr'
+      debug(`As the SOLR_URL environment variable has not been set, SOLR_URL is being defaulted to ${this.solrUrl}`)
+    }
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
       options.messages.info('WARNING: no search-docs configuration found')
@@ -29,6 +32,7 @@ class SolrService {
         } else {
           this.solrSchemaFields = SolrService.constructSolrSchemaFieldsArray(options.config.solrSchemaFields)
         }
+        debug('solrSchemaFields', this.solrSchemaFields)
 
         this.createViewSQL = this.buildCreateViewStatement(
           SolrService.constructModelsArray(options.blueprintComponents.models),
@@ -38,6 +42,8 @@ class SolrService {
             debug('Database view created with SQL: ', this.createViewSQL)
             callback(null)
           })
+        } else {
+          callback(boom.notFound('failed to construct create view SQL'))
         }
       }
     }
@@ -92,10 +98,15 @@ class SolrService {
   buildCreateViewStatement (models, searchDocs) {
     let selects = []
     for (let model of models) {
+      const modelId = `${_.camelCase(model.namespace)}_${model.id}`
+      debug(` - model ${modelId}`)
       let currentSearchDoc = null
       for (let searchDoc of searchDocs) {
-        if (searchDoc.modelId === model.id) {
+        const searchDocId = `${_.camelCase(searchDoc.namespace)}_${searchDoc.id}`
+        debug('   - searchDoc', searchDocId)
+        if (searchDocId === modelId) {
           currentSearchDoc = searchDoc
+          debug(`     > Corresponding searchDoc '${searchDocId}' found for model '${modelId}'!`)
           break
         }
       }
@@ -156,6 +167,5 @@ class SolrService {
 
 module.exports = {
   serviceClass: SolrService,
-  bootAfter: ['storage'],
-  bootBefore: ['tymlys']
+  bootAfter: ['storage']
 }

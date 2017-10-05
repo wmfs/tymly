@@ -6,6 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const fs = require('fs')
+const rimraf = require('rimraf')
 const scriptRunner = require('./fixtures/sql-script-runner')
 
 describe('State machine tests', function () {
@@ -101,6 +102,14 @@ describe('State machine tests', function () {
         }
       }
     )
+  })
+
+  it('Should remove output directory now tests are complete', function (done) {
+    if (fs.existsSync(OUTPUT_DIR_PATH)) {
+      rimraf(OUTPUT_DIR_PATH, {}, done)
+    } else {
+      done()
+    }
   })
 
   it('should cleanup test data', function (done) {
