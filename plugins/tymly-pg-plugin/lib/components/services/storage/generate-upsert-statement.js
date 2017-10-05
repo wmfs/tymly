@@ -30,6 +30,5 @@ module.exports = function generateUpsertStatement (model, object) {
   }
 
   statement += ` ON CONFLICT (${model.pkColumnNames.join((', '))}) DO NOTHING;`
-
   return statement
 }
