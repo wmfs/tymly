@@ -46,7 +46,7 @@ function cleanUp (bundle) {
   rimraf.sync(bundle)
 } // cleanUp
 
-async function buildBundle (searchRoot, packages, tarballs, logger = () => {}) {
+async function buildBundle (searchRoot, packages, tarballs, bundleName = 'bundle', logger = () => {}) {
   const workDir = `bundle-${Date.now()}`
   const wd = process.cwd()
   process.chdir(searchRoot)
@@ -62,7 +62,7 @@ async function buildBundle (searchRoot, packages, tarballs, logger = () => {}) {
   generateManifest(bundle, packages)
 
   logger('Creating tarball ...')
-  const tgzName = path.join(searchRoot, 'bundle.tgz')
+  const tgzName = path.join(searchRoot, `${bundleName}.tgz`)
   await createBundle(bundle, tgzName)
   const count = await countEntries(tgzName)
   logger(`... bundle.tgz containing ${count} files`)

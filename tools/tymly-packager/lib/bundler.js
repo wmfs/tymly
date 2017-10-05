@@ -16,11 +16,11 @@ function cleanUpTarballs (dir, tarballs) {
   tarballs.forEach(t => fs.unlinkSync(path.join(dir, t)))
 } // cleanUpTarballs
 
-async function bundleForDeploy (dir, logger = () => {}) {
+async function bundleForDeploy (dir, bundleName = 'bundle', logger = () => {}) {
   const absoluteDir = path.resolve(dir)
   const packages = packageDetails(dir, absoluteDir, logger)
   const tarballs = await packPackages(absoluteDir, packages, logger)
-  await buildBundle(absoluteDir, packages, tarballs, logger)
+  await buildBundle(absoluteDir, packages, tarballs, bundleName, logger)
   cleanUpTarballs(absoluteDir, tarballs)
 } // bundleForDeploy
 
