@@ -154,7 +154,10 @@ describe('Bundler tests', function () {
           {directory: 'package-1', name: 'package-A', version: '1.0.5'},
           {directory: 'package-2', name: 'package-B', version: '1.0.9'}
         ],
-        ['package-1/package-A-1.0.5.tgz', 'package-2/package-B-1.0.9.tgz'],
+        [
+          path.join('package-1', 'package-A-1.0.5.tgz'),
+          path.join('package-2', 'package-B-1.0.9.tgz')
+        ],
         3
       ]
 
