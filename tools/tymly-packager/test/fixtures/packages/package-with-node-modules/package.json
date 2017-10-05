@@ -7,6 +7,9 @@
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "mocha": "^3.5.3"
+  },
   "dependencies": {
     "rillet": "^1.11.0"
   }
