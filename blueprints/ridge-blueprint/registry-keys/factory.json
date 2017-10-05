@@ -1,0 +1,157 @@
+{
+  "label": "Factory Factors",
+  "description": "Holds the factors and weight to build up the risk score for a Factory.",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "object",
+        "default": {
+          "usage": {
+            "type": "constant",
+            "value": 10
+          },
+          "eaFoodStandards": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "option": "Exempt"
+              },
+              {
+                "option": "AwaitingInspection"
+              },
+              {
+                "minimum": 0,
+                "maximum": 2,
+                "score": 8
+              },
+              {
+                "minimum": 3,
+                "maximum": 4,
+                "score": 6
+              },
+              {
+                "equals": 5,
+                "score": 2
+              }
+            ]
+          },
+          "afa": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "equals": 0,
+                "score": 0
+              },
+              {
+                "minimum": 1,
+                "maximum": 3,
+                "score": 4
+              },
+              {
+                "moreThan": 3,
+                "score": 6
+              }
+            ]
+          },
+          "fireIncident": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "equals": 0,
+                "score": 0
+              },
+              {
+                "equals": 1,
+                "score": 6
+              },
+              {
+                "moreThan": 1,
+                "score": 16
+              }
+            ]
+          },
+          "buildingRegsCommentsIgnored": {
+            "type": "constant",
+            "value": 32
+          },
+          "footprint": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "moreThan": 10000,
+                "score": 20
+              },
+              {
+                "minimum": 2001,
+                "maximum": 9999,
+                "score": 16
+              },
+              {
+                "minimum": 625,
+                "maximum": 2000,
+                "score": 12
+              },
+              {
+                "lessThan": 625,
+                "score": 10
+              }
+            ]
+          },
+          "height": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "moreThan": 11,
+                "score": 12
+              },
+              {
+                "minimum": 3,
+                "maximum": 11,
+                "score": 8
+              },
+              {
+                "equals": 0,
+                "score": 1
+              }
+            ]
+          },
+          "heritage": {
+            "type": "boolean",
+            "trueScore": 2
+          },
+          "sprinklerCoverage": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "equals": 0,
+                "score": 15
+              },
+              {
+                "minimum": 1,
+                "maximum": 99,
+                "score": -8
+              },
+              {
+                "equals": 100,
+                "score": -32
+              }
+            ]
+          },
+          "imd": {
+            "type": "constant",
+            "value": 0
+          },
+          "lastEnforcement": {
+            "type": "constant",
+            "value": 0
+          },
+          "fsManagement": {
+            "type": "constant",
+            "value": 0
+          }
+        }
+      }
+    },
+    "required": ["value"]
+  }
+}

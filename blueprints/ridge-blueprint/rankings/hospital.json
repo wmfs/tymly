@@ -1,0 +1,41 @@
+{
+  "label": "Hospital Rankings",
+  "description": "Maps where to find the data and weightings for each factor.",
+  "id": "uprn",
+  "model": "gazetteer",
+  "factors": {
+    "usage": "constant",
+    "cqc": {
+      "model": "cqc_score",
+      "property": "rating"
+    },
+    "eaFoodStandards":  {
+      "model": "food_standards_score",
+      "property": "rating_value"
+    },
+    "afa": {
+      "model": "building_incident_stats",
+      "property": "one_year_fire_alarm_actuations"
+    },
+    "fireIncident": {
+      "model": "building_incident_stats",
+      "property": "one_year_fire_incidents"
+    },
+    "buildingRegsCommentsIgnored": "constant",
+    "height": {
+      "model": "building",
+      "property": "height"
+    },
+    "sprinklerCoverage": {
+      "model": "building",
+      "property": "sprinkler_coverage"
+    },
+    "heritage": {
+      "model": "heritage",
+      "property": "uprn"
+    },
+    "imd": "constant",
+    "lastEnforcement": "constant",
+    "fsManagement": "constant"
+  }
+}
