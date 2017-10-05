@@ -23,18 +23,15 @@ const searchRoot = path.resolve(__dirname, './fixtures/working')
 const forDeployRoot = path.resolve(__dirname, './fixtures/for-deploy')
 
 const allTestDirs = [ searchRoot, forDeployRoot ]
-const prevlog = console.log
 
 describe('Bundler tests', function () {
   before(() => {
     allTestDirs.forEach(d => rimraf.sync(d))
     allTestDirs.forEach(d => copydir.sync(pristineSource, d))
-    console.log = () => { }
   })
 
   after(() => {
     allTestDirs.forEach(d => rimraf.sync(d))
-    console.log = prevlog
   })
 
   describe('Package gathering', () => {

@@ -21,9 +21,9 @@ function countEntries (tarball) {
   })
 } // countEntries
 
-async function sprayOutTarballs (bundle, tarballs) {
+async function sprayOutTarballs (bundle, tarballs, logger) {
   for (const tarball of tarballs) {
-    console.log(`... ${tarball}`)
+    logger(`... ${tarball}`)
     await targz().extract(tarball, bundle)
   }
 } // sprayOutTarballs
@@ -46,26 +46,26 @@ function cleanUp (bundle) {
   rimraf.sync(bundle)
 } // cleanUp
 
-async function buildBundle (searchRoot, packages, tarballs) {
+async function buildBundle (searchRoot, packages, tarballs, logger = () => {}) {
   const workDir = `bundle-${Date.now()}`
   const wd = process.cwd()
   process.chdir(searchRoot)
 
-  console.log('Building bundle ...')
+  logger('Building bundle ...')
   fs.mkdirSync(workDir)
   const bundle = path.join(workDir, 'bundle')
   fs.mkdirSync(bundle)
 
-  await sprayOutTarballs(bundle, tarballs)
+  await sprayOutTarballs(bundle, tarballs, logger)
 
-  console.log('... adding manifest')
+  logger('... adding manifest')
   generateManifest(bundle, packages)
 
-  console.log('Creating tarball ...')
+  logger('Creating tarball ...')
   const tgzName = path.join(searchRoot, 'bundle.tgz')
   await createBundle(bundle, tgzName)
   const count = await countEntries(tgzName)
-  console.log(`... ${tgzName} containing ${count} files`)
+  logger(`... ${tgzName} containing ${count} files`)
 
   cleanUp(workDir)
 

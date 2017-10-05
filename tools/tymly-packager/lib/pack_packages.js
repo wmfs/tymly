@@ -9,30 +9,30 @@ function exec (cmd) {
   return cp.execSync(cmd).toString()
 } // exec
 
-function removeExistingTgz (tgzName) {
+function removeExistingTgz (tgzName, logger) {
   if (!fs.existsSync(tgzName)) { return }
 
-  console.log(`... removing ${tgzName}`)
+  logger(`... removing ${tgzName}`)
   fs.unlinkSync(tgzName)
 } // removeExistingTgz
 
-function cleanAndRefreshNodeModules () {
+function cleanAndRefreshNodeModules (logger) {
   rimraf.sync('node_modules')
-  console.log(`... fetching production dependencies`)
+  logger(`... fetching production dependencies`)
   exec('npm install --production --no-optional')
 } // cleanAndRefreshNodeModules
 
-async function packing (tgzName) {
-  console.log(`... packing`)
+async function packing (tgzName, logger) {
+  logger(`... packing`)
   exec('npm pack')
 
   if (!fs.existsSync(tgzName)) { throw new Error(`Did not find ${tgzName}`) }
 
-  return repack(tgzName)
+  return repack(tgzName, logger)
 } // packing
 
-async function repack (tgzName) {
-  console.log(`... repacking`)
+async function repack (tgzName, logger) {
+  logger(`... repacking`)
   await targz().extract(tgzName, '.')
 
   if (fs.existsSync('node_modules')) {
@@ -49,30 +49,30 @@ async function repack (tgzName) {
   return tgzName
 } // repackWithNodeModules
 
-async function packPackage (directory, tgzName) {
+async function packPackage (directory, tgzName, logger) {
   const wd = process.cwd()
   process.chdir(directory)
 
-  removeExistingTgz(tgzName)
+  removeExistingTgz(tgzName, logger)
 
-  cleanAndRefreshNodeModules()
+  cleanAndRefreshNodeModules(logger)
 
-  const tarball = await packing(tgzName)
+  const tarball = await packing(tgzName, logger)
 
   process.chdir(wd)
 
   return tarball
 } // packPackage
 
-async function packPackages (searchRoot, packages) {
+async function packPackages (searchRoot, packages, logger = () => {}) {
   const tarballs = [ ]
 
   for (const pkg of packages) {
-    console.log(`Package ${pkg.name}`)
+    logger(`Package ${pkg.name}`)
     const tgzName = `${pkg.name}-${pkg.version}.tgz`
     const dir = pkg.directory
 
-    const tarball = await packPackage(path.join(searchRoot, dir), tgzName)
+    const tarball = await packPackage(path.join(searchRoot, dir), tgzName, logger)
 
     tarballs.push(path.join(dir, tarball))
   } // for ...
