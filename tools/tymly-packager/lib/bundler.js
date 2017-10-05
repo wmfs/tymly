@@ -20,8 +20,9 @@ async function bundleForDeploy (dir, bundleName = 'bundle', logger = () => {}) {
   const absoluteDir = path.resolve(dir)
   const packages = packageDetails(dir, absoluteDir, logger)
   const tarballs = await packPackages(absoluteDir, packages, logger)
-  await buildBundle(absoluteDir, packages, tarballs, bundleName, logger)
+  const [tgzName] = await buildBundle(absoluteDir, packages, tarballs, bundleName, logger)
   cleanUpTarballs(absoluteDir, tarballs)
+  return tgzName
 } // bundleForDeploy
 
 module.exports = bundleForDeploy

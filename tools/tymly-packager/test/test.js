@@ -173,11 +173,11 @@ describe('Bundler tests', function () {
         })
 
         it('make the bundle', async () => {
-          const filesInBundle = await buildBundle(fixtureRoot, packages, expectedTarballs)
+          const [tarball, filesInBundle] = await buildBundle(fixtureRoot, packages, expectedTarballs)
 
           expect(filesInBundle).to.equal(expectedFiles)
 
-          const deployFiles = await listEntries(path.join(fixtureRoot, 'bundle.tgz'))
+          const deployFiles = await listEntries(tarball)
           const matchFiles = await listEntries(path.join(pristineTarballs, `${fixture}.tgz`))
 
           expect(deployFiles).to.deep.equal(matchFiles)
@@ -209,9 +209,9 @@ describe('Bundler tests', function () {
         const fixtureRoot = path.join(forDeployRoot, fixture)
 
         it(`bundle ${fixture} for deploy`, async () => {
-          await bundleForDeploy(fixtureRoot, fixture)
+          const tarball = await bundleForDeploy(fixtureRoot, fixture)
 
-          const deployFiles = await listEntries(path.join(fixtureRoot, `${fixture}.tgz`))
+          const deployFiles = await listEntries(tarball)
           const matchFiles = await listEntries(path.join(pristineTarballs, `${fixture}.tgz`))
 
           expect(deployFiles).to.deep.equal(matchFiles)

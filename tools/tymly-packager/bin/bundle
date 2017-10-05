@@ -5,12 +5,17 @@ const path = require('path')
 const commander = require('commander')
 const colors = require('colors/safe')
 
-const [directory, bundleName, quiet] = parseArgs(process.argv)
+run(...parseArgs(process.argv))
 
-if (!quiet) {
-  console.log(colors.cyan.bold("It's the Tymly Bundler!"))
-}
-bundleForDeploy(directory, bundleName, !quiet ? console.log : () => {})
+async function run(directory, bundleName, quiet) {
+  if (!quiet) {
+    console.log(colors.cyan.bold("It's the Tymly Bundler!"))
+  }
+  const outputName = bundleName || `${path.basename(directory)}.tgz`
+  const tarball = await bundleForDeploy(directory, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
+  const displayPath = path.isAbsolute(bundleName) ? bundleName : path.relative(process.cwd(), tarball)
+  console.log(colors.cyan(`Created ${displayPath}`))
+} // run
 
 /////////////////////////////////
 function parseArgs(args) {
@@ -27,6 +32,19 @@ function parseArgs(args) {
     commander.help(txt => colors.red(txt))
   } // if ...
 
-  const name = commander.tar || path.basename(dir)
-  return [dir, name, commander.quiet]
+  const tar = fixSuffix(commander.tar)
+
+  return [dir, tar, commander.quiet]
 } // parseArgs
+
+function fixSuffix(tar) {
+  if (!tar) {
+    return
+  }
+
+  if (tar.endsWith('.tgz') || tar.endsWith('.tar.gz')) {
+    return tar
+  }
+
+  return `${tar}.tgz`
+} // fixSuffix
