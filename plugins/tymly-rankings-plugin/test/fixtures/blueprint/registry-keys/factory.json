@@ -1,0 +1,57 @@
+{
+  "label": "Factory factors",
+  "description": "Holds the factors and weights to build a risk score for a Factory",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "object",
+        "default": {
+          "usage": {
+            "type": "constant",
+            "value": 8
+          },
+          "foodStandards": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "minimum": 0,
+                "maximum": 2,
+                "score": 8
+              },
+              {
+                "minimum": 3,
+                "maximum": 4,
+                "score": 6
+              },
+              {
+                "equals": 5,
+                "score": 2
+              }
+            ]
+          },
+          "incidents": {
+            "type": "numerical",
+            "ranges": [
+              {
+                "equals": 0,
+                "score": 0
+              },
+              {
+                "equals": 1,
+                "score": 6
+              },
+              {
+                "moreThan": 1,
+                "score": 16
+              }
+            ]
+          },
+          "heritage": {
+            "type": "boolean",
+            "trueScore": 2
+          }
+        }
+      }
+    }
+  }
+}
