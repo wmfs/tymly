@@ -19,10 +19,26 @@ Blueprints equate to a directory containing a simple `blueprint.json` file and o
 | `<%=blueprintDir.dirName %>` | <%=blueprintDir.description %> |
 <% }); -%>
 
+![Yeoman logo](/images/yeoman.png#floatleft) __We use [Yeoman](http://yeoman.io/) to help quickly scaffold new components in Tymly.__
+
+Running the `yo tymly:blueprint` command will get you building basic blueprints in no time. Please see the [Getting started](/getting-started/) section for help with setting-up Yeoman.
+
+<div style="clear: both;"></div>
+
+---
+
 ## State Machines
 
-Everything that happens inside Tymly happens because a finite-[State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) triggered it. If Tymly were to be considered in terms of Model, View, Controller... then State Machines are all about the _Controller_.
-Tymly uses the open [Amazon States Specification](https://states-language.net/spec.html) to define State Machines inside blueprints - as such, the following State Machine constructs are supported:
+All the events that occur inside Tymly are orchestrated by an army of ~~Finite~~ [State Machines](https://en.wikipedia.org/wiki/Finite-state_machine).
+Conceptually, a State Machine is nothing more than a collection of [States](https://states-language.net/spec.html#states-fields) that are wired together to describe an executable process.
+Each state needs to be assigned a __Type__, some examples:
+
+* __[Task](https://states-language.net/spec.html#task-state)__ states are where all the heavy-lifting is done. Tasks cover all manner of processing: importing data, sending e-mails, form-filling etc.
+* __[Choice](https://states-language.net/spec.html#choice-state)__ states are used to implement conditional branching inside a state machine (i.e. configuring states so that they execute only if a certain expression is satisfied).
+* __[Parallel](https://states-language.net/spec.html#parallel-state)__ states allow for the concurrent running of two or more states.
+
+If Tymly were to be considered in terms of Model, View, Controller... then State Machines are all about the _Controller_.
+Tymly uses the open [Amazon States Specification](https://states-language.net/spec.html) to define State Machines inside blueprints, as such, the following State Machine constructs are supported:
 
 <table >
     <tr>
@@ -141,102 +157,44 @@ Tymly uses the open [Amazon States Specification](https://states-language.net/sp
 </tr>
 </table>
 
-### The booking-someone-sick flow
+---
 
-The flow represented in the diagram below allows an Operator (or more accurately a _user_ who has been assigned the Operator _role_) to process the necessary housekeeping when someone phones-in sick.
+## Resources
 
-![Simple state diagram for booking-someone-sick](/images/simple-flow.png)
+If the purpose of a State Machine is to execute Task states in a controlled manner, then it could be argued Tymly isn't too dissimilar to a microservice architecture.
+That said, instead of coordinating remote services over HTTP, Tymly State Machines orchestrate plain-old Javascript object instances.
+In Tymly, these objects are conjured from simple classes termed "__Resources__". Each Task State therefore needs to be associated with a single _resource_.
 
-- As described in the next section, each  circle in this diagram is known as a [State](#states). The _initial_ state requires the operator to capture details of the sickness by filling-in a quick form.
+![A state machine containing two form-filling state tasks](/images/double-form-state-machine.png#center)
 
-- Once the form has been completed, the flow advances to a state where an email is sent to the employee's manager.
+In the State Machine illustrated above we have a couple of Task states (one for showing an order-form to a user and a second for showing a survey-form).
+Though these states will be configured differently inside the State Machine JSON, they'll both be associated with a common `formFilling` __resource__.
 
-- What state the flow moves to next is dependent on whether the absence will reduce staffing below some critical level. Either things are fine and the flow can move to the final state or the Operations Room will be alerted to a staffing shortfall.
+![Yeoman logo](/images/yeoman.png#floatleft)
+As described below, Tymly is extended through a plugin mechanism which can supply new-and-exciting resources. Again, Yeoman is used to help get things started, the `yo tymly:resource` will scaffold a basic resource for you to hack around with.
 
-- And to finish, the employee will have a new entry added to their sickness record.
+__Please see the [list of core resources](/reference/#list-of-state-resources) for more detailed information about the type of thing possible out-of-the-box with Tymly.__
 
-<hr>
+<div style="clear: both;"></div>
 
-## States
-
-Each of the circles in the previous diagram are known as __States__.  Each Tymly flow contains all the necessary information to assemble a [Finite State Machine] (https://en.wikipedia.org/wiki/State_diagram) (__FSM__), that being:
-
-- A list of possible states (an FSM can be in exactly one of a finite number of states at any given time)
-
-- How states are connected together (along with any conditions that are required)
-
-- Which state the FSM should find itself in as it starts (i.e. the flow's _initial_ state)
-
-TymlyJS provides a pool of different [State Classes](/reference/#list-of-state-classes), each state in a flow will be associated with a particular _State Class_. It's possible to deliver a good chunk of back-office functionality with surprisingly few State Classes.
-
-__For a full list of states that are currently available out-of-the-box, please see the [list of core states](/reference/#list-of-state-classes).__
-
-<hr>
-
-## Tymlys
-
-At this point it _might_  be useful to think of things in terms of a railway network...
-
-{{< note title="Analogy alert!" >}}
-
-- __Flows__ can be seen as the railway track - connecting states together in a very controlled way
-
-- __States__ can be seen as the railway stations - they're reached by travelling around flows. Journeys start at the _initial_ state.
-
-- __Tymlys__ therefore can be seen as trains as they move from state-to-state. A single flow can have any number of Tymlys making their way around it.
-
-{{< /note >}}
-
-Tymlys are always persisted as a simple document so that they can survive server restarts.
-This is an example of what might be persisted for a Tymly travelling around the __booking-someone-sick__ flow from earlier:
-
-``` JSON
-{
-    "_id" : "586e42ade923c119c4a4a85b",
-    "createdAt" : "2017-01-05T12:57:17.701+0000",
-    "userId" : "john.doe@tymlyjs.io",
-    "status" : "running",
-    "flowId" : "booking-someone-sick",
-    "stateId" : "notifyingOperationsRoom",
-    "stateEnterTime" : "2017-01-05T12:57:17.686+0000",
-    "ctx" : {
-        "formData" : {
-            "employeeNumber": 372711,
-            "likelyReturnDate": "2017-01-07T09:00:00.000+0000",
-            "sicknessCode": "hangover"
-        }
-    }
-}
-```
-
-The various properties in this example document are described in the table below:
-
-Property         | Description
----------------- | ---------------------------------
-`_id`            | Uniquely identifies a Tymly
-`createdAt`      | When the Tymly was first instigated
-`userId`         | If the Tymly was instigated by a human, then this is the userId of that person
-`status`         | Always one of `starting`, `running`, `waitingForHumanInput` or `finished`
-`flowId`         | Identifies which flow this Tymly is travelling around
-`stateId`        | Indicates the state that this Tymly is currently in
-`stateEnterTime` | The timestamp of when the Tymly entered its current state
-`ctx`            | This is a simple key/value store that's unique to each Tymly. In analogy terms, this is a good place to store the speed of a train. This __context__ is available to all states to read-from/write-to as they require. In this way, inter-state communication is possible - but within context of each ~~train~~ Tymly.
-
-<hr>
+---
 
 ## Plugins
 
-TymlyJS takes a batteries-included approach and hopefully ships with enough [State Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there. To help try and keep things minimal and manageable Tymly employs a __plugin__ architecture.
-A TymlyJS plugin extends the core framework with related State Classes (along with other internal components required to run them).
+Tymly takes a batteries-included approach and hopefully ships with enough [Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there
+To help try and keep things minimal and manageable, Resources (and other components) are bundled inside Tymly "__Plugins__". The following are available out-of-the-box:
 
-__Please see the [list of core plugins](/reference/#list-of-plugins) to get a feel for what plugins are all about__
+| Plugin | Description |
+| ------ | ----------- |
+<% pluginList.forEach(function(plugin){ -%>
+| [<%=plugin.label %>](<%=plugin.url %>) | <%=plugin.description %> |
+<% }); -%>
 
-TymlyJS's current library of state classes is certainly far from exhaustive and organisations will undoubtedly have specialist requirements of their own.
-It's straightforward to write a new plugin for TymlyJS and add missing capabilities.
+![Yeoman logo](/images/yeoman.png#floatleft)
+Organizations will undoubtedly have specialist requirements of their own - this is where plugins shine, allowing Tymly to be easily extended and adapted as required.
 
+And again, Yeoman can help things along. Running `yo tymly:plugin` will generate a skeleton plugin into which new resources and related components can be added.
 
+<div style="clear: both;"></div>
 
-
-
- 
- 
+---

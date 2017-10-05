@@ -3,17 +3,16 @@ date: 2016-03-09T00:11:02+01:00
 title: Getting started
 weight: 20
 ---
-__In this section we'll be writing a simple blueprint and running a Flobot...__
+> In this section we'll be installing a few things, writing a simple [Blueprint](/key-concepts/#blueprints) and executing ourselves a [State Machine](/key-concepts/#state-machines).
 
 ## Install Node.js
 
-First ensure you have [Node.js](https://nodejs.org/en/) installed... FlobotJS requires at least `v6.9 LTS`.
-
-To check everything's OK, run `node` from the command line:
+First ensure you have [Node.js](https://nodejs.org/en/) installed... Tymly requires at least `v8.5`.
+To check everything's OK, try the following from the command line:
 
 ``` sh
 $ node --version
-v6.9.1
+v8.5.0
 ```
 
 ## Configure npm
@@ -22,13 +21,13 @@ The `npm` command (Node Package Manager) comes bundled with Node.js. But again, 
 
 ``` sh
 $ npm --version
-3.5.2
+3.10.10
 ```
 
-### Running npm`behind a proxy
+### Running npm behind a proxy
 
-To download packages from the __[mothership](https://www.npmjs.com/)__, __npm__ will need access to all your internets.
-If you're going to be using FlobotJS from behind a proxy server, then there's some one-off hurt to get through at his point:
+To download packages from the __[mothership](https://www.npmjs.com/)__, `npm` will need access to all your internets.
+If you're going to be using Tymly from behind a proxy server, then there's some one-off hurt to get through at his point:
 
 ``` sh
 $ npm config set proxy       "http://domain%5Cusername:password@servername:port/"
@@ -37,23 +36,23 @@ $ npm config set https-proxy "http://domain%5Cusername:password@servername:port/
 
 > __Note:__ Use URL encoding to include `\` characters (i.e. replace them with `%5C` as above). More [here](http://stackoverflow.com/questions/25660936/using-npm-behind-corporate-proxy-pac).
 
-To check NPM is using your proxy correctly, try the following (which should contact the __[mothership](https://www.npmjs.com/)__ to find out the latest published version of the [Flobot package](https://www.npmjs.com/package/flobot)):
+To check `npm` is using your proxy correctly, try the following (which should contact the __[mothership](https://www.npmjs.com/)__ to find out the latest published version of the [tymly package](https://www.npmjs.com/package/tymly)):
 
 ```sh
-$ npm show flobot version
-0.0.4
+$ npm show tymly version
+0.0.14
 ```
 
 <hr>
 
 ## Hello World!
 
-__To help show what FlobotJS is about we'll go through the steps to get `Hello World!` printed to the console.__
+__To help show what Tymly is about we'll go through the steps to get `Hello World!` printed to the console.__
 
-All functionality in FlobotJS is delivered via a [flow](/key-concepts/#flows) and flows are defined in [blueprints](/key-concepts/#blueprints).
+All functionality in Tymly is delivered via a [state machine](/key-concepts/#state-machines) and state machines are defined inside [blueprints](/key-concepts/#blueprints).
 So to get `Hello World!` onto the screen, we're going to need ourselves a blueprint...
 
-Nothing to it: make a directory, with a `/flows` sub-directory and a `/blueprint.json` file:
+Nothing to it: make a directory, with a `/state-machines` sub-directory and a `/blueprint.json` file:
 
 ![Directory structure for the Hello World! tutorial](/images/hello-world-directory-structure.png)
 
@@ -76,9 +75,9 @@ __Edit the content of the `/blueprint.json` file, so it looks like:__
 
 - The important takeaway here is that our blueprint is named `helloWorld` and it will live within the `tutorial` namespace. Blueprints which share the same namespace can refer to each others components. The rest of the `blueprint.json` is meta tinsel.
  
-__Now we need to define a [flow](/key-concepts/#flows) for FlobotJS to run__
+__Now we need to define a [state machine](/key-concepts/#state-machines) for Tymly to execute__
 
-Create a `/flows/hello-world.json` file:
+Create a `/state-machines/hello-world.json` file:
 
 ![Revised structure showing hello-world.json file](/images/hello-world-json.png)
 
