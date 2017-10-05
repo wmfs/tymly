@@ -123,6 +123,24 @@ describe('Run some basic tests', function () {
     )
   })
 
+  it('Should error on mis-shapen data', function (done) {
+    supercopy(
+      {
+        sourceDir: path.resolve(__dirname, './fixtures/input-data/bad-people'),
+        topDownTableOrder: ['adults'],
+        headerColumnNamePkPrefix: '.',
+        client: client,
+        schemaName: 'supercopy_test',
+        truncateTables: true,
+        debug: true
+      },
+      function (err) {
+        expect(err).to.not.equal(null)
+        done()
+      }
+    )
+  })
+
   it('Should supercopy some people, truncating the tables first', function (done) {
     supercopy(
       {
@@ -174,6 +192,10 @@ describe('Run some basic tests', function () {
         done()
       }
     )
+  })
+
+  it('Should return error when extra columns are specified', function () {
+
   })
 
   it('Should cleanup the test data', function (done) {
