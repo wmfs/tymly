@@ -10,7 +10,8 @@ function searchDirectories (directory) {
       continue
     } // if ...
 
-    if (candidate === 'node_modules') {
+    if ((candidate === 'node_modules') ||
+        (candidate === 'test')) {
       continue
     }
 
