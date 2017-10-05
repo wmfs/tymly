@@ -3,8 +3,10 @@ const chai = require('chai')
 chai.use(require('chai-string'))
 const expect = chai.expect
 const path = require('path')
+const fs = require('fs')
 const rimraf = require('rimraf')
 const copydir = require('copy-dir')
+const targz = require('tar.gz')
 
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
@@ -13,18 +15,23 @@ const whereAndWhen = require('../lib/where_and_when.js')
 const packPackages = require('../lib/pack_packages.js')
 const createManifest = require('../lib/create_manifest.js')
 const buildBundle = require('../lib/build_bundle.js')
+const bundleForDeploy = require('../lib/bundler.js')
 
-const pristine = path.resolve(__dirname, './fixtures/packages')
+const pristineSource = path.resolve(__dirname, './fixtures/packages')
+const pristineTarballs = path.resolve(__dirname, './fixtures/expected')
 const searchRoot = path.resolve(__dirname, './fixtures/working')
+const forDeployRoot = path.resolve(__dirname, './fixtures/for-deploy')
+
+const allTestDirs = [ searchRoot, forDeployRoot ]
 
 describe('Bundler tests', function () {
   before(() => {
-    rimraf.sync(searchRoot)
-    copydir.sync(pristine, searchRoot)
+    allTestDirs.forEach(d => rimraf.sync(d))
+    allTestDirs.forEach(d => copydir.sync(pristineSource, d))
   })
 
   after(() => {
-    rimraf.sync(searchRoot)
+    allTestDirs.forEach(d => rimraf.sync(d))
   })
 
   describe('Package gathering', () => {
@@ -166,8 +173,64 @@ describe('Bundler tests', function () {
           const filesInBundle = await buildBundle(fixtureRoot, packages, expectedTarballs)
 
           expect(filesInBundle).to.equal(expectedFiles)
+
+          const deployFiles = await listEntries(path.join(fixtureRoot, 'bundle.tgz'))
+          const matchFiles = await listEntries(path.join(pristineTarballs, fixture, 'bundle.tgz'))
+
+          expect(deployFiles).to.deep.equal(matchFiles)
+        })
+      }) // describe ...
+    } // for ...
+  }) // bundling for deploy
+
+  describe('Deploy', function () {
+    const tests = [
+      [
+        'one top level package',
+        'simple-package'
+      ],
+      [
+        'package with node_modules',
+        'package-with-node-modules'
+      ],
+      [
+        'nested including a directory to ignore',
+        'nested-directory'
+      ]
+    ]
+
+    for (const [label, fixture] of tests) {
+      describe(label, function () {
+        this.timeout(10000)
+
+        const fixtureRoot = path.join(forDeployRoot, fixture)
+
+        it(`bundle ${fixture} for deploy`, async () => {
+          await bundleForDeploy(fixtureRoot)
+
+          const deployFiles = await listEntries(path.join(fixtureRoot, 'bundle.tgz'))
+          const matchFiles = await listEntries(path.join(pristineTarballs, fixture, 'bundle.tgz'))
+
+          expect(deployFiles).to.deep.equal(matchFiles)
         })
       }) // describe ...
     } // for ...
   }) // bundling for deploy
 })
+
+function listEntries (tarball) {
+  return new Promise((resolve) => {
+    const read = fs.createReadStream(tarball)
+    const parse = targz().createParseStream()
+    const entries = []
+
+    parse.on('entry', entry => {
+      entries.push(entry.path)
+    })
+    parse.on('end', () => {
+      resolve(entries)
+    })
+
+    read.pipe(parse)
+  })
+} // countEntries

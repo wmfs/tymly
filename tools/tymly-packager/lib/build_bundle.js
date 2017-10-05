@@ -5,7 +5,7 @@ const rimraf = require('rimraf')
 const createManifest = require('./create_manifest.js')
 
 function countEntries (tarball) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const read = fs.createReadStream(tarball)
     const parse = targz().createParseStream()
     let count = 0
