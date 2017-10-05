@@ -21,15 +21,18 @@ module.exports = function scriptRunner (statements, client, options, callback) {
         const stream = client.query(
           copyFrom(newStatement)
         )
+        stream.on('end', function () {
+          onceCb()
+        }).on('error', function (err) {
+          onceCb(err)
+        })
+
         const fileStream = fs.createReadStream(filename)
         fileStream.on('error', function (err) {
-          console.error(err)
           onceCb(err)
         })
-        fileStream.pipe(stream).on('finish', onceCb).on('error', function (err) {
-          console.error(err)
-          onceCb(err)
-        })
+
+        fileStream.pipe(stream)
       } else {
         debug(`Running: ${statement}`)
         client.query(
