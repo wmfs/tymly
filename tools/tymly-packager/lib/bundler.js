@@ -6,8 +6,10 @@ const fs = require('fs')
 const path = require('path')
 
 function packageDetails(dir) {
-  const packages = gatherPackages(dir)
-  return readVersionNumbers(dir, packages)
+  console.log(`Bundling ${dir} ...`)
+  const packages = readVersionNumbers(dir, gatherPackages(dir))
+  console.log(`... found ${packages.length} packages`)
+  return packages
 } // packageDetails
 
 function cleanUpTarballs(dir, tarballs) {

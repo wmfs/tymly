@@ -68,7 +68,7 @@ async function packPackages (searchRoot, packages) {
   const tarballs = [ ]
 
   for (const pkg of packages) {
-    console.log(`Module ${pkg.name}`)
+    console.log(`Package ${pkg.name}`)
     const tgzName = `${pkg.name}-${pkg.version}.tgz`
     const dir = pkg.directory
 

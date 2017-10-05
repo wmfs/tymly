@@ -23,6 +23,7 @@ function countEntries (tarball) {
 
 async function sprayOutTarballs (bundle, tarballs) {
   for (const tarball of tarballs) {
+    console.log(`... ${tarball}`)
     await targz().extract(tarball, bundle)
   }
 } // sprayOutTarballs
@@ -50,17 +51,21 @@ async function buildBundle (searchRoot, packages, tarballs) {
   const wd = process.cwd()
   process.chdir(searchRoot)
 
+  console.log('Building bundle ...')
   fs.mkdirSync(workDir)
   const bundle = path.join(workDir, 'bundle')
   fs.mkdirSync(bundle)
 
   await sprayOutTarballs(bundle, tarballs)
 
+  console.log('... adding manifest')
   generateManifest(bundle, packages)
 
+  console.log('Creating tarball ...')
   const tgzName = path.join(searchRoot, 'bundle.tgz')
   await createBundle(bundle, tgzName)
   const count = await countEntries(tgzName)
+  console.log(`... ${tgzName} containing ${count} files`)
 
   cleanUp(workDir)
 
