@@ -1,5 +1,5 @@
 {
-  "name": "package-with-node-modules",
+  "name": "package-with-dependencies",
   "version": "0.0.0",
   "description": "do nothing package with a node_modules directory we don't want to recurse into",
   "scripts": {
@@ -7,6 +7,10 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "fake",
+    "url": "fakey://fakey"
+  },
   "devDependencies": {
     "mocha": "^3.5.3"
   },

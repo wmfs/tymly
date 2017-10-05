@@ -42,8 +42,8 @@ describe('Bundler tests', function () {
         [{directory: '.'}]
       ],
       [
-        'package with node_modules',
-        'package-with-node-modules',
+        'package with dependencies',
+        'package-with-dependencies',
         [{directory: '.'}]
       ],
       [
@@ -71,10 +71,10 @@ describe('Bundler tests', function () {
         [{directory: '.', name: 'simple-package', version: '1.0.0'}]
       ],
       [
-        'package with node_modules',
-        'package-with-node-modules',
+        'package with dependencies',
+        'package-with-dependencies',
         [{directory: '.'}],
-        [{directory: '.', name: 'package-with-node-modules', version: '0.0.0'}]
+        [{directory: '.', name: 'package-with-dependencies', version: '0.0.0'}]
       ],
       [
         'nested including a directory to ignore',
@@ -138,10 +138,10 @@ describe('Bundler tests', function () {
         2
       ],
       [
-        'package with node_modules',
-        'package-with-node-modules',
-        [{directory: '.', name: 'package-with-node-modules', version: '0.0.0'}],
-        ['package-with-node-modules-0.0.0.tgz'],
+        'package with dependencies',
+        'package-with-dependencies',
+        [{directory: '.', name: 'package-with-dependencies', version: '0.0.0'}],
+        ['package-with-dependencies-0.0.0.tgz'],
         30
       ],
       [
@@ -193,8 +193,8 @@ describe('Bundler tests', function () {
         'simple-package'
       ],
       [
-        'package with node_modules',
-        'package-with-node-modules'
+        'package with dependencies',
+        'package-with-dependencies'
       ],
       [
         'nested including a directory to ignore',
