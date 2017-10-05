@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+const bundleForDeploy = require('../lib/bundler.js')
+const path = require('path')
+const commander = require('commander')
+const colors = require('colors/safe')
+
+const [directory, bundleName, quiet] = parseArgs(process.argv)
+
+if (!quiet) {
+  console.log(colors.cyan.bold("It's the Tymly Bundler!"))
+}
+bundleForDeploy(directory, bundleName, !quiet ? console.log : () => {})
+
+/////////////////////////////////
+function parseArgs(args) {
+  let dir = null
+
+  commander.usage('[options] directory').
+    arguments('<directory>').
+    option('-t, --tar <tarball-name>', 'tarball name').
+    option('-q, --quiet', 'quiet').
+    action(d => { dir = d })
+  commander.parse(args)
+
+  if (!dir) {
+    commander.help(txt => colors.red(txt))
+  } // if ...
+
+  const name = commander.tar || path.basename(dir)
+  return [dir, name, commander.quiet]
+} // parseArgs
