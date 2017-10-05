@@ -1,0 +1,13 @@
+{
+  "namespace": "RidgeTest",
+  "name": "ridge",
+  "version": "1.0",
+  "label": "Ridge",
+  "author": "Liliana Judge",
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to refresh a view in Ridge.",
+  "tags": [
+    "ridge",
+    "test"
+  ]
+}
