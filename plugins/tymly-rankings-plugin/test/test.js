@@ -24,14 +24,14 @@ describe('Ridge blueprint', function () {
           path.resolve(__dirname, './fixtures/blueprint')
         ]
       },
-      function (err) {
+      function (err, tymlyServices) {
         expect(err).to.eql(null)
         done()
       }
     )
   })
 
-  it('should test numeric case statement', function (done) {
+  it('should generate an SQL case for a numeric range', function (done) {
     let statement = numericCase(
       'foodStandards',
       {
@@ -62,7 +62,7 @@ describe('Ridge blueprint', function () {
     done()
   })
 
-  it('should test boolean case statement', function (done) {
+  it('should generate an SQL statement to check if a value exists', function (done) {
     let statement = booleanCase(
       'heritage',
       {
@@ -78,7 +78,7 @@ describe('Ridge blueprint', function () {
     done()
   })
 
-  it('should test options case statement', function (done) {
+  it('should generate an SQL case for text options', function (done) {
     let statement = optionsCase(
       'ofsted',
       {
@@ -107,7 +107,7 @@ describe('Ridge blueprint', function () {
     done()
   })
 
-  it('should test constant case statement', function (done) {
+  it('should generate an SQL statement for a constant value', function (done) {
     let statement = constantCase(
       'usage',
       {
@@ -123,7 +123,7 @@ describe('Ridge blueprint', function () {
     done()
   })
 
-  it('should test the view statement', function (done) {
+  it('should generate an SQL view statement for manually entered options', function (done) {
     let statement = generateView({
       'propertyType': 'factory',
       'schema': 'test',
@@ -164,18 +164,7 @@ describe('Ridge blueprint', function () {
         }
       }
     })
-    let expected = 'CREATE OR REPLACE VIEW test.factory_scores AS ' +
-      'SELECT scores.uprn,scores.label,scores.usage_score,scores.food_standards_score,scores.usage_score+scores.food_standards_score as risk_score ' +
-      'FROM (' +
-      'SELECT ' +
-      'g.uprn,' +
-      'g.address_label as label,' +
-      '10 as usage_score ,' +
-      'CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score  ' +
-      'FROM test.undefined g  ' +
-      'JOIN test.food_table food_table ON food_table.uprn = g.uprn  ' +
-      'JOIN test.ranking_uprns rank ON rank.uprn ' +
-      'WHERE rank.ranking_name = \'factory\'::text ) scores'
+    let expected = 'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.label,scores.usage_score,scores.food_standards_score,scores.usage_score+scores.food_standards_score as risk_score FROM (SELECT g.uprn,g.address_label as label,10 as usage_score ,CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score  FROM test.gazetteer g  JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores'
     expect(statement.trim()).to.eql(expected)
     done()
   })
