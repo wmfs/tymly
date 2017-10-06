@@ -5,8 +5,8 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const numericCase = require('./../lib/components/services/ranking/case-statements/numeric.js')
-const booleanCase = require('./../lib/components/services/ranking/case-statements/boolean.js')
+const numericCase = require('./../lib/components/services/rankings/case-statements/numeric.js')
+const booleanCase = require('./../lib/components/services/rankings/case-statements/boolean.js')
 
 describe('Ridge blueprint', function () {
   this.timeout(5000)
