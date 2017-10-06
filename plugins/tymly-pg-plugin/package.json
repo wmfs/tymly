@@ -11,20 +11,19 @@
     "dottie": "^2.0.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.1",
-    "pg-delta-file": "^0.0.5",
-    "pg-diff-sync": "^0.0.11",
-    "pg-info": "^0.0.15",
-    "pg-model": "^0.0.9",
-    "pg-telepods": "^0.0.6",
-    "process": "^0.11.10",
-    "relationize": "^0.0.19",
-    "supercopy": "^0.0.6"
+    "pg-delta-file": "0.0.5",
+    "pg-diff-sync": "0.0.11",
+    "pg-info": "0.0.15",
+    "pg-model": "0.0.9",
+    "pg-telepods": "0.0.6",
+    "relationize": "0.0.19",
+    "supercopy": "0.0.6"
   },
   "devDependencies": {
     "chai": "^4.1.0",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
-    "tymly": "^0.0.15"
+    "tymly": "0.0.15"
   },
   "scripts": {
     "lint": "standard",
