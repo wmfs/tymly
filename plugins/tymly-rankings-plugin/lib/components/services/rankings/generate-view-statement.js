@@ -10,7 +10,7 @@ module.exports = function generateViewStatement (options) {
   let totalScore = []
   let innerSelect = []
   let joinParts = new Set()
-  let postStatement = `WHERE rank.ranking_name = 'factory'::text ) scores`
+  let postStatement = `WHERE rank.ranking_name = '${options.propertyType}'::text ) scores`
 
   outerSelect.push(`scores.${options.columnToMatch}`)
   outerSelect.push(`scores.label`)
@@ -24,14 +24,14 @@ module.exports = function generateViewStatement (options) {
     joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, v.model, options.columnToMatch))
   })
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
-  joinParts.add(`JOIN ${options.schema}.ranking_uprns rank ON rank.${options.columnToMatch}`) // TODO: rank.ranking_name, ranking_uprns
+  joinParts.add(`JOIN ${options.schema}.ranking_${options.columnToMatch}s rank ON rank.${options.columnToMatch}`)
 
   let viewStatement =
     preStatement +
-    'SELECT ' +
+    `SELECT ` +
     outerSelect.join(',') +
-    ' FROM ' +
-    '(SELECT ' +
+    ` FROM ` +
+    `(SELECT ` +
     innerSelect.join(',') +
     ` FROM ${options.schema}.${options.TableToMatch} g `
 
