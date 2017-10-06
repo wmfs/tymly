@@ -50,6 +50,5 @@ INSERT INTO test.incidents (uprn, amount) VALUES (3, '1');
 
 INSERT INTO test.heritage (uprn) VALUES (1);
 INSERT INTO test.heritage (uprn) VALUES (2);
-INSERT INTO test.heritage (uprn) VALUES (3);
 
 COMMIT;
