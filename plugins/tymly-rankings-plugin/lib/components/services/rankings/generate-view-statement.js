@@ -24,7 +24,7 @@ module.exports = function generateViewStatement (options) {
     joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, v.model, options.columnToMatch))
   })
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
-  joinParts.add(`JOIN ${options.schema}.ranking_${options.columnToMatch}s rank ON rank.${options.columnToMatch}`)
+  joinParts.add(`JOIN ${options.schema}.ranking_${options.columnToMatch}s rank ON rank.${options.columnToMatch} = g.${options.columnToMatch}`)
 
   let viewStatement =
     preStatement +
@@ -33,7 +33,7 @@ module.exports = function generateViewStatement (options) {
     ` FROM ` +
     `(SELECT ` +
     innerSelect.join(',') +
-    ` FROM ${options.schema}.${options.TableToMatch} g `
+    ` FROM ${options.schema}.${options.tableToMatch} g `
 
   for (const i of joinParts) {
     viewStatement += `${i} `
