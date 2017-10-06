@@ -1,7 +1,7 @@
 {
   "name": "tymly-pg-plugin",
   "description": "Replace Tymly's out-the-box memory storage with PostgreSQL",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -11,20 +11,20 @@
     "dottie": "^2.0.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.1",
-    "pg-delta-file": "^0.0.4",
-    "pg-diff-sync": "^0.0.10",
-    "pg-info": "^0.0.14",
-    "pg-model": "^0.0.8",
-    "pg-telepods": "^0.0.5",
+    "pg-delta-file": "^0.0.5",
+    "pg-diff-sync": "^0.0.11",
+    "pg-info": "^0.0.15",
+    "pg-model": "^0.0.9",
+    "pg-telepods": "^0.0.6",
     "process": "^0.11.10",
-    "relationize": "^0.0.18",
-    "supercopy": "^0.0.5"
+    "relationize": "^0.0.19",
+    "supercopy": "^0.0.6"
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "tymly": "0.0.14",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "tymly": "^0.0.15"
   },
   "scripts": {
     "lint": "standard",
