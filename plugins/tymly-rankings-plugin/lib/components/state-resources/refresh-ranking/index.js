@@ -1,7 +1,8 @@
 'use strict'
+
 // const getFunction = require('tymly/lib/getFunction.js')
 
-class RefreshRankings {
+class RefreshRanking {
   init (resourceConfig, env, callback) {
     // console.log('Init table')
     // this.client = env.bootedServices.storage.client
@@ -16,8 +17,9 @@ class RefreshRankings {
   }
 
   run (event, context) {
+    console.log('refresh-ranking!!!!!')
     context.sendTaskSuccess()
   }
 }
 
-module.exports = RefreshRankings
+module.exports = RefreshRanking
