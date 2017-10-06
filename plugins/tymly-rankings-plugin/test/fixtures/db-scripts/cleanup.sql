@@ -1,0 +1,9 @@
+DROP VIEW IF EXISTS test.factory_scores;
+
+DROP TABLE IF EXISTS test.food;
+DROP TABLE IF EXISTS test.incidents;
+DROP TABLE IF EXISTS test.heritage;
+DROP TABLE IF EXISTS test.gazetteer;
+DROP TABLE IF EXISTS test.ranking_uprns;
+
+DROP SCHEMA IF EXISTS test;
