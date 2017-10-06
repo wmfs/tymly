@@ -67,7 +67,7 @@ __Edit the content of the `/blueprint.json` file, so it looks like:__
   "label": "Hello World! tutorial",
   "author": "John Doe",
 
-  "organisation": "Flobots",
+  "organisation": "Tymly",
   "description": "Provides a simple flow to print 'Hello World!' to the console",
   "tags": ["tutorial", "test"]
 }
@@ -92,7 +92,11 @@ __...and edit its content to:__
     "HelloWorld": {
     "Type": "Task",
     "Resource": "module:logging",
+    "ResourceConfig": {
+      "template": "Hello World!"
+    },
     "End": true
+    }
   }
 }
 ```
@@ -127,7 +131,9 @@ var tymly = require('tymly')
 
 tymly.boot(
   {
-    blueprintPaths: ['/myProjects/blueprints/hello-world-blueprint'] // Change me!
+    blueprintPaths: [
+      'd:/development/temp/hello-world-blueprint' // Change me!
+    ]
   },
   // Callback function
   function (err, services) {
@@ -155,28 +161,28 @@ __Let's execute a State Machine!__
 Edit the `./index.js` file again, keep the changes you made previously but __replace__ the callback function with:
 
 ``` javascript
-// Callback function
-function (err, services) {
-  if (err) {
-    console.error(err)
-  } else {
-    // No problems booting, so execute the State Machine...
-    statebox.startExecution(
-      {},  // input
-      'formFilling', // state machine name
-      {
-        sendResponse: 'COMPLETE'
-      }, // options
-      function (err, executionDescription) {
-        if (err) {
-          console.error(err)
-        } else {
-          console.log('Done.')
+  // Callback function
+  function (err, services) {
+    if (err) {
+      console.error(err)
+    } else {
+      // No problems booting, so execute the State Machine...
+      services.statebox.startExecution(
+        {},  // input
+        'tutorial_helloWorld_1_0', // state machine name
+        {
+          sendResponse: 'COMPLETE'
+        }, // options
+        function (err, executionDescription) {
+          if (err) {
+            console.error(err)
+          } else {
+            console.log('Done.')
+          }
         }
-      }
-    )
+      )
+    }
   }
-}
 ```
 
 - As before, if everything goes as expected during the boot process, Tymly will offer some `services`
