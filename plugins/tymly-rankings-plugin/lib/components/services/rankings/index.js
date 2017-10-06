@@ -17,7 +17,14 @@ class RankingService {
           let propertyType = key.split('_')[1] // e.g. factory OR hospital
           let registry = options.bootedServices.registry.registry[key]
 
-          let viewStatement = generateViewStatement(schemaName, tableToMatchOn, propertyType, columnToMatchOn, rankings[key].factors, registry)
+          let viewStatement = generateViewStatement({
+            'propertyType': propertyType,
+            'schema': schemaName,
+            'tableToMatch': tableToMatchOn,
+            'columnToMatch': columnToMatchOn,
+            'ranking': rankings[key].factors,
+            'registry': registry
+          })
 
           console.log(viewStatement + '\n\n')
         }

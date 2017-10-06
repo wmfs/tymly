@@ -4,27 +4,27 @@ const _ = require('lodash')
 const generateCaseStatement = require('./generate-case-statement')
 const generateJoinStatement = require('./generate-join-statement')
 
-module.exports = function generateViewStatement (schemaName, tableToMatchOn, propertyType, columnToMatchOn, rankingFactors, registry) {
-  let preStatement = `CREATE OR REPLACE VIEW ${schemaName}.${propertyType}_scores AS `
+module.exports = function generateViewStatement (options) {
+  let preStatement = `CREATE OR REPLACE VIEW ${options.schema}.${options.propertyType}_scores AS `
   let outerSelect = []
   let totalScore = []
   let innerSelect = []
   let joinParts = new Set()
   let postStatement = `WHERE rank.ranking_name = 'factory'::text ) scores`
 
-  outerSelect.push(`scores.${columnToMatchOn}`)
+  outerSelect.push(`scores.${options.columnToMatch}`)
   outerSelect.push(`scores.label`)
-  innerSelect.push(`g.${columnToMatchOn}`)
+  innerSelect.push(`g.${options.columnToMatch}`)
   innerSelect.push(`g.address_label as label`) // TODO: g.address_label
 
-  _.forEach(rankingFactors, function (v, k) {
+  _.forEach(options.ranking, function (v, k) {
     outerSelect.push(`scores.${_.snakeCase(k)}_score`)
-    innerSelect.push(generateCaseStatement(k, registry.value[k], schemaName, v.model, v.property))
+    innerSelect.push(generateCaseStatement(k, options.registry.value[k], options.schema, v.model, v.property))
     totalScore.push(`scores.${_.snakeCase(k)}_score`)
-    joinParts.add(generateJoinStatement(registry.value[k], schemaName, v.model, columnToMatchOn))
+    joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, v.model, options.columnToMatch))
   })
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
-  joinParts.add(`JOIN ${schemaName}.ranking_uprns rank ON rank.${columnToMatchOn}`) // TODO: rank.ranking_name, ranking_uprns
+  joinParts.add(`JOIN ${options.schema}.ranking_uprns rank ON rank.${options.columnToMatch}`) // TODO: rank.ranking_name, ranking_uprns
 
   let viewStatement =
     preStatement +
@@ -33,7 +33,7 @@ module.exports = function generateViewStatement (schemaName, tableToMatchOn, pro
     ' FROM ' +
     '(SELECT ' +
     innerSelect.join(',') +
-    ` FROM ${schemaName}.${tableToMatchOn} g `
+    ` FROM ${options.schema}.${options.TableToMatch} g `
 
   for (const i of joinParts) {
     viewStatement += `${i} `
