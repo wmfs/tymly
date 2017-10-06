@@ -11,14 +11,13 @@ class RankingService {
       options.messages.info('Finding rankings')
       for (const key in rankings) {
         if (rankings.hasOwnProperty(key)) {
-          let schemaName = key.split('_')[0] // wmfs
-          let tableToMatchOn = rankings[key].model // gazetteer
-          let columnToMatchOn = rankings[key].id // uprn
-          let propertyType = key.split('_')[1] // factory OR hospital
-          let joinParts = new Set()
+          let schemaName = key.split('_')[0] // e.g. wmfs
+          let tableToMatchOn = rankings[key].model // e.g. gazetteer
+          let columnToMatchOn = rankings[key].id // e.g. uprn
+          let propertyType = key.split('_')[1] // e.g. factory OR hospital
           let registry = options.bootedServices.registry.registry[key]
 
-          let viewStatement = generateViewStatement(schemaName, tableToMatchOn, propertyType, columnToMatchOn, rankings[key].factors, registry, joinParts)
+          let viewStatement = generateViewStatement(schemaName, tableToMatchOn, propertyType, columnToMatchOn, rankings[key].factors, registry)
 
           console.log(viewStatement + '\n\n')
         }
