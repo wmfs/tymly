@@ -85,16 +85,15 @@ __...and edit its content to:__
 
 ``` json
 {
-  "description": "Prints 'Hello World!' to the console and nothing else",
-  "version": "1.0",
-  "initialStateId": "logging",
-  "fsm": {
-    "logging": {
-      "options": {
-        "text": "Hello World!"
-      }     
-    }    
-  }  
+  "Comment": "Logs 'Hello World!' to the console",
+  "StartAt": "HelloWorld",
+  "States": {
+    "HelloWorld": {
+      "Type": "Task",
+      "Resource": "module:logging",
+      "End": true
+    }
+  }
 }
 ```
 
