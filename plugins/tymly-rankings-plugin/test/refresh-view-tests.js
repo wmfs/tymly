@@ -13,11 +13,10 @@ describe('Tests ranking of data', function () {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          path.resolve(__dirname, './..')
         ],
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/ridge-blueprint')
+          path.resolve(__dirname, './fixtures/blueprint')
         ],
         config: {}
 
