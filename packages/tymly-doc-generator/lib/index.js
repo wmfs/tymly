@@ -8,6 +8,7 @@ const tymly = require('tymly')
 const writeConfig = require('./write-config')
 const writeKeyConcepts = require('./write-key-concepts')
 const writeCoreComponents = require('./write-core-components')
+const writeGettingStarted = require('./write-getting-started')
 
 class DocGenerator {
   constructor (options) {
@@ -46,7 +47,16 @@ class DocGenerator {
               } else {
                 writeConfig(_this.options.destination, inventory)
                 writeKeyConcepts(_this.options.destination, inventory)
-                writeCoreComponents(_this.options.destination, inventory, callback)
+                writeCoreComponents(_this.options.destination,
+                  inventory,
+                  function (err) {
+                    if (err) {
+                      console.error(err)
+                    } else {
+                      writeGettingStarted(_this.options.destination, inventory, callback)
+                    }
+                  }
+                )
               }
             }
           )

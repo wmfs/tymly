@@ -7,12 +7,12 @@ weight: 20
 
 ## Install Node.js
 
-First ensure you have [Node.js](https://nodejs.org/en/) installed... Tymly requires at least `v8.5.0`.
+First ensure you have [Node.js](https://nodejs.org/en/) installed... Tymly requires at least `v<%= nodeInfo.node.version.version %>`.
 To check everything's OK, try the following from the command line:
 
 ``` sh
 $ node --version
-v8.5.0
+v<%= nodeInfo.node.version.version %>
 ```
 
 ## Configure npm
@@ -21,7 +21,7 @@ The `npm` command (Node Package Manager) comes bundled with Node.js. But again, 
 
 ``` sh
 $ npm --version
-3.10.10
+<%= nodeInfo.npm.version.version %>
 ```
 
 ### Running npm behind a proxy
@@ -40,7 +40,7 @@ To check `npm` is using your proxy correctly, try the following (which should co
 
 ```sh
 $ npm show tymly version
-0.0.14
+<%= tymlyPackage.version %>
 ```
 
 <hr>

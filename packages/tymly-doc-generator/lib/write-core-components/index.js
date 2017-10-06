@@ -128,7 +128,6 @@ module.exports = function (rootDir, inventory, callback) {
         console.log('Writing ' + destination)
 
         fs.writeFileSync(destination, md)
-
         callback(null)
       }
     }
