@@ -15,7 +15,7 @@ module.exports = function (rootDir, inventory, callback) {
       pluginId: pluginId,
       label: shortenPluginName(plugin.package.pkg.name),
       description: plugin.meta.description || plugin.package.pkg.description,
-      url: plugin.package.pkg.homepage
+      url: `/plugins/${plugin.package.pkg.name}`
     }
   }
 
@@ -93,7 +93,7 @@ module.exports = function (rootDir, inventory, callback) {
         {
           label: shortenPluginName(plugin.package.pkg.name),
           description: plugin.meta.description || plugin.package.pkg.description,
-          url: plugin.package.pkg.homepage
+          url: `/plugins/${plugin.package.pkg.name}`
         }
       )
     }

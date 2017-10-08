@@ -152,7 +152,7 @@ Make sure you change the blueprint path to point to your `hello-world-blueprint`
 $ node index.js
 ```
 
-...a chunk of output should then appear - for everything to have worked it should end with `Done booting`.
+...a chunk of output should then appear - for everything to have worked it should end with `Done booting.`.
 
 - This is a relatively exciting moment! Tymly has booted, consumed the demo blueprint and offered lots of ready-to-use [services](/reference/#list-of-services) - the reason we're not seeing `Hello World!` yet is that we haven't used any of those services.
 

@@ -6,8 +6,8 @@ weight: 10
 
 ## Blueprints
 
-In Tymly, a "__blueprint__" describes related functionality that adds value to an organization.
-Typically a blueprint will describe all the workflows, rules and forms affecting a business function or team - but they're equally suited to describing open data and ETL pipelines.
+In Tymly, "__blueprints__" provide a way to describe some related components that can coalesce to produce useful software.
+Typically a blueprint will describe all the workflows, rules and UI affecting a business function or team - but they're equally suited to describing open-data products and ETL pipelines as well.
 
 ![Cartoon illustration of people looking inside a Blueprint](/images/inside-a-blueprint.png#center)
 
@@ -33,10 +33,10 @@ Running the `yo tymly:blueprint` command will get you building basic blueprints 
 
 ---
 
-## State Machines
+## State machines
 
 All the events that occur inside Tymly are orchestrated by an army of ~~Finite~~ [State Machines](https://en.wikipedia.org/wiki/Finite-state_machine).
-Conceptually, a State Machine is nothing more than a collection of [States](https://states-language.net/spec.html#states-fields) that are wired together to describe an executable process.
+Conceptually, a state machine is nothing more than a collection of [states](https://states-language.net/spec.html#states-fields) that are wired together to describe an executable process.
 Each state needs to be assigned a __Type__, some examples:
 
 * __[Task](https://states-language.net/spec.html#task-state)__ states are where all the heavy-lifting is done. Tasks cover all manner of processing: importing data, sending e-mails, form-filling etc.
@@ -44,124 +44,11 @@ Each state needs to be assigned a __Type__, some examples:
 * __[Parallel](https://states-language.net/spec.html#parallel-state)__ states allow for the concurrent running of two or more states.
 
 If Tymly were to be considered in terms of Model, View, Controller... then State Machines are all about the _Controller_.
-Tymly uses the open [Amazon States Specification](https://states-language.net/spec.html) to define State Machines inside blueprints, as such, the following State Machine constructs are supported:
+Tymly uses the open [Amazon States Specification](https://states-language.net/spec.html) to define state machines inside blueprints, as such, the following constructs are supported:
 
-<table >
-    <tr>
-        <th>Sequential</th>
-        <th>Choice</th>
-        <th>Parallel</th>
-    </tr>
-    <tr>
-        <td><img src="/images/sequential-states.png"/></td>
-        <td><img src="/images/choice-states.png"/></td>
-        <td><img src="/images/parallel-states.png"></td>
-    </tr>
-<tr>
-<td>
-<pre style="margin:0; padding:1em;">
-{
- "States": {
-  "Load": {
-   "Type": "Task",
-   "Resource": "module:findingById",
-   "InputPath": "$.key",
-   "Next": "Form"
-  },
-  "Form": {
-   "Type": "Task",
-   "Resource": "module:formFilling",
-   "ResultPath": "$.formData",
-   "Next": "Save"
-  },
-  "Save": {
-   "Type": "Task",
-   "Resource": "module:upserting",
-   "InputPath": "$.formData",
-   "End": "True"
-  }
- }
-}
-</pre>
-</td>
-
-<td>
-<pre style="margin:0;padding:1em;">
-{
- "States": {
-  "ConsiderLanguage": {
-   "Type": "Choice",
-   "Choices": [
-    {
-     "Variable": "$.language",
-     "StringEquals": "Spanish"
-     "Next": "SpanishGreeting"
-    }
-   ],
-   "Default": "EnglishGreeting"
-  },
-  "SpanishGreeting": {
-   "Type": "Task",
-   "Resource": "module:logging",
-   "ResourceConfig": {
-    "template": "Hola"
-   },
-   "End": "True"
-  },
-  "EnglishGreeting": {
-   "Type": "Task",
-   "Resource": "module:logging",
-   "ResourceConfig": {
-    "template": "Hello"
-   },
-   "End": "True"
-  }
- }
-}
-</pre>
-</td>
-
-<td>
-<pre style="margin:0;padding:1em;">
-{
- "States": {
-  "ParallelThings": {
-   "Type": "Parallel",
-   "Branches": [
-    {
-     "StartAt": "ProcessAvatar",
-     "States": {
-      "ProcessAvatar" : {
-       "Type": "Task",
-       "Resource": "module:crop"
-       "End": true
-      }
-     }
-    },
-    {
-     "StartAt": "CreateAccount",
-     "States": {
-      "CreateAccount" : {
-       "Type": "Task",
-       "Resource": "module:onboard"
-       "End": true
-      }
-     }
-    }
-   ],
-   "Next": "SendWelcomeEmail"
-  },
-  "SendWelcomeEmail": {
-   "Type": "Task",
-   "Resource": "module:sendEmail"
-   "End": true
-  }
- }
-}
-</pre>
-</td>
-</tr>
-</table>
+<img src="/images/sequential-states.png" alt="A diagram showing three states, stringed together sequentially"/>
+<img src="/images/choice-states.png" alt="A diagram showing three states, but the final two illustrate two branches"/>
+<img src="/images/parallel-states.png" alt="A diagram again with three states, but the first two execute simultaneously">
 
 ---
 
@@ -173,11 +60,11 @@ In Tymly, these objects are conjured from simple classes termed "__Resources__".
 
 ![A state machine containing two form-filling state tasks](/images/double-form-state-machine.png#center)
 
-In the State Machine illustrated above we have a couple of Task states (one for showing an order-form to a user and a second for showing a survey-form).
+In the illustration above we have a couple of Task states (one for showing an order-form to a user and a second for showing a survey-form).
 Though these states will be configured differently inside the State Machine JSON, they'll both be associated with a common `formFilling` __resource__.
 
 ![Yeoman logo](/images/yeoman.png#floatleft)
-As described below, Tymly is extended through a plugin mechanism which can supply new-and-exciting resources. Again, Yeoman is used to help get things started, the `yo tymly:resource` will scaffold a basic resource for you to hack around with.
+As described below, Tymly is extended through a plugin mechanism which can supply new capabilities. Again, Yeoman is used to help get things started, the `yo tymly:resource` will scaffold a basic resource for you to hack around with.
 
 __Please see the [list of core resources](/reference/#list-of-state-resources) for more detailed information about the type of thing possible out-of-the-box with Tymly.__
 
@@ -187,19 +74,21 @@ __Please see the [list of core resources](/reference/#list-of-state-resources) f
 
 ## Plugins
 
-Tymly takes a batteries-included approach and hopefully ships with enough [Resources](/reference/#list-of-state-resources) to cover-off most of the the duller business processes out there
+![Diagram showing how plugins/blueprints/config/services relate to each other](/images/components.png)
+
+Tymly takes a batteries-included approach and hopefully ships with enough [Resources](/reference/#list-of-state-resources) to conjure most business processes out there.
 To help try and keep things minimal and manageable, Resources (and other components) are bundled inside Tymly "__Plugins__". The following are available out-of-the-box:
 
 | Plugin | Description |
 | ------ | ----------- |
-| [tymly](https://github.com/wmfs/tymly#readme) | The [Tymly](https://github.com/wmfs/tymly/tree/master/packages/tymly) package itself has a [built-in plugin](https://github.com/wmfs/tymly/tree/master/packages/tymly/lib/plugin) which provides low-level components to help get the party started |
-| [tymly-alerts-plugin](https://github.com/wmfs/tymly#readme) | Adds some alerting options to the Tymly framework |
-| [tymly-etl-plugin](https://github.com/wmfs/tymly#readme) | A collection of states for helping with Extract, Transform and Load tasks. |
-| [tymly-express-plugin](https://github.com/wmfs/tymly#readme) | Exposes the Tymly framework via an Express.js web app. |
-| [tymly-forms-plugin](https://github.com/wmfs/tymly#readme) | Adds some form capabilities to Tymly |
-| [tymly-pg-plugin](https://github.com/wmfs/tymly#readme) | Replace Tymly&#39;s out-the-box memory storage with PostgreSQL |
-| [tymly-rankings-plugin](https://github.com/wmfs/tymly#readme) | Plugin which handles ranking of data |
-| [tymly-solr-plugin](https://github.com/wmfs/tymly#readme) | Plugin which handles interaction with Apache Solr |
+| [tymly](/plugins/tymly) | The [Tymly](https://github.com/wmfs/tymly/tree/master/packages/tymly) package itself has a [built-in plugin](https://github.com/wmfs/tymly/tree/master/packages/tymly/lib/plugin) which provides low-level components to help get the party started |
+| [alerts](/plugins/tymly-alerts-plugin) | Adds some alerting options to the Tymly framework |
+| [etl](/plugins/tymly-etl-plugin) | A collection of states for helping with Extract, Transform and Load tasks. |
+| [express](/plugins/tymly-express-plugin) | Exposes the Tymly framework via an Express.js web app. |
+| [forms](/plugins/tymly-forms-plugin) | Adds some form capabilities to Tymly |
+| [pg](/plugins/tymly-pg-plugin) | Replace Tymly&#39;s out-the-box memory storage with PostgreSQL |
+| [rankings](/plugins/tymly-rankings-plugin) | Plugin which handles ranking of data |
+| [solr](/plugins/tymly-solr-plugin) | Plugin which handles interaction with Apache Solr |
 
 ![Yeoman logo](/images/yeoman.png#floatleft)
 Organizations will undoubtedly have specialist requirements of their own - this is where plugins shine, allowing Tymly to be easily extended and adapted as required.
