@@ -55,7 +55,7 @@ describe('Tests the Ranking Service', function () {
           },
           {
             'type': 'numeric-constant',
-            'value': 5,
+            'numericValue': 5,
             'score': 2
           }
         ]
@@ -96,17 +96,17 @@ describe('Tests the Ranking Service', function () {
         'options': [
           {
             'type': 'text-constant',
-            'value': 'good',
+            'textualValue': 'good',
             'score': 0
           },
           {
             'type': 'text-constant',
-            'value': 'average',
+            'textualValue': 'average',
             'score': 5
           },
           {
             'type': 'text-constant',
-            'value': 'bad',
+            'textualValue': 'bad',
             'score': 8
           }
         ]
@@ -125,7 +125,7 @@ describe('Tests the Ranking Service', function () {
       'usage',
       {
         'type': 'constant',
-        'value': 8
+        'score': 8
       },
       'test',
       'usage',
@@ -157,7 +157,7 @@ describe('Tests the Ranking Service', function () {
         'value': {
           'usage': {
             'type': 'constant',
-            'value': 10
+            'score': 10
           },
           'foodStandards': {
             'type': 'options',
@@ -176,7 +176,7 @@ describe('Tests the Ranking Service', function () {
               },
               {
                 'type': 'numeric-constant',
-                'value': 5,
+                'numericValue': 5,
                 'score': 2
               }
             ]
