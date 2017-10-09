@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const booleanCase = require('./../lib/components/services/rankings/case-statements/boolean.js')
-const optionsCase = require('./../lib/components/services/rankings/case-statements/options.js')
+const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
 
@@ -36,7 +36,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL case for a numeric range', function (done) {
-    let statement = optionsCase(
+    let statement = optionCase(
       'foodStandards',
       {
         'type': 'options',
@@ -89,7 +89,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL case for text options', function (done) {
-    let statement = optionsCase(
+    let statement = optionCase(
       'ofsted',
       {
         'type': 'options',
@@ -148,6 +148,7 @@ describe('Tests the Ranking Service', function () {
       'ranking': {
         'usage': 'constant',
         'foodStandards': {
+          'namespace': 'test',
           'model': 'food_table',
           'property': 'rating'
         }

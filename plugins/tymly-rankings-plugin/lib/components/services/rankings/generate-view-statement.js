@@ -19,15 +19,31 @@ module.exports = function generateViewStatement (options) {
     innerSelect.push(`g.${i} as ${i}`)
   })
 
-  _.forEach(options.ranking, function (v, k) {
-    if (v.hasOwnProperty('sourceProperty')) {
-      joinParts.add(generateJoinStatement(options.registry.value[k], _.snakeCase(v.namespace), _.snakeCase(v.model), _.snakeCase(v.sourceProperty)))
+  _.forEach(options.ranking, function (value, key) {
+    if (value.hasOwnProperty('sourceProperty')) {
+      joinParts.add(generateJoinStatement({
+        factorObj: options.registry.value[key],
+        schema: _.snakeCase(value.namespace),
+        table: _.snakeCase(value.model),
+        columnToMatch: _.snakeCase(value.sourceProperty)
+      }))
     } else {
-      joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, _.snakeCase(v.model), options.source['property']))
+      joinParts.add(generateJoinStatement({
+        factorObj: options.registry.value[key],
+        schema: _.snakeCase(value.namespace),
+        table: _.snakeCase(value.model),
+        columnToMatch: _.snakeCase(options.source['property'])
+      }))
     }
-    outerSelect.push(`scores.${_.snakeCase(k)}_score`)
-    innerSelect.push(generateCaseStatement(_.snakeCase(k), options.registry.value[k], options.schema, _.snakeCase(v.model), _.snakeCase(v.property)))
-    totalScore.push(`scores.${_.snakeCase(k)}_score`)
+    innerSelect.push(generateCaseStatement({
+      factorName: _.snakeCase(key),
+      factorObj: options.registry.value[key],
+      schema: _.snakeCase(value.namespace),
+      table: _.snakeCase(value.model),
+      column: _.snakeCase(value.property)
+    }))
+    outerSelect.push(`scores.${_.snakeCase(key)}_score`)
+    totalScore.push(`scores.${_.snakeCase(key)}_score`)
   })
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
   joinParts.add(`JOIN ${options.schema}.ranking_${options.source['property']}s rank ON rank.${options.source['property']} = g.${options.source['property']}`)

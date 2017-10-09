@@ -2,14 +2,14 @@
 
 const boolean = require('./case-statements/boolean')
 const constant = require('./case-statements/constant')
-const options = require('./case-statements/options')
+const option = require('./case-statements/option')
 
-module.exports = function generateCaseStatement (factorName, factorObj, schema, table, column) {
-  if (factorObj.type === 'constant') {
-    return constant(factorName, factorObj)
-  } else if (factorObj.type === 'options') {
-    return options(factorName, factorObj, schema, table, column)
-  } else if (factorObj.type === 'boolean') {
-    return boolean(factorName, factorObj, schema, table, column)
+module.exports = function generateCaseStatement (options) {
+  if (options.factorObj.type === 'constant') {
+    return constant(options.factorName, options.factorObj)
+  } else if (options.factorObj.type === 'options') {
+    return option(options.factorName, options.factorObj, options.schema, options.table, options.column)
+  } else if (options.factorObj.type === 'boolean') {
+    return boolean(options.factorName, options.factorObj, options.schema, options.table, options.column)
   }
 }

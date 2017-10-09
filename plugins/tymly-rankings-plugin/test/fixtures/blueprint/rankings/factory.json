@@ -9,14 +9,17 @@
   "factors": {
     "usage": "constant",
     "foodStandards": {
+      "namespace": "test",
       "model": "food",
       "property": "rating"
     },
     "incidents": {
+      "namespace": "test",
       "model": "incidents",
       "property": "amount"
     },
     "heritage": {
+      "namespace": "test",
       "model": "heritage",
       "property": "uprn"
     }
