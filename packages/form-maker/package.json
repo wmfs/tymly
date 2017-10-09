@@ -1,7 +1,7 @@
 {
   "name": "form-maker",
   "description": "Automatically generates form content based on all models specified in a blueprint.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Meena Hoda",
   "keywords": [
     "form",

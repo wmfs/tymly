@@ -1,5 +1,6 @@
 
-# Tymly [![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+# Tymly
+[![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/LICENSE)
 
 _An open source low-code platform - that's built for collaboration_
 
@@ -10,17 +11,6 @@ Ordinarily, you should refer to each package's specific installation instruction
 ### Node.js
 
 Tymly is constructed from a collection of __[Node.js](https://nodejs.org/en/)__ packages. To use any of them you'll need to have  Node __Version 8.4.0__ (or above) installed. 
-
-### Windows build tools
-
-For those wanting to run/develop Tymly on Windows, please install __Windows Build Tools__: 
-
-```bash
-$ npm install --global windows-build-tools
-```
-
-* Please see the package's [documentation](https://www.npmjs.com/package/windows-build-tools) for further guidance.
-* As per the console messages, it does take quite a while to install!
 
 ### Lerna
 

@@ -8,9 +8,9 @@
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
     "debug": "^2.6.8",
-    "tymly": "0.0.14",
-    "tymly-pg-plugin": "0.0.5",
-    "tymly-etl-plugin": "0.0.5"
+    "tymly": "0.0.15",
+    "tymly-pg-plugin": "0.0.6",
+    "tymly-etl-plugin": "0.0.6"
   },
   "scripts": {
     "lint": "standard",

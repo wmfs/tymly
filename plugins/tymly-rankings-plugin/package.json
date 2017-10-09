@@ -1,0 +1,34 @@
+{
+  "name": "tymly-rankings-plugin",
+  "description": "Plugin which handles ranking of data",
+  "version": "0.0.2",
+  "author": "Liliana Judge",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "async": "^2.5.0",
+    "boom": "^5.2.0",
+    "debug": "^3.0.1",
+    "lodash": "^4.17.4",
+    "process": "^0.11.10",
+    "request": "^2.82.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^3.5.0",
+    "standard": "^10.0.3",
+    "tymly": "^0.0.15",
+    "tymly-pg-plugin": "^0.0.6"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

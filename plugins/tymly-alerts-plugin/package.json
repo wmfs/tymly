@@ -1,7 +1,7 @@
 {
   "name": "tymly-alerts-plugin",
   "description": "Adds some alerting options to the Tymly framework",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -11,9 +11,9 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "tymly": "0.0.14",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "tymly": "^0.0.15"
   },
   "scripts": {
     "lint": "standard"

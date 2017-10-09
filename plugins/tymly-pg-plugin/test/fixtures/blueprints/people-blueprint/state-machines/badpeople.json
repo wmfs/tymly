@@ -1,0 +1,16 @@
+{
+  "Comment": "Do some inserting",
+  "StartAt": "Inserting",
+  "version": "1.0",
+  "States": {
+    "Inserting": {
+      "Type": "Task",
+      "InputPath": "$.skinner",
+      "Resource": "module:upserting",
+      "ResourceConfig": {
+        "modelId": "people"
+      },
+      "End": true
+    }
+  }
+}

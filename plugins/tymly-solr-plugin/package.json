@@ -1,7 +1,7 @@
 {
   "name": "tymly-solr-plugin",
   "description": "Plugin which handles interaction with Apache Solr",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
@@ -14,10 +14,10 @@
   },
   "devDependencies": {
     "chai": "^3.2.0",
-    "tymly": "0.0.14",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
-    "tymly-pg-plugin": "0.0.5"
+    "tymly": "^0.0.15",
+    "tymly-pg-plugin": "^0.0.6"
   },
   "scripts": {
     "lint": "standard",

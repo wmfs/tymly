@@ -6,6 +6,11 @@
     "blueprints/*"
   ],
   "version": "independent",
+  "commands":{
+    "publish": {
+      "ignore": ["*-blueprint"]
+    }
+  },
   "command": {
     "init": {
       "exact": false

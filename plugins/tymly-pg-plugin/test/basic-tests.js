@@ -98,6 +98,121 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
+  it('should succeed on basic input using insert state', function (done) {
+    statebox.startExecution(
+      {
+        skinner: {
+          employeeNo: 50,
+          firstName: 'Seymour',
+          lastName: 'Skinner',
+          age: 48
+        }
+      },
+      STATE_MACHINE_NAME,
+      {},
+      function (err, result) {
+        console.log(statebox)
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('should start a simple storage execution with "bad data" (extra data)', function (done) {
+    statebox.startExecution(
+      {
+        skinner: {
+          employeeNo: 50,
+          firstName: 'Seymour',
+          lastName: 'Skinner',
+          age: 48,
+          job: ''
+        }
+      },
+      'fbotTest_badpeople_1_0',
+      {},
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('state should be "FAILED" on "bad data" due to extra data', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should start a simple storage execution with "bad data" (missing rows)', function (done) {
+    statebox.startExecution(
+      {
+        skinner: {
+          employeeNo: 50,
+          firstName: 'Seymour'
+        }
+      },
+      'fbotTest_badpeople_1_0',
+      {},
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('state should be "FAILED" on "bad data" due to missing rows', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
+        if (err) console.error(err)
+        console.log(executionDescription)
+        expect(executionDescription.status).to.eql('FAILED')
+        done()
+      }
+    )
+  })
+
+  it('should start a simple storage execution with "bad data" (missing PK)', function (done) {
+    statebox.startExecution(
+      {
+        skinner: {
+          firstName: 'Seymour',
+          lastName: 'Skinner',
+          age: 48
+        }
+      },
+      'fbotTest_badpeople_1_0',
+      {},
+      function (err, result) {
+        expect(err).to.eql(null)
+        executionName = result.executionName
+        done()
+      }
+    )
+  })
+
+  it('state should be "FAILED" on "bad data" due to missing PK', function (done) {
+    statebox.waitUntilStoppedRunning(
+      executionName,
+      function (err, executionDescription) {
+        if (err) console.error(err)
+        console.log(executionDescription)
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.errorCode).to.eql('FAILED_TO_UPSERT')
+        done()
+      }
+    )
+  })
+
   it('should ensure the registry service (which has JSONB columns) still works', function () {
     expect(registryService.registry.fbotTest_planetSizeUnit.value).to.eql('km')
   })

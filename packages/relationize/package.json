@@ -1,7 +1,7 @@
 {
   "name": "relationize",
   "description": "Takes a set of JSON Schema definitions and returns a relational database structure capable of storing compliant data.",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "author": "Tim Needham",
   "keywords": [
     "json",

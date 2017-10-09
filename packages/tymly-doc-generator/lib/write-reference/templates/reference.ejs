@@ -1,0 +1,52 @@
+---
+date: <%=now %>
+title: Reference
+weight: 30
+---
+
+### Contents
+
+- [List of plugins](#list-of-plugins)
+- [List of state resources](#list-of-state-resources)
+- [List of commands](#list-of-commands)
+- [List of services](#list-of-services)
+
+## List of plugins
+
+> Plugins extend Tymly with functionally-related State Classes, Commands and Services etc.
+
+| Plugin | Description |
+| ------ | ----------- |
+<% pluginList.forEach(function(plugin){ -%>
+| [<%=plugin.label %>](<%=plugin.url %>) | <%=plugin.description %> |
+<% }); -%>
+
+## List of State Resources
+
+> Task states can refer to resources, here is a list of all the included State Resources....
+
+| State Class | Description | Plugin |
+| ----------- | ----------- | ------ |
+<% stateResources.forEach(function(stateResource){ -%>
+| [<%=stateResource.name %>](<%=stateResource.target %>) | <%=stateResource.description %> | [ <%=stateResource.plugin.label %>](<%=stateResource.plugin.url %>) |
+<% }); -%>
+
+## List of commands
+
+> Commands allow states to be configured to access dynamic runtime values (e.g. from the Tymly context, environment variable etc.)
+
+| Command | Description | Plugin |
+| ------- | ----------- | ------ |
+<% commands.forEach(function(command){ -%>
+| [<%=command.name %>](<%=command.target %>) | <%=command.description %> | [ <%=command.plugin.label %>](<%=command.plugin.url %>) |
+<% }); -%>
+
+## List of services
+
+> After the boot-up process, Tymly will return many ready-to-use _services_. Most services are internal things (like [caches](/reference/services/tymly-caches)) and are probably only of interest if you're writing your own plugins. However, some services (like [server](/reference/services/express-server)) offer key Tymly functionality.
+
+| Service | Description | Plugin |
+| ------- | ----------- | ------ |
+<% services.forEach(function(service){ -%>
+| [<%=service.name %>](<%=service.target %>) | <%=service.description %> | [ <%=service.plugin.label %>](<%=service.plugin.url %>) |
+<% }); -%>

@@ -8,11 +8,11 @@
     "machine",
     "aws"
   ],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "asl-choice-processor": "^0.0.3",
+    "asl-choice-processor": "^0.0.4",
     "async": "^2.5.0",
     "boom": "^5.2.0",
     "debug": "^2.6.8",
