@@ -11,7 +11,7 @@ const optionsCase = require('./../lib/components/services/rankings/case-statemen
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
 
-describe('Ridge blueprint', function () {
+describe('Tests the Ranking Service', function () {
   this.timeout(5000)
 
   let client

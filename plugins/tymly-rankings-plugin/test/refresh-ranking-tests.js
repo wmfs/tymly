@@ -5,11 +5,12 @@ const chai = require('chai')
 const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
+const STATE_MACHINE_NAME = 'test_refreshRanking_1_0'
 
-describe('Tests ranking of data', function () {
+describe('Tests the Ranking State Resource', function () {
   this.timeout(5000)
   let statebox
-  it('should create some basic refresh ranking tests', function (done) {
+  it('should run the tymly service', function (done) {
     tymly.boot(
       {
         pluginPaths: [
@@ -28,10 +29,10 @@ describe('Tests ranking of data', function () {
       }
     )
   })
-  it('should start a seed-data execution', function (done) {
+  it('should start the state resource execution', function (done) {
     statebox.startExecution(
       {},  // input
-      'test_refreshRanking_1_0', // state machine name
+      STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
       }, // options
@@ -40,7 +41,7 @@ describe('Tests ranking of data', function () {
         console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         expect(executionDescription.currentResource).to.eql('module:refreshRanking')
-        expect(executionDescription.stateMachineName).to.eql('test_refreshRanking_1_0')
+        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
