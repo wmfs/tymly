@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "propertyType": {
+      "type": "string",
+      "description": "Identifies the property type e.g. factory, hospital etc"
+    },
+    "schema": {
+      "type": "string",
+      "description": " Namespace in the blueprint.json"
+    },
+    "source": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "The source model, e.g gazetteer"
+        },
+        "property": {
+          "type": "string",
+          "description": "The uprn value"
+        },
+        "otherProperties": {
+          "type": "array",
+          "description": "An object array of address labels"
+        }
+      }
+    },
+    "ranking": {
+      "type": "object",
+      "description": "The ranking factors for different options"
+    },
+    "registry": {
+      "type": "object",
+      "description": "The registry values for different options"
+    }
+
+  }
+}
