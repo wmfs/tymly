@@ -12,16 +12,14 @@ class RankingService {
       for (const key in rankings) {
         if (rankings.hasOwnProperty(key)) {
           let schemaName = key.split('_')[0] // e.g. wmfs
-          let tableToMatchOn = rankings[key].model // e.g. gazetteer
-          let columnToMatchOn = rankings[key].id // e.g. uprn
+          let source = rankings[key].source // e.g. {model: 'gazetteer', property: 'uprn', otherProperties: ['address_label']}
           let propertyType = key.split('_')[1] // e.g. factory OR hospital
-          let registry = options.bootedServices.registry.registry[key]
+          let registry = options.bootedServices.registry.registry[key] // contains ranges for each factor
 
           let viewStatement = generateViewStatement({
             'propertyType': propertyType,
             'schema': schemaName,
-            'tableToMatch': tableToMatchOn,
-            'columnToMatch': columnToMatchOn,
+            'source': source,
             'ranking': rankings[key].factors,
             'registry': registry
           })
