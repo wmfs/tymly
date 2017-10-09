@@ -6,7 +6,6 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const numericCase = require('./../lib/components/services/rankings/case-statements/numeric.js')
 const booleanCase = require('./../lib/components/services/rankings/case-statements/boolean.js')
 const optionsCase = require('./../lib/components/services/rankings/case-statements/options.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
@@ -37,23 +36,26 @@ describe('Ridge blueprint', function () {
   })
 
   it('should generate an SQL case for a numeric range', function (done) {
-    let statement = numericCase(
+    let statement = optionsCase(
       'foodStandards',
       {
-        'type': 'numerical',
-        'ranges': [
+        'type': 'options',
+        'options': [
           {
+            'type': 'numeric-range',
             'minimum': 0,
             'maximum': 2,
             'score': 8
           },
           {
+            'type': 'numeric-range',
             'minimum': 3,
             'maximum': 4,
             'score': 6
           },
           {
-            'equals': 5,
+            'type': 'numeric-constant',
+            'value': 5,
             'score': 2
           }
         ]
@@ -72,7 +74,10 @@ describe('Ridge blueprint', function () {
       'heritage',
       {
         'type': 'boolean',
-        'trueScore': 2
+        'operator': 'equals',
+        'value': 'Y',
+        'true-score': 2,
+        'false-score': 0
       },
       'test',
       'heritage',
@@ -88,17 +93,20 @@ describe('Ridge blueprint', function () {
       'ofsted',
       {
         'type': 'options',
-        'ranges': [
+        'options': [
           {
-            'option': 'good',
+            'type': 'text-constant',
+            'value': 'good',
             'score': 0
           },
           {
-            'option': 'average',
+            'type': 'text-constant',
+            'value': 'average',
             'score': 5
           },
           {
-            'option': 'bad',
+            'type': 'text-constant',
+            'value': 'bad',
             'score': 8
           }
         ]
@@ -132,8 +140,11 @@ describe('Ridge blueprint', function () {
     let statement = generateView({
       'propertyType': 'factory',
       'schema': 'test',
-      'tableToMatch': 'gazetteer',
-      'columnToMatch': 'uprn',
+      'source': {
+        'model': 'gazetteer',
+        'property': 'uprn',
+        'otherProperties': [ 'address_label' ]
+      },
       'ranking': {
         'usage': 'constant',
         'foodStandards': {
@@ -148,20 +159,23 @@ describe('Ridge blueprint', function () {
             'value': 10
           },
           'foodStandards': {
-            'type': 'numerical',
-            'ranges': [
+            'type': 'options',
+            'options': [
               {
+                'type': 'numeric-range',
                 'minimum': 0,
                 'maximum': 2,
                 'score': 8
               },
               {
+                'type': 'numeric-range',
                 'minimum': 3,
                 'maximum': 4,
                 'score': 6
               },
               {
-                'equals': 5,
+                'type': 'numeric-constant',
+                'value': 5,
                 'score': 2
               }
             ]
@@ -169,7 +183,7 @@ describe('Ridge blueprint', function () {
         }
       }
     })
-    let expected = 'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.label,scores.usage_score,scores.food_standards_score,scores.usage_score+scores.food_standards_score as risk_score FROM (SELECT g.uprn,g.address_label as label,10 as usage_score ,CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score  FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores'
+    let expected = 'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.address_label,scores.usage_score,scores.food_standards_score,scores.usage_score+scores.food_standards_score as risk_score FROM (SELECT g.uprn,g.address_label as address_label,10 as usage_score,CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores'
     expect(statement.trim()).to.eql(expected)
     done()
   })
@@ -212,7 +226,6 @@ describe('Ridge blueprint', function () {
         if (err) {
           done(err)
         } else {
-          console.log(result.rows)
           expect(result.rows[0]).to.eql({
             uprn: '1',
             label: '1 abc lane',

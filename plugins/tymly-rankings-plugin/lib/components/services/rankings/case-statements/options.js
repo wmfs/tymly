@@ -4,9 +4,23 @@ const _ = require('lodash')
 
 module.exports = function options (factorName, factorObj, schema, table, column) {
   let statement = `CASE `
-  _.forEach(factorObj.ranges, function (i) {
-    statement += `WHEN upper(${table}.${column}) = upper('${i.option}') THEN ${i.score} `
+  let cast = ``
+  _.forEach(factorObj.options, function (i) {
+    if (i.type === 'text-constant') {
+      statement += `WHEN upper(${table}.${column}) = upper('${i.value}') THEN ${i.score} `
+      cast = `::int`
+    } else if (i.type === 'numeric-constant') {
+      statement += `WHEN ${table}.${column}${cast} = ${i.value} THEN ${i.score} `
+    } else if (i.type === 'numeric-range') {
+      statement += `WHEN ${table}.${column}${cast} BETWEEN ${i.minimum} AND ${i.maximum} THEN ${i.score} `
+    } else if (i.type === 'numeric-boundary') {
+      if (i.operator === 'greaterThan') {
+        statement += `WHEN ${table}.${column}${cast} > ${i.value} THEN ${i.score} `
+      } else if (i.operator === 'lessThan') {
+        statement += `WHEN ${table}.${column}${cast} < ${i.value} THEN ${i.score} `
+      }
+    }
   })
-  statement += `ELSE 0 END AS ${_.snakeCase(factorName)}_score `
+  statement += `ELSE 0 END AS ${_.snakeCase(factorName)}_score`
   return statement
 }
