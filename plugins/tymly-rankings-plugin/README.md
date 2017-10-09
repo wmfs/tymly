@@ -1,4 +1,5 @@
 # tymly-rankings-plugin
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/plugins/tymly-rankings-plugin/LICENSE)
 
 > Plugin which handles ranking of data
 

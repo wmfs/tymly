@@ -1,4 +1,5 @@
 # tymly-pg-plugin
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/plugins/tymly-pg-plugin/LICENSE)
 
 > Plugin for [TymlyJS](http://www.tymlyjs.io) that provides PostgreSQL persistence
 
