@@ -8,47 +8,57 @@
         "default": {
           "usage": {
             "type": "constant",
-            "value": 8
+            "score": 8
           },
           "foodStandards": {
-            "type": "numerical",
-            "ranges": [
+            "type": "options",
+            "options": [
               {
+                "type": "numeric-range",
                 "minimum": 0,
                 "maximum": 2,
                 "score": 8
               },
               {
+                "type": "numeric-range",
                 "minimum": 3,
                 "maximum": 4,
                 "score": 6
               },
               {
-                "equals": 5,
+                "type": "numeric-constant",
+                "numericValue": 5,
                 "score": 2
               }
             ]
           },
           "incidents": {
-            "type": "numerical",
-            "ranges": [
+            "type": "options",
+            "options": [
               {
-                "equals": 0,
+                "type": "numeric-constant",
+                "numericValue": 0,
                 "score": 0
               },
               {
-                "equals": 1,
+                "type": "numeric-constant",
+                "numericValue": 1,
                 "score": 6
               },
               {
-                "moreThan": 1,
+                "type": "numeric-boundary",
+                "operator": "greaterThan",
+                "numericValue": 1,
                 "score": 16
               }
             ]
           },
           "heritage": {
             "type": "boolean",
-            "trueScore": 2
+            "operator": "equals",
+            "textualValue": "Y",
+            "true-score": 2,
+            "false-score": 0
           }
         }
       }

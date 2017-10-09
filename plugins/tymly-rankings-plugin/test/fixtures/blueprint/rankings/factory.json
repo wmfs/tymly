@@ -1,19 +1,25 @@
 {
   "label": "Factory ranking",
   "description": "Maps where to find the data and weightings for each factor",
-  "id": "uprn",
-  "model": "gazetteer",
+  "source": {
+    "model": "gazetteer",
+    "property": "uprn",
+    "otherProperties": ["address_label"]
+  },
   "factors": {
     "usage": "constant",
     "foodStandards": {
+      "namespace": "test",
       "model": "food",
       "property": "rating"
     },
     "incidents": {
+      "namespace": "test",
       "model": "incidents",
       "property": "amount"
     },
     "heritage": {
+      "namespace": "test",
       "model": "heritage",
       "property": "uprn"
     }

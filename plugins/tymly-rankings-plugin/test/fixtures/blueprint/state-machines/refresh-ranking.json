@@ -6,6 +6,9 @@
     "RefreshRanking": {
       "Type": "Task",
       "Resource": "module:refreshRanking",
+      "ResourceConfig": {
+        "propertyType": "factory"
+      },
       "End": true
     }
   }

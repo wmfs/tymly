@@ -2,6 +2,6 @@
 
 const _ = require('lodash')
 
-module.exports = function constant (factorName, factorObj, schema, table, column) {
-  return `${factorObj.value} as ${_.snakeCase(factorName)}_score `
+module.exports = function constant (factorName, factorObj) {
+  return `${factorObj.score} as ${_.snakeCase(factorName)}_score`
 }
