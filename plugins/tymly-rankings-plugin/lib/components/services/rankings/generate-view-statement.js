@@ -20,10 +20,14 @@ module.exports = function generateViewStatement (options) {
   })
 
   _.forEach(options.ranking, function (v, k) {
+    if (v.hasOwnProperty('sourceProperty')) {
+      joinParts.add(generateJoinStatement(options.registry.value[k], _.snakeCase(v.namespace), _.snakeCase(v.model), _.snakeCase(v.sourceProperty)))
+    } else {
+      joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, _.snakeCase(v.model), options.source['property']))
+    }
     outerSelect.push(`scores.${_.snakeCase(k)}_score`)
     innerSelect.push(generateCaseStatement(_.snakeCase(k), options.registry.value[k], options.schema, _.snakeCase(v.model), _.snakeCase(v.property)))
     totalScore.push(`scores.${_.snakeCase(k)}_score`)
-    joinParts.add(generateJoinStatement(options.registry.value[k], options.schema, _.snakeCase(v.model), options.source['property']))
   })
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
   joinParts.add(`JOIN ${options.schema}.ranking_${options.source['property']}s rank ON rank.${options.source['property']} = g.${options.source['property']}`)
