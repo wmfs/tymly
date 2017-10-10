@@ -14,6 +14,7 @@ module.exports = function generateViewStatement (options) {
 
   outerSelect.push(`scores.${options.source['property']}`)
   innerSelect.push(`g.${options.source['property']}`)
+
   _.forEach(options.source['otherProperties'], function (i) {
     outerSelect.push(`scores.${i}`)
     innerSelect.push(`g.${i} as ${i}`)
@@ -45,6 +46,7 @@ module.exports = function generateViewStatement (options) {
     outerSelect.push(`scores.${_.snakeCase(key)}_score`)
     totalScore.push(`scores.${_.snakeCase(key)}_score`)
   })
+
   outerSelect.push(`${totalScore.join('+')} as risk_score`)
   joinParts.add(`JOIN ${options.schema}.ranking_${options.source['property']}s rank ON rank.${options.source['property']} = g.${options.source['property']}`)
 
