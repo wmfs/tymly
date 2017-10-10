@@ -54,11 +54,8 @@
             ]
           },
           "heritage": {
-            "type": "boolean",
-            "operator": "equals",
-            "textualValue": "Y",
-            "true-score": 2,
-            "false-score": 0
+            "type": "exists",
+            "score": 2
           }
         }
       }

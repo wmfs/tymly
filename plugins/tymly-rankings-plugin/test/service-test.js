@@ -6,7 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const booleanCase = require('./../lib/components/services/rankings/case-statements/boolean.js')
+const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
@@ -70,14 +70,11 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL statement to check if a value exists', function (done) {
-    let statement = booleanCase(
+    let statement = existsCase(
       'heritage',
       {
-        'type': 'boolean',
-        'operator': 'equals',
-        'value': 'Y',
-        'true-score': 2,
-        'false-score': 0
+        'type': 'exists',
+        'score': 2
       },
       'test',
       'heritage',
