@@ -7,17 +7,17 @@ module.exports = function options (factorName, factorObj, schema, table, column)
   let cast = ``
   _.forEach(factorObj.options, function (i) {
     if (i.type === 'text-constant') {
-      statement += `WHEN upper(${table}.${column}) = upper('${i.value}') THEN ${i.score} `
+      statement += `WHEN upper(${table}.${column}) = upper('${i.textualValue}') THEN ${i.score} `
       cast = `::int`
     } else if (i.type === 'numeric-constant') {
-      statement += `WHEN ${table}.${column}${cast} = ${i.value} THEN ${i.score} `
+      statement += `WHEN ${table}.${column}${cast} = ${i.numericValue} THEN ${i.score} `
     } else if (i.type === 'numeric-range') {
       statement += `WHEN ${table}.${column}${cast} BETWEEN ${i.minimum} AND ${i.maximum} THEN ${i.score} `
     } else if (i.type === 'numeric-boundary') {
       if (i.operator === 'greaterThan') {
-        statement += `WHEN ${table}.${column}${cast} > ${i.value} THEN ${i.score} `
+        statement += `WHEN ${table}.${column}${cast} > ${i.numericValue} THEN ${i.score} `
       } else if (i.operator === 'lessThan') {
-        statement += `WHEN ${table}.${column}${cast} < ${i.value} THEN ${i.score} `
+        statement += `WHEN ${table}.${column}${cast} < ${i.numericValue} THEN ${i.score} `
       }
     }
   })
