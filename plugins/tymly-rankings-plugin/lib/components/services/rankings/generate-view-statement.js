@@ -5,7 +5,7 @@ const generateCaseStatement = require('./generate-case-statement')
 const generateJoinStatement = require('./generate-join-statement')
 
 module.exports = function generateViewStatement (options) {
-  let preStatement = `CREATE OR REPLACE VIEW ${options.schema}.${options.propertyType}_scores AS `
+  let preStatement = `CREATE OR REPLACE VIEW ${options.schema}.${_.snakeCase(options.propertyType)}_scores AS `
   let outerSelect = []
   let totalScore = []
   let innerSelect = []
