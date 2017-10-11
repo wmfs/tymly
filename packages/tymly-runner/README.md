@@ -1,4 +1,6 @@
 # Tymly-runner
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/tymly-runner/LICENSE)
+
 > A configurable environment for running [Tymly](http://www.tymlyjs.io) instances.
 
 ## <a name="tests"></a>Tests
