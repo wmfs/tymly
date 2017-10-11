@@ -1,0 +1,23 @@
+{
+  "Comment": "state-machine to import animals",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "animal_with_age"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+  }
+}
