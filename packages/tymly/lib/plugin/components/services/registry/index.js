@@ -9,9 +9,11 @@ class RegistryService {
     const _this = this
     const storage = options.bootedServices.storage
 
+    this.bootedRegistry = options.bootedServices.registry
+
     this.registry = {}
-    this.registryKeyModel = storage.models.fbot_registryKey
-    this.blueprintRegistryKeys = options.blueprintComponents.registryKeys || {}
+    this.registryKeyModel = storage.models.fbot_registryKey // just describes the registry-key table (columns, etc.)
+    this.blueprintRegistryKeys = options.blueprintComponents.registryKeys || {} // the registry-keys from the blueprint
 
     this.ensureBlueprintKeys(options.messages, function (err) {
       if (err) {
@@ -26,10 +28,13 @@ class RegistryService {
           }
         })
       }
-    }
-    )
+    })
   }
 
+  /*
+  * If the registry key already exists in DB then do nothing,
+  * else create the row in the DB
+  * */
   ensureBlueprintKeys (messages, callback) {
     const _this = this
 
@@ -50,11 +55,12 @@ class RegistryService {
                 } else {
                   // Key not in storage, go create
                   const defaultValue = dottie.get(value, 'schema.properties.value.default')
-
                   _this.registryKeyModel.create(
                     {
                       key: key,
-                      value: {value: defaultValue}
+                      value: {
+                        value: defaultValue
+                      }
                     },
                     {},
                     function (err) {
@@ -104,6 +110,11 @@ class RegistryService {
         if (err) {
           callback(err)
         } else {
+          /*
+          * storedRegistry is the rows from the DB
+          * _this.registry is empty before the reduce
+          * _this.registry gets populated after the reduce with what's in storedRegistry
+          * */
           _this.registry = _.reduce(
             storedRegistry,
             function (result, value, key) {
@@ -115,7 +126,6 @@ class RegistryService {
             },
             {}
           )
-
           callback(null)
         }
       }
@@ -152,7 +162,7 @@ class RegistryService {
     }
 
     let root
-    for (const rootKey in source) {
+    for (let rootKey in source) {
       if (source.hasOwnProperty(rootKey)) {
         root = source[rootKey]
         root = dottie.get(root, rootPath)
@@ -161,6 +171,36 @@ class RegistryService {
     }
 
     return source
+  }
+
+  get (key) {
+    return this.bootedRegistry.registry[key].value
+  }
+
+  set (key, value, callback) {
+    const _this = this
+    this.registryKeyModel.upsert(
+      {
+        key: key,
+        value: {
+          value: value
+        }
+      },
+      {},
+      function (err) {
+        if (err) {
+          callback(err)
+        } else {
+          _this.refresh(function (err) {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null)
+            }
+          })
+        }
+      }
+    )
   }
 }
 
