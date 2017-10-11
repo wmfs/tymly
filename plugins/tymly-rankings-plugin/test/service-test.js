@@ -6,8 +6,8 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const booleanCase = require('./../lib/components/services/rankings/case-statements/boolean.js')
-const optionsCase = require('./../lib/components/services/rankings/case-statements/options.js')
+const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
+const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
 
@@ -36,7 +36,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL case for a numeric range', function (done) {
-    let statement = optionsCase(
+    let statement = optionCase(
       'foodStandards',
       {
         'type': 'options',
@@ -55,7 +55,7 @@ describe('Tests the Ranking Service', function () {
           },
           {
             'type': 'numeric-constant',
-            'value': 5,
+            'numericValue': 5,
             'score': 2
           }
         ]
@@ -70,14 +70,11 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL statement to check if a value exists', function (done) {
-    let statement = booleanCase(
+    let statement = existsCase(
       'heritage',
       {
-        'type': 'boolean',
-        'operator': 'equals',
-        'value': 'Y',
-        'true-score': 2,
-        'false-score': 0
+        'type': 'exists',
+        'score': 2
       },
       'test',
       'heritage',
@@ -89,24 +86,24 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL case for text options', function (done) {
-    let statement = optionsCase(
+    let statement = optionCase(
       'ofsted',
       {
         'type': 'options',
         'options': [
           {
             'type': 'text-constant',
-            'value': 'good',
+            'textualValue': 'good',
             'score': 0
           },
           {
             'type': 'text-constant',
-            'value': 'average',
+            'textualValue': 'average',
             'score': 5
           },
           {
             'type': 'text-constant',
-            'value': 'bad',
+            'textualValue': 'bad',
             'score': 8
           }
         ]
@@ -125,7 +122,7 @@ describe('Tests the Ranking Service', function () {
       'usage',
       {
         'type': 'constant',
-        'value': 8
+        'score': 8
       },
       'test',
       'usage',
@@ -148,6 +145,7 @@ describe('Tests the Ranking Service', function () {
       'ranking': {
         'usage': 'constant',
         'foodStandards': {
+          'namespace': 'test',
           'model': 'food_table',
           'property': 'rating'
         }
@@ -156,7 +154,7 @@ describe('Tests the Ranking Service', function () {
         'value': {
           'usage': {
             'type': 'constant',
-            'value': 10
+            'score': 10
           },
           'foodStandards': {
             'type': 'options',
@@ -175,7 +173,7 @@ describe('Tests the Ranking Service', function () {
               },
               {
                 'type': 'numeric-constant',
-                'value': 5,
+                'numericValue': 5,
                 'score': 2
               }
             ]

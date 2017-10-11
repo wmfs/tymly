@@ -1,4 +1,5 @@
 # tymly-solr-plugin
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/plugins/tymly-solr-plugin/LICENSE)
 
 > This plugin handles interaction with Apache Solr.
 

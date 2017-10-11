@@ -25,8 +25,8 @@ module.exports = function pathExploder (sourcePaths, options) {
   sourcePaths.forEach(function (sourcePath) {
     if (_.isString(sourcePath)) {
       const parts = sourcePath.split(';')
-      parts.forEach(
-        function (rawPart) {
+      parts.forEach(function (rawPart) {
+        if (rawPart.trim().length > 0) {
           const part = path.normalize(rawPart)
           const globbed = glob.sync(
             part,
@@ -61,10 +61,9 @@ module.exports = function pathExploder (sourcePaths, options) {
             options.messages.warning(`The directory at path ${rawPart} yielded no content `)
           }
         }
-      )
+      })
     }
-  }
-  )
+  })
 
   return explodedDirs
 }

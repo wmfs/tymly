@@ -1,4 +1,6 @@
 # asl-choice-processor
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/asl-choice-processor/LICENSE)
+
 > For determining the next state given an Amazon States Language "Choices" definition and a set of values. 
 
 ### Useful links

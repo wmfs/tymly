@@ -8,7 +8,7 @@
         "default": {
           "usage": {
             "type": "constant",
-            "value": 8
+            "score": 8
           },
           "foodStandards": {
             "type": "options",
@@ -27,7 +27,7 @@
               },
               {
                 "type": "numeric-constant",
-                "value": 5,
+                "numericValue": 5,
                 "score": 2
               }
             ]
@@ -37,28 +37,25 @@
             "options": [
               {
                 "type": "numeric-constant",
-                "value": 0,
+                "numericValue": 0,
                 "score": 0
               },
               {
                 "type": "numeric-constant",
-                "value": 1,
+                "numericValue": 1,
                 "score": 6
               },
               {
                 "type": "numeric-boundary",
                 "operator": "greaterThan",
-                "value": 1,
+                "numericValue": 1,
                 "score": 16
               }
             ]
           },
           "heritage": {
-            "type": "boolean",
-            "operator": "equals",
-            "value": "Y",
-            "true-score": 2,
-            "false-score": 0
+            "type": "exists",
+            "score": 2
           }
         }
       }
