@@ -10,7 +10,7 @@ module.exports = function generateViewStatement (options) {
   let totalScore = []
   let innerSelect = []
   let joinParts = new Set()
-  let postStatement = `WHERE rank.ranking_name = '${options.propertyType}'::text ) scores`
+  let postStatement = `WHERE rank.ranking_name = '${_.snakeCase(options.propertyType)}'::text ) scores`
 
   outerSelect.push(`scores.${options.source['property']}`)
   innerSelect.push(`g.${options.source['property']}`)
