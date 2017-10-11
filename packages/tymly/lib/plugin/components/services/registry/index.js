@@ -151,8 +151,8 @@ class RegistryService {
       }
     }
 
-    var root
-    for (var rootKey in source) {
+    let root
+    for (const rootKey in source) {
       if (source.hasOwnProperty(rootKey)) {
         root = source[rootKey]
         root = dottie.get(root, rootPath)
