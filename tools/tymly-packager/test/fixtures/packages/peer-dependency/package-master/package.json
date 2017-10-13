@@ -1,0 +1,17 @@
+{
+  "name": "package-master",
+  "version": "1.0.5",
+  "description": "do nothing package with a dependency on a local package",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "package-servant": "1.0.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "fake",
+    "url": "fakey://fakey"
+  }
+}

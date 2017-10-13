@@ -3,8 +3,6 @@ const path = require('path')
 const rimraf = require('rimraf')
 const fs = require('fs')
 const targz = require('tar.gz')
-const copydir = require('copy-dir')
-const lerna = require('lerna')
 
 function exec (cmd) {
   return cp.execSync(cmd).toString()
@@ -41,9 +39,9 @@ async function prepareTree (searchTree, packages) {
   rewritePackageJson(packages)
 
   const littleLerna = {
-    "lerna": "2.0.0",
-    "packages": packages.map(p => p.directory),
-    "version": "independent",
+    'lerna': '2.0.0',
+    'packages': packages.map(p => p.directory),
+    'version': 'independent'
   }
   fs.writeFileSync('lerna.json', JSON.stringify(littleLerna, null, 2))
 
@@ -79,7 +77,7 @@ async function repack (tgzName, logger) {
   await targz().extract(tgzName, '.')
 
   if (fs.existsSync('node_modules')) {
-    copydir.sync('node_modules', 'package/node_modules')
+    fs.renameSync('node_modules', 'package/node_modules')
   } // if ...
 
   const basename = path.basename(process.cwd())

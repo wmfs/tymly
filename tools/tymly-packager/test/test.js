@@ -156,6 +156,19 @@ describe('Bundler tests', function () {
           path.join('package-2', 'package-B-1.0.9.tgz')
         ],
         3
+      ],
+      [
+        'cross dependency',
+        'peer-dependency',
+        [
+          {directory: 'package-master', name: 'package-master', version: '1.0.5'},
+          {directory: 'package-servant', name: 'package-servant', version: '1.0.0'}
+        ],
+        [
+          path.join('package-master', 'package-master-1.0.5.tgz'),
+          path.join('package-servant', 'package-servant-1.0.0.tgz')
+        ],
+        3
       ]
 
     ]
@@ -180,7 +193,7 @@ describe('Bundler tests', function () {
           const deployFiles = await listEntries(tarball)
           const matchFiles = await listEntries(path.join(pristineTarballs, `${fixture}.tgz`))
 
-          expect(deployFiles).to.deep.equal(matchFiles)
+          expect(deployFiles).to.have.same.members(matchFiles)
         })
       }) // describe ...
     } // for ...
@@ -199,6 +212,10 @@ describe('Bundler tests', function () {
       [
         'nested including a directory to ignore',
         'nested-directory'
+      ],
+      [
+        'peer dependencies between packages',
+        'peer-dependency'
       ]
     ]
 
@@ -214,7 +231,7 @@ describe('Bundler tests', function () {
           const deployFiles = await listEntries(tarball)
           const matchFiles = await listEntries(path.join(pristineTarballs, `${fixture}.tgz`))
 
-          expect(deployFiles).to.deep.equal(matchFiles)
+          expect(deployFiles).to.have.same.members(matchFiles)
         })
       }) // describe ...
     } // for ...
