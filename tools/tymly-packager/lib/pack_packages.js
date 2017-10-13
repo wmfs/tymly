@@ -4,23 +4,66 @@ const rimraf = require('rimraf')
 const fs = require('fs')
 const targz = require('tar.gz')
 const copydir = require('copy-dir')
+const lerna = require('lerna')
 
 function exec (cmd) {
   return cp.execSync(cmd).toString()
 } // exec
 
-function removeExistingTgz (tgzName, logger) {
-  if (!fs.existsSync(tgzName)) { return }
+function rewritePackageJson (packages) {
+  for (const pkg of packages) {
+    const packageFile = path.join(pkg.directory, 'package.json')
+    const backupPackageFile = `${packageFile}.tymly-packager`
 
-  logger(`... removing ${tgzName}`)
-  fs.unlinkSync(tgzName)
-} // removeExistingTgz
+    const rawContents = fs.readFileSync(packageFile)
+    const packageJson = JSON.parse(rawContents)
+    delete packageJson.devDependencies
 
-function cleanAndRefreshNodeModules (logger) {
-  rimraf.sync('node_modules')
-  logger(`... fetching production dependencies`)
-  exec('npm install --production --no-optional')
-} // cleanAndRefreshNodeModules
+    fs.writeFileSync(backupPackageFile, rawContents)
+    fs.writeFileSync(packageFile, JSON.stringify(packageJson, null, 2))
+  } // for ...
+} // rewritePackageJson
+
+function restorePackageJson (packages) {
+  for (const pkg of packages) {
+    const packageFile = path.join(pkg.directory, 'package.json')
+    const backupPackageFile = `${packageFile}.tymly-packager`
+
+    fs.unlinkSync(packageFile)
+    fs.renameSync(backupPackageFile, packageFile)
+  } // for ...
+} // restorePackageJson
+
+async function prepareTree (searchTree, packages) {
+  const wd = process.cwd()
+  process.chdir(searchTree)
+
+  rewritePackageJson(packages)
+
+  const littleLerna = {
+    "lerna": "2.0.0",
+    "packages": packages.map(p => p.directory),
+    "version": "independent",
+  }
+  fs.writeFileSync('lerna.json', JSON.stringify(littleLerna, null, 2))
+
+  const needsPackageJson = !fs.existsSync('package.json')
+  if (needsPackageJson) {
+    fs.writeFileSync('package.json', '{ "name": "dummy" }')
+  }
+
+  exec('lerna clean --yes')
+  exec('lerna bootstrap')
+
+  fs.unlinkSync('lerna.json')
+  if (needsPackageJson) {
+    fs.unlinkSync('package.json')
+  }
+
+  restorePackageJson(packages)
+
+  process.chdir(wd)
+} // prepareTree
 
 async function packing (tgzName, logger) {
   logger(`... packing`)
@@ -53,10 +96,6 @@ async function packPackage (directory, tgzName, logger) {
   const wd = process.cwd()
   process.chdir(directory)
 
-  removeExistingTgz(tgzName, logger)
-
-  cleanAndRefreshNodeModules(logger)
-
   const tarball = await packing(tgzName, logger)
 
   process.chdir(wd)
@@ -65,6 +104,8 @@ async function packPackage (directory, tgzName, logger) {
 } // packPackage
 
 async function packPackages (searchRoot, packages, logger = () => {}) {
+  await prepareTree(searchRoot, packages)
+
   const tarballs = [ ]
 
   for (const pkg of packages) {
