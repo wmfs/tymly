@@ -39,17 +39,17 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.'}]
+        [{directory: '.', basename: 'simple-package'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.'}]
+        [{directory: '.', basename: 'package-with-dependencies'}]
       ],
       [
         'nested including a directory to ignore',
         'nested-directory',
-        [{directory: 'package-1'}, {directory: 'package-2'}]
+        [{directory: 'package-1', basename: 'package-1'}, {directory: 'package-2', basename: 'package-2'}]
       ]
     ]
 
@@ -133,14 +133,14 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.', name: 'simple-package', version: '1.0.0'}],
+        [{directory: '.', basename: 'simple-package', name: 'simple-package', version: '1.0.0'}],
         ['simple-package-1.0.0.tgz'],
         2
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.', name: 'package-with-dependencies', version: '0.0.0'}],
+        [{directory: '.', basename: 'package-with-dependencies', name: 'package-with-dependencies', version: '0.0.0'}],
         ['package-with-dependencies-0.0.0.tgz'],
         30
       ],
@@ -148,8 +148,8 @@ describe('Bundler tests', function () {
         'nested including a directory to ignore',
         'nested-directory',
         [
-          {directory: 'package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'package-2', name: 'package-B', version: '1.0.9'}
+          {directory: 'package-1', basename: 'package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'package-2', basename: 'package-2', name: 'package-B', version: '1.0.9'}
         ],
         [
           path.join('package-1', 'package-A-1.0.5.tgz'),
@@ -161,8 +161,8 @@ describe('Bundler tests', function () {
         'cross dependency',
         'peer-dependency',
         [
-          {directory: 'package-master', name: 'package-master', version: '1.0.5'},
-          {directory: 'package-servant', name: 'package-servant', version: '1.0.0'}
+          {directory: 'package-master', basename: 'package-master', name: 'package-master', version: '1.0.5'},
+          {directory: 'package-servant', basename: 'package-servant', name: 'package-servant', version: '1.0.0'}
         ],
         [
           path.join('package-master', 'package-master-1.0.5.tgz'),
