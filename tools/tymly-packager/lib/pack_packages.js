@@ -8,7 +8,11 @@ function exec (cmd) {
   return cp.execSync(cmd).toString()
 } // exec
 
-function rewritePackageJson (packages) {
+function lerna (cmd, ...params) {
+  exec(`lerna ${cmd} --loglevel silent ${params.join(' ')}`)
+} // lerna
+
+function stripDevDepsFromPackageJson (packages) {
   for (const pkg of packages) {
     const packageFile = path.join(pkg.directory, 'package.json')
     const backupPackageFile = `${packageFile}.tymly-packager`
@@ -20,7 +24,7 @@ function rewritePackageJson (packages) {
     fs.writeFileSync(backupPackageFile, rawContents)
     fs.writeFileSync(packageFile, JSON.stringify(packageJson, null, 2))
   } // for ...
-} // rewritePackageJson
+} // stripDevDepsFromPackageJson
 
 function restorePackageJson (packages) {
   for (const pkg of packages) {
@@ -32,12 +36,7 @@ function restorePackageJson (packages) {
   } // for ...
 } // restorePackageJson
 
-async function prepareTree (searchTree, packages) {
-  const wd = process.cwd()
-  process.chdir(searchTree)
-
-  rewritePackageJson(packages)
-
+function lernaJsonStubs (packages) {
   const littleLerna = {
     'lerna': '2.0.0',
     'packages': packages.map(p => p.directory),
@@ -48,16 +47,31 @@ async function prepareTree (searchTree, packages) {
   const needsPackageJson = !fs.existsSync('package.json')
   if (needsPackageJson) {
     fs.writeFileSync('package.json', '{ "name": "dummy" }')
+    fs.writeFileSync('package.json.is-temp', '')
   }
+} // lernaJsonStubs
 
-  exec('lerna clean --loglevel silent --yes')
-  exec('lerna bootstrap --loglevel silent')
-
+function cleanUpLernaStubs () {
   fs.unlinkSync('lerna.json')
-  if (needsPackageJson) {
-    fs.unlinkSync('package.json')
-  }
 
+  const needsCleanup = fs.existsSync('package.json.is-temp')
+  if (needsCleanup) {
+    fs.unlinkSync('package.json')
+    fs.unlinkSync('package.json.is-temp')
+  }
+} // cleanUpLernaStubs
+
+async function prepareTree (searchTree, packages) {
+  const wd = process.cwd()
+  process.chdir(searchTree)
+
+  stripDevDepsFromPackageJson(packages)
+  lernaJsonStubs(packages)
+
+  lerna('clean', '--yes')
+  lerna('bootstrap')
+
+  cleanUpLernaStubs()
   restorePackageJson(packages)
 
   process.chdir(wd)
