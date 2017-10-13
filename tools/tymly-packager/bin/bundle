@@ -8,13 +8,17 @@ const colors = require('colors/safe')
 run(...parseArgs(process.argv))
 
 async function run(directory, bundleName, quiet) {
-  if (!quiet) {
-    console.log(colors.cyan.bold("It's the Tymly Bundler!"))
+  try {
+    if (!quiet) {
+      console.log(colors.cyan.bold("It's the Tymly Bundler!"))
+    }
+    const outputName = bundleName || `${path.basename(directory)}.tgz`
+    const tarball = await bundleForDeploy(directory, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
+    const displayPath = path.isAbsolute(tarball) ? tarball : path.relative(process.cwd(), tarball)
+    console.log(colors.cyan(`Created ${displayPath}`))
+  } catch (err) {
+    console.error(err)
   }
-  const outputName = bundleName || `${path.basename(directory)}.tgz`
-  const tarball = await bundleForDeploy(directory, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
-  const displayPath = path.isAbsolute(bundleName) ? bundleName : path.relative(process.cwd(), tarball)
-  console.log(colors.cyan(`Created ${displayPath}`))
 } // run
 
 /////////////////////////////////
