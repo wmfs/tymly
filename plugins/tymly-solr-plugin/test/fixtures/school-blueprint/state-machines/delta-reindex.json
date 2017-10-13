@@ -1,0 +1,15 @@
+{
+  "Comment": "Perform a delta reindex",
+  "version": "1.0",
+  "StartAt": "DeltaReindex",
+  "States": {
+    "DeltaReindex": {
+      "Type": "Task",
+      "Resource": "module:deltaReindex",
+      "ResourceConfig": {
+        "core": "tymly"
+      },
+      "End": true
+    }
+  }
+}
