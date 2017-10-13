@@ -1,0 +1,16 @@
+{
+  "Comment": "Test blueprint to set reg keys",
+  "version": "1.0",
+  "StartAt": "SetRegistryKey",
+  "States": {
+    "SetRegistryKey": {
+      "Type": "Task",
+      "Resource": "module:setRegistryKey",
+      "ResourceConfig": {
+        "key": "fbotTest_mealThreshold",
+        "value": 2
+      },
+      "End": true
+    }
+  }
+}
