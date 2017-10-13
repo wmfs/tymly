@@ -1,0 +1,16 @@
+{
+  "Comment": "State machine to test refresh-ranking state resource",
+  "version": "1.0",
+  "StartAt": "RefreshRanking",
+  "States": {
+    "RefreshRanking": {
+      "Type": "Task",
+      "Resource": "module:refreshRanking",
+      "ResourceConfig": {
+        "schema": "test",
+        "propertyType": "factory"
+      },
+      "End": true
+    }
+  }
+}

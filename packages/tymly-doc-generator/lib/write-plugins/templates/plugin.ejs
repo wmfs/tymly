@@ -1,0 +1,28 @@
+---
+date: 2016-03-09T00:11:02+01:00
+title: The '<%= pluginShortName %>' plugin
+weight: 1100
+---
+
+> <%= package.description %>
+
+## Package details
+
+__Name:__  `<%= pluginName %>`
+
+__Version:__  `<%= package.version %>`
+
+__Github:__ [/tymly/plugins/<%= pluginName %>](https://github.com/wmfs/tymly/tree/master/plugins/<%= pluginName %>/lib/components)
+
+<% for (const componentTypeName in plugin.components) { -%>
+
+---
+
+## <%= componentTypeName %>
+
+| Name | Description |
+| ---- | ----------- |
+<% for (const componentName in plugin.components[componentTypeName]) { -%>
+| [<%= componentName -%>](/reference/<%= _.kebabCase(componentTypeName) -%>/<%= pluginShortName %>-<%= _.kebabCase(componentName) -%>) | <%= plugin.components[componentTypeName][componentName].doc.description %> |
+<% } -%>
+<% } -%>

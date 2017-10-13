@@ -38,9 +38,10 @@ class MemoryStorageService {
           _.forEach(modelSeedData.data, (row) => {
             // construct document
             const doc = {}
-            const documentPropertyNames = modelSeedData.propertyNames
+            let documentPropertyNames = modelSeedData.propertyNames
+
             for (let i = 0, colCount = documentPropertyNames.length; i < colCount; i++) {
-              doc[documentPropertyNames[i]] = row[i]
+              doc[_.snakeCase(documentPropertyNames[i])] = row[i]
             }
 
             // persist document

@@ -1,0 +1,30 @@
+{
+  "Comment": "Synchronizes animal_with_age to animal_with_year.",
+  "version": "1.0",
+  "StartAt": "SynchronizingTable",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "SynchronizingTable": {
+      "Type": "Task",
+      "InputPath": "$.outputDir",
+      "Resource": "module:synchronizingTable",
+      "ResourceConfig": {
+        "transformerFunctionName": "fbotTest_animalConverter",
+        "source": {
+          "tableName": "fbot_test.animal_with_age",
+          "hashSumColumnName": "hash_sum"
+        },
+        "target": {
+          "tableName": "fbot_test.animal_with_year",
+          "hashSumColumnName": "origin_hash_sum"
+        },
+        "join": {
+          "animal": "animal"
+        }
+      },
+      "End": true
+    }
+  }
+}

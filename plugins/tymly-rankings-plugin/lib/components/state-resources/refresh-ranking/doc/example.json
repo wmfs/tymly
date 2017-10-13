@@ -1,0 +1,10 @@
+{
+  "RefreshRanking": {
+    "Type": "Task",
+    "Resource": "module:refreshRanking",
+    "ResourceConfig": {
+      "schema": "test",
+      "propertyType": "factory"
+    }
+  }
+}

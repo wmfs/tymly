@@ -1,0 +1,33 @@
+{
+  "title": "Animals",
+  "description": "Isn't this just a list of animals?",
+  "primaryKey": ["animal"],
+  "type": "object",
+  "properties": {
+    "animal": {
+      "type": "string",
+      "description": "What type of animal is this?"
+    },
+    "colour": {
+      "type": "string",
+      "description": "What colour is this animal?"
+    },
+    "yearBorn": {
+      "description": "What year was this animal born?",
+      "type": "integer",
+      "minimum": 0
+    },
+    "originHashSum": {
+      "type": "string",
+      "description": "Hash assigned to row in animals"
+    }
+  },
+
+  "indexes": [
+    {
+      "columns": ["animal"],
+      "unique": true
+    }
+  ],
+  "required": ["animal"]
+}

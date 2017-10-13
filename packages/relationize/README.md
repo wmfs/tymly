@@ -1,4 +1,8 @@
 # relationize
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/relationize/LICENSE)
+
+
+
 	
 > Takes a set of JSON Schema definitions and returns a relational database structure capable of storing compliant data.
 

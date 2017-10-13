@@ -194,10 +194,6 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should return error when extra columns are specified', function () {
-
-  })
-
   it('Should cleanup the test data', function (done) {
     sqlScriptRunner(
       [

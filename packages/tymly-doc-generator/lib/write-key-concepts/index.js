@@ -1,12 +1,27 @@
 const fs = require('fs')
 const path = require('upath')
 const ejs = require('ejs')
+const shortenPluginName = require('./../write-reference/utils/shorten-plugin-name')
 
 const keyConceptsTemplate = fs.readFileSync(path.resolve(__dirname, './templates/key-concepts.ejs'))
 
 module.exports = function (rootDir, inventory) {
   const ctx = {
-    blueprintDirs: []
+    blueprintDirs: [],
+    pluginList: []
+  }
+
+  for (let pluginId in inventory.plugins) {
+    if (inventory.plugins.hasOwnProperty(pluginId)) {
+      const plugin = inventory.plugins[pluginId]
+      ctx.pluginList.push(
+        {
+          label: shortenPluginName(plugin.package.pkg.name),
+          description: plugin.meta.description || plugin.package.pkg.description,
+          url: `/plugins/${plugin.package.pkg.name}`
+        }
+      )
+    }
   }
 
   const services = inventory.services

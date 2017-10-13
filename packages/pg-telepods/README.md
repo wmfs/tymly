@@ -1,4 +1,8 @@
 # pg-telepods
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/pg-telepods/LICENSE)
+
+
+
 
 > Takes the contents of one PostgreSQL table, applies a transformation function to each row and ensures a target table is kept in sync
 

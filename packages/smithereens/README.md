@@ -1,5 +1,8 @@
 # smithereens
-[![Build Status](https://travis-ci.org/wmfs/smithereens.svg?branch=master)](https://travis-ci.org/wmfs/smithereens) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![Build Status](https://travis-ci.org/wmfs/smithereens.svg?branch=master)](https://travis-ci.org/wmfs/smithereens) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/smithereens/LICENSE)
+                                                                                                                    
+                                                                                                                    
+
 
 > Smash CSV files into more manageable files based on column values
 

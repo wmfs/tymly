@@ -25,3 +25,8 @@ img[src$='#floatright']
     margin: 0.9rem auto 1.2rem auto;
     display: inline-block;
 }
+
+.tymly_clear {
+    display: block;
+    clear:both;
+}

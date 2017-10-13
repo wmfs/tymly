@@ -1,5 +1,7 @@
 'use strict'
 
+const _ = require('lodash')
+
 // const debug = require('debug')('tymly-pg-plugin')
 
 // generates a postgres SQL INSERT statement that looks something like...
@@ -9,8 +11,13 @@
 module.exports = function generateUpsertStatement (model, object) {
   const columnCount = object.propertyNames.length
   const rowCount = object.data.length
+  let columnNames = []
 
-  let statement = `INSERT INTO ${model.fullTableName} (${object.propertyNames.join(', ')}) VALUES `
+  for (const pn of object.propertyNames) {
+    columnNames.push(_.snakeCase(pn))
+  }
+
+  let statement = `INSERT INTO ${model.fullTableName} (${columnNames.join(', ')}) VALUES `
   for (let row = 1; row <= rowCount; row++) {
     let valueLine = '('
     for (let col = 1; col <= columnCount; col++) {
