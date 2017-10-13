@@ -50,8 +50,8 @@ async function prepareTree (searchTree, packages) {
     fs.writeFileSync('package.json', '{ "name": "dummy" }')
   }
 
-  exec('lerna clean --yes')
-  exec('lerna bootstrap')
+  exec('lerna clean --loglevel silent --yes')
+  exec('lerna bootstrap --loglevel silent')
 
   fs.unlinkSync('lerna.json')
   if (needsPackageJson) {
