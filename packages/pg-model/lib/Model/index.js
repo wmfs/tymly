@@ -7,6 +7,8 @@ const Creator = require('./actions/Creator')
 const Destroyer = require('./actions/Destroyer')
 const Updater = require('./actions/Updater')
 
+const NotSet = 'NetSet'
+
 class Model {
   constructor (components, options) {
     const _this = this
@@ -61,7 +63,19 @@ class Model {
     this.updater = new Updater(this)
   }
 
-  create (jsonData, options, callback) {
+  create (jsonData, options = { }, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.create(jsonData, options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    } // if ...
+
     options.upsert = false
     const script = [{statement: 'BEGIN'}]
     this.creator.addStatements(script, jsonData, options)
