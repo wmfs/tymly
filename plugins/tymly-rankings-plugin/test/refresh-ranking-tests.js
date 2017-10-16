@@ -124,6 +124,7 @@ describe('Tests the Ranking State Resource', function () {
             },
             'foodStandards': {
               'type': 'options',
+              'default': 0,
               'options': [
                 {
                   'type': 'numeric-range',
@@ -146,6 +147,7 @@ describe('Tests the Ranking State Resource', function () {
             },
             'incidents': {
               'type': 'options',
+              'default': 0,
               'options': [
                 {
                   'type': 'numeric-constant',
@@ -167,6 +169,7 @@ describe('Tests the Ranking State Resource', function () {
             },
             'heritage': {
               'type': 'exists',
+              'default': 0,
               'score': 2
             }
           }

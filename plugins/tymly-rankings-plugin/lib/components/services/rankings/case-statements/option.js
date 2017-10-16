@@ -21,6 +21,6 @@ module.exports = function options (factorName, factorObj, schema, table, column)
       }
     }
   })
-  statement += `ELSE 0 END AS ${_.snakeCase(factorName)}_score`
+  statement += `ELSE ${factorObj.default} END AS ${_.snakeCase(factorName)}_score`
   return statement
 }

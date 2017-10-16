@@ -58,7 +58,8 @@ describe('Tests the Ranking Service', function () {
             'numericValue': 5,
             'score': 2
           }
-        ]
+        ],
+        'default': 0
       },
       'test',
       'food',
@@ -74,7 +75,8 @@ describe('Tests the Ranking Service', function () {
       'heritage',
       {
         'type': 'exists',
-        'score': 2
+        'score': 2,
+        'default': 0
       },
       'test',
       'heritage',
@@ -106,7 +108,8 @@ describe('Tests the Ranking Service', function () {
             'textualValue': 'bad',
             'score': 8
           }
-        ]
+        ],
+        'default': 0
       },
       'test',
       'ofsted',
@@ -176,7 +179,8 @@ describe('Tests the Ranking Service', function () {
                 'numericValue': 5,
                 'score': 2
               }
-            ]
+            ],
+            'default': 0
           }
         }
       }

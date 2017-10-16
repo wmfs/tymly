@@ -12,6 +12,7 @@
           },
           "foodStandards": {
             "type": "options",
+            "default": 0,
             "options": [
               {
                 "type": "numeric-range",
@@ -34,6 +35,7 @@
           },
           "incidents": {
             "type": "options",
+            "default": 0,
             "options": [
               {
                 "type": "numeric-constant",
@@ -55,6 +57,7 @@
           },
           "heritage": {
             "type": "exists",
+            "default": 0,
             "score": 2
           }
         }
