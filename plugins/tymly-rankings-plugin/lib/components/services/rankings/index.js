@@ -5,6 +5,9 @@ const generateViewStatement = require('./generate-view-statement')
 
 class RankingService {
   boot (options, callback) {
+    this.client = options.bootedServices.storage.client
+
+    // let script = ``
     let rankings = options.blueprintComponents.rankings
 
     if (_.isObject(rankings)) {
@@ -23,20 +26,37 @@ class RankingService {
             'ranking': rankings[key].factors,
             'registry': registry
           })
+          // script += viewStatement + ';'
 
+          console.log(propertyType)
           console.log(viewStatement + '\n\n')
         }
       }
     }
 
-    /*
-    Registry keys can be found in:
-    options.bootedServices.registry.registry -> registryKeys[key].value (this one appears to look at DB in fbot.registry_key)
-    or
-    options.bootedServices.registry.blueprintRegistryKeys -> registryKeys[key].schema.properties.value
-    */
-
     callback(null)
+    /* UNCOMMENT THIS WHEN YOU WANT IT TO RUN SCRIPT
+    this.executeScript(script, function (err) {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
+    })
+    */
+  }
+
+  executeScript (script, callback) {
+    this.client.query(
+      script,
+      function (err) {
+        if (err) {
+          callback(err)
+        } else {
+          callback(null)
+        }
+      }
+    )
   }
 }
 
@@ -44,3 +64,10 @@ module.exports = {
   serviceClass: RankingService,
   bootAfter: ['registry']
 }
+
+/*
+Registry keys can be found in:
+options.bootedServices.registry.registry -> registryKeys[key].value (this one appears to look at DB in fbot.registry_key)
+or
+options.bootedServices.registry.blueprintRegistryKeys -> registryKeys[key].schema.properties.value
+*/

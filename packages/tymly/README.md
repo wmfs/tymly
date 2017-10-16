@@ -15,8 +15,8 @@ const tymly = require('tymly')
 tymly.boot(
   {
     // Blueprints are structured directories that describe a business function.
-    // They contain 'flows' (e.g. Finite State Machines expressed in JSON)
-    // along with the resources required for those flows to run (e.g. data 
+    // They contain 'state-machines' (e.g. Finite State Machines expressed in JSON as per Amazon State Machine specification: http://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-state-machine-structure.html)
+    // along with the resources required for those state-machines to run (e.g. data 
     // model definitions, images, form-layouts, templates etc.)
     // This is just a simple list of directories where blueprints can be found...   
     blueprintPaths: [
