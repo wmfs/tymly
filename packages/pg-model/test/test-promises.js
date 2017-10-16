@@ -188,11 +188,9 @@ describe('Test promise API', function () {
     )
   })
 
-  it('should find a person via primary key', function (done) {
-    models.pgmodelTest.person.findById(
-      3,
-      function (err, doc) {
-        expect(err).to.equal(null)
+  it('should find a person via primary key', function () {
+    return models.pgmodelTest.person.findById(3)
+      .then(doc =>
         expect(doc).to.containSubset(
           {
             'employeeNo': '3',
@@ -201,214 +199,184 @@ describe('Test promise API', function () {
             'age': 8
           }
         )
-        done()
-      }
     )
   })
 
-  it("should fail finding a person that's not there", function (done) {
-    models.pgmodelTest.person.findById(
-      6,
-      function (err, doc) {
-        expect(err).to.equal(null)
+  it("should fail finding a person that's not there", function () {
+    return models.pgmodelTest.person.findById(6)
+      .then(doc =>
         expect(doc).to.equal(undefined)
-        done()
-      }
-    )
+      )
   })
 
-  it('should find 5 people, youngest first', function (done) {
-    models.pgmodelTest.person.find(
+  it('should find 5 people, youngest first', async function () {
+    const doc = await models.pgmodelTest.person.find(
       {
         orderBy: ['age']
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-
-        expect(doc[0].age).to.equal(8)
-        expect(doc[1].age).to.equal(10)
-        expect(doc[2].age).to.equal(36)
-        expect(doc[3].age).to.equal(39)
-        expect(doc[4].age).to.equal(null)
-        expect(doc).to.containSubset(
-          [
-            {
-              'age': 8,
-              'employeeNo': '3',
-              'firstName': 'Lisa',
-              'lastName': 'Simpson'
-            },
-            {
-              'age': 10,
-              'employeeNo': '5',
-              'firstName': 'Bart',
-              'lastName': 'Simpson'
-            },
-            {
-              'age': 36,
-              'employeeNo': '4',
-              'firstName': 'Marge',
-              'lastName': 'Simpson'
-            },
-            {
-              'age': 39,
-              'employeeNo': '1',
-              'firstName': 'Homer',
-              'lastName': 'Simpson'
-            },
-            {
-              'age': null,
-              'employeeNo': '2',
-              'firstName': 'Maggie',
-              'lastName': 'Simpson'
-            }
-          ]
-        )
-        done()
       }
+    )
+
+    expect(doc[0].age).to.equal(8)
+    expect(doc[1].age).to.equal(10)
+    expect(doc[2].age).to.equal(36)
+    expect(doc[3].age).to.equal(39)
+    expect(doc[4].age).to.equal(null)
+    expect(doc).to.containSubset(
+      [
+        {
+          'age': 8,
+          'employeeNo': '3',
+          'firstName': 'Lisa',
+          'lastName': 'Simpson'
+        },
+        {
+          'age': 10,
+          'employeeNo': '5',
+          'firstName': 'Bart',
+          'lastName': 'Simpson'
+        },
+        {
+          'age': 36,
+          'employeeNo': '4',
+          'firstName': 'Marge',
+          'lastName': 'Simpson'
+        },
+        {
+          'age': 39,
+          'employeeNo': '1',
+          'firstName': 'Homer',
+          'lastName': 'Simpson'
+        },
+        {
+          'age': null,
+          'employeeNo': '2',
+          'firstName': 'Maggie',
+          'lastName': 'Simpson'
+        }
+      ]
     )
   })
 
-  it('should find 3 people, eldest first', function (done) {
-    models.pgmodelTest.person.find(
+  it('should find 3 people, eldest first', async function () {
+    const doc = await models.pgmodelTest.person.find(
       {
         orderBy: ['-age'],
         nullsLast: true
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc[0].age).to.equal(39)
-        expect(doc[1].age).to.equal(36)
-        expect(doc[2].age).to.equal(10)
-        expect(doc[3].age).to.equal(8)
-        expect(doc[4].age).to.equal(null)
-        done()
       }
     )
+
+    expect(doc).to.have.length(5)
+    expect(doc[0].age).to.equal(39)
+    expect(doc[1].age).to.equal(36)
+    expect(doc[2].age).to.equal(10)
+    expect(doc[3].age).to.equal(8)
+    expect(doc[4].age).to.equal(null)
   })
 
-  it('should find Bart by name', function (done) {
-    models.pgmodelTest.person.find(
+  it('should find Bart by name', async () => {
+    const doc = await models.pgmodelTest.person.find(
       {
         where: {
           firstName: {equals: 'Bart'},
           lastName: {equals: 'Simpson'}
         }
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc).to.have.length(1)
-        expect(doc).to.containSubset(
-          [
-            {
-              'age': 10,
-              'employeeNo': '5',
-              'firstName': 'Bart',
-              'lastName': 'Simpson'
-            }
-          ]
-        )
-
-        done()
       }
+    )
+
+    expect(doc).to.have.length(1)
+    expect(doc).to.containSubset(
+      [
+        {
+          'age': 10,
+          'employeeNo': '5',
+          'firstName': 'Bart',
+          'lastName': 'Simpson'
+        }
+      ]
     )
   })
 
-  it('should find Bart and Lisa (eldest with limit 2/offset 2)', function (done) {
-    models.pgmodelTest.person.find(
+  it('should find Bart and Lisa (eldest with limit 2/offset 2)', async () => {
+    const doc = await models.pgmodelTest.person.find(
       {
         orderBy: ['-age'],
         nullsLast: true,
         limit: 2,
         offset: 2
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc).to.have.length(2)
-        expect(doc[0].employeeNo).to.eql('5')
-        expect(doc[1].employeeNo).to.eql('3')
-        expect(doc).to.containSubset(
-          [
-            {
-              'age': 10,
-              'employeeNo': '5',
-              'firstName': 'Bart',
-              'lastName': 'Simpson'
-            },
-            {
-              'age': 8,
-              'employeeNo': '3',
-              'firstName': 'Lisa',
-              'lastName': 'Simpson'
-            }
-          ]
-        )
-        done()
       }
+    )
+
+    expect(doc).to.have.length(2)
+    expect(doc[0].employeeNo).to.eql('5')
+    expect(doc[1].employeeNo).to.eql('3')
+    expect(doc).to.containSubset(
+      [
+        {
+          'age': 10,
+          'employeeNo': '5',
+          'firstName': 'Bart',
+          'lastName': 'Simpson'
+        },
+        {
+          'age': 8,
+          'employeeNo': '3',
+          'firstName': 'Lisa',
+          'lastName': 'Simpson'
+        }
+      ]
     )
   })
 
-  it('should get the second youngest known person (Marge)', function (done) {
-    models.pgmodelTest.person.findOne(
+  it('should get the second youngest known person (Marge)', async () => {
+    const doc = await models.pgmodelTest.person.findOne(
       {
         orderBy: ['age'],
         nullsLast: true,
         offset: 1
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc).to.containSubset(
-          {
-            'age': 10,
-            'employeeNo': '5',
-            'firstName': 'Bart',
-            'lastName': 'Simpson'
-          }
-        )
+      }
+    )
 
-        done()
+    expect(doc).to.containSubset(
+      {
+        'age': 10,
+        'employeeNo': '5',
+        'firstName': 'Bart',
+        'lastName': 'Simpson'
       }
     )
   })
 
-  it('should get one Homer by name', function (done) {
-    models.pgmodelTest.person.findOne(
+  it('should get one Homer by name', function () {
+    return models.pgmodelTest.person.findOne(
       {
         where: {
           firstName: {equals: 'Homer'},
           lastName: {equals: 'Simpson'}
         }
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc).to.containSubset(
-          {
-            'age': 39,
-            'employeeNo': '1',
-            'firstName': 'Homer',
-            'lastName': 'Simpson'
-          }
-        )
-
-        done()
       }
+    ).then(doc =>
+      expect(doc).to.containSubset(
+        {
+          'age': 39,
+          'employeeNo': '1',
+          'firstName': 'Homer',
+          'lastName': 'Simpson'
+        }
+      )
     )
   })
 
-  it("shouldn't get one missing person", function (done) {
-    models.pgmodelTest.person.findOne(
+  it("shouldn't get one missing person", async () => {
+    const doc = await models.pgmodelTest.person.findOne(
       {
         where: {
           firstName: {equals: 'Ned'},
           lastName: {equals: 'Flanders'}
         }
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        expect(doc).to.equal(undefined)
-        done()
       }
     )
+
+    expect(doc).to.equal(undefined)
   })
 
   it("should update Maggie's age to 1", function (done) {

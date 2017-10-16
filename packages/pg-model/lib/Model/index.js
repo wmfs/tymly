@@ -82,7 +82,19 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  findById (id, callback) {
+  findById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.findById(id, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    }
+
     if (!_.isArray(id)) {
       id = [id]
     }
@@ -102,7 +114,19 @@ class Model {
     )
   }
 
-  find (options, callback) {
+  find (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.find(options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    } // if ...
+
     const doc = {}
     this.finder.find(
       doc,
@@ -117,7 +141,19 @@ class Model {
     )
   }
 
-  findOne (options, callback) {
+  findOne (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.findOne(options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    } // if ...
+
     options.limit = 1
     const doc = {}
     this.finder.find(
