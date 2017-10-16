@@ -1,0 +1,11 @@
+{
+  "namespace": "wmfs",
+  "name": "ranking-blueprint",
+  "version": "1.0",
+  "label": "ranking-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to calculate a ranking.",
+  "tags": []
+}

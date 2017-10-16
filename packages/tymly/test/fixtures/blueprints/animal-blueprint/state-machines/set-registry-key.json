@@ -6,10 +6,7 @@
     "SetRegistryKey": {
       "Type": "Task",
       "Resource": "module:setRegistryKey",
-      "ResourceConfig": {
-        "key": "fbotTest_mealThreshold",
-        "value": 2
-      },
+      "InputPath": "$",
       "End": true
     }
   }

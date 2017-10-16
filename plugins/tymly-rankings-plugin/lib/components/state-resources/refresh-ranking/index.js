@@ -4,28 +4,27 @@ const generateView = require('./../../services/rankings/generate-view-statement.
 
 class RefreshRanking {
   init (resourceConfig, env, callback) {
-    this.schema = resourceConfig.schema
-    this.propertyType = resourceConfig.propertyType
     this.rankings = env.blueprintComponents.rankings
     this.client = env.bootedServices.storage.client
-    this.registrys = env.bootedServices.registry.registry // I believe this is from the DB
+    this.registry = env.bootedServices.registry
     callback(null)
   }
 
   run (event, context) {
-    // const schema = context.stateMachineMeta.namespace
-    const key = this.schema + '_' + this.propertyType // e.g. test_factory
+    this.schema = event.schema
+    this.propertyType = event.propertyType
 
-    // registry is the thing that's being updated by the user in this state
-    // so it could come from either resourceConfig or event
-    // unless the UI allows the user to update the registry-keys in the DB directly
+    // const schema = context.stateMachineMeta.namespace
+    const key = this.schema + '_' + this.propertyType
 
     let statement = generateView({
-      'propertyType': this.propertyType,
-      'schema': this.schema,
-      'source': this.rankings[key].source,
-      'ranking': this.rankings[key].factors,
-      'registry': this.registrys[key]
+      propertyType: this.propertyType,
+      schema: this.schema,
+      source: this.rankings[key].source,
+      ranking: this.rankings[key].factors,
+      registry: {
+        value: this.registry.get(key)
+      }
     })
 
     this.client.query(

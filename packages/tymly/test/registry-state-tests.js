@@ -38,12 +38,15 @@ describe('It should test the state resource for setting reg keys', function () {
 
   it('Should test the state resource execution', function (done) {
     statebox.startExecution(
-      {},
+      {
+        key: 'fbotTest_mealThreshold',
+        value: 2
+      },
       STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
-      function (err, executionDescription) {
+      function (err) {
         expect(err).to.equal(null)
         done()
       }
