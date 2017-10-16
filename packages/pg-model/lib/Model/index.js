@@ -203,7 +203,20 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  patch (doc, options, callback) {
+  patch (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.patch(doc, options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    } // if ...
+
+
     const script = [{statement: 'BEGIN'}]
 
     options.destroyMissingSubDocsv = false

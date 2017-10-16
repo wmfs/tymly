@@ -479,12 +479,8 @@ describe('Run some basic tests', function () {
         employeeNo: 2,
         firstName: 'Margaret'
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+      {}
+    ).then(() => done())
   })
 
   it('should find Maggie is now a Margaret', function (done) {
