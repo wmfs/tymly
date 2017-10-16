@@ -103,5 +103,6 @@ module.exports = {
   serviceClass: MemoryStorageService,
   refProperties: {
     modelId: 'models'
-  }
+  },
+  bootAfter: ['caches']
 }

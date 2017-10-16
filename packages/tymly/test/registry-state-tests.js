@@ -18,7 +18,12 @@ describe('It should test the state resource for setting reg keys', function () {
       {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/animal-blueprint')
-        ]
+        ],
+        config: {
+          caches: {
+            registryKeys: {}
+          }
+        }
       },
       function (err, tymlyServices) {
         expect(err).to.equal(null)

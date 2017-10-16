@@ -4,10 +4,14 @@ const async = require('async')
 const _ = require('lodash')
 const dottie = require('dottie')
 
+const cacheName = 'registryKeys'
+
 class RegistryService {
   boot (options, callback) {
     const _this = this
     const storage = options.bootedServices.storage
+    this.caches = options.bootedServices.caches
+    if (this.caches !== undefined) this.caches.defaultIfNotInConfig(cacheName, 1000)
 
     this.bootedRegistry = options.bootedServices.registry
 
@@ -174,7 +178,17 @@ class RegistryService {
   }
 
   get (key) {
-    return this.bootedRegistry.registry[key].value
+    console.log('*************', this)
+    let path = this.caches.get(cacheName, key)
+    if (path) {
+      console.log('Getting from cache...')
+      return path
+    } else {
+      let regVal = this.bootedRegistry.registry[key].value
+      console.log('Getting from DB...')
+      this.caches.set(cacheName, key, regVal)
+      return regVal
+    }
   }
 
   set (key, value, callback) {
@@ -191,12 +205,9 @@ class RegistryService {
         if (err) {
           callback(err)
         } else {
+          _this.caches.set('registryKeys', key, value)
           _this.refresh(function (err) {
-            if (err) {
-              callback(err)
-            } else {
-              callback(null)
-            }
+            callback(err)
           })
         }
       }
@@ -206,6 +217,6 @@ class RegistryService {
 
 module.exports = {
   serviceClass: RegistryService,
-  bootAfter: ['storage'],
+  bootAfter: ['storage', 'caches'],
   bootBefore: ['statebox']
 }

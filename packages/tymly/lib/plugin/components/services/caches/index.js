@@ -36,6 +36,13 @@ class CacheService {
       this[cacheName] = LRU(options)
     }
   }
+
+  set (cacheName, key, value) {
+    this[cacheName].set(key, value)
+  }
+  get (cacheName, key) {
+    return this[cacheName].get(key)
+  }
 }
 
 module.exports = {
