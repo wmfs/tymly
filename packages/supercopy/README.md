@@ -1,4 +1,8 @@
 # supercopy
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/supercopy/LICENSE)
+
+
+
 
 > Takes a specifically-named directory structure of CSV files and conjures bulk insert, update and delete statements and applies them to a PostgreSQL database. 
 
@@ -6,12 +10,6 @@
 ```bash
 $ npm install supercopy --save
 ```
-Because Supercopy uses a native library please make sure you have windows-build-tools installed.
-This must be done in Windows PowerShell as admin!!!
-```bash
-$ npm install -g windows-build-tools
-```
-
 
 ## <a name="usage"></a>Usage
 
@@ -38,20 +36,7 @@ supercopy(
 )
 
 ```
-If you want to import data from an XML file, you will need to configure supercopy like this...
-```javascript
-supercopy(
-  {
-    sourceDir: '/dir/in/which/generated/csv/file/will/be/placed',
-    topDownTableOrder: ['departments', 'employees'],
-    client: client,
-    schemaName: 'my_schema',
-    truncateTables: true,
-    debug: true,
-    triggerElement: 'word-to-split-records-on',
-    xmlSourceFile: '/path/to/target/xml/file'
-  }
-```
+
 ## supercopy(`options`, `callback`)
 
 ### Options

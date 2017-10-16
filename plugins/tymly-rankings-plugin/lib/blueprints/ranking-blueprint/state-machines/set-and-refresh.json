@@ -1,0 +1,19 @@
+{
+  "Comment": "State machine to take an object of weights and refresh a ranking.",
+  "version": "1.0",
+  "StartAt": "SetRegistryKey",
+  "States": {
+    "SetRegistryKey": {
+      "Type": "Task",
+      "Resource": "module:setRegistryKey",
+      "InputPath": "$.setRegistryKey",
+      "Next": "RefreshRanking"
+    },
+    "RefreshRanking": {
+      "Type": "Task",
+      "Resource": "module:refreshRanking",
+      "InputPath": "$.refreshRanking",
+      "End": true
+    }
+  }
+}

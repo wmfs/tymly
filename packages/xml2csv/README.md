@@ -1,4 +1,5 @@
 # xml2csv
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/xml2csv/LICENSE)
 
 > Takes an XML file and transforms it into a CSV file, based on format of the map you provide with options. 
 

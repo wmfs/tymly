@@ -1,0 +1,13 @@
+{
+  "Comment": "Test blueprint to set reg keys",
+  "version": "1.0",
+  "StartAt": "SetRegistryKey",
+  "States": {
+    "SetRegistryKey": {
+      "Type": "Task",
+      "Resource": "module:setRegistryKey",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

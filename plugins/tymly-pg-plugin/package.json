@@ -23,7 +23,9 @@
     "chai": "^4.1.0",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
-    "tymly": "0.0.15"
+    "tymly": "0.0.15",
+    "fs-extra": "^4.0.2",
+    "rimraf": "^2.6.2"
   },
   "scripts": {
     "lint": "standard",

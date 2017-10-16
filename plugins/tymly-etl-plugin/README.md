@@ -1,5 +1,5 @@
 # tymly-etl-plugin
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/plugins/tymly-etl-plugin/LICENSE)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/plugins/tymly-etl-plugin/LICENSE)
 
 > A collection of states for helping with Extract, Transform and Load tasks within [TymlyJS](http://www.tymlyjs.io).
 
