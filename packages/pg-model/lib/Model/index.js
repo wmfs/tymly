@@ -252,7 +252,19 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  destroyById (id, callback) {
+  destroyById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.destroyById(id, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    }
+
     if (!_.isArray(id)) {
       id = [id]
     }

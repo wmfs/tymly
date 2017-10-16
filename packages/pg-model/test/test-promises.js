@@ -479,13 +479,7 @@ describe('Test promise API', function () {
   })
 
   it('should delete Maggie/Margaret by via her id', function (done) {
-    models.pgmodelTest.person.destroyById(
-      2,
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+    models.pgmodelTest.person.destroyById(2).then(() => done())
   })
 
   it('should fail getting a deleted record', function (done) {
@@ -878,13 +872,8 @@ describe('Test promise API', function () {
   })
 
   it('should delete Mars, and in-turn Phobos and Stickney', function (done) {
-    models.pgmodelTest.planets.destroyById(
-      'mars',
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+    models.pgmodelTest.planets.destroyById('mars')
+      .then(() => done())
   })
 
   it('should now fail to find Phobos', function (done) {
