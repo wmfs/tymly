@@ -14,6 +14,7 @@ const chai = require('chai')
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
+const assert = require('assert')
 
 describe('Run some basic tests', function () {
   let client
@@ -417,27 +418,21 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it("should update Maggie's age to 1", function (done) {
-    models.pgmodelTest.person.update(
+  it("should update Maggie's age to 1", () => {
+    return models.pgmodelTest.person.update(
       {
         employeeNo: 2,
         age: 1,
         firstName: 'Maggie',
         lastName: 'Simpson'
       },
-      {},
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
+      {}
     )
   })
 
-  it('should find Maggie has an age now', function (done) {
-    models.pgmodelTest.person.findById(
-      2,
-      function (err, doc) {
-        expect(err).to.equal(null)
+  it('should find Maggie has an age now', () => {
+    models.pgmodelTest.person.findById(2)
+      .then(doc =>
         expect(doc).to.containSubset(
           {
             'employeeNo': '2',
@@ -446,23 +441,17 @@ describe('Run some basic tests', function () {
             'age': 1
           }
         )
-        done()
-      }
-    )
+      )
   })
 
-  it('should update Maggie again, but this time without an age', function (done) {
-    models.pgmodelTest.person.update(
+  it('should update Maggie again, but this time without an age', async () => {
+    await models.pgmodelTest.person.update(
       {
         employeeNo: 2,
         firstName: 'Maggie',
         lastName: 'Simpson'
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
+      {}
     )
   })
 

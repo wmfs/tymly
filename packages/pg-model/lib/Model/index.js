@@ -179,7 +179,19 @@ class Model {
     return id
   }
 
-  update (doc, options, callback) {
+  update (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.update(doc, options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    } // if ...
+
     options.destroyMissingSubDocs = false
     options.setMissingPropertiesToNull = true
     const script = [{statement: 'BEGIN'}]
