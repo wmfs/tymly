@@ -10,12 +10,6 @@
 ```bash
 $ npm install supercopy --save
 ```
-Because Supercopy uses a native library please make sure you have windows-build-tools installed.
-This must be done in Windows PowerShell as admin!!!
-```bash
-$ npm install -g windows-build-tools
-```
-
 
 ## <a name="usage"></a>Usage
 
@@ -42,20 +36,7 @@ supercopy(
 )
 
 ```
-If you want to import data from an XML file, you will need to configure supercopy like this...
-```javascript
-supercopy(
-  {
-    sourceDir: '/dir/in/which/generated/csv/file/will/be/placed',
-    topDownTableOrder: ['departments', 'employees'],
-    client: client,
-    schemaName: 'my_schema',
-    truncateTables: true,
-    debug: true,
-    triggerElement: 'word-to-split-records-on',
-    xmlSourceFile: '/path/to/target/xml/file'
-  }
-```
+
 ## supercopy(`options`, `callback`)
 
 ### Options
