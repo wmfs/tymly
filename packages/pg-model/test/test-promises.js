@@ -499,7 +499,7 @@ describe('Test promise API', function () {
     )
   })
 
-  it('should upsert (insert) Grampa', function (done) {
+  it('should upsert (insert) Grampa', () => {
     models.pgmodelTest.person.upsert(
       {
         employeeNo: 10,
@@ -507,18 +507,15 @@ describe('Test promise API', function () {
         lastName: 'Simpson',
         age: 82
       },
-      {},
-      function (err, idProperties) {
-        expect(idProperties).to.eql(
-          {
-            idProperties: {
-              employeeNo: '10'
-            }
+      {}
+    ).then(idProperties =>
+      expect(idProperties).to.eql(
+        {
+          idProperties: {
+            employeeNo: '10'
           }
-        )
-        expect(err).to.equal(null)
-        done()
-      }
+        }
+      )
     )
   })
 
@@ -548,12 +545,8 @@ describe('Test promise API', function () {
         lastName: 'Simpson',
         age: 83
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+      {}
+    ).then(() => done())
   })
 
   it('should find Grampa has now been updates via upsert', function (done) {
@@ -583,12 +576,8 @@ describe('Test promise API', function () {
       },
       {
         setMissingPropertiesToNull: false
-      },
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
       }
-    )
+    ).then(() => done())
   })
 
   it('should find Grampa again, with his age preserved and an updated name', function (done) {
@@ -616,12 +605,8 @@ describe('Test promise API', function () {
         firstName: 'Abraham',
         lastName: 'Simpson'
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+      {}
+    ).then(() => done())
   })
 
   it('should find Grampa again, but now with a null age', function (done) {

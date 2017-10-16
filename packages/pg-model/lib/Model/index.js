@@ -230,7 +230,18 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  upsert (jsonData, options, callback) {
+  upsert (jsonData, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return new Promise((resolve, reject) => {
+        this.upsert(jsonData, options, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
+      })
+    }
     options.upsert = true
     const script = [{statement: 'BEGIN'}]
     this.creator.addStatements(
