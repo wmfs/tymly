@@ -16,12 +16,7 @@ module.exports = class Upserting {
 
   run (doc, context) {
     if (!doc) {
-      context.sendTaskFailure(
-        {
-          error: 'NO_DOC_TO_UPSERT',
-          cause: 'Unable to save document - no document supplied'
-        }
-      )
+      failed(context, 'NO_DOC_TO_UPSERT', 'Unable to save document - no document supplied')
     }
 
     const docToPersist = _.cloneDeep(doc)
@@ -30,13 +25,13 @@ module.exports = class Upserting {
 
     this.model.upsert(docToPersist, {})
       .then(() => context.sendTaskSuccess())
-      .catch(err =>
-          context.sendTaskFailure(
-            {
-              error: 'FAILED_TO_UPSERT',
-              cause: JSON.stringify(err)
-            }
-          )
-      )
+      .catch(err => failed(context, 'FAILED_TO_UPSERT', JSON.stringify(err)))
   } // run
+}
+
+function failed (context, error, cause) {
+  context.sendTaskFailure({
+    error: error,
+    cause: cause
+  })
 }
