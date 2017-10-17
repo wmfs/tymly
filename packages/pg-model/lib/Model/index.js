@@ -9,6 +9,18 @@ const Updater = require('./actions/Updater')
 
 const NotSet = 'NetSet'
 
+function promised(obj, fn, ...args) {
+  return new Promise((resolve, reject) => {
+    fn.call(obj, ...args, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+} // promised
+
 class Model {
   constructor (components, options) {
     const _this = this
@@ -65,15 +77,7 @@ class Model {
 
   create (jsonData, options = { }, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.create(jsonData, options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.create, jsonData, options)
     } // if ...
 
     options.upsert = false
@@ -84,15 +88,7 @@ class Model {
 
   findById (id, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.findById(id, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.findById, id)
     }
 
     if (!_.isArray(id)) {
@@ -116,15 +112,7 @@ class Model {
 
   find (options, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.find(options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.find, options)
     } // if ...
 
     const doc = {}
@@ -143,15 +131,7 @@ class Model {
 
   findOne (options, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.findOne(options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.findOne, options)
     } // if ...
 
     options.limit = 1
@@ -181,15 +161,7 @@ class Model {
 
   update (doc, options, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.update(doc, options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.update, doc, options)
     } // if ...
 
     options.destroyMissingSubDocs = false
@@ -205,17 +177,8 @@ class Model {
 
   patch (doc, options, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.patch(doc, options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.patch, doc, options)
     } // if ...
-
 
     const script = [{statement: 'BEGIN'}]
 
@@ -232,15 +195,7 @@ class Model {
 
   upsert (jsonData, options, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.upsert(jsonData, options, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.upsert, jsonData, options)
     }
     options.upsert = true
     const script = [{statement: 'BEGIN'}]
@@ -254,15 +209,7 @@ class Model {
 
   destroyById (id, callback = NotSet) {
     if (callback === NotSet) {
-      return new Promise((resolve, reject) => {
-        this.destroyById(id, (err, result) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(result)
-          }
-        })
-      })
+      return promised(this, this.destroyById, id)
     }
 
     if (!_.isArray(id)) {
