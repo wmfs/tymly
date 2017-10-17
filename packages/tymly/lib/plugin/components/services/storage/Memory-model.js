@@ -222,6 +222,10 @@ class MemoryModel {
   }
 
   update (doc, options, callback) {
+    if (options.setMissingPropertiesToNull === false) {
+      return this.patch(doc, options, callback)
+    }
+
     const where = this.extractIdPropertiesFromDoc(doc)
     const index = this.findFirstIndex(where)
     if (index !== -1) {
@@ -231,14 +235,12 @@ class MemoryModel {
   }
 
   patch (doc, options, callback) {
-//    var matches = _.query(this.data, where)
-//    if (matches.length === 1) {
-//      var doc = JSON.parse(JSON.stringify(matches[0]))
-//      doc = this.applySelect(doc, select)
-//      callback(null, doc)
-//    } else {
-//      callback(null, null)
-//    }
+    const where = this.extractIdPropertiesFromDoc(doc)
+    const index = this.findFirstIndex(where)
+    if (index !== -1) {
+      for (const [k, v] of Object.entries(doc)) { this.data[index][k] = v }
+    }
+    callback(null)
   }
 
   upsert (doc, options, callback) {
@@ -246,6 +248,10 @@ class MemoryModel {
     const index = this.findFirstIndex(whereProperties)
 
     if (index !== -1) {
+      if (options.setMissingPropertiesToNull === false) {
+        return this.patch(doc, options, callback)
+      }
+
       this.data[index] = _.cloneDeep(doc)
       callback(null)
     } else {
