@@ -139,18 +139,18 @@ describe('Test promise API', function () {
     )
       .then(() => assert(false))
       .catch(err => {
-          expect(err).to.containSubset(
-            {
-              'code': '23505',
-              'constraint': 'person_pkey',
-              'detail': 'Key (employee_no)=(1) already exists.',
-              'name': 'error',
-              'schema': 'pgmodel_test',
-              'severity': 'ERROR',
-              'table': 'person'
-            }
+        expect(err).to.containSubset(
+          {
+            'code': '23505',
+            'constraint': 'person_pkey',
+            'detail': 'Key (employee_no)=(1) already exists.',
+            'name': 'error',
+            'schema': 'pgmodel_test',
+            'severity': 'ERROR',
+            'table': 'person'
+          }
           )
-        }
+      }
       )
   })
 
@@ -415,7 +415,6 @@ describe('Test promise API', function () {
       {}
     )
   })
-
 
   it("should find Maggie's age has gone again", function (done) {
     models.pgmodelTest.person.findById(

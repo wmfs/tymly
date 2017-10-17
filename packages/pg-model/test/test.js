@@ -14,7 +14,6 @@ const chai = require('chai')
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
-const assert = require('assert')
 
 describe('Run some basic tests', function () {
   let client
