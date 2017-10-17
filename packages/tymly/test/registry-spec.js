@@ -35,7 +35,6 @@ describe('Registry tests', function () {
 
   it('should get the value from registry using key', function (done) {
     let key = 'fbotTest_mealThreshold'
-    console.log('registry service>>>>>>>>>>>', registryService)
     let value = registryService.get(key)
     expect(value).to.eql(3)
     done()
@@ -43,7 +42,6 @@ describe('Registry tests', function () {
 
   it('should change the value in registry using key', function (done) {
     let key = 'fbotTest_mealThreshold'
-    console.log('registry service>>>>>>>>>>>', registryService.set)
     registryService.set(key, 2, function (err) {
       expect(err).to.eql(null)
       expect(registryService.get(key)).to.eql(2)
