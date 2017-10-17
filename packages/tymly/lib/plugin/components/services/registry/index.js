@@ -107,34 +107,26 @@ class RegistryService {
    * )
    */
   refresh (callback) {
-    const _this = this
-    this.registryKeyModel.find(
-      {},
-      function (err, storedRegistry) {
-        if (err) {
-          callback(err)
-        } else {
-          /*
-          * storedRegistry is the rows from the DB
-          * _this.registry is empty before the reduce
-          * _this.registry gets populated after the reduce with what's in storedRegistry
-          * */
-          _this.registry = _.reduce(
-            storedRegistry,
-            function (result, value, key) {
-              result[value.key] = {
-                value: value.value.value, // Oh my.
-                meta: _this.blueprintRegistryKeys[value.key]
-              }
-              return result
-            },
-            {}
-          )
-          callback(null)
-        }
+    this.registryKeyModel.find({})
+      .then(storedRegistry => {
+        /*
+         * storedRegistry is the rows from the DB
+         * _this.registry is empty before the reduce
+         * _this.registry gets populated after the reduce with what's in storedRegistry
+         */
+        this.registry = storedRegistry.reduce((result, value) => {
+          result[value.key] = {
+            value: value.value.value, // Easy now
+            meta: this.blueprintRegistryKeys[value.key]
+          }
+          return result
+        }, {})
+
+        callback(null)
       }
-    )
-  }
+      )
+      .catch(err => callback(err))
+  } // refresh
 
   substitute (namespace, source, rootPath) {
     const _this = this
@@ -189,7 +181,6 @@ class RegistryService {
   }
 
   set (key, value, callback) {
-    const _this = this
     this.registryKeyModel.upsert(
       {
         key: key,
@@ -199,8 +190,8 @@ class RegistryService {
       },
       {}
     ).then(() => {
-      _this.caches.set('registryKeys', key, value)
-      _this.refresh(callback)
+      this.caches.set('registryKeys', key, value)
+      this.refresh(callback)
     }
     ).catch(err => callback(err))
   } // set
