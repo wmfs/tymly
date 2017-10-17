@@ -1,0 +1,32 @@
+{
+  "name": "tymly-packager",
+  "version": "0.0.1",
+  "description": "Gathers up Tymly into a deployable package",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && mocha"
+  },
+  "author": "Jez Higgins",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-string": "^1.4.0",
+    "mocha": "^3.5.3",
+    "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "commander": "^2.11.0",
+    "copy-dir": "^0.3.0",
+    "lodash.clone": "^4.5.0",
+    "moment": "^2.18.1",
+    "rimraf": "^2.6.2",
+    "tar.gz": "^1.0.5",
+    "username": "^3.0.0"
+  }
+}
