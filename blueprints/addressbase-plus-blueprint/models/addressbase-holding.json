@@ -395,12 +395,12 @@
       "maxLength": 4,
       "description": "This is a count of all the child UPRN's for this record if a parent-child relationship exists. Source: Ordnance Survey"
     },
-    "voaNDRPDescCode": {
+    "voaNdrpDescCode": {
       "type": "string",
       "maxLength": 5,
       "description": "VOA Non-domestic rates primary description code, for example, IF2. The first letter is the primary category: C=commercial, E=education, F=formula-assessed utility, I=industrial, L=leisure, M=miscellaneous, N=non-formula-assessed utility, T=treasury(crown). The second letter provides further detail, for example: O=office, F=factory. The third and fourth digit is optional and occurs where further subdivision is required, for example, IF1=mill, IF2=works, IF3=workshop, IF4=business unit. Source: Valuation Office Agency"
     },
-    "voaNDRScatCode": {
+    "voaNdrScatCode": {
       "type": "string",
       "maxLength": 4,
       "description": "VOA non-domestic rates special category code, for example, 016. While the primary description code above provides a general level of classification, there is a SCat code for every kind of premise that VOA rates. For example, within PDesc IF2 (industrial/factory/works) there are 009 (aluminium works), 016 (artificial fibre works), 052 (cement works), 055 (chemical works), 110 (foundries), 142 (iron/steel works), 192 (motor vehicle works), and 198 (newspaper printing works). Source: Valuation Office Agency"
