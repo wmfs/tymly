@@ -178,14 +178,11 @@ class RegistryService {
   }
 
   get (key) {
-    console.log('*************', this)
-    let path = this.caches.get(cacheName, key)
+    const path = this.caches.get(cacheName, key)
     if (path) {
-      console.log('Getting from cache...')
       return path
     } else {
-      let regVal = this.bootedRegistry.registry[key].value
-      console.log('Getting from DB...')
+      const regVal = this.bootedRegistry.registry[key].value
       this.caches.set(cacheName, key, regVal)
       return regVal
     }
@@ -200,19 +197,13 @@ class RegistryService {
           value: value
         }
       },
-      {},
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          _this.caches.set('registryKeys', key, value)
-          _this.refresh(function (err) {
-            callback(err)
-          })
-        }
-      }
-    )
-  }
+      {}
+    ).then(() => {
+      _this.caches.set('registryKeys', key, value)
+      _this.refresh(callback)
+    }
+    ).catch(err => callback(err))
+  } // set
 }
 
 module.exports = {
