@@ -379,27 +379,21 @@ describe('Test promise API', function () {
     expect(doc).to.equal(undefined)
   })
 
-  it("should update Maggie's age to 1", function (done) {
-    models.pgmodelTest.person.update(
+  it("should update Maggie's age to 1", () => {
+    return models.pgmodelTest.person.update(
       {
         employeeNo: 2,
         age: 1,
         firstName: 'Maggie',
         lastName: 'Simpson'
       },
-      {},
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
+      {}
     )
   })
 
-  it('should find Maggie has an age now', function (done) {
-    models.pgmodelTest.person.findById(
-      2,
-      function (err, doc) {
-        expect(err).to.equal(null)
+  it('should find Maggie has an age now', () => {
+    models.pgmodelTest.person.findById(2)
+      .then(doc =>
         expect(doc).to.containSubset(
           {
             'employeeNo': '2',
@@ -408,25 +402,20 @@ describe('Test promise API', function () {
             'age': 1
           }
         )
-        done()
-      }
-    )
+      )
   })
 
-  it('should update Maggie again, but this time without an age', function (done) {
-    models.pgmodelTest.person.update(
+  it('should update Maggie again, but this time without an age', async () => {
+    await models.pgmodelTest.person.update(
       {
         employeeNo: 2,
         firstName: 'Maggie',
         lastName: 'Simpson'
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
+      {}
     )
   })
+
 
   it("should find Maggie's age has gone again", function (done) {
     models.pgmodelTest.person.findById(
@@ -452,12 +441,8 @@ describe('Test promise API', function () {
         employeeNo: 2,
         firstName: 'Margaret'
       },
-      {},
-      function (err, doc) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+      {}
+    ).then(() => done())
   })
 
   it('should find Maggie is now a Margaret', function (done) {
