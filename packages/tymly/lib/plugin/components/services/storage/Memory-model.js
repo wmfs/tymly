@@ -6,6 +6,20 @@ const _ = require('lodash')
 
 require('underscore-query')(_)
 
+const NotSet = 'NetSet'
+
+function promised(obj, fn, ...args) {
+  return new Promise((resolve, reject) => {
+    fn.call(obj, ...args, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+} // promised
+
 // TODO: This could be a useful module in its own right?
 
 class MemoryModel {
@@ -23,6 +37,8 @@ class MemoryModel {
     } else {
       this.primaryKey = ['id']
     }
+
+    this.promised = (...args) => promised(this, ...args)
   }
 
   extractIdPropertiesFromDoc (doc) {
@@ -36,7 +52,11 @@ class MemoryModel {
     return properties
   }
 
-  create (jsonData, options, callback) {
+  create (jsonData, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.create, jsonData, options)
+    }
+
     const _this = this
     let idProperties
     let err = null
@@ -140,7 +160,10 @@ class MemoryModel {
   }
 
   // TODO: Options! limit/offset etc.
-  find (options, callback) {
+  find (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.find, options)
+    }
     const output = this.applyWhere(options)
     callback(null, output)
   }
@@ -169,7 +192,10 @@ class MemoryModel {
     return properties
   }
 
-  findById (id, callback) {
+  findById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.findById, id)
+    }
     if (!_.isArray(id)) {
       id = [id]
     }
@@ -182,7 +208,11 @@ class MemoryModel {
     )
   }
 
-  findOne (options, callback) {
+  findOne (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.findOne, options)
+    }
+
     let doc
     const output = this.applyWhere(options)
     if (output.length > 0) {
@@ -221,7 +251,11 @@ class MemoryModel {
     return index
   }
 
-  update (doc, options, callback) {
+  update (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.update, doc, options)
+    }
+
     if (options.setMissingPropertiesToNull === false) {
       return this.patch(doc, options, callback)
     }
@@ -234,7 +268,11 @@ class MemoryModel {
     callback(null)
   }
 
-  patch (doc, options, callback) {
+  patch (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.patch, doc, options)
+    }
+
     const where = this.extractIdPropertiesFromDoc(doc)
     const index = this.findFirstIndex(where)
     if (index !== -1) {
@@ -243,7 +281,11 @@ class MemoryModel {
     callback(null)
   }
 
-  upsert (doc, options, callback) {
+  upsert (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.upsert, doc, options)
+    }
+
     const whereProperties = this.extractIdPropertiesFromDoc(doc)
     const index = this.findFirstIndex(whereProperties)
 
@@ -263,7 +305,11 @@ class MemoryModel {
     }
   }
 
-  destroyById (id, callback) {
+  destroyById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.destroyById, id)
+    }
+
     if (!_.isArray(id)) {
       id = [id]
     }

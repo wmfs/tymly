@@ -8,7 +8,7 @@ chai.use(chaiSubset)
 const expect = chai.expect
 const MemoryModel = require('../lib/plugin/components/services/storage/Memory-model')
 
-describe('Run some basic tests', function () {
+describe('Memory Model tests', function () {
   let planetsModel
   let personModel
   let phobosId
