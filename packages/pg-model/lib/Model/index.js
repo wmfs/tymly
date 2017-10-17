@@ -7,6 +7,20 @@ const Creator = require('./actions/Creator')
 const Destroyer = require('./actions/Destroyer')
 const Updater = require('./actions/Updater')
 
+const NotSet = 'NetSet'
+
+function promised (obj, fn, ...args) {
+  return new Promise((resolve, reject) => {
+    fn.call(obj, ...args, (err, result) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+} // promised
+
 class Model {
   constructor (components, options) {
     const _this = this
@@ -59,16 +73,26 @@ class Model {
     this.creator = new Creator(this)
     this.destroyer = new Destroyer(this)
     this.updater = new Updater(this)
+
+    this.promised = (...args) => promised(this, ...args)
   }
 
-  create (jsonData, options, callback) {
+  create (jsonData, options = { }, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.create, jsonData, options)
+    } // if ...
+
     options.upsert = false
     const script = [{statement: 'BEGIN'}]
     this.creator.addStatements(script, jsonData, options)
     scriptRunner(this, script, callback)
   }
 
-  findById (id, callback) {
+  findById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.findById, id)
+    }
+
     if (!_.isArray(id)) {
       id = [id]
     }
@@ -88,7 +112,11 @@ class Model {
     )
   }
 
-  find (options, callback) {
+  find (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.find, options)
+    } // if ...
+
     const doc = {}
     this.finder.find(
       doc,
@@ -103,7 +131,11 @@ class Model {
     )
   }
 
-  findOne (options, callback) {
+  findOne (options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.findOne, options)
+    } // if ...
+
     options.limit = 1
     const doc = {}
     this.finder.find(
@@ -129,7 +161,11 @@ class Model {
     return id
   }
 
-  update (doc, options, callback) {
+  update (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.update, doc, options)
+    } // if ...
+
     options.destroyMissingSubDocs = false
     options.setMissingPropertiesToNull = true
     const script = [{statement: 'BEGIN'}]
@@ -141,7 +177,11 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  patch (doc, options, callback) {
+  patch (doc, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.patch, doc, options)
+    } // if ...
+
     const script = [{statement: 'BEGIN'}]
 
     options.destroyMissingSubDocsv = false
@@ -155,7 +195,10 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  upsert (jsonData, options, callback) {
+  upsert (jsonData, options, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.upsert, jsonData, options)
+    }
     options.upsert = true
     const script = [{statement: 'BEGIN'}]
     this.creator.addStatements(
@@ -166,7 +209,11 @@ class Model {
     scriptRunner(this, script, callback)
   }
 
-  destroyById (id, callback) {
+  destroyById (id, callback = NotSet) {
+    if (callback === NotSet) {
+      return this.promised(this.destroyById, id)
+    }
+
     if (!_.isArray(id)) {
       id = [id]
     }
