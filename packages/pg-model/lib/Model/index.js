@@ -73,11 +73,13 @@ class Model {
     this.creator = new Creator(this)
     this.destroyer = new Destroyer(this)
     this.updater = new Updater(this)
+
+    this.promised = (...args) => promised(this, ...args)
   }
 
   create (jsonData, options = { }, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.create, jsonData, options)
+      return this.promised(this.create, jsonData, options)
     } // if ...
 
     options.upsert = false
@@ -88,7 +90,7 @@ class Model {
 
   findById (id, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.findById, id)
+      return this.promised(this.findById, id)
     }
 
     if (!_.isArray(id)) {
@@ -112,7 +114,7 @@ class Model {
 
   find (options, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.find, options)
+      return this.promised(this.find, options)
     } // if ...
 
     const doc = {}
@@ -131,7 +133,7 @@ class Model {
 
   findOne (options, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.findOne, options)
+      return this.promised(this.findOne, options)
     } // if ...
 
     options.limit = 1
@@ -161,7 +163,7 @@ class Model {
 
   update (doc, options, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.update, doc, options)
+      return this.promised(this.update, doc, options)
     } // if ...
 
     options.destroyMissingSubDocs = false
@@ -177,7 +179,7 @@ class Model {
 
   patch (doc, options, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.patch, doc, options)
+      return this.promised(this.patch, doc, options)
     } // if ...
 
     const script = [{statement: 'BEGIN'}]
@@ -195,7 +197,7 @@ class Model {
 
   upsert (jsonData, options, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.upsert, jsonData, options)
+      return this.promised(this.upsert, jsonData, options)
     }
     options.upsert = true
     const script = [{statement: 'BEGIN'}]
@@ -209,7 +211,7 @@ class Model {
 
   destroyById (id, callback = NotSet) {
     if (callback === NotSet) {
-      return promised(this, this.destroyById, id)
+      return this.promised(this.destroyById, id)
     }
 
     if (!_.isArray(id)) {
