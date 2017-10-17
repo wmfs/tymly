@@ -6,12 +6,11 @@ const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
 const MemoryModel = require('../lib/plugin/components/services/storage/Memory-model')
+const assert = require('assert')
 
 describe('Memory Model promise tests', function () {
   let planetsModel
   let personModel
-  let phobosId
-  let stickneyId
 
   it('should get some model instances', function () {
     planetsModel = new MemoryModel(
@@ -101,12 +100,12 @@ describe('Memory Model promise tests', function () {
     )
       .then(() => assert(false))
       .catch(err => {
-          expect(err).to.containSubset(
-            {
-              'name': 'DuplicatePrimaryKey'
-            }
+        expect(err).to.containSubset(
+          {
+            'name': 'DuplicatePrimaryKey'
+          }
           )
-        }
+      }
       )
   })
 
@@ -194,7 +193,6 @@ describe('Memory Model promise tests', function () {
       ]
     )
   })
-
 
   it('should find Bart by name', async () => {
     const doc = await personModel.find(
@@ -289,7 +287,6 @@ describe('Memory Model promise tests', function () {
     )
   })
 
-
   it("should find Maggie's age has gone again", async () => {
     const doc = await personModel.findById(2)
 
@@ -312,7 +309,7 @@ describe('Memory Model promise tests', function () {
     ).then(() => done())
   })
 
-  it('should find Maggie is now a Margaret', async () =>  {
+  it('should find Maggie is now a Margaret', async () => {
     const doc = await personModel.findById(2)
 
     expect(doc).to.containSubset(
@@ -412,7 +409,6 @@ describe('Memory Model promise tests', function () {
         'age': 82
       }
     )
-
   })
 
   it('should upsert (update) Grampa again, but turn age to null', function (done) {
@@ -435,7 +431,6 @@ describe('Memory Model promise tests', function () {
         'lastName': 'Simpson'
       }
     )
-
   })
 
   it('should create mars, with two moons and a few craters', function (done) {
@@ -525,16 +520,10 @@ describe('Memory Model promise tests', function () {
           }
         )
 
-        const moons = {}
-        moons[doc.moons[0].title] = doc.moons[0]
-        moons[doc.moons[1].title] = doc.moons[1]
-        phobosId = moons['Phobos'].id
-        stickneyId = moons['Phobos'].craters[0].id
         done()
       }
     )
   })
-
 
   it('should delete Mars', function (done) {
     planetsModel.destroyById('mars')
@@ -545,6 +534,4 @@ describe('Memory Model promise tests', function () {
     return planetsModel.findById('mars')
       .then(doc => expect(doc).to.equal(undefined))
   })
-
-
 })

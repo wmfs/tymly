@@ -8,7 +8,7 @@ require('underscore-query')(_)
 
 const NotSet = 'NetSet'
 
-function promised(obj, fn, ...args) {
+function promised (obj, fn, ...args) {
   return new Promise((resolve, reject) => {
     fn.call(obj, ...args, (err, result) => {
       if (err) {
