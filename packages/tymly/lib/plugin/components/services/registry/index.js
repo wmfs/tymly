@@ -178,7 +178,6 @@ class RegistryService {
   }
 
   get (key) {
-    console.log('*************', this)
     let path = this.caches.get(cacheName, key)
     if (path) {
       console.log('Getting from cache...')
