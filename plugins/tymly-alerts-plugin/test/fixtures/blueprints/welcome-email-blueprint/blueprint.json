@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "A blueprint to test sending emails",
-  "tags": ["emails", "alert"]
+  "categories": ["emails", "alert"]
 
 }

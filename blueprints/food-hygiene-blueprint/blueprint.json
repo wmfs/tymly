@@ -7,5 +7,5 @@
 
   "organisation": "West Midlands Fire Service",
   "description": "Tymly blueprint to process food and hygiene ratings from a XML file, which can be retrieved from URL_HERE.",
-  "tags": []
+  "categories": []
 }

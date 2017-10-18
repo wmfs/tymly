@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint to store simple information about a set of people.",
-  "tags": ["people", "test"]
+  "categories": ["people", "test"]
 
 }

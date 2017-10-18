@@ -10,6 +10,6 @@
   "organisation": "Tymlys",
   "description": "Blueprint providing core Tymly components",
 
-  "tags": ["tymly", "core"]
+  "categories": ["tymly", "core"]
 
 }

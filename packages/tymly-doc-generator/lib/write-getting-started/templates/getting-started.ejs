@@ -69,7 +69,7 @@ __Edit the content of the `/blueprint.json` file, so it looks like:__
 
   "organisation": "Tymly",
   "description": "Provides a simple flow to print 'Hello World!' to the console",
-  "tags": ["tutorial", "test"]
+  "categories": ["tutorial", "test"]
 }
 ```
 

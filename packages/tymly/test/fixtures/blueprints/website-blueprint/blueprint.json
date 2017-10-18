@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint to help test ACL roles.",
-  "tags": ["acl", "roles", "permissions"]
+  "categories": ["acl", "roles", "permissions"]
 
 }

@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint with a reference table model which is seeded on boot.",
-  "tags": ["test"]
+  "categories": ["test"]
 
 }

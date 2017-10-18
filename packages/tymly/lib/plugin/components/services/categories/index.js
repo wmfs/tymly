@@ -4,16 +4,16 @@ const async = require('async')
 const _ = require('lodash')
 const sprintf = require('sprintf-js').sprintf
 
-class TagsService {
+class CategoryService {
   boot (options, callback) {
     const _this = this
 
     const storage = options.bootedServices.storage
 
-    this.tags = {}
-    this.tagModel = storage.models.tymly_tag
+    this.categories = {}
+    this.categoryModel = storage.models.tymly_category
 
-    this.ensureTags(options.blueprintComponents.tags, options.messages, function (err) {
+    this.ensureCategories(options.blueprintComponents.categories, options.messages, function (err) {
       if (err) {
         callback(err)
       } else {
@@ -30,7 +30,7 @@ class TagsService {
     )
   }
 
-  ensureTags (blueprintTags, messages, callback) {
+  ensureCategories (blueprintTags, messages, callback) {
     const _this = this
 
     if (blueprintTags) {
@@ -38,7 +38,7 @@ class TagsService {
         blueprintTags,
 
         function (tag, name, cb) {
-          _this.tagModel.findOne(
+          _this.categoryModel.findOne(
             {
               where: {
                 name: {equals: tag.name}
@@ -60,7 +60,7 @@ class TagsService {
                     styling: tag.styling || {}
                   }
 
-                  _this.tagModel.create(
+                  _this.categoryModel.create(
                     newDoc,
                     {},
                     function (err) {
@@ -104,17 +104,17 @@ class TagsService {
    */
   refresh (callback) {
     const _this = this
-    this.tagModel.find(
+    this.categoryModel.find(
       {},
       function (err, storedTags) {
         if (err) {
           callback(err)
         } else {
-          _this.tags = _.reduce(
+          _this.categories = _.reduce(
             storedTags,
             function (result, value, key) {
               result[value.name] = {
-                tag: value.name,
+                category: value.name,
                 label: value.label,
                 styling: value.styling
               }
@@ -131,6 +131,6 @@ class TagsService {
 }
 
 module.exports = {
-  serviceClass: TagsService,
+  serviceClass: CategoryService,
   bootAfter: ['storage']
 }

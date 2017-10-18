@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint to help test storage plugins.",
-  "tags": ["storage"]
+  "categories": ["storage"]
 
 }

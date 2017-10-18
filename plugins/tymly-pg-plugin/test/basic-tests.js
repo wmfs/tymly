@@ -12,7 +12,7 @@ describe('PostgreSQL storage tests', function () {
   this.timeout(5000)
 
   let registryService
-  let tagsService
+  let categoryService
   let client
   let statebox
   let executionName
@@ -37,7 +37,7 @@ describe('PostgreSQL storage tests', function () {
         client = tymlyServices.storage.client
         statebox = tymlyServices.statebox
         registryService = tymlyServices.registry
-        tagsService = tymlyServices.tags
+        categoryService = tymlyServices.categories
         done()
       }
     )
@@ -217,18 +217,18 @@ describe('PostgreSQL storage tests', function () {
     expect(registryService.registry.tymlyTest_planetSizeUnit.value).to.eql('km')
   })
 
-  it('should ensure the tags service (which has JSONB columns) still works', function () {
-    expect(tagsService.tags).to.eql(
+  it('should ensure the categories service (which has JSONB columns) still works', function () {
+    expect(categoryService.categories).to.eql(
       {
         gas: {
-          tag: 'gas',
+          category: 'gas',
           label: 'Gas',
           styling: {
             'background-color': '#80C342'
           }
         },
         terrestrial: {
-          tag: 'terrestrial',
+          category: 'terrestrial',
           label: 'terrestrial',
           styling: {
             'background-color': '#5F5F5F '

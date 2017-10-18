@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint to support Solr tests",
-  "tags": ["student", "staff"]
+  "categories": ["student", "staff"]
 
 }

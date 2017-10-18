@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "An example Tymly Blueprint to help model cat behaviour...",
-  "tags": ["cats", "pets"]
+  "categories": ["cats", "pets"]
 
 }

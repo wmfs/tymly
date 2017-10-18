@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "A blueprint to test the Forms service.",
-  "tags": ["forms", "ui"]
+  "categories": ["forms", "ui"]
 
 }
