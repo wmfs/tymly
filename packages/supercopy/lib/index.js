@@ -24,7 +24,7 @@ function createFolders (targetDir) {
   }, initDir)
 }
 
-module.exports = function supercopy (options, callback) {
+function supercopy (options, callback) {
   preprocess(options, () => {
     collectFileInfo(options, function (err, fileInfo) {
       if (err) {
@@ -40,4 +40,20 @@ module.exports = function supercopy (options, callback) {
       }
     })
   })
+}
+
+const NotSet = 'NotSet'
+
+module.exports = (options, callback = NotSet) => {
+  if (callback === NotSet) {
+    return new Promise((resolve, reject) => {
+      supercopy(options, (err) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve()
+      })
+    })
+  }
+  supercopy(options, callback)
 }
