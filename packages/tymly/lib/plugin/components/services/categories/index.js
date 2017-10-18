@@ -1,133 +1,79 @@
 'use strict'
 
-const async = require('async')
-const _ = require('lodash')
-const sprintf = require('sprintf-js').sprintf
-
 class CategoryService {
   boot (options, callback) {
-    const _this = this
-
     const storage = options.bootedServices.storage
 
     this.categories = {}
     this.categoryModel = storage.models.tymly_category
 
-    this.ensureCategories(options.blueprintComponents.categories, options.messages, function (err) {
-      if (err) {
-        callback(err)
-      } else {
-        _this.refresh(function (err) {
-          if (err) {
-            callback(err)
-          } else {
-            options.messages.info('Tags loaded')
-            callback(null)
-          }
-        })
-      }
+    this.ensureCategories(options.blueprintComponents.categories, options.messages)
+      .then(() => this.refresh())
+      .then(() => options.messages.info('Categories loaded'))
+      .then(() => callback())
+      .catch(err => callback(err))
+  }
+
+  ensureCategories (blueprintCats, messages) {
+    if (!blueprintCats) {
+      return Promise.resolve()
     }
+
+    const catList = Array.from(Object.values(blueprintCats))
+
+    const categoryChecks = catList.map(
+      cat => this.ensureCategory(cat, messages)
     )
-  }
 
-  ensureCategories (blueprintTags, messages, callback) {
-    const _this = this
+    return Promise.all(categoryChecks)
+  } // ensureCategories
 
-    if (blueprintTags) {
-      async.forEachOf(
-        blueprintTags,
+  async ensureCategory (cat, messages) {
+    const doc = await this.categoryModel.findOne({where: {name: {equals: cat.name}}})
+    return !doc ? this.saveCategory(cat, messages) : null
+  } // ensureCategory
 
-        function (tag, name, cb) {
-          _this.categoryModel.findOne(
-            {
-              where: {
-                name: {equals: tag.name}
-              }
-            },
-            function (err, doc) {
-              if (err) {
-                cb(err)
-              } else {
-                if (doc) {
-                  // Tag already in storage, move on
-                  cb(null)
-                } else {
-                  // Tag not in storage, go create
-
-                  const newDoc = {
-                    name: tag.name,
-                    label: tag.label || tag.name,
-                    styling: tag.styling || {}
-                  }
-
-                  _this.categoryModel.create(
-                    newDoc,
-                    {},
-                    function (err) {
-                      if (err) {
-                        cb(err)
-                      } else {
-                        messages.info(sprintf('Added %s', newDoc.name))
-                        cb(null)
-                      }
-                    }
-                  )
-                }
-              }
-            }
-          )
-        },
-
-        callback
-      )
-    } else {
-      callback(null)
+  async saveCategory (cat, messages) {
+    const newDoc = {
+      name: cat.name,
+      label: cat.label || cat.name,
+      styling: cat.styling || {}
     }
-  }
+
+    await this.categoryModel.create(newDoc, {})
+    messages.info(`Added ${newDoc.name}`)
+  } // saveCategory
 
   /**
-   * Reloads all tags from storage (i.e. the `tymly_tag_1_0` model)
-   * @param {Function} callback Called with all loaded tags
-   * @returns {undefined}
+   * Reloads all tags from storage (i.e. the `tymly_category_1_0` model)
+   * @returns {Promise} resolving to all the loaded categories
    * @example
-   * registry.refresh(
-   *   function (err, tags) {
-   *     // Tags as loaded from storage
-   *     // Key/value pairs, where key is the tag ID and value is an object:
+   * categories.refresh()
+   *   .then(cats => {
+   *     // Categories as loaded from storage
+   *     // Key/value pairs, where key is the category ID and value is an object:
    *     // {
-   *     //  tag: Tag name
-   *     //  label: Tag label
-   *     //  styling: Tag styling
+   *     //  category: Category name
+   *     //  label: Category label
+   *     //  styling: Category styling
    *     // }
    *   }
    * )
    */
-  refresh (callback) {
-    const _this = this
-    this.categoryModel.find(
-      {},
-      function (err, storedTags) {
-        if (err) {
-          callback(err)
-        } else {
-          _this.categories = _.reduce(
-            storedTags,
-            function (result, value, key) {
-              result[value.name] = {
-                category: value.name,
-                label: value.label,
-                styling: value.styling
-              }
-              return result
-            },
-            {}
-          )
+  async refresh () {
+    const storedCats = await this.categoryModel.find({})
 
-          callback(null)
-        }
+    this.categories = storedCats.reduce((result, value) => {
+      result[value.name] = {
+        category: value.name,
+        label: value.label,
+        styling: value.styling
       }
-    )
-  }
+      return result
+    }, {})
+
+    return this.categories
+  } // refresh
 }
 
 module.exports = {
