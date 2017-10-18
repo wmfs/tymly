@@ -45,7 +45,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should supercopy some people', function (done) {
+  it('Should promise to supercopy some people', function (done) {
     supercopy(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input-data/people'),
@@ -54,12 +54,8 @@ describe('Run some basic tests', function () {
         client: client,
         schemaName: 'supercopy_test',
         debug: true
-      },
-      function (err) {
-        expect(err).to.equal(null)
-        done()
       }
-    )
+    ).then(() => done())
   })
 
   it('Should return correctly modified adult rows', function (done) {
