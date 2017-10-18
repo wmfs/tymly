@@ -1,2 +1,2 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-TRUNCATE TABLE tymly.tag;
+TRUNCATE TABLE tymly.category;
