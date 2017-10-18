@@ -8,5 +8,5 @@
 
   "organisation": "West Midlands Fire Service",
   "description": "Tymly blueprint for building attributes",
-  "tags": ["gazetteer"]
+  "categories": ["gazetteer"]
 }

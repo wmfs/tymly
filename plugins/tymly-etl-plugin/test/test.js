@@ -6,7 +6,7 @@ const expect = require('chai').expect
 const glob = require('glob')
 const _ = require('lodash')
 const csv = require('csvtojson')
-const STATE_MACHINE_NAME = 'fbotTest_people_1_0'
+const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('Simple CSV and tymly test', function () {
   this.timeout(5000)

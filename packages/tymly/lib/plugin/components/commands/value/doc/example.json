@@ -1,7 +1,0 @@
-{
-  "catName": {
-    "$value": {
-      "path": "myCatData.name"
-    }
-  }
-}

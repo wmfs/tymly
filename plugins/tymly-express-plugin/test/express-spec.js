@@ -83,7 +83,7 @@ describe('Simple Express tests', function () {
           },
 
           defaultUsers: {
-            'Dave': ['fbotTest_fbotTestAdmin'],
+            'Dave': ['tymlyTest_tymlyTestAdmin'],
             'Steve': ['spaceCadet']
           }
 
@@ -115,7 +115,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        stateMachineName: 'fbotTest_cat_1_0',
+        stateMachineName: 'tymlyTest_cat_1_0',
         data: {petName: 'Rupert'}
       }
     ).on(
@@ -162,7 +162,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        stateMachineName: 'fbotTest_cat_1_0',
+        stateMachineName: 'tymlyTest_cat_1_0',
         input: {
           petName: 'Rupert',
           gender: 'male',
@@ -206,7 +206,7 @@ describe('Simple Express tests', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_cat_1_0')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_cat_1_0')
         expect(executionDescription.currentStateName).to.eql('Sleeping')
         expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
         expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)
@@ -224,7 +224,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        stateMachineName: 'fbotTest_listeningCat_1_0',
+        stateMachineName: 'tymlyTest_listeningCat_1_0',
         input: {
           petName: 'Alan',
           gender: 'male',
@@ -296,7 +296,7 @@ describe('Simple Express tests', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_listeningCat_1_0')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_listeningCat_1_0')
         expect(executionDescription.currentStateName).to.eql('Sleeping')
         expect(executionDescription.ctx.gender).to.eql('male')
         expect(executionDescription.ctx.petDiary).to.be.an('array')
@@ -318,7 +318,7 @@ describe('Simple Express tests', function () {
     rest.postJson(
       executionsUrl,
       {
-        stateMachineName: 'fbotTest_listeningCat_1_0',
+        stateMachineName: 'tymlyTest_listeningCat_1_0',
         input: {
           petName: 'Alan',
           gender: 'male',
@@ -381,7 +381,7 @@ describe('Simple Express tests', function () {
           rest.postJson(
             executionsUrl,
             {
-              namespace: 'fbotTest',
+              namespace: 'tymlyTest',
               stateMachineName: 'cat',
               version: '1.0',
               data: {petName: 'Rupert'}

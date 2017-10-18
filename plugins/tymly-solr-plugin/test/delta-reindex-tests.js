@@ -5,7 +5,7 @@
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-// const STATE_MACHINE_NAME = 'fbotTest_deltaReindex_1_0'
+// const STATE_MACHINE_NAME = 'tymlyTest_deltaReindex_1_0'
 
 describe('tymly-solr-plugin tests', function () {
   this.timeout(5000)

@@ -20,7 +20,7 @@ class UsersService {
       this.forms = options.bootedServices.forms.forms
     }
 
-    this.roleMembershipModel = options.bootedServices.storage.models.fbot_roleMembership
+    this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
     const caches = options.bootedServices.caches
     caches.defaultIfNotInConfig('userMemberships', 500)
     this.userMembershipsCache = caches.userMemberships
@@ -53,7 +53,7 @@ class UsersService {
    * @example
    * users.ensureUserRoles(
    *   'Dave',
-   *   ['fbotTest_fbotTestAdmin'],
+   *   ['tymlyTest_tymlyTestAdmin'],
    *   function (err) {
    *     // Expect err to be null
    *   }
@@ -95,7 +95,7 @@ class UsersService {
    * users.getUserRoles(
    *   'Dave',
    *   function (err, roles) {
-   *     // roles === ['fbotTest_fbotTestAdmin']
+   *     // roles === ['tymlyTest_tymlyTestAdmin']
    *   }
    * )
    */
@@ -129,13 +129,13 @@ class UsersService {
   }
 
   /**
-   * Resets the internal cache of users and their roles. Needs calling if things change in the fbot_roleMembership_1_0 model and similar.
+   * Resets the internal cache of users and their roles. Needs calling if things change in the tymly_roleMembership_1_0 model and similar.
    * @returns {undefined}
    * @example
    * users.getUserRoles(
    *   'Dave',
    *   function (err, roles) {
-   *     // roles === ['fbotTest_fbotTestAdmin']
+   *     // roles === ['tymlyTest_tymlyTestAdmin']
    *   }
    * )
    */

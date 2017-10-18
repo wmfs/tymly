@@ -1,6 +1,6 @@
 {
 
-  "namespace": "fbotTest",
+  "namespace": "tymlyTest",
   "name": "welcome-email",
   "version": "1.0",
 
@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "A blueprint to test sending emails",
-  "tags": ["emails", "alert"]
+  "categories": ["emails", "alert"]
 
 }

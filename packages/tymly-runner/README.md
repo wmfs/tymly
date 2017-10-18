@@ -20,7 +20,7 @@ Before starting, please set following environment variables:
 | TYMLY_PLUGINS_PATH    |  Plugin directories to use at boot-time, `;` delimited if multiple sources. For example: `TYMLY_PLUGINS_PATH="/plugins/production/*-plugin;/plugins/development/*-plugin"`. |
 | TYMLY_BLUEPRINTS_PATH |  Exactly the same as `TYMLY_PLUGINS_PATH`, but used to specifiy the location(s) of blueprints to load at boot time, e.g. `TYMLY_BLUEPRINTS_PATH="/blueprints/production/*-blueprint;/plugins/development/*-blueprint"`. |
 | TYMLY_ADMIN_USERID    |  Identifies a username (that will be decoded from incoming JWT tokens) which should be treated as an administrator. For example: `TYMLY_ADMIN_USERID=bigboss`.|
-| TYMLY_ADMIN_ROLES     |  Indicates which roles should be automatically granted to the user identified by `TYMLY_ADMIN_USERID` (delimited by `,`). For example: `TYMLY_ADMIN_ROLES=fbot_admin`. |
+| TYMLY_ADMIN_ROLES     |  Indicates which roles should be automatically granted to the user identified by `TYMLY_ADMIN_USERID` (delimited by `,`). For example: `TYMLY_ADMIN_ROLES=tymly_admin`. |
 | DEBUG                  |  We use the [debug](https://www.npmjs.com/package/debug) package, where Tymly plugin and state names equate to debug modules, for example: `DEBUG=tymly,processingCscFiles,-express`.
 
 ## Starting 

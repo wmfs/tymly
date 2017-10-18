@@ -1,9 +1,9 @@
 {
-  "plural": "tags",
+  "plural": "categories",
 
   "primaryKey": ["name"],
 
-  "description": "Tags used to help explore/categorize flows and tymlys",
+  "description": "Categories used to help explore/organise blueprints and plugins",
   "type": "object",
 
   "properties": {

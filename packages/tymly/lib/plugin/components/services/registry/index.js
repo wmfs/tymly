@@ -16,7 +16,7 @@ class RegistryService {
     this.bootedRegistry = options.bootedServices.registry
 
     this.registry = {}
-    this.registryKeyModel = storage.models.fbot_registryKey // just describes the registry-key table (columns, etc.)
+    this.registryKeyModel = storage.models.tymly_registryKey // just describes the registry-key table (columns, etc.)
     this.blueprintRegistryKeys = options.blueprintComponents.registryKeys || {} // the registry-keys from the blueprint
 
     this.ensureBlueprintKeys(options.messages, function (err) {
@@ -90,7 +90,7 @@ class RegistryService {
   }
 
   /**
-   * Reloads all registry key/values from storage (i.e. the `fbot_registryKey_1_0` model)
+   * Reloads all registry key/values from storage (i.e. the `tymly_registryKey_1_0` model)
    * @param {Function} callback Called with all key/value pairs currently stored in the registry
    * @returns {undefined}
    * @example

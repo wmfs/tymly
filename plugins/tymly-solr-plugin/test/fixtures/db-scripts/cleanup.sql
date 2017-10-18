@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS fbot.solr_data;
+DROP VIEW IF EXISTS tymly.solr_data;
 
-DROP TABLE IF EXISTS fbot_test.students;
-DROP TABLE IF EXISTS fbot_test.staff;
+DROP TABLE IF EXISTS tymly_test.students;
+DROP TABLE IF EXISTS tymly_test.staff;

@@ -225,7 +225,7 @@ describe('Tests the Ranking State Resource', function () {
   })
 
   it('should delete this registry key', function (done) {
-    client.query('DELETE FROM fbot.registry_key WHERE key = \'test_factory\'', function (err) {
+    client.query('DELETE FROM tymly.registry_key WHERE key = \'test_factory\'', function (err) {
       expect(err).to.equal(null)
       if (err) {
         done(err)

@@ -101,7 +101,6 @@ module.exports = function (rootDir, inventory, callback) {
 
   const components = [
     {componentName: 'stateResources', singular: 'stateResource', weight: 1000},
-    {componentName: 'commands', singular: 'command', weight: 1010},
     {componentName: 'services', singular: 'service', weight: 1020}
   ]
 

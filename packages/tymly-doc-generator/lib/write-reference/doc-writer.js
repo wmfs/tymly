@@ -10,7 +10,6 @@ const contentProcessors = require('./content-processors')
 
 const contentTemplates = {
   services: fs.readFileSync(path.resolve(__dirname, './templates/services-content.ejs')).toString(),
-  commands: fs.readFileSync(path.resolve(__dirname, './templates/commands-content.ejs')).toString(),
   stateResources: fs.readFileSync(path.resolve(__dirname, './templates/state-resources-content.ejs')).toString()
 }
 

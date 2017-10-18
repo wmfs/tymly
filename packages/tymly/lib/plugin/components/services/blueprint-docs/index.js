@@ -6,7 +6,7 @@ class BlueprintDocsService {
   boot (options, callback) {
     this.storage = options.bootedServices
     const models = options.bootedServices.storage.models
-    this.blueprintDocDao = models.fbot_blueprintDoc
+    this.blueprintDocDao = models.tymly_blueprintDoc
     callback(null)
   }
 
@@ -19,7 +19,7 @@ class BlueprintDocsService {
    * @example
    * blueprintDocs.isKnownDocument(
    *   'templateRole',
-   *   'fbotTest_fbotTestAdmin',
+   *   'tymlyTest_tymlyTestAdmin',
    *   function (err, isKnown) {
    *     // 'isKnown' is boolean and indicates if this document
    *     // has been previously added at boot-time.
@@ -48,15 +48,15 @@ class BlueprintDocsService {
    * Record that a blueprint has just creating a document in a model.
    * @param {string} domain For grouping documents that have been created, often relate to a model name
    * @param {string} docId An id for the document that's being registered (should be unique within its domain)
-   * @param {Function} callback Called with the registered document (e.g. a doc stored via the `fbot.blueprintDocs` model, pretty useless)
+   * @param {Function} callback Called with the registered document (e.g. a doc stored via the `tymly.blueprintDocs` model, pretty useless)
    * @returns {undefined}
    * @example
    * blueprintDocs.registerDocument(
    *   'templateRole',
-   *   'fbotTest_fbotTestAdmin',
+   *   'tymlyTest_tymlyTestAdmin',
    *   function (err, blueprintsDocInfo) {
    *     // The returned value here is the doc as now stored
-   *     // in the fbot.blueprintDocs model... not that
+   *     // in the tymly.blueprintDocs model... not that
    *     // much use, just deal with errors?
    *   }
    * )

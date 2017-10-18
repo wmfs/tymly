@@ -3,12 +3,12 @@
 const path = require('path')
 const expect = require('chai').expect
 
-describe('Tag tests', function () {
+describe('Category tests', function () {
   const tymly = require('./../lib')
 
   this.timeout(5000)
 
-  let tagsService
+  let categoryService
 
   it('should load the cat blueprint (which has some registry keys)', function (done) {
     tymly.boot(
@@ -23,16 +23,16 @@ describe('Tag tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        tagsService = tymlyServices.tags
+        categoryService = tymlyServices.categories
         done()
       }
     )
   })
 
   it('should find the tags are all stored correctly', function () {
-    expect(tagsService.tags.cat).to.eql(
+    expect(categoryService.categories.cat).to.eql(
       {
-        tag: 'cat',
+        category: 'cat',
         label: 'Cat',
         styling: {
           'background-color': '#5F5F5F'
@@ -40,9 +40,9 @@ describe('Tag tests', function () {
       }
     )
 
-    expect(tagsService.tags.pet).to.eql(
+    expect(categoryService.categories.pet).to.eql(
       {
-        tag: 'pet',
+        category: 'pet',
         label: 'Pet',
         styling: {
           'background-color': '#80C342'

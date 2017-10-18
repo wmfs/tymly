@@ -11,13 +11,13 @@
       "InputPath": "$.outputDir",
       "Resource": "module:synchronizingTable",
       "ResourceConfig": {
-        "transformerFunctionName": "fbotTest_animalConverter",
+        "transformerFunctionName": "tymlyTest_animalConverter",
         "source": {
-          "tableName": "fbot_test.animal_with_age",
+          "tableName": "tymly_test.animal_with_age",
           "hashSumColumnName": "hash_sum"
         },
         "target": {
-          "tableName": "fbot_test.animal_with_year",
+          "tableName": "tymly_test.animal_with_year",
           "hashSumColumnName": "origin_hash_sum"
         },
         "join": {

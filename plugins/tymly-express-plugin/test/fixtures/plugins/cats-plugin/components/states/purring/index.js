@@ -4,7 +4,7 @@ const levelLabels = ['softly', 'away', 'loudly']
 
 class Purring {
   init (stateConfig, options, callback) {
-    this.calculateContentmentLevel = options.services.functions.getFunction('fbotTest', 'calculateContentmentLevel')
+    this.calculateContentmentLevel = options.services.functions.getFunction('tymlyTest', 'calculateContentmentLevel')
     callback(null)
   }
 

@@ -13,9 +13,9 @@ class RbacService {
     const _this = this
 
     this.messages = options.messages
-    this.roleModel = options.bootedServices.storage.models.fbot_role
-    this.roleMembershipModel = options.bootedServices.storage.models.fbot_roleMembership
-    this.permissionModel = options.bootedServices.storage.models.fbot_permission
+    this.roleModel = options.bootedServices.storage.models.tymly_role
+    this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
+    this.permissionModel = options.bootedServices.storage.models.tymly_permission
 
     applyDefaultBlueprintDocs(
       options,
@@ -33,7 +33,7 @@ class RbacService {
   }
 
   /**
-   * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `fbot_permission_1_0`, `fbot_role_1_0` and `fbot_membership_1_0`)
+   * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `tymly_permission_1_0`, `tymly_role_1_0` and `tymly_membership_1_0`)
    * @param {Function} callback Called with a standard error
    * @returns {undefined}
    * @example
@@ -73,16 +73,16 @@ class RbacService {
    * @param {Object} ctx A Tymly context (optional)
    * @param {Array<string>} roles An array of roleIds
    * @param {string} resourceType The type of resource to authorize against (e.g. `flow`)
-   * @param {string} resourceName The name of the resource that the credentials are being checked against (e.g. `flow fbotTest_cat_1_0 startNewTymly`)
+   * @param {string} resourceName The name of the resource that the credentials are being checked against (e.g. `flow tymlyTest_cat_1_0 startNewTymly`)
    * @param {string} action And the name of action these credentials are wanting to perform (e.g. `startNewTymly`)
    * @returns {boolean} Indicates if the provided credentials allow the specified action to be applied to the named resource (`true`) or not (`false`)
    * @example
    * var allowed = rbac.getUserIdFromContext(
    *   'Dave', // userId
    *   null, // ctx
-   *   ['fbotTest_fbotTestAdmin'], // roles
+   *   ['tymlyTest_tymlyTestAdmin'], // roles
    *   'flow', // resourceType,
-   *   'fbotTest_cat_1_0', // resourceName,
+   *   'tymlyTest_cat_1_0', // resourceName,
    *   'startNewTymly' // action
    * ) // Returns true/false
    */

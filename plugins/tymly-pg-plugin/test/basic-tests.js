@@ -6,13 +6,13 @@ const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
-const STATE_MACHINE_NAME = 'fbotTest_people_1_0'
+const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('PostgreSQL storage tests', function () {
   this.timeout(5000)
 
   let registryService
-  let tagsService
+  let categoryService
   let client
   let statebox
   let executionName
@@ -37,7 +37,7 @@ describe('PostgreSQL storage tests', function () {
         client = tymlyServices.storage.client
         statebox = tymlyServices.statebox
         registryService = tymlyServices.registry
-        tagsService = tymlyServices.tags
+        categoryService = tymlyServices.categories
         done()
       }
     )
@@ -130,7 +130,7 @@ describe('PostgreSQL storage tests', function () {
           job: ''
         }
       },
-      'fbotTest_badpeople_1_0',
+      'tymlyTest_badpeople_1_0',
       {},
       function (err, result) {
         expect(err).to.eql(null)
@@ -159,7 +159,7 @@ describe('PostgreSQL storage tests', function () {
           firstName: 'Seymour'
         }
       },
-      'fbotTest_badpeople_1_0',
+      'tymlyTest_badpeople_1_0',
       {},
       function (err, result) {
         expect(err).to.eql(null)
@@ -190,7 +190,7 @@ describe('PostgreSQL storage tests', function () {
           age: 48
         }
       },
-      'fbotTest_badpeople_1_0',
+      'tymlyTest_badpeople_1_0',
       {},
       function (err, result) {
         expect(err).to.eql(null)
@@ -214,21 +214,21 @@ describe('PostgreSQL storage tests', function () {
   })
 
   it('should ensure the registry service (which has JSONB columns) still works', function () {
-    expect(registryService.registry.fbotTest_planetSizeUnit.value).to.eql('km')
+    expect(registryService.registry.tymlyTest_planetSizeUnit.value).to.eql('km')
   })
 
-  it('should ensure the tags service (which has JSONB columns) still works', function () {
-    expect(tagsService.tags).to.eql(
+  it('should ensure the categories service (which has JSONB columns) still works', function () {
+    expect(categoryService.categories).to.eql(
       {
         gas: {
-          tag: 'gas',
+          category: 'gas',
           label: 'Gas',
           styling: {
             'background-color': '#80C342'
           }
         },
         terrestrial: {
-          tag: 'terrestrial',
+          category: 'terrestrial',
           label: 'terrestrial',
           styling: {
             'background-color': '#5F5F5F '
@@ -239,8 +239,8 @@ describe('PostgreSQL storage tests', function () {
   })
 
   it('should find the seed-data state-machine by name', function () {
-    const stateMachine = statebox.findStateMachineByName('fbotTest_seedDataTest_1_0')
-    expect(stateMachine.name).to.eql('fbotTest_seedDataTest_1_0')
+    const stateMachine = statebox.findStateMachineByName('tymlyTest_seedDataTest_1_0')
+    expect(stateMachine.name).to.eql('tymlyTest_seedDataTest_1_0')
   })
 
   it('should start a seed-data execution', function (done) {
@@ -248,7 +248,7 @@ describe('PostgreSQL storage tests', function () {
       {
         idToFind: 3
       },  // input
-      'fbotTest_seedDataTest_1_0', // state machine name
+      'tymlyTest_seedDataTest_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'
       }, // options
@@ -257,7 +257,7 @@ describe('PostgreSQL storage tests', function () {
         expect(executionDescription.ctx.foundTitle.title).to.eql('Miss')
         expect(executionDescription.currentStateName).to.eql('FindingById')
         expect(executionDescription.currentResource).to.eql('module:findingById')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_seedDataTest_1_0')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_seedDataTest_1_0')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }

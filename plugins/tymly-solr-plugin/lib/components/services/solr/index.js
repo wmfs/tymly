@@ -116,7 +116,7 @@ class SolrService {
     }
 
     if (selects.length !== 0) {
-      return `CREATE OR REPLACE VIEW fbot.solr_data AS \n${selects.join('\nUNION\n')};`
+      return `CREATE OR REPLACE VIEW tymly.solr_data AS \n${selects.join('\nUNION\n')};`
     } else {
       return null
     }

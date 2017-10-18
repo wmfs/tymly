@@ -5,7 +5,7 @@
 const path = require('path')
 const expect = require('chai').expect
 const tymly = require('../lib')
-const STATE_MACHINE_NAME = 'fbotTest_setRegistryKey_1_0'
+const STATE_MACHINE_NAME = 'tymlyTest_setRegistryKey_1_0'
 
 describe('It should test the state resource for setting reg keys', function () {
   this.timeout(5000)
@@ -35,7 +35,7 @@ describe('It should test the state resource for setting reg keys', function () {
   })
 
   it('should get the value from registry using key', function (done) {
-    let key = 'fbotTest_mealThreshold'
+    let key = 'tymlyTest_mealThreshold'
     let value = registry.get(key)
     expect(value).to.eql(3)
     done()
@@ -44,7 +44,7 @@ describe('It should test the state resource for setting reg keys', function () {
   it('Should test the state resource execution', function (done) {
     statebox.startExecution(
       {
-        key: 'fbotTest_mealThreshold',
+        key: 'tymlyTest_mealThreshold',
         value: 2
       },
       STATE_MACHINE_NAME,
@@ -59,7 +59,7 @@ describe('It should test the state resource for setting reg keys', function () {
   })
 
   it('should get the value from registry using key after calling set', function (done) {
-    let key = 'fbotTest_mealThreshold'
+    let key = 'tymlyTest_mealThreshold'
     let value = registry.get(key)
     expect(value).to.eql(2)
     done()

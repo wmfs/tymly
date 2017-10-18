@@ -3,7 +3,7 @@
   "description": "What cats do.",
   "version": "1.0",
   "initialStateId": "sleeping",
-  "tags": ["pet", "cat"],
+  "categories": ["pet", "cat"],
   "instigators": ["user"],
   "initialCtx": {
     "mealCount": 0

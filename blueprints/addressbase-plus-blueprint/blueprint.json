@@ -8,5 +8,5 @@
 
   "organisation": "West Midlands Fire Service",
   "description": "Tymly blueprint to support ordnance survey's addressbase plus",
-  "tags": ["address", "addressbase", "gazetteer"]
+  "categories": ["address", "addressbase", "gazetteer"]
 }

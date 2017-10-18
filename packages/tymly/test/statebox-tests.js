@@ -2,7 +2,7 @@
 
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'fbotTest_aDayInTheLife'
+const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 
 describe('Simple Tymly test', function () {
   const tymly = require('./../lib')
@@ -64,7 +64,7 @@ describe('Simple Tymly test', function () {
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_aDayInTheLife')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_aDayInTheLife')
         expect(executionDescription.currentStateName).to.eql('Sleeping')
         expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
         expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)

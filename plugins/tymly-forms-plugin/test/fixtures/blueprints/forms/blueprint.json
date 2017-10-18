@@ -1,6 +1,6 @@
 {
 
-  "namespace": "fbotTest",
+  "namespace": "tymlyTest",
   "name": "forms",
   "version": "1.0",
 
@@ -9,6 +9,6 @@
 
   "organisation": "Tymlys",
   "description": "A blueprint to test the Forms service.",
-  "tags": ["forms", "ui"]
+  "categories": ["forms", "ui"]
 
 }

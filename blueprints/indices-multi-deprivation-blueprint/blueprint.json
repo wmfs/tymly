@@ -7,5 +7,5 @@
 
   "organisation": "West Midlands Fire Service",
   "description": "Tymly blueprint to process indices of multiple deprivation data from a csv file, which can be retrieved from https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015 (note that this blueprint uses file 7).",
-  "tags": []
+  "categories": []
 }

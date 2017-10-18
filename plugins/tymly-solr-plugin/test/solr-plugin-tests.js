@@ -59,7 +59,7 @@ describe('tymly-solr-plugin tests', function () {
 
     expect(select).to.be.a('string')
     expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM fbot_test.students')
+      'character_name AS character_name FROM tymly_test.students')
   })
 
   it('should generate a SQL CREATE VIEW statement', function () {
@@ -67,12 +67,12 @@ describe('tymly-solr-plugin tests', function () {
       studentsAndStaffModels, studentsAndStaffSearchDocs)
 
     expect(sqlString).to.be.a('string')
-    expect(sqlString).to.eql('CREATE OR REPLACE VIEW fbot.solr_data AS \n' +
+    expect(sqlString).to.eql('CREATE OR REPLACE VIEW tymly.solr_data AS \n' +
       'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM fbot_test.students\n' +
+      'character_name AS character_name FROM tymly_test.students\n' +
       'UNION\n' +
       'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_first_name || \' \' || character_last_name AS character_name FROM fbot_test.staff;')
+      'character_first_name || \' \' || character_last_name AS character_name FROM tymly_test.staff;')
   })
 
   it('should have generated a SQL CREATE VIEW statement on tymly boot', function () {
@@ -109,7 +109,7 @@ describe('tymly-solr-plugin tests', function () {
   })
 
   it('should return 19 rows when selecting from the view', function (done) {
-    client.query(`SELECT * FROM fbot.solr_data ORDER BY character_name ASC;`, [],
+    client.query(`SELECT * FROM tymly.solr_data ORDER BY character_name ASC;`, [],
       function (err, result) {
         expect(err).to.eql(null)
         if (err) {

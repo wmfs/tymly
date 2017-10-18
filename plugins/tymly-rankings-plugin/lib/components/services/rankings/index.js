@@ -67,7 +67,7 @@ module.exports = {
 
 /*
 Registry keys can be found in:
-options.bootedServices.registry.registry -> registryKeys[key].value (this one appears to look at DB in fbot.registry_key)
+options.bootedServices.registry.registry -> registryKeys[key].value (this one appears to look at DB in tymly.registry_key)
 or
 options.bootedServices.registry.blueprintRegistryKeys -> registryKeys[key].schema.properties.value
 */
