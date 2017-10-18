@@ -98,7 +98,7 @@ class StateboxService {
 }
 
 module.exports = {
-  bootAfter: ['storage', 'commands', 'temp'],
+  bootAfter: ['storage', 'temp'],
   refProperties: {
     stateMachineName: 'stateMachines'
   },
