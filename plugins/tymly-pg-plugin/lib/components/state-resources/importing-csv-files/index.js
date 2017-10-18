@@ -4,6 +4,7 @@
 'use strict'
 
 const supercopy = require('supercopy')
+const multicopy = require('./multicopy.js')
 
 class ImportingCsvFiles {
   init (resourceConfig, env, callback) {
@@ -11,33 +12,52 @@ class ImportingCsvFiles {
     this.topDownTableOrder = resourceConfig.topDownTableOrder
     this.client = env.bootedServices.storage.client
     this.truncateTables = resourceConfig.truncateTables || false
+    this.multicopy = resourceConfig.multicopy || false
     callback(null)
   }
 
   run (event, context) {
-    supercopy(
-      {
-        sourceDir: event,
-        headerColumnPkPrefix: this.headerColumnPkPrefix,
-        topDownTableOrder: this.topDownTableOrder,
-        client: this.client,
-        schemaName: context.stateMachineMeta.schemaName,
-        truncateTables: this.truncateTables,
-        debug: true
-      },
-      function (err) {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'supercopyFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
+    if (this.multiCopy === true) {
+      multicopy.refresh(
+        event,
+        function (err) {
+          if (err) {
+            context.sendTaskFailure(
+              {
+                error: 'multicopyFail',
+                cause: err
+              }
+            )
+          } else {
+            context.sendTaskSuccess()
+          }
         }
-      }
-    )
+      )
+    } else {
+      supercopy(
+        {
+          sourceDir: event,
+          headerColumnPkPrefix: this.headerColumnPkPrefix,
+          topDownTableOrder: this.topDownTableOrder,
+          client: this.client,
+          schemaName: context.stateMachineMeta.schemaName,
+          truncateTables: this.truncateTables,
+          debug: true
+        },
+        function (err) {
+          if (err) {
+            context.sendTaskFailure(
+              {
+                error: 'supercopyFail',
+                cause: err
+              }
+            )
+          } else {
+            context.sendTaskSuccess()
+          }
+        }
+      )
+    }
   }
 }
 
