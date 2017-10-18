@@ -1,6 +1,6 @@
 {
 
-  "namespace": "fbot",
+  "namespace": "tymly",
   "name": "core",
   "version": "1.0",
 
@@ -10,6 +10,6 @@
   "organisation": "Tymlys",
   "description": "Blueprint providing core Tymly components",
 
-  "tags": ["tymly", "fbot", "core"]
+  "tags": ["tymly", "core"]
 
 }

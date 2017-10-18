@@ -55,7 +55,7 @@ describe('RBAC tests', function () {
         null, // ctx
         [], // roles
         'stateMachine', // resourceType
-        'fbotTest_readPost_1_0', // resourceName
+        'tymlyTest_readPost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
   })
@@ -67,7 +67,7 @@ describe('RBAC tests', function () {
         null, // ctx
         [], // roles
         'stateMachine', // resourceType
-        'fbotTest_createPost_1_0', // resourceName
+        'tymlyTest_createPost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
   })
@@ -79,7 +79,7 @@ describe('RBAC tests', function () {
         null, // ctx
         [], // roles
         'stateMachine', // resourceType
-        'fbotTest_createPost_1_0', // resourceName
+        'tymlyTest_createPost_1_0', // resourceName
         'create' // action
       )).to.equal(false)
   })
@@ -91,7 +91,7 @@ describe('RBAC tests', function () {
         {userId: 'molly'}, // ctx
         [], // roles
         'stateMachine', // resourceType
-        'fbotTest_updatePost_1_0', // resourceName
+        'tymlyTest_updatePost_1_0', // resourceName
         'create' // action
       )).to.equal(true)
   })
@@ -101,9 +101,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         'john.doe', // userId
         null, // ctx
-        ['fbotTest_developer'], // roles
+        ['tymlyTest_developer'], // roles
         'stateMachine', // resourceType
-        'fbotTest_createPost_1_0', // resourceName
+        'tymlyTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(true)
   })
@@ -115,7 +115,7 @@ describe('RBAC tests', function () {
         null, // ctx
         ['spaceCadet', 'IRRELEVANT!'], // roles
         'stateMachine', // resourceType
-        'fbotTest_createPost_1_0', // resourceName
+        'tymlyTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(false)
   })
@@ -125,9 +125,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         null, // userId
         null, // ctx
-        ['fbot_developer'], // roles
+        ['tymly_developer'], // roles
         'stateMachine', // resourceType
-        'fbotTest_deletePost_1_0', // resourceName
+        'tymlyTest_deletePost_1_0', // resourceName
         'create' // action
       )).to.equal(false)
   })
@@ -137,9 +137,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         null, // userId
         null, // ctx
-        ['fbotTest_boss'], // roles
+        ['tymlyTest_boss'], // roles
         'stateMachine', // resourceType
-        'fbotTest_createPost_1_0', // resourceName
+        'tymlyTest_createPost_1_0', // resourceName
         'cancel' // action
       )).to.equal(true)
   })
@@ -149,9 +149,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         'molly', // userId
         null, // ctx
-        ['fbotTest_fbotTestAdmin'], // roles
+        ['tymlyTest_tymlyTestAdmin'], // roles
         'stateMachine', // resourceType
-        'fbotTest_purgeSite_1_0', // resourceName
+        'tymlyTest_purgeSite_1_0', // resourceName
         'create' // action
       )).to.equal(true)
   })
@@ -161,9 +161,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         'molly', // userId
         null, // ctx
-        ['fbotTest_fbotTestReadOnly'], // roles
+        ['tymlyTest_tymlyTestReadOnly'], // roles
         'stateMachine', // resourceType
-        'fbotTest_purgeSite_1_0', // resourceName
+        'tymlyTest_purgeSite_1_0', // resourceName
         'get' // action
       )).to.equal(true)
   })
@@ -173,9 +173,9 @@ describe('RBAC tests', function () {
       rbac.checkRoleAuthorization(
         'molly', // userId
         null, // ctx
-        ['fbotTest_fbotTestReadOnly'], // roles
+        ['tymlyTest_tymlyTestReadOnly'], // roles
         'stateMachine', // resourceType
-        'fbotTest_purgeSite_1_0', // resourceName
+        'tymlyTest_purgeSite_1_0', // resourceName
         'create' // action
       )).to.equal(false)
   })

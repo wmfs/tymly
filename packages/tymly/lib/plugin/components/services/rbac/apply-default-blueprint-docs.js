@@ -27,9 +27,9 @@ module.exports = function applyBlueprintDocs (options, callback) {
   }
 
   const blueprintDocs = options.bootedServices.blueprintDocs
-  const roleModel = options.bootedServices.storage.models.fbot_role
-  const roleMembershipModel = options.bootedServices.storage.models.fbot_roleMembership
-  const permissionModel = options.bootedServices.storage.models.fbot_permission
+  const roleModel = options.bootedServices.storage.models.tymly_role
+  const roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
+  const permissionModel = options.bootedServices.storage.models.tymly_permission
 
   const docTasks = []
 

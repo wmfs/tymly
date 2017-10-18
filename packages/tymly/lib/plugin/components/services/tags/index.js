@@ -11,7 +11,7 @@ class TagsService {
     const storage = options.bootedServices.storage
 
     this.tags = {}
-    this.tagModel = storage.models.fbot_tag
+    this.tagModel = storage.models.tymly_tag
 
     this.ensureTags(options.blueprintComponents.tags, options.messages, function (err) {
       if (err) {
@@ -86,7 +86,7 @@ class TagsService {
   }
 
   /**
-   * Reloads all tags from storage (i.e. the `fbot_tag_1_0` model)
+   * Reloads all tags from storage (i.e. the `tymly_tag_1_0` model)
    * @param {Function} callback Called with all loaded tags
    * @returns {undefined}
    * @example

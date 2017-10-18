@@ -25,9 +25,9 @@ describe('Memory storage tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         const models = tymlyServices.storage.models
-        people = models.fbotTest_people
-        planets = models.fbotTest_planets
-        star = models.fbotTest_star
+        people = models.tymlyTest_people
+        planets = models.tymlyTest_planets
+        star = models.tymlyTest_star
         done()
       }
     )

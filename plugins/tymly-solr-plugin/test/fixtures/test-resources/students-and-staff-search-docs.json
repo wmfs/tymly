@@ -6,7 +6,7 @@
       "actorName": "first_name || ' ' || last_name",
       "characterName": "@characterName"
     },
-    "namespace": "fbotTest",
+    "namespace": "tymlyTest",
     "id": "students",
     "name": "students"
   },
@@ -17,7 +17,7 @@
       "actorName": "first_name || ' ' || last_name",
       "characterName": "character_first_name || ' ' || character_last_name"
     },
-    "namespace": "fbotTest",
+    "namespace": "tymlyTest",
     "id": "staff",
     "name": "staff"
   }

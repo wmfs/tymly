@@ -13,7 +13,7 @@ let client
 
 describe('Importing CSV Tests', function () {
   this.timeout(5000)
-  const STATE_MACHINE_NAME = 'fbotTest_importCsv_1_0'
+  const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
   let statebox
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
@@ -58,7 +58,7 @@ describe('Importing CSV Tests', function () {
 
   it('should check the animals have been added', function (done) {
     client.query(
-      'select * from fbot_test.animal_with_age',
+      'select * from tymly_test.animal_with_age',
       function (err, result) {
         expect(err).to.equal(null)
         if (err) {
@@ -84,7 +84,7 @@ describe('Importing CSV Tests', function () {
 
 describe('Synchronizing Table tests', function () {
   this.timeout(5000)
-  const STATE_MACHINE_NAME = 'fbotTest_syncAnimal_1_0'
+  const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
   let statebox
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
@@ -129,7 +129,7 @@ describe('Synchronizing Table tests', function () {
 
   it('should check the animals have been added and converted', function (done) {
     client.query(
-      'select * from fbot_test.animal_with_year',
+      'select * from tymly_test.animal_with_year',
       function (err, result) {
         expect(err).to.equal(null)
         if (err) {

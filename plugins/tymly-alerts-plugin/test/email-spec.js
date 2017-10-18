@@ -86,17 +86,17 @@ describe('Simple email tests', function () {
   })
 
   it('should find the send welcome email by id', function () {
-    tymlysService.findFlowById('fbotTest_sendWelcomeEmail_1_0',
+    tymlysService.findFlowById('tymlyTest_sendWelcomeEmail_1_0',
       function (err, flow) {
         expect(err).to.eql(null)
-        expect(flow.flowId).to.eql('fbotTest_sendWelcomeEmail_1_0')
+        expect(flow.flowId).to.eql('tymlyTest_sendWelcomeEmail_1_0')
       }
     )
   })
 
   it('should run a Tymly to illustrate a simple email-sending flow', function (done) {
     tymlysService.startNewTymly(
-      'fbotTest_sendWelcomeEmail_1_0',
+      'tymlyTest_sendWelcomeEmail_1_0',
       {},
       function (err, emailSendingTymly) {
         expect(err).to.eql(null)

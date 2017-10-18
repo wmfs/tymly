@@ -3,7 +3,7 @@
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-const STATE_MACHINE_NAME = 'fbotTest_simpleForm_1_0'
+const STATE_MACHINE_NAME = 'tymlyTest_simpleForm_1_0'
 
 describe('Simple forms tests', function () {
   this.timeout(5000)
@@ -49,11 +49,11 @@ describe('Simple forms tests', function () {
         executionName = executionDescription.executionName
         expect(executionDescription.currentStateName).to.eql('FormFilling')
         expect(executionDescription.currentResource).to.eql('module:formFilling')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_simpleForm_1_0')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_simpleForm_1_0')
         expect(executionDescription.status).to.eql('RUNNING')
         expect(executionDescription.ctx).to.eql(
           {
-            formIdToShowHuman: 'fbotTest_simpleForm_1_0'
+            formIdToShowHuman: 'tymlyTest_simpleForm_1_0'
           }
         )
         done()
@@ -94,7 +94,7 @@ describe('Simple forms tests', function () {
         executionName = executionDescription.executionName
         expect(executionDescription.currentStateName).to.eql('FormFilling')
         expect(executionDescription.currentResource).to.eql('module:formFilling')
-        expect(executionDescription.stateMachineName).to.eql('fbotTest_simpleForm_1_0')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_simpleForm_1_0')
         expect(executionDescription.status).to.eql('RUNNING')
         expect(executionDescription.ctx).to.eql(
           {
@@ -105,7 +105,7 @@ describe('Simple forms tests', function () {
                 name: 'Rupert'
               }
             },
-            formIdToShowHuman: 'fbotTest_simpleForm_1_0',
+            formIdToShowHuman: 'tymlyTest_simpleForm_1_0',
             key: {
               email: 'rupert@tymlyjs.io'
             }
