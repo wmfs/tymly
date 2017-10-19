@@ -108,7 +108,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  // CHECK THAT A VALID JWT REQUIRED TO USE /tymlys API
+  // CHECK THAT A VALID JWT REQUIRED TO USE /TYMLY'S API
   // ---------------------------------------------------
 
   it('should fail to create a new Tymly without a JWT', function (done) {
@@ -340,7 +340,7 @@ describe('Simple Express tests', function () {
     rest.del(
       executionsUrl + alan,
       sendToken(adminToken)
-    ).on('complete', function (rupert, res) {
+    ).on('complete', function (executionDescription, res) {
       expect(res.statusCode).to.equal(204)
       done()
     })
