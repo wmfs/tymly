@@ -5,7 +5,7 @@ const _ = require('lodash')
 
 class StateboxService {
   boot (options, callback) {
-    this.statebox = new Statebox()
+    this.statebox = new Statebox(options)
 
     addResources(this.statebox, options)
 
