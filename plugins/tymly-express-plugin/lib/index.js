@@ -1,2 +1,4 @@
 'use strict'
-module.exports = {}
+module.exports = {
+  serverClass: require('./components/services/server')
+}

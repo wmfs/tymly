@@ -12,14 +12,16 @@ class ImportingCsvFiles {
     this.topDownTableOrder = resourceConfig.topDownTableOrder
     this.client = env.bootedServices.storage.client
     this.truncateTables = resourceConfig.truncateTables || false
-    this.multicopy = resourceConfig.multicopy || false
+    this.multicopyVar = resourceConfig.multicopy || false
     callback(null)
   }
 
   run (event, context) {
-    if (this.multiCopy === true) {
+    if (this.multicopyVar === true) {
       multicopy.refresh(
         event,
+        this.client
+        ,
         function (err) {
           if (err) {
             context.sendTaskFailure(
@@ -34,7 +36,7 @@ class ImportingCsvFiles {
         }
       )
     } else {
-      supercopy(
+      return supercopy(
         {
           sourceDir: event,
           headerColumnPkPrefix: this.headerColumnPkPrefix,

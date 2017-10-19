@@ -54,6 +54,5 @@ module.exports = (options, callback = NotSet) => {
         return resolve()
       })
     })
-  }
-  supercopy(options, callback)
+  } else { supercopy(options, callback) }
 }

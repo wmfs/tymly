@@ -1,0 +1,22 @@
+{
+  "Comment": "import food data (mass)",
+  "version": "1.0",
+  "StartAt": "ImportingCsvFiles",
+  "categories": [
+    "test"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportingCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.sourceDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "multicopy": true
+      },
+      "End": true
+    }
+  }
+}

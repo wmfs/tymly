@@ -1,0 +1,14 @@
+{
+
+  "namespace": "foodTest",
+  "name": "food",
+  "version": "1.0",
+
+  "label": "Food",
+  "author": "Reece Brend",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to store simple information about a set of food items.",
+  "categories": ["food", "test"]
+
+}
