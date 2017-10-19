@@ -36,14 +36,14 @@ describe('Initializing environment...', function () {
 
   it('Should make a call to the refresh and check data is entered', function (done) {
     refresh(
-        'test/fixtures/input-data',
-        function (err) {
-          expect(err).to.equal(null)
-          done()
-        }
-      )
-  }
-  )
+      'test/fixtures/multicopy-data',
+      client,
+      function (err) {
+        expect(err).to.equal(null)
+        done()
+      }
+    )
+  })
 
   it('Should check data in the tables are as they should be', function (done) {
     client.query(

@@ -1,0 +1,20 @@
+{
+  "title": "meat",
+  "description": "A list of food items",
+  "primaryKey": ["foodName"],
+  "type": "object",
+  "properties": {
+    "foodName": {
+      "type": "string",
+      "description": "What is this food called?"
+    },
+    "foodGroup": {
+      "type": "string",
+      "description": "What sort of food is this?"
+    }
+  },
+  "indexes": [{
+    "columns": ["foodName"],
+    "unique": true
+  }]
+}
