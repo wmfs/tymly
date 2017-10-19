@@ -113,7 +113,7 @@ class MemoryDao {
           }
         } else {
           // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to succeed execution with name '${executionName}'`))
+          callback(boom.badRequest(`Unable to fail execution with name '${executionName}'`))
         }
       }
     )
