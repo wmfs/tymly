@@ -1,7 +1,6 @@
 'use strict'
 const debug = require('debug')('statebox')
 const moduleClasses = {}
-const _ = require('lodash')
 
 module.exports.findModuleByName = function findModuleByName (name) {
   return moduleClasses[name]
@@ -14,11 +13,6 @@ module.exports.createModule = function createModule (moduleName, moduleClass) {
 }
 
 module.exports.createModules = function createModules (resourceModules) {
-  const _this = this
-  _.forOwn(
-    resourceModules,
-    function (moduleClass, moduleName) {
-      _this.createModule(moduleName, moduleClass)
-    }
-  )
+  for (const [moduleName, moduleClass] of Object.entries(resourceModules))
+    this.createModule(moduleName, moduleClass)
 }
