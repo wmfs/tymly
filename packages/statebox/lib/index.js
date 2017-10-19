@@ -11,6 +11,7 @@ const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
+const StorageDao = require('./StorageService-dao')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
 const routes = require('./routes/index')
 const CallbackManager = require('./Callback-manager')
@@ -150,8 +151,7 @@ class Statebox {
           if (executionDescription.status === 'RUNNING') {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
-            stateToRun.runTaskFailure(executionDescription, options)
-            callback(null)
+            stateToRun.runTaskFailure(executionDescription, options, callback)
           } else {
             callback(
               new Error(`Failure has been rejected because execution is not running (executionName='${executionName}')`)
