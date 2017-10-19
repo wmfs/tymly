@@ -29,6 +29,7 @@ supercopy(
     schemaName: 'my_schema',
     truncateTables: true,
     debug: true
+    multicopy: false
   },
   function (err) {
     // Done!
@@ -50,6 +51,7 @@ supercopy(
 | `schemaName`          | `string`   | Identifies a PostgreSQL schema where the tables that are to be affected by this copy be found.
 | `truncateTables`      | `boolean`  | A flag to indicate whether or not to truncate tables before supercopying into them
 | `debug`               | `boolean`  | Show debugging information on the console
+| `multicopy`               | `boolean`  | Enables 'sourceDir' to house many typical Supercopy 'sourceDir' shaped directories. Defaults to false.
 
 ### <a name="structure"></a>File structure
 
@@ -68,6 +70,19 @@ The directory identified by the `sourceDir` option should be structured in the f
     table2.csv  
   /deletes
     table1.csv
+    
+OR IF USING MULTICOPY
+
+/manyDirs
+ /someDir
+  /inserts
+    table1.csv
+    table2.csv
+ /someDir
+  /inserts
+    table1.csv
+    table2.csv   
+
 ```
 
 #### Notes
