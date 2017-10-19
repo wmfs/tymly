@@ -5,19 +5,9 @@ const _ = require('lodash')
 
 class StateboxService {
   boot (options, callback) {
-    const _this = this
     this.statebox = new Statebox()
-    options.messages.info('Adding resources...')
-    if (_.isObject(options.pluginComponents.stateResources)) {
-      const resourceClasses = {}
-      _.forOwn(
-        options.pluginComponents.stateResources,
-        function (resource, resourceName) {
-          resourceClasses[resourceName] = resource.componentModule
-        }
-      )
-      _this.statebox.createModuleResources(resourceClasses)
-    }
+
+    addResources(this.statebox, options)
 
     options.messages.info('Adding state machines...')
     if (_.isObject(options.blueprintComponents.stateMachines)) {
@@ -37,7 +27,7 @@ class StateboxService {
           version: definition.version
         }
 
-        _this.statebox.createStateMachine(
+        this.statebox.createStateMachine(
           name,
           definition,
           meta,
@@ -95,7 +85,22 @@ class StateboxService {
   waitUntilStoppedRunning (executionName, callback) {
     this.statebox.waitUntilStoppedRunning(executionName, callback)
   }
-}
+} // class StateboxService
+
+function addResources(statebox, options) {
+  options.messages.info('Adding resources...')
+  const stateResources = options.pluginComponents.stateResources
+  if (!_.isObject(stateResources)) {
+    return
+  }
+
+  const resourceClasses = {}
+  for (const [name, resource] of Object.entries(stateResources)) {
+    resourceClasses[name] = resource.componentModule
+  } // for ...
+
+  statebox.createModuleResources(resourceClasses)
+} // _addResources
 
 module.exports = {
   bootAfter: ['storage', 'temp'],
