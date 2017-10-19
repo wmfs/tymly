@@ -18,7 +18,7 @@ const CallbackManager = require('./Callback-manager')
 class Statebox {
   constructor (options) {
     this.options = options || {}
-    if (!this.options.hasOwnProperty('dao')) {
+    if (!this.options.dao) {
       this.options.dao = new MemoryDao(options)
     }
     this.options.executioner = executioner

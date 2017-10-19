@@ -87,7 +87,7 @@ class StateboxService {
   }
 } // class StateboxService
 
-function addResources(statebox, options) {
+function addResources (statebox, options) {
   options.messages.info('Adding resources...')
   const stateResources = options.pluginComponents.stateResources
   if (!_.isObject(stateResources)) {

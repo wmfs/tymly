@@ -13,6 +13,7 @@ module.exports.createModule = function createModule (moduleName, moduleClass) {
 }
 
 module.exports.createModules = function createModules (resourceModules) {
-  for (const [moduleName, moduleClass] of Object.entries(resourceModules))
+  for (const [moduleName, moduleClass] of Object.entries(resourceModules)) {
     this.createModule(moduleName, moduleClass)
+  }
 }
