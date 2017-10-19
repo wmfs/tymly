@@ -2,55 +2,54 @@ const boom = require('boom')
 const MemoryModel = require('../../tymly/lib/plugin/components/services/storage/Memory-model')
 
 const executionModelDefinition = {
-  "id": "execution",
-  "name": "executions",
-  "plural": "executions",
-  "primaryKey": ["executionName"],
-  "description": "Statebox executions instances",
-  "type": "object",
-  "properties": {
-    "executionName": {
-      "type": "string"
+  'id': 'execution',
+  'name': 'executions',
+  'plural': 'executions',
+  'primaryKey': ['executionName'],
+  'description': 'Statebox executions instances',
+  'type': 'object',
+  'properties': {
+    'executionName': {
+      'type': 'string'
     },
-    "ctx": {
-      "type": "string"
+    'ctx': {
+      'type': 'string'
     },
-    "currentStateName": {
-      "type": "string"
+    'currentStateName': {
+      'type': 'string'
     },
-    "currentResource": {
-      "type": "string"
+    'currentResource': {
+      'type': 'string'
     },
-    "stateMachineName": {
-      "type": "string"
+    'stateMachineName': {
+      'type': 'string'
     },
-    "status": {
-      "type": "string"
+    'status': {
+      'type': 'string'
     },
-    "instigatingClient": {
-      "type": "string"
+    'instigatingClient': {
+      'type': 'string'
     },
-    "parentExecutionName": {
-      "type": "string"
+    'parentExecutionName': {
+      'type': 'string'
     },
-    "rootExecutionName": {
-      "type": "string"
+    'rootExecutionName': {
+      'type': 'string'
     }
   },
-  "required": ["uuid"]
+  'required': ['uuid']
 } // executionModelDefinition
 
 const NotSet = 'NotSet'
-function pOrC(promise, callback) {
-  if (callback === NotSet)
-    return promise
+function pOrC (promise, callback) {
+  if (callback === NotSet) { return promise }
   promise
     .then(result => callback(null, result))
     .catch(err => callback(err, null))
 } // pOrC
 
 class StorageServiceDao {
-  constructor(options) {
+  constructor (options) {
     this.uuid = 0
     this.model = new MemoryModel(executionModelDefinition)
   } // constructor
@@ -104,7 +103,7 @@ class StorageServiceDao {
     )
   } // updateCurrentStateName
 
-  ////////////////////////////////////
+  /// /////////////////////////////////
   async _createNewExecution (startAt, startResource, input, stateMachineName, executionOptions) {
     this.uuid++
     const executionName = this.uuid.toString()
@@ -130,7 +129,7 @@ class StorageServiceDao {
     return this._updateExecution(
       executionName,
       execution => {
-        execution.status = 'STOPPED';
+        execution.status = 'STOPPED'
         execution.errorCause = execution.errorCause || cause
         execution.errorCode = execution.errorCode || errorCode
       },
@@ -204,8 +203,8 @@ class StorageServiceDao {
     )
   } // _markRelatedBrancesAsFailed
 
-  ///////////////////////////////////
-  async _updateExecution(executionName, updateFn, error) {
+  /// ////////////////////////////////
+  async _updateExecution (executionName, updateFn, error) {
     const execution = await this.findExecutionByName(executionName)
 
     if (!execution) {
@@ -219,7 +218,7 @@ class StorageServiceDao {
     return execution
   } // _updateExecution
 
-  async _saveExecution(execution) {
+  async _saveExecution (execution) {
     if (!execution) {
       return
     }

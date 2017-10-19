@@ -13,15 +13,15 @@ const stateMachines = require('./fixtures/state-machines')
 
 const Statebox = require('./../lib')
 
-function DaosToTest() {
-  const daos = [ ['built in DAO', null ] ]
+function DaosToTest () {
+  const daos = [ ['built in DAO', null] ]
 
   try {
-    const MM = require('../../tymly/lib/plugin/components/services/storage/Memory-model')
+    require('../../tymly/lib/plugin/components/services/storage/Memory-model')
     daos.push([
       'in-memory storage service', new StorageDao()
     ])
-  } catch(err) {
+  } catch (err) {
     console.log('MemoryModel not available')
   }
 
@@ -435,5 +435,4 @@ DaosToTest().map(([name, dao]) => {
       )
     })
   })
-
 })
