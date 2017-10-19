@@ -67,7 +67,7 @@ describe('Example form-filling tests', function () {
     )
   })
 
-  it('should send in a heartbeat update (i.e. some par-filled form data)', function (done) {
+  it('should send in a heartbeat update (i.e. some part-filled form data)', function (done) {
     statebox.sendTaskHeartbeat(
       executionName,
       {
