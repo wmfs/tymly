@@ -6,6 +6,8 @@ const dottie = require('dottie')
 const jwt = require('express-jwt')
 const schema = require('./schema.json')
 const Buffer = require('safe-buffer').Buffer
+const _ = require('lodash')
+const fs = require('fs')
 
 class AuthService {
   boot (options, callback) {
@@ -15,8 +17,15 @@ class AuthService {
     let configOk = true
 
     let secret = dottie.get(options, 'config.auth.secret')
+
+    if (secret === undefined && _.isString(process.env.TYMLY_CERTIFICATE_PATH)) {
+      // TODO: Make this a bit better
+      secret = fs.readFileSync(process.env.TYMLY_CERTIFICATE_PATH)
+    }
+
     if (secret === undefined) {
       secret = process.env.TYMLY_AUTH_SECRET
+      secret = new Buffer(secret, 'base64')
     }
 
     if (secret === undefined) {
@@ -46,14 +55,12 @@ class AuthService {
 
     if (configOk) {
       const expressApp = options.bootedServices.server.app
-
       this.jwtCheck = jwt(
         {
-          secret: new Buffer(secret, 'base64'),
+          secret: secret,
           audience: audience
         }
       )
-
       expressApp.set('jwtCheck', this.jwtCheck)
 
       options.messages.info('Added JWT Express middleware')
