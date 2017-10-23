@@ -1,0 +1,11 @@
+{
+  "propertyNames": [
+    "name",
+    "title",
+    "type",
+    "color"
+  ],
+  "data": [
+    [ "Mercury", "Mercury, Messenger of the Gods", "terrestrial", "white" ]
+  ]
+}

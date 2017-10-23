@@ -18,7 +18,7 @@ class MemoryStorageService {
     options.messages.info('Using memory storage...')
 
     this.addModels(options.blueprintComponents.models, options.messages)
-    
+
     const seedData = options.blueprintComponents.seedData
     if (seedData) {
       options.messages.info('Loading seed data:')
@@ -40,15 +40,13 @@ class MemoryStorageService {
             debug('persisting document', doc)
             model.upsert(doc, {}, () => {}) // In-memory is sync really (so this is OK)
           })
-          callback(null)
         } else {
           options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
-          callback(null)
         }
       })
-    } else {
-      callback(null)
     }
+
+    callback(null)
   } // boot
 
   addModels (modelDefinitions, messages) {

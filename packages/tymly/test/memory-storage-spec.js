@@ -14,7 +14,7 @@ describe('Memory storage tests', function () {
   let planets
   let star
 
-  it('should create some out-the-box tymly services to test memory storage state-machines', function (done) {
+  it('should create some out-the-box tymly services to test memory storage state-machines', (done) => {
     tymly.boot(
       {
         blueprintPaths: [
@@ -28,7 +28,14 @@ describe('Memory storage tests', function () {
         people = models.tymlyTest_people
         planets = models.tymlyTest_planets
         star = models.tymlyTest_star
-        done()
+
+        star.findById('Arcturus')
+          .then(seededStar => expect(seededStar.name).to.eql('Arcturus'))
+          .then(() => planets.findById('Mercury'))
+          .then(seededPlanet => expect(seededPlanet.name).to.eql('Mercury'))
+          .then(() => done())
+          .catch(err => done(err))
+
       }
     )
   })
