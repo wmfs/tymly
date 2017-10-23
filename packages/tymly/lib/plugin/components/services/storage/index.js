@@ -15,18 +15,10 @@ class MemoryStorageService {
     this.storageName = 'memory'
     this.models = {}
 
-    const modelDefinitions = options.blueprintComponents.models || {}
-
     options.messages.info('Using memory storage...')
 
-    _.forOwn(
-      modelDefinitions,
-      function (modelDefinition, modelId) {
-        options.messages.detail(modelId)
-        _this.models[modelId] = new MemoryModel(modelDefinition)
-      }
-    )
-
+    this.addModels(options.blueprintComponents.models, options.messages)
+    
     const seedData = options.blueprintComponents.seedData
     if (seedData) {
       options.messages.info('Loading seed data:')
@@ -57,7 +49,30 @@ class MemoryStorageService {
     } else {
       callback(null)
     }
-  }
+  } // boot
+
+  addModels (modelDefinitions, messages) {
+    if (!modelDefinitions) {
+      return
+    } // if (!modelDefinitions
+
+    for (const [name, definition] of Object.entries(modelDefinitions)) {
+      this.addModel(name, definition, messages)
+    } // for ...
+  } // addModels
+
+  addModel (name, definition, messages) {
+    if (!name || !definition) {
+      return
+    } // if ...
+
+    if (this.models[name]) {
+      detailMessage(messages, `${name} already defined in MemoryStorage`)
+    } // if ...
+
+    detailMessage(messages, `Added ${name} to MemoryStorage`)
+    this.models[name] = new MemoryModel(definition)
+  } // addModel
 
   fileImporter (action, modelId, rootDir, fileInfo, importReport, callback) {
     const model = this.models[modelId]
@@ -98,6 +113,14 @@ class MemoryStorageService {
     }
   }
 }
+
+function detailMessage (messages, msg) {
+  if (!messages) {
+    return
+  }
+
+  messages.detail(msg)
+} // detailMessage
 
 module.exports = {
   serviceClass: MemoryStorageService,
