@@ -25,7 +25,7 @@ class PostgresqlStorageService {
     this.models = {}
 
     const connectionString = process.env.PG_CONNECTION_STRING
-    options.messages.info(`Using Postgresql storage... (${connectionString})`)
+    infoMessage(options.messages, `Using Postgresql storage... (${connectionString})`)
 
     // TODO: Use pool instead
 
@@ -36,7 +36,7 @@ class PostgresqlStorageService {
       return _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
     }))
 
-    options.messages.info(`Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
+    infoMessage(options.messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
     pgInfo(
       {
         client: this.client,
@@ -46,17 +46,12 @@ class PostgresqlStorageService {
         if (err) {
           callback(err)
         } else {
-          const jsonSchemas = []
-
-          _.forOwn(
-            modelDefinitions,
-            function (modelDefinition, modelId) {
-              jsonSchemas.push(
-                {
-                  namespace: modelDefinition.namespace,
-                  schema: modelDefinition
-                }
-              )
+          const jsonSchemas = Object.values(modelDefinitions).map(
+            definition => {
+              return {
+                namespace: definition.namespace,
+                schema: definition
+              }
             }
           )
 
@@ -98,73 +93,21 @@ class PostgresqlStorageService {
                       )
 
                       _this.models = {}
-                      options.messages.info('Models:')
+                      infoMessage(options.messages, 'Models:')
 
-                      _.forOwn(
-                        models,
-                        function (namespace, namespaceId) {
-                          _.forOwn(
-                            namespace,
-                            function (model, modelId) {
-                              const id = namespaceId + '_' + modelId
-                              options.messages.detail(id)
-                              _this.models[id] = model
-                            }
-                          )
-                        }
+                      for (const [namespaceId, namespace] of Object.entries(models)) {
+                        for (const [modelId, model] of Object.entries(namespace)) {
+                          const id = `${namespaceId}_${modelId}`
+                          detailMessage(options.messages, id)
+                          _this.models[id] = model
+                        } // for ...
+                      } // for ...
+
+                      _this.insertMultipleSeeData(
+                        options.blueprintComponents.seedData,
+                        options.messages,
+                        callback
                       )
-
-                      if (options.blueprintComponents.seedData) {
-                        options.messages.info('Loading seed data:')
-                        async.eachSeries(
-                          options.blueprintComponents.seedData,
-                          (seedData, cb) => {
-                            const name = seedData.namespace + '_' + seedData.name
-                            const model = _this.models[name]
-                            if (model) {
-                              options.messages.detail(name)
-
-                              // generate upsert sql statement
-                              const sql = generateUpsertStatement(model, seedData)
-                              debug('load', name, 'seed-data sql: ', sql)
-
-                              // generate a single array of parameters which each
-                              // correspond with a placeholder in the upsert sql statement
-                              let params = []
-                              _.forEach(seedData.data, (row) => {
-                                params = params.concat(row)
-                              })
-                              debug('load', name, 'seed-data params: ', params)
-
-                              pgStatementRunner(
-                                _this.client,
-                                [{
-                                  'sql': sql,
-                                  'params': params
-                                }],
-                                function (err) {
-                                  if (err) {
-                                    cb(err)
-                                  } else {
-                                    cb(null)
-                                  }
-                                }
-                              )
-                            } else {
-                              options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
-                              cb(null)
-                            }
-                          },
-                          (err) => {
-                            if (err) {
-                              callback(err)
-                            } else {
-                              callback(null)
-                            }
-                          })
-                      } else {
-                        callback(null)
-                      }
                     }
                   }
                 )
@@ -174,8 +117,79 @@ class PostgresqlStorageService {
         }
       }
     )
+  } // boot
+
+  insertMultipleSeeData (seedDataArray, messages, callback) {
+    const _this = this
+    if (seedDataArray) {
+      infoMessage(messages, 'Loading seed data:')
+      async.eachSeries(
+        seedDataArray,
+        (seedData, cb) => {
+          const name = seedData.namespace + '_' + seedData.name
+          const model = _this.models[name]
+          if (model) {
+            detailMessage(messages, name)
+
+            // generate upsert sql statement
+            const sql = generateUpsertStatement(model, seedData)
+            debug('load', name, 'seed-data sql: ', sql)
+
+            // generate a single array of parameters which each
+            // correspond with a placeholder in the upsert sql statement
+            let params = []
+            _.forEach(seedData.data, (row) => {
+              params = params.concat(row)
+            })
+            debug('load', name, 'seed-data params: ', params)
+
+            pgStatementRunner(
+              _this.client,
+              [{
+                'sql': sql,
+                'params': params
+              }],
+              function (err) {
+                if (err) {
+                  cb(err)
+                } else {
+                  cb(null)
+                }
+              }
+            )
+          } else {
+            detailMessage(messages, `WARNING: seed data found for model ${name}, but no such model was found`)
+            cb(null)
+          }
+        },
+        (err) => {
+          if (err) {
+            callback(err)
+          } else {
+            callback(null)
+          }
+        })
+    } else {
+      callback(null)
+    }
+  } // insertMultipleSeedData
+} // PostgresqlStorageService
+
+function detailMessage (messages, msg) {
+  if (!messages) {
+    return
   }
-}
+
+  messages.detail(msg)
+} // detailMessage
+
+function infoMessage (messages, msg) {
+  if (!messages) {
+    return
+  }
+
+  messages.info(msg)
+} // infoMessage
 
 module.exports = {
   schema: schema,
