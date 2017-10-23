@@ -16,7 +16,12 @@ class AuthService {
 
     let configOk = true
 
-    let secret = dottie.get(options, 'config.auth.secret')
+    let secret
+
+    secret = dottie.get(options, 'config.auth.secret')
+    if (secret) {
+      secret = new Buffer(secret, 'base64')
+    }
 
     if (secret === undefined && _.isString(process.env.TYMLY_CERTIFICATE_PATH)) {
       // TODO: Make this a bit better

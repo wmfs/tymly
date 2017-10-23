@@ -1,7 +1,7 @@
 {
   "name": "tymly-express-plugin",
   "description": "Exposes the Tymly framework via an Express.js web app.",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
