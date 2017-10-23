@@ -35,7 +35,6 @@ describe('Memory storage tests', function () {
           .then(seededPlanet => expect(seededPlanet.name).to.eql('Mercury'))
           .then(() => done())
           .catch(err => done(err))
-
       }
     )
   })
