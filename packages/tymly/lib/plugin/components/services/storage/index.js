@@ -11,40 +11,14 @@ const EJSON = require('mongodb-extended-json')
 
 class MemoryStorageService {
   boot (options, callback) {
-    const _this = this
     this.storageName = 'memory'
     this.models = {}
 
-    options.messages.info('Using memory storage...')
+    infoMessage(options.messages, 'Using memory storage...')
 
     this.addModels(options.blueprintComponents.models, options.messages)
 
-    const seedData = options.blueprintComponents.seedData
-    if (seedData) {
-      options.messages.info('Loading seed data:')
-      _.forEach(seedData, (modelSeedData) => {
-        const name = modelSeedData.namespace + '_' + modelSeedData.name
-        const model = _this.models[name]
-        if (model) {
-          options.messages.detail(name)
-          _.forEach(modelSeedData.data, (row) => {
-            // construct document
-            const doc = {}
-            let documentPropertyNames = modelSeedData.propertyNames
-
-            for (let i = 0, colCount = documentPropertyNames.length; i < colCount; i++) {
-              doc[_.snakeCase(documentPropertyNames[i])] = row[i]
-            }
-
-            // persist document
-            debug('persisting document', doc)
-            model.upsert(doc, {}, () => {}) // In-memory is sync really (so this is OK)
-          })
-        } else {
-          options.messages.detail(`WARNING: seed data found for model ${name}, but no such model was found`)
-        }
-      })
-    }
+    this.insertMultipleSeedData(options.blueprintComponents.seedData, options.messages)
 
     callback(null)
   } // boot
@@ -71,6 +45,38 @@ class MemoryStorageService {
     detailMessage(messages, `Added ${name} to MemoryStorage`)
     this.models[name] = new MemoryModel(definition)
   } // addModel
+
+  insertMultipleSeedData (seedDataArray, messages) {
+    if (!seedDataArray) {
+      return
+    }
+    infoMessage(messages, 'Loading seed data:')
+
+    for (const seedData of Object.values(seedDataArray)) {
+      this.insertSeedData(seedData, messages)
+    }
+  } // insertMultipleSeedData
+
+  insertSeedData (seedData, messages) {
+    const name = `${seedData.namespace}_${seedData.name}`
+    const model = this.models[name]
+    if (!model) {
+      return detailMessage(messages, `WARNING: seed data found for model ${name}, but no such model was found`)
+    }
+
+    detailMessage(messages, name)
+    for (const row of seedData.data) {
+      // construct document
+      const doc = {}
+      for (const [index, name] of seedData.propertyNames.entries()) {
+        doc[_.snakeCase(name)] = row[index]
+      }
+
+      // persist document
+      debug('persisting document', doc)
+      model.upsert(doc, {}, () => {}) // In-memory is sync really (so this is OK)
+    }
+  } // insertSeedData
 
   fileImporter (action, modelId, rootDir, fileInfo, importReport, callback) {
     const model = this.models[modelId]
@@ -119,6 +125,14 @@ function detailMessage (messages, msg) {
 
   messages.detail(msg)
 } // detailMessage
+
+function infoMessage (messages, msg) {
+  if (!messages) {
+    return
+  }
+
+  messages.info(msg)
+} // infoMessage
 
 module.exports = {
   serviceClass: MemoryStorageService,
