@@ -11,9 +11,11 @@ const stateMachines = require('./state-machines')
 const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
+const StorageDao = require('./StorageService-dao')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
 const routes = require('./routes/index')
 const CallbackManager = require('./Callback-manager')
+const debug = require('debug')('statebox')
 
 class Statebox {
   constructor (options) {
@@ -27,11 +29,39 @@ class Statebox {
 
   _findDao (options) {
     if (options.dao) {
+      debug('Using custom Dao')
       return options.dao // custom DAO provided
     }
 
+    const storageDao = this._daoFromStorage(options)
+    if (storageDao) {
+      debug('Using Storage Dao')
+      return storageDao
+    }
+
+    debug('Using built in MemoryDao')
     return new MemoryDao(options)
   } // _findDao
+
+  _daoFromStorage (options) {
+    if (!options.bootedServices || !options.bootedServices.storage) {
+      return null
+    }
+    try {
+      const storage = options.bootedServices.storage
+      let model = storage.models[StorageDao.ExecutionModelName]
+      if (!model) {
+        model = storage.addModel(
+          StorageDao.ExecutionModelName,
+          StorageDao.ExecutionModelDefinition,
+          options.messages
+        )
+      }
+      return new StorageDao(model)
+    } catch (err) {
+    }
+    return null
+  } // _daoFromStorage
 
   createModuleResource (moduleName, moduleClass) {
     resources.createModule(moduleName, moduleClass)

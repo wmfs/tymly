@@ -48,6 +48,9 @@ function pOrC (promise, callback) {
 } // pOrC
 
 class StorageServiceDao {
+  static get ExecutionModelName () {
+    return 'tymly_executions'
+  } // ExecutionModelName
   static get ExecutionModelDefinition () {
     return executionModelDefinition
   } // ExecutionModelDefinition

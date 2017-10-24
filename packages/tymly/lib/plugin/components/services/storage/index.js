@@ -40,10 +40,12 @@ class MemoryStorageService {
 
     if (this.models[name]) {
       detailMessage(messages, `${name} already defined in MemoryStorage`)
+      return this.models[name]
     } // if ...
 
     detailMessage(messages, `Added ${name} to MemoryStorage`)
     this.models[name] = new MemoryModel(definition)
+    return this.models[name]
   } // addModel
 
   insertMultipleSeedData (seedDataArray, messages) {

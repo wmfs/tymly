@@ -13,11 +13,7 @@ const stateMachines = require('./fixtures/state-machines')
 
 const Statebox = require('./../lib')
 
-DaosToTest().map(([name, dao]) => {
-  const options = {
-    dao: dao
-  }
-
+DaosToTest.forEach(([name, options]) => {
   describe(`Simple stateMachine tests using ${name}`, function () {
     this.timeout(5000)
     let statebox
