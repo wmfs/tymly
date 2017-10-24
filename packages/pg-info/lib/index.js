@@ -86,12 +86,26 @@ const QUERIES = [
   "WHERE split_part(source_table, '.', 1) = ANY($1)"
 ]
 
-module.exports = function pgInfo (options, callback) {
+const NotSet = 'NotSet'
+
+module.exports = function pgInfo (options, callback = NotSet) {
   // Options
   // -------
   // client         Connects pg instance (client or pool is fine)
   // schemas        List of schemas to info
 
+  if (callback === NotSet) {
+    return new Promise((resolve, reject) => {
+      pgInfo(options, (err, info) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(info)
+      })
+    })
+  } // if (callback === NotSet)
+
+  // //////////////
   const schemas = options.schemas || ['public']
   const client = options.client
   const queryResults = []
