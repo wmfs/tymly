@@ -110,7 +110,7 @@ class PostgresqlStorageService {
           }
         }
       )
-    } catch(err) {
+    } catch (err) {
       callback(err)
     }
   } // boot
