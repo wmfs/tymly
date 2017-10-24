@@ -1,10 +1,16 @@
-/* eslint-env mocha */
-'use strict'
 
 const loader = require('./loader')
 const parser = require('./parser')
+const promisify = require('util').promisify
 
-module.exports = function relationize (options, callback) {
+const NotSet = 'NotSet'
+const relationizeP = promisify(relationize)
+
+function relationize (options, callback = NotSet) {
+  if (callback === NotSet) {
+    return relationizeP(options)
+  }
+
   loader(options, function (err, schemaFiles) {
     if (err) {
       callback(err)
@@ -14,3 +20,5 @@ module.exports = function relationize (options, callback) {
   }
   )
 }
+
+module.exports = relationize
