@@ -18,7 +18,6 @@ const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
   async boot (options, callback) {
-    const _this = this
     this.storageName = 'postgresql'
 
     const modelDefinitions = options.blueprintComponents.models || {}
@@ -69,39 +68,51 @@ class PostgresqlStorageService {
       })
 
       await pgStatementRunner(
-        _this.client,
+        this.client,
         statements
       )
 
       const models = pgModel({
-        client: _this.client,
+        client: this.client,
         dbStructure: expectedDbStructure
       })
 
-      _this.models = {}
+      this.models = {}
       infoMessage(options.messages, 'Models:')
 
       for (const [namespaceId, namespace] of Object.entries(models)) {
         for (const [modelId, model] of Object.entries(namespace)) {
           const id = `${namespaceId}_${modelId}`
           detailMessage(options.messages, id)
-          _this.models[id] = model
+          this.models[id] = model
         } // for ...
       } // for ...
 
-      _this.insertMultipleSeedData(
+      await this.insertMultipleSeedData(
         options.blueprintComponents.seedData,
-        options.messages,
-        callback
+        options.messages
       )
+      callback(null)
     } catch (err) {
       callback(err)
     }
   } // boot
 
-  insertMultipleSeedData (seedDataArray, messages, callback) {
+  insertMultipleSeedData (seedDataArray, messages) {
+    return new Promise((resolve, reject) => {
+      this._insertMultipleSeedData(seedDataArray, messages, (err) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve()
+      })
+    })
+  } // insertMultipleSeedData
+
+  _insertMultipleSeedData (seedDataArray, messages, callback) {
     const _this = this
     if (seedDataArray) {
+      callback(null)
       infoMessage(messages, 'Loading seed data:')
       async.eachSeries(
         seedDataArray,
