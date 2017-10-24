@@ -51,61 +51,52 @@ class PostgresqlStorageService {
         schemas: schemaNames
       })
 
-      relationize(
-        {
-          source: {
-            schemas: jsonSchemas
-          }
-        },
-        function (err, expectedDbStructure) {
+      const expectedDbStructure = await relationize({
+        source: {
+          schemas: jsonSchemas
+        }
+      })
+
+      const rawStatements = pgDiffSync(
+        currentDbStructure,
+        expectedDbStructure
+      )
+      const statements = rawStatements.map(s => {
+        return {
+          'sql': s,
+          'params': []
+        }
+      })
+
+      pgStatementRunner(
+        _this.client,
+        statements,
+        function (err) {
           if (err) {
             callback(err)
           } else {
-            let statements = pgDiffSync(
-              currentDbStructure,
-              expectedDbStructure
+            const models = pgModel(
+              {
+                client: _this.client,
+                dbStructure: expectedDbStructure
+              }
             )
 
-            for (let i = 0, statementLength = statements.length; i < statementLength; i++) {
-              let s = statements[i]
-              statements[i] = {
-                'sql': s,
-                'params': []
-              }
-            }
+            _this.models = {}
+            infoMessage(options.messages, 'Models:')
 
-            pgStatementRunner(
-              _this.client,
-              statements,
-              function (err) {
-                if (err) {
-                  callback(err)
-                } else {
-                  const models = pgModel(
-                    {
-                      client: _this.client,
-                      dbStructure: expectedDbStructure
-                    }
-                  )
+            for (const [namespaceId, namespace] of Object.entries(models)) {
+              for (const [modelId, model] of Object.entries(namespace)) {
+                const id = `${namespaceId}_${modelId}`
+                detailMessage(options.messages, id)
+                _this.models[id] = model
+              } // for ...
+            } // for ...
 
-                  _this.models = {}
-                  infoMessage(options.messages, 'Models:')
-
-                  for (const [namespaceId, namespace] of Object.entries(models)) {
-                    for (const [modelId, model] of Object.entries(namespace)) {
-                      const id = `${namespaceId}_${modelId}`
-                      detailMessage(options.messages, id)
-                      _this.models[id] = model
-                    } // for ...
-                  } // for ...
-
-                  _this.insertMultipleSeeData(
-                    options.blueprintComponents.seedData,
-                    options.messages,
-                    callback
-                  )
-                }
-              }
+            _this.insertMultipleSeeData(
+              options.blueprintComponents.seedData,
+              options.messages,
+              callback
             )
           }
         }
