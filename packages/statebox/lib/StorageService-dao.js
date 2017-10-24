@@ -1,5 +1,4 @@
 const boom = require('boom')
-const MemoryModel = require('../../tymly/lib/plugin/components/services/storage/Memory-model')
 
 const executionModelDefinition = {
   'id': 'execution',
@@ -49,9 +48,13 @@ function pOrC (promise, callback) {
 } // pOrC
 
 class StorageServiceDao {
-  constructor (options) {
+  static get ExecutionModelDefinition () {
+    return executionModelDefinition
+  } // ExecutionModelDefinition
+
+  constructor (model) {
     this.uuid = 0
-    this.model = new MemoryModel(executionModelDefinition)
+    this.model = model
   } // constructor
 
   createNewExecution (startAt, startResource, input, stateMachineName, executionOptions, callback = NotSet) {

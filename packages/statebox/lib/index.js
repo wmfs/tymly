@@ -18,13 +18,20 @@ const CallbackManager = require('./Callback-manager')
 class Statebox {
   constructor (options) {
     this.options = options || {}
-    if (!this.options.dao) {
-      this.options.dao = new MemoryDao(options)
-    }
+    this.options.dao = this._findDao(options)
+
     this.options.executioner = executioner
     this.options.callbackManager = new CallbackManager()
     this.options.parallelBranchTracker = new ParallelBranchTracker()
   }
+
+  _findDao (options) {
+    if (options.dao) {
+      return options.dao // custom DAO provided
+    }
+
+    return new MemoryDao(options)
+  } // _findDao
 
   createModuleResource (moduleName, moduleClass) {
     resources.createModule(moduleName, moduleClass)

@@ -3,7 +3,7 @@
 
 const chai = require('chai')
 const expect = chai.expect
-const StorageDao = require('../lib/StorageService-dao')
+const DaosToTest = require('./daosToTest')
 
 // Module Resources
 const moduleResources = require('./fixtures/module-resources')
@@ -12,21 +12,6 @@ const moduleResources = require('./fixtures/module-resources')
 const stateMachines = require('./fixtures/state-machines')
 
 const Statebox = require('./../lib')
-
-function DaosToTest () {
-  const daos = [ ['built in DAO', null] ]
-
-  try {
-    require('../../tymly/lib/plugin/components/services/storage/Memory-model')
-    daos.push([
-      'in-memory storage service', new StorageDao()
-    ])
-  } catch (err) {
-    console.log('MemoryModel not available')
-  }
-
-  return daos
-}
 
 DaosToTest().map(([name, dao]) => {
   const options = {
