@@ -68,45 +68,38 @@ class PostgresqlStorageService {
         }
       })
 
-      pgStatementRunner(
+      await pgStatementRunner(
         _this.client,
-        statements,
-        function (err) {
-          if (err) {
-            callback(err)
-          } else {
-            const models = pgModel(
-              {
-                client: _this.client,
-                dbStructure: expectedDbStructure
-              }
-            )
+        statements
+      )
 
-            _this.models = {}
-            infoMessage(options.messages, 'Models:')
+      const models = pgModel({
+        client: _this.client,
+        dbStructure: expectedDbStructure
+      })
 
-            for (const [namespaceId, namespace] of Object.entries(models)) {
-              for (const [modelId, model] of Object.entries(namespace)) {
-                const id = `${namespaceId}_${modelId}`
-                detailMessage(options.messages, id)
-                _this.models[id] = model
-              } // for ...
-            } // for ...
+      _this.models = {}
+      infoMessage(options.messages, 'Models:')
 
-            _this.insertMultipleSeeData(
-              options.blueprintComponents.seedData,
-              options.messages,
-              callback
-            )
-          }
-        }
+      for (const [namespaceId, namespace] of Object.entries(models)) {
+        for (const [modelId, model] of Object.entries(namespace)) {
+          const id = `${namespaceId}_${modelId}`
+          detailMessage(options.messages, id)
+          _this.models[id] = model
+        } // for ...
+      } // for ...
+
+      _this.insertMultipleSeedData(
+        options.blueprintComponents.seedData,
+        options.messages,
+        callback
       )
     } catch (err) {
       callback(err)
     }
   } // boot
 
-  insertMultipleSeeData (seedDataArray, messages, callback) {
+  insertMultipleSeedData (seedDataArray, messages, callback) {
     const _this = this
     if (seedDataArray) {
       infoMessage(messages, 'Loading seed data:')
