@@ -17,10 +17,9 @@ const pgStatementRunner = require('./pg-statement-runner')
 const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
-  async boot (options, callback) {
+  boot (options, callback) {
     this.storageName = 'postgresql'
 
-    const modelDefinitions = options.blueprintComponents.models || {}
     this.models = {}
 
     const connectionString = process.env.PG_CONNECTION_STRING
@@ -31,9 +30,25 @@ class PostgresqlStorageService {
     this.client = new pg.Client(connectionString)
     this.client.connect()
 
+    const modelDefinitions = options.blueprintComponents.models || {}
+    const seedData = options.blueprintComponents.seedData
+
+    this.createModels(modelDefinitions, options.messages)
+      .then(() => this.insertMultipleSeedData(seedData, options.messages))
+      .then(() => callback())
+      .catch(err => callback(err))
+  } // boot
+
+  async createModels (modelDefinitions, messages) {
     const schemaNames = _.uniq(_.map(modelDefinitions, function (modelDefinition) {
       return _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
     }))
+    infoMessage(messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
+    const currentDbStructure = await pgInfo({
+      client: this.client,
+      schemas: schemaNames
+    })
+
     const jsonSchemas = Object.values(modelDefinitions).map(
       definition => {
         return {
@@ -42,61 +57,44 @@ class PostgresqlStorageService {
         }
       }
     ) // jsonSchemas
+    const expectedDbStructure = await relationize({
+      source: {
+        schemas: jsonSchemas
+      }
+    })
 
-    infoMessage(options.messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
-    try {
-      const currentDbStructure = await pgInfo({
-        client: this.client,
-        schemas: schemaNames
-      })
+    const rawStatements = pgDiffSync(
+      currentDbStructure,
+      expectedDbStructure
+    )
+    const statements = rawStatements.map(s => {
+      return {
+        'sql': s,
+        'params': []
+      }
+    })
 
-      const expectedDbStructure = await relationize({
-        source: {
-          schemas: jsonSchemas
-        }
-      })
+    await pgStatementRunner(
+      this.client,
+      statements
+    )
 
-      const rawStatements = pgDiffSync(
-        currentDbStructure,
-        expectedDbStructure
-      )
-      const statements = rawStatements.map(s => {
-        return {
-          'sql': s,
-          'params': []
-        }
-      })
+    const models = pgModel({
+      client: this.client,
+      dbStructure: expectedDbStructure
+    })
 
-      await pgStatementRunner(
-        this.client,
-        statements
-      )
+    this.models = {}
+    infoMessage(messages, 'Models:')
 
-      const models = pgModel({
-        client: this.client,
-        dbStructure: expectedDbStructure
-      })
-
-      this.models = {}
-      infoMessage(options.messages, 'Models:')
-
-      for (const [namespaceId, namespace] of Object.entries(models)) {
-        for (const [modelId, model] of Object.entries(namespace)) {
-          const id = `${namespaceId}_${modelId}`
-          detailMessage(options.messages, id)
-          this.models[id] = model
-        } // for ...
+    for (const [namespaceId, namespace] of Object.entries(models)) {
+      for (const [modelId, model] of Object.entries(namespace)) {
+        const id = `${namespaceId}_${modelId}`
+        detailMessage(messages, id)
+        this.models[id] = model
       } // for ...
-
-      await this.insertMultipleSeedData(
-        options.blueprintComponents.seedData,
-        options.messages
-      )
-      callback(null)
-    } catch (err) {
-      callback(err)
-    }
-  } // boot
+    } // for ...
+  } // _boot
 
   insertMultipleSeedData (seedDataArray, messages) {
     return new Promise((resolve, reject) => {
