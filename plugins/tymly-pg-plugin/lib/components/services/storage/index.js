@@ -17,7 +17,7 @@ const pgStatementRunner = require('./pg-statement-runner')
 const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
-  boot (options, callback) {
+  async boot (options, callback) {
     const _this = this
     this.storageName = 'postgresql'
 
@@ -35,88 +35,84 @@ class PostgresqlStorageService {
     const schemaNames = _.uniq(_.map(modelDefinitions, function (modelDefinition) {
       return _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
     }))
-
-    infoMessage(options.messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
-    pgInfo(
-      {
-        client: this.client,
-        schemas: schemaNames
-      },
-      function (err, currentDbStructure) {
-        if (err) {
-          callback(err)
-        } else {
-          const jsonSchemas = Object.values(modelDefinitions).map(
-            definition => {
-              return {
-                namespace: definition.namespace,
-                schema: definition
-              }
-            }
-          )
-
-          relationize(
-            {
-              source: {
-                schemas: jsonSchemas
-              }
-            },
-            function (err, expectedDbStructure) {
-              if (err) {
-                callback(err)
-              } else {
-                let statements = pgDiffSync(
-                  currentDbStructure,
-                  expectedDbStructure
-                )
-
-                for (let i = 0, statementLength = statements.length; i < statementLength; i++) {
-                  let s = statements[i]
-                  statements[i] = {
-                    'sql': s,
-                    'params': []
-                  }
-                }
-
-                pgStatementRunner(
-                  _this.client,
-                  statements,
-                  function (err) {
-                    if (err) {
-                      callback(err)
-                    } else {
-                      const models = pgModel(
-                        {
-                          client: _this.client,
-                          dbStructure: expectedDbStructure
-                        }
-                      )
-
-                      _this.models = {}
-                      infoMessage(options.messages, 'Models:')
-
-                      for (const [namespaceId, namespace] of Object.entries(models)) {
-                        for (const [modelId, model] of Object.entries(namespace)) {
-                          const id = `${namespaceId}_${modelId}`
-                          detailMessage(options.messages, id)
-                          _this.models[id] = model
-                        } // for ...
-                      } // for ...
-
-                      _this.insertMultipleSeeData(
-                        options.blueprintComponents.seedData,
-                        options.messages,
-                        callback
-                      )
-                    }
-                  }
-                )
-              }
-            }
-          )
+    const jsonSchemas = Object.values(modelDefinitions).map(
+      definition => {
+        return {
+          namespace: definition.namespace,
+          schema: definition
         }
       }
-    )
+    ) // jsonSchemas
+
+    infoMessage(options.messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
+    try {
+      const currentDbStructure = await pgInfo({
+        client: this.client,
+        schemas: schemaNames
+      })
+
+      relationize(
+        {
+          source: {
+            schemas: jsonSchemas
+          }
+        },
+        function (err, expectedDbStructure) {
+          if (err) {
+            callback(err)
+          } else {
+            let statements = pgDiffSync(
+              currentDbStructure,
+              expectedDbStructure
+            )
+
+            for (let i = 0, statementLength = statements.length; i < statementLength; i++) {
+              let s = statements[i]
+              statements[i] = {
+                'sql': s,
+                'params': []
+              }
+            }
+
+            pgStatementRunner(
+              _this.client,
+              statements,
+              function (err) {
+                if (err) {
+                  callback(err)
+                } else {
+                  const models = pgModel(
+                    {
+                      client: _this.client,
+                      dbStructure: expectedDbStructure
+                    }
+                  )
+
+                  _this.models = {}
+                  infoMessage(options.messages, 'Models:')
+
+                  for (const [namespaceId, namespace] of Object.entries(models)) {
+                    for (const [modelId, model] of Object.entries(namespace)) {
+                      const id = `${namespaceId}_${modelId}`
+                      detailMessage(options.messages, id)
+                      _this.models[id] = model
+                    } // for ...
+                  } // for ...
+
+                  _this.insertMultipleSeeData(
+                    options.blueprintComponents.seedData,
+                    options.messages,
+                    callback
+                  )
+                }
+              }
+            )
+          }
+        }
+      )
+    } catch(err) {
+      callback(err)
+    }
   } // boot
 
   insertMultipleSeeData (seedDataArray, messages, callback) {
