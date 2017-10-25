@@ -20,20 +20,23 @@ const debug = require('debug')('statebox')
 class Statebox {
   constructor (options) {
     this.options = options || {}
-    this.options.dao = this._findDao(options)
-
-    this.options.executioner = executioner
-    this.options.callbackManager = new CallbackManager()
-    this.options.parallelBranchTracker = new ParallelBranchTracker()
+    this.ready =  this._findDao(options)
+      .then(dao => {
+        info(options.messages, 'Statebox is ready')
+        this.options.dao = dao
+        this.options.executioner = executioner
+        this.options.callbackManager = new CallbackManager()
+        this.options.parallelBranchTracker = new ParallelBranchTracker()
+      })
   }
 
-  _findDao (options) {
+  async _findDao (options) {
     if (options.dao) {
       debug('Using custom Dao')
       return options.dao // custom DAO provided
     }
 
-    const storageDao = this._daoFromStorage(options)
+    const storageDao = await this._daoFromStorage(options)
     if (storageDao) {
       debug('Using Storage Dao')
       return storageDao
@@ -43,15 +46,17 @@ class Statebox {
     return new MemoryDao(options)
   } // _findDao
 
-  _daoFromStorage (options) {
+  async _daoFromStorage (options) {
     if (!options.bootedServices || !options.bootedServices.storage) {
       return null
     }
     try {
       const storage = options.bootedServices.storage
+      info(options.messages, `Using storage service ${storage.storageName}`)
       let model = storage.models[StorageDao.ExecutionModelName]
       if (!model) {
-        model = storage.addModel(
+        info(options.messages, `Adding model ${StorageDao.ExecutionModelName}`)
+        model = await storage.addModel(
           StorageDao.ExecutionModelName,
           StorageDao.ExecutionModelDefinition,
           options.messages
@@ -59,6 +64,9 @@ class Statebox {
       }
       return new StorageDao(model)
     } catch (err) {
+      warning(options.messages, `Could not get Dao from storage service`)
+      warning(options.messages, err)
+      warning(options.messages, `Falling back to in-memory Dao`)
     }
     return null
   } // _daoFromStorage
@@ -76,22 +84,26 @@ class Statebox {
   }
 
   createStateMachine (stateMachineName, stateMachineDefinition, stateMachineMeta, env, callback) {
-    stateMachines.createStateMachine(
-      stateMachineName,
-      stateMachineDefinition,
-      stateMachineMeta,
-      env,
-      this.options,
-      callback)
-  }
+    this.ready.then(() =>
+      stateMachines.createStateMachine(
+        stateMachineName,
+        stateMachineDefinition,
+        stateMachineMeta,
+        env,
+        this.options,
+        callback)
+    )
+  } // createStateMachine
 
   createStateMachines (stateMachineDefinitions, env, callback) {
-    stateMachines.createStateMachines(
-      stateMachineDefinitions,
-      env,
-      this.options,
-      callback)
-  }
+    this.ready.then(() =>
+      stateMachines.createStateMachines(
+        stateMachineDefinitions,
+        env,
+        this.options,
+        callback)
+    )
+  } // createStateMachines
 
   deleteStateMachine (name) {
     stateMachines.deleteStateMachine(name)
@@ -118,10 +130,18 @@ class Statebox {
   }
 
   startExecution (input, stateMachineName, executionOptions, callback) {
-    executioner(input, stateMachineName, executionOptions, this.options, callback)
-  }
+    this.ready.then(() =>
+      executioner(input, stateMachineName, executionOptions, this.options, callback)
+    )
+  } // startExecution
 
   stopExecution (cause, errorCode, executionName, executionOptions, callback) {
+    this.ready.then(() =>
+      this._stopExecution(cause, errorCode, executionName, executionOptions, callback)
+    )
+  } // stopExecution
+
+  _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
     const _this = this
     this.options.dao.findExecutionByName(
       executionName,
@@ -152,10 +172,17 @@ class Statebox {
   }
 
   describeExecution (executionName, executionOptions, callback) {
-    this.options.dao.findExecutionByName(executionName, callback)
-  }
+    this.ready.then(() => {
+      this.options.dao.findExecutionByName(executionName, callback)
+    })
+  } // describeExecution
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
+    this.ready.then(() => {
+      this._sendTaskSuccess(executionName, output, executionOptions, callback)
+    })
+  } // sendTaskSuccess
+  _sendTaskSuccess (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -175,9 +202,14 @@ class Statebox {
         }
       }
     )
-  }
+  } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
+    this.ready.then(() => {
+      this._sendTaskFailure(executionName, options, executionOptions, callback)
+    })
+  } // sendTaskFailure
+  _sendTaskFailure (executionName, options, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -198,7 +230,12 @@ class Statebox {
     )
   }
 
-  sendTaskHeartbeat (executionName, output, executionOptions, callback) {
+  sendTaskHeartbeat(executionName, options, executionOptions, callback) {
+    this.ready.then(() => {
+      this._sendTaskHeartbeat(executionName, options, executionOptions, callback)
+    })
+  } // sendTaskHeartbeat
+  _sendTaskHeartbeat (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -217,7 +254,7 @@ class Statebox {
         }
       }
     )
-  }
+  } // _sendTaskHeartbeat
 
   addExpressApi (express, app, jwtCheck) {
     // Statebox routes
@@ -237,6 +274,11 @@ class Statebox {
   }
 
   waitUntilStoppedRunning (executionName, callback) {
+    this.ready.then(() =>
+      this._waitUntilStoppedRunning(executionName, callback)
+    )
+  } // waitUntilStoppedRunning
+  _waitUntilStoppedRunning (executionName, callback) {
     // TODO: Back-offs, timeouts etc.
     const _this = this
     async.doUntil(
@@ -268,6 +310,22 @@ class Statebox {
         }
       }
     )
+  }
+} // _waitUntilStoppedRunning
+
+function info(messages, msg) {
+  if (messages) {
+    messages.info(msg)
+  } else {
+    console.log(msg)
+  }
+}
+function warning(messages, msg) {
+  if (messages) {
+    info(messages, msg)
+    messages.warning(msg)
+  } else {
+    console.log(msg)
   }
 }
 
