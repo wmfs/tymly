@@ -20,10 +20,8 @@ class PostgresqlStorageService {
   boot (options, callback) {
     this.storageName = 'postgresql'
 
-    this.models = {}
-
     const connectionString = process.env.PG_CONNECTION_STRING
-    infoMessage(options.messages, `Using Postgresql storage... (${connectionString})`)
+    infoMessage(options.messages, `Using PostgresqlStorage... (${connectionString})`)
 
     // TODO: Use pool instead
 
@@ -33,13 +31,14 @@ class PostgresqlStorageService {
     const modelDefinitions = options.blueprintComponents.models || {}
     const seedData = options.blueprintComponents.seedData
 
+    this.models = {}
     this.schemaNames = []
     this.jsonSchemas = []
 
     this._pushModelSchemas(modelDefinitions)
 
-    this.createModels(this.schemaNames, this.jsonSchemas, options.messages)
-      .then(() => this.insertMultipleSeedData(seedData, options.messages))
+    this._createModels(options.messages)
+      .then(() => this._insertMultipleSeedData(seedData, options.messages))
       .then(() => callback())
       .catch(err => callback(err))
   } // boot
@@ -61,16 +60,16 @@ class PostgresqlStorageService {
     })
   } // _pushModelSchema
 
-  async createModels (schemaNames, jsonSchemas, messages) {
-    infoMessage(messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
+  async _createModels (messages) {
+    infoMessage(messages, `Getting info for from DB schemas: ${this.schemaNames.join(', ')}...`)
     const currentDbStructure = await pgInfo({
       client: this.client,
-      schemas: schemaNames
+      schemas: this.schemaNames
     })
 
     const expectedDbStructure = await relationize({
       source: {
-        schemas: jsonSchemas
+        schemas: this.jsonSchemas
       }
     })
 
@@ -95,21 +94,37 @@ class PostgresqlStorageService {
       dbStructure: expectedDbStructure
     })
 
-    this.models = {}
     infoMessage(messages, 'Models:')
 
     for (const [namespaceId, namespace] of Object.entries(models)) {
       for (const [modelId, model] of Object.entries(namespace)) {
         const id = `${namespaceId}_${modelId}`
         detailMessage(messages, id)
-        this.models[id] = model
+        if (!this.models[id]) {
+          this.models[id] = model
+        } // if ...
       } // for ...
     } // for ...
   } // _boot
 
-  insertMultipleSeedData (seedDataArray, messages) {
+  addModel (name, definition, messages) {
+    if (!name || !definition) {
+      return
+    }
+
+    if (this.models[name]) {
+      detailMessage(messages, `${name} already defined in PostgresqlStorage ...`)
+      return this.models[name]
+    }
+
+    detailMessage(message, `Adding ${name} to PostgresqlStorage`)
+    this._pushModelSchema(definition)
+    this._createModels(messages)
+  } // addModel
+
+  _insertMultipleSeedData (seedDataArray, messages) {
     return new Promise((resolve, reject) => {
-      this._insertMultipleSeedData(seedDataArray, messages, (err) => {
+      this._doInsertMultipleSeedData(seedDataArray, messages, (err) => {
         if (err) {
           return reject(err)
         }
@@ -118,7 +133,7 @@ class PostgresqlStorageService {
     })
   } // insertMultipleSeedData
 
-  _insertMultipleSeedData (seedDataArray, messages, callback) {
+  _doInsertMultipleSeedData (seedDataArray, messages, callback) {
     const _this = this
     if (seedDataArray) {
       callback(null)

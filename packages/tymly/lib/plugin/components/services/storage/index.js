@@ -14,16 +14,16 @@ class MemoryStorageService {
     this.storageName = 'memory'
     this.models = {}
 
-    infoMessage(options.messages, 'Using memory storage...')
+    infoMessage(options.messages, 'Using MemoryStorage...')
 
-    this.addModels(options.blueprintComponents.models, options.messages)
+    this._createModels(options.blueprintComponents.models, options.messages)
 
-    this.insertMultipleSeedData(options.blueprintComponents.seedData, options.messages)
+    this._insertMultipleSeedData(options.blueprintComponents.seedData, options.messages)
 
     callback(null)
   } // boot
 
-  addModels (modelDefinitions, messages) {
+  _createModels (modelDefinitions, messages) {
     if (!modelDefinitions) {
       return
     } // if (!modelDefinitions
@@ -43,23 +43,23 @@ class MemoryStorageService {
       return this.models[name]
     } // if ...
 
-    detailMessage(messages, `Added ${name} to MemoryStorage`)
+    detailMessage(messages, `Adding ${name} to MemoryStorage`)
     this.models[name] = new MemoryModel(definition)
     return this.models[name]
   } // addModel
 
-  insertMultipleSeedData (seedDataArray, messages) {
+  _insertMultipleSeedData (seedDataArray, messages) {
     if (!seedDataArray) {
       return
     }
     infoMessage(messages, 'Loading seed data:')
 
     for (const seedData of Object.values(seedDataArray)) {
-      this.insertSeedData(seedData, messages)
+      this._insertSeedData(seedData, messages)
     }
   } // insertMultipleSeedData
 
-  insertSeedData (seedData, messages) {
+  _insertSeedData (seedData, messages) {
     const name = `${seedData.namespace}_${seedData.name}`
     const model = this.models[name]
     if (!model) {
