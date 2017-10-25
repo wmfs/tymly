@@ -61,6 +61,10 @@ class PostgresqlStorageService {
   } // _pushModelSchema
 
   async _createModels (messages) {
+    if (!this.schemaNames.length || !this.jsonSchemas.length) {
+      infoMessage(messages, 'No models to create')
+      return
+    }
     infoMessage(messages, `Getting info for from DB schemas: ${this.schemaNames.join(', ')}...`)
     const currentDbStructure = await pgInfo({
       client: this.client,
@@ -95,19 +99,18 @@ class PostgresqlStorageService {
     })
 
     infoMessage(messages, 'Models:')
-
     for (const [namespaceId, namespace] of Object.entries(models)) {
       for (const [modelId, model] of Object.entries(namespace)) {
         const id = `${namespaceId}_${modelId}`
-        detailMessage(messages, id)
         if (!this.models[id]) {
+          detailMessage(messages, id)
           this.models[id] = model
         } // if ...
       } // for ...
     } // for ...
   } // _boot
 
-  addModel (name, definition, messages) {
+  async addModel (name, definition, messages) {
     if (!name || !definition) {
       return
     }
@@ -117,9 +120,10 @@ class PostgresqlStorageService {
       return this.models[name]
     }
 
-    detailMessage(message, `Adding ${name} to PostgresqlStorage`)
+    detailMessage(messages, `Adding ${name} to PostgresqlStorage`)
     this._pushModelSchema(definition)
-    this._createModels(messages)
+    await this._createModels(messages)
+    return this.models[name]
   } // addModel
 
   _insertMultipleSeedData (seedDataArray, messages) {
@@ -185,6 +189,7 @@ class PostgresqlStorageService {
           }
         })
     } else {
+      infoMessage(messages, 'No seed data to insert')
       callback(null)
     }
   } // insertMultipleSeedData
