@@ -51,8 +51,9 @@ class PostgresqlStorageService {
 
   _pushModelSchema (modelDefinition) {
     const schemaName = _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
-    if (!this.schemaNames.includes(schemaName))
+    if (!this.schemaNames.includes(schemaName)) {
       this.schemaNames.push(schemaName)
+    }
 
     this.jsonSchemas.push({
       namespace: modelDefinition.namespace,
