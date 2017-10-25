@@ -23,7 +23,6 @@ module.exports = function indexStatementGenerator (indexId, index, statements) {
   }
 
   if (_.isUndefined(index.base)) {
-    console.log('!!!!', template(ctx))
     statements.push(
       template(ctx)
     )
