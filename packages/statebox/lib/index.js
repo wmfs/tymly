@@ -20,7 +20,7 @@ const debug = require('debug')('statebox')
 class Statebox {
   constructor (options) {
     this.options = options || {}
-    this.ready =  this._findDao(options)
+    this.ready = this._findDao(options)
       .then(dao => {
         info(options.messages, 'Statebox is ready')
         this.options.dao = dao
@@ -230,7 +230,7 @@ class Statebox {
     )
   }
 
-  sendTaskHeartbeat(executionName, options, executionOptions, callback) {
+  sendTaskHeartbeat (executionName, options, executionOptions, callback) {
     this.ready.then(() => {
       this._sendTaskHeartbeat(executionName, options, executionOptions, callback)
     })
@@ -313,14 +313,14 @@ class Statebox {
   }
 } // _waitUntilStoppedRunning
 
-function info(messages, msg) {
+function info (messages, msg) {
   if (messages) {
     messages.info(msg)
   } else {
     console.log(msg)
   }
 }
-function warning(messages, msg) {
+function warning (messages, msg) {
   if (messages) {
     info(messages, msg)
     messages.warning(msg)
