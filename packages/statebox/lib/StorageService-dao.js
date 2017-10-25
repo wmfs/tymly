@@ -116,7 +116,7 @@ class StorageServiceDao {
     const executionName = `${stateMachineName}-${uuid()}-${++this.count}`.toString()
     const executionDescription = {
       executionName: executionName,
-      ctx: input,
+      ctx: JSON.stringify(input),
       currentStateName: startAt,
       currentResource: startResource,
       stateMachineName: stateMachineName,
@@ -129,6 +129,7 @@ class StorageServiceDao {
 
     await this.model.create(executionDescription, {})
 
+    executionDescription.ctx = input
     return executionDescription
   } // _createNewExecution
 
@@ -213,7 +214,11 @@ class StorageServiceDao {
   /// ////////////////////////////////
   async _findExecution (executionName) {
     const execution = await this.model.findById(executionName)
-    execution.ctx = JSON.parse(execution.ctx)
+
+    if (execution) {
+      execution.ctx = JSON.parse(execution.ctx)
+    }
+
     return execution
   } // _findExecution
 
