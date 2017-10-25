@@ -207,7 +207,6 @@ describe('PostgreSQL storage tests', function () {
         if (err) console.error(err)
         console.log(executionDescription)
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.errorCode).to.eql('FAILED_TO_UPSERT')
         done()
       }
     )
