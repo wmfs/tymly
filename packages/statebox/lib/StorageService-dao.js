@@ -3,6 +3,7 @@ const boom = require('boom')
 const executionModelDefinition = {
   'id': 'execution',
   'name': 'executions',
+  'namespace': 'tymly',
   'plural': 'executions',
   'primaryKey': ['executionName'],
   'description': 'Statebox executions instances',
@@ -49,7 +50,7 @@ function pOrC (promise, callback) {
 
 class StorageServiceDao {
   static get ExecutionModelName () {
-    return 'tymly_executions'
+    return `${executionModelDefinition.namespace}_${executionModelDefinition.id}`
   } // ExecutionModelName
   static get ExecutionModelDefinition () {
     return executionModelDefinition
