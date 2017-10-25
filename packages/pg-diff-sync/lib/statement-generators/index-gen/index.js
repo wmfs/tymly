@@ -18,7 +18,12 @@ module.exports = function indexStatementGenerator (indexId, index, statements) {
     method: index.target.method || 'btree'
   }
 
+  if (!ctx.columns.join()) {
+    return
+  }
+
   if (_.isUndefined(index.base)) {
+    console.log('!!!!', template(ctx))
     statements.push(
       template(ctx)
     )
