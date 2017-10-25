@@ -1,4 +1,5 @@
 const boom = require('boom')
+const uuid = require('uuid/v1')
 
 const executionModelDefinition = {
   'id': 'execution',
@@ -57,7 +58,7 @@ class StorageServiceDao {
   } // ExecutionModelDefinition
 
   constructor (model) {
-    this.uuid = 0
+    this.count = 0
     this.model = model
   } // constructor
 
@@ -77,7 +78,7 @@ class StorageServiceDao {
 
   findExecutionByName (executionName, callback = NotSet) {
     return pOrC(
-      this.model.findById(executionName),
+      this._findExecution(executionName),
       callback
     )
   } // findExecutionByName
@@ -112,8 +113,7 @@ class StorageServiceDao {
 
   /// /////////////////////////////////
   async _createNewExecution (startAt, startResource, input, stateMachineName, executionOptions) {
-    this.uuid++
-    const executionName = this.uuid.toString()
+    const executionName = `${stateMachineName}-${uuid()}-${++this.count}`.toString()
     const executionDescription = {
       executionName: executionName,
       ctx: input,
@@ -211,6 +211,12 @@ class StorageServiceDao {
   } // _markRelatedBrancesAsFailed
 
   /// ////////////////////////////////
+  async _findExecution (executionName) {
+    const execution = await this.model.findById(executionName)
+    execution.ctx = JSON.parse(execution.ctx)
+    return execution
+  } // _findExecution
+
   async _updateExecution (executionName, updateFn, error) {
     const execution = await this.findExecutionByName(executionName)
 
@@ -230,8 +236,12 @@ class StorageServiceDao {
       return
     }
 
+    const ctx = execution.ctx
+    execution.ctx = JSON.stringify(ctx)
+
     await this.model.update(execution, {})
 
+    execution.ctx = ctx
     return execution
   } // _saveExecution
 } // class StorageServiceDao
