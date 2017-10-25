@@ -216,7 +216,7 @@ class MemoryModel {
     let doc
     const output = this.applyWhere(options)
     if (output.length > 0) {
-      doc = output[0]
+      doc = _.cloneDeep(output[0])
     }
     callback(null, doc)
   }
