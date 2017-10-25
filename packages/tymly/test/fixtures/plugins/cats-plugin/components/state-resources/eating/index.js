@@ -10,7 +10,8 @@ module.exports = class Eating {
     event.petDiary.push(`Shh, ${event.petName} is eating...`)
     context.sendTaskSuccess(
       {
-        hoursSinceLastMeal: 0
+        hoursSinceLastMeal: 0,
+        petDiary: event.petDiary
       }
     )
   }

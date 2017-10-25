@@ -9,7 +9,8 @@ module.exports = class Sitting {
     event.petDiary.push(`Stand back, ${event.petName} is using the cat litter!`)
     context.sendTaskSuccess(
       {
-        hoursSinceLastMotion: 0
+        hoursSinceLastMotion: 0,
+        petDiary: event.petDiary
       }
     )
   }
