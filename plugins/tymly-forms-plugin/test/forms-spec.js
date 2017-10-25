@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 
-const expect = require('chai').expect
+const chai = require('chai')
+const expect = chai.expect
+const chaiSubset = require('chai-subset')
+chai.use(chaiSubset)
 const tymly = require('tymly')
 const path = require('path')
 const STATE_MACHINE_NAME = 'tymlyTest_simpleForm_1_0'
@@ -90,28 +93,31 @@ describe('Simple forms tests', function () {
         sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'
       }, // options
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        executionName = executionDescription.executionName
-        expect(executionDescription.currentStateName).to.eql('FormFilling')
-        expect(executionDescription.currentResource).to.eql('module:formFilling')
-        expect(executionDescription.stateMachineName).to.eql('tymlyTest_simpleForm_1_0')
-        expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.ctx).to.eql(
-          {
-            commentData: {
-              _executionName: '1',
-              formData: {
-                email: 'rupert@tymlyjs.io',
-                name: 'Rupert'
+        try {
+          expect(err).to.eql(null)
+          executionName = executionDescription.executionName
+          expect(executionDescription.currentStateName).to.eql('FormFilling')
+          expect(executionDescription.currentResource).to.eql('module:formFilling')
+          expect(executionDescription.stateMachineName).to.eql('tymlyTest_simpleForm_1_0')
+          expect(executionDescription.status).to.eql('RUNNING')
+          expect(executionDescription.ctx).to.containSubset(
+            {
+              commentData: {
+                formData: {
+                  email: 'rupert@tymlyjs.io',
+                  name: 'Rupert'
+                }
+              },
+              formIdToShowHuman: 'tymlyTest_simpleForm_1_0',
+              key: {
+                email: 'rupert@tymlyjs.io'
               }
-            },
-            formIdToShowHuman: 'tymlyTest_simpleForm_1_0',
-            key: {
-              email: 'rupert@tymlyjs.io'
             }
-          }
-        )
-        done()
+          )
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })
