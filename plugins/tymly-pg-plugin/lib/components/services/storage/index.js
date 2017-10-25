@@ -33,30 +33,41 @@ class PostgresqlStorageService {
     const modelDefinitions = options.blueprintComponents.models || {}
     const seedData = options.blueprintComponents.seedData
 
-    this.createModels(modelDefinitions, options.messages)
+    this.schemaNames = []
+    this.jsonSchemas = []
+
+    this._pushModelSchemas(modelDefinitions)
+
+    this.createModels(this.schemaNames, this.jsonSchemas, options.messages)
       .then(() => this.insertMultipleSeedData(seedData, options.messages))
       .then(() => callback())
       .catch(err => callback(err))
   } // boot
 
-  async createModels (modelDefinitions, messages) {
-    const schemaNames = _.uniq(_.map(modelDefinitions, function (modelDefinition) {
-      return _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
-    }))
+  _pushModelSchemas (modelDefinitions) {
+    Object.values(modelDefinitions).forEach(
+      modelDefinition => this._pushModelSchema(modelDefinition)
+    )
+  } // _pushModelSchemas
+
+  _pushModelSchema (modelDefinition) {
+    const schemaName = _.kebabCase(modelDefinition.namespace).replace(/-/g, '_')
+    if (!this.schemaNames.includes(schemaName))
+      this.schemaNames.push(schemaName)
+
+    this.jsonSchemas.push({
+      namespace: modelDefinition.namespace,
+      schema: modelDefinition
+    })
+  } // _pushModelSchema
+
+  async createModels (schemaNames, jsonSchemas, messages) {
     infoMessage(messages, `Getting info for from DB schemas: ${schemaNames.join(', ')}...`)
     const currentDbStructure = await pgInfo({
       client: this.client,
       schemas: schemaNames
     })
 
-    const jsonSchemas = Object.values(modelDefinitions).map(
-      definition => {
-        return {
-          namespace: definition.namespace,
-          schema: definition
-        }
-      }
-    ) // jsonSchemas
     const expectedDbStructure = await relationize({
       source: {
         schemas: jsonSchemas
