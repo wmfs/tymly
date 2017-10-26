@@ -3,6 +3,7 @@ const debugPackage = require('debug')('statebox')
 const stateMachines = require('./../../state-machines')
 const _ = require('lodash')
 const dottie = require('dottie')
+const Status = require('../../Status')
 
 class BaseState {
   constructor (stateName, stateMachine, stateDefinition, options) {
@@ -107,7 +108,7 @@ class BaseState {
               if (err) {
                 throw new Error(err)
               } else {
-                const registeredCallback = _this.options.callbackManager.getAndRemoveCallback('COMPLETE', executionName)
+                const registeredCallback = _this.options.callbackManager.getAndRemoveCallback(Status.COMPLETE, executionName)
                 if (registeredCallback) {
                   registeredCallback(null, failedExecutionDescription)
                 }
@@ -149,13 +150,13 @@ class BaseState {
               const tracker = _this.options.parallelBranchTracker
               tracker.registerChildExecutionEnd(executionDescription.executionName)
               const parallelStateStatus = tracker.getParallelTaskStatus(parentExecutionName)
-              if (parallelStateStatus === 'SUCCEEDED') {
+              if (parallelStateStatus === Status.SUCCEEDED) {
                 debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
                 _this.processTaskSuccess(ctx, parentExecutionName)
               }
             } else {
               // No branching, so finished everything... might need to call a callback?
-              const registeredCallback = _this.options.callbackManager.getAndRemoveCallback('COMPLETE', executionName)
+              const registeredCallback = _this.options.callbackManager.getAndRemoveCallback(Status.COMPLETE, executionName)
               if (registeredCallback) {
                 registeredCallback(null, succeededExecutionDescription)
               }

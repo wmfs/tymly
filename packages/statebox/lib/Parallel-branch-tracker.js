@@ -1,5 +1,7 @@
 'use strict'
 
+const Status = require('./Status')
+
 module.exports = class ParallelBranchTracker {
   constructor () {
     this.parentExecutions = {}
@@ -32,9 +34,9 @@ module.exports = class ParallelBranchTracker {
     const parent = this.parentExecutions[parentExecutionName]
     if (parent.running === 0) {
       // TODO: Garbage collect
-      status = 'SUCCEEDED'
+      status = Status.SUCCEEDED
     } else {
-      status = 'RUNNING'
+      status = Status.RUNNING
     }
     return status
   }

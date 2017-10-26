@@ -1,6 +1,7 @@
 const process = require('process')
 const boom = require('boom')
 const _ = require('lodash')
+const Status = require('./Status')
 
 class MemoryDao {
   constructor (options) {
@@ -17,7 +18,7 @@ class MemoryDao {
       currentStateName: startAt,
       currentResource: startResource,
       stateMachineName: stateMachineName,
-      status: 'RUNNING',
+      status: Status.RUNNING,
       instigatingClient: executionOptions.instigatingClient,
       parentExecutionName: executionOptions.parentExecutionName,
       rootExecutionName: executionOptions.rootExecutionName,
@@ -37,7 +38,7 @@ class MemoryDao {
       function () {
         const execution = _this.executions[executionName]
         if (execution) {
-          execution.status = 'STOPPED'
+          execution.status = Status.STOPPED
           if (!execution.errorCause) {
             execution.errorCause = cause
           }
@@ -77,7 +78,7 @@ class MemoryDao {
         const execution = _this.executions[executionName]
         if (execution) {
           execution.ctx = ctx
-          execution.status = 'SUCCEEDED'
+          execution.status = Status.SUCCEEDED
           callback(null, execution)
         } else {
           // TODO: Something bad happened
@@ -94,7 +95,7 @@ class MemoryDao {
         const executionName = executionDescription.executionName
         const execution = _this.executions[executionName]
         if (execution) {
-          execution.status = 'FAILED'
+          execution.status = Status.FAILED
           execution.errorCode = errorCode
           execution.errorMessage = errorMessage
           if (executionDescription.hasOwnProperty('rootExecutionName') && executionDescription.rootExecutionName) {
@@ -169,11 +170,11 @@ class MemoryDao {
             if (execution.hasOwnProperty('parentExecutionName') && execution.parentExecutionName === parentExecutionName) {
               summary.numberOfBranches++
               switch (execution.status) {
-                case 'SUCCEEDED':
+                case Status.SUCCEEDED:
                   summary.numberSucceeded++
                   break
 
-                case 'FAILED':
+                case Status.FAILED:
                   summary.numberFailed++
                   break
               }
@@ -191,7 +192,7 @@ class MemoryDao {
       function () {
         const execution = _this.executions[executionName]
         if (execution) {
-          execution.status = 'FAILED'
+          execution.status = Status.FAILED
           if (!execution.errorCause) {
             execution.errorCause = 'States.BranchFailed'
           }

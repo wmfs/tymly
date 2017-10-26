@@ -12,6 +12,7 @@ const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./Memory-dao')
 const StorageDao = require('./StorageService-dao')
+const Status = require('./Status')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
 const routes = require('./routes/index')
 const CallbackManager = require('./Callback-manager')
@@ -149,7 +150,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === 'RUNNING') {
+          if (executionDescription.status === Status.RUNNING) {
             _this.options.dao.stopExecution(
               cause,
               errorCode,
@@ -189,7 +190,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === 'RUNNING') {
+          if (executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskSuccess(executionDescription, output)
@@ -216,7 +217,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === 'RUNNING') {
+          if (executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskFailure(executionDescription, options, callback)
@@ -242,7 +243,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === 'RUNNING') {
+          if (executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskHeartbeat(executionDescription, output, callback)
@@ -300,7 +301,7 @@ class Statebox {
         )
       },
       function (latestExecutionDescription) {
-        return latestExecutionDescription.status !== 'RUNNING'
+        return latestExecutionDescription.status !== Status.RUNNING
       },
       function (err, finalExecutionDescription) {
         if (err) {

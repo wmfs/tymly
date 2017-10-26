@@ -1,5 +1,6 @@
 const boom = require('boom')
 const uuid = require('uuid/v1')
+const Status = require('./Status')
 
 const executionModelDefinition = {
   'id': 'execution',
@@ -120,7 +121,7 @@ class StorageServiceDao {
       currentStateName: startAt,
       currentResource: startResource,
       stateMachineName: stateMachineName,
-      status: 'RUNNING',
+      status: Status.RUNNING,
       instigatingClient: executionOptions.instigatingClient,
       parentExecutionName: executionOptions.parentExecutionName,
       rootExecutionName: executionOptions.rootExecutionName,
@@ -137,7 +138,7 @@ class StorageServiceDao {
     return this._updateExecution(
       executionName,
       execution => {
-        execution.status = 'STOPPED'
+        execution.status = Status.STOPPED
         execution.errorCause = execution.errorCause || cause
         execution.errorCode = execution.errorCode || errorCode
       },
@@ -149,7 +150,7 @@ class StorageServiceDao {
     return this._updateExecution(
       executionName,
       execution => {
-        execution.status = 'SUCCEEDED'
+        execution.status = Status.SUCCEEDED
         execution.ctx = ctx
       },
       boom.badRequest(`Unable to succeed execution with name '${executionName}'`)
@@ -162,7 +163,7 @@ class StorageServiceDao {
     return this._updateExecution(
       executionName,
       execution => {
-        execution.status = 'FAILED'
+        execution.status = Status.FAILED
         execution.errorCode = errorCode
         execution.errorMessage = errorMessage
 
@@ -203,7 +204,7 @@ class StorageServiceDao {
     return this._updateExecution(
       executionName,
       execution => {
-        execution.status = 'FAILED'
+        execution.status = Status.FAILED
         execution.errorCause = execution.errorCause || 'States.BranchFailed'
         execution.errorCode = execution.errorCode || 'Failed because a state in a parallel branch has failed'
       },
