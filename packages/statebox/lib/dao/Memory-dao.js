@@ -1,7 +1,7 @@
 const process = require('process')
 const boom = require('boom')
 const _ = require('lodash')
-const Status = require('./Status')
+const Status = require('../Status')
 
 class MemoryDao {
   constructor (options) {

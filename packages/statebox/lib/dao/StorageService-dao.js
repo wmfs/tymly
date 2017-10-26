@@ -1,6 +1,6 @@
 const boom = require('boom')
 const uuid = require('uuid/v1')
-const Status = require('./Status')
+const Status = require('../Status')
 
 const executionModelDefinition = {
   'id': 'execution',

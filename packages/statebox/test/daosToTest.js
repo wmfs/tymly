@@ -1,4 +1,4 @@
-const StorageDao = require('../lib/StorageService-dao')
+const StorageDao = require('../lib/dao/StorageService-dao')
 
 let messages = null
 try {
