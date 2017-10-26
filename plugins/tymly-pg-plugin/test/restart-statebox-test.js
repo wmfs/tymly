@@ -86,5 +86,4 @@ describe('Restart statebox test - cat state machine', function () {
       }
     )
   })
-  
 })
