@@ -1,6 +1,5 @@
-const boom = require('boom')
 const uuid = require('uuid/v1')
-const Status = require('../Status')
+const Dao = require('./Dao')
 
 const executionModelDefinition = {
   'id': 'execution',
@@ -42,15 +41,7 @@ const executionModelDefinition = {
   'required': ['uuid']
 } // executionModelDefinition
 
-const NotSet = 'NotSet'
-function pOrC (promise, callback) {
-  if (callback === NotSet) { return promise }
-  promise
-    .then(result => callback(null, result))
-    .catch(err => callback(err, null))
-} // pOrC
-
-class StorageServiceDao {
+class StorageServiceDao extends Dao {
   static get ExecutionModelName () {
     return `${executionModelDefinition.namespace}_${executionModelDefinition.id}`
   } // ExecutionModelName
@@ -59,160 +50,16 @@ class StorageServiceDao {
   } // ExecutionModelDefinition
 
   constructor (model) {
+    super()
     this.count = 0
     this.model = model
   } // constructor
 
-  createNewExecution (startAt, startResource, input, stateMachineName, executionOptions, callback = NotSet) {
-    return pOrC(
-      this._createNewExecution(startAt, startResource, input, stateMachineName, executionOptions),
-      callback
-    )
-  } // _createNewExecution
-
-  stopExecution (cause, errorCode, executionName, executionOptions, callback = NotSet) {
-    return pOrC(
-      this._stopExecution(cause, errorCode, executionName, executionOptions),
-      callback
-    )
-  } // stopExecution
-
-  findExecutionByName (executionName, callback = NotSet) {
-    return pOrC(
-      this._findExecution(executionName),
-      callback
-    )
-  } // findExecutionByName
-
-  succeedExecution (executionName, ctx, callback = NotSet) {
-    return pOrC(
-      this._succeedExecution(executionName, ctx),
-      callback
-    )
-  } // succeedExecution
-
-  failExecution (executionDescription, errorMessage, errorCode, callback = NotSet) {
-    return pOrC(
-      this._failExecution(executionDescription, errorMessage, errorCode),
-      callback
-    )
-  } // failExecution
-
-  setNextState (executionName, nextStateName, nextResource, ctx, callback = NotSet) {
-    return pOrC(
-      this._setNextState(executionName, nextStateName, nextResource, ctx),
-      callback
-    )
-  } // setNextState
-
-  updateCurrentStateName (stateName, currentResource, executionName, callback = NotSet) {
-    return pOrC(
-      this._updateCurrentStateName(stateName, currentResource, executionName),
-      callback
-    )
-  } // updateCurrentStateName
-
-  /// /////////////////////////////////
-  async _createNewExecution (startAt, startResource, input, stateMachineName, executionOptions) {
-    const executionName = `${stateMachineName}-${uuid()}-${++this.count}`.toString()
-    const executionDescription = {
-      executionName: executionName,
-      ctx: JSON.stringify(input),
-      currentStateName: startAt,
-      currentResource: startResource,
-      stateMachineName: stateMachineName,
-      status: Status.RUNNING,
-      instigatingClient: executionOptions.instigatingClient,
-      parentExecutionName: executionOptions.parentExecutionName,
-      rootExecutionName: executionOptions.rootExecutionName,
-      startDate: new Date().toISOString()
-    }
-
-    await this.model.create(executionDescription, {})
-
-    executionDescription.ctx = input
-    return executionDescription
-  } // _createNewExecution
-
-  _stopExecution (cause, errorCode, executionName, executionOptions) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.status = Status.STOPPED
-        execution.errorCause = execution.errorCause || cause
-        execution.errorCode = execution.errorCode || errorCode
-      },
-      boom.badRequest(`Unable to stop execution with name '${executionName}'`)
-    )
-  } // _stopExecution
-
-  _succeedExecution (executionName, ctx) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.status = Status.SUCCEEDED
-        execution.ctx = ctx
-      },
-      boom.badRequest(`Unable to succeed execution with name '${executionName}'`)
-    )
-  } // _succeedExecution
-
-  _failExecution (executionDescription, errorMessage, errorCode) {
-    const executionName = executionDescription.executionName
-
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.status = Status.FAILED
-        execution.errorCode = errorCode
-        execution.errorMessage = errorMessage
-
-        return this._markRelatedBranchesAsFailed(executionDescription.rootExecutionName)
-      },
-      boom.badRequest(`Unable to fail execution with name '${executionName}'`)
-    )
-  } // _failExecution
-
-  _setNextState (executionName, nextStateName, nextResource, ctx) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.ctx = ctx
-        execution.currentStateName = nextStateName
-        execution.currentResource = nextResource
-      },
-      boom.badRequest(`Unable to set next state name for execution with name '${executionName}'`)
-    )
-  } // _setNextState
-
-  _updateCurrentStateName (stateName, currentResource, executionName) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.currentStateName = stateName
-        execution.currentResource = currentResource
-      },
-      boom.badRequest(`Unable to update state name for execution with name '${executionName}'`)
-    )
-  } // _updateCurrentStateName
-
-  _markRelatedBranchesAsFailed (executionName) {
-    if (!executionName) {
-      return
-    }
-
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.status = Status.FAILED
-        execution.errorCause = execution.errorCause || 'States.BranchFailed'
-        execution.errorCode = execution.errorCode || 'Failed because a state in a parallel branch has failed'
-      },
-      boom.badRequest(`Unable to set failed state for execution named ${executionName}`)
-    )
-  } // _markRelatedBrancesAsFailed
-
   /// ////////////////////////////////
+  _newExecutionName (stateMachineName) {
+    return `${stateMachineName}-${uuid()}-${++this.count}`
+  } // newExecutionName
+
   async _findExecution (executionName) {
     const execution = await this.model.findById(executionName)
 
@@ -224,20 +71,26 @@ class StorageServiceDao {
   } // _findExecution
 
   async _updateExecution (executionName, updateFn, error) {
-    const execution = await this.findExecutionByName(executionName)
+    const execution = await this._findExecution(executionName)
 
     if (!execution) {
       throw error
     }
 
-    await updateFn(execution)
+    updateFn(execution)
 
-    await this._saveExecution(execution)
-
-    return execution
+    return this._saveExecution(execution)
   } // _updateExecution
 
+  async _createExecution (execution) {
+    return this._persist('create', execution)
+  } // _createExecution
+
   async _saveExecution (execution) {
+    return this._persist('update', execution)
+  } // _saveExecution
+
+  async _persist (action, execution) {
     if (!execution) {
       return
     }
@@ -245,7 +98,7 @@ class StorageServiceDao {
     const ctx = execution.ctx
     execution.ctx = JSON.stringify(ctx)
 
-    await this.model.update(execution, {})
+    await this.model[action](execution, {})
 
     execution.ctx = ctx
     return execution

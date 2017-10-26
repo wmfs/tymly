@@ -34,6 +34,10 @@ function DaosToTest () {
   return daos
 }
 
+process.on('unhandledRejection', error => {
+  console.log('unhandledRejection', error)
+})
+
 module.exports = DaosToTest().map(([name, dao, storageService]) => {
   return [name, {
     dao: dao,

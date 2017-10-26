@@ -1,158 +1,13 @@
 const process = require('process')
-const boom = require('boom')
 const _ = require('lodash')
+const Dao = require('./Dao')
 const Status = require('../Status')
 
-class MemoryDao {
+class MemoryDao extends Dao {
   constructor (options) {
+    super()
     this.uuid = 0
     this.executions = {}
-  }
-
-  createNewExecution (startAt, startResource, input, stateMachineName, executionOptions, callback) {
-    this.uuid++
-    const executionName = this.uuid.toString()
-    const executionDescription = {
-      executionName: executionName,
-      ctx: input,
-      currentStateName: startAt,
-      currentResource: startResource,
-      stateMachineName: stateMachineName,
-      status: Status.RUNNING,
-      instigatingClient: executionOptions.instigatingClient,
-      parentExecutionName: executionOptions.parentExecutionName,
-      rootExecutionName: executionOptions.rootExecutionName,
-      startDate: new Date().toISOString()
-    }
-    this.executions[executionName] = executionDescription
-    process.nextTick(
-      function () {
-        callback(null, executionDescription)
-      }
-    )
-  }
-
-  stopExecution (cause, errorCode, executionName, executionOptions, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.status = Status.STOPPED
-          if (!execution.errorCause) {
-            execution.errorCause = cause
-          }
-          if (!execution.errorCode) {
-            execution.errorCode = errorCode
-          }
-          callback(null)
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to update state name for execution with name '${executionName}'`))
-        }
-      }
-    )
-  }
-
-  findExecutionByName (executionName, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const raw = _this.executions[executionName]
-        if (raw) {
-          callback(
-            null,
-            raw
-          )
-        } else {
-          callback(null, null)
-        }
-      }
-    )
-  }
-
-  succeedExecution (executionName, ctx, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.ctx = ctx
-          execution.status = Status.SUCCEEDED
-          callback(null, execution)
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to succeed execution with name '${executionName}'`))
-        }
-      }
-    )
-  }
-
-  failExecution (executionDescription, errorMessage, errorCode, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const executionName = executionDescription.executionName
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.status = Status.FAILED
-          execution.errorCode = errorCode
-          execution.errorMessage = errorMessage
-          if (executionDescription.hasOwnProperty('rootExecutionName') && executionDescription.rootExecutionName) {
-            _this.markRelatedBranchesAsFailed(
-              executionDescription.rootExecutionName,
-              function (err) {
-                if (err) {
-                  callback(err)
-                } else {
-                  callback(null, execution)
-                }
-              }
-            )
-          } else {
-            callback(null, execution)
-          }
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to fail execution with name '${executionName}'`))
-        }
-      }
-    )
-  }
-
-  setNextState (executionName, nextStateName, nextResource, ctx, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.ctx = ctx
-          execution.currentStateName = nextStateName
-          execution.currentResource = nextResource
-          callback(null)
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to set next state name for execution with name '${executionName}'`))
-        }
-      }
-    )
-  }
-
-  updateCurrentStateName (stateName, currentResource, executionName, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.currentStateName = stateName
-          execution.currentResource = currentResource
-          callback(null)
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to update state name for execution with name '${executionName}'`))
-        }
-      }
-    )
   }
 
   getBranchSummary (parentExecutionName, callback) {
@@ -186,27 +41,43 @@ class MemoryDao {
     )
   }
 
-  markRelatedBranchesAsFailed (executionName, callback) {
-    const _this = this
-    process.nextTick(
-      function () {
-        const execution = _this.executions[executionName]
-        if (execution) {
-          execution.status = Status.FAILED
-          if (!execution.errorCause) {
-            execution.errorCause = 'States.BranchFailed'
-          }
-          if (!execution.errorCode) {
-            execution.errorCode = 'Failed because a state in a parallel branch has failed'
-          }
-          callback(null)
-        } else {
-          // TODO: Something bad happened
-          callback(boom.badRequest(`Unable to set next state name for execution with name '${executionName}'`))
-        }
-      }
-    )
-  }
-}
+  /// ////////////////////////////////////
+  _newExecutionName (stateMachineName) {
+    this.uuid++
+    return this.uuid.toString()
+  } // newExecutionName
+
+  async _findExecution (executionName) {
+    return this.executions[executionName]
+  } // _findExecution
+
+  async _updateExecution (executionName, updateFn, error) {
+    const execution = this.executions[executionName]
+
+    if (!execution) {
+      throw error
+    }
+
+    updateFn(execution)
+
+    this._saveExecution(execution)
+
+    return execution
+  } // _updateExecution
+
+  async _createExecution (execution) {
+    return this._saveExecution(execution)
+  } // _createExecution
+
+  async _saveExecution (execution) {
+    if (!execution) {
+      return
+    }
+
+    this.executions[execution.executionName] = execution
+
+    return execution
+  } // _saveExecution
+} // class MemoryDao
 
 module.exports = MemoryDao
