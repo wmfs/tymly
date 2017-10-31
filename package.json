@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "author": "Tim Needham",
   "devDependencies": {
-    "lerna": "2.0.0"
+    "lerna": "^2.0.0"
   },
   "scripts": {
-    "test": "lerna run test --concurrency 1",
-    "lint": "lerna run lint"
+    "bootstrap": "./node_modules/.bin/lerna bootstrap",
+    "test": "./node_modules/.bin/lerna run test --concurrency 1",
+    "lint": "./node_modules/.bin/lerna run lint"
   },
   "license": "MIT",
   "repository": {
@@ -19,6 +20,7 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
-    "mocha": "^3.5.3"
+    "mocha": "^3.5.3",
+    "standard": "^10.0.3"
   }
 }
