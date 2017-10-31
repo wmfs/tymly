@@ -73,6 +73,6 @@ task bootstrap (type:Exec) {
 
 task test (type:Exec,
            dependsOn: [bootstrap, startPostgres]) {
-  commandLine 'npm', 'run', 'test'
+  commandLine 'npm', 'run', 'ci_test'
   environment PG_CONNECTION_STRING: pg_connection
 }
