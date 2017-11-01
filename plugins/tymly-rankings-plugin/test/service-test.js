@@ -10,6 +10,7 @@ const existsCase = require('./../lib/components/services/rankings/case-statement
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
+const generateStats = require('./../lib/components/services/rankings/generate-stats')
 
 describe('Tests the Ranking Service', function () {
   this.timeout(5000)
@@ -143,7 +144,7 @@ describe('Tests the Ranking Service', function () {
       'source': {
         'model': 'gazetteer',
         'property': 'uprn',
-        'otherProperties': [ 'address_label' ]
+        'otherProperties': ['address_label']
       },
       'ranking': {
         'usage': 'constant',
@@ -255,8 +256,66 @@ describe('Tests the Ranking Service', function () {
             heritage_score: 0,
             risk_score: 16
           })
+          expect(result.rows[3]).to.eql({
+            uprn: '4',
+            label: '4 abc lane',
+            usage_score: 8,
+            food_standards_score: 8,
+            incidents_score: 6,
+            heritage_score: 2,
+            risk_score: 24
+          })
+          expect(result.rows[4]).to.eql({
+            uprn: '5',
+            label: '5 abc lane',
+            usage_score: 8,
+            food_standards_score: 8,
+            incidents_score: 16,
+            heritage_score: 0,
+            risk_score: 32
+          })
+          expect(result.rows[5]).to.eql({
+            uprn: '6',
+            label: '6 abc lane',
+            usage_score: 8,
+            food_standards_score: 2,
+            incidents_score: 0,
+            heritage_score: 0,
+            risk_score: 10
+          })
           done()
         }
+      }
+    )
+  })
+
+  it('should generate a statistics table', function (done) {
+    generateStats({
+      client: client,
+      category: 'factory',
+      schema: 'test',
+      name: 'test'
+    })
+      .then(() => done())
+      .catch((err) => done(err))
+  })
+
+  it('should check the data in the statistics table', function (done) {
+    client.query(
+      'SELECT * FROM test.test_stats',
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        }
+        expect(result.rows[0]).to.eql({
+          category: 'factory',
+          mean: '22.33',
+          median: '21.00',
+          variance: '73.89',
+          stdev: '8.60'
+        })
+        done()
       }
     )
   })

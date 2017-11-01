@@ -35,20 +35,33 @@ CREATE TABLE test.heritage (
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (1, '1 abc lane');
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (2, '2 abc lane');
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (3, '3 abc lane');
+INSERT INTO test.gazetteer (uprn, address_label) VALUES (4, '4 abc lane');
+INSERT INTO test.gazetteer (uprn, address_label) VALUES (5, '5 abc lane');
+INSERT INTO test.gazetteer (uprn, address_label) VALUES (6, '6 abc lane');
 
 INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (1, 'factory');
 INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (2, 'factory');
 INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (3, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (4, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (5, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (6, 'factory');
 
 INSERT INTO test.food (uprn, rating) VALUES (1, '2');
 INSERT INTO test.food (uprn, rating) VALUES (2, '1');
 INSERT INTO test.food (uprn, rating) VALUES (3, '5');
+INSERT INTO test.food (uprn, rating) VALUES (4, '0');
+INSERT INTO test.food (uprn, rating) VALUES (5, '2');
+INSERT INTO test.food (uprn, rating) VALUES (6, '5');
 
 INSERT INTO test.incidents (uprn, amount) VALUES (1, '5');
 INSERT INTO test.incidents (uprn, amount) VALUES (2, '0');
 INSERT INTO test.incidents (uprn, amount) VALUES (3, '1');
+INSERT INTO test.incidents (uprn, amount) VALUES (4, '1');
+INSERT INTO test.incidents (uprn, amount) VALUES (5, '2');
+INSERT INTO test.incidents (uprn, amount) VALUES (6, '0');
 
 INSERT INTO test.heritage (uprn) VALUES (1);
 INSERT INTO test.heritage (uprn) VALUES (2);
+INSERT INTO test.heritage (uprn) VALUES (4);
 
 COMMIT;

@@ -1,5 +1,6 @@
 DROP VIEW IF EXISTS test.factory_scores;
 
+DROP TABLE IF EXISTS test.test_stats;
 DROP TABLE IF EXISTS test.food;
 DROP TABLE IF EXISTS test.incidents;
 DROP TABLE IF EXISTS test.heritage;

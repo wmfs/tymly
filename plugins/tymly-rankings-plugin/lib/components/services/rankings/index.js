@@ -2,52 +2,50 @@
 
 const _ = require('lodash')
 const generateViewStatement = require('./generate-view-statement')
+// const generateStats = require('./generate-stats')
 
 class RankingService {
   boot (options, callback) {
-    this.client = options.bootedServices.storage.client
-
+    let promises
+    // const client = options.bootedServices.storage.client
+    const rankings = options.blueprintComponents.rankings
     // let script = ``
-    let rankings = options.blueprintComponents.rankings
 
     if (_.isObject(rankings)) {
       options.messages.info('Finding rankings')
-      for (const key in rankings) {
-        if (rankings.hasOwnProperty(key)) {
-          let schemaName = key.split('_')[0] // e.g. wmfs
-          let source = rankings[key].source // e.g. {model: 'gazetteer', property: 'uprn', otherProperties: ['address_label']}
-          let propertyType = key.split('_')[1] // e.g. factory OR hospital
-          let registry = options.bootedServices.registry.registry[key] // contains ranges for each factor
 
-          let viewStatement = generateViewStatement({
-            'propertyType': propertyType,
-            'schema': schemaName,
-            'source': source,
-            'ranking': rankings[key].factors,
-            'registry': registry
-          })
-          // script += viewStatement + ';'
+      // Each property type
+      promises = Object.entries(rankings).map(async (i) => {
+        // Generate view statement
+        const viewStatement = generateViewStatement({
+          propertyType: _.snakeCase(i[0].split('_')[1]),
+          schema: _.snakeCase(i[0].split('_')[0]),
+          source: i[1].source,
+          ranking: i[1].factors,
+          registry: options.bootedServices.registry.registry[i[0]]
+        })
 
-          console.log(propertyType)
-          console.log(viewStatement + '\n\n')
-        }
-      }
+        console.log('---', i[0].split('_')[1], '---')
+        console.log(viewStatement + '\n\n')
+
+        // Generate statistics table
+        /*
+        await generateStats({
+          client: client,
+          category: i[0].split('_')[1],
+          schema: i[0].split('_')[0],
+          name: 'test'
+        })
+        */
+      })
     }
 
-    callback(null)
-    /* UNCOMMENT THIS WHEN YOU WANT IT TO RUN SCRIPT
-    this.executeScript(script, function (err) {
-      if (err) {
-        callback(err)
-      } else {
-        callback(null)
-      }
-    })
-    */
-  }
+    Promise.all(promises)
+      .then(() => callback(null))
+      .catch((err) => callback(err))
 
-  executeScript (script, callback) {
-    this.client.query(
+    /* UNCOMMENT THIS WHEN YOU WANT IT TO RUN GENERATE VIEW SCRIPT
+    client.query(
       script,
       function (err) {
         if (err) {
@@ -57,6 +55,7 @@ class RankingService {
         }
       }
     )
+    */
   }
 }
 
@@ -64,10 +63,3 @@ module.exports = {
   serviceClass: RankingService,
   bootAfter: ['registry']
 }
-
-/*
-Registry keys can be found in:
-options.bootedServices.registry.registry -> registryKeys[key].value (this one appears to look at DB in tymly.registry_key)
-or
-options.bootedServices.registry.blueprintRegistryKeys -> registryKeys[key].schema.properties.value
-*/
