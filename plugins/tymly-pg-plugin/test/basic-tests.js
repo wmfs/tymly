@@ -173,10 +173,14 @@ describe('PostgreSQL storage tests', function () {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
-        if (err) console.error(err)
-        console.log(executionDescription)
-        expect(executionDescription.status).to.eql('FAILED')
-        done()
+        try {
+          if (err) console.error(err)
+          console.log(executionDescription)
+          expect(executionDescription.status).to.eql('FAILED')
+          done()
+        } catch (oops) {
+          done(oops)
+        }
       }
     )
   })
@@ -204,10 +208,14 @@ describe('PostgreSQL storage tests', function () {
     statebox.waitUntilStoppedRunning(
       executionName,
       function (err, executionDescription) {
-        if (err) console.error(err)
-        console.log(executionDescription)
-        expect(executionDescription.status).to.eql('FAILED')
-        done()
+        try {
+          if (err) console.error(err)
+          console.log(executionDescription)
+          expect(executionDescription.status).to.eql('FAILED')
+          done()
+        } catch (oops) {
+          done(oops)
+        }
       }
     )
   })
