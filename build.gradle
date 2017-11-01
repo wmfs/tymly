@@ -1,0 +1,83 @@
+/*
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    //classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.2"
+    //classpath "org.ysb33r.gradle:grolifant:0.3.1"
+    classpath files('../nodejs-gradle-plugin/build/libs/nodejs-gradle-plugin-0.2.jar')
+    classpath files('../grolifant/build/libs/grolifant-0.5.1.jar')
+  }
+}
+
+apply plugin : 'org.ysb33r.nodejs.lerna'
+
+task bootstrap (type: org.ysb33r.gradle.nodejs.tasks.LernaTask) {
+  command 'bootstrap'
+}
+
+task clean (type: org.ysb33r.gradle.nodejs.tasks.LernaTask) {
+    description 'Clean project'
+    group 'Build'
+
+    command 'run'
+    cmdArgs 'test'
+}
+
+task test (type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
+    description 'Runs tests'
+    group 'Build'
+
+    command 'test'
+}
+*/
+
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.github.honourednihilist:gradle-postgresql-embedded:0.2.0"
+  }
+}
+
+apply plugin: "com.github.honourednihilist.gradle-postgresql-embedded"
+
+String pg_username = "postgres"
+String pg_password = "postgres"
+String pg_db_name = "test_db"
+int pg_port = 54321
+
+postgresEmbedded {
+	version = "V9_6_3"
+	host = "localhost"
+	port = pg_port
+	dbName = pg_db_name
+	username = pg_username
+	password = pg_password
+	artifactStorePath = "~/.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
+	stopWhenBuildFinished = true
+	timeoutMillisBeforeStop = 0
+}
+
+String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
+
+task npmBootstrap (type: Exec) {
+  commandLine 'npm', 'install'
+}
+
+task bootstrap (type: Exec,
+                dependsOn: npmBootstrap) {
+  commandLine 'npm', 'run', 'bootstrap'
+}
+
+task test (type:Exec,
+           dependsOn: [bootstrap, startPostgres]) {
+  commandLine 'npm', 'run', 'ci_test'
+  environment PG_CONNECTION_STRING: pg_connection
+}
