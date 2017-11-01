@@ -67,7 +67,12 @@ postgresEmbedded {
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
 
-task bootstrap (type:Exec) {
+task npmBootstrap (type: Exec) {
+  commandLine 'npm', 'install'
+}
+
+task bootstrap (type: Exec,
+                dependsOn: npmBootstrap) {
   commandLine 'npm', 'run', 'bootstrap'
 }
 
