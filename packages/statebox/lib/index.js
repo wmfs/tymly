@@ -277,23 +277,23 @@ class Statebox {
     this.ready.then(() =>
       this._waitUntilStoppedRunning(executionName)
         .then(executionDescription => callback(null, executionDescription))
-        .catch(err => callback(err))
+        .catch(err => callback(err, null))
     )
   } // waitUntilStoppedRunning
   async _waitUntilStoppedRunning (executionName) {
-    let failed = 0
+    let notFound = 0
 
     do {
       const executionDescription = await this.options.dao.findExecutionByName(executionName)
 
-      if (executionDescription && executionDescription.status !== Status.RUNNING) {
+      if (typeof executionDescription !== 'object') {
+        ++notFound
+      } else if (executionDescription.status !== Status.RUNNING) {
         return executionDescription
       }
 
-      failed += (!executionDescription)
-
       await pause(50)
-    } while (failed !== 5)
+    } while (notFound !== 5)
 
     throw new Error(`Could not find execution ${executionName}`)
   } // _waitUntilStoppedRunning
