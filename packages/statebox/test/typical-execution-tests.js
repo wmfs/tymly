@@ -66,6 +66,20 @@ DaosToTest.forEach(([name, options]) => {
       )
     })
 
+    it('should fail when asked to wait on a non-existant execution', function (done) {
+      statebox.waitUntilStoppedRunning(
+        'monkey-trousers',
+        function (err, executionDescription) {
+          try {
+            expect(err).to.not.eql(null)
+            done()
+          } catch (oops) {
+            done(oops)
+          }
+        }
+      )
+    })
+
     it("should execute helloWorld, but receive SUCCEEDED response {sendResponse: 'COMPLETE'}", function (done) {
       statebox.startExecution(
         {},  // input

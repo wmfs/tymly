@@ -8,7 +8,6 @@
 
 const executioner = require('./executioner')
 const stateMachines = require('./state-machines')
-const async = require('async')
 const resources = require('./resources')
 const MemoryDao = require('./dao/Memory-dao')
 const StorageDao = require('./dao/StorageService-dao')
@@ -276,43 +275,35 @@ class Statebox {
 
   waitUntilStoppedRunning (executionName, callback) {
     this.ready.then(() =>
-      this._waitUntilStoppedRunning(executionName, callback)
+      this._waitUntilStoppedRunning(executionName)
+        .then(executionDescription => callback(null, executionDescription))
+        .catch(err => callback(err))
     )
   } // waitUntilStoppedRunning
-  _waitUntilStoppedRunning (executionName, callback) {
-    // TODO: Back-offs, timeouts etc.
-    const _this = this
-    async.doUntil(
-      function (cb) {
-        _this.options.dao.findExecutionByName(
-          executionName,
-          function (err, latestExecutionDescription) {
-            if (err) {
-              cb(err)
-            } else {
-              setTimeout(
-                function () {
-                  cb(null, latestExecutionDescription)
-                },
-                50
-              )
-            }
-          }
-        )
-      },
-      function (latestExecutionDescription) {
-        return latestExecutionDescription.status !== Status.RUNNING
-      },
-      function (err, finalExecutionDescription) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, finalExecutionDescription)
-        }
+  async _waitUntilStoppedRunning (executionName) {
+    let failed = 0
+
+    do {
+      const executionDescription = await this.options.dao.findExecutionByName(executionName)
+
+      if (executionDescription && executionDescription.status !== Status.RUNNING) {
+        return executionDescription
       }
-    )
-  }
-} // _waitUntilStoppedRunning
+
+      failed += (!executionDescription)
+
+      await pause(50)
+    } while (failed !== 5)
+
+    throw new Error(`Could not find execution ${executionName}`)
+  } // _waitUntilStoppedRunning
+} // class Statebox
+
+function pause (duration) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), duration)
+  })
+} // _pause
 
 function info (messages, msg) {
   if (messages) {

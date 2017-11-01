@@ -214,6 +214,7 @@ describe('PostgreSQL storage tests', function () {
           expect(executionDescription.status).to.eql('FAILED')
           done()
         } catch (oops) {
+          console.log('!!!!!!Failed execution name is ', executionName)
           done(oops)
         }
       }
