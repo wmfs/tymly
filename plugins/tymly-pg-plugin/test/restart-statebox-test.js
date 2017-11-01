@@ -71,18 +71,22 @@ describe('Restart statebox test - cat state machine', function () {
     statebox.waitUntilStoppedRunning(
       rupert,
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('tymlyTest_aDayInTheLife')
-        expect(executionDescription.currentStateName).to.eql('Sleeping')
-        expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
-        expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)
-        expect(executionDescription.ctx.gender).to.eql('male')
-        expect(executionDescription.ctx.petDiary).to.be.an('array')
-        expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Rupert is waking up!')
-        expect(executionDescription.ctx.petDiary[2]).to.equal("Rupert is walking... where's he off to?")
-        expect(executionDescription.ctx.petDiary[6]).to.equal('Shh, Rupert is eating...')
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('tymlyTest_aDayInTheLife')
+          expect(executionDescription.currentStateName).to.eql('Sleeping')
+          expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
+          expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)
+          expect(executionDescription.ctx.gender).to.eql('male')
+          expect(executionDescription.ctx.petDiary).to.be.an('array')
+          expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Rupert is waking up!')
+          expect(executionDescription.ctx.petDiary[2]).to.equal("Rupert is walking... where's he off to?")
+          expect(executionDescription.ctx.petDiary[6]).to.equal('Shh, Rupert is eating...')
+          done()
+        } catch (oops) {
+          done(oops)
+        }
       }
     )
   })
