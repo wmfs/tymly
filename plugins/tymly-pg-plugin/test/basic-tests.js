@@ -174,8 +174,8 @@ describe('PostgreSQL storage tests', function () {
       executionName,
       function (err, executionDescription) {
         try {
-          if (err) console.error(err)
-          console.log(executionDescription)
+          expect(err).to.eql(null)
+          expect(executionDescription).to.not.eql(null)
           expect(executionDescription.status).to.eql('FAILED')
           done()
         } catch (oops) {
@@ -210,7 +210,8 @@ describe('PostgreSQL storage tests', function () {
       function (err, executionDescription) {
         try {
           if (err) console.error(err)
-          console.log(executionDescription)
+          expect(err).to.eql(null)
+          expect(executionDescription).to.not.eql(null)
           expect(executionDescription.status).to.eql('FAILED')
           done()
         } catch (oops) {
