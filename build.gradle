@@ -60,7 +60,7 @@ postgresEmbedded {
 	dbName = pg_db_name
 	username = pg_username
 	password = pg_password
-	artifactStorePath = "~/.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
+	artifactStorePath = "./.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
 	stopWhenBuildFinished = true
 	timeoutMillisBeforeStop = 0
 }

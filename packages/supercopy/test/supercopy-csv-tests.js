@@ -12,7 +12,7 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 describe('Run some basic tests', function () {
-  this.timeout(5000)
+  this.timeout(10000)
 
   const connectionString = process.env.PG_CONNECTION_STRING
   let client
