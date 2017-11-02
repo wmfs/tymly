@@ -37,6 +37,7 @@ class RankingService {
             client: client,
             category: value.name,
             schema: value.namespace,
+            pk: value.source.property,
             name: 'test'
           })
         }

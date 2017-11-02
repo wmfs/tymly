@@ -312,6 +312,7 @@ describe('Tests the Ranking Service', function () {
       client: client,
       category: 'factory',
       schema: 'test',
+      pk: 'uprn',
       name: 'test'
     })
       .then(() => done())
