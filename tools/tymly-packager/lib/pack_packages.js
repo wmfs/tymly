@@ -43,11 +43,16 @@ async function packPackage (directory, tgzName, logger) {
   return tarball
 } // packPackage
 
+function fancyType (directory) {
+  const t = directory.substring(0, directory.indexOf('s'))
+  return `${t.charAt(0).toUpperCase()}${t.substring(1)}`
+}
+
 async function packPackages (searchRoot, packages, logger = () => {}) {
   const results = []
 
   for (const pkg of packages) {
-    logger(`Package ${pkg.name}`)
+    logger(`${fancyType(pkg.directory)} ${pkg.name}`)
     const tgzName = `${pkg.name}-${pkg.version}.tgz`
     const dir = pkg.directory
 
