@@ -4,13 +4,14 @@ const tar = require('./tar_helpers')
 const rimraf = require('rimraf')
 const cp = require('child_process')
 const createManifest = require('./create_manifest.js')
+const lernapath = path.resolve(__dirname, '..', 'node_modules', '.bin', 'lerna')
 
 function exec (cmd) {
   return cp.execSync(cmd).toString()
 } // exec
 
 function lerna (cmd, ...params) {
-  exec(`lerna ${cmd} --loglevel silent ${params.join(' ')}`)
+  exec(`${lernapath} ${cmd} --loglevel silent ${params.join(' ')}`)
 } // lerna
 
 function stripDevDepsFromPackageJson (packages) {
