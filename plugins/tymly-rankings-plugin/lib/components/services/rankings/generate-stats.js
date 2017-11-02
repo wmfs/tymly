@@ -28,6 +28,7 @@ module.exports = function generateStats (options) {
             res.rows.map(r => {
               // Find range based on r.risk_score
               let range = findRange(ranges, r.risk_score)
+              // console.log(r.risk_score + ' = ' + range)
 
               // Upsert range for this property with uprn
               options.client.query(updateRangeSQL(options, range, r), function (err) {
@@ -89,13 +90,11 @@ function generateRanges (scores, mean, stdev) {
 }
 
 function findRange (ranges, score) {
-  let range = null
-  Object.keys(ranges).map(k => {
+  for (const k of Object.keys(ranges)) {
     if (score >= ranges[k].lowerBound && score <= ranges[k].upperBound) {
-      range = k
+      return k
     }
-  })
-  return range
+  }
 }
 
 function getScoresSQL (options) {
