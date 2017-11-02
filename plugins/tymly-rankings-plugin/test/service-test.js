@@ -312,6 +312,7 @@ describe('Tests the Ranking Service', function () {
       client: client,
       category: 'factory',
       schema: 'test',
+      pk: 'uprn',
       name: 'test'
     })
       .then(() => done())
@@ -328,6 +329,7 @@ describe('Tests the Ranking Service', function () {
         }
         expect(result.rows[0]).to.eql({
           category: 'factory',
+          count: '6',
           mean: '22.33',
           median: '21.00',
           variance: '73.89',

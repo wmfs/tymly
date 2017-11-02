@@ -6,60 +6,47 @@ const generateStats = require('./generate-stats')
 
 class RankingService {
   boot (options, callback) {
-    let promises
     const client = options.bootedServices.storage.client
     const rankings = options.blueprintComponents.rankings
 
     if (_.isObject(rankings)) {
+      let promises
       options.messages.info('Finding rankings')
 
-      // Each json file in /rankings
-      promises = Object.entries(rankings).map(async (i) => {
-        // Generate view statement
-        const viewStatement = generateViewStatement({
-          category: _.snakeCase(i[0].split('_')[1]),
-          schema: _.snakeCase(i[0].split('_')[0]),
-          source: i[1].source,
-          ranking: i[1].factors,
-          registry: options.bootedServices.registry.registry[i[0]]
-        })
+      promises = Object.keys(rankings).map(async (key) => {
+        const value = rankings[key]
 
-        console.log('---', i[0].split('_')[1], '---')
-        console.log(viewStatement + '\n\n')
+        console.log('---', key)
 
-        // Execute the viewStatement here
-        await client.query(viewStatement)
+        if (value.source && value.factors) {
+          // Generate view statement
+          const viewStatement = generateViewStatement({
+            category: _.snakeCase(value.name),
+            schema: _.snakeCase(value.namespace),
+            source: value.source,
+            ranking: value.factors,
+            registry: options.bootedServices.registry.registry[key]
+          })
 
-        // Generate statistics table
-        await generateStats({
-          client: client,
-          category: i[0].split('_')[1],
-          schema: i[0].split('_')[0],
-          name: 'test'
-        })
-      })
-    }
+          // Execute the viewStatement
+          await client.query(viewStatement)
 
-    Promise.all(promises)
-      .then(() => {
-        console.log('done')
-        callback(null)
-      })
-      .catch((err) => callback(err))
-
-    // UNCOMMENT THIS WHEN YOU WANT IT TO RUN GENERATE VIEW SCRIPT
-    /*
-    client.query(
-      script,
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null)
+          // Generate statistics table
+          // TODO: name should be inferred and not be 'test'
+          await generateStats({
+            client: client,
+            category: value.name,
+            schema: value.namespace,
+            pk: value.source.property,
+            name: 'test'
+          })
         }
-      }
-    )
-    */
+      })
+
+      Promise.all(promises)
+        .then(() => callback(null))
+        .catch((err) => callback(err))
+    }
   }
 }
 
