@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const targz = require('tar.gz')
+const tar = require('./tar_helpers')
 const rimraf = require('rimraf')
 const cp = require('child_process')
 const createManifest = require('./create_manifest.js')
@@ -15,7 +15,7 @@ function lerna (cmd, ...params) {
 
 function stripDevDepsFromPackageJson (packages) {
   for (const pkg of packages) {
-    const packageFile = path.join(pkg.basename, 'package.json')
+    const packageFile = path.join(pkg.directory, 'package.json')
     const backupPackageFile = `${packageFile}.tymly-packager`
 
     const rawContents = fs.readFileSync(packageFile)
@@ -29,8 +29,8 @@ function stripDevDepsFromPackageJson (packages) {
 
 function restorePackageJson (packages) {
   for (const pkg of packages) {
-    const packageFile = path.join(pkg.basename, 'package.json')
-    const packageLockFile = path.join(pkg.basename, 'package-lock.json')
+    const packageFile = path.join(pkg.directory, 'package.json')
+    const packageLockFile = path.join(pkg.directory, 'package-lock.json')
     const backupPackageFile = `${packageFile}.tymly-packager`
 
     fs.unlinkSync(packageFile)
@@ -41,10 +41,14 @@ function restorePackageJson (packages) {
   } // for ...
 } // restorePackageJson
 
-function lernaJsonStubs (packages) {
+function lernaJsonStubs () {
   const littleLerna = {
     'lerna': '2.0.0',
-    'packages': packages.map(p => p.basename),
+    'packages': [
+      'packages/*',
+      'plugins/*',
+      'blueprints/*'
+    ],
     'version': 'independent'
   }
   fs.writeFileSync('lerna.json', JSON.stringify(littleLerna, null, 2))
@@ -72,27 +76,15 @@ function populateNodeModules (searchTree, packages) {
   process.chdir(wd)
 } // populateNodeModules
 
-function countEntries (tarball) {
-  return new Promise((resolve) => {
-    const read = fs.createReadStream(tarball)
-    const parse = targz().createParseStream()
-    let count = 0
-
-    parse.on('entry', entry => {
-      count += (entry.type === 'File')
-    })
-    parse.on('end', () => {
-      resolve(count)
-    })
-
-    read.pipe(parse)
-  })
+async function countEntries (tarball) {
+  const entries = await tar.list(tarball)
+  return entries.length
 } // countEntries
 
-async function sprayOutTarballs (bundle, tarballs, logger) {
-  for (const tarball of tarballs) {
-    logger(`... ${path.basename(tarball, '.tgz')}`)
-    await targz().extract(tarball, bundle)
+async function sprayOutTarballs (bundle, packages, logger) {
+  for (const pkg of packages) {
+    logger(`... ${path.basename(pkg.tarball, '.tgz')}`)
+    await tar.extract(pkg.tarball, path.join(bundle, pkg.directory))
   }
 } // sprayOutTarballs
 
@@ -103,9 +95,9 @@ function generateManifest (bundle, packages) {
 
 async function createBundle (bundle, tgzName) {
   const wd = process.cwd()
-  process.chdir(bundle)
+  process.chdir(path.join(bundle, '..'))
 
-  await targz().compress('.', tgzName)
+  await tar.create('bundle', tgzName)
 
   process.chdir(wd)
 } // createBundle
@@ -114,7 +106,7 @@ function cleanUp (bundle) {
   rimraf.sync(bundle)
 } // cleanUp
 
-async function buildBundle (searchRoot, packages, tarballs, bundleName = 'bundle.tgz', logger = () => {}) {
+async function buildBundle (searchRoot, packages, bundleName = 'bundle.tgz', logger = () => {}) {
   const workDir = `bundle-${Date.now()}`
   const wd = process.cwd()
   process.chdir(searchRoot)
@@ -124,7 +116,7 @@ async function buildBundle (searchRoot, packages, tarballs, bundleName = 'bundle
   const bundle = path.join(workDir, 'bundle')
   fs.mkdirSync(bundle)
 
-  await sprayOutTarballs(bundle, tarballs, logger)
+  await sprayOutTarballs(bundle, packages, logger)
 
   logger('... populating node_modules')
   populateNodeModules(bundle, packages)
@@ -133,7 +125,7 @@ async function buildBundle (searchRoot, packages, tarballs, bundleName = 'bundle
   generateManifest(bundle, packages)
 
   logger('Creating tarball ...')
-  const tgzName = path.resolve(searchRoot, `${bundleName}`)
+  const tgzName = path.resolve(searchRoot, bundleName)
   await createBundle(bundle, tgzName)
   const count = await countEntries(tgzName)
   logger(`... ${bundleName} containing ${count} files`)

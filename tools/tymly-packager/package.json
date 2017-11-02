@@ -24,9 +24,10 @@
     "commander": "^2.11.0",
     "copy-dir": "^0.3.0",
     "lodash.clone": "^4.5.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "rimraf": "^2.6.2",
-    "tar.gz": "^1.0.5",
+    "tar": "^4.0.2",
     "username": "^3.0.0"
   }
 }
