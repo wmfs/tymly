@@ -226,7 +226,7 @@ describe('Bundler tests', function () {
       ],
       [
         'nested including a directory to ignore',
-        'nested-directory'
+        'mixed'
       ],
       [
         'peer dependencies between packages',

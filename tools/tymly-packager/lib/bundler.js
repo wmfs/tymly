@@ -12,16 +12,16 @@ function packageDetails (dir, absoluteDir, logger) {
   return packages
 } // packageDetails
 
-function cleanUpTarballs (dir, tarballs) {
-  tarballs.forEach(t => fs.unlinkSync(path.join(dir, t)))
+function cleanUpTarballs (dir, packages) {
+  packages.forEach(pkg => fs.unlinkSync(path.join(dir, pkg.tarball)))
 } // cleanUpTarballs
 
 async function bundleForDeploy (dir, bundleName = 'bundle', logger = () => {}) {
   const absoluteDir = path.resolve(dir)
   const packages = packageDetails(dir, absoluteDir, logger)
-  const tarballs = await packPackages(absoluteDir, packages, logger)
-  const [tgzName] = await buildBundle(absoluteDir, packages, tarballs, bundleName, logger)
-  cleanUpTarballs(absoluteDir, tarballs)
+  const packagesWithTarballs = await packPackages(absoluteDir, packages, logger)
+  const [tgzName] = await buildBundle(absoluteDir, packagesWithTarballs, bundleName, logger)
+  cleanUpTarballs(absoluteDir, packagesWithTarballs)
   return tgzName
 } // bundleForDeploy
 
