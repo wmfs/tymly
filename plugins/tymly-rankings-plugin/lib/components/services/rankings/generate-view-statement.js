@@ -53,6 +53,9 @@ module.exports = function generateViewStatement (options) {
   joinParts.add(`JOIN ${options.schema}.ranking_${_.snakeCase(options.source['property'])}s rank ON ` +
     `rank.${_.snakeCase(options.source['property'])} = g.${_.snakeCase(options.source['property'])}`)
 
+  // outerSelect.push(`scores.range`)
+  // innerSelect.push(`'N/A' as range`)
+
   let viewStatement =
     preStatement +
     `SELECT ` +
