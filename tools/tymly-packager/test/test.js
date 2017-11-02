@@ -78,22 +78,22 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.'}],
-        [{directory: '.', name: 'simple-package', version: '1.0.0'}]
+        [{directory: 'packages/simple-package'}],
+        [{directory: 'packages/simple-package', name: 'simple-package', version: '1.0.0'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.'}],
-        [{directory: '.', name: 'package-with-dependencies', version: '0.0.0'}]
+        [{directory: 'plugins/package-with-dependencies'}],
+        [{directory: 'plugins/package-with-dependencies', name: 'package-with-dependencies', version: '0.0.0'}]
       ],
       [
-        'nested including a directory to ignore',
-        'nested-directory',
-        [{directory: 'package-1'}, {directory: 'package-2'}],
+        'including a directory to ignore',
+        'mixed',
+        [{directory: 'packages/package-1'}, {directory: 'packages/package-2'}],
         [
-          {directory: 'package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'package-2', name: 'package-B', version: '1.0.9'}
+          {directory: 'packages/package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'packages/package-2', name: 'package-B', version: '1.0.9'}
         ]
       ]
     ]
