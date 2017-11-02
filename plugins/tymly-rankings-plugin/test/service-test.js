@@ -4,7 +4,7 @@
 
 const tymly = require('tymly')
 const path = require('path')
-const { Client } = require('pg')
+const {Client} = require('pg')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
@@ -17,7 +17,7 @@ describe('Tests the Ranking Service', function () {
   this.timeout(5000)
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new Client({ connectionString: pgConnectionString })
+  const client = new Client({connectionString: pgConnectionString})
   client.connect()
 
   it('should create the test resources', function (done) {
@@ -333,7 +333,12 @@ describe('Tests the Ranking Service', function () {
           mean: '22.33',
           median: '21.00',
           variance: '73.89',
-          stdev: '8.60'
+          stdev: '8.60',
+          ranges: {
+            low: {lowerBound: 0, upperBound: '13.74'},
+            high: {lowerBound: '30.94', upperBound: 34},
+            medium: {lowerBound: '13.75', upperBound: '30.93'}
+          }
         })
         done()
       }

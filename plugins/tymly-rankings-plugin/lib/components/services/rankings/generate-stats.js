@@ -34,7 +34,7 @@ module.exports = function generateStats (options) {
               options.client.query(updateRangeSQL(options, range, r), function (err) {
                 if (err) reject(err)
                 // Create statistics table (if not exists) and upsert row for statistic of this category
-                options.client.query(generateStatsSQL(options, scores, mean, stdev), function (err) {
+                options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
                   if (err) return reject(err)
                   resolve()
                 })
@@ -110,22 +110,22 @@ function updateRangeSQL (options, range, row) {
   return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range 
   (${_.snakeCase(options.pk)} bigint not null primary key, range text);
   INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range (${_.snakeCase(options.pk)}, range)
-  VALUES (${row[_.snakeCase(options.pk)]}, '${range}')
+  VALUES (${row[_.snakeCase(options.pk)]}, '${_.kebabCase(range)}')
   ON CONFLICT (${_.snakeCase(options.pk)}) DO UPDATE SET
-  range = '${range}';`
+  range = '${_.kebabCase(range)}';`
 }
 
-function generateStatsSQL (options, scores, mean, stdev) {
+function generateStatsSQL (options, scores, mean, stdev, ranges) {
   return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats
-  (category text not null primary key, count numeric, mean numeric, median numeric, variance numeric, stdev numeric);
-  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category, count, mean, median, variance, stdev)
+  (category text not null primary key, count numeric, mean numeric, median numeric, variance numeric, stdev numeric, ranges jsonb);
+  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category, count, mean, median, variance, stdev, ranges)
   VALUES ('${_.kebabCase(options.category)}', ${scores.length}, ${mean.toFixed(2)}, ${stats.median(scores).toFixed(2)},
-  ${stats.variance(scores).toFixed(2)}, ${stdev.toFixed(2)})
+  ${stats.variance(scores).toFixed(2)}, ${stdev.toFixed(2)}, '${JSON.stringify(ranges)}')
   ON CONFLICT (category) DO UPDATE SET
   count = ${scores.length},
   mean = ${mean.toFixed(2)},
   median = ${stats.median(scores).toFixed(2)},
   variance = ${stats.variance(scores).toFixed(2)},
-  stdev = ${stdev.toFixed(2)};
-  `
+  stdev = ${stdev.toFixed(2)},
+  ranges = '${JSON.stringify(ranges)}';`
 }
