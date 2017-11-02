@@ -5,34 +5,16 @@ const chai = require('chai')
 const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
+const { Client } = require('pg')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
   this.timeout(5000)
   let statebox
-  let client
 
-  it('should run the tymly service', function (done) {
-    tymly.boot(
-      {
-        pluginPaths: [
-          path.resolve(__dirname, './..'),
-          require.resolve('tymly-pg-plugin')
-        ],
-        blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprint'),
-          path.resolve(__dirname, '../lib/blueprints/ranking-blueprint')
-        ],
-        config: {}
-      },
-      function (err, tymlyServices) {
-        expect(err).to.eql(null)
-        client = tymlyServices.storage.client
-        statebox = tymlyServices.statebox
-        done()
-      }
-    )
-  })
+  const pgConnectionString = process.env.PG_CONNECTION_STRING
+  const client = new Client({ connectionString: pgConnectionString })
+  client.connect()
 
   it('should create the test resources', function (done) {
     sqlScriptRunner(
@@ -49,11 +31,48 @@ describe('Tests the Ranking State Resource', function () {
     )
   })
 
+  it('should run the tymly service', function (done) {
+    tymly.boot(
+      {
+        pluginPaths: [
+          path.resolve(__dirname, './..'),
+          require.resolve('tymly-pg-plugin')
+        ],
+        blueprintPaths: [
+          path.resolve(__dirname, './fixtures/blueprint'),
+          path.resolve(__dirname, '../lib/blueprints/ranking-blueprint')
+        ],
+        config: {}
+      },
+      function (err, tymlyServices) {
+        expect(err).to.eql(null)
+        // client = tymlyServices.storage.client
+        statebox = tymlyServices.statebox
+        done()
+      }
+    )
+  })
+
+  // it('should create the test resources', function (done) {
+  //   sqlScriptRunner(
+  //     './db-scripts/setup.sql',
+  //     client,
+  //     function (err) {
+  //       expect(err).to.equal(null)
+  //       if (err) {
+  //         done(err)
+  //       } else {
+  //         done()
+  //       }
+  //     }
+  //   )
+  // })
+
   it('should start the state resource execution to generate view with initial weights', function (done) {
     statebox.startExecution(
       {
         schema: 'test',
-        propertyType: 'factory'
+        category: 'factory'
       },  // input
       'test_refreshRanking_1_0', // state machine name
       {
@@ -176,7 +195,7 @@ describe('Tests the Ranking State Resource', function () {
         },
         refreshRanking: {
           schema: 'test',
-          propertyType: 'factory'
+          category: 'factory'
         }
       },  // input
       'wmfs_setAndRefresh_1_0', // state machine name

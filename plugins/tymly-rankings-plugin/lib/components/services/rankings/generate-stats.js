@@ -15,12 +15,10 @@ module.exports = function generateStats (options) {
       getScoresSQL,
       function (err, result) {
         if (err) return reject(err)
-        result.rows.map(r => {
-          scores.push(r.risk_score)
-        })
+        result.rows.map(r => scores.push(r.risk_score))
 
         if (scores.length > 0) {
-          // Create statistics table and upsert row for statistic of this category
+          // Create statistics table (if not exists) and upsert row for statistic of this category
           let statements = `
           CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category text not null primary key, mean numeric, median numeric, variance numeric, stdev numeric); 
           INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category, mean, median, variance, stdev)

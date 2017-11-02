@@ -4,6 +4,7 @@
 
 const tymly = require('tymly')
 const path = require('path')
+const { Client } = require('pg')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
@@ -15,7 +16,24 @@ const generateStats = require('./../lib/components/services/rankings/generate-st
 describe('Tests the Ranking Service', function () {
   this.timeout(5000)
 
-  let client
+  const pgConnectionString = process.env.PG_CONNECTION_STRING
+  const client = new Client({ connectionString: pgConnectionString })
+  client.connect()
+
+  it('should create the test resources', function (done) {
+    sqlScriptRunner(
+      './db-scripts/setup.sql',
+      client,
+      function (err) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          done()
+        }
+      }
+    )
+  })
 
   it('should run the tymly service', function (done) {
     tymly.boot(
@@ -30,7 +48,7 @@ describe('Tests the Ranking Service', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        client = tymlyServices.storage.client
+        // client = tymlyServices.storage.client
         done()
       }
     )
@@ -139,7 +157,7 @@ describe('Tests the Ranking Service', function () {
 
   it('should generate an SQL view statement for manually entered options', function (done) {
     let statement = generateView({
-      'propertyType': 'factory',
+      'category': 'factory',
       'schema': 'test',
       'source': {
         'model': 'gazetteer',
@@ -191,25 +209,25 @@ describe('Tests the Ranking Service', function () {
     done()
   })
 
-  it('should create the test resources', function (done) {
-    sqlScriptRunner(
-      './db-scripts/setup.sql',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
-    )
-  })
+  // it('should create the test resources', function (done) {
+  //   sqlScriptRunner(
+  //     './db-scripts/setup.sql',
+  //     client,
+  //     function (err) {
+  //       expect(err).to.equal(null)
+  //       if (err) {
+  //         done(err)
+  //       } else {
+  //         done()
+  //       }
+  //     }
+  //   )
+  // })
 
   it('should execute the generated view statement', function (done) {
     // TODO: This should run the service based on the /fixtures/blueprint rather than hardcoded the statement produced by it
     client.query(
-      'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.label,scores.usage_score,scores.food_standards_score,scores.incidents_score,scores.heritage_score,scores.usage_score+scores.food_standards_score+scores.incidents_score+scores.heritage_score as risk_score FROM (SELECT g.uprn,g.address_label as label,8 as usage_score ,CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score ,CASE WHEN incidents.amount = 0 THEN 0 WHEN incidents.amount = 1 THEN 6 WHEN incidents.amount > 1 THEN 16 ELSE 0 END AS incidents_score ,CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score  FROM test.gazetteer g  LEFT JOIN test.food food ON food.uprn = g.uprn  LEFT JOIN test.incidents incidents ON incidents.uprn = g.uprn  LEFT JOIN test.heritage heritage ON heritage.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores;',
+      'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.address_label,scores.usage_score,scores.food_standards_score,scores.incidents_score,scores.heritage_score,scores.usage_score+scores.food_standards_score+scores.incidents_score+scores.heritage_score as risk_score FROM (SELECT g.uprn,g.address_label as address_label,8 as usage_score ,CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score ,CASE WHEN incidents.amount = 0 THEN 0 WHEN incidents.amount = 1 THEN 6 WHEN incidents.amount > 1 THEN 16 ELSE 0 END AS incidents_score ,CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score  FROM test.gazetteer g  LEFT JOIN test.food food ON food.uprn = g.uprn  LEFT JOIN test.incidents incidents ON incidents.uprn = g.uprn  LEFT JOIN test.heritage heritage ON heritage.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores;',
       function (err) {
         expect(err).to.equal(null)
         if (err) {
@@ -231,7 +249,7 @@ describe('Tests the Ranking Service', function () {
         } else {
           expect(result.rows[0]).to.eql({
             uprn: '1',
-            label: '1 abc lane',
+            address_label: '1 abc lane',
             usage_score: 8,
             food_standards_score: 8,
             incidents_score: 16,
@@ -240,7 +258,7 @@ describe('Tests the Ranking Service', function () {
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
-            label: '2 abc lane',
+            address_label: '2 abc lane',
             usage_score: 8,
             food_standards_score: 8,
             incidents_score: 0,
@@ -249,7 +267,7 @@ describe('Tests the Ranking Service', function () {
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
-            label: '3 abc lane',
+            address_label: '3 abc lane',
             usage_score: 8,
             food_standards_score: 2,
             incidents_score: 6,
@@ -258,7 +276,7 @@ describe('Tests the Ranking Service', function () {
           })
           expect(result.rows[3]).to.eql({
             uprn: '4',
-            label: '4 abc lane',
+            address_label: '4 abc lane',
             usage_score: 8,
             food_standards_score: 8,
             incidents_score: 6,
@@ -267,7 +285,7 @@ describe('Tests the Ranking Service', function () {
           })
           expect(result.rows[4]).to.eql({
             uprn: '5',
-            label: '5 abc lane',
+            address_label: '5 abc lane',
             usage_score: 8,
             food_standards_score: 8,
             incidents_score: 16,
@@ -276,7 +294,7 @@ describe('Tests the Ranking Service', function () {
           })
           expect(result.rows[5]).to.eql({
             uprn: '6',
-            label: '6 abc lane',
+            address_label: '6 abc lane',
             usage_score: 8,
             food_standards_score: 2,
             incidents_score: 0,

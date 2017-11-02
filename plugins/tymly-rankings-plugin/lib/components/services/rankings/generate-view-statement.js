@@ -5,12 +5,12 @@ const generateCaseStatement = require('./generate-case-statement')
 const generateJoinStatement = require('./generate-join-statement')
 
 module.exports = function generateViewStatement (options) {
-  let preStatement = `CREATE OR REPLACE VIEW ${options.schema}.${options.propertyType}_scores AS `
+  let preStatement = `CREATE OR REPLACE VIEW ${options.schema}.${options.category}_scores AS `
   let outerSelect = []
   let totalScore = []
   let innerSelect = []
   let joinParts = new Set()
-  let postStatement = `WHERE rank.ranking_name = '${_.kebabCase(options.propertyType)}'::text ) scores`
+  let postStatement = `WHERE rank.ranking_name = '${_.kebabCase(options.category)}'::text ) scores`
 
   outerSelect.push(`scores.${options.source['property']}`)
   innerSelect.push(`g.${options.source['property']}`)

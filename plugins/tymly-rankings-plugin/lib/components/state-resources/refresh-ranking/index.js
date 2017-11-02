@@ -12,13 +12,13 @@ class RefreshRanking {
 
   run (event, context) {
     this.schema = event.schema
-    this.propertyType = event.propertyType
+    this.category = event.category
 
     // const schema = context.stateMachineMeta.namespace
-    const key = this.schema + '_' + this.propertyType
+    const key = this.schema + '_' + this.category
 
     let statement = generateView({
-      propertyType: this.propertyType,
+      category: this.category,
       schema: this.schema,
       source: this.rankings[key].source,
       ranking: this.rankings[key].factors,
