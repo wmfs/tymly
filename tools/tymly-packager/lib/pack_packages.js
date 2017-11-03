@@ -1,8 +1,8 @@
 const path = require('path')
 const rimraf = require('rimraf')
 const fs = require('fs')
-const targz = require('tar.gz')
 const cp = require('child_process')
+const tar = require('./tar_helpers')
 
 function exec (cmd) {
   return cp.execSync(cmd).toString()
@@ -19,14 +19,15 @@ async function packing (tgzName, logger) {
 
 async function repack (tgzName, logger) {
   logger(`... repacking`)
-  await targz().extract(tgzName, '.')
-
-  const basename = path.basename(process.cwd())
-  fs.renameSync('package', basename)
+  await tar.extract(tgzName)
   fs.unlinkSync(tgzName)
 
-  await targz().compress(basename, tgzName)
-  rimraf.sync(basename)
+  const wd = process.cwd()
+  process.chdir('package')
+  await tar.create('.', path.join('..', tgzName))
+
+  process.chdir(wd)
+  rimraf.sync('package')
 
   return tgzName
 } // repackWithNodeModules
@@ -42,20 +43,27 @@ async function packPackage (directory, tgzName, logger) {
   return tarball
 } // packPackage
 
+function fancyType (directory) {
+  const t = directory.substring(0, directory.indexOf('s'))
+  return `${t.charAt(0).toUpperCase()}${t.substring(1)}`
+}
+
 async function packPackages (searchRoot, packages, logger = () => {}) {
-  const tarballs = [ ]
+  const results = []
 
   for (const pkg of packages) {
-    logger(`Package ${pkg.name}`)
+    logger(`${fancyType(pkg.directory)} ${pkg.name}`)
     const tgzName = `${pkg.name}-${pkg.version}.tgz`
     const dir = pkg.directory
 
     const tarball = await packPackage(path.join(searchRoot, dir), tgzName, logger)
 
-    tarballs.push(path.join(dir, tarball))
+    const upkg = Object.assign({}, pkg)
+    upkg.tarball = path.join(dir, tarball)
+    results.push(upkg)
   } // for ...
 
-  return tarballs
+  return results
 } // packPackages
 
 module.exports = packPackages

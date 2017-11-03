@@ -3,10 +3,9 @@ const chai = require('chai')
 chai.use(require('chai-string'))
 const expect = chai.expect
 const path = require('path')
-const fs = require('fs')
 const rimraf = require('rimraf')
 const copydir = require('copy-dir')
-const targz = require('tar.gz')
+const tar = require('../lib/tar_helpers')
 
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
@@ -39,17 +38,28 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.', basename: 'simple-package'}]
+        [{directory: 'packages/simple-package', basename: 'simple-package'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.', basename: 'package-with-dependencies'}]
+        [{directory: 'plugins/package-with-dependencies', basename: 'package-with-dependencies'}]
       ],
       [
-        'nested including a directory to ignore',
-        'nested-directory',
-        [{directory: 'package-1', basename: 'package-1'}, {directory: 'package-2', basename: 'package-2'}]
+        'includes a directory to ignore',
+        'mixed',
+        [
+          {directory: 'packages/package-1', basename: 'package-1'},
+          {directory: 'packages/package-2', basename: 'package-2'}
+        ]
+      ],
+      [
+        'packages with a dependency from one to another',
+        'peer-dependency',
+        [
+          {directory: 'packages/package-master', basename: 'package-master'},
+          {directory: 'packages/package-servant', basename: 'package-servant'}
+        ]
       ]
     ]
 
@@ -67,22 +77,22 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.'}],
-        [{directory: '.', name: 'simple-package', version: '1.0.0'}]
+        [{directory: 'packages/simple-package'}],
+        [{directory: 'packages/simple-package', name: 'simple-package', version: '1.0.0'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.'}],
-        [{directory: '.', name: 'package-with-dependencies', version: '0.0.0'}]
+        [{directory: 'plugins/package-with-dependencies'}],
+        [{directory: 'plugins/package-with-dependencies', name: 'package-with-dependencies', version: '0.0.0'}]
       ],
       [
-        'nested including a directory to ignore',
-        'nested-directory',
-        [{directory: 'package-1'}, {directory: 'package-2'}],
+        'including a directory to ignore',
+        'mixed',
+        [{directory: 'packages/package-1'}, {directory: 'packages/package-2'}],
         [
-          {directory: 'package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'package-2', name: 'package-B', version: '1.0.9'}
+          {directory: 'packages/package-1', name: 'package-A', version: '1.0.5'},
+          {directory: 'packages/package-2', name: 'package-B', version: '1.0.9'}
         ]
       ]
     ]
@@ -133,27 +143,27 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: '.', basename: 'simple-package', name: 'simple-package', version: '1.0.0'}],
-        ['simple-package-1.0.0.tgz'],
+        [{directory: path.join('packages', 'simple-package'), basename: 'simple-package', name: 'simple-package', version: '1.0.0'}],
+        [path.join('packages', 'simple-package', 'simple-package-1.0.0.tgz')],
         2
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: '.', basename: 'package-with-dependencies', name: 'package-with-dependencies', version: '0.0.0'}],
-        ['package-with-dependencies-0.0.0.tgz'],
+        [{directory: path.join('plugins', 'package-with-dependencies'), basename: 'package-with-dependencies', name: 'package-with-dependencies', version: '0.0.0'}],
+        [path.join('plugins', 'package-with-dependencies', 'package-with-dependencies-0.0.0.tgz')],
         30
       ],
       [
-        'nested including a directory to ignore',
-        'nested-directory',
+        'including a directory to ignore',
+        'mixed',
         [
-          {directory: 'package-1', basename: 'package-1', name: 'package-A', version: '1.0.5'},
-          {directory: 'package-2', basename: 'package-2', name: 'package-B', version: '1.0.9'}
+          {directory: path.join('packages', 'package-1'), basename: 'package-1', name: 'package-A', version: '1.0.5'},
+          {directory: path.join('packages', 'package-2'), basename: 'package-2', name: 'package-B', version: '1.0.9'}
         ],
         [
-          path.join('package-1', 'package-A-1.0.5.tgz'),
-          path.join('package-2', 'package-B-1.0.9.tgz')
+          path.join('packages', 'package-1', 'package-A-1.0.5.tgz'),
+          path.join('packages', 'package-2', 'package-B-1.0.9.tgz')
         ],
         3
       ],
@@ -161,12 +171,12 @@ describe('Bundler tests', function () {
         'cross dependency',
         'peer-dependency',
         [
-          {directory: 'package-master', basename: 'package-master', name: 'package-master', version: '1.0.5'},
-          {directory: 'package-servant', basename: 'package-servant', name: 'package-servant', version: '1.0.0'}
+          {directory: path.join('packages', 'package-master'), basename: 'package-master', name: 'package-master', version: '1.0.5'},
+          {directory: path.join('packages', 'package-servant'), basename: 'package-servant', name: 'package-servant', version: '1.0.0'}
         ],
         [
-          path.join('package-master', 'package-master-1.0.5.tgz'),
-          path.join('package-servant', 'package-servant-1.0.0.tgz')
+          path.join('packages', 'package-master', 'package-master-1.0.5.tgz'),
+          path.join('packages', 'package-servant', 'package-servant-1.0.0.tgz')
         ],
         3
       ]
@@ -180,13 +190,18 @@ describe('Bundler tests', function () {
         const fixtureRoot = path.join(searchRoot, fixture)
 
         it('pack up each package', async () => {
-          const tarballs = await packPackages(fixtureRoot, packages)
+          const packagesWithTarballs = await packPackages(fixtureRoot, packages)
+          const tarballs = packagesWithTarballs.map(pkg => pkg.tarball)
 
           expect(tarballs).to.deep.equal(expectedTarballs)
         })
 
         it('make the bundle', async () => {
-          const [tarball, filesInBundle] = await buildBundle(fixtureRoot, packages, expectedTarballs)
+          for (let t = 0; t !== expectedTarballs.length; ++t) {
+            packages[t].tarball = expectedTarballs[t]
+          }
+
+          const [tarball, filesInBundle] = await buildBundle(fixtureRoot, packages)
 
           expect(filesInBundle).to.equal(expectedFiles)
 
@@ -211,7 +226,7 @@ describe('Bundler tests', function () {
       ],
       [
         'nested including a directory to ignore',
-        'nested-directory'
+        'mixed'
       ],
       [
         'peer dependencies between packages',
@@ -239,18 +254,5 @@ describe('Bundler tests', function () {
 })
 
 function listEntries (tarball) {
-  return new Promise((resolve) => {
-    const read = fs.createReadStream(tarball)
-    const parse = targz().createParseStream()
-    const entries = []
-
-    parse.on('entry', entry => {
-      entries.push(entry.path)
-    })
-    parse.on('end', () => {
-      resolve(entries)
-    })
-
-    read.pipe(parse)
-  })
+  return tar.list(tarball)
 } // countEntries

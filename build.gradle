@@ -65,19 +65,35 @@ postgresEmbedded {
 	timeoutMillisBeforeStop = 0
 }
 
+println(postgresEmbedded.port)
+
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
 
+////////////////////////////////////////////
 task npmBootstrap (type: Exec) {
   commandLine 'npm', 'install'
 }
 
 task bootstrap (type: Exec,
                 dependsOn: npmBootstrap) {
+  group 'Build'
+  description 'Installs the npm dependencies'
+
   commandLine 'npm', 'run', 'bootstrap'
 }
 
 task test (type:Exec,
            dependsOn: [bootstrap, startPostgres]) {
+  group 'Build'
+  description 'Runs tests whole test suite'
+
   commandLine 'npm', 'run', 'ci_test'
   environment PG_CONNECTION_STRING: pg_connection
+}
+
+task bundle (type: Exec) {
+  group 'Build'
+  description 'Creates an installable tymly package'
+
+  commandLine 'npm', 'run', 'bundle'
 }
