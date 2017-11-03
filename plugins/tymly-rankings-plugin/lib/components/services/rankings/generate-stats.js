@@ -12,7 +12,7 @@ module.exports = function generateStats (options) {
 
       options.client.query(getScoresSQL(options), function (err, result) {
         if (err) return reject(err)
-        result.rows.map(r => scores.push(r.risk_score))
+        result.rows.map(row => scores.push(row.risk_score))
 
         const mean = stats.mean(scores)
         const stdev = stats.stdev(scores)

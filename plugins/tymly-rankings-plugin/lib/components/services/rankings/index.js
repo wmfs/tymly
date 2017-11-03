@@ -13,25 +13,25 @@ class RankingService {
       let promises
       options.messages.info('Finding rankings')
 
-      promises = Object.keys(rankings).map(async (key) => {
+      let rankingKeysWithValues = Object.keys(rankings).filter(key => {
+        const value = rankings[key]
+        if (value.source && value.factors) {
+          return key
+        }
+      })
+
+      promises = rankingKeysWithValues.map(async (key) => {
         const value = rankings[key]
 
-        console.log('---', key)
-
         if (value.source && value.factors) {
-          // Generate view statement
-          const viewStatement = generateViewStatement({
+          await client.query(generateViewStatement({
             category: _.snakeCase(value.name),
             schema: _.snakeCase(value.namespace),
             source: value.source,
             ranking: value.factors,
             registry: options.bootedServices.registry.registry[key]
-          })
+          }))
 
-          // Execute the viewStatement
-          await client.query(viewStatement)
-
-          // Generate statistics table
           // TODO: name should be inferred and not be 'test'
           await generateStats({
             client: client,
@@ -42,7 +42,6 @@ class RankingService {
           })
         }
       })
-
       Promise.all(promises)
         .then(() => callback(null))
         .catch((err) => callback(err))

@@ -345,6 +345,25 @@ describe('Tests the Ranking Service', function () {
     )
   })
 
+  it('should check the data in uprn_to_range', function (done) {
+    client.query(
+      'SELECT * FROM test.uprn_to_range',
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) done(err)
+        expect(result.rows).to.eql([
+          {uprn: '1', range: 'high'},
+          {uprn: '2', range: 'medium'},
+          {uprn: '3', range: 'medium'},
+          {uprn: '4', range: 'medium'},
+          {uprn: '5', range: 'high'},
+          {uprn: '6', range: 'low'}
+        ])
+        done()
+      }
+    )
+  })
+
   it('should clean up the test resources', function (done) {
     sqlScriptRunner(
       './db-scripts/cleanup.sql',
