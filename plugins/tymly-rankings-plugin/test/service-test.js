@@ -209,21 +209,6 @@ describe('Tests the Ranking Service', function () {
     done()
   })
 
-  // it('should create the test resources', function (done) {
-  //   sqlScriptRunner(
-  //     './db-scripts/setup.sql',
-  //     client,
-  //     function (err) {
-  //       expect(err).to.equal(null)
-  //       if (err) {
-  //         done(err)
-  //       } else {
-  //         done()
-  //       }
-  //     }
-  //   )
-  // })
-
   it('should execute the generated view statement', function (done) {
     // TODO: This should run the service based on the /fixtures/blueprint rather than hardcoded the statement produced by it
     client.query(
@@ -314,9 +299,11 @@ describe('Tests the Ranking Service', function () {
       schema: 'test',
       pk: 'uprn',
       name: 'test'
+    }, function (err) {
+      expect(err).to.equal(null)
+      if (err) done(err)
+      done()
     })
-      .then(() => done())
-      .catch((err) => done(err))
   })
 
   it('should check the data in the statistics table', function (done) {

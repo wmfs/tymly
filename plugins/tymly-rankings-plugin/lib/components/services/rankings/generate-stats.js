@@ -1,41 +1,44 @@
 'use strict'
 
 const _ = require('lodash')
+const async = require('async')
 const stats = require('stats-lite')
 
-module.exports = function generateStats (options) {
-  return new Promise(
-    (resolve, reject) => {
-      console.log('generating stats for ' + options.category)
-      let scores = []
-      let ranges
+module.exports = function generateStats (options, callback) {
+  console.log(options.category + ' - Generating statistics')
 
-      options.client.query(getScoresSQL(options), function (err, result) {
-        if (err) return reject(err)
-        result.rows.map(row => scores.push(row.risk_score))
+  let scores = []
+  let ranges
 
-        const mean = stats.mean(scores)
-        const stdev = stats.stdev(scores)
+  options.client.query(getScoresSQL(options), function (err, result) {
+    if (err) return callback(err)
+    result.rows.map(row => scores.push(row.risk_score))
 
-        if (scores.length > 0) {
-          ranges = generateRanges(scores, mean, stdev)
-          options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
-            if (err) return reject(err)
-            options.client.query(getViewRowsSQL(options), function (err, res) {
-              if (err) return reject(err)
-              res.rows.map(r => {
-                let range = findRange(ranges, r.risk_score)
-                options.client.query(updateRangeSQL(options, range, r), function (err) {
-                  if (err) reject(err)
-                  resolve()
-                })
-              })
+    const mean = stats.mean(scores)
+    const stdev = stats.stdev(scores)
+
+    if (scores.length > 0) {
+      ranges = generateRanges(scores, mean, stdev)
+      options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
+        if (err) return callback(err)
+        options.client.query(getViewRowsSQL(options), function (err, res) {
+          if (err) return callback(err)
+          console.log(options.category + ' - Retrieved rows, calculating ranges')
+          async.each(res.rows, (r, cb) => {
+            let range = findRange(ranges, r.risk_score)
+            options.client.query(updateRangeSQL(options, range, r), function (err) {
+              if (err) cb(err)
+              cb(null)
             })
+          }, (err) => {
+            if (err) callback(err)
+            console.log(options.category + ' - Finished generating statistics')
+            callback(null)
           })
-        }
+        })
       })
     }
-  )
+  })
 }
 
 function generateRanges (scores, mean, stdev) {
