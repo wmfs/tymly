@@ -6,11 +6,10 @@ const stats = require('stats-lite')
 module.exports = function generateStats (options) {
   return new Promise(
     (resolve, reject) => {
-      console.log(options.category)
+      console.log('generating stats for ' + options.category)
       let scores = []
       let ranges
 
-      // Get the scores to perform statistics on
       options.client.query(getScoresSQL(options), function (err, result) {
         if (err) return reject(err)
         result.rows.map(r => scores.push(r.risk_score))
@@ -20,22 +19,14 @@ module.exports = function generateStats (options) {
 
         if (scores.length > 0) {
           ranges = generateRanges(scores, mean, stdev)
-
-          // Get rows from view
-          options.client.query(getViewRowsSQL(options), function (err, res) {
+          options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
             if (err) return reject(err)
-
-            res.rows.map(r => {
-              // Find range based on r.risk_score
-              let range = findRange(ranges, r.risk_score)
-              // console.log(r.risk_score + ' = ' + range)
-
-              // Upsert range for this property with uprn
-              options.client.query(updateRangeSQL(options, range, r), function (err) {
-                if (err) reject(err)
-                // Create statistics table (if not exists) and upsert row for statistic of this category
-                options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
-                  if (err) return reject(err)
+            options.client.query(getViewRowsSQL(options), function (err, res) {
+              if (err) return reject(err)
+              res.rows.map(r => {
+                let range = findRange(ranges, r.risk_score)
+                options.client.query(updateRangeSQL(options, range, r), function (err) {
+                  if (err) reject(err)
                   resolve()
                 })
               })
