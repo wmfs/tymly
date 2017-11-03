@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const moment = require('moment')
 const bundleForDeploy = require('../lib/bundler.js')
 const path = require('path')
 const commander = require('commander')
@@ -14,7 +15,7 @@ async function run(directory, bundleName, quiet) {
     }
 
     const fullDirectoryName = path.resolve(process.cwd(), directory)
-    const outputName = bundleName || `${path.basename(fullDirectoryName)}.tgz`
+    const outputName = bundleName || `${path.basename(fullDirectoryName)}-${moment().format('YYYYmmDD-hhmmss')}.tgz`
     const tarball = await bundleForDeploy(directory, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
     const displayPath = path.relative(process.cwd(), tarball)
     console.log(colors.cyan(`Created ${displayPath}`))
