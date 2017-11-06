@@ -6,6 +6,7 @@ const path = require('path')
 const rimraf = require('rimraf')
 const copydir = require('copy-dir')
 const tar = require('../lib/tar_helpers')
+const upath = require('upath')
 
 const gatherPackages = require('../lib/gather_packages.js')
 const readVersionNumbers = require('../lib/read_version_numbers.js')
@@ -65,9 +66,9 @@ describe('Bundler tests', function () {
 
     for (const [label, fixture, results] of tests) {
       it(label, () => {
-        const packages = gatherPackages(path.join(searchRoot, fixture))
-
-        expect(packages).to.deep.equal(results)
+        let packages = gatherPackages(upath.join(searchRoot, fixture))
+        packages = upath.normalize(JSON.stringify(packages))
+        expect(packages).to.deep.equal(JSON.stringify(results))
       }) // it ...
     } // for ...
   }) // gathering packages
