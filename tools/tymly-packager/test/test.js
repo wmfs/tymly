@@ -66,7 +66,8 @@ describe('Bundler tests', function () {
     for (const [label, fixture, results] of tests) {
       it(label, () => {
         const packages = gatherPackages(path.join(searchRoot, fixture))
-        expect(packages).to.equal(results)
+
+        expect(packages).to.deep.equal(results)
       }) // it ...
     } // for ...
   }) // gathering packages
