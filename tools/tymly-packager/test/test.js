@@ -63,10 +63,11 @@ describe('Bundler tests', function () {
       ]
     ]
 
-    for (const [label, fixture, results] of tests) {
+    for (let [label, fixture, results] of tests) {
       it(label, () => {
-        const packages = gatherPackages(path.join(searchRoot, fixture))
-
+        const packages = JSON.stringify(gatherPackages(path.join(searchRoot, fixture)))
+        results = JSON.stringify(results)
+        results = results.replace(/\//g, '\\\\')
         expect(packages).to.deep.equal(results)
       }) // it ...
     } // for ...
