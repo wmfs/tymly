@@ -30,6 +30,7 @@ class RankingService {
           registry: options.bootedServices.registry.registry[key]
         }), (err) => {
           if (err) cb(err)
+          // TODO: 'test' should be inferred
           generateStats({
             client: client,
             category: value.name,

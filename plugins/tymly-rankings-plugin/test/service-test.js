@@ -338,13 +338,14 @@ describe('Tests the Ranking Service', function () {
       function (err, result) {
         expect(err).to.equal(null)
         if (err) done(err)
+        console.log(result.rows)
         expect(result.rows).to.eql([
-          {uprn: '1', range: 'high'},
-          {uprn: '2', range: 'medium'},
-          {uprn: '3', range: 'medium'},
-          {uprn: '4', range: 'medium'},
-          {uprn: '5', range: 'high'},
-          {uprn: '6', range: 'low'}
+          {uprn: '1', range: 'high', distribution: '0.0185'},
+          {uprn: '2', range: 'medium', distribution: '0.0409'},
+          {uprn: '3', range: 'medium', distribution: '0.0354'},
+          {uprn: '4', range: 'medium', distribution: '0.0455'},
+          {uprn: '5', range: 'high', distribution: '0.0247'},
+          {uprn: '6', range: 'low', distribution: '0.0166'}
         ])
         done()
       }
