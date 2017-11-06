@@ -38,37 +38,35 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
-        [{directory: 'packages/simple-package', basename: 'simple-package'}]
+        [{directory: 'packages\\simple-package', basename: 'simple-package'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
-        [{directory: 'plugins/package-with-dependencies', basename: 'package-with-dependencies'}]
+        [{directory: 'plugins\\package-with-dependencies', basename: 'package-with-dependencies'}]
       ],
       [
         'includes a directory to ignore',
         'mixed',
         [
-          {directory: 'packages/package-1', basename: 'package-1'},
-          {directory: 'packages/package-2', basename: 'package-2'}
+          {directory: 'packages\\package-1', basename: 'package-1'},
+          {directory: 'packages\\package-2', basename: 'package-2'}
         ]
       ],
       [
         'packages with a dependency from one to another',
         'peer-dependency',
         [
-          {directory: 'packages/package-master', basename: 'package-master'},
-          {directory: 'packages/package-servant', basename: 'package-servant'}
+          {directory: 'packages\\package-master', basename: 'package-master'},
+          {directory: 'packages\\package-servant', basename: 'package-servant'}
         ]
       ]
     ]
 
-    for (let [label, fixture, results] of tests) {
+    for (const [label, fixture, results] of tests) {
       it(label, () => {
         const packages = JSON.stringify(gatherPackages(path.join(searchRoot, fixture)))
-        results = JSON.stringify(results)
-        results = results.replace(/\//g, '\\\\')
-        expect(packages).to.deep.equal(results)
+        expect(packages).to.equal(JSON.stringify(results))
       }) // it ...
     } // for ...
   }) // gathering packages
