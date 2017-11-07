@@ -90,13 +90,4 @@ function ensureBeginAndEnd (statementsAndParams) {
   }
 } // ensureBeginAndEnd
 
-const NotSet = 'NotSet'
-
-module.exports = function (client, statementsAndParams, callback = NotSet) {
-  if (callback === NotSet) {
-    return pgScriptRunner(client, statementsAndParams)
-  }
-  pgScriptRunner(client, statementsAndParams).
-    then(result => callback(null, result)).
-    catch(err => callback(err))
-} //
+module.exports = pgScriptRunner

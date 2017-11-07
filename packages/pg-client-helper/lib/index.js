@@ -1,9 +1,13 @@
 const pg = require('pg')
-const pgStatementRunner = require('./pg-statement-runner')
+const statementRunner = require('./pg-statement-runner')
+
+const NotSet = 'NotSet'
 
 class PGClient {
   constructor (connectionString) {
-    this.client_ = new pg.Client(connectionString)
+    this.client_ = new pg.Client({
+      connectionString: connectionString
+    })
     this.client_.connect()
   }
 
@@ -11,8 +15,13 @@ class PGClient {
     return this.client_.query(...args)
   } // query
 
-  run (scriptAndParamArray, callback) {
-    return pgStatementRunner(this.client_, scriptAndParamArray, callback)
+  run (statementsAndParamsArray, callback = NotSet) {
+    if (callback === NotSet) {
+      return statementRunner(this.client_, statementsAndParamsArray)
+    }
+    statementRunner(this.client_, statementsAndParamsArray).
+    then(result => callback(null, result)).
+    catch(err => callback(err))
   } // run
 } // class PGClient
 
