@@ -4,7 +4,7 @@ const collectFileInfo = require('./collect-file-info')
 const generateScriptStatements = require('./generate-script-statements')
 const path = require('path')
 const fs = require('fs')
-const copyStream  = require('./copy-stream')
+const copyStream = require('./copy-stream')
 const promisify = require('util').promisify
 
 function preprocess (options) {
@@ -24,7 +24,7 @@ function createFolders (targetDir) {
   }, initDir)
 }
 
-function annotateCopyStatements(statements) {
+function annotateCopyStatements (statements) {
   for (const statement of statements) {
     if (statement.sql.startsWith('COPY ')) {
       statement.action = copyStream
@@ -43,7 +43,7 @@ async function supercopy (options, callback) {
 
     await options.client.run(statements)
     callback(null)
-  } catch(err) {
+  } catch (err) {
     callback(err)
   }
 } // supercopy
