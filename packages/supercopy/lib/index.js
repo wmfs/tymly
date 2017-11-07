@@ -7,10 +7,9 @@ const path = require('path')
 const fs = require('fs')
 const promisify = require('util').promisify
 
-function preprocess (options, callback) {
+function preprocess (options) {
   const outputPath = path.resolve(options.sourceDir, 'inserts')
   createFolders(outputPath)
-  callback()
 }
 
 function createFolders (targetDir) {
@@ -26,19 +25,19 @@ function createFolders (targetDir) {
 }
 
 function supercopy (options, callback) {
-  preprocess(options, () => {
-    collectFileInfo(options, function (err, fileInfo) {
-      if (err) {
-        callback(err)
-      } else {
-        const scriptStatements = generateScriptStatements(fileInfo, options)
-        scriptRunner(
-          scriptStatements,
-          options.client,
-          callback
-        )
-      }
-    })
+  preprocess(options)
+
+  collectFileInfo(options, function (err, fileInfo) {
+    if (err) {
+      callback(err)
+    } else {
+      const scriptStatements = generateScriptStatements(fileInfo, options)
+      scriptRunner(
+        scriptStatements,
+        options.client,
+        callback
+      )
+    }
   })
 }
 
