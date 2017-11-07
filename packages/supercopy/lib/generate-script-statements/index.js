@@ -17,8 +17,8 @@ module.exports = function generateScriptStatements (fileInfo, options) {
   addUpsertStatements(scriptStatements, fileInfo, options)
   scriptStatements.push('COMMIT;')
 
-  let tables = getTables(fileInfo, options)
-  for (let table of tables) {
+  const tables = getTables(fileInfo, options)
+  for (const table of tables) {
     scriptStatements.push(`VACUUM ANALYZE ${table};`)
   }
 

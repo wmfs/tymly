@@ -5,7 +5,7 @@
 const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const expect = require('chai').expect
-const pg = require('pg')
+const PGClient = require('pg-client-helper')
 const supercopy = require('./../lib')
 const path = require('path')
 const fs = require('fs')
@@ -18,8 +18,7 @@ describe('Run some basic tests', function () {
   let client
 
   it('Should create a new pg client', function () {
-    client = new pg.Client(connectionString)
-    client.connect()
+    client = new PGClient(connectionString)
   })
 
   it('Should remove output directory ahead of csv tests, if it exists already', function (done) {
