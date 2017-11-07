@@ -12,7 +12,8 @@ class Creator {
     this.primaryKeyColumns = model.pkColumnNames
   }
 
-  addStatements (script, jsonData, options, preStatementHook) {
+  makeStatements (jsonData, options, preStatementHook) {
+    const script = []
     const _this = this
 
     function createPostStatementHook (result, ctx) {
@@ -80,8 +81,8 @@ class Creator {
 
       statement += ` RETURNING ${_this.primaryKeyColumns.join(', ')};`
       const scriptEntry = {
-        statement: statement,
-        values: parsedDoc.keyAndAttributeValues,
+        sql: statement,
+        params: parsedDoc.keyAndAttributeValues,
         columnNames: parsedDoc.keyAndAttributeColumns,
         postStatementHook: createPostStatementHook.bind(_this)
       }
@@ -97,12 +98,12 @@ class Creator {
         function (subDoc, propertyId) {
           const subModel = _this.model.subModels[propertyId]
 
-          subModel.model.creator.addStatements(
-            script,
+          const subScript = subModel.model.creator.makeStatements(
             doc[propertyId],
             options,
             getPreStatementHookFunction(_this.fullTableName, subModel.columnJoin)
           )
+          script.push(...subScript)
         }
       )
     }
@@ -114,7 +115,8 @@ class Creator {
     } else {
       addInsertStatementToScript(jsonData)
     }
-  }
+    return script
+  } // addStatements
 }
 
 module.exports = Creator

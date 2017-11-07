@@ -15,13 +15,13 @@ class Destroyer {
     this.sql = `DELETE FROM ${this.fullTableName} WHERE ${where.join(' AND ')}`
   }
 
-  addStatements (script, id, options) {
-    script.push(
+  makeStatements (id, options) {
+    return [
       {
-        statement: this.sql,
-        values: id
+        sql: this.sql,
+        params: id
       }
-    )
+    ]
   }
 }
 

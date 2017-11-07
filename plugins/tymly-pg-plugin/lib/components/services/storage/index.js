@@ -7,13 +7,13 @@ const schema = require('./schema.json')
 const process = require('process')
 const async = require('async')
 
-const pg = require('pg')
 const relationize = require('relationize')
 const pgInfo = require('pg-info')
 const pgDiffSync = require('pg-diff-sync')
 const pgModel = require('pg-model')
 
-const pgStatementRunner = require('./pg-statement-runner')
+const PGClient = require('pg-client-helper')
+
 const generateUpsertStatement = require('./generate-upsert-statement')
 
 class PostgresqlStorageService {
@@ -23,10 +23,7 @@ class PostgresqlStorageService {
     const connectionString = process.env.PG_CONNECTION_STRING
     infoMessage(options.messages, `Using PostgresqlStorage... (${connectionString})`)
 
-    // TODO: Use pool instead
-
-    this.client = new pg.Client(connectionString)
-    this.client.connect()
+    this.client = new PGClient(connectionString)
 
     const modelDefinitions = options.blueprintComponents.models || {}
     const seedData = options.blueprintComponents.seedData
@@ -89,10 +86,7 @@ class PostgresqlStorageService {
       }
     })
 
-    await pgStatementRunner(
-      this.client,
-      statements
-    )
+    await this.client.run(statements)
 
     const models = pgModel({
       client: this.client,
@@ -163,8 +157,7 @@ class PostgresqlStorageService {
             })
             debug('load', name, 'seed-data params: ', params)
 
-            pgStatementRunner(
-              _this.client,
+            _this.client.run(
               [{
                 'sql': sql,
                 'params': params

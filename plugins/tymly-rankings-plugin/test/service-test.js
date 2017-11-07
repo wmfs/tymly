@@ -4,7 +4,7 @@
 
 const tymly = require('tymly')
 const path = require('path')
-const {Client} = require('pg')
+const PGClient = require('pg-client-helper')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
@@ -17,22 +17,10 @@ describe('Tests the Ranking Service', function () {
   this.timeout(5000)
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new Client({connectionString: pgConnectionString})
-  client.connect()
+  const client = new PGClient(pgConnectionString)
 
-  it('should create the test resources', function (done) {
-    sqlScriptRunner(
-      './db-scripts/setup.sql',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
-    )
+  it('should create the test resources', () => {
+    return sqlScriptRunner('./db-scripts/setup.sql', client)
   })
 
   it('should run the tymly service', function (done) {
@@ -352,18 +340,7 @@ describe('Tests the Ranking Service', function () {
     )
   })
 
-  it('should clean up the test resources', function (done) {
-    sqlScriptRunner(
-      './db-scripts/cleanup.sql',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
-    )
+  it('should clean up the test resources', () => {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

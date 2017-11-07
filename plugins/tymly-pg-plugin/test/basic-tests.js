@@ -262,13 +262,17 @@ describe('PostgreSQL storage tests', function () {
         sendResponse: 'COMPLETE'
       }, // options
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.foundTitle.title).to.eql('Miss')
-        expect(executionDescription.currentStateName).to.eql('FindingById')
-        expect(executionDescription.currentResource).to.eql('module:findingById')
-        expect(executionDescription.stateMachineName).to.eql('tymlyTest_seedDataTest_1_0')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.foundTitle.title).to.eql('Miss')
+          expect(executionDescription.currentStateName).to.eql('FindingById')
+          expect(executionDescription.currentResource).to.eql('module:findingById')
+          expect(executionDescription.stateMachineName).to.eql('tymlyTest_seedDataTest_1_0')
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })
@@ -284,9 +288,5 @@ describe('PostgreSQL storage tests', function () {
         done()
       }
     )
-  })
-
-  it('Should end db client', function () {
-    client.end()
   })
 })

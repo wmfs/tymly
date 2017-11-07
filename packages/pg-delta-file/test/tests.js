@@ -2,7 +2,7 @@
 
 'use strict'
 
-const pg = require('pg')
+const PGClient = require('pg-client-helper')
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path')
@@ -17,8 +17,7 @@ describe('Run the basic usage example',
 
     it('Should create a new pg client',
       function () {
-        client = new pg.Client(process.env.PG_CONNECTION_STRING)
-        client.connect()
+        client = new PGClient(process.env.PG_CONNECTION_STRING)
       }
     )
 
@@ -77,12 +76,6 @@ describe('Run the basic usage example',
             done()
           }
         )
-      }
-    )
-
-    it('Should end db client',
-      function () {
-        client.end()
       }
     )
   }

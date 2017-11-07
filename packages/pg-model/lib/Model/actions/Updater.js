@@ -19,8 +19,9 @@ class Updater {
     this.prefix = 'UPDATE ' + this.fullTableName + ' SET '
   }
 
-  addStatements (script, jsonData, options) {
+  makeStatements (jsonData, options) {
     const _this = this
+    const script = []
     const values = []
 
     const parsedDoc = _this.model.parseDoc(jsonData)
@@ -58,8 +59,8 @@ class Updater {
 
     script.push(
       {
-        statement: sql,
-        values: values,
+        sql: sql,
+        params: values,
         postStatementHook: getPostHookFunction(this.fullTableName, parsedDoc.primaryKeyValues)
       }
     )
@@ -84,12 +85,12 @@ class Updater {
 
               options.upsert = true
               options.destroyMissingSubDocs = true
-              subModel.model.creator.addStatements(
-                script,
+              const subScript = subModel.model.creator.makeStatements(
                 row,
                 options,
                 getPreStatementHookFunction(_this.fullTableName, subModel.columnJoin)
               )
+              script.push(...subScript)
             }
           )
 
@@ -103,8 +104,8 @@ class Updater {
               )
               script.push(
                 {
-                  statement: subModel.model.deleteMissingSql,
-                  values: [firstPkValues]
+                  sql: subModel.model.deleteMissingSql,
+                  params: [firstPkValues]
                 }
               )
             } else {
@@ -115,6 +116,7 @@ class Updater {
         }
       }
     )
+    return script
   }
 }
 

@@ -12,7 +12,7 @@ module.exports = function getPreStatementHookFunction (parentFullTableName, colu
     )
 
     const scriptEntryColumnNames = scriptEntry.columnNames
-    const scriptEntryValues = scriptEntry.values
+    const scriptEntryValues = scriptEntry.params
     let scriptEntryColumnName
     for (let i = 0; i < scriptEntryColumnNames.length; i++) {
       scriptEntryColumnName = scriptEntryColumnNames[i]

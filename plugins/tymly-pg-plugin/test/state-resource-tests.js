@@ -174,8 +174,4 @@ describe('Clean up', function () {
       }
     )
   })
-
-  it('should end db client', function () {
-    client.end()
-  })
 })

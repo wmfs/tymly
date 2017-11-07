@@ -2,7 +2,7 @@
 
 'use strict'
 
-const pg = require('pg')
+const PGClient = require('pg-client-helper')
 const process = require('process')
 const pgInfo = require('./../lib')
 const chai = require('chai')
@@ -18,18 +18,12 @@ describe('Run the basic-usage example', function () {
   this.timeout(15000)
 
   it('Should create a new pg client', function () {
-    console.log('\n\nMAKING NEW PG CLIENT.')
     const pgConnectionString = process.env.PG_CONNECTION_STRING
-    console.log('PG_CONNECTION_STRING=' + pgConnectionString)
-    client = new pg.Client(pgConnectionString)
-    console.log('MADE NEW CLIENT, CONNECTING...')
-    client.connect()
-    console.log('CONNECTED')
+    client = new PGClient(pgConnectionString)
   }
   )
 
   it('Should install test schemas', function (done) {
-    console.log('ABOUT TO INSTALL TEST SCHEMAS...')
     sqlScriptRunner(
         'install-test-schemas.sql',
         client,
@@ -86,11 +80,6 @@ describe('Run the basic-usage example', function () {
           done()
         }
       )
-  }
-  )
-
-  it('Should end db client', function () {
-    client.end()
   }
   )
 })

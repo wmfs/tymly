@@ -5,7 +5,7 @@ const chai = require('chai')
 const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
-const { Client } = require('pg')
+const PGClient = require('pg-client-helper')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
@@ -13,22 +13,10 @@ describe('Tests the Ranking State Resource', function () {
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new Client({ connectionString: pgConnectionString })
-  client.connect()
+  const client = new PGClient(pgConnectionString)
 
-  it('should create the test resources', function (done) {
-    sqlScriptRunner(
-      './db-scripts/setup.sql',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
-    )
+  it('should create the test resources', () => {
+    return sqlScriptRunner('./db-scripts/setup.sql', client)
   })
 
   it('should run the tymly service', function (done) {
@@ -228,19 +216,8 @@ describe('Tests the Ranking State Resource', function () {
     })
   })
 
-  it('should clean up the test resources', function (done) {
-    sqlScriptRunner(
-      './db-scripts/cleanup.sql',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
-    )
+  it('should clean up the test resources', () => {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 
   it('should delete this registry key', function (done) {

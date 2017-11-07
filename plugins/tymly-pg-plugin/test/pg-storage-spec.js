@@ -578,8 +578,4 @@ describe('PG storage tests', function () {
       }
     )
   })
-
-  it('Should end db client', function () {
-    client.end()
-  })
 })

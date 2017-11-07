@@ -20,7 +20,7 @@
     "standard": "^10.0.3",
     "tymly": "^0.0.15",
     "tymly-pg-plugin": "^0.0.6",
-    "pg": "7.3.0"
+    "pg-client-helper": "^0.0.1"
   },
   "scripts": {
     "lint": "standard",

@@ -2,10 +2,10 @@
 
 'use strict'
 
-const pg = require('pg')
 const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const pgModel = require('./../lib')
+const PGClient = require('pg-client-helper')
 const empty = require('./fixtures/empty.json')
 const planets = require('./fixtures/planets.json')
 const pgDiffSync = require('pg-diff-sync')
@@ -23,8 +23,7 @@ describe('Test promise API', function () {
   let stickneyId
 
   it('Should create a new pg client', function () {
-    client = new pg.Client(process.env.PG_CONNECTION_STRING)
-    client.connect()
+    client = new PGClient(process.env.PG_CONNECTION_STRING)
   })
 
   it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {

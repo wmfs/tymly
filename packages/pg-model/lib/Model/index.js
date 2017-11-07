@@ -1,7 +1,6 @@
 'use strict'
 
 const _ = require('lodash')
-const scriptRunner = require('./utils/script-runner')
 const Finder = require('./actions/Finder')
 const Creator = require('./actions/Creator')
 const Destroyer = require('./actions/Destroyer')
@@ -83,9 +82,8 @@ class Model {
     } // if ...
 
     options.upsert = false
-    const script = [{statement: 'BEGIN'}]
-    this.creator.addStatements(script, jsonData, options)
-    scriptRunner(this, script, callback)
+    const script = this.creator.makeStatements(jsonData, options)
+    this.client.run(script, callback)
   }
 
   findById (id, callback = NotSet) {
@@ -168,13 +166,8 @@ class Model {
 
     options.destroyMissingSubDocs = false
     options.setMissingPropertiesToNull = true
-    const script = [{statement: 'BEGIN'}]
-    this.updater.addStatements(
-      script,
-      doc,
-      options
-    )
-    scriptRunner(this, script, callback)
+    const script = this.updater.makeStatements(doc, options)
+    this.client.run(script, callback)
   }
 
   patch (doc, options, callback = NotSet) {
@@ -182,17 +175,11 @@ class Model {
       return this.promised(this.patch, doc, options)
     } // if ...
 
-    const script = [{statement: 'BEGIN'}]
-
     options.destroyMissingSubDocsv = false
     options.setMissingPropertiesToNull = false
 
-    this.updater.addStatements(
-      script,
-      doc,
-      options
-    )
-    scriptRunner(this, script, callback)
+    const script = this.updater.makeStatements(doc, options)
+    this.client.run(script, callback)
   }
 
   upsert (jsonData, options, callback = NotSet) {
@@ -200,13 +187,8 @@ class Model {
       return this.promised(this.upsert, jsonData, options)
     }
     options.upsert = true
-    const script = [{statement: 'BEGIN'}]
-    this.creator.addStatements(
-      script,
-      jsonData,
-      options
-    )
-    scriptRunner(this, script, callback)
+    const script = this.creator.makeStatements(jsonData, options)
+    this.client.run(script, callback)
   }
 
   destroyById (id, callback = NotSet) {
@@ -217,9 +199,8 @@ class Model {
     if (!_.isArray(id)) {
       id = [id]
     }
-    const script = [{statement: 'BEGIN'}]
-    this.destroyer.addStatements(script, id)
-    scriptRunner(this, script, callback)
+    const script = this.destroyer.makeStatements(id)
+    this.client.run(script, callback)
   }
 
   parseDoc (doc, options) {

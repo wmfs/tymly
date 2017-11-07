@@ -23,6 +23,7 @@
     "chai": "^4.1.0",
     "mocha": "^3.5.0",
     "pg": "^6.4.1",
+    "pg-client-helper": "^0.0.1",
     "standard": "^10.0.3"
   },
   "scripts": {

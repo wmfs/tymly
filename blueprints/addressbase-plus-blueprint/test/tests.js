@@ -158,8 +158,4 @@ describe('Blueprint Tests', function () {
       done()
     }
   })
-
-  it('Should shutdown database connection', function () {
-    client.end()
-  })
 })
