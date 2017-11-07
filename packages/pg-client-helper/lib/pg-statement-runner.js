@@ -5,16 +5,11 @@ function query(sql, params, client) {
   return client.query(sql, params)
 }
 
-function pgScriptRunner (client, statementsAndParams) {
+async function pgScriptRunner (client, statementsAndParams) {
   ensureBeginAndEnd(statementsAndParams)
 
-  const doStatement = async (index, ctx) => {
-    if (index == statementsAndParams.length) {
-      return ctx.returnValue
-    }
-
-    const data = statementsAndParams[index]
-
+  const ctx = { }
+  for (const data of statementsAndParams) {
     try {
       if (data.preStatementHook) {
         data.preStatementHook(data, ctx)
@@ -27,17 +22,12 @@ function pgScriptRunner (client, statementsAndParams) {
         data.postStatementHook(result, ctx)
       }
     } catch(err) {
-      throw [err, data.sql]
-    }
-
-    return doStatement(index+1, ctx)
-  } // doStatement
-
-  return doStatement(0, { }).
-    catch(([err, statement]) => {
-      rollback(err, statement, client)
+      await rollback(err, data.sql, client)
       throw err
-    })
+    } // catch ...
+  } // for ...
+
+  return ctx.returnValue
 } // pgScriptRunner
 
 function rollback(err, statement, client) {
