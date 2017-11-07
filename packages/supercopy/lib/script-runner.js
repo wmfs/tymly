@@ -37,35 +37,17 @@ module.exports = function scriptRunner (statements, client, callback) {
     statements,
     function (statementAndParam, cb) {
       const statement = statementAndParam.sql
-      const onceCb = _.once(cb)
       i++
       if (statement.startsWith('COPY ')) {
-        const components = statement.match(/COPY (.*?) FROM '([^']*)'/)
-        const tableAndCols = components[1]
-        const filename = components[2]
-        const newStatement = `COPY ${tableAndCols} FROM STDIN CSV HEADER;`
-        debug(`Stream-Copy: ${newStatement} -- (${filename})`)
-        const stream = client.query(
-          copyFrom(newStatement)
-        )
-        stream.on('end', function () {
-          onceCb()
-        }).on('error', function (err) {
-          onceCb(err)
-        })
-
-        const fileStream = fs.createReadStream(filename)
-        fileStream.on('error', function (err) {
-          onceCb(err)
-        })
-
-        fileStream.pipe(stream)
+        copyStream(statement, client).
+          then(() => cb()).
+          catch(err => cb(err))
       } else {
         debug(`Running: ${statement}`)
         client.query(
           statement,
           [],
-          onceCb
+          cb
         )
       }
     },
