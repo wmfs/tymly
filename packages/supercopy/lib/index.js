@@ -33,16 +33,20 @@ function annotateCopyStatements(statements) {
   return statements
 } // annotateCopyStatements
 
-function supercopy (options, callback) {
-  preprocess(options)
+async function supercopy (options, callback) {
+  try {
+    preprocess(options)
 
-  collectFileInfo(options).
-    then(fileInfo => generateScriptStatements(fileInfo, options)).
-    then(statements => annotateCopyStatements(statements)).
-    then(statements => options.client.run(statements)).
-    then(() => callback(null)).
-    catch(err => callback(err))
-}
+    const fileInfo = await collectFileInfo(options)
+    let statements = generateScriptStatements(fileInfo, options)
+    statements = annotateCopyStatements(statements)
+
+    await options.client.run(statements)
+    callback(null)
+  } catch(err) {
+    callback(err)
+  }
+} // supercopy
 
 const NotSet = 'NotSet'
 const supercopyP = promisify(supercopy)
