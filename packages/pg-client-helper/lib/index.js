@@ -9,6 +9,10 @@ class PGClient {
       connectionString: connectionString
     })
     this.client_.connect()
+
+    this.pool_ = new pg.Pool({
+      connectionString: connectionString
+    })
   }
 
   query (...args) {
@@ -16,12 +20,15 @@ class PGClient {
   } // query
 
   run (statementsAndParamsArray, callback = NotSet) {
+    const result = statementRunner(this.client_, statementsAndParamsArray)
+
     if (callback === NotSet) {
-      return statementRunner(this.client_, statementsAndParamsArray)
+      return result
     }
-    statementRunner(this.client_, statementsAndParamsArray).
-    then(result => callback(null, result)).
-    catch(err => callback(err))
+
+    result.
+      then(result => callback(null, result)).
+      catch(err => callback(err))
   } // run
 } // class PGClient
 
