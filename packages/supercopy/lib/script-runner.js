@@ -5,7 +5,7 @@ const debug = require('debug')('supercopy')
 const fs = require('fs')
 const copyFrom = require('pg-copy-streams').from
 const _ = require('lodash')
-module.exports = function scriptRunner (statements, client, options, callback) {
+module.exports = function scriptRunner (statements, client, callback) {
   let i = -1
   async.eachSeries(
     statements,

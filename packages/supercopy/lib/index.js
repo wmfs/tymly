@@ -35,7 +35,6 @@ function supercopy (options, callback) {
         scriptRunner(
           scriptStatements,
           options.client,
-          options,
           callback
         )
       }
