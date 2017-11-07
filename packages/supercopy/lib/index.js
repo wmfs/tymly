@@ -39,7 +39,8 @@ function supercopy (options, callback) {
   collectFileInfo(options).
     then(fileInfo => generateScriptStatements(fileInfo, options)).
     then(statements => annotateCopyStatements(statements)).
-    then(statements => options.client.run(statements, callback)).
+    then(statements => options.client.run(statements)).
+    then(() => callback(null)).
     catch(err => callback(err))
 }
 
