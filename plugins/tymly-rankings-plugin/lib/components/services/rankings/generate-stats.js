@@ -72,7 +72,7 @@ function generateRanges (scores, mean, stdev) {
     }
   } else {
     return {
-      low: {
+      veryLow: {
         lowerBound: 0,
         upperBound: (+mean - +stdev).toFixed(2)
       },
@@ -80,7 +80,7 @@ function generateRanges (scores, mean, stdev) {
         lowerBound: (+mean - +stdev + +0.01).toFixed(2),
         upperBound: (+mean + +stdev).toFixed(2)
       },
-      high: {
+      veryHigh: {
         lowerBound: (+mean + +stdev + +0.01).toFixed(2),
         upperBound: Math.max(...scores)
       }

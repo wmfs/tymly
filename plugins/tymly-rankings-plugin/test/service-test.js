@@ -322,8 +322,8 @@ describe('Tests the Ranking Service', function () {
           variance: '73.89',
           stdev: '8.60',
           ranges: {
-            low: {lowerBound: 0, upperBound: '13.74'},
-            high: {lowerBound: '30.94', upperBound: 34},
+            veryLow: {lowerBound: 0, upperBound: '13.74'},
+            veryHigh: {lowerBound: '30.94', upperBound: 34},
             medium: {lowerBound: '13.75', upperBound: '30.93'}
           }
         })
@@ -340,12 +340,12 @@ describe('Tests the Ranking Service', function () {
         if (err) done(err)
         console.log(result.rows)
         expect(result.rows).to.eql([
-          {uprn: '1', range: 'high', distribution: '0.0185'},
+          {uprn: '1', range: 'very-high', distribution: '0.0185'},
           {uprn: '2', range: 'medium', distribution: '0.0409'},
           {uprn: '3', range: 'medium', distribution: '0.0354'},
           {uprn: '4', range: 'medium', distribution: '0.0455'},
-          {uprn: '5', range: 'high', distribution: '0.0247'},
-          {uprn: '6', range: 'low', distribution: '0.0166'}
+          {uprn: '5', range: 'very-high', distribution: '0.0247'},
+          {uprn: '6', range: 'very-low', distribution: '0.0166'}
         ])
         done()
       }
