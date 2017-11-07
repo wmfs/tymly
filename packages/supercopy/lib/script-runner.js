@@ -2,7 +2,6 @@
 
 const async = require('async')
 const debug = require('debug')('supercopy')
-const copyStream  = require('./copy-stream')
 
 module.exports = function scriptRunner (statements, client, callback) {
   let i = -1
@@ -10,9 +9,10 @@ module.exports = function scriptRunner (statements, client, callback) {
     statements,
     function (statementAndParam, cb) {
       const statement = statementAndParam.sql
-      i++
-      if (statement.startsWith('COPY ')) {
-        copyStream(statement, client).
+      const action = statementAndParam.action
+
+      if (action) {
+        action(statement, client).
           then(() => cb()).
           catch(err => cb(err))
       } else {
