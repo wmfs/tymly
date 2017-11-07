@@ -5,11 +5,38 @@ const debug = require('debug')('supercopy')
 const fs = require('fs')
 const copyFrom = require('pg-copy-streams').from
 const _ = require('lodash')
+
+function copyStream(statement, client) {
+  return new Promise((resolve, reject) => {
+    const components = statement.match(/COPY (.*?) FROM '([^']*)'/)
+    const tableAndCols = components[1]
+    const filename = components[2]
+    const newStatement = `COPY ${tableAndCols} FROM STDIN CSV HEADER;`
+    debug(`Stream-Copy: ${newStatement} -- (${filename})`)
+    const stream = client.query(
+      copyFrom(newStatement)
+    )
+    stream.on('end', function () {
+      resolve()
+    }).on('error', function (err) {
+      reject(err)
+    })
+
+    const fileStream = fs.createReadStream(filename)
+    fileStream.on('error', function (err) {
+      reject(err)
+    })
+
+    fileStream.pipe(stream)
+  })
+} // copyStream
+
 module.exports = function scriptRunner (statements, client, callback) {
   let i = -1
   async.eachSeries(
     statements,
-    function (statement, cb) {
+    function (statementAndParam, cb) {
+      const statement = statementAndParam.sql
       const onceCb = _.once(cb)
       i++
       if (statement.startsWith('COPY ')) {

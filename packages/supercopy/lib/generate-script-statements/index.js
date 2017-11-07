@@ -24,5 +24,9 @@ module.exports = function generateScriptStatements (fileInfo, options) {
 
   debug(`Statements to run ${JSON.stringify(scriptStatements, null, 2)}`)
 
-  return scriptStatements
+  return scriptStatements.map(statement => {
+    return {
+      sql: statement
+    }
+  })
 }
