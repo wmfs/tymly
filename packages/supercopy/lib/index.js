@@ -28,14 +28,12 @@ function supercopy (options, callback) {
   preprocess(options)
 
   collectFileInfo(options).
-    then(fileInfo => {
-      const scriptStatements = generateScriptStatements(fileInfo, options)
-      scriptRunner(
+    then(fileInfo => generateScriptStatements(fileInfo, options)).
+    then(scriptStatements => scriptRunner(
         scriptStatements,
         options.client,
         callback
-      )
-    }).
+      )).
     catch(err => callback(err))
 }
 
