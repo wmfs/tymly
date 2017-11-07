@@ -1,5 +1,10 @@
 // note that statementsAndParams should be an array of objects, where each
 // object has a sql (string) property and a params (array) property
+
+function query(sql, params, client) {
+  return client.query(sql, params)
+}
+
 function pgScriptRunner (client, statementsAndParams, callback) {
   ensureBeginAndEnd(statementsAndParams)
 
@@ -15,7 +20,7 @@ function pgScriptRunner (client, statementsAndParams, callback) {
         data.preStatementHook(data, ctx)
       }
 
-      const result = await client.query(data.sql, data.params)
+      const result = await query(data.sql, data.params, client)
 
       if (data.postStatementHook) {
         data.postStatementHook(result, ctx)

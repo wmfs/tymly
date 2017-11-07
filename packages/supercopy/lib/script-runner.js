@@ -12,7 +12,7 @@ module.exports = function scriptRunner (statements, client, callback) {
       const action = statementAndParam.action
 
       if (action) {
-        action(statement, client).
+        action(statement, null, client).
           then(() => cb()).
           catch(err => cb(err))
       } else {
