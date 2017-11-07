@@ -3,11 +3,19 @@
 const async = require('async')
 const makeDir = require('make-dir')
 const path = require('path')
+const promisify = require('util').promisify
 const processUpserts = require('./process-upserts')
 const processDeletes = require('./process-deletes')
 const processCopy = require('./process-copy')
 
-module.exports = function pgTelepods (options, callback) {
+const NotSet = 'NotSet'
+const pgTelepodsP = promisify(pgTelepods)
+
+function pgTelepods (options, callback = NotSet) {
+  if (callback === NotSet) {
+    return pgTelepodsP(options)
+  } // if
+
   options.deletesDir = path.join(options.outputDir, 'deletes')
   options.upsertsDir = path.join(options.outputDir, 'upserts')
 
@@ -47,4 +55,6 @@ module.exports = function pgTelepods (options, callback) {
       }
     }
   )
-}
+} // pgTelepods
+
+module.exports = pgTelepods

@@ -27,38 +27,31 @@ describe('Run the basic-usage example',
       return sqlScriptRunner('install-test-schemas.sql', client)
     })
 
-    it('Should start the telepods',
-      function (done) {
-        startTelepods(
-          {
-            client: client,
-            outputDir: path.resolve(__dirname, './output'),
-            source: {
-              tableName: 'springfield.people',
-              hashSumColumnName: 'hash_sum'
-            },
-            target: {
-              tableName: 'government.census',
-              hashSumColumnName: 'origin_hash_sum'
-            },
-            join: {
-              'social_security_id': 'social_security_id' // key = source table column, value = target table column
-            },
-            transformFunction: function (sourceRow, callback) {
-              callback(null, {
-                'socialSecurityId': sourceRow.socialSecurityId,
-                'name': sourceRow.firstName + ' ' + sourceRow.lastName,
-                'town': 'Springfield'
-              })
-            }
-          },
-          function (err, stats) {
-            expect(err).to.eql(null)
-            done()
-          }
-        )
-      }
-    )
+    it('Should start the telepods', async () => {
+      const result = await startTelepods({
+        client: client,
+        outputDir: path.resolve(__dirname, './output'),
+        source: {
+          tableName: 'springfield.people',
+          hashSumColumnName: 'hash_sum'
+        },
+        target: {
+          tableName: 'government.census',
+          hashSumColumnName: 'origin_hash_sum'
+        },
+        join: {
+          'social_security_id': 'social_security_id' // key = source table column, value = target table column
+        },
+        transformFunction: function (sourceRow, callback) {
+          callback(null, {
+            'socialSecurityId': sourceRow.socialSecurityId,
+            'name': sourceRow.firstName + ' ' + sourceRow.lastName,
+            'town': 'Springfield'
+          })
+        }
+      })
+      expect(result).to.not.equal(null)
+    })
 
     it('Should return correctly modified children rows', async () => {
       const result = await client.query(
@@ -92,6 +85,7 @@ describe('Run the basic-usage example',
           }
         ]
       )
+      expect(result).to.not.equal(null)
     })
 
     it('Should check for deletes csv', () => {
