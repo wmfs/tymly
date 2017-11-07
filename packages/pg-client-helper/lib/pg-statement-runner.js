@@ -5,7 +5,7 @@ function query(sql, params, client) {
   return client.query(sql, params)
 }
 
-function pgScriptRunner (client, statementsAndParams, callback) {
+function pgScriptRunner (client, statementsAndParams) {
   ensureBeginAndEnd(statementsAndParams)
 
   const doStatement = async (index, ctx) => {
@@ -20,7 +20,8 @@ function pgScriptRunner (client, statementsAndParams, callback) {
         data.preStatementHook(data, ctx)
       }
 
-      const result = await query(data.sql, data.params, client)
+      const action = data.action || query
+      const result = await action(data.sql, data.params, client)
 
       if (data.postStatementHook) {
         data.postStatementHook(result, ctx)
@@ -53,8 +54,11 @@ function rollback(err, statement, client) {
 }
 
 ////////////////
-const BEGIN = 'BEGIN'
+const BEGIN = 'BEGIN;'
+const COMMIT = 'COMMIT;'
 const END = 'END;'
+const VACUUM = 'VACUUM'
+
 function statement(stmt) {
   return {
     'sql': stmt,
@@ -65,11 +69,23 @@ const beginStatement = statement(BEGIN)
 const endStatement = statement(END)
 
 function ensureBeginAndEnd (statementsAndParams) {
-  if (statementsAndParams.length !== 0 && statementsAndParams[0].sql !== BEGIN) {
+  // this should really attempt to match BEGIN and ENDS more intelligently
+  if (statementsAndParams.length === 0) {
+    return
+  }
+
+  const firstStatement = statementsAndParams[0].sql
+  const lastStatement = statementsAndParams[statementsAndParams.length-1].sql
+
+  if (firstStatement !== BEGIN && !firstStatement.startsWith(VACUUM)) {
     statementsAndParams.unshift(beginStatement)
   }
 
-  if (statementsAndParams.length !== 0 && statementsAndParams[statementsAndParams.length - 1].sql !== END) {
+  if (lastStatement.startsWith(VACUUM)) {
+    return
+  }
+
+  if (lastStatement !== END && lastStatement !== COMMIT) {
     statementsAndParams.push(endStatement)
   }
 } // ensureBeginAndEnd
