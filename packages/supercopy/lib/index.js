@@ -2,7 +2,6 @@
 
 const collectFileInfo = require('./collect-file-info')
 const generateScriptStatements = require('./generate-script-statements')
-const scriptRunner = require('./script-runner')
 const path = require('path')
 const fs = require('fs')
 const copyStream  = require('./copy-stream')
@@ -40,11 +39,7 @@ function supercopy (options, callback) {
   collectFileInfo(options).
     then(fileInfo => generateScriptStatements(fileInfo, options)).
     then(statements => annotateCopyStatements(statements)).
-    then(scriptStatements => scriptRunner(
-        scriptStatements,
-        options.client,
-        callback
-      )).
+    then(statements => options.client.run(statements, callback)).
     catch(err => callback(err))
 }
 
