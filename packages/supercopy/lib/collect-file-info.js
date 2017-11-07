@@ -11,11 +11,7 @@ const readdirAsync = promisify(fs.readdir)
 const lstatAsync = promisify(fs.lstat)
 const columnNamesAsync = promisify(getColumnNames)
 
-module.exports = function (options, callback) {
-  collect(options)
-    .then(info => callback(null, info))
-    .catch(err => callback(err, null))
-}
+module.exports = collect
 
 async function collect (options) {
   const info = {}

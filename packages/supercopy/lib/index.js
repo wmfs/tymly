@@ -27,18 +27,16 @@ function createFolders (targetDir) {
 function supercopy (options, callback) {
   preprocess(options)
 
-  collectFileInfo(options, function (err, fileInfo) {
-    if (err) {
-      callback(err)
-    } else {
+  collectFileInfo(options).
+    then(fileInfo => {
       const scriptStatements = generateScriptStatements(fileInfo, options)
       scriptRunner(
         scriptStatements,
         options.client,
         callback
       )
-    }
-  })
+    }).
+    catch(err => callback(err))
 }
 
 const NotSet = 'NotSet'
