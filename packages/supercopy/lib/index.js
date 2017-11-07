@@ -5,6 +5,7 @@ const generateScriptStatements = require('./generate-script-statements')
 const scriptRunner = require('./script-runner')
 const path = require('path')
 const fs = require('fs')
+const promisify = require('util').promisify
 
 function preprocess (options, callback) {
   const outputPath = path.resolve(options.sourceDir, 'inserts')
@@ -43,16 +44,11 @@ function supercopy (options, callback) {
 }
 
 const NotSet = 'NotSet'
+const supercopyP = promisify(supercopy)
 
 module.exports = (options, callback = NotSet) => {
   if (callback === NotSet) {
-    return new Promise((resolve, reject) => {
-      supercopy(options, (err) => {
-        if (err) {
-          return reject(err)
-        }
-        return resolve()
-      })
-    })
-  } else { supercopy(options, callback) }
+    return supercopyP(options)
+  }
+  supercopy(options, callback)
 }
