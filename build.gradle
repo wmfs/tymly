@@ -65,8 +65,6 @@ postgresEmbedded {
 	timeoutMillisBeforeStop = 0
 }
 
-println(postgresEmbedded.port)
-
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
 
 ////////////////////////////////////////////
