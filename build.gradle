@@ -72,8 +72,16 @@ task npmBootstrap (type: Exec) {
   commandLine 'npm', 'install'
 }
 
+task clean (type: Exec,
+            dependsOn: npmBootstrap) {
+  group 'Build'
+  description 'Discard all the node_modules directories'
+
+  commandLine 'npm', 'run', 'clean'
+}
+
 task bootstrap (type: Exec,
-                dependsOn: npmBootstrap) {
+                dependsOn: [npmBootstrap, clean]) {
   group 'Build'
   description 'Installs the npm dependencies'
 
@@ -89,7 +97,8 @@ task test (type:Exec,
   environment PG_CONNECTION_STRING: pg_connection
 }
 
-task bundle (type: Exec) {
+task bundle (type: Exec,
+             dependsOn: [npmBootstrap]) {
   group 'Build'
   description 'Creates an installable tymly package'
 
