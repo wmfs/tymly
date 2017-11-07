@@ -1,19 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
-module.exports = function installTestSchemas (filename, client, callback) {
-  fs.readFile(
-    path.resolve(__dirname, filename),
-    'utf8',
-    function (err, sql) {
-      if (err) {
-        callback(err)
-      } else {
-        client.query(
-          sql,
-          callback
-        )
-      }
-    }
-  )
+module.exports = async function scriptRunner (filename, client) {
+  const fullFileName = path.resolve(__dirname, filename)
+  const sql = fs.readFileSync(fullFileName, 'utf8')
+  return client.query(sql)
 }
