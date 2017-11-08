@@ -7,7 +7,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 describe('Restart statebox test - cat state machine', function () {
   const tymly = require('tymly')
   let statebox
-  this.timeout(90000)
+  this.timeout(10000)
   let rupert
 
   const tymlyConfig = {
@@ -56,7 +56,7 @@ describe('Restart statebox test - cat state machine', function () {
     )
   })
 
-  it('reboot tymly', function (done) {
+  xit('reboot tymly', function (done) {
     tymly.boot(
       tymlyConfig,
       function (err, tymlyServices) {

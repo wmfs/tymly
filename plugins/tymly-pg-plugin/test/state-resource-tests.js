@@ -2,6 +2,7 @@
 
 'use strict'
 
+const PGClient = require('pg-client-helper')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
@@ -9,11 +10,16 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const OUTPUT_DIR_PATH = path.resolve(__dirname, './output')
-let client
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
 
 describe('Importing CSV Tests', function () {
   this.timeout(5000)
   const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
+  let client
   let statebox
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
@@ -86,6 +92,7 @@ describe('Synchronizing Table tests', function () {
   this.timeout(5000)
   const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
   let statebox
+  let client
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(
@@ -154,6 +161,8 @@ describe('Synchronizing Table tests', function () {
 })
 
 describe('Clean up', function () {
+  let client = new PGClient(process.env.PG_CONNECTION_STRING)
+
   it('should remove output directory now tests are complete', function (done) {
     if (fs.existsSync(OUTPUT_DIR_PATH)) {
       rimraf(OUTPUT_DIR_PATH, {}, done)
