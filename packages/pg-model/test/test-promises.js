@@ -16,6 +16,11 @@ chai.use(chaiSubset)
 const expect = chai.expect
 const assert = require('assert')
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
+})
+
 describe('Test promise API', function () {
   let client
   let models
@@ -476,8 +481,8 @@ describe('Test promise API', function () {
     )
   })
 
-  it('should upsert (insert) Grampa', () => {
-    models.pgmodelTest.person.upsert(
+  it('should upsert (insert) Grampa', async () => {
+    const idProperties = await models.pgmodelTest.person.upsert(
       {
         employeeNo: 10,
         firstName: 'Abe',
@@ -485,14 +490,14 @@ describe('Test promise API', function () {
         age: 82
       },
       {}
-    ).then(idProperties =>
-      expect(idProperties).to.eql(
-        {
-          idProperties: {
-            employeeNo: '10'
-          }
+    )
+
+    expect(idProperties).to.eql(
+      {
+        idProperties: {
+          employeeNo: '10'
         }
-      )
+      }
     )
   })
 
