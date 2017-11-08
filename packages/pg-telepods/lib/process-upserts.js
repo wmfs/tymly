@@ -23,11 +23,16 @@ module.exports = function processUpserts (options, callback) {
   const upsertWriteFileStream = fs.createWriteStream(
     path.join(upsertsDir, getFilename(options.target.tableName)),
     {defaultEncoding: 'utf8'})
-  const stream = options.client.query(new QueryStream(sql))
-  stream.on('end', function () {
-    upsertWriteFileStream.end()
-    callback(null)
-  })
-  const upsertTransformer = new UpsertTransformer(options)
-  stream.pipe(upsertTransformer).pipe(upsertWriteFileStream)
+
+  const upsertTransform = (sql, params, client) => {
+    const stream = client.query(new QueryStream(sql))
+    stream.on('end', function () {
+      upsertWriteFileStream.end()
+      callback(null)
+    })
+    const upsertTransformer = new UpsertTransformer(options)
+    stream.pipe(upsertTransformer).pipe(upsertWriteFileStream)
+  } // upsertTransform
+
+  options.client.run([{ sql: sql, action: upsertTransform }])
 }

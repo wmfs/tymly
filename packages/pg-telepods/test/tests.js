@@ -10,13 +10,11 @@ const expect = chai.expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const path = require('path')
 const fs = require('fs')
-let client
-
-// Make a Postgres client
 
 describe('Run the basic-usage example',
   function () {
     this.timeout(15000)
+    let client
 
     it('Should create a new pg client', () => {
       client = new PGClient(process.env.PG_CONNECTION_STRING)
