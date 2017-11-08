@@ -25,7 +25,7 @@ module.exports = function generateStats (options, callback) {
         options.client.query(getViewRowsSQL(options), function (err, res) {
           if (err) return callback(err)
           console.log(options.category + ' - Retrieved rows, calculating ranges')
-          async.each(res.rows, (r, cb) => {
+          async.eachSeries(res.rows, (r, cb) => {
             let range = findRange(ranges, r.risk_score)
 
             let normal = dist.Normal(mean, stdev)
