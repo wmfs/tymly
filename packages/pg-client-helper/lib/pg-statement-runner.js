@@ -5,29 +5,34 @@ function query(sql, params, client) {
   return client.query(sql, params)
 }
 
-async function pgScriptRunner (client, statementsAndParams) {
-  ensureBeginAndEnd(statementsAndParams)
+async function pgScriptRunner (pool, statementsAndParams) {
+  const client = await pool.connect()
+  try {
+    ensureBeginAndEnd(statementsAndParams)
 
-  const ctx = { }
-  for (const data of statementsAndParams) {
-    try {
-      if (data.preStatementHook) {
-        data.preStatementHook(data, ctx)
-      }
+    const ctx = { }
+    for (const data of statementsAndParams) {
+      try {
+        if (data.preStatementHook) {
+          data.preStatementHook(data, ctx)
+        }
 
-      const action = data.action || query
-      const result = await action(data.sql, data.params, client)
+        const action = data.action || query
+        const result = await action(data.sql, data.params, client)
 
-      if (data.postStatementHook) {
-        data.postStatementHook(result, ctx)
-      }
-    } catch(err) {
-      await rollback(err, data.sql, client)
-      throw err
-    } // catch ...
-  } // for ...
+        if (data.postStatementHook) {
+          data.postStatementHook(result, ctx)
+        }
+      } catch(err) {
+        await rollback(err, data.sql, client)
+        throw err
+      } // catch ...
+    } // for ...
 
-  return ctx.returnValue
+    return ctx.returnValue
+  } finally {
+    client.release()
+  }
 } // pgScriptRunner
 
 function rollback(err, statement, client) {

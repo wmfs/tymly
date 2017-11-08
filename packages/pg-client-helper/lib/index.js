@@ -5,22 +5,17 @@ const NotSet = 'NotSet'
 
 class PGClient {
   constructor (connectionString) {
-    this.client_ = new pg.Client({
-      connectionString: connectionString
-    })
-    this.client_.connect()
-
     this.pool_ = new pg.Pool({
       connectionString: connectionString
     })
   }
 
   query (...args) {
-    return this.client_.query(...args)
+    return this.pool_.query(...args)
   } // query
 
   run (statementsAndParamsArray, callback = NotSet) {
-    const result = statementRunner(this.client_, statementsAndParamsArray)
+    const result = statementRunner(this.pool_, statementsAndParamsArray)
 
     if (callback === NotSet) {
       return result
