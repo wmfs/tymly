@@ -7,7 +7,6 @@ const startTelepods = require('./../lib')
 const process = require('process')
 const chai = require('chai')
 const expect = chai.expect
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const path = require('path')
 const fs = require('fs')
 
@@ -21,7 +20,7 @@ describe('Run the basic-usage example',
     })
 
     it('Should install test schemas', () => {
-      return sqlScriptRunner('install-test-schemas.sql', client)
+      return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
     })
 
     it('Should start the telepods', async () => {
@@ -91,7 +90,7 @@ describe('Run the basic-usage example',
     })
 
     it('Should uninstall test schemas', () => {
-      return sqlScriptRunner('uninstall-test-schemas.sql', client)
+      return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
     })
   }
 )

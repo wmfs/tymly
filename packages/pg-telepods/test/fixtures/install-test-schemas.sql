@@ -19,7 +19,7 @@ INSERT INTO springfield.people (hash_sum, social_security_id, first_name, last_n
 ('EEEEEEEE', 5, 'Montgomery', 'Burns', 123),
 ('11111111', 6, 'Ned', 'Flanders', 60);
 
-CREATE SCHEMA government
+CREATE SCHEMA government;
 
 CREATE TABLE government.census (
   origin_hash_sum text NOT NULL,
