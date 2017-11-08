@@ -21,9 +21,9 @@ class PGClient {
       return result
     }
 
-    result.
-      then(result => callback(null, result)).
-      catch(err => callback(err))
+    result
+      .then(result => callback(null, result))
+      .catch(err => callback(err))
   } // run
 } // class PGClient
 

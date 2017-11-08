@@ -1,12 +1,14 @@
+/* eslint-env mocha */
+
 const PGClient = require('../lib/index')
 const process = require('process')
 const expect = require('chai').expect
 
-function sqlf(statements) {
-  return statements.map(sql => { return  { sql: sql } })
+function sqlf (statements) {
+  return statements.map(sql => { return { sql: sql } })
 }
 
-function postInsert(result, ctx) {
+function postInsert (result, ctx) {
   if (result.command === 'SELECT') {
     ctx.returnValue = result.rows[0].count
   }
@@ -52,7 +54,7 @@ describe('Ensure transaction isolation', function () {
     'INSERT INTO banjax.test VALUES (19, \'hello\');',
     'SELECT COUNT(*) FROM banjax.test;'
   ])
-  test1.forEach(s => s.postStatementHook = postInsert)
+  test1.forEach(s => { s.postStatementHook = postInsert })
   const test2 = sqlf([
     'INSERT INTO banjax.test VALUES (31, \'hello\');',
     'INSERT INTO banjax.test VALUES (32, \'hello\');',
@@ -76,7 +78,7 @@ describe('Ensure transaction isolation', function () {
     'INSERT INTO banjax.test VALUES (30, \'hello\');',
     'SELECT COUNT(*) FROM banjax.test;'
   ])
-  test2.forEach(s => s.postStatementHook = postInsert)
+  test2.forEach(s => { s.postStatementHook = postInsert })
 
   it('Fire off some sql statements', async () => {
     await client.run(sqlf(setupScript))
@@ -99,12 +101,12 @@ describe('Ensure transaction isolation', function () {
 
     const results = [ ]
 
-    const q1 = client.run(test1).
-      then(r => results.push(r)).
-      catch(err => results.push(err.toString()))
-    const q2 = client.run(test2).
-      then(r => results.push(r)).
-      catch(err => results.push(err.toString()))
+    const q1 = client.run(test1)
+      .then(r => results.push(r))
+      .catch(err => results.push(err.toString()))
+    const q2 = client.run(test2)
+      .then(r => results.push(r))
+      .catch(err => results.push(err.toString()))
 
     await Promise.all([q1, q2])
 
@@ -116,12 +118,12 @@ describe('Ensure transaction isolation', function () {
 
     const results = [ ]
 
-    const q1 = client.run(test2).
-      then(r => results.push(r)).
-      catch(err => results.push(err.toString()))
-    const q2 = client.run(test2).
-      then(r => results.push(r)).
-      catch(err => results.push(err.toString()))
+    const q1 = client.run(test2)
+      .then(r => results.push(r))
+      .catch(err => results.push(err.toString()))
+    const q2 = client.run(test2)
+      .then(r => results.push(r))
+      .catch(err => results.push(err.toString()))
 
     await Promise.all([q1, q2])
 

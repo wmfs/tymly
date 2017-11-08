@@ -1,7 +1,7 @@
 // note that statementsAndParams should be an array of objects, where each
 // object has a sql (string) property and a params (array) property
 
-function query(sql, params, client) {
+function query (sql, params, client) {
   return client.query(sql, params)
 }
 
@@ -23,7 +23,7 @@ async function pgScriptRunner (pool, statementsAndParams) {
         if (data.postStatementHook) {
           data.postStatementHook(result, ctx)
         }
-      } catch(err) {
+      } catch (err) {
         await rollback(err, data.sql, client)
         throw err
       } // catch ...
@@ -35,7 +35,7 @@ async function pgScriptRunner (pool, statementsAndParams) {
   }
 } // pgScriptRunner
 
-function rollback(err, statement, client) {
+function rollback (err, statement, client) {
   console.error('')
   console.error('ScriptRunner fail!')
   console.error('------------------')
@@ -43,18 +43,18 @@ function rollback(err, statement, client) {
   console.error(JSON.stringify(statement, null, 2))
   console.error(err)
   console.error('')
-  return client.query('ROLLBACK;').
-    then(() => console.log('ROLLBACK SUCCESSFUL.')).
-    catch(rollbackErr => console.error(`FAILED TO ROLLBACK AS WELL! ${rollbackErr}`))
+  return client.query('ROLLBACK;')
+    .then(() => console.log('ROLLBACK SUCCESSFUL.'))
+    .catch(rollbackErr => console.error(`FAILED TO ROLLBACK AS WELL! ${rollbackErr}`))
 }
 
-////////////////
+/// /////////////
 const BEGIN = 'BEGIN;'
 const COMMIT = 'COMMIT;'
 const END = 'END;'
 const VACUUM = 'VACUUM'
 
-function statement(stmt) {
+function statement (stmt) {
   return {
     'sql': stmt,
     'params': []
@@ -70,7 +70,7 @@ function ensureBeginAndEnd (statementsAndParams) {
   }
 
   const firstStatement = statementsAndParams[0].sql
-  const lastStatement = statementsAndParams[statementsAndParams.length-1].sql
+  const lastStatement = statementsAndParams[statementsAndParams.length - 1].sql
 
   if (firstStatement !== BEGIN && !firstStatement.startsWith(VACUUM)) {
     statementsAndParams.unshift(beginStatement)
