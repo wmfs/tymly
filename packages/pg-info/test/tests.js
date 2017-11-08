@@ -4,12 +4,12 @@
 
 const PGClient = require('pg-client-helper')
 const process = require('process')
+const path = require('path')
 const pgInfo = require('./../lib')
 const chai = require('chai')
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 let client
 
 // Make a Postgres client
@@ -17,23 +17,14 @@ let client
 describe('Run the basic-usage example', function () {
   this.timeout(15000)
 
-  it('Should create a new pg client', function () {
+  it('Should create a new pg client', () => {
     const pgConnectionString = process.env.PG_CONNECTION_STRING
     client = new PGClient(pgConnectionString)
-  }
-  )
+  })
 
-  it('Should install test schemas', function (done) {
-    sqlScriptRunner(
-        'install-test-schemas.sql',
-        client,
-        function (err) {
-          expect(err).to.equal(null)
-          done()
-        }
-      )
-  }
-  )
+  it('Should install test schemas', () => {
+    return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
+  })
 
   it('Should get some database info (callback)', function (done) {
     pgInfo(
@@ -71,17 +62,9 @@ describe('Run the basic-usage example', function () {
   }
   )
 
-  it('Should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-        'uninstall-test-schemas.sql',
-        client,
-        function (err) {
-          expect(err).to.equal(null)
-          done()
-        }
-      )
-  }
-  )
+  it('Should uninstall test schemas', () => {
+    return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
+  })
 })
 
 const schemaNames = ['pginfo_people_test', 'pginfo_planets_test', 'pginfo_not_exists']
