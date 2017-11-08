@@ -15,7 +15,7 @@ async function run(directory, bundleName, quiet) {
     }
 
     const fullDirectoryName = path.resolve(process.cwd(), directory)
-    const outputName = bundleName || `${path.basename(fullDirectoryName)}-${moment().format('YYYYmmDD-hhmmss')}.tgz`
+    const outputName = bundleName || `${path.basename(fullDirectoryName)}-${moment().format('YYYYmmDD-HHmmss')}.tgz`
     const tarball = await bundleForDeploy(directory, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
     const displayPath = path.relative(process.cwd(), tarball)
     console.log(colors.cyan(`Created ${displayPath}`))
