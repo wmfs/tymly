@@ -110,6 +110,11 @@ describe('Ensure transaction isolation', function () {
 
     await Promise.all([q1, q2])
 
+    // valid results are ['20', '20'] or ['20', '40'] depending on how things where scheduled
+    if (results[0] === '20' && results[1] === '20') {
+      return true
+    }
+
     expect(results).to.have.all.members(['20', '40'])
   })
 
