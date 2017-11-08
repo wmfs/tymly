@@ -14,14 +14,14 @@ module.exports = function generateDelta (options, callback) {
     options.tables,
     function (table, cb) {
       const sql = `select * from ${table.tableName} where ${options.modifiedColumnName} >= $1`
-      const dbStream = options.client.query(new QueryStream(sql, [options.since]))
+      const csvTransform = (sql, values, client) => {
+        const dbStream = client.query(new QueryStream(sql, [options.since]))
+        dbStream.on('end', () => cb(null))
 
-      dbStream.on('end', function closeDatabaseStream () {
-        cb(null)
-      })
-
-      const csvTransformer = new Transformer(info, table, options)
-      dbStream.pipe(csvTransformer).pipe(deltaFileWriteStream)
+        const csvTransformer = new Transformer(info, table, options)
+        dbStream.pipe(csvTransformer).pipe(deltaFileWriteStream)
+      }
+      options.client.run([{ sql: sql, action: csvTransform }])
     },
     function (err) {
       if (err) {

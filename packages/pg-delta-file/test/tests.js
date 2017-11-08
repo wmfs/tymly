@@ -6,33 +6,17 @@ const PGClient = require('pg-client-helper')
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path')
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const generateDelta = require('./../lib')
-
-let client
 
 describe('Run the basic usage example',
   function () {
-    this.timeout(15000)
+    this.timeout(10000)
 
-    it('Should create a new pg client',
-      function () {
-        client = new PGClient(process.env.PG_CONNECTION_STRING)
-      }
-    )
+    const client = new PGClient(process.env.PG_CONNECTION_STRING)
 
-    it('Should install test schemas',
-      function (done) {
-        sqlScriptRunner(
-          'install-test-schemas.sql',
-          client,
-          function (err) {
-            expect(err).to.equal(null)
-            done()
-          }
-        )
-      }
-    )
+    it('Should install test schemas', () => {
+      return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
+    })
 
     it('Should generate the delta file',
       function (done) {
@@ -66,17 +50,8 @@ describe('Run the basic usage example',
       }
     )
 
-    it('Should uninstall test schemas',
-      function (done) {
-        sqlScriptRunner(
-          'uninstall-test-schemas.sql',
-          client,
-          function (err) {
-            expect(err).to.equal(null)
-            done()
-          }
-        )
-      }
-    )
+    it('Should uninstall test schemas', () => {
+      return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
+    })
   }
 )
