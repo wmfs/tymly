@@ -1,19 +1,25 @@
 'use strict'
 
+const dottie = require('dottie')
+
 class GetNotifications {
   init (resourceConfig, env, callback) {
     callback(null)
   }
 
   run (event, context) {
-    this.startFrom = event.startFrom
-    this.limit = event.limit
+    let executionDescription = {}
+    const limit = event.limit || 10
+    // const userID
+    let payload = {}
 
-    console.log('INPUTS:')
-    console.log('> startFrom:' + this.startFrom)
-    console.log('> limit:' + this.limit)
-
-    context.sendTaskSuccess()
+    // select * from tymly.notifications where user_id = this.userID
+    payload.notifications = ['1st', '2nd', '3rd']
+    payload.totalNotifications = payload.notifications.length
+    payload.limit = limit
+    if (event.startFrom) payload.startFrom = event.startFrom
+    dottie.set(executionDescription, 'userNotifications', payload)
+    context.sendTaskSuccess(executionDescription)
   }
 }
 
