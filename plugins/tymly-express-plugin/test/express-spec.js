@@ -241,7 +241,6 @@ describe('Simple Express tests', function () {
       done()
     })
   })
-
   it('should wait a while', function (done) {
     setTimeout(done, 250)
   })
