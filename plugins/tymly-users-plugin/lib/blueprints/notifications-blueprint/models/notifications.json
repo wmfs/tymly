@@ -1,0 +1,52 @@
+{
+  "id": "notifications",
+  "title": "Notifications",
+  "description": "Notifications",
+  "primaryKey": ["notificationId"],
+  "type": "object",
+  "properties": {
+    "notificationId": {
+      "type": "string",
+      "description": "The ID of the notification"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the notification"
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the notification"
+    },
+    "category": {
+      "type": "string",
+      "description": "The category the notification belongs to"
+    },
+    "launches": {
+      "type": "array",
+      "description": "What has launched this?",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Where was the launch triggered?"
+          },
+          "stateMachineName": {
+            "type": "string",
+            "description": "What state machine is this part of?"
+          },
+          "input": {
+            "type": "object",
+            "properties": {
+              "claimNo": {
+                "type": "integer",
+                "description": "The claim number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["notificationId"]
+}
