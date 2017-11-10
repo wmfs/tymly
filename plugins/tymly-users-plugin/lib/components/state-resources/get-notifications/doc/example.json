@@ -1,0 +1,7 @@
+{
+  "GetNotifications": {
+    "Type": "Task",
+    "Resource": "module:getNotifications",
+    "InputPath": "$.getNotifications"
+  }
+}

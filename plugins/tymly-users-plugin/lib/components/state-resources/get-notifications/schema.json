@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "startFrom": {
+      "type": "string",
+      "format": "date-time",
+      "description": "An optional timestamp denoting the earliest time notifications should be returned from."
+    },
+    "limit": {
+      "type": "integer",
+      "description": "An integer specifying the maximum number of notifications to retrieve."
+    }
+  }
+}
