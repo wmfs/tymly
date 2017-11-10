@@ -5,6 +5,10 @@
   "primaryKey": ["notificationId"],
   "type": "object",
   "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The ID of the user the notification belongs to"
+    },
     "notificationId": {
       "type": "string",
       "description": "The ID of the notification"
@@ -44,9 +48,10 @@
               }
             }
           }
-        }
+        },
+        "required": ["title"]
       }
     }
   },
-  "required": ["notificationId"]
+  "required": ["userID", "notificationId"]
 }
