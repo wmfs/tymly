@@ -5,12 +5,14 @@
   "author": "Meena Hoda",
   "main": "./lib/index.js",
   "dependencies": {
+    "dottie": "2.0.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",
     "mocha": "^3.5.0",
     "standard": "^10.0.3",
-    "tymly": "^0.0.15"
+    "tymly": "^0.0.15",
+    "tymly-pg-plugin": "^0.0.6"
   },
   "scripts": {
     "lint": "standard",
