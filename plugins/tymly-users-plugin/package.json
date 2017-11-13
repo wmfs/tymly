@@ -13,7 +13,8 @@
     "standard": "^10.0.3",
     "tymly": "^0.0.15",
     "tymly-pg-plugin": "^0.0.6",
-    "pg-client-helper": "0.0.1"
+    "pg-client-helper": "0.0.1",
+    "async": "2.6.0"
   },
   "scripts": {
     "lint": "standard",
