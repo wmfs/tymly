@@ -6,6 +6,7 @@ CREATE TABLE tymly_users_test.notifications (
   title text,
   description text,
   category text,
+  acknowledged timestamp with time zone,
   _created timestamp with time zone NOT NULL DEFAULT now(),
   _created_by text,
   _modified timestamp with time zone NOT NULL DEFAULT now(),

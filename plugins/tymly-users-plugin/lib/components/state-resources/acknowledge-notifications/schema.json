@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "notificationIds": {
+      "type": "array",
+      "description": "Holds the ID's of the notification the user wishes to acknowledge."
+    }
+  }
+}

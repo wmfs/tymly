@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to get notifications for a user.",
+  "version": "1.0",
+  "StartAt": "AcknowledgeNotifications",
+  "States": {
+    "AcknowledgeNotifications": {
+      "Type": "Task",
+      "Resource": "module:acknowledgeNotifications",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

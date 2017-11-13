@@ -25,6 +25,11 @@
       "type": "string",
       "description": "The category the notification belongs to"
     },
+    "acknowledged": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime the user acknowledged the notification"
+    },
     "launches": {
       "type": "array",
       "description": "Links each notification to an action to perform (i.e. which state machine to execute along with the inputs to provide)",

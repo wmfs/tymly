@@ -11,6 +11,7 @@ const PGClient = require('pg-client-helper')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_getNotifications_1_0'
+const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_acknowledgeNotifications_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
@@ -129,6 +130,39 @@ describe('tymly-users-plugin tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created),
           Date.parse(startFrom), 'Notification is more recent than startFrom')
+        done()
+      }
+    )
+  })
+
+  it('should acknowledge one notification', function (done) {
+    statebox.startExecution(
+      {
+        notificationIds: ['97fd09f8-b8b2-11e7-abc4-cec278b6b50a']
+      },
+      ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('AcknowledgeNotifications')
+        expect(executionDescription.currentResource).to.eql('module:acknowledgeNotifications')
+        expect(executionDescription.stateMachineName).to.eql(ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should check the notification is acknowledged', function (done) {
+    client.query(
+      `select * from tymly_users_test.notifications where notification_id = '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
+      (err, result) => {
+        if (err) done(err)
+        expect(err).to.eql(null)
+        expect(result.rows[0].acknowledged).to.not.eql(null)
         done()
       }
     )

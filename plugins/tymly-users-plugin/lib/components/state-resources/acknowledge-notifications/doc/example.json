@@ -1,0 +1,7 @@
+{
+  "AcknowledgeNotifications": {
+    "Type": "Task",
+    "Resource": "module:acknowledgeNotifications",
+    "InputPath": "$.acknowledgeNotifications"
+  }
+}
