@@ -1,8 +1,8 @@
 {
   "namespace": "tymlyUsersTest",
-  "name": "notifications-blueprint",
+  "name": "test-blueprint",
   "version": "1.0",
-  "label": "notifications-blueprint",
+  "label": "test-blueprint",
   "author": "Tymly",
 
   "organisation": "West Midlands Fire Service",

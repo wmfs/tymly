@@ -5,6 +5,7 @@ const async = require('async')
 /*
 * TODO: Where does user ID come from? Will it come from env?
 * TODO: What should this return in the context?
+* TODO: Handle failure if notification not found (look at tymly-mock-api)
 * */
 
 class AcknowledgeNotifications {

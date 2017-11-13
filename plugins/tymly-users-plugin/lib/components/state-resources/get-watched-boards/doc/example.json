@@ -1,0 +1,7 @@
+{
+  "GetWatchedBoards": {
+    "Type": "Task",
+    "Resource": "module:getWatchedBoards",
+    "InputPath": "$"
+  }
+}

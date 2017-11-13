@@ -30,7 +30,7 @@ describe('tymly-users-plugin tests', function () {
           require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/test-notifications-blueprint')
+          path.resolve(__dirname, './fixtures/test-blueprint')
         ]
       },
       function (err, tymlyServices) {
@@ -42,7 +42,7 @@ describe('tymly-users-plugin tests', function () {
   })
 
   it('should create the test resources', function () {
-    return sqlScriptRunner('./db-scripts/setup.sql', client)
+    return sqlScriptRunner('./db-scripts/notifications/setup.sql', client)
   })
 
   it('should start the state resource execution to retrieve some notifications', function (done) {
@@ -169,6 +169,6 @@ describe('tymly-users-plugin tests', function () {
   })
 
   it('should clean up the test resources', function () {
-    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/notifications/cleanup.sql', client)
   })
 })

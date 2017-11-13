@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to get a list of boards that the user is currently watching.",
+  "version": "1.0",
+  "StartAt": "GetWatchedBoards",
+  "States": {
+    "GetWatchedBoards": {
+      "Type": "Task",
+      "Resource": "module:getWatchedBoards",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

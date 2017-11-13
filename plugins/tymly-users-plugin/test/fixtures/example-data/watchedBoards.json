@@ -1,0 +1,65 @@
+{
+  "user1": {
+    "incidents": {
+      "Incident Summary": {
+        "total": 2,
+        "subscriptions": [
+          {
+            "subscriptionId": "e431ec74-c07f-11e7-abc4-cec278b6b50a",
+            "feedName": "wmfs_incidentSummary_1_0|1234|2017",
+            "title": "Incident 1234/2017",
+            "description": "RTC with 3 casualties and 0 fatalities",
+            "startedWatching": "2017-10-24T11:12:32.913Z",
+            "launches": [
+              {
+                "stateMachineName": "wmfs_incidentSummary_1_0",
+                "input": {
+                  "incidentNumber": 1234,
+                  "incidentYear": 2017
+                }
+              }
+            ]
+          },
+          {
+            "subscriptionId": "c1ce44a6-c0c1-11e7-abc4-cec278b6b50a",
+            "feedName": "wmfs_incidentSummary_1_0|12|2015",
+            "title": "Incident 12/2015",
+            "description": "Fire with 0 casualties and 0 fatalities",
+            "startedWatching": "2016-10-24T11:12:32.913Z",
+            "launches": [
+              {
+                "stateMachineName": "wmfs_incidentSummary_1_0",
+                "input": {
+                  "incidentNumber": 12,
+                  "incidentYear": 2015
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "gazetteer": {
+      "Property Viewer": {
+        "total": 2,
+        "subscriptions": [
+          {
+            "subscriptionId": "9f56eb4c-c0af-11e7-abc4-cec278b6b50a",
+            "feedName": "wmfs_property_viewer_1_0|4",
+            "title": "URN #4",
+            "description": "Tymly Kebabs, Streetly, B74 3RU",
+            "startedWatching": "2017-10-24T11:12:32.913Z",
+            "launches": [
+              {
+                "stateMachineName": "wmfs_property_viewer_1_0",
+                "input": {
+                  "urn": 4
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
