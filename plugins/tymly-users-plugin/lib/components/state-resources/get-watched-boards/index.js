@@ -24,22 +24,20 @@ class GetWatchedBoards {
           }
         )
       } else {
-        let subscriptions = []
-        results.rows.map(row => {
-          subscriptions.push({
+        let subscriptions = results.rows.map(row => {
+          return {
             subscriptionId: row.subscription_id,
             feedName: row.feed_name,
             title: row.title,
             description: row.description,
             startedWatching: row.started_watching
-          })
+          }
         })
 
-        let executionDescription = {
+        context.sendTaskSuccess({
           total: subscriptions.length,
           subscriptions: subscriptions
-        }
-        context.sendTaskSuccess(executionDescription)
+        })
       }
     })
   }

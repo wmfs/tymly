@@ -1,11 +1,11 @@
 {
   "namespace": "tymly",
-  "name": "notifications-blueprint",
+  "name": "tymly-blueprint",
   "version": "1.0",
-  "label": "notifications-blueprint",
+  "label": "tymly-blueprint",
   "author": "Tymly",
 
   "organisation": "West Midlands Fire Service",
-  "description": "Tymly blueprint to handle notifications.",
+  "description": "Tymly blueprint to handle user interactions.",
   "categories": []
 }
