@@ -1,0 +1,103 @@
+{
+  "user1": {
+    "totalNotifications": 100,
+    "notifications": [
+      {
+        "notificationId": "97fd076e-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Expense claim #1",
+        "description": "FIRST",
+        "created": "2017-10-24T11:12:32.913Z",
+        "category": "expenses",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewCompletedExpenseClaim_1_0",
+            "input": {
+              "claimNo": 3
+            }
+          }
+        ]
+      },
+      {
+        "notificationId": "97fd09f8-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Expense claim #2",
+        "description": "SECOND",
+        "created": "2017-10-23T11:12:32.913Z",
+        "category": "expenses",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewCompletedExpenseClaim_1_0",
+            "input": {
+              "claimNo": 1
+            }
+          }
+        ]
+      },
+      {
+        "notificationId": "97fd0b06-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Expense claim #3",
+        "description": "THIRD",
+        "created": "2017-10-22T11:12:32.913Z",
+        "category": "expenses",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewCompletedExpenseClaim_1_0",
+            "input": {
+              "claimNo": 4
+            }
+          }
+        ]
+      },
+      {
+        "notificationId": "97fd13a8-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Employee Info #1",
+        "description": "FOURTH",
+        "created": "2017-10-17T11:12:32.913Z",
+        "category": "information",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewEmployeeInfo_1_0",
+            "input": {
+              "employeeNo": 3
+            }
+          }
+        ]
+      },
+      {
+        "notificationId": "97fd1470-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Employee Info #2",
+        "description": "FIFTH",
+        "created": "2017-10-16T11:12:32.913Z",
+        "category": "information",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewEmployeeInfo_1_0",
+            "input": {
+              "employeeNo": 34
+            }
+          }
+        ]
+      },
+      {
+        "notificationId": "97fd152e-b8b2-11e7-abc4-cec278b6b50a",
+        "title": "Employee Info #3",
+        "description": "SIXTH",
+        "created": "2017-10-15T11:12:32.913Z",
+        "category": "information",
+        "launches": [
+          {
+            "title": "View",
+            "stateMachineName": "wmfs_viewEmployeeInfo_1_0",
+            "input": {
+              "employeeNo": 14
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
