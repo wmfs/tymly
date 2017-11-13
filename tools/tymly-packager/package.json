@@ -4,8 +4,8 @@
   "description": "Gathers up Tymly into a deployable package",
   "main": "index.js",
   "scripts": {
-    "lint": "standard",
-    "test": "standard && mocha"
+    "lint": "standard \"lib/**/*.js\" \"test/*.js\"",
+    "test": "standard \"lib/**/*.js\" \"test/*.js\"  && mocha"
   },
   "author": "Jez Higgins",
   "license": "MIT",
