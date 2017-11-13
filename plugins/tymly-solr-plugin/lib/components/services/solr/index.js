@@ -9,14 +9,10 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class SolrService {
   boot (options, callback) {
-    this.solrUrl = process.env.SOLR_URL
-    if (this.solrUrl === undefined) {
-      this.solrUrl = 'http://localhost:8983/solr'
-      debug(`As the SOLR_URL environment variable has not been set, SOLR_URL is being defaulted to ${this.solrUrl}`)
-    }
+    this.solrUrl = SolrService._connectionString(options.config)
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
-      options.messages.info('WARNING: no search-docs configuration found')
+      options.messages.info('No search-docs configuration found')
       this.solrSchemaFields = []
       this.createViewSQL = null
       callback(null)
@@ -48,6 +44,21 @@ class SolrService {
       }
     }
   }
+
+  static _connectionString (config) {
+    if (config.solrUrl) {
+      debug('Using config.solrUrl')
+      return config.solrUrl
+    }
+
+    if (process.env.SOLR_URL) {
+      debug('Using SOLR_URL environment variable')
+      return process.env.SOLR_URL
+    }
+
+    debug('Using default Solr URL')
+    return 'http://localhost:8983/solr'
+  } // _connectionUrl
 
   static constructModelsArray (models) {
     let modelsArray = []
