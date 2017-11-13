@@ -10,7 +10,7 @@ const async = require('async')
 
 class GetNotifications {
   init (resourceConfig, env, callback) {
-    this.userId = 'user1'
+    this.userId = 'user2'
     this.client = env.bootedServices.storage.client
     callback(null)
   }
@@ -24,9 +24,16 @@ class GetNotifications {
       notifications: []
     }
 
+    let getNotificationsSql = `select * from ${schemaName}.notifications where user_id = '${this.userId}'`
+
+    if (event.startFrom) {
+      payload.startFrom = event.startFrom
+      getNotificationsSql += ` and _created >= '${event.startFrom}'::date`
+    }
+
     // Get the notifications for this user
     _client.query(
-      `select * from ${schemaName}.notifications where user_id = '${this.userId}'`,
+      getNotificationsSql,
       (err, results) => {
         if (err) {
           context.sendTaskFailure(
@@ -73,7 +80,6 @@ class GetNotifications {
               // Send back as context
               payload.totalNotifications = payload.notifications.length
               payload.limit = limit
-              if (event.startFrom) payload.startFrom = event.startFrom
 
               dottie.set(executionDescription, 'userNotifications', payload)
               context.sendTaskSuccess(executionDescription)
