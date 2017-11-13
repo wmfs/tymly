@@ -8,7 +8,7 @@ const expect = require('chai').expect
 const PGClient = require('pg-client-helper')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
+const GET_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_getNotifications_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
@@ -24,7 +24,7 @@ describe('tymly-users-plugin tests', function () {
           require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
-          path.resolve(__dirname, '../lib/blueprints/notifications-blueprint')
+          path.resolve(__dirname, './fixtures/test-notifications-blueprint')
         ]
       },
       function (err, tymlyServices) {
