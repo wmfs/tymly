@@ -11,15 +11,15 @@
     },
     "notificationId": {
       "type": "string",
-      "description": "The ID of the notification"
+      "description": "A UUID identifying this particular notification for this particular user"
     },
     "title": {
       "type": "string",
-      "description": "The title of the notification"
+      "description": "A short title describing this notification"
     },
     "description": {
       "type": "string",
-      "description": "The description of the notification"
+      "description": "A bit more context/information"
     },
     "category": {
       "type": "string",
@@ -27,7 +27,7 @@
     },
     "launches": {
       "type": "array",
-      "description": "What has launched this?",
+      "description": "Links each notification to an action to perform (i.e. which state machine to execute along with the inputs to provide)",
       "items": {
         "type": "object",
         "properties": {
