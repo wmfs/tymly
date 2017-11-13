@@ -1,7 +1,19 @@
 {
   "blueprintPaths": "TYMLY_BLUEPRINTS_PATH",
   "pluginPaths": "TYMLY_PLUGINS_PATH",
-  "config.serverPort": "TYMLY_SERVER_PORT",
-  "config.auth.secret": "TYMLY_AUTH_SECRET",
-  "config.auth.audience": "TYMLY_AUTH_AUDIENCE"
+  "config": {
+    "auth": {
+      "secret": "TYMLY_AUTH_SECRET",
+      "audience": "TYMLY_AUTH_AUDIENCE"
+    },
+    "pgConnectionString": "PG_CONNECTION_STRING",
+    "email": {
+      "from": "TYMLY_EMAIL_FROM",
+      "transport": {
+        "host": "TYMLY_EMAIL_HOST",
+        "port": "TYMLY_EMAIL_PORT"
+      }
+    },
+    "solrUrl": "SOLR_URL"
+  }
 }
