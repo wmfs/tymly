@@ -9,7 +9,7 @@ console.log('Tymly Runner')
 console.log('-------------')
 
 // Add an admin user if defined via $TYMLY_ADMIN_USERID
-let adminUserId = confVar("admin", "userId", "TYMLY_ADMIN_USERID")
+let adminUserId = confVar('admin', 'userId', 'TYMLY_ADMIN_USERID')
 
 if (adminUserId) {
   // UserID might be double-quoted, so remove if that's the case
@@ -17,7 +17,7 @@ if (adminUserId) {
     adminUserId = adminUserId.substring(1, adminUserId.length - 1)
   }
   config.config.defaultUsers = {}
-  let roles = confVar("admin", "roles", "TYMLY_ADMIN_ROLES")
+  let roles = confVar('admin', 'roles', 'TYMLY_ADMIN_ROLES')
   if (!Array.isArray(roles)) {
     roles = roles.split(',')
   }
@@ -41,13 +41,13 @@ tymly.boot(
   }
 ) // tymly.boot
 
-function startServer(services) {
+function startServer (services) {
   if (!services.server) {
     return
   }
 
-  const authSecret = confVar("auth", "secret", "TYMLY_AUTH_SECRET")
-  const authAudience = confVar("auth", "audience", "TYMLY_AUTH_AUDIENCE")
+  const authSecret = confVar('auth', 'secret', 'TYMLY_AUTH_SECRET')
+  const authAudience = confVar('auth', 'audience', 'TYMLY_AUTH_AUDIENCE')
 
   const app = services.server.app
   app.listen(config.config.serverPort, function () {
@@ -68,7 +68,7 @@ function startServer(services) {
   })
 } // startServer
 
-function confVar(section, confName, envVar) {
+function confVar (section, confName, envVar) {
   if (config.config[section] && config.config[section][confName]) {
     return config.config[section][confName]
   }
