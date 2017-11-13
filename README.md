@@ -54,7 +54,7 @@ $ lerna bootstrap
 
 ## <a name="test"></a>Testing
 
-The following Lerna command will run all tests in all of Tymly's packages (and also ensures everyting meets [Standard.js](https://standardjs.com/) style rules):
+The following Lerna command will run all tests in all of Tymly's packages (and also ensures everything meets [Standard.js](https://standardjs.com/) style rules):
 
 ``` bash
 $ lerna run test
