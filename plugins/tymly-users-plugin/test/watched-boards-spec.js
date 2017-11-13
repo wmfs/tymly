@@ -36,7 +36,7 @@ describe('tymly-users-plugin tests', function () {
   })
 
   it('should create the test resources', function () {
-    return sqlScriptRunner('./db-scripts/notifications/setup.sql', client)
+    return sqlScriptRunner('./db-scripts/watched-boards/setup.sql', client)
   })
 
   it('should start the state machine to get watched boards', function (done) {
@@ -59,6 +59,6 @@ describe('tymly-users-plugin tests', function () {
   })
 
   it('should clean up the test resources', function () {
-    return sqlScriptRunner('./db-scripts/notifications/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/watched-boards/cleanup.sql', client)
   })
 })
