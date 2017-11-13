@@ -20,7 +20,7 @@ class PostgresqlStorageService {
   boot (options, callback) {
     this.storageName = 'postgresql'
 
-    const connectionString = process.env.PG_CONNECTION_STRING
+    const connectionString = this._connectionString(options.config)
     infoMessage(options.messages, `Using PostgresqlStorage... (${connectionString})`)
 
     this.client = new PGClient(connectionString)
@@ -39,6 +39,16 @@ class PostgresqlStorageService {
       .then(() => callback())
       .catch(err => callback(err))
   } // boot
+
+  _connectionString (config) {
+    if (config.pgConnectionString) {
+      debug('Using config.pgConnectionString')
+      return config.pgConnectionString
+    }
+
+    debug('Using PG_CONNECTION_STRING environment variable')
+    return process.env.PG_CONNECTION_STRING
+  } // _connectionUrl
 
   _pushModelSchemas (modelDefinitions) {
     Object.values(modelDefinitions).forEach(
