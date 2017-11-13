@@ -2,23 +2,23 @@
   "blueprintPaths": "/usr/src/tymly/bundle/blueprints/*-blueprint",
   "pluginPaths": "/usr/src/tymly/bundle/plugins/*-plugin",
   "config": {
-    "serverPort": "8080",
+    "serverPort": "3000",
     "auth": {
       "secret": "ssh",
       "audience": "aud"
     },
     "admin": {
-      "userId": "jez",
+      "userId": "admin",
       "roles": "ordnanceSurvey_ordnanceSurveyAdmin,wmfs_addressboxAdmin"
     },
-    "pgConnectionString": "postgres://postgres:postgres@localhost:5432/prod_db",
+    "pgConnectionString": "postgres://postgres:postgres@postgres_host:5432/prod_db",
     "email": {
       "from": "Tymly!",
       "transport": {
-        "host": "localhost",
+        "host": "email_host",
         "port": 22
       }
     },
-    "solrUrl": "http://localhost:8983/solr"
+    "solrUrl": "http://solr_host:8983/solr"
   }
 }
