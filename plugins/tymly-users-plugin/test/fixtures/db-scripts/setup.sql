@@ -28,9 +28,9 @@ INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, des
 VALUES
 ('user1', '97fd076e-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #1', 'FIRST', 'expenses');
 
-INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
+INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category, _created)
 VALUES
-('user2', '97fd09f8-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #2', 'SECOND', 'expenses');
+('user2', '97fd09f8-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #2', 'SECOND', 'expenses', '2016-10-21T14:20:30.414Z');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
