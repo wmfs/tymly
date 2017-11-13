@@ -35,7 +35,7 @@ PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432/my_test_db
 Any database used by Tymly must be capable of generating universally unique identifiers - this is easily achieved by running the following statement on the receiving database:
 
 ```
-CREATE EXTENSION uuid-ossp;
+CREATE EXTENSION "uuid-ossp";
 ```
 
 
