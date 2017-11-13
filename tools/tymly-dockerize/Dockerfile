@@ -7,7 +7,6 @@ COPY $tarfile .
 
 RUN tar zxf bundle.tgz
 
-COPY config/docker.json config/docker.json
+COPY config/* config/
 
-ENV NODE_ENV "docker"
 CMD ["node", "bundle/packages/tymly-runner/lib/index.js"]
