@@ -5,7 +5,8 @@
   "author": "Meena Hoda",
   "main": "./lib/index.js",
   "dependencies": {
-    "dottie": "2.0.0"
+    "dottie": "2.0.0",
+    "async": "2.6.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",
@@ -13,8 +14,7 @@
     "standard": "^10.0.3",
     "tymly": "^0.0.15",
     "tymly-pg-plugin": "^0.0.6",
-    "pg-client-helper": "0.0.1",
-    "async": "2.6.0"
+    "pg-client-helper": "0.0.1"
   },
   "scripts": {
     "lint": "standard",
