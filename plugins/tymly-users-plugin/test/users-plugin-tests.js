@@ -5,18 +5,23 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const PGClient = require('pg-client-helper')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
   let statebox
+  const pgConnectionString = process.env.PG_CONNECTION_STRING
+  const client = new PGClient(pgConnectionString)
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './../lib')
+          path.resolve(__dirname, './../lib'),
+          require.resolve('tymly-pg-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, '../lib/blueprints/notifications-blueprint')
@@ -28,6 +33,10 @@ describe('tymly-users-plugin tests', function () {
         done()
       }
     )
+  })
+
+  it('should create the test resources', function () {
+    return sqlScriptRunner('./db-scripts/setup.sql', client)
   })
 
   it('should start the state resource execution to retrieve some notifications', function (done) {
@@ -50,5 +59,9 @@ describe('tymly-users-plugin tests', function () {
         done()
       }
     )
+  })
+
+  it('should clean up the test resources', () => {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })
