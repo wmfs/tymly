@@ -5,11 +5,15 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const PGClient = require('pg-client-helper')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymlyUsersTest_getWatchedBoards_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
+  const pgConnectionString = process.env.PG_CONNECTION_STRING
+  const client = new PGClient(pgConnectionString)
   let statebox
 
   it('should create some basic tymly services', function (done) {
@@ -31,6 +35,10 @@ describe('tymly-users-plugin tests', function () {
     )
   })
 
+  it('should create the test resources', function () {
+    return sqlScriptRunner('./db-scripts/notifications/setup.sql', client)
+  })
+
   it('should start the state machine to get watched boards', function (done) {
     statebox.startExecution(
       {},
@@ -48,5 +56,9 @@ describe('tymly-users-plugin tests', function () {
         done()
       }
     )
+  })
+
+  it('should clean up the test resources', function () {
+    return sqlScriptRunner('./db-scripts/notifications/cleanup.sql', client)
   })
 })
