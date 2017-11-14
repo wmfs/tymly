@@ -74,7 +74,7 @@ task cleanNodeModules (type: Exec,
   commandLine 'npm', 'run', 'clean'
 }
 task cleanTestFiles (type: Delete) {
-  delete fileTree(dir: '.', include: '**/test/TEST-*.xml')
+  delete fileTree(dir: '.', include: '*/*/test/TEST-*.xml')
 }
 task cleanBuild (type: Delete) {
   delete buildDir
