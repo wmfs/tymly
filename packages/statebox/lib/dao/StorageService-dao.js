@@ -14,7 +14,7 @@ const executionModelDefinition = {
       'type': 'string'
     },
     'ctx': {
-      'type': 'string'
+      'type': 'object'
     },
     'currentStateName': {
       'type': 'string'
@@ -28,8 +28,8 @@ const executionModelDefinition = {
     'status': {
       'type': 'string'
     },
-    'instigatingClient': {
-      'type': 'string'
+    'executionOptions': {
+      'type': 'object'
     },
     'parentExecutionName': {
       'type': 'string'
@@ -62,11 +62,6 @@ class StorageServiceDao extends Dao {
 
   async _findExecution (executionName) {
     const execution = await this.model.findById(executionName)
-
-    if (execution) {
-      execution.ctx = JSON.parse(execution.ctx)
-    }
-
     return execution
   } // _findExecution
 
@@ -96,8 +91,6 @@ class StorageServiceDao extends Dao {
     }
 
     const ctx = execution.ctx
-    execution.ctx = JSON.stringify(ctx)
-
     await this.model[action](execution, {})
 
     execution.ctx = ctx

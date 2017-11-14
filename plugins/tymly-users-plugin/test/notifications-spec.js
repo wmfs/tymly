@@ -13,7 +13,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_getNotifications_1_0'
 const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_acknowledgeNotifications_1_0'
 
-describe('tymly-users-plugin tests', function () {
+describe('notifications tymly-users-plugin tests', function () {
   this.timeout(5000)
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new PGClient(pgConnectionString)

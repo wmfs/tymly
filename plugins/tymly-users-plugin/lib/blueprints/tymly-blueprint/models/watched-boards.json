@@ -2,17 +2,10 @@
   "id": "watched-boards",
   "title": "Watched Boards",
   "description": "Watched Boards",
-  "primaryKey": [
-    "subscriptionId"
-  ],
   "type": "object",
   "properties": {
     "userId": {
       "type": "string"
-    },
-    "subscriptionId": {
-      "type": "string",
-      "description": "This is a UUID, that can be used to uniquely identify any watched board of any user."
     },
     "feedName": {
       "type": "string",
@@ -28,11 +21,12 @@
     },
     "startedWatching": {
       "type": "string",
-      "description": "A timestamp of when the user wasfirst subscribed to this feed."
+      "description": "A timestamp of when the user was first subscribed to this feed."
     },
-    "launchesId": {
-      "type": "string",
+    "launches": {
+      "type": "object",
       "description": "A standard launches object that can be used to view the board."
     }
-  }
+  },
+  "required": ["userID"]
 }

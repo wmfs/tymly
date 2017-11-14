@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to get settings for a user.",
+  "version": "1.0",
+  "StartAt": "GetSettings",
+  "States": {
+    "GetSettings": {
+      "Type": "Task",
+      "Resource": "module:getSettings",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

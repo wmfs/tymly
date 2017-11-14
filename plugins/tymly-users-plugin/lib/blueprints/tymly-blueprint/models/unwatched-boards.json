@@ -1,0 +1,18 @@
+{
+  "id": "unwatched-boards",
+  "title": "Unwatched Boards",
+  "description": "Unwatched Boards",
+  "primaryKey": [
+    "subscriptionId"
+  ],
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string"
+    },
+    "subscriptionId": {
+      "type": "string",
+      "description": "This is a UUID, that can be used to uniquely identify any watched board of any user."
+    }
+  }
+}

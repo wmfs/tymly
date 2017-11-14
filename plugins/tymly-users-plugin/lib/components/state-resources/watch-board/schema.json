@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "stateMachineName": {
+      "type": "string",
+      "description": "The name of the state-machine which conjured the currently rendered board"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title identifying this board-instance - would be available on any rendered board"
+    },
+    "description": {
+      "type": "string",
+      "description": "	Some summary content - most likely available on the rendered board or search result etc. Could even be user-editable to help better recognise the reason the board was watched in the first place."
+    },
+    "key": {
+      "type": "object",
+      "description": "	A key/value pair object describing the primary key of the currently displayed board - perhaps derived from the launches object which caused the board to be rendered."
+    }
+  }
+}

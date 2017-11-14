@@ -6,15 +6,17 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const PGClient = require('pg-client-helper')
-const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymlyUsersTest_getWatchedBoards_1_0'
+const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymly_getWatchedBoards_1_0'
+const WATCH_BOARD_STATE_MACHINE = 'tymly_watchBoard_1_0'
+// const UNWATCH_BOARD_STATE_MACHINE = 'tymly_unwatchBoard_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
+  let statebox
+
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new PGClient(pgConnectionString)
-  let statebox
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -35,11 +37,36 @@ describe('tymly-users-plugin tests', function () {
     )
   })
 
-  it('should create the test resources', function () {
-    return sqlScriptRunner('./db-scripts/watched-boards/setup.sql', client)
+  // Watch the board
+  it('should watch the board', function (done) {
+    statebox.startExecution(
+      {
+        stateMachineName: 'wmfs_incidentSummary_1_0',
+        title: 'Incident 1/1999',
+        description: 'Fire with 0 casualties and 0 fatalities',
+        key: {
+          'incidentNumber': 1,
+          'incidentYear': 1999
+        }
+      },
+      WATCH_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('WatchBoard')
+        expect(executionDescription.currentResource).to.eql('module:watchBoard')
+        expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
   })
 
-  it('should start the state machine to get watched boards', function (done) {
+  // Get the watched boards (to validate the above)
+  it('should get the watched board to validate the previous test', function (done) {
     statebox.startExecution(
       {},
       GET_WATCHED_BOARDS_STATE_MACHINE,
@@ -58,7 +85,10 @@ describe('tymly-users-plugin tests', function () {
     )
   })
 
-  it('should clean up the test resources', function () {
-    return sqlScriptRunner('./db-scripts/watched-boards/cleanup.sql', client)
+  // Delete rows from the table - this is temporary and will be replaced with unwatch execution
+  it('clean up', function (done) {
+    client.query(`DELETE FROM tymly.watched_boards where user_id = 'user2'`, function (err) {
+      done(err)
+    })
   })
 })

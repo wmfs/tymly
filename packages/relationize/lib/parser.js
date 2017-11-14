@@ -224,6 +224,18 @@ module.exports = function schemaFilesParser (schemaFiles) {
         }
       }
 
+      // TEMPORARY FIX
+      // TODO: What if there's no primary key defined, but it does already use an ID column? Use that? Add a different named UUID column?
+      if (columns.id && columns.id.dataType === 'uuid') {
+        columns.id = {
+          array: false,
+          dataType: 'uuid',
+          columnDefault: 'uuid_generate_v1()',
+          isNullable: 'NO',
+          comment: 'Automatically added UUID-based primary key column'
+        }
+      }
+
       // Add some meta columns
 
       columns._created = {

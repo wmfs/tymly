@@ -9,6 +9,8 @@ module.exports = function executioner (input, stateMachineName, executionOptions
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
   // TODO: Test 'input' conforms
   // TODO: Note API usually requires a string, but object seems better for Statebox?
+  // TODO: Persist executionOptions?
+
   const stateMachineToExecute = stateMachines.findStateMachineByName(stateMachineName)
   if (stateMachineToExecute) {
     const currentResource = stateMachineToExecute.definition.States[stateMachineToExecute.startAt].Resource
@@ -23,7 +25,7 @@ module.exports = function executioner (input, stateMachineName, executionOptions
           callback(err)
         } else {
           stateMachineToExecute.processState(executionDescription.executionName)
-          if (_.isObject(executionOptions) && executionOptions.hasOwnProperty('sendResponse') && executionOptions.sendResponse !== 'immediately') {
+          if (_.isObject(executionOptions) && executionOptions.hasOwnProperty('sendResponse') && executionOptions.sendResponse !== 'IMMEDIATELY') {
             options.callbackManager.addCallback(
               executionOptions.sendResponse,
               executionDescription.executionName,

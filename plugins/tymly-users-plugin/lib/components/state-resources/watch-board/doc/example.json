@@ -1,0 +1,7 @@
+{
+  "WatchBoard": {
+    "Type": "Task",
+    "Resource": "module:watchBoard",
+    "InputPath": "$"
+  }
+}
