@@ -2,6 +2,7 @@
 
 /*
 * TODO: Where does user ID come from? Will it come from env?
+* TODO: userRemit needs to contain settings & favouriteStartableNames
 * */
 
 class GetUserRemit {
@@ -12,7 +13,6 @@ class GetUserRemit {
   }
 
   run (event, context) {
-    // const schemaName = context.stateMachineMeta.schemaName
     context.sendTaskSuccess()
   }
 }
