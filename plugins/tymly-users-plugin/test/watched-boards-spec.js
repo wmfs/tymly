@@ -11,7 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymlyUsersTest_getWatchedBoards_1_0'
 const WATCH_BOARD_STATE_MACHINE = 'tymlyUsersTest_watchBoard_1_0'
 
-describe('tymly-users-plugin tests', function () {
+describe('watched-boards tymly-users-plugin test ', function () {
   this.timeout(5000)
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new PGClient(pgConnectionString)
