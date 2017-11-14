@@ -1,0 +1,24 @@
+{
+  "id": "favouring-startable-state-machines",
+  "title": "Favouring Startable State Machines",
+  "description": "Favouring Startable State Machines",
+  "primaryKey": [
+    "userId"
+  ],
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "This is a UUID, that can be used to uniquely identify any watched board of any user."
+    },
+    "stateMachineName": {
+      "type": "object",
+      "properties": {
+        "favouriteStartableNames": {
+          "type": "array"
+        }
+      },
+      "description": "Array of the favourable state machines."
+    }
+  }
+}
