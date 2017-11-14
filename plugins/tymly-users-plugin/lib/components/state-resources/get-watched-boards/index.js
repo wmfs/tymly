@@ -24,7 +24,7 @@ class GetWatchedBoards {
           }
         )
       } else {
-        let subscriptions = results.rows.map(row => {
+        const subscriptions = results.rows.map(row => {
           return {
             subscriptionId: row.subscription_id,
             feedName: row.feed_name,
