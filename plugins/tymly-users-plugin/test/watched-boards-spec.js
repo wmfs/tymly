@@ -66,7 +66,7 @@ describe('tymly-users-plugin tests', function () {
         title: 'Incident 1/1999',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
-          'incidentNumer': 1,
+          'incidentNumber': 1,
           'incidentYear': 1999
         }
       },
