@@ -52,7 +52,8 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       GET_NOTIFICATIONS_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'Liliana'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
