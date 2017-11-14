@@ -11,6 +11,8 @@ const _ = require('lodash')
 class Context {
   constructor (executionDescription, task) {
     this.executionName = executionDescription.executionName
+    this.executionOptions = executionDescription.executionOptions
+    this.userId = executionDescription.executionOptions.userId
     this.stateMachineMeta = task.stateMachine.meta
     this.task = task
   }
@@ -131,8 +133,8 @@ class Task extends BaseStateType {
             `executionName: ${executionDescription.executionName}\n` +
             `stateMachineName: ${executionDescription.stateMachineName}\n` +
             `currentStateName: ${executionDescription.currentStateName}\n` +
-            `parentExecutionName: ${executionDescription.parentExecutionName}\n` +
-            `rootExecutionName: ${executionDescription.rootExecutionName}\n` +
+            `parentExecutionName: ${executionDescription.executionOptions.parentExecutionName}\n` +
+            `rootExecutionName: ${executionDescription.executionOptions.rootExecutionName}\n` +
             `startDate: ${executionDescription.startDate}\n` +
             `ctx: ${JSON.stringify(executionDescription.ctx)}\n\n` +
             'STACK\n' +

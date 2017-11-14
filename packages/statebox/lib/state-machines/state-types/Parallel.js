@@ -23,7 +23,7 @@ class Parallel extends BaseStateType {
   process (executionDescription) {
     const _this = this
     const parentExecutionName = executionDescription.executionName
-    const rootExecutionName = executionDescription.rootExecutionName || executionDescription.executionName
+    const rootExecutionName = executionDescription.executionOptions.rootExecutionName || executionDescription.executionName
     this.parallelBranchTracker.addParentExecutionName(parentExecutionName)
     async.each(
       this.branches,

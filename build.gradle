@@ -1,9 +1,7 @@
 /*
 buildscript {
   repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
+    maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
     //classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.2"
@@ -37,12 +35,11 @@ task test (type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
 
 buildscript {
   repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
+    maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
     classpath "gradle.plugin.com.github.honourednihilist:gradle-postgresql-embedded:0.2.0"
+    classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0"
   }
 }
 
@@ -97,10 +94,31 @@ task test (type:Exec,
   environment PG_CONNECTION_STRING: pg_connection
 }
 
-task bundle (type: Exec,
-             dependsOn: [npmBootstrap]) {
-  group 'Build'
-  description 'Creates an installable tymly package'
+String tarfileName = "tymly-${getDate()}.tgz"
+def getDate() { new Date().format('yyyyMMdd-HHmmss') }
 
-  commandLine 'npm', 'run', 'bundle'
+task createTarball (type: Exec,
+                    dependsOn: [npmBootstrap]) {
+  commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
+}
+
+task dropTarfileToDocker (type: Copy,
+                          dependsOn: [createTarball]) {
+  from tarfileName
+  into './tools/tymly-dockerize'
+  rename { fileName -> "bundle.tgz" }
+} // dropTarfileToDocker
+
+task bundle (type: Exec,
+             dependsOn: [createTarball, dropTarfileToDocker]) {
+  group 'Build'
+  description 'Creates an installable Tymly package'
+}
+
+task dockerBuild (type: Exec) {
+  group 'Build'
+  description 'Build a runnable Tymly Docker image'
+
+  workingDir './tools/tymly-dockerize'
+  commandLine 'docker', 'build', '--tag', 'wmfs/tymly', '.'
 }
