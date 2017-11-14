@@ -86,6 +86,16 @@ describe('tymly-users-plugin tests', function () {
     )
   })
 
+  it('should check the subscription has been created for the user to watch the board', function (done) {
+    client.query(`select * from tymly_users_test.watched_boards where user_id = 'user2'`, (err, res) => {
+      if (err) done(err)
+      expect(res.rows[0].feed_name).to.eql('wmfs_incidentSummary_1_0|1234|2017')
+      expect(res.rows[0].title).to.eql('Incident 1234/2017')
+      expect(res.rows[0].description).to.eql('RTC with 3 casualties and 0 fatalities')
+      done()
+    })
+  })
+
   it('should clean up the test resources', function () {
     return sqlScriptRunner('./db-scripts/watched-boards/cleanup.sql', client)
   })

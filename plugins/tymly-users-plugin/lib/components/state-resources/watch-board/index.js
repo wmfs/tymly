@@ -16,19 +16,23 @@ class WatchBoard {
 
   run (event, context) {
     const schemaName = context.stateMachineMeta.schemaName
-    const title = event.title
-    const description = event.description
-    const key = event.key
-    const feedName = event.stateMachineName + '|' + key.incidentNumber + '|' + key.incidentYear
-
-    // Insert a 'subscription' to the database (tymly.watched_boards) for the given user and board to watch (board details come from event)
-
+    const feedName = event.stateMachineName + '|' + event.key.incidentNumber + '|' + event.key.incidentYear
     const statement = `INSERT INTO ${schemaName}.watched_boards
     (user_id, feed_name, title, description, started_watching) VALUES
-    ('${this.userId}', '${feedName}', '${title}', '${description}', '${(new Date()).toUTCString()}'::timestamp with time zone)`
+    ('${this.userId}', '${feedName}', '${event.title}', '${event.description}', '${(new Date()).toUTCString()}'::timestamp with time zone)`
 
-    console.log(statement)
-    context.sendTaskSuccess()
+    this.client.query(statement, (err) => {
+      if (err) {
+        context.sendTaskFailure(
+          {
+            error: 'watchBoardFail',
+            cause: err
+          }
+        )
+      } else {
+        context.sendTaskSuccess()
+      }
+    })
   }
 }
 
