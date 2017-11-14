@@ -183,7 +183,17 @@ describe('Simple Express tests', function () {
       expect(executionDescription.status).to.eql('RUNNING')
       expect(executionDescription.currentStateName).to.eql('WakingUp')
       expect(executionDescription.ctx.petName).to.eql('Rupert')
-      expect(executionDescription.instigatingClient).to.eql({ appName: 'tymly-express-plugin', domain: 'express-spec.js' })
+      expect(executionDescription.executionOptions).to.eql(
+        {
+          action: 'startExecution',
+          instigatingClient: {
+            appName: 'tymly-express-plugin',
+            domain: 'express-spec.js'
+          },
+          'stateMachineName': 'tymlyTest_cat_1_0',
+          userId: 'Dave'
+        }
+      )
       rupert = executionDescription.executionName
       done()
     })
@@ -289,7 +299,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it("should successfully complete Alans's awakening", function (done) {
+  it('should successfully complete Alans\'s awakening', function (done) {
     statebox.waitUntilStoppedRunning(
       alan,
       function (err, executionDescription) {
@@ -359,7 +369,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it("should get an admin's remit", function (done) {
+  it('should get an admin\'s remit', function (done) {
     rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
       console.log('>>>>>>>>', remit)
       expect(res.statusCode).to.equal(200)
@@ -367,7 +377,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it("should get a normal user's remit", function (done) {
+  it('should get a normal user\'s remit', function (done) {
     rest.get(remitUrl, sendToken(irrelevantToken)).on('complete', function (remit, res) {
       console.log('>>>>>>>>', remit)
       expect(res.statusCode).to.equal(200)

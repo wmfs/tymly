@@ -144,14 +144,14 @@ class BaseState {
             // TODO: Needs handling as per spec
             throw new Error(err)
           } else {
-            const parentExecutionName = executionDescription.parentExecutionName
+            const parentExecutionName = executionDescription.executionOptions.parentExecutionName
             if (parentExecutionName) {
               // Has a parent flow, so see if the related parallel state can advance
               const tracker = _this.options.parallelBranchTracker
               tracker.registerChildExecutionEnd(executionDescription.executionName)
               const parallelStateStatus = tracker.getParallelTaskStatus(parentExecutionName)
               if (parallelStateStatus === Status.SUCCEEDED) {
-                debugPackage(`All branches have now succeeded (executionName='${executionDescription.parentExecutionName}')`)
+                debugPackage(`All branches have now succeeded (executionName='${executionDescription.executionOptions.parentExecutionName}')`)
                 _this.processTaskSuccess(ctx, parentExecutionName)
               }
             } else {

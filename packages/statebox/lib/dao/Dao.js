@@ -72,9 +72,7 @@ class Dao {
       currentResource: startResource,
       stateMachineName: stateMachineName,
       status: Status.RUNNING,
-      instigatingClient: executionOptions.instigatingClient,
-      parentExecutionName: executionOptions.parentExecutionName,
-      rootExecutionName: executionOptions.rootExecutionName,
+      executionOptions: executionOptions,
       startDate: new Date().toISOString()
     }
 
@@ -114,7 +112,7 @@ class Dao {
         execution.errorCode = errorCode
         execution.errorMessage = errorMessage
 
-        return this._markRelatedBranchesAsFailed(executionDescription.rootExecutionName)
+        return this._markRelatedBranchesAsFailed(executionDescription.executionOptions.rootExecutionName)
       },
       boom.badRequest(`Unable to fail execution with name '${executionName}'`)
     )
