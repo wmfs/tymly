@@ -1,6 +1,6 @@
 'use strict'
 
-// const dottie = require('dottie')
+const dottie = require('dottie')
 // const async = require('async')
 
 /*
@@ -10,16 +10,34 @@
 
 class GetSettings {
   init (resourceConfig, env, callback) {
-    this.userId = 'user2'
-    this.client = env.bootedServices.storage.client
+    this.userId = 'testuser2'
+    this.settings = env.bootedServices.storage.models['tymly_settings']
     callback(null)
   }
 
   run (event, context) {
-    // const _client = this.client
-    // const schemaName = context.stateMachineMeta.schemaName
-    // let executionDescription = {}
-    // let payload = {}
+    let executionDescription = {}
+    this.settings.find(
+      {
+        where: {
+          userId: {equals: this.userId}
+        }
+      },
+      (err, results) => {
+        if (err) {
+          console.log('ERROR')
+          context.sendTaskFailure(
+            {
+              error: 'getSettingsFail',
+              cause: err
+            }
+          )
+        } else {
+          dottie.set(executionDescription, 'userSettings', results)
+          context.sendTaskSuccess({results})
+        }
+      }
+    )
   }
 }
 
