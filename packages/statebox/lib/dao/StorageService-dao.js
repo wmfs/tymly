@@ -30,12 +30,6 @@ const executionModelDefinition = {
     },
     'executionOptions': {
       'type': 'object'
-    },
-    'parentExecutionName': {
-      'type': 'string'
-    },
-    'rootExecutionName': {
-      'type': 'string'
     }
   },
   'required': ['uuid']
