@@ -8,7 +8,6 @@
 class GetUserRemit {
   init (resourceConfig, env, callback) {
     this.userId = 'user2'
-    this.client = env.bootedServices.storage.client
     callback(null)
   }
 
