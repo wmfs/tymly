@@ -2,16 +2,11 @@
   "id": "notifications",
   "title": "Notifications",
   "description": "Notifications",
-  "primaryKey": ["notificationId"],
   "type": "object",
   "properties": {
     "userId": {
       "type": "string",
       "description": "The ID of the user the notification belongs to"
-    },
-    "notificationId": {
-      "type": "string",
-      "description": "A UUID identifying this particular notification for this particular user"
     },
     "title": {
       "type": "string",
@@ -31,32 +26,9 @@
       "description": "The datetime the user acknowledged the notification"
     },
     "launches": {
-      "type": "array",
-      "description": "Links each notification to an action to perform (i.e. which state machine to execute along with the inputs to provide)",
-      "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Where was the launch triggered?"
-          },
-          "stateMachineName": {
-            "type": "string",
-            "description": "What state machine is this part of?"
-          },
-          "input": {
-            "type": "object",
-            "properties": {
-              "claimNo": {
-                "type": "integer",
-                "description": "The claim number"
-              }
-            }
-          }
-        },
-        "required": ["title"]
-      }
+      "type": "object",
+      "description": "A standard launches object that can be used to view the board."
     }
   },
-  "required": ["userID", "notificationId"]
+  "required": ["userID"]
 }

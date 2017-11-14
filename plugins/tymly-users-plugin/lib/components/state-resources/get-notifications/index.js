@@ -12,10 +12,13 @@ class GetNotifications {
   init (resourceConfig, env, callback) {
     this.userId = 'user2'
     this.client = env.bootedServices.storage.client
+    this.notifications = env.bootedServices.storage.models.tymly_notifications
     callback(null)
   }
 
   run (event, context) {
+    // console.log('>>>', this.notifications)
+
     const _client = this.client
     const schemaName = context.stateMachineMeta.schemaName
     const limit = event.limit || 10

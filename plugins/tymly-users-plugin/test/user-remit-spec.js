@@ -33,7 +33,16 @@ describe('tymly-users-plugin tests', function () {
 
   it('should start the state machine to get watched boards', function (done) {
     statebox.startExecution(
-      {},
+      {
+        clientManifest: {
+          boardNames: ['wmfs_propertyViewer_1_0'],
+          categoryNames: ['hr'],
+          teamNames: ['socialClub'],
+          todoExecutionNames: ['5200987c-bb03-11e7-abc4-cec278b6b50a'],
+          formNames: ['wmfs_bookSomeoneSick_1_0', 'wmfs_createNewEmployee_1_0'],
+          startable: ['wmfs_bookSomoneSick_1_0']
+        }
+      },
       GET_USER_REMIT_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE'
