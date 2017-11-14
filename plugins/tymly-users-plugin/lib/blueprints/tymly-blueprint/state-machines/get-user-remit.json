@@ -3,7 +3,7 @@
   "version": "1.0",
   "StartAt": "GetUserRemit",
   "States": {
-    "WatchBoard": {
+    "GetUserRemit": {
       "Type": "Task",
       "Resource": "module:getUserRemit",
       "InputPath": "$",

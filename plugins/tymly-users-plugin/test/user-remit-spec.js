@@ -6,7 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 
-const GET_USER_REMIT_STATE_MACHINE = 'tymlyUsersTest_getUserRemit_1_0'
+const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(5000)
