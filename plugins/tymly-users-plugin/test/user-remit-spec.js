@@ -8,7 +8,7 @@ const expect = require('chai').expect
 
 const GET_USER_REMIT_STATE_MACHINE = 'tymlyUsersTest_getUserRemit_1_0'
 
-describe('tymly-users-plugin tests', function () {
+describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(5000)
   let statebox
 
@@ -31,7 +31,7 @@ describe('tymly-users-plugin tests', function () {
     )
   })
 
-  it('should start the state machine to get watched boards', function (done) {
+  it('should start the state machine to get user remit', function (done) {
     statebox.startExecution(
       {
         clientManifest: {

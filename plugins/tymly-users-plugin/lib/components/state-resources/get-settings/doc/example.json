@@ -1,0 +1,7 @@
+{
+  "GetSettings": {
+    "Type": "Task",
+    "Resource": "module:getSettings",
+    "InputPath": "$.getSettings"
+  }
+}
