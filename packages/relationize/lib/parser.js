@@ -226,7 +226,7 @@ module.exports = function schemaFilesParser (schemaFiles) {
 
       // TEMPORARY FIX
       // TODO: What if there's no primary key defined, but it does already use an ID column? Use that? Add a different named UUID column?
-      if (columns.id) {
+      if (columns.id && columns.id.dataType === 'uuid') {
         columns.id = {
           array: false,
           dataType: 'uuid',
