@@ -2,7 +2,7 @@ CREATE SCHEMA IF NOT EXISTS tymly_users_test;
 
 CREATE TABLE tymly_users_test.watched_boards (
     user_id text,
-    subscription_id text NOT NULL PRIMARY KEY, -- This is a UUID, that can be used to uniquely identify any watched board of any user.
+    subscription_id text NOT NULL PRIMARY KEY DEFAULT uuid_generate_v1(), -- This is a UUID, that can be used to uniquely identify any watched board of any user.
     feed_name text, -- A string relating to a particular state-machine-name and key combo. Consider several users requesting updates whenever the details of a particular property change - this equates to a several users subscribing to the property's "feed".
     title text, -- This is the title from the board that the user has subscribed to watch - use when render a the subscription for the user.
     description text, -- This is some more detail to complement title.

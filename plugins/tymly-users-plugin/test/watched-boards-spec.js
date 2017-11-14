@@ -66,7 +66,7 @@ describe('tymly-users-plugin tests', function () {
         title: 'Incident 1/1999',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
-          'incidentNumer': 1,
+          'incidentNumber': 1,
           'incidentYear': 1999
         }
       },
@@ -84,6 +84,16 @@ describe('tymly-users-plugin tests', function () {
         done()
       }
     )
+  })
+
+  it('should check the subscription has been created for the user to watch the board', function (done) {
+    client.query(`select * from tymly_users_test.watched_boards where user_id = 'user2'`, (err, res) => {
+      expect(err).to.eql(null)
+      expect(res.rows[0].feed_name).to.eql('wmfs_incidentSummary_1_0|1234|2017')
+      expect(res.rows[0].title).to.eql('Incident 1234/2017')
+      expect(res.rows[0].description).to.eql('RTC with 3 casualties and 0 fatalities')
+      done(err)
+    })
   })
 
   it('should clean up the test resources', function () {
