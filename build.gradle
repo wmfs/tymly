@@ -76,9 +76,32 @@ task cleanNodeModules (type: Exec,
 task cleanTestFiles (type: Delete) {
   delete fileTree(dir: '.', include: '**/test/TEST-*.xml')
 }
+task cleanBuild (type: Delete) {
+  delete buildDir
+}
+
+String tarballDir = "${buildDir}/tarball"
+String tarfileName = "${tarballDir}/tymly-${getDate()}.tgz"
+def getDate() { new Date().format('yyyyMMdd-HHmmss') }
+
+task createTarball (type: Exec,
+                    dependsOn: [npmBootstrap]) {
+  doFirst {
+    mkdir tarballDir
+  }
+
+  commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
+}
+
+task dropTarfileToDocker (type: Copy,
+                          dependsOn: [createTarball]) {
+  from tarfileName
+  into './tools/tymly-dockerize'
+  rename { fileName -> "bundle.tgz" }
+} // dropTarfileToDocker
 
 ////////////////////////////////////////////
-task clean (dependsOn: [cleanNodeModules, cleanTestFiles]) {
+task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
   group 'Build'
   description 'Discards all node_modules directories, cleans up TEST-*.xml files, removes build directory'
 }
@@ -100,28 +123,13 @@ task test (type:Exec,
   environment PG_CONNECTION_STRING: pg_connection
 }
 
-String tarfileName = "tymly-${getDate()}.tgz"
-def getDate() { new Date().format('yyyyMMdd-HHmmss') }
-
-task createTarball (type: Exec,
-                    dependsOn: [npmBootstrap]) {
-  commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
-}
-
-task dropTarfileToDocker (type: Copy,
-                          dependsOn: [createTarball]) {
-  from tarfileName
-  into './tools/tymly-dockerize'
-  rename { fileName -> "bundle.tgz" }
-} // dropTarfileToDocker
-
-task bundle (type: Exec,
-             dependsOn: [createTarball, dropTarfileToDocker]) {
+task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
   group 'Build'
   description 'Creates an installable Tymly package'
 }
 
-task dockerBuild (type: Exec) {
+task dockerBuild (type: Exec,
+                  dependsOn: [dropTarfileToDocker]) {
   group 'Build'
   description 'Build a runnable Tymly Docker image'
 
