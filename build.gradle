@@ -63,22 +63,28 @@ postgresEmbedded {
 }
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
-
+String buildDir="./build"
 ////////////////////////////////////////////
 task npmBootstrap (type: Exec) {
   commandLine 'npm', 'install'
 }
 
-task clean (type: Exec,
-            dependsOn: npmBootstrap) {
-  group 'Build'
-  description 'Discard all the node_modules directories'
-
+task cleanNodeModules (type: Exec,
+                       dependsOn: npmBootstrap) {
   commandLine 'npm', 'run', 'clean'
+}
+task cleanTestFiles (type: Delete) {
+  delete fileTree(dir: '.', include: '**/test/TEST-*.xml')
+}
+
+////////////////////////////////////////////
+task clean (dependsOn: [cleanNodeModules, cleanTestFiles]) {
+  group 'Build'
+  description 'Discards all node_modules directories, cleans up TEST-*.xml files, removes build directory'
 }
 
 task bootstrap (type: Exec,
-                dependsOn: [npmBootstrap, clean]) {
+                dependsOn: [npmBootstrap]) {
   group 'Build'
   description 'Installs the npm dependencies'
 
@@ -86,7 +92,7 @@ task bootstrap (type: Exec,
 }
 
 task test (type:Exec,
-           dependsOn: [bootstrap, startPostgres]) {
+           dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
   group 'Build'
   description 'Runs tests whole test suite'
 
