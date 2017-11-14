@@ -3,7 +3,6 @@
 /*
 * TODO: Where does user ID come from? Will it come from env?
 * TODO: Have a model in the test/fixtures blueprint rather than produce tables via SQL, the problem atm is the UUID
-* TODO: Boards should be categorized - this will affect implementation here
 * subscription_id should be a UUID so should be auto generated
 * */
 
