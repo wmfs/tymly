@@ -3,7 +3,6 @@
 const async = require('async')
 
 /*
-* TODO: Where does user ID come from? Will it come from env?
 * TODO: What should this return in the context?
 * TODO: Handle failure if notification not found (look at tymly-mock-api)
 * TODO: pg-model and tymly/storage/memory-model need to handle dates
@@ -23,7 +22,7 @@ class AcknowledgeNotifications {
     async.eachSeries(event.notificationIds, (id, cb) => {
       _client.query(
         `UPDATE ${schemaName}.notifications SET acknowledged = '${(new Date()).toUTCString()}'::timestamp with time ` +
-        `zone where user_id = '${userId}' and notification_id = '${id}'`,
+        `zone where user_id = '${userId}' and id = '${id}'`,
         (err) => {
           cb(err)
         }

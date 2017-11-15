@@ -6,12 +6,11 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const assert = require('chai').assert
-const async = require('async')
 const PGClient = require('pg-client-helper')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-const GET_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_getNotifications_1_0'
-const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymlyUsersTest_acknowledgeNotifications_1_0'
+const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
+const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymly_acknowledgeNotifications_1_0'
 
 describe('notifications tymly-users-plugin tests', function () {
   this.timeout(5000)
@@ -19,7 +18,6 @@ describe('notifications tymly-users-plugin tests', function () {
   const client = new PGClient(pgConnectionString)
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
-  let ctx
   let statebox
 
   it('should create some basic tymly services', function (done) {
@@ -62,52 +60,7 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        ctx = executionDescription.ctx
         done()
-      }
-    )
-  })
-
-  it('should check the returned context matches the notifications in the database', function (done) {
-    let notifications = []
-    client.query(
-      `select * from tymly_users_test.notifications where user_id = 'test-user'`,
-      (err, results) => {
-        if (err) done(err)
-        expect(err).to.eql(null)
-        async.eachSeries(results.rows, (row, cb) => {
-          let notification = {
-            notificationId: row.notification_id,
-            title: row.title,
-            description: row.description,
-            created: row._created,
-            category: row.category,
-            launches: []
-          }
-
-          client.query(
-            `select * from tymly_users_test.launches where notifications_notification_id = '${notification.notificationId}'`,
-            (err, r) => {
-              if (err) cb(err)
-              notification.launches.push({
-                title: r.rows[0].title,
-                stateMachineName: r.rows[0].state_machine_name,
-                input: r.rows[0].input
-              })
-              notifications.push(notification)
-              cb(null)
-            }
-          )
-        }, (err) => {
-          if (err) done(err)
-          expect(err).to.eql(null)
-          expect(ctx.userNotifications).to.eql({
-            notifications: notifications,
-            totalNotifications: notifications.length,
-            limit: limit
-          })
-          done()
-        })
       }
     )
   })
@@ -130,8 +83,7 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created),
-          Date.parse(startFrom), 'Notification is more recent than startFrom')
+        assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created), Date.parse(startFrom), 'Notification is more recent than startFrom')
         done()
       }
     )
@@ -161,7 +113,7 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should check the notification is acknowledged', function (done) {
     client.query(
-      `select * from tymly_users_test.notifications where notification_id = '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
+      `select * from tymly.notifications where id = '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
       (err, result) => {
         if (err) done(err)
         expect(err).to.eql(null)

@@ -1,5 +1,2 @@
-DROP TABLE IF EXISTS tymly_users_test.notifications;
-
-DROP TABLE IF EXISTS tymly_users_test.launches;
-
-DROP SCHEMA IF EXISTS tymly_users_test;
+DELETE FROM tymly.notifications WHERE user_id = 'test-user';
+DELETE FROM tymly.notifications WHERE user_id = 'test-user-2';
