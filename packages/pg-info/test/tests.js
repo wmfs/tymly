@@ -2,7 +2,7 @@
 
 'use strict'
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const process = require('process')
 const path = require('path')
 const pgInfo = require('./../lib')
@@ -19,7 +19,7 @@ describe('Run the basic-usage example', function () {
 
   it('Should create a new pg client', () => {
     const pgConnectionString = process.env.PG_CONNECTION_STRING
-    client = new PGClient(pgConnectionString)
+    client = new HlPgClient(pgConnectionString)
   })
 
   it('Should install test schemas', () => {

@@ -5,7 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_SETTINGS_STATE_MACHINE = 'tymly_getSettings_1_0'
@@ -16,7 +16,7 @@ describe('settings tymly-users-plugin tests', function () {
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new PGClient(pgConnectionString)
+  const client = new HlPgClient(pgConnectionString)
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(

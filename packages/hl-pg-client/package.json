@@ -1,6 +1,6 @@
 {
-  "name": "pg-client-helper",
-  "description": "A wrapper around PG Client, providing a slightly high level API",
+  "name": "hl-pg-client",
+  "description": "Provides a slightly higher level PostgreSQL client, that builds on pg-pool",
   "version": "0.0.1",
   "author": "Jez Higgins",
   "keywords": [
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "test": "standard && mocha"
   },
   "license": "MIT",
   "repository": {

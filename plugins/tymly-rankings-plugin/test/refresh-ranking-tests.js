@@ -5,7 +5,7 @@ const chai = require('chai')
 const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
@@ -13,7 +13,7 @@ describe('Tests the Ranking State Resource', function () {
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new PGClient(pgConnectionString)
+  const client = new HlPgClient(pgConnectionString)
 
   it('should create the test resources', () => {
     return sqlScriptRunner('./db-scripts/setup.sql', client)

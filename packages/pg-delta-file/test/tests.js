@@ -2,7 +2,7 @@
 
 'use strict'
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const chai = require('chai')
 const expect = chai.expect
 const path = require('path')
@@ -12,7 +12,7 @@ describe('Run the basic usage example',
   function () {
     this.timeout(10000)
 
-    const client = new PGClient(process.env.PG_CONNECTION_STRING)
+    const client = new HlPgClient(process.env.PG_CONNECTION_STRING)
 
     it('Should install test schemas', () => {
       return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))

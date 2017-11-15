@@ -2,7 +2,7 @@
 
 'use strict'
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const chai = require('chai')
 const expect = chai.expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
@@ -13,7 +13,7 @@ describe('Initializing environment...', function () {
   this.timeout(15000)
 
   let connectionString = process.env.PG_CONNECTION_STRING
-  let client = new PGClient(connectionString)
+  let client = new HlPgClient(connectionString)
 
   it('Should setup DB env', function (done) {
     sqlScriptRunner(
