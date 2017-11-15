@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "subscriptionId": {
+      "type": "string",
+      "description": "The UUID of a subscription the user wants to cancel (as available as part of each subscription object)"
+    }
+  }
+}

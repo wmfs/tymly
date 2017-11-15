@@ -9,7 +9,7 @@ const PGClient = require('pg-client-helper')
 
 const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymly_getWatchedBoards_1_0'
 const WATCH_BOARD_STATE_MACHINE = 'tymly_watchBoard_1_0'
-// const UNWATCH_BOARD_STATE_MACHINE = 'tymly_unwatchBoard_1_0'
+const UNWATCH_BOARD_STATE_MACHINE = 'tymly_unwatchBoard_1_0'
 
 describe('tymly-users-plugin tests', function () {
   this.timeout(5000)
@@ -18,15 +18,14 @@ describe('tymly-users-plugin tests', function () {
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new PGClient(pgConnectionString)
 
+  let subscriptionId
+
   it('should create some basic tymly services', function (done) {
     tymly.boot(
       {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
           require.resolve('tymly-pg-plugin')
-        ],
-        blueprintPaths: [
-          path.resolve(__dirname, './fixtures/test-blueprint')
         ]
       },
       function (err, tymlyServices) {
@@ -81,6 +80,29 @@ describe('tymly-users-plugin tests', function () {
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        subscriptionId = executionDescription.ctx.subscriptions[0].subscriptionId
+        done()
+      }
+    )
+  })
+
+  // Get the watched boards (to validate the above)
+  it('should delete the watched board to validate the previous test', function (done) {
+    statebox.startExecution(
+      {
+        subscriptionId: subscriptionId
+      },
+      UNWATCH_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('UnwatchBoard')
+        expect(executionDescription.currentResource).to.eql('module:unwatchBoard')
+        expect(executionDescription.stateMachineName).to.eql(UNWATCH_BOARD_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }

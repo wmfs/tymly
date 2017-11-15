@@ -1,0 +1,7 @@
+{
+  "UnwatchBoard": {
+    "Type": "Task",
+    "Resource": "module:unwatchBoard",
+    "InputPath": "$"
+  }
+}
