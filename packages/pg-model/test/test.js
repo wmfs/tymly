@@ -87,10 +87,7 @@ describe('Run some basic tests', function () {
         expect(err).to.equal(null)
         expect(idProperties).to.eql(
           {
-            idProperties:
-            {
-              employeeNo: '1'
-            }
+            idProperties: {employeeNo: '1'}
           }
         )
         done()
@@ -193,6 +190,70 @@ describe('Run some basic tests', function () {
     )
   })
 
+  it('Should find who is older than 36', function (done) {
+    models.pgmodelTest.person.find(
+      {
+        where: {
+          age: {moreThan: 36}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(1)
+        expect(doc[0].firstName).to.eql('Homer')
+        done(err)
+      }
+    )
+  })
+
+  it('Should find who is older than or equal to 36', function (done) {
+    models.pgmodelTest.person.find(
+      {
+        where: {
+          age: {moreThanEquals: 36}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(2)
+        expect(doc[0].firstName).to.eql('Homer')
+        expect(doc[1].firstName).to.eql('Marge')
+        done(err)
+      }
+    )
+  })
+
+  it('Should find who is younger than 36', function (done) {
+    models.pgmodelTest.person.find(
+      {
+        where: {
+          age: {lessThan: 36}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(2)
+        expect(doc[0].firstName).to.eql('Lisa')
+        expect(doc[1].firstName).to.eql('Bart')
+        done(err)
+      }
+    )
+  })
+
+  it('Should find who is younger than or equal to 36', function (done) {
+    models.pgmodelTest.person.find(
+      {
+        where: {
+          age: {lessThanEquals: 36}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(3)
+        expect(doc[0].firstName).to.eql('Lisa')
+        expect(doc[1].firstName).to.eql('Marge')
+        expect(doc[2].firstName).to.eql('Bart')
+        done(err)
+      }
+    )
+  })
+
   it('should find a person via primary key', function (done) {
     models.pgmodelTest.person.findById(
       3,
@@ -211,7 +272,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it("should fail finding a person that's not there", function (done) {
+  it('should fail finding a person that\'s not there', function (done) {
     models.pgmodelTest.person.findById(
       6,
       function (err, doc) {
@@ -400,7 +461,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it("shouldn't get one missing person", function (done) {
+  it('shouldn\'t get one missing person', function (done) {
     models.pgmodelTest.person.findOne(
       {
         where: {
@@ -416,7 +477,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it("should update Maggie's age to 1", function (done) {
+  it('should update Maggie\'s age to 1', function (done) {
     models.pgmodelTest.person.update(
       {
         employeeNo: 2,
@@ -465,7 +526,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it("should find Maggie's age has gone again", function (done) {
+  it('should find Maggie\'s age has gone again', function (done) {
     models.pgmodelTest.person.findById(
       2,
       function (err, doc) {
