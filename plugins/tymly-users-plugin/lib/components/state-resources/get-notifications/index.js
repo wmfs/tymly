@@ -7,7 +7,6 @@ const dottie = require('dottie')
 class GetNotifications {
   init (resourceConfig, env, callback) {
     this.notifications = env.bootedServices.storage.models['tymly_notifications']
-    this.client = env.bootedServices.storage.client
     callback(null)
   }
 

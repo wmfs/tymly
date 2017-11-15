@@ -19,6 +19,7 @@ describe('notifications tymly-users-plugin tests', function () {
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
   let statebox
+  let idToAcknowledge
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -81,6 +82,7 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created), Date.parse(startFrom), 'Notification is more recent than startFrom')
+        idToAcknowledge = executionDescription.ctx.userNotifications.notifications[0].id
         done()
       }
     )
@@ -89,7 +91,7 @@ describe('notifications tymly-users-plugin tests', function () {
   it('should acknowledge one notification', function (done) {
     statebox.startExecution(
       {
-        notificationIds: ['97fd09f8-b8b2-11e7-abc4-cec278b6b50a']
+        notificationIds: [idToAcknowledge] // ['97fd09f8-b8b2-11e7-abc4-cec278b6b50a']
       },
       ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
       {
@@ -110,7 +112,7 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should check the notification is acknowledged', function (done) {
     client.query(
-      `select * from tymly.notifications where id = '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
+      `select * from tymly.notifications where id = '${idToAcknowledge}'`, // '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
       (err, result) => {
         if (err) done(err)
         expect(err).to.eql(null)
