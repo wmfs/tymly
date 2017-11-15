@@ -1,0 +1,7 @@
+{
+  "GetFavouriteStartableNames": {
+    "Type": "Task",
+    "Resource": "module:getFavouriteStartableNames",
+    "InputPath": "$.getFavouriteStartableNames"
+  }
+}
