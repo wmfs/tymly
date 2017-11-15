@@ -1,0 +1,7 @@
+{
+  "AwaitingHumanInput": {
+    "Type": "Task",
+    "Resource": "module:awaitingHumanInput",
+    "InputPath": "$.awaitingHumanInput"
+  }
+}
