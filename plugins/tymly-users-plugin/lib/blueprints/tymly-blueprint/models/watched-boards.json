@@ -21,6 +21,7 @@
     },
     "startedWatching": {
       "type": "string",
+      "format": "date-time",
       "description": "A timestamp of when the user was first subscribed to this feed."
     },
     "launches": {

@@ -20,7 +20,7 @@ class WatchBoard {
         feedName: feedName,
         title: event.title,
         description: event.description,
-        startedWatching: 'a timestamp with time zone with the value for now'
+        startedWatching: new Date().toLocaleString()
       },
       {},
       function (err, idProperties) {

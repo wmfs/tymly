@@ -91,7 +91,7 @@ describe('notifications tymly-users-plugin tests', function () {
   it('should acknowledge one notification', function (done) {
     statebox.startExecution(
       {
-        notificationIds: [idToAcknowledge] // ['97fd09f8-b8b2-11e7-abc4-cec278b6b50a']
+        notificationIds: [idToAcknowledge]
       },
       ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
       {
@@ -112,7 +112,7 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should check the notification is acknowledged', function (done) {
     client.query(
-      `select * from tymly.notifications where id = '${idToAcknowledge}'`, // '97fd09f8-b8b2-11e7-abc4-cec278b6b50a'`,
+      `select * from tymly.notifications where id = '${idToAcknowledge}'`,
       (err, result) => {
         if (err) done(err)
         expect(err).to.eql(null)
