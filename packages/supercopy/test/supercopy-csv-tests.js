@@ -3,7 +3,6 @@
 'use strict'
 
 const process = require('process')
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const expect = require('chai').expect
 const HlPgClient = require('hl-pg-client')
 const supercopy = require('./../lib')
@@ -30,18 +29,8 @@ describe('Run some basic tests', function () {
     }
   })
 
-  it('Should load some test data', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql',
-        'install.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should load some test data', async () => {
+    for (const filename of ['uninstall.sql', 'install.sql']) { await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', filename))) }
   })
 
   it('Should promise to supercopy some people', function () {
@@ -189,16 +178,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should cleanup the test data', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should cleanup the test data', async () => {
+    await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', 'uninstall.sql')))
   })
 })

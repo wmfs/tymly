@@ -3,7 +3,6 @@
 'use strict'
 
 const process = require('process')
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const pgModel = require('./../lib')
 const HlPgClient = require('hl-pg-client')
 const empty = require('./fixtures/empty.json')
@@ -11,6 +10,7 @@ const planets = require('./fixtures/planets.json')
 const pgDiffSync = require('pg-diff-sync')
 const async = require('async')
 const chai = require('chai')
+const path = require('path')
 const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
@@ -31,18 +31,8 @@ describe('Test promise API', function () {
     client = new HlPgClient(process.env.PG_CONNECTION_STRING)
   })
 
-  it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql',
-        'install.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should initially drop-cascade the pg_model_test schema, if one exists', async () => {
+    for (const filename of ['uninstall.sql', 'install.sql']) { await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', filename))) }
   })
 
   it('Should install test database objects', function (done) {
@@ -892,16 +882,7 @@ describe('Test promise API', function () {
     )
   })
 
-  it('Should finally drop-cascade the pg_model_test schema', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should finally drop-cascade the pg_model_test schema', async () => {
+    await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', 'uninstall.sql')))
   })
 })
