@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to delete a board that the user is currently watching.",
+  "version": "1.0",
+  "StartAt": "UnwatchBoard",
+  "States": {
+    "UnwatchBoard": {
+      "Type": "Task",
+      "Resource": "module:unwatchBoard",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}
