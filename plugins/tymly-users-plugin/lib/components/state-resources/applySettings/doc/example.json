@@ -1,0 +1,7 @@
+{
+  "ApplySettings": {
+    "Type": "Task",
+    "Resource": "module:applySettings",
+    "InputPath": "$.applySettings"
+  }
+}

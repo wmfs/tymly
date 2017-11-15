@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to apply new settings for a user.",
+  "version": "1.0",
+  "StartAt": "ApplySettings",
+  "States": {
+    "ApplySettings": {
+      "Type": "Task",
+      "Resource": "module:applySettings",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "categoryRelevance": {
+      "type": "array",
+      "description": "Ordering of relevant categories for the user"
+    }
+  }
+}
