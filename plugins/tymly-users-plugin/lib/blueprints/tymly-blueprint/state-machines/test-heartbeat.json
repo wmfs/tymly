@@ -1,0 +1,22 @@
+{
+  "Comment": "State machine to test heartbeat functionality.",
+  "version": "1.0",
+  "StartAt": "TestHeartbeat",
+  "States": {
+    "TestHeartbeat": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "uiType": "testType",
+        "uiName": "testName",
+        "dataPath": "$.someDefaultFormData",
+        "defaults": {
+          "empNo": 0,
+          "status": "Probationary"
+        }
+      },
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

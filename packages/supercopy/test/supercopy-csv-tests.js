@@ -3,9 +3,8 @@
 'use strict'
 
 const process = require('process')
-const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const expect = require('chai').expect
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const supercopy = require('./../lib')
 const path = require('path')
 const fs = require('fs')
@@ -18,7 +17,7 @@ describe('Run some basic tests', function () {
   let client
 
   it('Should create a new pg client', function () {
-    client = new PGClient(connectionString)
+    client = new HlPgClient(connectionString)
   })
 
   it('Should remove output directory ahead of csv tests, if it exists already', function (done) {
@@ -30,18 +29,8 @@ describe('Run some basic tests', function () {
     }
   })
 
-  it('Should load some test data', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql',
-        'install.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should load some test data', async () => {
+    for (const filename of ['uninstall.sql', 'install.sql']) { await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', filename))) }
   })
 
   it('Should promise to supercopy some people', function () {
@@ -189,16 +178,7 @@ describe('Run some basic tests', function () {
     )
   })
 
-  it('Should cleanup the test data', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should cleanup the test data', async () => {
+    await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', 'uninstall.sql')))
   })
 })

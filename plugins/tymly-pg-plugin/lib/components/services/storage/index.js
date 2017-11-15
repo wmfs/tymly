@@ -12,7 +12,7 @@ const pgInfo = require('pg-info')
 const pgDiffSync = require('pg-diff-sync')
 const pgModel = require('pg-model')
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 
 const generateUpsertStatement = require('./generate-upsert-statement')
 
@@ -23,7 +23,7 @@ class PostgresqlStorageService {
     const connectionString = PostgresqlStorageService._connectionString(options.config)
     infoMessage(options.messages, `Using PostgresqlStorage... (${connectionString})`)
 
-    this.client = new PGClient(connectionString)
+    this.client = new HlPgClient(connectionString)
 
     const modelDefinitions = options.blueprintComponents.models || {}
     const seedData = options.blueprintComponents.seedData

@@ -6,7 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const assert = require('chai').assert
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
@@ -15,7 +15,7 @@ const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymly_acknowledgeNotifications_
 describe('notifications tymly-users-plugin tests', function () {
   this.timeout(5000)
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new PGClient(pgConnectionString)
+  const client = new HlPgClient(pgConnectionString)
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
   let statebox

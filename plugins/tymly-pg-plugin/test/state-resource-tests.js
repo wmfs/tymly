@@ -2,7 +2,7 @@
 
 'use strict'
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
@@ -161,7 +161,7 @@ describe('Synchronizing Table tests', function () {
 })
 
 describe('Clean up', function () {
-  let client = new PGClient(process.env.PG_CONNECTION_STRING)
+  let client = new HlPgClient(process.env.PG_CONNECTION_STRING)
 
   it('should remove output directory now tests are complete', function (done) {
     if (fs.existsSync(OUTPUT_DIR_PATH)) {
