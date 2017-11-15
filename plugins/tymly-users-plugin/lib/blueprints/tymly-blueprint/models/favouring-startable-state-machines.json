@@ -11,14 +11,9 @@
       "type": "string",
       "description": "This is a UUID, that can be used to uniquely identify any watched board of any user."
     },
-    "stateMachineName": {
+    "favouriteStartableNames": {
       "type": "object",
-      "properties": {
-        "favouriteStartableNames": {
-          "type": "array"
-        }
-      },
-      "description": "Array of the favourable state machines."
+      "description": "A list of favourite state machine names"
+      }
     }
-  }
 }
