@@ -2,9 +2,7 @@
 
 const dottie = require('dottie')
 
-/*
-* TODO: pg-model and tymly/storage/memory-model need to handle dates
-* */
+// 'new Date(event.startFrom).toLocaleString()' seems to work for timestamp with time zone
 
 class GetNotifications {
   init (resourceConfig, env, callback) {
@@ -15,44 +13,21 @@ class GetNotifications {
 
   run (event, context) {
     const userId = context.userId
-    /*
-    if (event.startFrom) {...} else {
-      this.notifications.find(
-        {
-          where: {
-            userId: {equals: userId}
-          }
-        },
-        (err, results) => {
-          if (err) {
-            context.sendTaskFailure(
-              {
-                error: 'getNotificationsFail',
-                cause: err
-              }
-            )
-          } else {
-            context.sendTaskSuccess()
-          }
-        }
-      )
-    }
-    */
     const limit = event.limit || 10
     let executionDescription = {}
     let payload = {
       notifications: []
     }
-
-    let getNotificationsSql = `select * from tymly.notifications where user_id = '${userId}'`
-
-    if (event.startFrom) {
-      payload.startFrom = event.startFrom
-      getNotificationsSql += ` and _created >= '${event.startFrom}'::date`
+    let findOptions = {
+      where: {
+        userId: {equals: userId}
+      }
     }
 
-    this.client.query(
-      getNotificationsSql,
+    if (event.startFrom) findOptions.where.created = {moreThanEquals: new Date(event.startFrom).toLocaleString()}
+
+    this.notifications.find(
+      findOptions,
       (err, results) => {
         if (err) {
           context.sendTaskFailure(
@@ -62,13 +37,13 @@ class GetNotifications {
             }
           )
         } else {
-          results.rows.map(r => {
+          results.map(r => {
             payload.notifications.push({
               id: r.id,
               title: r.title,
               description: r.description,
               category: r.category,
-              created: r._created
+              created: r.created
             })
           })
           payload.totalNotifications = payload.notifications.length
