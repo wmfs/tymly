@@ -27,14 +27,4 @@ class ApplySettings {
   }
 }
 
-// (err) => {
-//   if (err) {
-//     context.sendTaskFailure({
-//       error: 'applySettingsFail',
-//       cause: err
-//     })
-//   } else {
-//     context.sendTaskSuccess()
-//   }
-
 module.exports = ApplySettings
