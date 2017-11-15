@@ -9,6 +9,7 @@ const PGClient = require('pg-client-helper')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_SETTINGS_STATE_MACHINE = 'tymly_getSettings_1_0'
+const APPLY_SETTINGS_STATE_MACHINE = 'tymly_applySettings_1_0'
 
 describe('settings tymly-users-plugin tests', function () {
   this.timeout(5000)
@@ -40,7 +41,7 @@ describe('settings tymly-users-plugin tests', function () {
     return sqlScriptRunner('./db-scripts/settings/setup.sql', client)
   })
 
-  it('should get user2s settings', function (done) {
+  it('should get test-user\'s settings', function (done) {
     statebox.startExecution(
       {},
       GET_SETTINGS_STATE_MACHINE,
@@ -50,13 +51,55 @@ describe('settings tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log('***', executionDescription.ctx.results)
         expect(executionDescription.currentStateName).to.eql('GetSettings')
         expect(executionDescription.currentResource).to.eql('module:getSettings')
         expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
+        done()
+      }
+    )
+  })
 
+  it('should update test-user\'s settings', function (done) {
+    statebox.startExecution(
+      {
+        categoryRelevance: '["incidents", "hr", "hydrants", "gazetteer", "expenses"]'
+      },
+      APPLY_SETTINGS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('ApplySettings')
+        expect(executionDescription.currentResource).to.eql('module:applySettings')
+        expect(executionDescription.stateMachineName).to.eql(APPLY_SETTINGS_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should ensure test-user\'s applied settings are present in DB', function (done) {
+    statebox.startExecution(
+      {},
+      GET_SETTINGS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('GetSettings')
+        expect(executionDescription.currentResource).to.eql('module:getSettings')
+        expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
+        expect(executionDescription.ctx.results[0].categoryRelevance).to.eql(
+          [ 'incidents', 'hr', 'hydrants', 'gazetteer', 'expenses' ]
+        )
         done()
       }
     )
