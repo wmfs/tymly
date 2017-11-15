@@ -1,22 +1,21 @@
 'use strict'
 
 /*
-* TODO: Where does user ID come from? Will it come from env?
 * TODO: Boards should be categorized - this will affect implementation here
 * */
 
 class GetWatchedBoards {
   init (resourceConfig, env, callback) {
-    this.userId = 'user2'
     this.watchedBoards = env.bootedServices.storage.models['tymly_watchedBoards']
     callback(null)
   }
 
   run (event, context) {
+    const userId = context.userId
     this.watchedBoards.find(
       {
         where: {
-          userId: {equals: this.userId}
+          userId: {equals: userId}
         }
       },
       (err, results) => {

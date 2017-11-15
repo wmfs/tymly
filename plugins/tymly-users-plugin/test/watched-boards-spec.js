@@ -51,7 +51,8 @@ describe('tymly-users-plugin tests', function () {
       },
       WATCH_BOARD_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'user2'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -71,7 +72,8 @@ describe('tymly-users-plugin tests', function () {
       {},
       GET_WATCHED_BOARDS_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'user2'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
