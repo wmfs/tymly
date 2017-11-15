@@ -6,7 +6,8 @@
   "main": "./lib/index.js",
   "dependencies": {
     "dottie": "2.0.0",
-    "async": "2.6.0"
+    "async": "2.6.0",
+    "jsonpath": "^0.2.12"
   },
   "devDependencies": {
     "chai": "^3.2.0",
