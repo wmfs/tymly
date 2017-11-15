@@ -1,10 +1,25 @@
-
 const _ = require('lodash')
 
 const expressionTypeFormatters = {
   equals: function (columnName, value, values) {
     values.push(value)
-    return columnName + '= $' + values.length
+    return columnName + ' = $' + values.length
+  },
+  moreThan: function (columnName, value, values) {
+    values.push(value)
+    return columnName + ' > $' + values.length
+  },
+  lessThan: function (columnName, value, values) {
+    values.push(value)
+    return columnName + ' < $' + values.length
+  },
+  moreThanEquals: function (columnName, value, values) {
+    values.push(value)
+    return columnName + ' >= $' + values.length
+  },
+  lessThanEquals: function (columnName, value, values) {
+    values.push(value)
+    return columnName + ' <= $' + values.length
   }
 }
 
