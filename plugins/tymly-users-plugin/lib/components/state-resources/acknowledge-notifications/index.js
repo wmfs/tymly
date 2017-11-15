@@ -17,11 +17,10 @@ class AcknowledgeNotifications {
   run (event, context) {
     const userId = context.userId
     const _client = this.client
-    const schemaName = context.stateMachineMeta.schemaName
 
     async.eachSeries(event.notificationIds, (id, cb) => {
       _client.query(
-        `UPDATE ${schemaName}.notifications SET acknowledged = '${(new Date()).toUTCString()}'::timestamp with time ` +
+        `UPDATE tymly.notifications SET acknowledged = '${(new Date()).toUTCString()}'::timestamp with time ` +
         `zone where user_id = '${userId}' and id = '${id}'`,
         (err) => {
           cb(err)
