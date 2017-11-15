@@ -24,9 +24,6 @@ describe('settings tymly-users-plugin tests', function () {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
           require.resolve('tymly-pg-plugin')
-        ],
-        blueprintPaths: [
-          path.resolve(__dirname, './fixtures/test-blueprint')
         ]
       },
       function (err, tymlyServices) {
