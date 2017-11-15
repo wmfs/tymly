@@ -45,7 +45,8 @@ describe('settings tymly-users-plugin tests', function () {
       {},
       GET_SETTINGS_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -54,7 +55,7 @@ describe('settings tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getSettings')
         expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.results[0].userId).to.eql('testuser2')
+        expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
 
         done()
       }

@@ -4,25 +4,24 @@ const dottie = require('dottie')
 const async = require('async')
 
 /*
-* TODO: Where does user ID come from? Will it come from env?
 * TODO: pg-model and tymly/storage/memory-model need to handle dates
 * */
 
 class GetNotifications {
   init (resourceConfig, env, callback) {
-    this.userId = 'user2'
     this.notifications = env.bootedServices.storage.models['tymly_notifications']
     this.client = env.bootedServices.storage.client
     callback(null)
   }
 
   run (event, context) {
+    const userId = context.userId
     /*
     if (event.startFrom) {...} else {
       this.notifications.find(
         {
           where: {
-            userId: {equals: this.userId}
+            userId: {equals: userId}
           }
         },
         (err, results) => {
@@ -48,7 +47,7 @@ class GetNotifications {
       notifications: []
     }
 
-    let getNotificationsSql = `select * from ${schemaName}.notifications where user_id = '${this.userId}'`
+    let getNotificationsSql = `select * from ${schemaName}.notifications where user_id = '${userId}'`
 
     if (event.startFrom) {
       payload.startFrom = event.startFrom

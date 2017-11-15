@@ -11,19 +11,19 @@ const async = require('async')
 
 class AcknowledgeNotifications {
   init (resourceConfig, env, callback) {
-    this.userId = 'user2'
     this.client = env.bootedServices.storage.client
     callback(null)
   }
 
   run (event, context) {
+    const userId = context.userId
     const _client = this.client
     const schemaName = context.stateMachineMeta.schemaName
 
     async.eachSeries(event.notificationIds, (id, cb) => {
       _client.query(
         `UPDATE ${schemaName}.notifications SET acknowledged = '${(new Date()).toUTCString()}'::timestamp with time ` +
-        `zone where user_id = '${this.userId}' and notification_id = '${id}'`,
+        `zone where user_id = '${userId}' and notification_id = '${id}'`,
         (err) => {
           cb(err)
         }

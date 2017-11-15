@@ -45,7 +45,8 @@ describe('user-remit tymly-users-plugin tests', function () {
       },
       GET_USER_REMIT_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)

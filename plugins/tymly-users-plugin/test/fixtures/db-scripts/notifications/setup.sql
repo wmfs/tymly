@@ -27,27 +27,27 @@ CREATE TABLE tymly_users_test.launches (
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
-('user1', '97fd076e-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #1', 'FIRST', 'expenses');
+('test-user-2', '97fd076e-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #1', 'FIRST', 'expenses');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category, _created)
 VALUES
-('user2', '97fd09f8-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #2', 'SECOND', 'expenses', '2016-10-21T14:20:30.414Z');
+('test-user', '97fd09f8-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #2', 'SECOND', 'expenses', '2016-10-21T14:20:30.414Z');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
-('user1', '97fd0b06-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #3', 'THIRD', 'expenses');
+('test-user-2', '97fd0b06-b8b2-11e7-abc4-cec278b6b50a', 'Expense claim #3', 'THIRD', 'expenses');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
-('user1', '97fd13a8-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #1', 'FOURTH', 'information');
+('test-user-2', '97fd13a8-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #1', 'FOURTH', 'information');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
-('user1', '97fd1470-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #2', 'FIFTH', 'information');
+('test-user-2', '97fd1470-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #2', 'FIFTH', 'information');
 
 INSERT INTO tymly_users_test.notifications (user_id, notification_id, title, description, category)
 VALUES
-('user2', '97fd152e-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #3', 'SIXTH', 'information');
+('test-user', '97fd152e-b8b2-11e7-abc4-cec278b6b50a', 'Employee Info #3', 'SIXTH', 'information');
 
 INSERT INTO tymly_users_test.launches (title, state_machine_name, input, notifications_notification_id)
 VALUES

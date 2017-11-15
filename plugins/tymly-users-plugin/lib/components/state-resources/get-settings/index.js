@@ -10,17 +10,17 @@ const dottie = require('dottie')
 
 class GetSettings {
   init (resourceConfig, env, callback) {
-    this.userId = 'testuser2'
     this.settings = env.bootedServices.storage.models['tymly_settings']
     callback(null)
   }
 
   run (event, context) {
+    const userId = context.userId
     let executionDescription = {}
     this.settings.find(
       {
         where: {
-          userId: {equals: this.userId}
+          userId: {equals: userId}
         }
       },
       (err, results) => {

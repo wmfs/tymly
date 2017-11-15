@@ -53,7 +53,7 @@ describe('notifications tymly-users-plugin tests', function () {
       GET_NOTIFICATIONS_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'Liliana'
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -71,7 +71,7 @@ describe('notifications tymly-users-plugin tests', function () {
   it('should check the returned context matches the notifications in the database', function (done) {
     let notifications = []
     client.query(
-      `select * from tymly_users_test.notifications where user_id = 'user2'`,
+      `select * from tymly_users_test.notifications where user_id = 'test-user'`,
       (err, results) => {
         if (err) done(err)
         expect(err).to.eql(null)
@@ -120,7 +120,8 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       GET_NOTIFICATIONS_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -143,7 +144,8 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
