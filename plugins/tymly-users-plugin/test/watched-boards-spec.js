@@ -5,7 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 
 const GET_WATCHED_BOARDS_STATE_MACHINE = 'tymly_getWatchedBoards_1_0'
 const WATCH_BOARD_STATE_MACHINE = 'tymly_watchBoard_1_0'
@@ -16,7 +16,7 @@ describe('tymly-users-plugin tests', function () {
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new PGClient(pgConnectionString)
+  const client = new HlPgClient(pgConnectionString)
 
   let subscriptionId
 

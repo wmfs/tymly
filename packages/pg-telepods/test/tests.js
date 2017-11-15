@@ -2,7 +2,7 @@
 
 'use strict'
 
-const PGClient = require('pg-client-helper')
+const HlPgClient = require('hl-pg-client')
 const startTelepods = require('./../lib')
 const process = require('process')
 const chai = require('chai')
@@ -16,7 +16,7 @@ describe('Run the basic-usage example',
     let client
 
     it('Should create a new pg client', () => {
-      client = new PGClient(process.env.PG_CONNECTION_STRING)
+      client = new HlPgClient(process.env.PG_CONNECTION_STRING)
     })
 
     it('Should install test schemas', () => {

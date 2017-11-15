@@ -11,7 +11,7 @@
     "dottie": "^2.0.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.1",
-    "pg-client-helper": "0.0.1",
+    "hl-pg-client": "0.0.1",
     "pg-delta-file": "0.0.5",
     "pg-diff-sync": "0.0.11",
     "pg-info": "0.0.15",

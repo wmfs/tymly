@@ -53,9 +53,7 @@ describe('Memory storage tests', function () {
         expect(idProperties).to.eql(
           {
             idProperties:
-            {
-              employeeNo: '1'
-            }
+              {employeeNo: '1'}
           }
         )
         done()
@@ -111,8 +109,9 @@ describe('Memory storage tests', function () {
       function (err) {
         console.log(err)
         expect(err).to.eql(
-          { name: 'DuplicatePrimaryKey',
-            message: "Unable to create model 'people' because {\"employeeNo\":\"1\"} already exists"
+          {
+            name: 'DuplicatePrimaryKey',
+            message: 'Unable to create model \'people\' because {"employeeNo":"1"} already exists'
           }
         )
         done()
@@ -138,7 +137,8 @@ describe('Memory storage tests', function () {
       {},
       function (err) {
         expect(err).to.eql(
-          { name: 'DuplicatePrimaryKey',
+          {
+            name: 'DuplicatePrimaryKey',
             message: 'Unable to create model \'people\' because {"employeeNo":"2"} already exists'
           }
         )
@@ -165,7 +165,7 @@ describe('Memory storage tests', function () {
     )
   })
 
-  it("should fail finding a person that's not there", function (done) {
+  it('should fail finding a person that\'s not there', function (done) {
     people.findById(
       '0',
       function (err, doc) {
@@ -275,6 +275,70 @@ describe('Memory storage tests', function () {
     )
   })
 
+  it('should find who is older than 30', function (done) {
+    people.find(
+      {
+        where: {
+          age: {moreThan: 30}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(3)
+        expect(doc[0].firstName).to.eql('Homer')
+        expect(doc[1].firstName).to.eql('Marge')
+        expect(doc[2].firstName).to.eql('Ned')
+        done(err)
+      }
+    )
+  })
+
+  it('should find who is older than or equal to 39', function (done) {
+    people.find(
+      {
+        where: {
+          age: {moreThanEquals: 39}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(2)
+        expect(doc[0].firstName).to.eql('Homer')
+        expect(doc[1].firstName).to.eql('Ned')
+        done(err)
+      }
+    )
+  })
+
+  it('should find who is younger than 10', function (done) {
+    people.find(
+      {
+        where: {
+          age: {lessThan: 10}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(1)
+        expect(doc[0].firstName).to.eql('Lisa')
+        done(err)
+      }
+    )
+  })
+
+  it('should find who is younger than or equal to 10', function (done) {
+    people.find(
+      {
+        where: {
+          age: {lessThanEquals: 10}
+        }
+      },
+      function (err, doc) {
+        expect(doc.length).to.eql(2)
+        expect(doc[0].firstName).to.eql('Lisa')
+        expect(doc[1].firstName).to.eql('Bart')
+        done(err)
+      }
+    )
+  })
+
   it('should find Marge and Homer (offset 2/limit 2)', function (done) {
     people.find(
       {
@@ -354,7 +418,7 @@ describe('Memory storage tests', function () {
     )
   })
 
-  it("shouldn't get one missing person", function (done) {
+  it('shouldn\'t get one missing person', function (done) {
     people.findOne(
       {
         where: {
@@ -370,7 +434,7 @@ describe('Memory storage tests', function () {
     )
   })
 
-  it("should update Maggie's age to 1", function (done) {
+  it('should update Maggie\'s age to 1', function (done) {
     people.update(
       {
         employeeNo: '2',
@@ -419,7 +483,7 @@ describe('Memory storage tests', function () {
     )
   })
 
-  it("should find Maggie's age has gone again", function (done) {
+  it('should find Maggie\'s age has gone again', function (done) {
     people.findById(
       '2',
       function (err, doc) {

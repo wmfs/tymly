@@ -19,7 +19,7 @@
     "chai": "^4.1.0",
     "chai-subset": "^1.5.0",
     "mocha": "^3.5.0",
-    "pg-client-helper": "0.0.1",
+    "hl-pg-client": "0.0.1",
     "pg-diff-sync": "^0.0.11",
     "standard": "^10.0.3"
   },
