@@ -140,10 +140,32 @@ class MemoryModel {
               const conditionType = _.keys(condition)[0]
               const expression = _.values(condition)[0]
 
-              if (conditionType === 'equals') {
-                if (row[propertyId] !== expression) {
-                  matches = false
-                }
+              switch (conditionType) {
+                case 'equals':
+                  if (row[propertyId] !== expression) {
+                    matches = false
+                  }
+                  break
+                case 'moreThan':
+                  if (!(row[propertyId] > expression)) {
+                    matches = false
+                  }
+                  break
+                case 'lessThan':
+                  if (!(row[propertyId] < expression)) {
+                    matches = false
+                  }
+                  break
+                case 'moreThanEquals':
+                  if (!(row[propertyId] >= expression)) {
+                    matches = false
+                  }
+                  break
+                case 'lessThanEquals':
+                  if (!(row[propertyId] <= expression)) {
+                    matches = false
+                  }
+                  break
               }
             }
           )
