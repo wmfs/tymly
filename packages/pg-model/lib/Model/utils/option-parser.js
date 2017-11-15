@@ -23,7 +23,7 @@ const expressionTypeFormatters = {
   }
 }
 
-module.exports = function refineSql (sql, options) {
+module.exports = function refineSql (sql, propertyIdToColumn, options) {
   const values = []
 
   if (options) {
@@ -37,7 +37,7 @@ module.exports = function refineSql (sql, options) {
       _.forOwn(
         options.where,
         function (expression, propertyId) {
-          const columnName = _.kebabCase(propertyId).replace(/-/g, '_')
+          const columnName = propertyIdToColumn[propertyId]
           const expressionType = _.keys(expression)[0]
           const param = _.values(expression)[0]
           parts.push(expressionTypeFormatters[expressionType](columnName, param, values))
@@ -60,7 +60,7 @@ module.exports = function refineSql (sql, options) {
           } else {
             direction = 'ASC'
           }
-          parts.push(_.kebabCase(propertyId).replace(/-/g, '_') + ' ' + direction)
+          parts.push(propertyIdToColumn[propertyId] + ' ' + direction)
         }
       )
       sql += parts.join(', ')

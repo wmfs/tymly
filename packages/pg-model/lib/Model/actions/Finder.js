@@ -8,6 +8,7 @@ const optionParser = require('./../utils/option-parser')
 class Finder {
   constructor (model) {
     this.modelId = model.modelId
+    this.propertyIdToColumn = model.propertyIdToColumn
     this.subModels = model.subModels
     this.fkConstraints = model.fkConstraints
     this.client = model.client
@@ -30,7 +31,7 @@ class Finder {
 
   find (targetRoot, options, callback) {
     const _this = this
-    const parsedOptions = optionParser(this.sql, options)
+    const parsedOptions = optionParser(this.sql, this.propertyIdToColumn, options)
 
     this.client.query(
       parsedOptions.sql,

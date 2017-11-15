@@ -35,6 +35,10 @@ class Model {
 
     this.columnNames = _.keys(table.columns)
     this.columnNamesWithPropertyAliases = _.map(this.columnNames, function (columnName) { return columnName + ' AS "' + _.camelCase(columnName) + '"' })
+    this.propertyIdToColumn = { }
+    for (const col of this.columnNames) {
+      this.propertyIdToColumn[_.camelCase(col)] = col
+    }
 
     this.propertyIds = _.compact(_.map(this.columnNames, function (columnName) { if (columnName[0] !== '_') { return _.camelCase(columnName) } }))
     this.pkColumnNames = table.pkColumnNames
@@ -76,7 +80,13 @@ class Model {
     this.promised = (...args) => promised(this, ...args)
   }
 
-  create (jsonData, options = { }, callback = NotSet) {
+  columnify (propertyIds) {
+    if (Array.isArray(propertyIds)) {
+      return propertyIds.map(id => this.propertyIdToColumn[id])
+    }
+    return this.propertyIdToColumn[propertyIds]
+  }
+  create (jsonData, options = {}, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.create, jsonData, options)
     } // if ...
@@ -218,10 +228,6 @@ class Model {
       includeNullFks = false
     }
 
-    function columnify (propertyIds) {
-      return _.map(propertyIds, function (propertyId) { return _.kebabCase(propertyId).replace(/-/g, '_') })
-    }
-
     const parsed = {
       keyAndAttributeProperties: {},
       attributeProperties: {},
@@ -267,17 +273,17 @@ class Model {
       )
     }
 
-    parsed.keyColumns = columnify(_.keys(parsed.keyProperties))
+    parsed.keyColumns = this.columnify(_.keys(parsed.keyProperties))
     parsed.keyValues = _.values(parsed.keyProperties)
 
-    parsed.attributeColumns = columnify(_.keys(parsed.attributeProperties))
+    parsed.attributeColumns = this.columnify(_.keys(parsed.attributeProperties))
     parsed.attributeValues = _.values(parsed.attributeProperties)
 
-    parsed.keyAndAttributeColumns = columnify(_.keys(parsed.keyAndAttributeProperties))
+    parsed.keyAndAttributeColumns = this.columnify(_.keys(parsed.keyAndAttributeProperties))
     parsed.keyAndAttributeValues = _.values(parsed.keyAndAttributeProperties)
 
     parsed.missingAttributeIds = _.difference(_this.attributeIdsWithoutfkPropertyIds, _.keys(parsed.attributeProperties))
-    parsed.missingAttributeColumnNames = _.map(parsed.missingAttributeIds, function (propertyId) { return _.kebabCase(propertyId).replace(/-/g, '_') })
+    parsed.missingAttributeColumnNames = this.columnify(parsed.missingAttributeIds)
 
     parsed.primaryKeyValues = {}
     this.pkPropertyIds.forEach(
