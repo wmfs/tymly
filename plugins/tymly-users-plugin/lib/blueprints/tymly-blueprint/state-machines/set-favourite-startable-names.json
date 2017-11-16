@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to set favourite startable names for a user.",
+  "version": "1.0",
+  "StartAt": "SetFavouriteStartableNames",
+  "States": {
+    "SetFavouriteStartableNames": {
+      "Type": "Task",
+      "Resource": "module:setFavouriteStartableNames",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}
