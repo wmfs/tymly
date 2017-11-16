@@ -65,6 +65,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getUserRemit')
         expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.userRemit.settings).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
+        expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
         done()
       }
     )
