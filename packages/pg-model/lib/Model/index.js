@@ -174,8 +174,8 @@ class Model {
       return this.promised(this.update, doc, options)
     } // if ...
 
-    options.destroyMissingSubDocs = false
-    options.setMissingPropertiesToNull = true
+    if (!options.hasOwnProperty('destroyMissingSubDocs')) options.destroyMissingSubDocs = false
+    if (!options.hasOwnProperty('setMissingPropertiesToNull')) options.setMissingPropertiesToNull = true
     const script = this.updater.makeStatements(doc, options)
     this.client.run(script, callback)
   }
