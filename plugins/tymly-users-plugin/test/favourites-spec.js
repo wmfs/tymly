@@ -9,7 +9,7 @@ const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_FAVOURITE_STATE_MACHINE = 'tymly_getFavouriteStartableNames_1_0'
-// const APPLY_SETTINGS_STATE_MACHINE = 'tymly_applySettings_1_0'
+const SET_FAVOURITE_STATE_MACHINE = 'tymly_setFavouriteStartableNames_1_0'
 
 describe('favourites tymly-users-plugin tests', function () {
   this.timeout(15000)
@@ -55,6 +55,26 @@ describe('favourites tymly-users-plugin tests', function () {
       }
     )
   })
+  it('should update test-user\'s favourites', function (done) {
+    statebox.startExecution(
+      {
+        stateMachineNames: '["wmfs_claimAnExpense_1_0", "wmfs_reportHydrantDefect_1_0", "notifications"]'
+      },
+      SET_FAVOURITE_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('SetFavouriteStartableNames')
+        expect(executionDescription.currentResource).to.eql('module:setFavouriteStartableNames')
+        expect(executionDescription.stateMachineName).to.eql(SET_FAVOURITE_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
   it('should ensure test-user\'s applied favourites are present in DB', function (done) {
     statebox.startExecution(
       {},
@@ -71,7 +91,7 @@ describe('favourites tymly-users-plugin tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
         expect(executionDescription.ctx.results[0].stateMachineNames).to.eql(
-          [ 'notifications', 'settings' ]
+          [ 'wmfs_claimAnExpense_1_0', 'wmfs_reportHydrantDefect_1_0', 'notifications' ]
         )
         done()
       }
