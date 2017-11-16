@@ -1,0 +1,7 @@
+{
+  "GetUserDashboardData": {
+    "Type": "Task",
+    "Resource": "module:getUserDashboardData",
+    "InputPath": "$"
+  }
+}

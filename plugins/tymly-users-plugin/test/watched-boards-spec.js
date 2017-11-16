@@ -50,7 +50,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       WATCH_BOARD_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'test-user-2'
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -70,7 +70,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       GET_WATCHED_BOARDS_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'test-user-2'
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)

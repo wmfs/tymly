@@ -1,0 +1,7 @@
+{
+  "GetTodoChanges": {
+    "Type": "Task",
+    "Resource": "module:getTodoChanges",
+    "InputPath": "$"
+  }
+}
