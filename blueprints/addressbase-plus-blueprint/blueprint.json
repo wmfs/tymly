@@ -7,6 +7,6 @@
   "author": "Reece Brend",
 
   "organisation": "West Midlands Fire Service",
-  "description": "Tymly blueprint to support ordnance survey's addressbase plus",
+  "description": "Tymly blueprint to support Ordnance Survey's addressbase plus",
   "categories": ["address", "addressbase", "gazetteer"]
 }
