@@ -1,9 +1,5 @@
 'use strict'
 
-/*
-* TODO: pg-model and tymly/storage/memory-model need to handle dates
-* */
-
 class WatchBoard {
   init (resourceConfig, env, callback) {
     this.watchedBoards = env.bootedServices.storage.models['tymly_watchedBoards']

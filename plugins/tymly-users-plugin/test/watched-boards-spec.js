@@ -81,6 +81,8 @@ describe('watched-boards tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.total).to.eql(1)
+        expect(executionDescription.ctx.subscriptions[0].feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
         subscriptionId = executionDescription.ctx.subscriptions[0].subscriptionId
         done()
       }

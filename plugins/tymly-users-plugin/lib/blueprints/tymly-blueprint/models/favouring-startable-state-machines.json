@@ -11,7 +11,7 @@
       "type": "string",
       "description": "This is a UUID, that can be used to uniquely identify any watched board of any user."
     },
-    "favouriteStartableNames": {
+    "stateMachineNames": {
       "type": "object",
       "description": "A list of favourite state machine names"
       }

@@ -2,11 +2,6 @@
 
 const async = require('async')
 
-/*
-* TODO: Handle failure if notification not found (look at tymly-mock-api)
-* 'new Date(event.startFrom).toLocaleString()' seems to work for timestamp with time zone
-* */
-
 class AcknowledgeNotifications {
   init (resourceConfig, env, callback) {
     this.notifications = env.bootedServices.storage.models['tymly_notifications']

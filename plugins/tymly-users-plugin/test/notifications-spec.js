@@ -41,7 +41,7 @@ describe('notifications tymly-users-plugin tests', function () {
     return sqlScriptRunner('./db-scripts/notifications/setup.sql', client)
   })
 
-  it('should start the state resource execution to retrieve some notifications', function (done) {
+  it('should start the state resource execution to retrieve some notifications for a specified user', function (done) {
     statebox.startExecution(
       {
         limit: limit
@@ -58,6 +58,9 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.userNotifications.totalNotifications).to.eql(2)
+        expect(executionDescription.ctx.userNotifications.notifications[0].title).to.eql('Expense claim #2')
+        expect(executionDescription.ctx.userNotifications.notifications[1].title).to.eql('Employee Info #3')
         done()
       }
     )

@@ -3,6 +3,7 @@
 const dottie = require('dottie')
 
 // 'new Date(event.startFrom).toLocaleString()' seems to work for timestamp with time zone
+// 'new Date().toLocaleString()' for the current date/time
 
 class GetNotifications {
   init (resourceConfig, env, callback) {

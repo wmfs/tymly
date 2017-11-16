@@ -1,8 +1,22 @@
 {
   "Comment": "State machine to get the user remit.",
   "version": "1.0",
-  "StartAt": "GetUserRemit",
+  "StartAt": "GetSettings",
   "States": {
+    "GetSettings": {
+      "Type": "Task",
+      "Resource": "module:getSettings",
+      "InputPath": "$",
+      "ResultPath" : "$.userSettings",
+      "Next": "GetFavouriteStartableNames"
+    },
+    "GetFavouriteStartableNames": {
+      "Type": "Task",
+      "Resource": "module:getFavouriteStartableNames",
+      "InputPath": "$",
+      "ResultPath" : "$.favourites",
+      "Next": "GetUserRemit"
+    },
     "GetUserRemit": {
       "Type": "Task",
       "Resource": "module:getUserRemit",
