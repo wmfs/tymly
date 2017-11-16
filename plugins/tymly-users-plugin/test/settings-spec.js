@@ -53,6 +53,7 @@ describe('settings tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
+        expect(executionDescription.ctx.results[0].categoryRelevance).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
         done()
       }
     )
@@ -95,7 +96,7 @@ describe('settings tymly-users-plugin tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
         expect(executionDescription.ctx.results[0].categoryRelevance).to.eql(
-          [ 'incidents', 'hr', 'hydrants', 'gazetteer', 'expenses' ]
+          ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']
         )
         done()
       }
