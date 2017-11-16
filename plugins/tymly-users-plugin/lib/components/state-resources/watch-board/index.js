@@ -22,19 +22,6 @@ class WatchBoard {
     ).then(() => {
       context.sendTaskSuccess()
     }).catch(err => context.sendTaskFailure(err))
-    // function (err, idProperties) {
-    //   console.log('idProperties:', idProperties)
-    //   if (err) {
-    //     context.sendTaskFailure(
-    //       {
-    //         error: 'watchBoardFail',
-    //         cause: err
-    //       }
-    //     )
-    //   } else {
-    //     context.sendTaskSuccess()
-    //   }
-    // }
   }
 }
 

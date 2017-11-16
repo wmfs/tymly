@@ -36,7 +36,6 @@ describe('watched-boards tymly-users-plugin tests', function () {
     )
   })
 
-  // Watch the board
   it('should watch the board', function (done) {
     statebox.startExecution(
       {
@@ -65,7 +64,6 @@ describe('watched-boards tymly-users-plugin tests', function () {
     )
   })
 
-  // Get the watched boards (to validate the above)
   it('should get the watched board to validate the previous test', function (done) {
     statebox.startExecution(
       {},
@@ -75,7 +73,6 @@ describe('watched-boards tymly-users-plugin tests', function () {
         userId: 'test-user-2'
       },
       function (err, executionDescription) {
-        console.log('>>>', executionDescription.ctx)
         expect(err).to.eql(null)
         console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
@@ -90,7 +87,6 @@ describe('watched-boards tymly-users-plugin tests', function () {
     )
   })
 
-  // Get the watched boards (to validate the above)
   it('should delete the watched board to validate the previous test', function (done) {
     statebox.startExecution(
       {
@@ -112,9 +108,9 @@ describe('watched-boards tymly-users-plugin tests', function () {
     )
   })
 
-  // Delete rows from the table - this is temporary and will be replaced with unwatch execution
-  it('clean up', function (done) {
-    client.query(`DELETE FROM tymly.watched_boards where user_id = 'test-user-2'`, function (err) {
+  it('should check the board has been unwatched', function (done) {
+    client.query(`SELECT * FROM tymly.watched_boards where id = '${subscriptionId}'`, function (err, results) {
+      expect(results.rowCount).to.eql(0)
       done(err)
     })
   })
