@@ -10,7 +10,7 @@ class WatchBoard {
     const userId = context.userId
     const feedName = event.stateMachineName + '|' + event.key.incidentNumber + '|' + event.key.incidentYear
 
-    this.watchedBoards.create(
+    this.watchedBoards.upsert(
       {
         userId: userId,
         feedName: feedName,
@@ -18,21 +18,23 @@ class WatchBoard {
         description: event.description,
         startedWatching: new Date().toLocaleString()
       },
-      {},
-      function (err, idProperties) {
-        console.log('idProperties:', idProperties)
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'watchBoardFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
-        }
-      }
-    )
+      {}
+    ).then(() => {
+      context.sendTaskSuccess()
+    }).catch(err => context.sendTaskFailure(err))
+    // function (err, idProperties) {
+    //   console.log('idProperties:', idProperties)
+    //   if (err) {
+    //     context.sendTaskFailure(
+    //       {
+    //         error: 'watchBoardFail',
+    //         cause: err
+    //       }
+    //     )
+    //   } else {
+    //     context.sendTaskSuccess()
+    //   }
+    // }
   }
 }
 

@@ -51,7 +51,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       WATCH_BOARD_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'user2'
+        userId: 'test-user-2'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -72,9 +72,10 @@ describe('watched-boards tymly-users-plugin tests', function () {
       GET_WATCHED_BOARDS_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'user2'
+        userId: 'test-user-2'
       },
       function (err, executionDescription) {
+        console.log('>>>', executionDescription.ctx)
         expect(err).to.eql(null)
         console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
@@ -113,7 +114,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
 
   // Delete rows from the table - this is temporary and will be replaced with unwatch execution
   it('clean up', function (done) {
-    client.query(`DELETE FROM tymly.watched_boards where user_id = 'user2'`, function (err) {
+    client.query(`DELETE FROM tymly.watched_boards where user_id = 'test-user-2'`, function (err) {
       done(err)
     })
   })
