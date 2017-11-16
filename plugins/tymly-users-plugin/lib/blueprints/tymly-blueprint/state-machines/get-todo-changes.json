@@ -6,7 +6,8 @@
     "GetTodoChanges": {
       "Type": "Task",
       "Resource": "module:getTodoChanges",
-      "InputPath": "$"
+      "InputPath": "$",
+      "End": true
     }
   }
 }

@@ -6,7 +6,8 @@
     "GetUserDashboardData": {
       "Type": "Task",
       "Resource": "module:getUserDashboardData",
-      "InputPath": "$"
+      "InputPath": "$",
+      "End": true
     }
   }
 }
