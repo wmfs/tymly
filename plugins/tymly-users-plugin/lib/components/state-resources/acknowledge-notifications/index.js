@@ -18,7 +18,9 @@ class AcknowledgeNotifications {
           userId: userId,
           acknowledged: new Date().toLocaleString()
         },
-        {},
+        {
+          setMissingPropertiesToNull: false
+        },
         function (err) {
           cb(err)
         }
