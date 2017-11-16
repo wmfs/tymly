@@ -1,0 +1,12 @@
+{
+  "Comment": "Get a list of todo-list entries that need adding/removing from the client store.",
+  "version": "1.0",
+  "StartAt": "GetTodoChanges",
+  "States": {
+    "GetTodoChanges": {
+      "Type": "Task",
+      "Resource": "module:getTodoChanges",
+      "InputPath": "$"
+    }
+  }
+}

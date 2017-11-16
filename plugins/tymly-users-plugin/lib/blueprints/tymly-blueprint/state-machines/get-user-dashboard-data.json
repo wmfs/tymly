@@ -1,0 +1,12 @@
+{
+  "Comment": "Get the necessary information to be render a personal dashboard for the user.",
+  "version": "1.0",
+  "StartAt": "GetUserDashboardData",
+  "States": {
+    "GetUserDashboardData": {
+      "Type": "Task",
+      "Resource": "module:getUserDashboardData",
+      "InputPath": "$"
+    }
+  }
+}
