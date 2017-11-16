@@ -11,6 +11,7 @@ class GetUserRemit {
 
   run (event, context) {
     // const userId = context.userId;
+    // const clientManifest = event.clientManifest // things currently present on client device
     const settings = event.userSettings.results[0].categoryRelevance
     const favourites = event.favourites.results[0].stateMachineNames
     let executionDescription = {

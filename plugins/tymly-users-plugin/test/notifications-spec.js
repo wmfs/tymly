@@ -120,6 +120,8 @@ describe('notifications tymly-users-plugin tests', function () {
         if (err) done(err)
         expect(err).to.eql(null)
         expect(result.rows[0].acknowledged).to.not.eql(null)
+        expect(result.rows[0].user_id).to.eql('test-user')
+        expect(result.rows[0].title).to.eql('Employee Info #3')
         done()
       }
     )
