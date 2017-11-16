@@ -1,6 +1,6 @@
 'use strict'
 
-const dottie = require('dottie')
+// const dottie = require('dottie')
 
 class GetFavouriteStartableNames {
   init (resourceConfig, env, callback) {
@@ -10,7 +10,7 @@ class GetFavouriteStartableNames {
 
   run (event, context) {
     const userId = context.userId
-    let executionDescription = {}
+    // let executionDescription = {}
     this.favouringStartableStateMachines.find(
       {
         where: {
@@ -27,7 +27,7 @@ class GetFavouriteStartableNames {
             }
           )
         } else {
-          dottie.set(executionDescription, 'favouriteStartableNames', results)
+          // dottie.set(executionDescription, 'favouriteStartableNames', results)
           context.sendTaskSuccess({results})
         }
       }
