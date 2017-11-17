@@ -21,18 +21,12 @@ class StateboxApiService {
 function addExpressApi (express, app, jwtCheck) {
   // Statebox routes
   // ---------------
-  let router = express.Router()
+  const router = express.Router()
   router.post('/', jwtCheck, routes.startExecution)
   router.get('/:executionName', jwtCheck, routes.describeExecution)
   router.put('/:executionName', jwtCheck, routes.executionAction)
   router.delete('/:executionName', jwtCheck, routes.stopExecution)
   app.use('/executions', router)
-
-  // Remit routes
-  // ------------
-  router = express.Router()
-  router.get('/', jwtCheck, routes.getUserRemit)
-  app.use('/remit', router)
 }
 
 module.exports = {

@@ -1,4 +1,4 @@
-const respond = require('./respond')
+const respond = require('../../../../util/respond')
 
 module.exports = function getUsersRemit (req, res) {
   const services = req.app.get('services')

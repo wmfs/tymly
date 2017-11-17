@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const respond = require('./respond')
+const respond = require('../../../../util/respond')
 const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
