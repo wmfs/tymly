@@ -22,7 +22,6 @@ function promised (obj, fn, ...args) {
 
 class Model {
   constructor (components, options) {
-    const _this = this
     this.client = options.client
     const table = components.table
     this.namespace = components.namespace
@@ -33,32 +32,18 @@ class Model {
     this.fullTableName = this.schemaName + '.' + this.tableName
     this.fkConstraints = table.fkConstraints
 
-    this.columnNames = _.keys(table.columns)
-    this.columnNamesWithPropertyAliases = _.map(this.columnNames, function (columnName) { return columnName + ' AS "' + _.camelCase(columnName) + '"' })
-    this.propertyIdToColumn = { }
-    for (const col of this.columnNames) {
-      this.propertyIdToColumn[_.camelCase(col)] = col
-    }
-
-    this.propertyIds = _.compact(_.map(this.columnNames, function (columnName) { if (columnName[0] !== '_') { return _.camelCase(columnName) } }))
+    this.columnNames = Object.keys(table.columns)
+    this.columnToPropertyId = this.columnNames.reduce((cols, col) => { cols[col] = _.camelCase(col); return cols }, { })
+    this.propertyIdToColumn = Object.entries(this.columnToPropertyId).map(([col, prop]) => [prop, col]).reduce((props, [p, c]) => { props[p] = c; return props }, { })
+    this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
+    this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
     this.pkColumnNames = table.pkColumnNames
-    this.pkPropertyIds = _.map(this.pkColumnNames, function (columnName) { return _.camelCase(columnName) })
+    this.pkPropertyIds = this.pkColumnNames.map(column => this.columnToPropertyId[column])
     this.attributeIds = _.difference(this.propertyIds, this.pkPropertyIds)
 
     this.subDocIds = [] // Populated once all state-machines are available
-    this.fkColumnNames = []
-    this.fkPropertyIds = []
-    _.forOwn(
-      table.fkConstraints,
-      function (fkConstraint) {
-        _this.fkColumnNames = _this.fkColumnNames.concat(fkConstraint.sourceColumns)
-      }
-    )
-    this.fkColumnNames.forEach(
-      function (fkColumnName) {
-        _this.fkPropertyIds.push(_.camelCase(fkColumnName))
-      }
-    )
+    this.fkColumnNames = Object.values(table.fkConstraints).reduce((cols, constraint) => cols.concat(constraint.sourceColumns), [ ])
+    this.fkPropertyIds = this.fkColumnNames.map(fkColumnName => _.camelCase(fkColumnName))
     this.attributeIdsWithoutfkPropertyIds = _.difference(this.attributeIds, this.fkPropertyIds)
 
     this.subModels = {}// Added once all state-machines are available
