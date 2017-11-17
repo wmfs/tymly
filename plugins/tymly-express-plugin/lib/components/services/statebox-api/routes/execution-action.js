@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const boom = require('boom')
 const actions = require('./actions/index')
+
 module.exports = function (req, res) {
   const services = req.app.get('services')
   const authService = services.auth

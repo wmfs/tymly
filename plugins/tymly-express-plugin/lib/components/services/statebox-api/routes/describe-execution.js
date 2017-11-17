@@ -1,5 +1,5 @@
-const boom = require('boom')
 const debug = require('debug')('tymlyExpressPlugin')
+const boomUp = require('./boom-up')
 
 module.exports = function describeExecution (req, res) {
   const services = req.app.get('services')
@@ -29,12 +29,7 @@ module.exports = function describeExecution (req, res) {
     {},
     function (err, executionDescription) {
       if (err) {
-        let boomErr
-        if (err.isBoom) {
-          boomErr = err
-        } else {
-          boomErr = boom.internal('Statebox returned an error while attempting to describe execution', err)
-        }
+        const boomErr = boomUp(err, 'Statebox returned an error while attempting to describe execution')
         res.status(boomErr.output.statusCode).send(boomErr.output.payload)
       } else {
         res.status(200).send(executionDescription)

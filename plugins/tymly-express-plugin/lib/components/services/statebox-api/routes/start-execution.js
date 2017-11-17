@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const boom = require('boom')
+const boomUp = require('./boom-up')
 const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
@@ -41,12 +41,7 @@ module.exports = function startExecution (req, res) {
     options,
     function (err, executionDescription) {
       if (err) {
-        let boomErr
-        if (err.isBoom) {
-          boomErr = err
-        } else {
-          boomErr = boom.internal('Statebox returned an error while attempting to start', err)
-        }
+        const boomErr = boomUp(err, 'Statebox returned an error while attempting to start')
         res.status(boomErr.output.statusCode).send(boomErr.output.payload)
       } else {
         res.status(201).send(executionDescription)
