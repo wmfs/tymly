@@ -9,6 +9,11 @@ const tymly = require('tymly')
 const path = require('path')
 const formsPluginDir = require.resolve('tymly-forms-plugin')
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 function sendToken (adminToken) {
   const options = {
     headers: {
@@ -303,22 +308,26 @@ describe('Simple Express tests', function () {
     statebox.waitUntilStoppedRunning(
       alan,
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql('tymlyTest_listeningCat_1_0')
-        expect(executionDescription.currentStateName).to.eql('Sleeping')
-        expect(executionDescription.ctx.gender).to.eql('male')
-        expect(executionDescription.ctx.petDiary).to.be.an('array')
-        expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Alan is waking up!')
-        expect(executionDescription.ctx.petDiary[1]).to.equal('Alan is listening for something... what will he hear?')
-        expect(executionDescription.ctx.petDiary[2]).to.equal('Sweet dreams Alan! x')
-        expect(executionDescription.ctx.formData.order[0]).to.eql(
-          {
-            product: 'Fresh Tuna',
-            quantity: 25
-          }
-        )
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('tymlyTest_listeningCat_1_0')
+          expect(executionDescription.currentStateName).to.eql('Sleeping')
+          expect(executionDescription.ctx.gender).to.eql('male')
+          expect(executionDescription.ctx.petDiary).to.be.an('array')
+          expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Alan is waking up!')
+          expect(executionDescription.ctx.petDiary[1]).to.equal('Alan is listening for something... what will he hear?')
+          expect(executionDescription.ctx.petDiary[2]).to.equal('Sweet dreams Alan! x')
+          expect(executionDescription.ctx.formData.order[0]).to.eql(
+            {
+              product: 'Fresh Tuna',
+              quantity: 25
+            }
+          )
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })

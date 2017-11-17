@@ -26,6 +26,10 @@ class Context {
   }
 
   sendTaskHeartbeat (output, callback) {
+    if (!callback) {
+      console.log(new Error("Missing callback parameter in call to sendTaskHeartbeat"))
+      callback = () => {}
+    }
     this.task.processTaskHeartbeat(output, this.executionName, callback)
   }
 
