@@ -72,6 +72,36 @@ describe('user-remit tymly-users-plugin tests', function () {
     )
   })
 
+  it('what if the user only has settings and no favourites yet?', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: ['wmfs_propertyViewer_1_0'],
+          categoryNames: ['hr'],
+          teamNames: ['socialClub'],
+          todoExecutionNames: ['5200987c-bb03-11e7-abc4-cec278b6b50a'],
+          formNames: ['wmfs_bookSomeoneSick_1_0', 'wmfs_createNewEmployee_1_0'],
+          startable: ['wmfs_bookSomeoneSick_1_0']
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user-3'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+        expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+        expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.userRemit.settings).to.eql(['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents'])
+        done()
+      }
+    )
+  })
+
   it('should tear down the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
   })
