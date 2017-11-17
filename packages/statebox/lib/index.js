@@ -13,7 +13,6 @@ const MemoryDao = require('./dao/Memory-dao')
 const StorageDao = require('./dao/StorageService-dao')
 const Status = require('./Status')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
-const routes = require('./routes/index')
 const CallbackManager = require('./Callback-manager')
 const debug = require('debug')('statebox')
 
@@ -255,23 +254,6 @@ class Statebox {
       }
     )
   } // _sendTaskHeartbeat
-
-  addExpressApi (express, app, jwtCheck) {
-    // Statebox routes
-    // ---------------
-    let router = express.Router()
-    router.post('/', jwtCheck, routes.startExecution)
-    router.get('/:executionName', jwtCheck, routes.describeExecution)
-    router.put('/:executionName', jwtCheck, routes.executionAction)
-    router.delete('/:executionName', jwtCheck, routes.stopExecution)
-    app.use('/executions', router)
-
-    // Remit routes
-    // ------------
-    router = express.Router()
-    router.get('/', jwtCheck, routes.getUserRemit)
-    app.use('/remit', router)
-  }
 
   waitUntilStoppedRunning (executionName, callback) {
     this.ready.then(() =>
