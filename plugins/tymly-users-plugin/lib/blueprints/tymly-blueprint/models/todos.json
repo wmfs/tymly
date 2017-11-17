@@ -6,7 +6,11 @@
   "properties": {
     "userId": {
       "type": "string",
-      "description": "The ID of the user the todo belongs to"
+      "description": "The ID of the user the todo belongs to, if a user"
+    },
+    "teamName": {
+      "type": "string",
+      "description": "The team the todo belongs to, if a team"
     },
     "stateMachineTitle": {
       "type": "string",
@@ -32,6 +36,5 @@
       "type": "object",
       "description": "A standard launches object which can be used to offer alternative actions to the user instead of the default behaviour of progressing it (e.g. perhaps allocating it to another user or team... or just viewing a related board)."
     }
-  },
-  "required": ["userID"]
+  }
 }
