@@ -7,6 +7,9 @@ COPY $tarfile .
 
 RUN tar zxf bundle.tgz
 
-COPY config/* config/
+RUN rm bundle.tgz
+
+COPY config/custom-environment-variables.json config/
+COPY config/default.json config/
 
 CMD ["node", "bundle/packages/tymly-runner/lib/index.js"]
