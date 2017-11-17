@@ -1,4 +1,4 @@
-const boomUp = require('./boom-up')
+const respond = require('./respond')
 
 module.exports = function getUsersRemit (req, res) {
   const services = req.app.get('services')
@@ -9,12 +9,7 @@ module.exports = function getUsersRemit (req, res) {
   usersService.calculateRemitForUser(
     userId,
     function (err, remit) {
-      if (err) {
-        const boomErr = boomUp(err, 'Error while attempting to calculate user remit')
-        res.status(boomErr.output.statusCode).send(boomErr.output.payload)
-      } else {
-        res.status(200).send(remit)
-      }
+      respond(res, err, remit, 200, 'Error while attempting to calculate user remit')
     }
   )
 }

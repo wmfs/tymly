@@ -1,5 +1,5 @@
 const debug = require('debug')('statebox')
-const boomUp = require('./boom-up')
+const respond = require('./respond')
 
 module.exports = function cancelTymlyRoute (req, res) {
   const services = req.app.get('services')
@@ -19,13 +19,8 @@ module.exports = function cancelTymlyRoute (req, res) {
     'STOPPED',
     req.params.executionName,
     options,
-    function (err) {
-      if (err) {
-        const boomErr = boomUp(err, `Execution returned an error while attempting to stop (executionName='${req.params.executionName})'`)
-        res.status(boomErr.output.statusCode).send(boomErr.output.payload)
-      } else {
-        res.status(204).send()
-      }
+    function (err, executionDescription) {
+      respond(res, err, executionDescription, 204, `Execution returned an error while attempting to stop (executionName='${req.params.executionName})'`)
     }
   )
 }

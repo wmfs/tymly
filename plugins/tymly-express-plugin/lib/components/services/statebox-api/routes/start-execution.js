@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const boomUp = require('./boom-up')
+const respond = require('./respond')
 const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
@@ -10,20 +10,8 @@ module.exports = function startExecution (req, res) {
   const statebox = services.statebox
   const stateMachineName = req.body.stateMachineName
 
-  let input = req.body.input
-  if (input) {
-    input = _.cloneDeep(input)
-  } else {
-    input = {}
-  }
-
-  let options = req.body.options
-  if (options) {
-    options = _.cloneDeep(options)
-  } else {
-    options = {}
-  }
-
+  const input = cloneOrDefault(req.body.input)
+  const options = cloneOrDefault(req.body.options)
   // options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
   options.action = 'startExecution'
   options.stateMachineName = stateMachineName
@@ -40,12 +28,11 @@ module.exports = function startExecution (req, res) {
     stateMachineName,
     options,
     function (err, executionDescription) {
-      if (err) {
-        const boomErr = boomUp(err, 'Statebox returned an error while attempting to start')
-        res.status(boomErr.output.statusCode).send(boomErr.output.payload)
-      } else {
-        res.status(201).send(executionDescription)
-      }
+      respond(res, err, executionDescription, 201, 'Statebox returned an error while attempting to start')
     }
   )
+}
+
+function cloneOrDefault (obj) {
+  return obj ? _.cloneDeep(obj) : { }
 }
