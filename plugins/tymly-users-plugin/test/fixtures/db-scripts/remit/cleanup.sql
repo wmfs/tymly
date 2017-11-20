@@ -1,14 +1,14 @@
 DELETE FROM tymly.categories
-WHERE label = 'Gazetteer' AND description = 'Things to do with individual buildings and other property';
+WHERE id = 'a69c0aa1-cde5-11e7-abc4-cec278b6b50a';
 DELETE FROM tymly.categories
-WHERE label = 'Fire' AND description = 'Fire-related incidents';
+WHERE id = 'a69c0ab2-cde5-11e7-abc4-cec278b6b50a';
 DELETE FROM tymly.categories
-WHERE label = 'Water' AND description = 'All things water and hydrants';
+WHERE id = 'a69c0ac3-cde5-11e7-abc4-cec278b6b50a';
 
 DELETE FROM tymly.teams
-WHERE title = 'Fire Safety (North)' AND description = 'Fire Safety Team for the northern region';
+WHERE id = 'a69c0ad4-cde5-11e7-abc4-cec278b6b50a';
 DELETE FROM tymly.teams
-WHERE title = 'Birmingham (Red watch)' AND description = 'Birmingham Fire Station (Red Watch)';
+WHERE id = 'a69c0ae5-cde5-11e7-abc4-cec278b6b50a';
 
 DELETE FROM tymly.todos
 WHERE id = 'a69c0ac9-cde5-11e7-abc4-cec278b6b50a';
