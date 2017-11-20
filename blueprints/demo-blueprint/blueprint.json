@@ -1,0 +1,11 @@
+{
+  "namespace": "tymly",
+  "name": "demo-blueprint",
+  "version": "1.0",
+  "label": "demo-blueprint",
+  "author": "",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Blueprint to demo Tymly capabilities",
+  "categories": []
+}
