@@ -1,0 +1,25 @@
+{
+  "boardTitleTemplate": "URN ${urn}",
+  "watchable": true,
+  "category": "gazetteer",
+  "content": [
+    {
+      "widget": "template",
+      "config": {
+        "template": "We can show some HTML stuff here"
+      }
+    },
+    {
+      "widget": "map",
+      "config": {
+        "centreLatPropertyPath": "lat",
+        "centreLonPropertyPath": "lon",
+        "editable": false,
+        "drawing": false,
+        "layers": ["gazetteer"],
+        "3d": true,
+        "initialZoom": "5"
+      }
+    }
+  ]
+}

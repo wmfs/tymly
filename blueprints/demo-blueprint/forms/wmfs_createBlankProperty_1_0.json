@@ -1,0 +1,249 @@
+{
+  "jsonSchema": {
+    "title": "Create a blank property",
+    "description": "Create an empty property with minimum defaults",
+    "type": "object",
+    "required": [
+      "firstName",
+      "lastName", 
+      "on", 
+      "agree"
+    ],
+    "properties": {
+      "firstName": {
+        "type": "string",
+        "title": "First name"
+      },
+      "lastName": {
+        "type": "string",
+        "title": "Last name"
+      },
+      "description": {
+        "type": "string",
+        "title": "description"
+      },
+      "image": {
+        "type": "string",
+        "title": "http://tymly.ct.tools:3210/static/wmfs/images/blocked-fire-door.jpg"
+      },
+      "itemQuantity": {
+        "type": "integer",
+        "title": "How many did you buy?",
+        "items": {
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      },
+      "itemPurpose": {
+        "type": "string",
+        "title": "What was it for?",
+        "items": {
+          "enum": [
+            "Equipment",
+            "Stationary",
+            "Travel",
+            "Other"
+          ]
+        }
+      },
+      "itemWhere": {
+        "type": "string",
+        "title": "Where did you buy it?"
+      },
+      "bio": {
+        "type": "string",
+        "title": "Bio"
+      },
+      "dateTime": {
+        "type": "string",
+        "title": "Date Time"
+      },
+      "date": {
+        "type": "string",
+        "title": "Date"
+      },
+      "time": {
+        "type": "integer",
+        "title": "Time"
+      },
+      "on": {
+        "type": "string"
+      },
+      "agree": {
+        "type": "string",
+        "title": "Agree"
+      },
+      "header": {
+        "type": "string",
+        "title": "Notifications"
+      },
+      "html": {
+        "type": "string",
+        "title": "<h1>MAKING THE WEST MIDLANDS SAFER, STRONGER AND HEALTHIER</h1>"
+      },
+      "slider": {
+        "type": "string",
+        "title": ""
+      },
+      "questionnaire": {
+        "type": "string",
+        "title": "When an alarm sounds, what should I do?"
+      }
+    }
+  },
+  "uiSchema": {
+    "firstName": {
+      "ui:widget": "textField",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "lastName": {
+      "ui:widget": "textField",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "description": {
+      "ui:widget": "richTextEditor",
+      "title": "description"
+    },
+    "image": {
+      "ui:widget": "image",
+      "title": "",
+      "ui:placeholder": "image"
+    },
+    "itemQuantity": {
+      "ui:widget": "select",
+      "ui:title": " "
+    },
+    "itemPurpose": {
+      "ui:widget": "radio",
+      "ui:title": " "
+    },
+    "itemWhere": {
+      "ui:widget": "mapBox",
+      "ui:title": " "
+    },
+    "bio": {
+      "ui:widget": "textField"
+    },
+    "dateTime": {
+      "ui:widget": "dateTimePicker",
+      "title": "",
+      "ui:placeholder": "Date Time"
+    },
+    "date": {
+      "ui:widget": "datePicker",
+      "title": "",
+      "ui:placeholder": "Date"
+    },
+    "time": {
+      "ui:widget": "timePicker",
+      "title": "",
+      "ui:placeholder": "Time"
+    },
+    "on": {
+      "ui:widget": "switch",
+      "title": ""
+    },
+    "agree": {
+      "ui:widget": "checkbox",
+      "title": "",
+      "ui:placeholder": "check"
+    },
+    "header": {
+      "ui:widget": "header",
+      "title": "Header"
+    },
+    "html": {
+      "ui:widget": "html",
+      "title": "Html Content"
+    },
+    "slider": {
+      "ui:widget": "slider",
+      "title": "Agree"
+    },
+    "questionnaire": {
+      "ui:widget": "questionnaire",
+      "title": "Agree"
+    }
+  },
+  "widgets": {
+    "textField": "TextField",
+    "textPassword": "TextPassword",
+    "image": "Image",
+    "mapBox": "MapBox",
+    "dateTimePicker": "DateTimePicker",
+    "datePicker": "DatePicker",
+    "timePicker": "TimePicker",
+    "select": "Select",
+    "radio": "Radio",
+    "switch": "Switch",
+    "checkbox": "Checkbox",
+    "richTextEditor": "RichTextEditor",
+    "header": "Header",
+    "html": "HTML",
+    "slider": "Slider",
+    "questionnaire": "Questionnaire"
+  },
+  "validation_schema": {
+    "firstName": {
+      "expression": "(/[0-9]/).test(firstName)",
+      "elements": [
+        "firstName"
+      ],
+      "error": "firstName should be a string"
+    },
+    "lastName": {
+      "expression": "(/[0-9]/).test(lastName)",
+      "elements": [
+        "lastName"
+      ],
+      "error": "lastName should be a string"
+    },
+    "bio": {
+      "expression": "(/[0-9]/).test(bio)",
+      "elements": [
+        "bio"
+      ],
+      "error": "bio should be a string"
+    },
+    "itemQuantity": {
+      "expression": "itemQuantity > 8",
+      "elements": [
+        "itemQuantity"
+      ],
+      "error": "The quantity should be less than 8"
+    },
+    "itemPurpose": {
+      "expression": "itemPurpose !== 'Travel'",
+      "elements": [
+        "itemPurpose"
+      ],
+      "error": "The item purpose is not correct"
+    },
+    "on": {
+      "expression": "on !== 'true'",
+      "elements": [
+        "on"
+      ],
+      "error": "Please set this to true"
+    },
+    "agree": {
+      "expression": "agree !== 'true'",
+      "elements": [
+        "agree"
+      ],
+      "error": "Please check this option"
+    }
+  }
+}

@@ -19,7 +19,8 @@ describe('Demo tests', function () {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
