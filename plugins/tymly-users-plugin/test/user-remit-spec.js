@@ -109,7 +109,7 @@ describe('user-remit tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.userRemit.settings).to.eql(['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents'])
-        expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(undefined)
+        expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql([])
         done()
       }
     )

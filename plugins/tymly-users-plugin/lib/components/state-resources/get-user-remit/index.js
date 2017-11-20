@@ -14,7 +14,8 @@ class GetUserRemit {
   run (event, context) {
     // const userId = context.userId
     const clientManifest = event.clientManifest
-    let settings, favourites
+    let settings = {}
+    let favourites = []
     if (event.userSettings.results.length > 0) settings = event.userSettings.results[0].categoryRelevance
     if (event.favourites.results.length > 0) favourites = event.favourites.results[0].stateMachineNames
 
@@ -25,7 +26,7 @@ class GetUserRemit {
       favouriteStartableNames: favourites
     }
 
-    let promises = [
+    const promises = [
       this.findComponents(userRemit, 'categories', 'categoryNames', 'label', clientManifest),
       this.findComponents(userRemit, 'todos', 'todoExecutionNames', 'id', clientManifest),
       this.findComponents(userRemit, 'teams', 'teamNames', 'title', clientManifest)
