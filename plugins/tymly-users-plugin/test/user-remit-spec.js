@@ -41,16 +41,20 @@ describe('user-remit tymly-users-plugin tests', function () {
     return sqlScriptRunner('./db-scripts/favourites/setup.sql', client)
   })
 
-  it('should start the state machine to get user remit', function (done) {
+  it('should create the remit test resources', function () {
+    return sqlScriptRunner('./db-scripts/remit/setup.sql', client)
+  })
+
+  it('should start the state machine to get user remit, should get whole remit because client doesn\'t contain anything', function (done) {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: ['wmfs_propertyViewer_1_0'],
-          categoryNames: ['hr'],
-          teamNames: ['socialClub'],
-          todoExecutionNames: ['5200987c-bb03-11e7-abc4-cec278b6b50a'],
-          formNames: ['wmfs_bookSomeoneSick_1_0', 'wmfs_createNewEmployee_1_0'],
-          startable: ['wmfs_bookSomeoneSick_1_0']
+          boardNames: [],
+          categoryNames: [],
+          teamNames: [],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
         }
       },
       GET_USER_REMIT_STATE_MACHINE,
@@ -67,6 +71,14 @@ describe('user-remit tymly-users-plugin tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.userRemit.settings).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
         expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
+        expect(Object.keys(executionDescription.ctx.userRemit.add.categoryNames))
+          .to.eql(['Gazetteer', 'Fire', 'Water'])
+        expect(Object.keys(executionDescription.ctx.userRemit.add.todoExecutionNames)).to.eql([
+          'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
+          'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
+          'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
+          'a69c1178-cde5-11e7-abc4-cec278b6b50a'])
+        expect(executionDescription.ctx.userRemit.remove).to.eql({})
         done()
       }
     )
@@ -76,12 +88,12 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: ['wmfs_propertyViewer_1_0'],
-          categoryNames: ['hr'],
-          teamNames: ['socialClub'],
-          todoExecutionNames: ['5200987c-bb03-11e7-abc4-cec278b6b50a'],
-          formNames: ['wmfs_bookSomeoneSick_1_0', 'wmfs_createNewEmployee_1_0'],
-          startable: ['wmfs_bookSomeoneSick_1_0']
+          boardNames: [],
+          categoryNames: [],
+          teamNames: [],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
         }
       },
       GET_USER_REMIT_STATE_MACHINE,
@@ -97,6 +109,109 @@ describe('user-remit tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.userRemit.settings).to.eql(['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents'])
+        expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql([])
+        done()
+      }
+    )
+  })
+
+  it('should add fire, water and remove hr category names to the remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: [],
+          categoryNames: ['Gazetteer', 'hr'],
+          teamNames: [],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+        expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+        expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx.userRemit.add.categoryNames))
+          .to.eql(['Fire', 'Water'])
+        expect(executionDescription.ctx.userRemit.remove.categoryNames)
+          .to.eql(['hr'])
+        done()
+      }
+    )
+  })
+
+  it('should add/remove todo execution names to/from the remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: [],
+          categoryNames: [],
+          teamNames: [],
+          todoExecutionNames: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+        expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+        expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx.userRemit.add.todoExecutionNames)).to.eql([
+          'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
+          'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
+          'a69c1178-cde5-11e7-abc4-cec278b6b50a'
+        ])
+        expect(executionDescription.ctx.userRemit.remove.todoExecutionNames)
+          .to.eql(['a69c0ad0-cde5-11e7-abc4-cec278b6b50a'])
+        done()
+      }
+    )
+  })
+
+  it('should add/remove team names to/from the remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: [],
+          categoryNames: [],
+          teamNames: ['Birmingham (Red watch)', 'Another team'],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+        expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+        expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx.userRemit.add.teamNames))
+          .to.eql(['Fire Safety (North)'])
+        expect(executionDescription.ctx.userRemit.remove.teamNames)
+          .to.eql(['Another team'])
         done()
       }
     )
@@ -108,5 +223,9 @@ describe('user-remit tymly-users-plugin tests', function () {
 
   it('should tear down the favourites test resources', function () {
     return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
+  })
+
+  it('should tear down the remit test resources', function () {
+    return sqlScriptRunner('./db-scripts/remit/cleanup.sql', client)
   })
 })

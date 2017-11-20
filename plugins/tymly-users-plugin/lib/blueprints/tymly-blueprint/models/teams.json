@@ -1,0 +1,20 @@
+{
+  "id": "teams",
+  "title": "Teams",
+  "description": "Teams",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The name of the team"
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the team"
+    },
+    "style": {
+      "type": "object",
+      "description": "The style"
+    }
+  }
+}

@@ -87,6 +87,29 @@ describe('watched-boards tymly-users-plugin tests', function () {
     )
   })
 
+  it('should fail to watch an incorrectly formatted board the board', function (done) {
+    statebox.startExecution(
+      {
+        stateMachineName: 'fail_fakeBoard_1_0',
+        description: 'This board should fail'
+      },
+      WATCH_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('WatchBoard')
+        expect(executionDescription.currentResource).to.eql('module:watchBoard')
+        expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('FAILED')
+        done()
+      }
+    )
+  })
+
   it('should delete the watched board to validate the previous test', function (done) {
     statebox.startExecution(
       {

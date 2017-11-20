@@ -1,0 +1,116 @@
+{
+  "jsonSchema": {
+    "title": "Claim an expense",
+    "description": "Claim for some travel or similar",
+    "type": "object",
+    "required": [
+      "firstName",
+      "lastName"
+    ],
+    "properties": {
+      "firstName": {
+        "type": "string",
+        "title": "First name"
+      },
+      "lastName": {
+        "type": "string",
+        "title": "Last name"
+      },
+      "age": {
+        "type": "integer",
+        "title": "Age"
+      },
+      "bio": {
+        "type": "string",
+        "title": "Bio"
+      },
+      "password": {
+        "type": "string",
+        "title": "Password",
+        "minLength": 3
+      },
+      "repeat_password": {
+        "type": "string", 
+        "title": "Repeat Password"
+      },
+      "telephone": {
+        "type": "string",
+        "title": "Telephone",
+        "minLength": 10
+      },
+      "date": {
+        "type": "string",
+        "title": "Date"
+      }
+    }
+  },
+  "uiSchema": {
+    "firstName": {
+      "ui:widget": "textField",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "lastName": {
+      "ui:widget": "textField",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "age": {
+      "ui:widget": "textField",
+      "ui:title": "Age of person",
+      "ui:description": "(earthian year)"
+    },
+    "bio": {
+      "ui:widget": "textField"
+    },
+    "password": {
+      "ui:widget": "textPassword",
+      "ui:help": "Hint: Make it strong!"
+    },
+    "repeat_password": {
+      "ui:widget": "textPassword", 
+      "ui:help": "Make sure it is the same as password"
+    },
+    "date": {
+      "ui:widget": "alt-datetime"
+    },
+    "telephone": {
+      "ui:widget": "telephone",
+      "ui:options": {
+        "inputType": "tel"
+      }
+    }
+  },
+  "widgets": {
+    "textField": "TextField",
+    "telephone": "TextField",
+    "textPassword": "TextPassword"
+  }, 
+  "validation_schema": {
+    "firstName": {
+      "expression": "(/[0-9]/).test(firstName)", 
+      "elements": ["firstName"], 
+      "error": "firstName should be a string"
+    },
+    "lastName": {
+      "expression": "(/[0-9]/).test(lastName)", 
+      "elements": ["lastName"], 
+      "error": "lastName should be a string"
+    },
+    "bio": {
+      "expression": "(/[0-9]/).test(bio)", 
+      "elements": ["bio"], 
+      "error": "bio should be a string"
+    },
+    "repeat_password": {
+      "expression": "password !== repeat_password", 
+      "elements": ["password", "repeat_password"], 
+      "error": "Passwords do not match"
+    }, 
+    "telephone": {
+      "expression": "(/[a-zA-Z]/).test(telephone)", 
+      "elements": ["telephone"], 
+      "error": "Telephone should only contain numbers"
+    }
+  }
+}

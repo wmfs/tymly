@@ -1,0 +1,12 @@
+{
+  "boardTitleTemplate": "Dashboard",
+  "watchable": false,
+  "content": [
+    {
+      "widget": "template",
+      "config": {
+        "template": "Personal dashboard for user!"
+      }
+    }
+  ]
+}
