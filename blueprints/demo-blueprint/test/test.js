@@ -9,11 +9,7 @@ const tymly = require('tymly')
 
 describe('Demo tests', function () {
   this.timeout(15000)
-
-  // const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
-
-  let statebox
-  // let client
+  let models
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -28,13 +24,19 @@ describe('Demo tests', function () {
         config: {}
       },
       function (err, tymlyServices) {
-        console.log('$$$', err)
         expect(err).to.eql(null)
-        statebox = tymlyServices.statebox
-        console.log(statebox)
-        // client = tymlyServices.storage.client
+        models = tymlyServices.storage.models
         done()
       }
     )
+  })
+  it('should get categories', function (done) {
+    models.tymly_categories.find('Expenses')
+      .then(result => {
+        expect(result[0].label).to.eql('Expenses')
+        expect(result[0].description).to.eql('Things to do with claiming and authorising expenses')
+        expect(result[0].style).to.eql({'icon': 'coin', 'backgroundColor': '#00GG00'})
+        done()
+      })
   })
 })
