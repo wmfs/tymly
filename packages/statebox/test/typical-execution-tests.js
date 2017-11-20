@@ -66,6 +66,34 @@ DaosToTest.forEach(([name, options]) => {
       )
     })
 
+    it('should execute helloThenWorldThroughException', function (done) {
+      statebox.startExecution(
+        {},  // input
+        'helloThenWorldThroughException', // state machine name
+        {}, // options
+        function (err, executionDescription) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('RUNNING')
+          executionName = executionDescription.executionName
+          done()
+        }
+      )
+    })
+
+    it('should successfully complete helloThenWorldThroughException execution', function (done) {
+      statebox.waitUntilStoppedRunning(
+        executionName,
+        function (err, executionDescription) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenWorldThroughException')
+          expect(executionDescription.currentStateName).to.eql('World')
+          expect(executionDescription.currentResource).to.eql('module:world')
+          done()
+        }
+      )
+    })
+
     it('should fail when asked to wait on a non-existant execution', function (done) {
       statebox.waitUntilStoppedRunning(
         'monkey-trousers',
@@ -143,6 +171,36 @@ DaosToTest.forEach(([name, options]) => {
           expect(err).to.eql(null)
           expect(executionDescription.status).to.eql('FAILED')
           expect(executionDescription.stateMachineName).to.eql('helloThenFailure')
+          expect(executionDescription.currentStateName).to.eql('Failure')
+          expect(executionDescription.currentResource).to.eql('module:failure')
+          expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
+          expect(executionDescription.errorMessage).to.eql('But at least it was expected')
+          done()
+        }
+      )
+    })
+
+    it('should execute helloThenUncaughtFailure', function (done) {
+      statebox.startExecution(
+        {},  // input
+        'helloThenUncaughtFailure', // state machine name
+        {}, // options
+        function (err, executionDescription) {
+          expect(err).to.eql(null)
+          executionName = executionDescription.executionName
+          expect(executionDescription.status).to.eql('RUNNING')
+          done()
+        }
+      )
+    })
+
+    it('should successfully fail helloThenUncaughtFailure execution 2', function (done) {
+      statebox.waitUntilStoppedRunning(
+        executionName,
+        function (err, executionDescription) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenUncaughtFailure')
           expect(executionDescription.currentStateName).to.eql('Failure')
           expect(executionDescription.currentResource).to.eql('module:failure')
           expect(executionDescription.errorCode).to.eql('SomethingBadHappened')

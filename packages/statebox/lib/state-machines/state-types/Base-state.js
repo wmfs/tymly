@@ -36,21 +36,69 @@ class BaseState {
   }
 
   runTaskFailure (executionDescription, options, callback) {
+    let ctx = executionDescription.ctx
+    const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+    const stateDefinition = stateMachine.findStateDefinitionByName(executionDescription.currentStateName)
     const executionName = executionDescription.executionName
-    const tracker = this.options.parallelBranchTracker
-    tracker.registerChildExecutionFail(executionName)
-    this.options.dao.failExecution(
-      executionDescription,
-      options.cause,
-      options.error,
-      function (err, failedExecutionDescription) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, failedExecutionDescription)
+
+    let throwException = false
+    if (stateDefinition.Catch) {
+      let caughtException = false
+      for (let catchBlock of stateDefinition.Catch) {
+        let catchNext
+        for (let exceptionName of catchBlock.ErrorEquals) {
+          if (exceptionName === options.error || exceptionName === 'States.ALL') {
+            catchNext = catchBlock.Next
+            break
+          }
+        }
+
+        if (catchNext) {
+          caughtException = true
+          const nextResource = stateMachine.findStateDefinitionByName(catchNext).Resource
+          this.options.dao.setNextState(
+            executionName, // executionName
+            catchNext, // nextStateName
+            nextResource,
+            ctx, // ctx
+            function (err) {
+              if (err) {
+                // TODO: Needs handling as per spec
+                throw new Error(err)
+              } else {
+                stateMachine.processState(executionName)
+              }
+            }
+          )
+          break
         }
       }
-    )
+
+      if (!caughtException) {
+        // all catch blocks were evaluated, but no matches were found
+        throwException = true
+      }
+    } else {
+      // no catch blocks were defined in the state definition
+      throwException = true
+    }
+
+    if (throwException) {
+      const tracker = this.options.parallelBranchTracker
+      tracker.registerChildExecutionFail(executionName)
+      this.options.dao.failExecution(
+        executionDescription,
+        options.cause,
+        options.error,
+        function (err, failedExecutionDescription) {
+          if (err) {
+            callback(err)
+          } else {
+            callback(null, failedExecutionDescription)
+          }
+        }
+      )
+    }
   }
 
   runTaskHeartbeat (executionDescription, output, callback) {

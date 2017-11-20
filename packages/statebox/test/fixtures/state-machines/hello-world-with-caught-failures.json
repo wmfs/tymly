@@ -1,0 +1,38 @@
+{
+  "Comment": "A simple four-state machine, which will fail during the second and third state (but will recover via catching exceptions)",
+  "StartAt": "Hello",
+  "States": {
+    "Hello": {
+      "Type": "Task",
+      "Resource": "module:hello",
+      "Next": "Failure1"
+    },
+    "Failure1": {
+      "Type": "Task",
+      "Resource": "module:failure",
+      "Catch": [
+        {
+          "ErrorEquals": [ "States.ALL" ],
+          "Next": "Failure2"
+        }
+      ],
+      "End": true
+    },
+    "Failure2": {
+      "Type": "Task",
+      "Resource": "module:failure",
+      "Catch": [
+        {
+          "ErrorEquals": [ "SomethingBadHappened" ],
+          "Next": "World"
+        }
+      ],
+      "End": true
+    },
+    "World": {
+      "Type": "Task",
+      "Resource": "module:world",
+      "End": true
+    }
+  }
+}
