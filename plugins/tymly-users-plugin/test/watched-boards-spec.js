@@ -137,4 +137,11 @@ describe('watched-boards tymly-users-plugin tests', function () {
       done(err)
     })
   })
+
+  it('should clean up watched boards', function (done) {
+    client.query(`DELETE FROM tymly.watched_boards where user_id = 'test-user'`, function (err, results) {
+      expect(err).to.eql(null)
+      done()
+    })
+  })
 })
