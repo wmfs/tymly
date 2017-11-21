@@ -9,7 +9,7 @@
     "standard": "^10.0.3",
     "debug": "^2.6.8",
     "tymly": "0.0.15",
-    "tymly-forms-plugin": "0.0.8"
+    "tymly-users-plugin": "0.0.1"
   },
   "scripts": {
     "start": "node ./lib/index.js",

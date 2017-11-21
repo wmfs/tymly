@@ -1,0 +1,81 @@
+{
+  "jsonSchema": {
+    "title": "Add safety record",
+    "description": "Add a new safety record to an incident",
+    "type": "object",
+    "required": [
+      "firstName",
+      "lastName"
+    ],
+    "properties": {
+      "firstName": {
+        "type": "string",
+        "title": "First name"
+      },
+      "lastName": {
+        "type": "string",
+        "title": "Last name"
+      },
+      "age": {
+        "type": "integer",
+        "title": "Age"
+      },
+      "bio": {
+        "type": "string",
+        "title": "Bio"
+      },
+      "password": {
+        "type": "string",
+        "title": "Password",
+        "minLength": 3
+      },
+      "telephone": {
+        "type": "string",
+        "title": "Telephone",
+        "minLength": 10
+      }, 
+      "date": {
+        "type": "string",
+        "title": "Date"
+      }
+    }
+  },
+  "uiSchema": {
+    "firstName": {
+      "ui:widget": "w_input",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "lastName": {
+      "ui:widget": "w_input",
+      "ui:autofocus": true,
+      "ui:emptyValue": ""
+    },
+    "age": {
+      "ui:widget": "w_input",
+      "ui:title": "Age of person",
+      "ui:description": "(earthian year)"
+    },
+    "bio": {
+      "ui:widget": "w_textarea"
+    },
+    "password": {
+      "ui:widget": "password",
+      "ui:help": "Hint: Make it strong!"
+    },
+    "date": {
+      "ui:widget": "alt-datetime"
+    },
+    "telephone": {
+      "ui:widget": "w_telephone",
+      "ui:options": {
+        "inputType": "tel"
+      }
+    }
+  }, 
+  "widgets": {
+    "w_input": "W_Input",
+    "w_textarea": "W_Textarea",
+    "w_telephone": "W_Telephone"
+  }
+}

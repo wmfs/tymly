@@ -1,14 +1,15 @@
 INSERT INTO tymly.todos (user_id, state_machine_title, state_machine_category,
-todo_title, description, required_human_input, launches)
+todo_title, description, required_human_input, launches, id)
 VALUES
 ('test-user', 'Process expense claim', 'expenses', 'Homer Simpson',
- 'Homer Simpson is claiming $12 for A pack of Duff Beer', '{}', '{}');
+ 'Homer Simpson is claiming $12 for A pack of Duff Beer', '{}', '{}', '5200987c-bb03-11e7-abc4-cec278b6b50a');
 
 INSERT INTO tymly.todos (user_id, state_machine_title, state_machine_category,
-  todo_title, description, required_human_input, launches)
+  todo_title, description, required_human_input, launches, id)
   VALUES
   ('test-user', 'wmfs_bookSomeoneSick_1_0', 'hr', 'Vincent Vega',
-   'Acknowledge Vincent Vega has booked sick Friday 27th October 2017', '{}', '{}');
+   'Acknowledge Vincent Vega has booked sick Friday 27th October 2017', '{}', '{}',
+    '0d625558-ce99-11e7-b7e3-c38932399c15');
 
 INSERT INTO tymly.todos (user_id, state_machine_title, state_machine_category,
  todo_title, description, required_human_input, launches)
