@@ -2,9 +2,7 @@
   "id": "settings",
   "title": "Settings",
   "description": "Settings",
-  "primaryKey": [
-    "userId"
-  ],
+  "primaryKey": ["userId"],
   "type": "object",
   "properties": {
     "userId": {

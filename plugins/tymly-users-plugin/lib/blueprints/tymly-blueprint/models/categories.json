@@ -2,9 +2,6 @@
   "id": "categories",
   "title": "Categories",
   "description": "Categories",
-  "primaryKey": [
-    "label"
-  ],
   "type": "object",
   "properties": {
     "label": {
