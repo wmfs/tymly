@@ -18,7 +18,7 @@ OR
 ```bash
 $ lerna run test --concurrency X
 ```
-Where X is how many tests to execute concurrently (higher X === faster testing)
+To test the entire lerna repository, where X is how many tests to execute concurrently (higher X === faster testing)
 
 
 
