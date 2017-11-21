@@ -34,7 +34,6 @@ describe('Demo tests', function () {
 
   it('should get boards', function (done) {
     expect(boards['tymly_expense'].boardTitleTemplate).to.eql('Dashboard')
-    expect(boards['tymly_personalDetails'].boardTitleTemplate).to.eql('Dashboard')
     done()
   })
 })
