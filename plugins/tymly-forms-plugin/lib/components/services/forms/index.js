@@ -29,5 +29,5 @@ module.exports = {
   refProperties: {
     formId: 'forms'
   },
-  bootBefore: ['tymlys', 'rbac']
+  bootBefore: ['tymly', 'rbac']
 }
