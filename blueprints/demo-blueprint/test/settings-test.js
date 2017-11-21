@@ -7,16 +7,16 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 
-xdescribe('Demo tests', function () {
-  this.timeout(55000)
+describe('Demo tests', function () {
+  this.timeout(5000)
   let models
+  // let forms
 
   it('should startup tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
-          require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -33,11 +33,10 @@ xdescribe('Demo tests', function () {
   })
 
   it('should get settings', function (done) {
-    // console.log(models.tymly_settings)
     models.tymly_settings.find('user1')
       .then(result => {
         expect(result[0].userId).to.eql('user1')
-        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']})
+        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
         done()
       })
   })
