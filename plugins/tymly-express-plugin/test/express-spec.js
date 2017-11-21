@@ -7,7 +7,7 @@ const rest = require('restler')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-const formsPluginDir = require.resolve('tymly-forms-plugin')
+const formsPluginDir = require.resolve('tymly-users-plugin')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
