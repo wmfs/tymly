@@ -1,0 +1,23 @@
+{
+  "propertyNames": [
+    "userId",
+    "teamName",
+    "stateMachineTitle",
+    "stateMachineCategory",
+    "todoTitle",
+    "description",
+    "requiredHumanInput",
+    "launches"
+  ],
+  "data": [
+    [
+      "test", "ClaimsTeam", "Expenses", "hr", "Claim1", "Walter White is claiming $35 for A large plastic container", {}, {}
+    ],
+    [
+      "test", "ITTeam", "Sickness", "hr", "Sickness", "Acknowledge Vincent Vega has booked sick Friday 27th October 2017", {}, {}
+    ],
+    [
+      "test", "ClaimsTeam", "Expenses", "hr", "Claim2", "Walter White is claiming $50 for A large costume", {}, {}
+    ]
+  ]
+}

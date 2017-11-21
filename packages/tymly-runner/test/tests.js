@@ -13,10 +13,10 @@ describe('Simple Tymly test', function () {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './fixtures/plugins/cats-plugin')
+          path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
         ],
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')
+          path.resolve(__dirname, './../../../blueprints/ridge-blueprint')
         ]
       },
       function (err, tymlyServices) {
