@@ -7,14 +7,16 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 
-xdescribe('Teams tests', function () {
-  this.timeout(5000)
-  let models
+describe('Demo tests', function () {
+  this.timeout(55000)
+  let boards
 
   it('should startup tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -24,19 +26,15 @@ xdescribe('Teams tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        models = tymlyServices.storage.models
+        boards = tymlyServices.boards.boards
         done()
       }
     )
   })
 
-  it('should get teams', function (done) {
-    models.tymly_teams.find('Systems Development')
-      .then(result => {
-        expect(result[0].title).to.eql('Systems Development')
-        expect(result[0].description).to.eql('The ICT Systems Development Team at West Midlands Fire Service')
-        expect(result[0].style).to.eql({'icon': 'computer', 'backgroundColor': '#000000'})
-        done()
-      })
+  it('should get boards', function (done) {
+    expect(boards['tymly_expense'].boardTitleTemplate).to.eql('Dashboard')
+    expect(boards['tymly_personalDetails'].boardTitleTemplate).to.eql('Dashboard')
+    done()
   })
 })
