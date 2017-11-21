@@ -1,4 +1,9 @@
 {
   "type": "object",
-  "properties": {}
+  "properties": {
+    "clientTodoExecutionNames": {
+      "type": "string",
+      "description": "An array of all the todo-executions that are currently stored on the client device."
+    }
+  }
 }

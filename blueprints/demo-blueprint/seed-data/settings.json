@@ -1,0 +1,11 @@
+{
+  "propertyNames": [
+    "userId",
+    "categoryRelevance"
+  ],
+  "data": [
+    ["user1", {"user1": ["incidents", "hr", "hydrants", "gazetteer"]}],
+    ["user2", {"user2": ["incidents", "hr", "hydrants", "gazetteer", "expenses"]}],
+    ["user3", {"user3": ["incidents", "gazetteer", "expenses"]}]
+  ]
+}

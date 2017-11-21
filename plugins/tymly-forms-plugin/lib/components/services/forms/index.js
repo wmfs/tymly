@@ -16,6 +16,7 @@ class FormsService {
       if (formDefinitions.hasOwnProperty(formId)) {
         options.messages.info(formId)
         formDefinition = formDefinitions[formId]
+        console.log('£££', formDefinition)
         this.forms[formId] = formDefinition
       }
     }
@@ -29,5 +30,5 @@ module.exports = {
   refProperties: {
     formId: 'forms'
   },
-  bootBefore: ['tymlys', 'rbac']
+  bootBefore: ['tymly', 'rbac']
 }

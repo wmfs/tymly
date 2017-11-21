@@ -1,0 +1,27 @@
+{
+  "Comment": "A simple three-state machine, which will fail on the second state",
+  "StartAt": "Hello",
+  "States": {
+    "Hello": {
+      "Type": "Task",
+      "Resource": "module:hello",
+      "Next": "Failure"
+    },
+    "Failure": {
+      "Type": "Task",
+      "Resource": "module:failure",
+      "Catch": [
+        {
+          "ErrorEquals":["States.EXPLODING_PIES"],
+          "Next":"NeverRuns"
+        }
+      ],
+      "Next": "NeverRuns"
+    },
+    "NeverRuns": {
+      "Type": "Task",
+      "Resource": "module:world",
+      "End": true
+    }
+  }
+}

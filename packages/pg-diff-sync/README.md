@@ -32,8 +32,8 @@ $ npm install pg-diff-sync --save
 ### Arguments:
 | Arg  | Type | Notes |
 | ---  | ----- | ------ |
-| `baseDbStructure`  | `object`  | An object representing the original starting position of a database - most likely the output conjured from the __[pg-info](https://github.com/wmfs/pg-info)__ package |
-| `targetDbStructure`  | `object`  | And an object representing how the database needs to be - in the same form as `baseDbStructure` (again see the __[pg-info](https://github.com/wmfs/pg-info)__ package for more details) |
+| `baseDbStructure`  | `object`  | An object representing the original starting position of a database - most likely the output conjured from the __[pg-info](https://github.com/wmfs/tymly/tree/master/packages/pg-info)__ package |
+| `targetDbStructure`  | `object`  | And an object representing how the database needs to be - in the same form as `baseDbStructure` (again see the __[pg-info](https://github.com/wmfs/tymly/tree/master/packages/pg-info)__ package for more details) |
 
 ## <a name="output"></a>Output
 

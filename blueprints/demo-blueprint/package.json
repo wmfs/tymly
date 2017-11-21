@@ -10,6 +10,7 @@
     "debug": "^2.6.8",
     "tymly-pg-plugin": "0.0.6",
     "tymly-users-plugin": "0.0.1",
+    "tymly-forms-plugin": "0.0.8",
     "tymly": "0.0.15"
   },
   "scripts": {

@@ -18,11 +18,11 @@
         "modelId": "incident"
       },
       "ResultPath": "$.formData",
-      "Next": "FormFilling"
+      "Next": "AwaitingHumanInput"
     },
-    "FormFilling": {
+    "AwaitingHumanInput": {
       "Type": "Task",
-      "Resource": "module:formFilling",
+      "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "formId": "incidentForm"
       },

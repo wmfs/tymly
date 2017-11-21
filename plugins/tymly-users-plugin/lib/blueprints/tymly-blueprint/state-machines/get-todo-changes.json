@@ -1,8 +1,29 @@
 {
   "Comment": "Get a list of todo-list entries that need adding/removing from the client store.",
   "version": "1.0",
-  "StartAt": "GetTodoChanges",
+  "StartAt": "GetSettings",
   "States": {
+    "GetSettings": {
+      "Type": "Task",
+      "Resource": "module:getSettings",
+      "InputPath": "$",
+      "ResultPath" : "$.userSettings",
+      "Next": "GetFavouriteStartableNames"
+    },
+    "GetFavouriteStartableNames": {
+      "Type": "Task",
+      "Resource": "module:getFavouriteStartableNames",
+      "InputPath": "$",
+      "ResultPath" : "$.favourites",
+      "Next": "GetUserRemit"
+    },
+    "GetUserRemit": {
+      "Type": "Task",
+      "Resource": "module:getUserRemit",
+      "InputPath": "$",
+      "ResultPath": "$.userRemit",
+      "Next": "GetTodoChanges"
+    },
     "GetTodoChanges": {
       "Type": "Task",
       "Resource": "module:getTodoChanges",
