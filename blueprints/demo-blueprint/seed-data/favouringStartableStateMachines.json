@@ -1,0 +1,9 @@
+{
+  "propertyNames": [
+    "userId",
+    "stateMachineNames"
+  ],
+  "data": [
+    ["user1", {"user1": [ "wmfs_claimAnExpense_1_0", "wmfs_reportHydrantDefect_1_0"]}]
+    ]
+}

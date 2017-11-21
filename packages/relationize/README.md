@@ -90,7 +90,7 @@ __Properties__
 Relationize returns objects of the same form as those returned by the __[pg-info](https://github.com/wmfs/pg-info)__ package.
 The output of Relationize can then be used to generate a relational database (complete with comments, tables, indexes and foreign key constraints) to store your JSON-structured data.
 
-* __Please refer to the [pg-info docs](https://github.com/wmfs/pg-info) for more details.__
+* __Please refer to the [pg-info docs](https://github.com/wmfs/tymly/tree/master/packages/pg-info) for more details.__
 
 
 ## <a name="test"></a>Testing
