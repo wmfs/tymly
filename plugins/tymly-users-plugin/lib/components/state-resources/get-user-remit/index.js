@@ -34,7 +34,7 @@ class GetUserRemit {
     ]
 
     if (this.forms) {
-      promises.push(this.processComponents(userRemit, 'formNames', this.forms.forms, 'key', clientManifest['formNames']))
+      promises.push(this.processComponents(userRemit, 'formNames', this.forms.forms, clientManifest['formNames']))
     }
 
     Promise.all(promises)
@@ -51,48 +51,27 @@ class GetUserRemit {
     return new Promise((resolve, reject) => {
       this[modelName].find({}, (err, results) => {
         if (err) reject(err)
-        this.processComponents(userRemit, componentType, results, titleCol, clientManifest[componentType])
+        let resultsObj = {}
+        results.map(r => { resultsObj[r[titleCol]] = r })
+        this.processComponents(userRemit, componentType, resultsObj, clientManifest[componentType])
         resolve(userRemit)
       })
     })
   }
 
-  processComponents (userRemit, componentType, components, titleCol, alreadyInClientManifest) {
-    if (titleCol === 'key') {
-      _.forEach(
-        Object.keys(components),
-        function (componentName) {
-          if (alreadyInClientManifest.indexOf(componentName) === -1) {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
-          }
+  processComponents (userRemit, componentType, components, alreadyInClientManifest) {
+    _.forEach(
+      Object.keys(components),
+      function (componentName) {
+        if (alreadyInClientManifest.indexOf(componentName) === -1) {
+          dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
         }
-      )
-
-      const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
-      if (namesToRemove.length > 0) {
-        userRemit.remove[componentType] = namesToRemove
       }
-    } else {
-      if (!_.isArray(alreadyInClientManifest)) {
-        alreadyInClientManifest = []
-      }
-      _.forEach(
-        components,
-        function (component) {
-          const componentName = component[titleCol]
+    )
 
-          if (alreadyInClientManifest.indexOf(componentName) === -1) {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, component)
-          }
-        }
-      )
-      let componentsObj = {}
-      components.map(c => { componentsObj[c[titleCol]] = c })
-
-      const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(componentsObj))
-      if (namesToRemove.length > 0) {
-        userRemit.remove[componentType] = namesToRemove
-      }
+    const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
+    if (namesToRemove.length > 0) {
+      userRemit.remove[componentType] = namesToRemove
     }
 
     return userRemit
