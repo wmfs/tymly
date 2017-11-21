@@ -2,6 +2,9 @@
   "id": "watched-boards",
   "title": "Watched Boards",
   "description": "Watched Boards",
+  "primaryKey": [
+    "userId"
+  ],
   "type": "object",
   "properties": {
     "userId": {

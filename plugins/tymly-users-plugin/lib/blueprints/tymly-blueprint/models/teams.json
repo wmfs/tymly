@@ -2,6 +2,9 @@
   "id": "teams",
   "title": "Teams",
   "description": "Teams",
+  "primaryKey": [
+    "title"
+  ],
   "type": "object",
   "properties": {
     "title": {

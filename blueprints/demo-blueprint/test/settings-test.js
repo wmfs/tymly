@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('Settings tests', function () {
-  this.timeout(5000)
+  this.timeout(15000)
   let models
   // let forms
 
