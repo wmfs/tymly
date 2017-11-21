@@ -78,6 +78,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
           'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
           'a69c1178-cde5-11e7-abc4-cec278b6b50a'])
+        expect(Object.keys(executionDescription.ctx.userRemit.add.teamNames)).to.eql(['Fire Safety (North)', 'Birmingham (Red watch)'])
         expect(executionDescription.ctx.userRemit.remove).to.eql({})
         done()
       }

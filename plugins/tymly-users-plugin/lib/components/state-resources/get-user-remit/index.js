@@ -8,6 +8,7 @@ class GetUserRemit {
     this.categories = env.bootedServices.storage.models['tymly_categories']
     this.teams = env.bootedServices.storage.models['tymly_teams']
     this.todos = env.bootedServices.storage.models['tymly_todos']
+    // get forms/boards/startables
     callback(null)
   }
 
