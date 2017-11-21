@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('Demo tests', function () {
-  this.timeout(55000)
+  this.timeout(5000)
   let models
   // let forms
 
@@ -17,7 +17,6 @@ describe('Demo tests', function () {
       {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
-          // require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -28,23 +27,18 @@ describe('Demo tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         models = tymlyServices.storage.models
-        // forms = tymlyServices.forms.forms
         done()
       }
     )
   })
 
-  it('should get categories', function (done) {
-    // console.log(models.tymly_settings)
+  it('should get settings', function (done) {
     models.tymly_settings.find('user1')
       .then(result => {
+        console.log('!!', result[0].categoryRelevance)
         expect(result[0].userId).to.eql('user1')
-        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']})
+        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
         done()
       })
-  })
-
-  it('should get boards', function(done) {
-
   })
 })
