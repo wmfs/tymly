@@ -17,7 +17,6 @@ describe('Demo tests', function () {
       {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
-          // require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -66,6 +65,22 @@ describe('Demo tests', function () {
         expect(result[2].title).to.eql('Employee Info #3')
         expect(result[2].description).to.eql('Expense claim #3')
         expect(result[2].category).to.eql('information')
+        done()
+      })
+  })
+  it('should get the todos', function (done) {
+    models.tymly_todos.find('test')
+      .then(result => {
+        expect(result[0].userId).to.eql('test')
+        expect(result[0].teamName).to.eql('ClaimsTeam')
+        expect(result[0].stateMachineTitle).to.eql('Expenses')
+        expect(result[0].stateMachineCategory).to.eql('hr')
+        expect(result[1].userId).to.eql('test')
+        console.log(result[1])
+        // expect(result[1].todoTitle).to.eql('Sickness')
+        expect(result[1].description).to.eql('Acknowledge Vincent Vega has booked sick Friday 27th October 2017')
+        expect(result[2].userId).to.eql('test')
+        expect(result[2].description).to.eql('Walter White is claiming $50 for A large costume')
         done()
       })
   })
