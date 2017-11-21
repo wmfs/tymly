@@ -35,7 +35,6 @@ describe('Demo tests', function () {
   it('should get settings', function (done) {
     models.tymly_settings.find('user1')
       .then(result => {
-        console.log('!!', result[0].categoryRelevance)
         expect(result[0].userId).to.eql('user1')
         expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
         done()
