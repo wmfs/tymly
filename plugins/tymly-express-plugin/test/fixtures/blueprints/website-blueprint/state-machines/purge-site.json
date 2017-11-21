@@ -7,11 +7,11 @@
   "categories": [
     "website"
   ],
-  "StartAt": "FormFilling",
+  "StartAt": "AwaitingHumanInput",
   "States": {
-    "FormFilling": {
+    "AwaitingHumanInput": {
       "Type": "Task",
-      "Resource": "module:formFilling",
+      "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "formId": "purgeForm"
       },

@@ -18,7 +18,7 @@ describe('data import', function () {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-forms-plugin')
+          require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
@@ -39,13 +39,13 @@ describe('data import', function () {
       {},  // input
       STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
         executionName = executionDescription.executionName
         expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.currentStateName).to.eql('FormFilling')
+        expect(executionDescription.currentStateName).to.eql('AwaitingHumanInput')
         done()
       }
     )

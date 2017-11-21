@@ -1,10 +1,5 @@
 'use strict'
 
-// var dottie = require ('dottie');
-// var mongoose = require ('mongoose');
-// var transformSchemaDefinition = require ('mongoose-gen');
-// var _ = require ('lodash');
-
 class FormsService {
   boot (options, callback) {
     this.forms = {}
