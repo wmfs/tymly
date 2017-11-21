@@ -7,7 +7,7 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 
-describe('Demo tests', function () {
+describe('Board tests', function () {
   this.timeout(55000)
   let boards
 
