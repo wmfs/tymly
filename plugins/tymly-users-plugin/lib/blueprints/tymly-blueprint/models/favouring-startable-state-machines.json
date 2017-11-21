@@ -14,6 +14,6 @@
     "stateMachineNames": {
       "type": "object",
       "description": "A list of favourite state machine names"
+      }
     }
-  }
 }

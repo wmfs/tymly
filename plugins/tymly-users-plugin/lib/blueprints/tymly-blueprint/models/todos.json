@@ -2,9 +2,6 @@
   "id": "todos",
   "title": "Todos",
   "description": "Todos",
-  "primaryKey": [
-    "userId"
-  ],
   "type": "object",
   "properties": {
     "userId": {

@@ -2,9 +2,6 @@
   "id": "notifications",
   "title": "Notifications",
   "description": "Notifications",
-  "primaryKey": [
-    "userId"
-  ],
   "type": "object",
   "properties": {
     "userId": {
