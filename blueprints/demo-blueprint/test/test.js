@@ -52,9 +52,9 @@ describe('Demo tests', function () {
       })
   })
   it('should get forms', function (done) {
-    expect(forms['tymly_wmfsBookSomeoneSick10'].jsonSchema.title).to.eql('Book someone sick')
-    expect(forms['tymly_wmfsClaimAnExpense10'].jsonSchema.title).to.eql('Claim an expense')
-    expect(forms['tymly_wmfsCreateBlankProperty10'].jsonSchema.title).to.eql('Create a blank property')
+    expect(forms['tymly_bookSomeoneSick'].jsonSchema.title).to.eql('Book someone sick')
+    expect(forms['tymly_claimAnExpense'].jsonSchema.title).to.eql('Claim an expense')
+    expect(forms['tymly_createBlankProperty'].jsonSchema.title).to.eql('Create a blank property')
     done()
   })
 })
