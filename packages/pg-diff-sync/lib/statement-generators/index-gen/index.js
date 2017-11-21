@@ -6,6 +6,21 @@ const templateString = fs.readFileSync(path.resolve(__dirname, './template.ejs')
 const template = ejs.compile(templateString, {})
 
 module.exports = function indexStatementGenerator (indexId, index, statements) {
+  switch (index.target.columns[0]) {
+    case 'created':
+      index.target.columns[0] = '_created'
+      break
+    case 'created_by':
+      index.target.columns[0] = '_created_by'
+      break
+    case 'modified':
+      index.target.columns[0] = '_modified'
+      break
+    case 'modified_by':
+      index.target.columns[0] = '_modified_by'
+      break
+  }
+
   const parts = indexId.split('.')
   const tableId = parts[0] + '.' + parts[1]
   const indexName = parts[2]
