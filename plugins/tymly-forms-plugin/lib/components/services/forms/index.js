@@ -16,6 +16,7 @@ class FormsService {
       if (formDefinitions.hasOwnProperty(formId)) {
         options.messages.info(formId)
         formDefinition = formDefinitions[formId]
+        console.log('£££', formDefinition)
         this.forms[formId] = formDefinition
       }
     }

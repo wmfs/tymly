@@ -10,12 +10,14 @@ const tymly = require('tymly')
 describe('Demo tests', function () {
   this.timeout(15000)
   let models
+  let forms
 
   it('should startup tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
+          // require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -26,6 +28,7 @@ describe('Demo tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         models = tymlyServices.storage.models
+        forms = tymlyServices.forms.forms
         done()
       }
     )
@@ -38,5 +41,12 @@ describe('Demo tests', function () {
         expect(result[0].style).to.eql({'icon': 'coin', 'backgroundColor': '#00GG00'})
         done()
       })
+  })
+
+  it('should get forms', function (done) {
+    expect(forms['tymly_wmfsBookSomeoneSick10'].jsonSchema.title).to.eql('Book someone sick')
+    expect(forms['tymly_wmfsClaimAnExpense10'].jsonSchema.title).to.eql('Claim an expense')
+    expect(forms['tymly_wmfsCreateBlankProperty10'].jsonSchema.title).to.eql('Create a blank property')
+    done()
   })
 })
