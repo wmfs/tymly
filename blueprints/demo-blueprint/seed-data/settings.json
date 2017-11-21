@@ -4,6 +4,8 @@
     "categoryRelevance"
   ],
   "data": [
-    "['test-user-2'", "['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']"
+    ["user1", {"user1": ["incidents", "hr", "hydrants", "gazetteer"]}],
+    ["user2", {"user2": ["incidents", "hr", "hydrants", "gazetteer", "expenses"]}],
+    ["user3", {"user3": ["incidents", "gazetteer", "expenses"]}]
   ]
 }

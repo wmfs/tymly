@@ -36,10 +36,10 @@ describe('Demo tests', function () {
 
   it('should get categories', function (done) {
     // console.log(models.tymly_settings)
-    models.tymly_settings.find('test-user-2')
+    models.tymly_settings.find('user1')
       .then(result => {
-        console.log('>>>>>>> ' + result[0])
-        expect(result[0].userId).to.eql('test-user-2')
+        expect(result[0].userId).to.eql('user1')
+        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']})
         done()
       })
   })
