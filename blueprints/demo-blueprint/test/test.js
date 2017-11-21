@@ -7,7 +7,7 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 
-xdescribe('Demo tests', function () {
+describe('Demo tests', function () {
   this.timeout(15000)
   let models
   let forms
@@ -69,6 +69,7 @@ xdescribe('Demo tests', function () {
         done()
       })
   })
+
   it('should get forms', function (done) {
     expect(forms['tymly_bookSomeoneSick'].jsonSchema.title).to.eql('Book someone sick')
     expect(forms['tymly_claimAnExpense'].jsonSchema.title).to.eql('Claim an expense')

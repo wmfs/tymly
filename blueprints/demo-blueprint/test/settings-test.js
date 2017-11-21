@@ -43,4 +43,8 @@ describe('Demo tests', function () {
         done()
       })
   })
+
+  it('should get boards', function(done) {
+
+  })
 })
