@@ -7,16 +7,14 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 
-describe('Board tests', function () {
-  this.timeout(55000)
+describe('Boards tests', function () {
+  this.timeout(5000)
   let boards
 
   it('should startup tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-pg-plugin'),
-          require.resolve('tymly-forms-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
