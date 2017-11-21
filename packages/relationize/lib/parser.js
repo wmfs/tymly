@@ -20,6 +20,12 @@ module.exports = function schemaFilesParser (schemaFiles) {
     const indexes = content.indexes || []
     const fkConstraints = content.fkConstraints || []
 
+    // Add indexes for meta columns
+    indexes.push({columns: ['_created'], unique: false})
+    indexes.push({columns: ['_created_by'], unique: false})
+    indexes.push({columns: ['_modified'], unique: false})
+    indexes.push({columns: ['_modified_by'], unique: false})
+
     // Turn index propertyIds to column names
     indexes.forEach(
       function (index) {
