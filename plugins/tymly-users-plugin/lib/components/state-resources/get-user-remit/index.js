@@ -8,7 +8,7 @@ class GetUserRemit {
     this.categories = env.bootedServices.storage.models['tymly_categories']
     this.teams = env.bootedServices.storage.models['tymly_teams']
     this.todos = env.bootedServices.storage.models['tymly_todos']
-    // get forms/boards/startables
+    // this.forms = env.bootedServices.forms
     callback(null)
   }
 
@@ -33,6 +33,10 @@ class GetUserRemit {
       this.findComponents(userRemit, 'teams', 'teamNames', 'title', clientManifest)
     ]
 
+    // if (this.forms) {
+    //   promises.push(this.processComponents(userRemit, 'formNames', this.forms.forms, 'key', clientManifest['formNames']))
+    // }
+
     Promise.all(promises)
       .then(() => { context.sendTaskSuccess({userRemit}) })
       .catch(err => {
@@ -54,27 +58,41 @@ class GetUserRemit {
   }
 
   processComponents (userRemit, componentType, components, titleCol, alreadyInClientManifest) {
-    if (!_.isArray(alreadyInClientManifest)) {
-      alreadyInClientManifest = []
-    }
-    _.forEach(
-      components,
-      function (component) {
-        const componentName = component[titleCol]
-
-        if (alreadyInClientManifest.indexOf(componentName) === -1) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, component)
+    if (titleCol === 'key') {
+      _.forEach(
+        Object.keys(components),
+        function (componentName) {
+          if (alreadyInClientManifest.indexOf(componentName) === -1) {
+            dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
+          }
         }
-      }
-    )
-    let componentsObj = {}
-    components.map(c => {
-      componentsObj[c[titleCol]] = c
-    })
+      )
 
-    const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(componentsObj))
-    if (namesToRemove.length > 0) {
-      userRemit.remove[componentType] = namesToRemove
+      const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
+      if (namesToRemove.length > 0) {
+        userRemit.remove[componentType] = namesToRemove
+      }
+    } else {
+      if (!_.isArray(alreadyInClientManifest)) {
+        alreadyInClientManifest = []
+      }
+      _.forEach(
+        components,
+        function (component) {
+          const componentName = component[titleCol]
+
+          if (alreadyInClientManifest.indexOf(componentName) === -1) {
+            dottie.set(userRemit, `add.${componentType}.${componentName}`, component)
+          }
+        }
+      )
+      let componentsObj = {}
+      components.map(c => { componentsObj[c[titleCol]] = c })
+
+      const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(componentsObj))
+      if (namesToRemove.length > 0) {
+        userRemit.remove[componentType] = namesToRemove
+      }
     }
 
     return userRemit
