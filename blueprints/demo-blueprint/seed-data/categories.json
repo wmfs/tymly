@@ -5,8 +5,8 @@
     "style"
   ],
   "data": [
-    ["Expenses", "Things to do with claiming and authorising expenses", {"icon": "coin", "backgroundColor": "#00GG00"}],
-    ["Human Resources", "Things to do with the human condition. At work.", { "icon": "fingerprint", "backgroundColor": "#888800"}],
-    ["Gazetteer", "Things to do with individual buildings and other property", {"icon": "house", "backgroundColor": "#008800"}]
+    [ "Expenses", "Things to do with claiming and authorising expenses", {"icon": "coin", "backgroundColor": "#00GG00"} ],
+    [ "Human Resources", "Things to do with the human condition. At work.", { "icon": "fingerprint", "backgroundColor": "#888800"} ],
+    [ "Gazetteer", "Things to do with individual buildings and other property", {"icon": "house", "backgroundColor": "#008800"} ]
   ]
 }

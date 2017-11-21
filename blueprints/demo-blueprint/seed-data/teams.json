@@ -5,8 +5,8 @@
     "style"
   ],
   "data": [
-    ["Systems Development", "The ICT Systems Development Team at West Midlands Fire Service", {"icon": "computer", "backgroundColor": "#000000"}],
-    ["Service Desk", "The ICT Service Desk Team at West Midlands Fire Service", {"icon": "telephone", "backgroundColor": "#FF0000"}],
-    ["Fire Safety", "The Fire Safety Team at West Midlands Fire Service", {"icon": "fire-alarm", "backgroundColor": "#1A5276"}]
+    [ "Systems Development", "The ICT Systems Development Team at West Midlands Fire Service", {"icon": "computer", "backgroundColor": "#000000"} ],
+    [ "Service Desk", "The ICT Service Desk Team at West Midlands Fire Service", {"icon": "telephone", "backgroundColor": "#FF0000"} ],
+    [ "Fire Safety", "The Fire Safety Team at West Midlands Fire Service", {"icon": "fire-alarm", "backgroundColor": "#1A5276"} ]
   ]
 }
