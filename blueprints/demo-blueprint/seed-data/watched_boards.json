@@ -1,0 +1,21 @@
+{
+  "propertyNames": [
+    "userId",
+    "feedName",
+    "title",
+    "description",
+    "startedWatching",
+    "launches"
+  ],
+  "data": [
+    [
+      "test", "wmfs_incidentSummary_1_0|1234|2017", "Incident 1234/2017", "RTC with 3 casualties and 0 fatalities", null, {}
+    ],
+    [
+      "test", "wmfs_incidentSummary_1_0|1234|2016", "Incident 1234/2016", "RTC with 2 casualties and 0 fatalities", null, {}
+    ],
+    [
+      "test", "wmfs_incidentSummary_1_0|1234|2015", "Incident 1234/2015", "RTC with 2 casualties and 0 fatalities", null, {}
+    ]
+  ]
+}

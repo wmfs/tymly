@@ -82,6 +82,21 @@ describe('Demo tests', function () {
         done()
       })
   })
+  it('should get the watched boards', function (done) {
+    models.tymly_watchedBoards.find('test')
+      .then(result => {
+        expect(result[0].user_id).to.eql('test')
+        expect(result[0].feed_name).to.eql('wmfs_incidentSummary_1_0|1234|2017')
+        expect(result[0].title).to.eql('Incident 1234/2017')
+        expect(result[0].description).to.eql('RTC with 3 casualties and 0 fatalities')
+        expect(result[1].user_id).to.eql('test')
+        expect(result[1].feed_name).to.eql('wmfs_incidentSummary_1_0|1234|2016')
+        expect(result[1].description).to.eql('RTC with 2 casualties and 0 fatalities')
+        expect(result[2].user_id).to.eql('test')
+        expect(result[2].description).to.eql('RTC with 2 casualties and 0 fatalities')
+        done()
+      })
+  })
   it('should get forms', function (done) {
     expect(forms['tymly_bookSomeoneSick'].jsonSchema.title).to.eql('Book someone sick')
     expect(forms['tymly_claimAnExpense'].jsonSchema.title).to.eql('Claim an expense')
