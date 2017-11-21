@@ -1,0 +1,9 @@
+{
+  "propertyNames": [
+    "userId",
+    "categoryRelevance"
+  ],
+  "data": [
+    "['test-user-2'", "['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']"
+  ]
+}
