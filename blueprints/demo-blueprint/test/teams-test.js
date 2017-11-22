@@ -31,12 +31,18 @@ describe('Teams tests', function () {
   })
 
   it('should get teams', function (done) {
-    models.tymly_teams.find('Systems Development')
+    models.tymly_teams.find({
+      where: {
+        title: 'Systems Development'
+      }
+    })
       .then(result => {
         expect(result[0].title).to.eql('Systems Development')
         expect(result[0].description).to.eql('The ICT Systems Development Team at West Midlands Fire Service')
         expect(result[0].style).to.eql({'icon': 'computer', 'backgroundColor': '#000000'})
         done()
+      }).catch(error => {
+        done(error)
       })
   })
 })

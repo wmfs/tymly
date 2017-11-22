@@ -8,14 +8,8 @@
     "launches"
   ],
   "data": [
-    [
-      "test", "Employee Info #1", "Expense claim #1", "information", null, {}
-    ],
-    [
-      "test", "Employee Info #2", "Expense claim #2", "information", null, {}
-    ],
-    [
-      "test", "Employee Info #3", "Expense claim #3", "information", null, {}
-    ]
+    [ "test", "Employee Info #1", "Expense claim #1", "information", null, {} ],
+    [ "test", "Employee Info #2", "Expense claim #2", "information", null, {} ],
+    [ "test", "Employee Info #3", "Expense claim #3", "information", null, {} ]
   ]
 }
