@@ -66,11 +66,19 @@ function findSecret (options) {
 function findCertificate (options) {
   const certPath = dottie.get(options, 'config.auth.certificate') || process.env.TYMLY_CERTIFICATE_PATH
 
+  if (certPath) {
+    options.messages.info(`Loading certificate from ${certPath}`)
+  }
+
   return certPath ? fs.readFileSync(certPath) : undefined
 } // findCertificate
 
 function findAuthSecret (options) {
   const secret = dottie.get(options, 'config.auth.secret') || process.env.TYMLY_AUTH_SECRET
+  if (secret) {
+    options.messages.info(`Using auth secret`)
+  }
+
   return secret ? new Buffer(secret, 'base64') : undefined
 } // findAuthSecret
 
@@ -84,6 +92,8 @@ function findAudience (options) {
         message: 'No authentication audience was supplied via config or the $TYMLY_AUTH_AUDIENCE environment variable'
       }
     )
+  } else {
+    options.messages.info(`Audience ${audience}`)
   }
 
   return audience
