@@ -3,6 +3,7 @@
   "pluginPaths": "TYMLY_PLUGINS_PATH",
   "config": {
     "auth": {
+      "certificate": "TYMLY_CERTIFICATE_PATH",
       "secret": "TYMLY_AUTH_SECRET",
       "audience": "TYMLY_AUTH_AUDIENCE"
     },

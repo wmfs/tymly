@@ -28,7 +28,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "test": "standard && mocha"
   },
   "license": "MIT",
   "repository": {
