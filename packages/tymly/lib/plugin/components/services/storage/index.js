@@ -2,7 +2,7 @@
 
 const debug = require('debug')('tymly')
 const boom = require('boom')
-const _ = require('lodash')
+// const _ = require('lodash')
 const MemoryModel = require('./Memory-model')
 const fs = require('fs')
 const split = require('split')
@@ -71,9 +71,11 @@ class MemoryStorageService {
       // construct document
       const doc = {}
       for (const [index, name] of seedData.propertyNames.entries()) {
-        doc[_.snakeCase(name)] = row[index]
+        // doc[_.snakeCase(name)] = row[index]
+        doc[name] = row[index]
       }
 
+      console.log(doc.user_id)
       // persist document
       debug('persisting document', doc)
       model.upsert(doc, {}, () => {}) // In-memory is sync really (so this is OK)
@@ -90,8 +92,8 @@ class MemoryStorageService {
       const readStream = fs.createReadStream(filePath)
       readStream.pipe(split())
 
-        // For each line
-        // -------------
+      // For each line
+      // -------------
         .on('data', function (line) {
           if (line[0] === '{') {
             const data = EJSON.parse(line)
@@ -100,10 +102,10 @@ class MemoryStorageService {
 
                 const where = {}
                 primaryKey.forEach(
-                function (key) {
-                  where[key] = data[key]
-                }
-              )
+                  function (key) {
+                    where[key] = data[key]
+                  }
+                )
 
                 model.upsert(data, {}, function () {}) // In-memory is sync really (so this is OK)
 
