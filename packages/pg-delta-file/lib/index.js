@@ -7,13 +7,11 @@ const generateDelta = require('./generate-delta')
 module.exports = function setup (options, callback) {
   const outputDirPath = getDirName(options.outputFilepath)
 
-  makeDir(outputDirPath).then(
-    function () {
+  makeDir(outputDirPath)
+    .then(function () {
       generateDelta(options, callback)
-    }
-  ).catch(
-    function (err) {
+    })
+    .catch(function (err) {
       callback(err)
-    }
-  )
+    })
 }
