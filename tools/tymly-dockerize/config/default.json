@@ -11,7 +11,7 @@
       "userId": "admin",
       "roles": "ordnanceSurvey_ordnanceSurveyAdmin,wmfs_addressboxAdmin"
     },
-    "pgConnectionString": "postgres://postgres:postgres@postgres_host:5432/prod_db",
+    "pgConnectionString": "postgres://postgres:postgres@postgres_host:5432/postgres",
     "email": {
       "from": "Tymly!",
       "transport": {
