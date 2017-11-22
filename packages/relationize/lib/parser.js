@@ -176,6 +176,7 @@ module.exports = function schemaFilesParser (schemaFiles) {
                         type: targetKeyProperty.type,
                         description: 'Auto-added foreign key for ' + content.id
                       }
+                      if (targetKeyProperty.maxLength) subDocFile.content.properties[fkPropertyId].maxLength = targetKeyProperty.maxLength
                     }
                   }
                 )
