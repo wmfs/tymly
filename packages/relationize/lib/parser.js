@@ -177,6 +177,8 @@ module.exports = function schemaFilesParser (schemaFiles) {
                         description: 'Auto-added foreign key for ' + content.id
                       }
                       if (targetKeyProperty.maxLength) subDocFile.content.properties[fkPropertyId].maxLength = targetKeyProperty.maxLength
+                      if (targetKeyProperty.multipleOf) subDocFile.content.properties[fkPropertyId].multipleOf = targetKeyProperty.multipleOf
+                      if (targetKeyProperty.format) subDocFile.content.properties[fkPropertyId].format = targetKeyProperty.format
                     }
                   }
                 )
