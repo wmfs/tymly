@@ -34,7 +34,8 @@ class PostgresqlStorageService {
 
     this._pushModelSchemas(modelDefinitions)
 
-    this._createModels(options.messages)
+    this._installExtension()
+      .then(() => this._createModels(options.messages))
       .then(() => this._insertMultipleSeedData(seedData, options.messages))
       .then(() => callback())
       .catch(err => callback(err))
@@ -67,6 +68,10 @@ class PostgresqlStorageService {
       schema: modelDefinition
     })
   } // _pushModelSchema
+
+  async _installExtension () {
+    return this.client.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
+  }
 
   async _createModels (messages) {
     if (!this.schemaNames.length || !this.jsonSchemas.length) {
