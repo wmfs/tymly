@@ -1,0 +1,13 @@
+{
+  "Comment": "Get the history of state machines the user has accessed.",
+  "version": "1.0",
+  "StartAt": "GetUserHistory",
+  "States": {
+    "GetUserHistory": {
+      "Type": "Task",
+      "Resource": "module:getUserHistory",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

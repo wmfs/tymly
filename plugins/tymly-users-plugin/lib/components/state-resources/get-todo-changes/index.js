@@ -35,6 +35,7 @@ class GetTodoChanges {
 
       this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodoExecutionNames)
       context.sendTaskSuccess({todoChanges})
+      // Maybe it should be added to the todos in existing remit - event.userRemit.userRemit
     })
   }
 

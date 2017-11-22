@@ -269,7 +269,6 @@ class MemoryModel {
         }
       }
     )
-
     return index
   }
 

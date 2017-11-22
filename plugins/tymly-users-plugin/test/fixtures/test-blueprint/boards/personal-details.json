@@ -1,0 +1,44 @@
+{
+  "boardTitleTemplate": "${firstName} ${lastName} (${employeeNo})",
+  "watchable": true,
+  "category": "hr",
+  "content": [
+    {
+      "widget": "template",
+      "config": {
+        "template": "<h3>My Personal Page</h3>"
+      }
+    },
+    {
+      "widget": "template",
+      "config": {
+        "template": "<p>Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui.</p>"
+      }
+    },
+    {
+      "widget": "template",
+      "config": {
+        "template": "<ul><li>item 1</li><li>item 2</li><li>item 3</li></ul>"
+      }
+    },
+    {
+      "widget": "template",
+      "config": {
+        "template": "<a href='http://www.google.com' target='_blank'>link to google</a>"
+      }
+    },
+    {
+      "widget": "map",
+      "config": {
+        "centreOnUserLocation": true,
+        "centreLatPropertyPath": null,
+        "centreLonPropertyPath": null,
+        "editable": false,
+        "drawing": false,
+        "layers": ["gazetteer"],
+        "3d": true,
+        "initialZoom": "5"
+      }
+    }
+  ]
+}

@@ -10,13 +10,11 @@ const tymly = require('tymly')
 describe('Settings tests', function () {
   this.timeout(15000)
   let models
-  // let forms
 
   it('should startup tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
@@ -33,10 +31,12 @@ describe('Settings tests', function () {
   })
 
   it('should get settings', function (done) {
-    models.tymly_settings.find('user1')
+    models.tymly_settings.find({
+      where: {userId: {equals: 'user1'}}
+    })
       .then(result => {
         expect(result[0].userId).to.eql('user1')
-        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
+        expect(result[0].categoryRelevance).to.eql(['incidents', 'hr', 'hydrants', 'gazetteer'])
         done()
       })
   })

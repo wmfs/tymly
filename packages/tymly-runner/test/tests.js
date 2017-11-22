@@ -15,9 +15,7 @@ describe('Simple Tymly test', function () {
         pluginPaths: [
           path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
         ],
-        blueprintPaths: [
-          path.resolve(__dirname, './../../../blueprints/ridge-blueprint')
-        ]
+        blueprintPaths: []
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)

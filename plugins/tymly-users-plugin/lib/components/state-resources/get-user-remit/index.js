@@ -9,6 +9,8 @@ class GetUserRemit {
     this.teams = env.bootedServices.storage.models['tymly_teams']
     this.todos = env.bootedServices.storage.models['tymly_todos']
     this.forms = env.bootedServices.forms
+    this.boards = env.bootedServices.boards
+    // startables
     callback(null)
   }
 
@@ -37,6 +39,10 @@ class GetUserRemit {
       promises.push(this.processComponents(userRemit, 'formNames', this.forms.forms, clientManifest['formNames']))
     }
 
+    if (this.boards) {
+      promises.push(this.processComponents(userRemit, 'boardNames', this.boards.boards, clientManifest['boardNames']))
+    }
+
     Promise.all(promises)
       .then(() => { context.sendTaskSuccess({userRemit}) })
       .catch(err => {
@@ -54,7 +60,7 @@ class GetUserRemit {
         let resultsObj = {}
         results.map(r => { resultsObj[r[titleCol]] = r })
         this.processComponents(userRemit, componentType, resultsObj, clientManifest[componentType])
-        resolve(userRemit)
+        resolve()
       })
     })
   }
