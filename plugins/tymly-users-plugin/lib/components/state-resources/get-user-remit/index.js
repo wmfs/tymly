@@ -9,6 +9,8 @@ class GetUserRemit {
     this.teams = env.bootedServices.storage.models['tymly_teams']
     this.todos = env.bootedServices.storage.models['tymly_todos']
     this.forms = env.bootedServices.forms
+    // startables
+    // boards
     callback(null)
   }
 
@@ -54,7 +56,7 @@ class GetUserRemit {
         let resultsObj = {}
         results.map(r => { resultsObj[r[titleCol]] = r })
         this.processComponents(userRemit, componentType, resultsObj, clientManifest[componentType])
-        resolve(userRemit)
+        resolve()
       })
     })
   }

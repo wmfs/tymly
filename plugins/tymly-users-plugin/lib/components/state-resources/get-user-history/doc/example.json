@@ -1,0 +1,7 @@
+{
+  "GetUserHistory": {
+    "Type": "Task",
+    "Resource": "module:getUserHistory",
+    "InputPath": "$"
+  }
+}
