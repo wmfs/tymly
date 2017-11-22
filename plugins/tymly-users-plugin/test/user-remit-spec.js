@@ -90,6 +90,10 @@ describe('user-remit tymly-users-plugin tests', function () {
           'test_addIncidentSafetyRecord',
           'test_bookSomeoneSick'
         ])
+        expect(Object.keys(executionDescription.ctx.userRemit.add.boardNames)).to.eql([
+          'test_personalDetails',
+          'test_propertyViewer'
+        ])
         expect(executionDescription.ctx.userRemit.remove).to.eql({})
         done()
       }
@@ -257,6 +261,39 @@ describe('user-remit tymly-users-plugin tests', function () {
           .to.eql(['test_addIncidentLogEntry', 'test_addIncidentSafetyRecord'])
         expect(executionDescription.ctx.userRemit.remove.formNames)
           .to.eql(['processAnExpenseClaim'])
+        done()
+      }
+    )
+  })
+
+  it('should add/remove board names to/from the remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: ['test_personalDetails', 'test_expenses'],
+          categoryNames: [],
+          teamNames: [],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+        expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+        expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx.userRemit.add.boardNames))
+          .to.eql(['test_propertyViewer'])
+        expect(executionDescription.ctx.userRemit.remove.boardNames)
+          .to.eql(['test_expenses'])
         done()
       }
     )
