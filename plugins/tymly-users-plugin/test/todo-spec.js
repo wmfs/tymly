@@ -68,7 +68,7 @@ describe('todo changes tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetTodoChanges')
         expect(executionDescription.currentResource).to.eql('module:getTodoChanges')
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
@@ -109,7 +109,7 @@ describe('todo changes tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetTodoChanges')
         expect(executionDescription.currentResource).to.eql('module:getTodoChanges')
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)

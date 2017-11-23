@@ -38,7 +38,7 @@ describe('user dashboard data tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetUserDashboardData')
         expect(executionDescription.currentResource).to.eql('module:getUserDashboardData')
         expect(executionDescription.stateMachineName).to.eql(GET_USER_DASHBOARD_STATE_MACHINE)

@@ -68,7 +68,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -124,7 +124,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -159,7 +159,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -196,7 +196,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -236,7 +236,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -273,7 +273,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
@@ -310,7 +310,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)

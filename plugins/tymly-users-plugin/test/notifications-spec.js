@@ -53,7 +53,7 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetNotifications')
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
@@ -79,7 +79,7 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetNotifications')
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
@@ -103,7 +103,7 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('AcknowledgeNotifications')
         expect(executionDescription.currentResource).to.eql('module:acknowledgeNotifications')
         expect(executionDescription.stateMachineName).to.eql(ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE)

@@ -38,7 +38,7 @@ describe('user history tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetUserHistory')
         expect(executionDescription.currentResource).to.eql('module:getUserHistory')
         expect(executionDescription.stateMachineName).to.eql(GET_USER_HISTORY_STATE_MACHINE)

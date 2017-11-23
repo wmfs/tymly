@@ -54,7 +54,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('WatchBoard')
         expect(executionDescription.currentResource).to.eql('module:watchBoard')
         expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
@@ -74,7 +74,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
@@ -100,7 +100,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('WatchBoard')
         expect(executionDescription.currentResource).to.eql('module:watchBoard')
         expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
@@ -121,7 +121,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('UnwatchBoard')
         expect(executionDescription.currentResource).to.eql('module:unwatchBoard')
         expect(executionDescription.stateMachineName).to.eql(UNWATCH_BOARD_STATE_MACHINE)
