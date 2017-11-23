@@ -47,14 +47,18 @@ describe('settings tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.currentStateName).to.eql('GetSettings')
-        expect(executionDescription.currentResource).to.eql('module:getSettings')
-        expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
-        expect(executionDescription.ctx.results[0].categoryRelevance).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('GetSettings')
+          expect(executionDescription.currentResource).to.eql('module:getSettings')
+          expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.ctx.results.userId).to.eql('test-user')
+          expect(executionDescription.ctx.results.categoryRelevance).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })
@@ -70,12 +74,16 @@ describe('settings tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.currentStateName).to.eql('ApplySettings')
-        expect(executionDescription.currentResource).to.eql('module:applySettings')
-        expect(executionDescription.stateMachineName).to.eql(APPLY_SETTINGS_STATE_MACHINE)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('ApplySettings')
+          expect(executionDescription.currentResource).to.eql('module:applySettings')
+          expect(executionDescription.stateMachineName).to.eql(APPLY_SETTINGS_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })
@@ -89,16 +97,20 @@ describe('settings tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.currentStateName).to.eql('GetSettings')
-        expect(executionDescription.currentResource).to.eql('module:getSettings')
-        expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
-        expect(executionDescription.ctx.results[0].categoryRelevance).to.eql(
-          ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']
-        )
-        done()
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('GetSettings')
+          expect(executionDescription.currentResource).to.eql('module:getSettings')
+          expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.ctx.results.userId).to.eql('test-user')
+          expect(executionDescription.ctx.results.categoryRelevance).to.eql(
+            ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']
+          )
+          done()
+        } catch (err) {
+          done(err)
+        }
       }
     )
   })
