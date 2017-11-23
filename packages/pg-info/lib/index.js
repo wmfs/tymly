@@ -19,19 +19,19 @@ const FK_MATCH_TYPES = {
 
 const QUERIES = [
 
-   // List of schemas
+  // List of schemas
   'select nspname as schema_name, obj_description(oid) as schema_comment ' +
   'from pg_namespace ' +
   'where nspname = ANY($1)',
 
   // List of tables
-  "select table_schema, table_name, obj_description((table_schema||'.'||table_name)::regclass, 'pg_class') table_comment " +
+  'select table_schema, table_name, obj_description((table_schema||\'.\'||table_name)::regclass, \'pg_class\') table_comment ' +
   'from information_schema.tables ' +
   'where table_schema = ANY($1)',
 
   // List of columns
   'select table_schema, table_name, column_name, column_default, is_nullable, data_type, character_maximum_length, numeric_scale, ' +
-  "pg_catalog.col_description(format('%s.%s',isc.table_schema,isc.table_name)::regclass::oid,isc.ordinal_position) as column_comment, udt_name as array_element_type " +
+  'pg_catalog.col_description(format(\'%s.%s\',isc.table_schema,isc.table_name)::regclass::oid,isc.ordinal_position) as column_comment, udt_name as array_element_type ' +
   'from information_schema.columns isc ' +
   'where table_schema = ANY($1) ' +
   'order by ordinal_position',
@@ -41,7 +41,7 @@ const QUERIES = [
   'from information_schema.tables t, pg_index i ' +
   'join pg_attribute a on a.attrelid = i.indrelid ' +
   'and a.attnum = any(i.indkey) ' +
-  "where i.indrelid = (t.table_schema||'.'||t.table_name)::regclass " +
+  'where i.indrelid = (t.table_schema||\'.\'||t.table_name)::regclass ' +
   'and i.indisprimary ' +
   'and t.table_schema = any($1)',
 
@@ -69,7 +69,7 @@ const QUERIES = [
   'WHERE ns.nspname = ANY($1)',
 
   // List of foreign key constraints
-  "SELECT constraint_name,split_part(source_table, '.', 1) AS source_schema, source_table, source_column, target_table, target_column, update_action, delete_action, match_type FROM " +
+  'SELECT constraint_name,split_part(source_table, \'.\', 1) AS source_schema, source_table, source_column, target_table, target_column, update_action, delete_action, match_type FROM ' +
   '(SELECT constraint_name,source_table::regclass::text AS source_table, source_attr.attname AS source_column, ' +
   'target_table::regclass::text, target_attr.attname AS target_column, update_action, delete_action, match_type ' +
   'FROM pg_attribute target_attr, pg_attribute source_attr, ' +
@@ -78,12 +78,15 @@ const QUERIES = [
   ' (SELECT conname AS constraint_name, conrelid as source_table, confrelid AS target_table, conkey AS source_constraints, confkey AS target_constraints, ' +
   ' generate_series(1, array_upper(conkey, 1)) AS i, confupdtype as update_action, confdeltype as delete_action, confmatchtype as match_type ' +
   ' FROM pg_constraint ' +
-  " WHERE contype = 'f' " +
+  ' WHERE contype = \'f\' ' +
   ')  query1 ' +
   ') query2 ' +
   'WHERE target_attr.attnum = target_constraints AND target_attr.attrelid = target_table ' +
   'AND source_attr.attnum = source_constraints AND source_attr.attrelid = source_table) AS fk_constraints ' +
-  "WHERE split_part(source_table, '.', 1) = ANY($1)"
+  'WHERE split_part(source_table, \'.\', 1) = ANY($1)',
+
+  // List of triggers
+  'SELECT * FROM information_schema.triggers WHERE trigger_schema = ANY($1)'
 ]
 
 const NotSet = 'NotSet'
@@ -113,14 +116,17 @@ module.exports = function pgInfo (options, callback = NotSet) {
   async.eachSeries(
     QUERIES,
     function (query, cb) {
-      client.query(query, [schemas], function (err, result) {
-        if (err) {
-          cb(err)
-        } else {
-          queryResults.push(result.rows)
-          cb(null)
+      client.query(
+        query,
+        [schemas],
+        function (err, result) {
+          if (err) {
+            cb(err)
+          } else {
+            queryResults.push(result.rows)
+            cb(null)
+          }
         }
-      }
       )
     },
     function (err) {
@@ -138,6 +144,7 @@ module.exports = function pgInfo (options, callback = NotSet) {
         const pgPkColumns = queryResults[3]
         const pgIndexes = queryResults[4]
         const pgFkConstraints = queryResults[5]
+        const pgTriggers = queryResults[6]
 
         // Loop over each requested schema name
         schemas.forEach(
@@ -203,6 +210,25 @@ module.exports = function pgInfo (options, callback = NotSet) {
                           }
                         )
 
+                        const triggers = {}
+                        const tableTriggers = _.filter(pgTriggers, {
+                          trigger_schema: requestedSchemaName,
+                          event_object_table: candidatePgTable.table_name
+                        }) // ???
+                        tableTriggers.forEach(
+                          function (tableTrigger) {
+                            triggers[tableTrigger.trigger_name] = {
+                              event_object_schema: tableTrigger.event_object_schema,
+                              event_manipulation: tableTrigger.event_manipulation,
+                              event_object_table: tableTrigger.event_object_table,
+                              action_condition: tableTrigger.action_condition,
+                              action_statement: tableTrigger.action_statement,
+                              action_orientation: tableTrigger.action_orientation,
+                              action_timing: tableTrigger.action_timing
+                            }
+                          }
+                        )
+
                         const fkConstraints = {}
                         const tableFkConstraints = _.filter(pgFkConstraints, {source_table: requestedSchemaName + '.' + candidatePgTable.table_name})
                         tableFkConstraints.forEach(
@@ -231,6 +257,7 @@ module.exports = function pgInfo (options, callback = NotSet) {
                           pkColumnNames: pkColumnNames,
                           columns: columns,
                           indexes: indexes,
+                          triggers: triggers,
                           fkConstraints: fkConstraints
                         }
                       }

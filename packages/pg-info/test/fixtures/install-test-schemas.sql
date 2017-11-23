@@ -95,3 +95,18 @@ COMMENT ON COLUMN pginfo_planets_test.craters.id IS 'Automatically added UUID-ba
 COMMENT ON COLUMN pginfo_planets_test.craters._created IS 'Timestamp for when this record was created';
 
 CREATE INDEX craters_moons_id_idx ON pginfo_planets_test.craters (moons_id);
+
+CREATE TABLE pginfo_planets_test.new_craters (
+    id uuid NOT NULL,
+    title text NOT NULL,
+    CONSTRAINT new_craters_pkey PRIMARY KEY (id)
+);
+
+--CREATE OR REPLACE FUNCTION append_inserted_craters_row() RETURNS trigger AS $BODY$
+--    BEGIN
+--        INSERT INTO pginfo_planets_test.new_craters (id, title) VALUES (new.id, new.title);
+--        RETURN NEW;
+--    END;
+--$BODY$ LANGUAGE plpgsql;
+--
+--CREATE TRIGGER new_craters_trigger BEFORE INSERT ON pginfo_planets_test.craters EXECUTE PROCEDURE append_inserted_craters_row();

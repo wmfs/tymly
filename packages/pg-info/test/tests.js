@@ -26,25 +26,54 @@ describe('Run the basic-usage example', function () {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
   })
 
+  // Temporarily here and not in script because client.runFile will break the statement down on ';'
+  it('Should create test triggers', () => {
+    return client.query(`CREATE OR REPLACE FUNCTION append_inserted_craters_row() RETURNS trigger AS $BODY$
+    BEGIN INSERT INTO pginfo_planets_test.new_craters (id, title) VALUES (new.id, new.title);
+    RETURN NEW;
+    END;
+    $BODY$ LANGUAGE plpgsql;`)
+  })
+
+  // Temporarily here and not in script because client.runFile will break the statement down on ';'
+  it('Should create test triggers', () => {
+    return client.query(`CREATE TRIGGER new_craters_trigger BEFORE INSERT ON pginfo_planets_test.craters EXECUTE PROCEDURE append_inserted_craters_row();`)
+  })
+
   it('Should get some database info (callback)', function (done) {
     pgInfo(
       {
         client: client,
         schemas: schemaNames
       },
-        function (err, info) {
-          expect(err).to.equal(null)
-          expect(info).to.containSubset(
-            {
-              schemas: expectedSchemas
+      function (err, info) {
+        expect(info.schemas.pginfo_planets_test.tables.craters.triggers).to.eql(
+          {
+            new_craters_trigger: {
+              event_object_schema: 'pginfo_planets_test',
+              event_manipulation: 'INSERT',
+              event_object_table: 'craters',
+              action_condition: null,
+              action_statement: 'EXECUTE PROCEDURE append_inserted_craters_row()',
+              action_orientation: 'STATEMENT',
+              action_timing: 'BEFORE'
             }
-
-          )
-          done()
-        }
-      )
-  }
-  )
+          }
+        )
+        expect(info.schemas.pginfo_people_test.tables.people.triggers).to.eql({})
+        expect(info.schemas.pginfo_planets_test.tables.planets.triggers).to.eql({})
+        expect(info.schemas.pginfo_planets_test.tables.moons.triggers).to.eql({})
+        expect(info.schemas.pginfo_planets_test.tables.new_craters.triggers).to.eql({})
+        expect(err).to.equal(null)
+        expect(info).to.containSubset(
+          {
+            schemas: expectedSchemas
+          }
+        )
+        done()
+      }
+    )
+  })
 
   it('Should get some database info (promise)', function () {
     pgInfo(
@@ -52,15 +81,14 @@ describe('Run the basic-usage example', function () {
         client: client,
         schemas: schemaNames
       })
-        .then(info =>
-          expect(info).to.containSubset(
-            {
-              schemas: expectedSchemas
-            }
-          )
-        ) // pgInfo
-  }
-  )
+      .then(info =>
+        expect(info).to.containSubset(
+          {
+            schemas: expectedSchemas
+          }
+        )
+      ) // pgInfo
+  })
 
   it('Should uninstall test schemas', () => {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
@@ -75,7 +103,7 @@ const expectedSchemas = {
     'comment': 'Simple schema created to support testing of the pg-info package!',
     'tables': {
       'people': {
-        'comment': "Isn't this just a list of people?",
+        'comment': 'Isn\'t this just a list of people?',
         'pkColumnNames': [
           'person_no'
         ],
@@ -96,7 +124,7 @@ const expectedSchemas = {
             'dataType': 'text',
             'characterMaximumLength': null,
             'numericScale': null,
-            'comment': "Person's first name"
+            'comment': 'Person\'s first name'
           },
           'last_name': {
             'array': false,
@@ -147,6 +175,7 @@ const expectedSchemas = {
             'method': 'btree'
           }
         },
+        'triggers': {},
         'fkConstraints': {}
       }
     }
@@ -253,6 +282,7 @@ const expectedSchemas = {
             'method': 'gin'
           }
         },
+        'triggers': {},
         'fkConstraints': {}
       },
       'moons': {
@@ -327,6 +357,7 @@ const expectedSchemas = {
             'method': 'btree'
           }
         },
+        'triggers': {},
         'fkConstraints': {
           'moons_to_planets_fk': {
             'targetTable': 'pginfo_planets_test.planets',
@@ -400,6 +431,17 @@ const expectedSchemas = {
             ],
             'unique': false,
             'method': 'btree'
+          }
+        },
+        'triggers': {
+          'new_craters_trigger': {
+            'event_object_schema': 'pginfo_planets_test',
+            'event_manipulation': 'INSERT',
+            'event_object_table': 'craters',
+            'action_condition': null,
+            'action_statement': 'EXECUTE PROCEDURE append_inserted_craters_row()',
+            'action_orientation': 'STATEMENT',
+            'action_timing': 'BEFORE'
           }
         },
         'fkConstraints': {
