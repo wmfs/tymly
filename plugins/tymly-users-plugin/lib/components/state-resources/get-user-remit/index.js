@@ -29,17 +29,17 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.categories, 'categoryNames', 'label', clientManifest),
-      this.findComponents(userRemit, this.todos, 'todoExecutionNames', 'id', clientManifest),
-      this.findComponents(userRemit, this.teams, 'teamNames', 'title', clientManifest)
+      this.findComponents(userRemit, this.categories, 'categories', 'label', clientManifest['categoryNames']),
+      this.findComponents(userRemit, this.todos, 'todos', 'id', clientManifest['todoExecutionNames']),
+      this.findComponents(userRemit, this.teams, 'teams', 'title', clientManifest['teamNames'])
     ]
 
     if (this.forms) {
-      promises.push(this.processComponents(userRemit, 'formNames', this.forms.forms, clientManifest['formNames']))
+      promises.push(this.processComponents(userRemit, 'forms', this.forms.forms, clientManifest['formNames']))
     }
 
     if (this.boards) {
-      promises.push(this.processComponents(userRemit, 'boardNames', this.boards.boards, clientManifest['boardNames']))
+      promises.push(this.processComponents(userRemit, 'boards', this.boards.boards, clientManifest['boardNames']))
     }
 
     Promise.all(promises)
@@ -52,12 +52,12 @@ class GetUserRemit {
       })
   }
 
-  findComponents (userRemit, model, componentType, titleCol, clientManifest) {
+  findComponents (userRemit, model, componentType, titleCol, alreadyInClientManifest) {
     return model.find({})
       .then(results => {
         const resultsObj = {}
         results.map(r => { resultsObj[r[titleCol]] = r })
-        this.processComponents(userRemit, componentType, resultsObj, clientManifest[componentType])
+        this.processComponents(userRemit, componentType, resultsObj, alreadyInClientManifest)
       })
   } // findComponents
 
