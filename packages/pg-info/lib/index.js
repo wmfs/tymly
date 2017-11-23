@@ -214,7 +214,7 @@ module.exports = function pgInfo (options, callback = NotSet) {
                         const tableTriggers = _.filter(pgTriggers, {
                           trigger_schema: requestedSchemaName,
                           event_object_table: candidatePgTable.table_name
-                        }) // ???
+                        })
                         tableTriggers.forEach(
                           function (tableTrigger) {
                             triggers[tableTrigger.trigger_name] = {
