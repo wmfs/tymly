@@ -115,6 +115,31 @@ describe('settings tymly-users-plugin tests', function () {
     )
   })
 
+  it('get default values for new-user\'s settings', function (done) {
+    statebox.startExecution(
+      {},
+      GET_SETTINGS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'new-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('GetSettings')
+          expect(executionDescription.currentResource).to.eql('module:getSettings')
+          expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.ctx.results.userId).to.eql('new-user')
+          expect(executionDescription.ctx.results.categoryRelevance).to.eql([])
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
   })
