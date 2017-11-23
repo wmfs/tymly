@@ -177,6 +177,32 @@ __Properties__
 | `unique` | `boolean` | Indicates whether this is a unique index or not |
 | `method` | `string` | The index method used, one of `btree`, `hash`, `gist` or `gin`) |
 
+### `triggers` object
+
+__Example__
+
+```javascript
+{
+  triggers: {
+  	trigger_name: {
+		event_object_schema: 'pginfo_planets_test',
+              	event_manipulation: 'INSERT',
+              	event_object_table: 'craters',
+              	action_condition: null,
+              	action_statement: 'EXECUTE PROCEDURE append_inserted_craters_row()',
+              	action_orientation: 'STATEMENT',
+              	action_timing: 'BEFORE'
+	}
+  }
+}
+```
+
+__Properties__
+
+| property | Type | Notes |
+| -------- | ---- | ----- |
+| `triggers` | `object` | An object containing trigger objects that belong to this table |
+
 ### `fkConstraint` object
 
 __Example__
