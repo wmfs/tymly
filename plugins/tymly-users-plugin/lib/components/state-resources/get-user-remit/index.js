@@ -17,11 +17,11 @@ class GetUserRemit {
   run (event, context) {
     // const userId = context.userId
     const clientManifest = event.clientManifest
-    let settings = { categoryRelevance: event.userSettings.results.categoryRelevance }
+    const settings = { categoryRelevance: event.userSettings.results.categoryRelevance }
     let favourites = []
     if (event.favourites.results.length > 0) favourites = event.favourites.results[0].stateMachineNames
 
-    let userRemit = {
+    const userRemit = {
       add: {},
       remove: {},
       settings: settings,
@@ -29,9 +29,9 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, 'categories', 'categoryNames', 'label', clientManifest),
-      this.findComponents(userRemit, 'todos', 'todoExecutionNames', 'id', clientManifest),
-      this.findComponents(userRemit, 'teams', 'teamNames', 'title', clientManifest)
+      this.findComponents(userRemit, this.categories, 'categoryNames', 'label', clientManifest),
+      this.findComponents(userRemit, this.todos, 'todoExecutionNames', 'id', clientManifest),
+      this.findComponents(userRemit, this.teams, 'teamNames', 'title', clientManifest)
     ]
 
     if (this.forms) {
@@ -52,27 +52,21 @@ class GetUserRemit {
       })
   }
 
-  findComponents (userRemit, modelName, componentType, titleCol, clientManifest) {
-    return new Promise((resolve, reject) => {
-      this[modelName].find({}, (err, results) => {
-        if (err) reject(err)
-        let resultsObj = {}
+  findComponents (userRemit, model, componentType, titleCol, clientManifest) {
+    return model.find({})
+      .then(results => {
+        const resultsObj = {}
         results.map(r => { resultsObj[r[titleCol]] = r })
         this.processComponents(userRemit, componentType, resultsObj, clientManifest[componentType])
-        resolve()
       })
-    })
-  }
+  } // findComponents
 
   processComponents (userRemit, componentType, components, alreadyInClientManifest) {
-    _.forEach(
-      Object.keys(components),
-      function (componentName) {
-        if (alreadyInClientManifest.indexOf(componentName) === -1) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
-        }
+    for (const componentName of Object.keys(components)) {
+      if (alreadyInClientManifest.indexOf(componentName) === -1) {
+        dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
       }
-    )
+    }
 
     const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
     if (namesToRemove.length > 0) {
@@ -80,7 +74,7 @@ class GetUserRemit {
     }
 
     return userRemit
-  }
+  } // processComponents
 }
 
 module.exports = GetUserRemit
