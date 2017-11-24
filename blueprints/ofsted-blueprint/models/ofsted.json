@@ -1,0 +1,40 @@
+{
+  "title": "ofsted",
+  "description": "Gets the ofsted attribute for use in RIDGE models",
+  "primaryKey": [
+    "urn"
+  ],
+  "type": "object",
+  "properties": {
+    "urn": {
+      "type": "integer",
+      "maxLength": 12
+    },
+    "school_name": {
+      "type": "string"
+    },
+    "ofsted_phase": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "local_authority": {
+      "type": "string"
+    },
+    "postcode": {
+      "type": "string"
+    },
+    "inspection_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "overall_effectiveness": {
+      "type": "integer"
+    },
+    "effectiveness_of_leadership": {
+      "type": "integer"
+    }
+  }
+}
+
