@@ -1,6 +1,6 @@
 {
   "title": "ofsted",
-  "description": "Gets the ofsted attribute for use in RIDGE models",
+  "description": "Gets Ofsted inspection data from Ofsted CSV file and imports into Postgres for use in RIDGE models",
   "primaryKey": [
     "urn"
   ],
