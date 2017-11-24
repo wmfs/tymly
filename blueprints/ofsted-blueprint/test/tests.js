@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('Ofsted tests', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
 
@@ -55,7 +55,7 @@ describe('Ofsted tests', function () {
 
   it('Should be the correct data in the database', function (done) {
     client.query(
-      'select urn, school_name, ofsted_phase, region, local_authority, postcode, inspection_date, overall_effectiveness, effectiveness_of_leadership from wmfs.ofsted order by urn;',
+      'select urn, school_name, ofsted_phase, region, local_authority, postcode, overall_effectiveness, effectiveness_of_leadership from wmfs.ofsted order by urn;',
       function (err, result) {
         expect(err).to.equal(null)
         if (err) {
@@ -70,7 +70,6 @@ describe('Ofsted tests', function () {
                 region: 'West Midlands',
                 local_authority: 'Birmingham',
                 postcode: 'B33 8QB',
-                inspection_date: '2015-01-22',
                 overall_effectiveness: 2,
                 effectiveness_of_leadership: 2
               }
