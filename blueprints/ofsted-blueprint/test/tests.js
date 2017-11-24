@@ -73,6 +73,116 @@ describe('Ofsted tests', function () {
                 inspection_date: '22/01/2015',
                 overall_effectiveness: 2,
                 effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103121',
+                school_name: 'Brearley Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B19 3XJ',
+                inspection_date: '05/12/2014',
+                overall_effectiveness: 1,
+                effectiveness_of_leadership: 1
+              },
+              {
+                urn: '103122',
+                school_name: 'Garretts Green Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B26 2JL',
+                inspection_date: '02/11/2012',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103123',
+                school_name: 'Perry Beeches Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B42 2PX',
+                inspection_date: '27/09/2012',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103124',
+                school_name: 'St Thomas Centre Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B15 2AF',
+                inspection_date: '12/12/2013',
+                overall_effectiveness: 1,
+                effectiveness_of_leadership: 1
+              },
+              {
+                urn: '103125',
+                school_name: 'Highfield Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B8 3QU',
+                inspection_date: '27/02/2014',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103126',
+                school_name: 'Marsh Hill Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B23 7HG',
+                inspection_date: '13/12/2013',
+                overall_effectiveness: 1,
+                effectiveness_of_leadership: 1
+              },
+              {
+                urn: '103127',
+                school_name: 'West Heath Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B31 3HB',
+                inspection_date: '04/10/2013',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103128',
+                school_name: 'Goodway Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B44 8RL',
+                inspection_date: '12/09/2014',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
+              },
+              {
+                urn: '103129',
+                school_name: 'Kings Norton Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B38 8SY',
+                inspection_date: '31/01/2013',
+                overall_effectiveness: 1,
+                effectiveness_of_leadership: 1
+              },
+              {
+                urn: '103131',
+                school_name: 'Rubery Nursery School',
+                ofsted_phase: 'Nursery',
+                region: 'West Midlands',
+                local_authority: 'Birmingham',
+                postcode: 'B45 9PB',
+                inspection_date: '05/12/2014',
+                overall_effectiveness: 2,
+                effectiveness_of_leadership: 2
               }
             ]
           )
