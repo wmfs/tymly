@@ -190,5 +190,8 @@ describe('Ofsted tests', function () {
         }
       }
     )
+    /* need a test for NULL inspection in dataset.
+    Awaiting confirmation of weighting for a NULL result
+     */
   })
 })
