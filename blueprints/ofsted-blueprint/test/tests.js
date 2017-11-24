@@ -55,7 +55,7 @@ describe('Ofsted tests', function () {
 
   it('Should be the correct data in the database', function (done) {
     client.query(
-      'select urn, school_name, ofsted_phase, region, local_authority, postcode, overall_effectiveness, effectiveness_of_leadership from wmfs.ofsted order by urn;',
+      'select urn, school_name, ofsted_phase, region, local_authority, postcode, TO_CHAR(inspection_date, \'DD/MM/YYYY\') AS inspection_date, overall_effectiveness, effectiveness_of_leadership from wmfs.ofsted order by urn;',
       function (err, result) {
         expect(err).to.equal(null)
         if (err) {
@@ -70,6 +70,7 @@ describe('Ofsted tests', function () {
                 region: 'West Midlands',
                 local_authority: 'Birmingham',
                 postcode: 'B33 8QB',
+                inspection_date: '22/01/2015',
                 overall_effectiveness: 2,
                 effectiveness_of_leadership: 2
               }
