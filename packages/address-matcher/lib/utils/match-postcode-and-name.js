@@ -4,29 +4,29 @@ const _ = require('lodash')
 
 function matchPostcodeAndName (options, client, callback) {
   client.query(
-    exactMatch(options) + ' ' + fuzzyMatch(options),
+    match(options, 'exact', 2) + ' ' + match(options, 'fuzzy', 3),
     (err) => {
       callback(err)
     }
   )
 }
 
-function exactMatch (options) {
-  return `INSERT INTO ${options.link.schema}.${options.link.table} (${options.source.id}, ${options.target.id}, match_certainty) ` +
-    `SELECT source.${options.source.id}, target.${options.target.id}, 2 ` +
+function match (options, type, certainty) {
+  let statement = `INSERT INTO ${options.link.schema}.${options.link.table} (${options.source.id}, ${options.target.id}, match_certainty) ` +
+    `SELECT source.${options.source.id}, target.${options.target.id}, ${certainty} ` +
     `FROM ${options.source.schema}.${options.source.table} source, ${options.target.schema}.${options.target.table} target ` +
     `WHERE source.${options.link.map.postcode.source} = target.${options.link.map.postcode.target} ` +
-    `AND ` + processExactWhere(options.link.map.businessName.source, options.link.map.businessName.target) +
-    `ON CONFLICT (${options.source.id}) do nothing;`
-}
-
-function fuzzyMatch (options) {
-  return `INSERT INTO ${options.link.schema}.${options.link.table} (${options.source.id}, ${options.target.id}, match_certainty) ` +
-    `SELECT source.${options.source.id}, target.${options.target.id}, 2 ` +
-    `FROM ${options.source.schema}.${options.source.table} source, ${options.target.schema}.${options.target.table} target ` +
-    `WHERE source.${options.link.map.postcode.source} = target.${options.link.map.postcode.target} ` +
-    `AND ` + processFuzzyWhere(options.link.map.businessName.source, options.link.map.businessName.target) +
-    `ON CONFLICT (${options.source.id}) do nothing;`
+    `AND `
+  switch (type) {
+    case 'exact':
+      statement += processExactWhere(options.link.map.businessName.source, options.link.map.businessName.target)
+      break
+    case 'fuzzy':
+      statement += processFuzzyWhere(options.link.map.businessName.source, options.link.map.businessName.target)
+      break
+  }
+  statement += `ON CONFLICT (${options.source.id}) do nothing;`
+  return statement
 }
 
 function processExactWhere (source, target) {
