@@ -1,6 +1,6 @@
 'use strict'
 
-function initmatchTable (options, client, callback) {
+function initMatchTable (options, client, callback) {
   client.query(
     generateStatement(options) + generateCertaintyReferenceTable(options),
     function (err) {
@@ -31,5 +31,5 @@ function generateCertaintyReferenceTable (options) {
     ON CONFLICT (match_certainty) DO NOTHING; `
 }
 
-module.exports = initmatchTable
-initmatchTable.generateStatement = generateStatement
+module.exports = initMatchTable
+initMatchTable.generateStatement = generateStatement
