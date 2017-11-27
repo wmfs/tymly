@@ -1,0 +1,34 @@
+{
+  "name": "address-matcher",
+  "version": "0.0.1",
+  "description": "A package to link two database tables by addresses",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "4.17.4",
+    "async": "2.5.0"
+  },
+  "devDependencies": {
+    "chai": "4.1.0",
+    "mocha": "3.5.0",
+    "standard": "10.0.3",
+    "hl-pg-client": "0.0.1"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && mocha"
+  },
+  "author": "Meena Hoda",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  },
+  "keywords": [
+    "matching",
+    "records",
+    "addresses"
+  ]
+}
