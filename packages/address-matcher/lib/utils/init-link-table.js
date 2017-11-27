@@ -20,15 +20,15 @@ function generateStatement (options) {
 }
 
 function generateCertaintyReferenceTable (options) {
-  return `DROP TABLE IF EXISTS ${options.link.schema}.certainty_reference; ` +
-    `CREATE TABLE ${options.link.schema}.certainty_reference ` +
+  return `CREATE TABLE IF NOT EXISTS ${options.link.schema}.certainty_reference ` +
     `(match_certainty integer NOT NULL PRIMARY KEY, description text); ` +
     `INSERT INTO ${options.link.schema}.certainty_reference ` +
     `(match_certainty, description) VALUES ` +
     `(0, 'Not matched.'), ` +
     `(1, 'Manually matched.'), ` +
     `(2, 'Exact match on postcode and name.'), ` +
-    `(3, 'Fuzzy match on postcode and name.'); `
+    `(3, 'Fuzzy match on postcode and name.')
+    ON CONFLICT (match_certainty) DO NOTHING; `
 }
 
 module.exports = initLinkTable
