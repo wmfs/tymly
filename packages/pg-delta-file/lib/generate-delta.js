@@ -14,7 +14,7 @@ module.exports = function generateDelta (options, callback) {
     Object.keys(options.csvExtracts),
     (model, cb) => {
       const modified = options.modifiedColumnName || '_modified'
-      const sql = `select * from ${options.namespace}.${model} where ${modified} >= $1` // TODO: options.namespace to be inferred
+      const sql = `select * from ${options.namespace}.${model} where ${modified} >= $1`
       const csvTransform = (sql, values, client) => {
         const dbStream = client.query(new QueryStream(sql, values))
         dbStream.on('end', () => cb(null))
