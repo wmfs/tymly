@@ -6,9 +6,9 @@ const HlPgClient = require('hl-pg-client')
 const path = require('path')
 const expect = require('chai').expect
 const matchTables = require('../lib/index.js')
-const initmatchTables = require('../lib/utils/init-match-table.js')
+const initMatchTables = require('../lib/utils/init-match-table.js')
 const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
-const generateStatementInitTable = initmatchTables.generateStatement
+const generateStatementInitTable = initMatchTables.generateStatement
 const processWhere = matchPostcodeAndName.processWhere
 
 describe('Run some tests', function () {
