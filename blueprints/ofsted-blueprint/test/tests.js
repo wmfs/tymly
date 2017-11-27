@@ -10,7 +10,7 @@ const tymly = require('tymly')
 describe('Ofsted tests', function () {
   this.timeout(15000)
 
-  const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
+  const STATE_MACHINE_NAME = 'ofsted_refreshFromCsvFile_1_0'
 
   let statebox
   let client
@@ -180,9 +180,9 @@ describe('Ofsted tests', function () {
                 region: 'West Midlands',
                 local_authority: 'Birmingham',
                 postcode: 'B45 9PB',
-                inspection_date: '05/12/2014',
-                overall_effectiveness: 2,
-                effectiveness_of_leadership: 2
+                inspection_date: null,
+                overall_effectiveness: null,
+                effectiveness_of_leadership: null
               }
             ]
           )
@@ -190,8 +190,5 @@ describe('Ofsted tests', function () {
         }
       }
     )
-    /* need a test for NULL inspection in dataset.
-    Awaiting confirmation of weighting for a NULL result
-     */
   })
 })
