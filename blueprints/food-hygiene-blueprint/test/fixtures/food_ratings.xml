@@ -7,7 +7,7 @@
     </Header>
     <EstablishmentCollection>
         <EstablishmentDetail>
-            <FHRSID>670211</FHRSID>
+            <FHRSID>1234567890</FHRSID>
             <LocalAuthorityBusinessID>PI/000615818</LocalAuthorityBusinessID>
             <BusinessName>Business 1</BusinessName>
             <BusinessType>Restaurant/Cafe/Canteen</BusinessType>
@@ -35,7 +35,7 @@
             </Geocode>
         </EstablishmentDetail>
         <EstablishmentDetail>
-            <FHRSID>912722</FHRSID>
+            <FHRSID>1234567891</FHRSID>
             <LocalAuthorityBusinessID>PI/000631313</LocalAuthorityBusinessID>
             <BusinessName>Business 2</BusinessName>
             <BusinessType>Other catering premises</BusinessType>
@@ -63,7 +63,7 @@
             </Geocode>
         </EstablishmentDetail>
         <EstablishmentDetail>
-            <FHRSID>800341</FHRSID>
+            <FHRSID>1234567892</FHRSID>
             <LocalAuthorityBusinessID>PI/000626847</LocalAuthorityBusinessID>
             <BusinessName>Business 3</BusinessName>
             <BusinessType>Retailers - other</BusinessType>
@@ -88,7 +88,7 @@
             </Geocode>
         </EstablishmentDetail>
         <EstablishmentDetail>
-            <FHRSID>853976</FHRSID>
+            <FHRSID>1234567893</FHRSID>
             <LocalAuthorityBusinessID>PI/000598851</LocalAuthorityBusinessID>
             <BusinessName>Business 4</BusinessName>
             <BusinessType>Other catering premises</BusinessType>
@@ -117,7 +117,7 @@
             </Geocode>
         </EstablishmentDetail>
         <EstablishmentDetail>
-            <FHRSID>601580</FHRSID>
+            <FHRSID>1234567894</FHRSID>
             <LocalAuthorityBusinessID>PI/000462752</LocalAuthorityBusinessID>
             <BusinessName>2 M'S</BusinessName>
             <BusinessType>Retailers - other</BusinessType>

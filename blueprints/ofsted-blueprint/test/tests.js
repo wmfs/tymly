@@ -64,7 +64,7 @@ describe('Ofsted tests', function () {
           expect(result.rows).to.eql(
             [
               {
-                urn: '103120',
+                urn: '100000',
                 school_name: 'Bordesley Green East Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -75,7 +75,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103121',
+                urn: '100001',
                 school_name: 'Brearley Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -86,7 +86,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 1
               },
               {
-                urn: '103122',
+                urn: '100002',
                 school_name: 'Garretts Green Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -97,7 +97,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103123',
+                urn: '100003',
                 school_name: 'Perry Beeches Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -108,7 +108,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103124',
+                urn: '100004',
                 school_name: 'St Thomas Centre Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -119,7 +119,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 1
               },
               {
-                urn: '103125',
+                urn: '100005',
                 school_name: 'Highfield Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -130,7 +130,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103126',
+                urn: '100006',
                 school_name: 'Marsh Hill Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -141,7 +141,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 1
               },
               {
-                urn: '103127',
+                urn: '100007',
                 school_name: 'West Heath Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -152,7 +152,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103128',
+                urn: '100008',
                 school_name: 'Goodway Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -163,7 +163,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 2
               },
               {
-                urn: '103129',
+                urn: '100009',
                 school_name: 'Kings Norton Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -174,7 +174,7 @@ describe('Ofsted tests', function () {
                 effectiveness_of_leadership: 1
               },
               {
-                urn: '103131',
+                urn: '100010',
                 school_name: 'Rubery Nursery School',
                 ofsted_phase: 'Nursery',
                 region: 'West Midlands',
@@ -186,6 +186,20 @@ describe('Ofsted tests', function () {
               }
             ]
           )
+          done()
+        }
+      }
+    )
+  })
+  it('Should remove the data in the database', function (done) {
+    client.query(
+      `delete from ofsted.ofsted where urn::text like '1000%';`,
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          expect(result.rows).to.eql([])
           done()
         }
       }

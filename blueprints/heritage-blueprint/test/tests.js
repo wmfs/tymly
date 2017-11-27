@@ -61,75 +61,39 @@ describe('Heritage tests', function () {
         if (err) {
           done(err)
         } else {
-          expect(result.rows).to.eql(
-            [
-              {
-                uprn: '100032033430',
-                address: 'BLAKELANDS COUNTRY GUEST HOUSE & RESTAURANT, SIX ASHES ROAD, HALFPENNY GREEN, STOURBRIDGE, DY7 5DP',
-                info: 'Grade 2* listed.'
-              },
-              {
-                uprn: '100071312158',
-                address: 'FOX HILL HOUSE, FOX HILL ROAD, LITTLE SUTTON, SUTTON COLDFIELD, B75 6NY',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384631',
-                address: '31 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384632',
-                address: '33 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384633',
-                address: '35 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384634',
-                address: '37 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384635',
-                address: '39-45 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384636',
-                address: '47 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384637',
-                address: 'FIRST FLOOR, 49-51 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071384638',
-                address: 'BAGUETTE DU MAISON, 49-51 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071411786',
-                address: 'FIRST TO THIRD FLOORS, 33 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '100071411787',
-                address: 'FIRST FLOOR AND SECOND FLOOR, 35 CONSTITUTION HILL, HOCKLEY, BIRMINGHAM, B19 3LE',
-                info: 'Heritage Site'
-              },
-              {
-                uprn: '200004531516',
-                address: 'PATSHULL HALL, PATSHULL PARK, WOLVERHAMPTON, WV6 7HY',
-                info: ' Grade I listed building be renovated.'
-              }
-            ]
-          )
+          expect(result.rowCount).to.eql(13)
+          expect(result.rows[0].uprn).to.eql('1234567890')
+          expect(result.rows[4].uprn).to.eql('1234567894')
+          expect(result.rows[10].uprn).to.eql('12345678910')
+          done()
+        }
+      }
+    )
+  })
+
+  it('Should be clean up the database', function (done) {
+    client.query(
+      `DELETE FROM wmfs.heritage WHERE uprn::text LIKE '123456789%';`,
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          done()
+        }
+      }
+    )
+  })
+
+  it('Should find a now empty database', function (done) {
+    client.query(
+      'select * from wmfs.heritage;',
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          expect(result.rows).to.eql([])
           done()
         }
       }
