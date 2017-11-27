@@ -1,6 +1,6 @@
 {
   "name": "address-matcher",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A package to link two database tables by addresses",
   "main": "index.js",
   "dependencies": {

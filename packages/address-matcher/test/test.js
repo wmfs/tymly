@@ -163,7 +163,9 @@ describe('Run some tests', function () {
           {food_id: '987654', address_id: '987'},
           {food_id: '444444', address_id: '444'},
           {food_id: '555555', address_id: '555'},
-          {food_id: '666666', address_id: '666'}
+          {food_id: '666666', address_id: '666'},
+          {food_id: '777777', address_id: '777'},
+          {food_id: '888888', address_id: '888'}
         ])
         done(err)
       }
@@ -176,9 +178,7 @@ describe('Run some tests', function () {
       (err, results) => {
         expect(results.rows).to.eql([
           {food_id: '222222', address_id: null},
-          {food_id: '333333', address_id: null},
-          {food_id: '777777', address_id: null},
-          {food_id: '888888', address_id: null}
+          {food_id: '333333', address_id: null}
         ])
         done(err)
       }

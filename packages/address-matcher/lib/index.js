@@ -22,6 +22,8 @@ function matchTables (options, client, callback) {
           (err, unmatchedRows) => {
             if (err) callback(err)
             statistics.unmatched = unmatchedRows.rows[0].count
+
+            // How many records in total?
             client.query(
               `select count(*) from ${options.match.schema}.${options.match.table}`,
               (err, sourceRows) => {

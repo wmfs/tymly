@@ -29,7 +29,9 @@ sub_building_name,building_name,building_number,area_name,street_description,pos
 (98765,null,52.54935190,-1.84637060,null,null,'APARTMENT 8','EDMOND COURT',3,null,'TURNIP ROAD','B73 5XF'),
 (444,null,52.46364640,-1.56049150,null,'SAFE WITH TYMLY',null,null,null,'CORELY','101 CHUCKLE LANE','CV7 8AZ'),
 (555,null,52.51436490,-2.06319590,'TYMLY PRIMARY SCHOOL', null,null,null,null,'TIPTON', 'COLD TREE ROAD','DY4 7UF'),
-(666,null,52.60086440,-1.61572840,null,'VEGGY LAND',null,null,9,'DORDON','RED LANE','B78 1TR');
+(666,null,52.60086440,-1.61572840,null,'VEGGY LAND',null,null,9,'DORDON','RED LANE','B78 1TR'),
+(777,null,52.44757800,-2.33931700,null,'ALL THE FOOD RESTAURANT AND CAFE',null,null,5,'SHROPSHIRE','GREEN STREET','WV15 6JA'),
+(888,null,52.46591000,-2.00897800,null,'CARING FOR YOU',null,null,423,'SANDWELL','CASTLE ROAD','B68 0QY');
 
 CREATE TABLE match_test.food (
   food_id bigint NOT NULL PRIMARY KEY,
@@ -67,7 +69,7 @@ VALUES
 '9 Red Lane','B78 1TR','1',317,'North Warwickshire',52.60082000,-1.61584000),
 (777777,'1066','All the food','Restaurant/Cafe/Canteen',5,'Green Street',
 'Alveley','WV15 6JA','5',708,'Shropshire',52.44757800,-2.33931700),
-(888888,'109','Caring 4 U','Hospitals/Childcare/Caring Premises',7845,'Caring for you',
+(888888,'109','Caring 4 U','Hospitals/Childcare/Caring Premises',7845,'Caring 4 you',
 'Castle Road','B68 0QY','5',423,'Sandwell',52.46591000,-2.00897800),
 (987654,'PI/000501839','Edmond Court','Other catering premises',7841,
 '339 Turnip Road','Birmingham','B73 5XF','5',402,'Birmingham',52.54956200,-1.84667200);
