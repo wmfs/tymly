@@ -28,6 +28,10 @@
     "sprinklerCoverage": {
       "type": "integer",
       "description": "Percentage of sprinkler coverage of the building."
+    },
+    "occupancy": {
+      "type": "integer",
+      "description": "Capacity of people the building is holding."
     }
   }
 }
