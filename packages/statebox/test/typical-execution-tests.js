@@ -108,7 +108,7 @@ DaosToTest.forEach(([name, options]) => {
       )
     })
 
-    it("should execute helloWorld, but receive SUCCEEDED response {sendResponse: 'COMPLETE'}", function (done) {
+    it('should execute helloWorld, but receive SUCCEEDED response {sendResponse: \'COMPLETE\'}', function (done) {
       statebox.startExecution(
         {},  // input
         'helloWorld', // state machine name
@@ -210,7 +210,7 @@ DaosToTest.forEach(([name, options]) => {
       )
     })
 
-    it("should execute helloThenFailure, but receive FAILED response {sendResponse: 'COMPLETE'}", function (done) {
+    it('should execute helloThenFailure, but receive FAILED response {sendResponse: \'COMPLETE\'}', function (done) {
       statebox.startExecution(
         {},  // input
         'helloThenFailure', // state machine name
