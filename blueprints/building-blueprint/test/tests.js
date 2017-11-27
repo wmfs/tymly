@@ -63,56 +63,85 @@ describe('data import', function () {
           expect(result.rows).to.eql(
             [
               {
-                uprn: '20811',
-                footprint: '10000.00',
-                floors: 8,
-                height: '24.00',
-                sprinkler_coverage: 100
+                'floors': 2,
+                'footprint': '700.00',
+                'height': '5.00',
+                'sprinkler_coverage': 100,
+                'uprn': '1234567890'
               },
               {
-                uprn: '21411',
-                footprint: '12500.00',
-                floors: 14,
-                height: '48.00',
-                sprinkler_coverage: 60
+                'floors': 3,
+                'footprint': '1500.00',
+                'height': '7.00',
+                'sprinkler_coverage': 75,
+                'uprn': '1234567891'
               },
               {
-                uprn: '10014008811',
-                footprint: '700.00',
-                floors: 2,
-                height: '5.00',
-                sprinkler_coverage: 100
+                'floors': 1,
+                'footprint': '120.00',
+                'height': '6.00',
+                'sprinkler_coverage': 40,
+                'uprn': '1234567892'
               },
               {
-                uprn: '10033912311',
-                footprint: '1500.00',
-                floors: 3,
-                height: '7.00',
-                sprinkler_coverage: 75
+                'floors': 8,
+                'footprint': '10000.00',
+                'height': '24.00',
+                'sprinkler_coverage': 100,
+                'uprn': '1234567893'
               },
               {
-                uprn: '100071414911',
-                footprint: '120.00',
-                floors: 1,
-                height: '6.00',
-                sprinkler_coverage: 40
+                'floors': 20,
+                'footprint': '1750.00',
+                'height': '60.00',
+                'sprinkler_coverage': 50,
+                'uprn': '1234567894'
               },
               {
-                uprn: '100071448211',
-                footprint: '350.00',
-                floors: 1,
-                height: '10.00',
-                sprinkler_coverage: 100
+                'floors': 14,
+                'footprint': '12500.00',
+                'height': '48.00',
+                'sprinkler_coverage': 60,
+                'uprn': '1234567895'
               },
               {
-                uprn: '100071449911',
-                footprint: '1750.00',
-                floors: 20,
-                height: '60.00',
-                sprinkler_coverage: 50
+                'floors': 1,
+                'footprint': '350.00',
+                'height': '10.00',
+                'sprinkler_coverage': 100,
+                'uprn': '1234567896'
               }
             ]
           )
+          done()
+        }
+      }
+    )
+  })
+
+  it('Should be clean up the database', function (done) {
+    client.query(
+      `DELETE FROM wmfs.building WHERE uprn::text LIKE '123456789%';`,
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          done()
+        }
+      }
+    )
+  })
+
+  it('Should find a now empty database', function (done) {
+    client.query(
+      'select * from wmfs.building;',
+      function (err, result) {
+        expect(err).to.equal(null)
+        if (err) {
+          done(err)
+        } else {
+          expect(result.rows).to.eql([])
           done()
         }
       }
