@@ -10,29 +10,29 @@
       "type": "integer",
       "maxLength": 12
     },
-    "school_name": {
+    "schoolName": {
       "type": "string"
     },
-    "ofsted_phase": {
+    "ofstedPhase": {
       "type": "string"
     },
     "region": {
       "type": "string"
     },
-    "local_authority": {
+    "localAuthority": {
       "type": "string"
     },
     "postcode": {
       "type": "string"
     },
-    "inspection_date": {
+    "inspectionDate": {
       "type": "string",
       "format": "date-time"
     },
-    "overall_effectiveness": {
+    "overallEffectiveness": {
       "type": "integer"
     },
-    "effectiveness_of_leadership": {
+    "effectivenessOfLeadership": {
       "type": "integer"
     }
   }
