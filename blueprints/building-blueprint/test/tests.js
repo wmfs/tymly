@@ -123,6 +123,7 @@ describe('data import', function () {
     client.query(
       `DELETE FROM wmfs.building WHERE uprn::text LIKE '123456789%';`,
       function (err, result) {
+        expect(result.rowCount).to.eql(7)
         expect(err).to.equal(null)
         if (err) {
           done(err)
