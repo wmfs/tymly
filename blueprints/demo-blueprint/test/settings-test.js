@@ -36,7 +36,7 @@ describe('Settings tests', function () {
     })
       .then(result => {
         expect(result[0].userId).to.eql('user1')
-        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']})
+        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
         done()
       })
   })
