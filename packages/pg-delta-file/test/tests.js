@@ -21,7 +21,7 @@ describe('Run the basic usage example',
     it('Should generate the delta file', function (done) {
       generateDelta(
         {
-          namespace: 'springfield', // to be inferred
+          namespace: 'springfield',
           client: client,
           since: '2017-06-02 15:02:38.000000 GMT',
           outputFilepath: path.resolve(__dirname, './output', './single-delta.csv'),
