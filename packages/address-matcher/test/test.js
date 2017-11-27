@@ -9,8 +9,10 @@ const linkTables = require('../lib/index.js')
 const initLinkTables = require('../lib/utils/init-link-table.js')
 const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
 const generateStatementInitTable = initLinkTables.generateStatement
-const processWherePartMatchNamePostcode = matchPostcodeAndName.processWherePart
-const generateStatementMatchNamePostcode = matchPostcodeAndName.generateStatement
+const processFuzzyWhere = matchPostcodeAndName.processFuzzyWhere
+const processExactWhere = matchPostcodeAndName.processExactWhere
+// const processWherePartMatchNamePostcode = matchPostcodeAndName.processWherePart
+// const generateStatementMatchNamePostcode = matchPostcodeAndName.generateStatement
 
 describe('Run some tests', function () {
   this.timeout(15000)
@@ -57,77 +59,82 @@ describe('Run some tests', function () {
     done()
   })
 
-  it('Should test the statement to match on name and postcode', (done) => {
-    const statement = generateStatementMatchNamePostcode(options)
-    expect(statement.trim()).to.eql('INSERT INTO link_test_results.food_addressbase (food_id, address_id, match_certainty) ' +
-      'SELECT source.food_id, target.address_id, 2 FROM link_test.food source, link_test.addressbase target ' +
-      'WHERE source.postcode = target.postcode AND ' +
-      '(upper(business_name) = organisation_name OR ' +
-      'difference(business_name, organisation_name) = 4 OR ' +
-      'upper(business_name) = organisation OR ' +
-      'difference(business_name, organisation) = 4 OR ' +
-      'upper(business_name) = building_name OR ' +
-      'difference(business_name, building_name) = 4 OR ' +
-      'upper(address_line_1) = organisation_name OR ' +
-      'difference(address_line_1, organisation_name) = 4 OR ' +
-      'upper(address_line_1) = organisation OR ' +
-      'difference(address_line_1, organisation) = 4 OR ' +
-      'upper(address_line_1) = building_name OR ' +
-      'difference(address_line_1, building_name) = 4) ' +
-      'ON CONFLICT (food_id) do nothing;')
-    done()
-  })
-
   it('Should test processing the where part of a statement with both strings', (done) => {
-    const where = processWherePartMatchNamePostcode(
+    const where = processExactWhere(
       ['full_name'],
       ['first_name']
     )
     expect(where.trim()).to.eql('(' +
-      'upper(full_name) = first_name OR ' +
-      'difference(full_name, first_name) = 4)')
+      'upper(full_name) = upper(first_name))')
     done()
   })
 
   it('Should test processing the where part of a statement with only source array', (done) => {
-    const where = processWherePartMatchNamePostcode(
+    const where = processExactWhere(
       ['full_name', 'name'],
       ['first_name']
     )
     expect(where.trim()).to.eql('(' +
-      'upper(full_name) = first_name OR ' +
+      'upper(full_name) = upper(first_name) OR ' +
+      'upper(name) = upper(first_name))')
+    done()
+  })
+
+  it('Should test processing the where part of a statement with only target array', (done) => {
+    const where = processExactWhere(
+      ['full_name'],
+      ['first_name', 'last_name']
+    )
+    expect(where.trim()).to.eql('(' +
+      'upper(full_name) = upper(first_name) OR ' +
+      'upper(full_name) = upper(last_name))')
+    done()
+  })
+
+  it('Should test processing the where part of a statement with both arrays', (done) => {
+    const where = processExactWhere(
+      ['full_name', 'name'],
+      ['first_name', 'middle_name']
+    )
+    expect(where.trim()).to.eql('(' +
+      'upper(full_name) = upper(first_name) OR ' +
+      'upper(full_name) = upper(middle_name) OR ' +
+      'upper(name) = upper(first_name) OR ' +
+      'upper(name) = upper(middle_name))')
+    done()
+  })
+
+  it('Should test processing the where part of a statement with only source array', (done) => {
+    const where = processFuzzyWhere(
+      ['full_name', 'name'],
+      ['first_name']
+    )
+    expect(where.trim()).to.eql('(' +
       'difference(full_name, first_name) = 4 OR ' +
-      'upper(name) = first_name OR ' +
       'difference(name, first_name) = 4)')
     done()
   })
 
   it('Should test processing the where part of a statement with only target array', (done) => {
-    const where = processWherePartMatchNamePostcode(
+    const where = processFuzzyWhere(
       ['full_name'],
       ['first_name', 'last_name']
     )
     expect(where.trim()).to.eql('(' +
-      'upper(full_name) = first_name OR ' +
       'difference(full_name, first_name) = 4 OR ' +
-      'upper(full_name) = last_name OR ' +
       'difference(full_name, last_name) = 4)')
     done()
   })
 
   it('Should test processing the where part of a statement with both arrays', (done) => {
-    const where = processWherePartMatchNamePostcode(
+    const where = processFuzzyWhere(
       ['full_name', 'name'],
       ['first_name', 'middle_name']
     )
     expect(where.trim()).to.eql('(' +
-      'upper(full_name) = first_name OR ' +
       'difference(full_name, first_name) = 4 OR ' +
-      'upper(full_name) = middle_name OR ' +
       'difference(full_name, middle_name) = 4 OR ' +
-      'upper(name) = first_name OR ' +
       'difference(name, first_name) = 4 OR ' +
-      'upper(name) = middle_name OR ' +
       'difference(name, middle_name) = 4)')
     done()
   })
