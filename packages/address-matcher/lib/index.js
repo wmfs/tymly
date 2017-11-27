@@ -1,11 +1,11 @@
 'use strict'
 
-const initLinkTable = require('./utils/init-link-table.js')
+const initmatchTable = require('./utils/init-match-table.js')
 const matchPostcodeAndName = require('./utils/match-postcode-and-name.js')
 const insertUnmatchedRecords = require('./utils/insert-unmatched-records.js')
 
-function linkTables (options, client, callback) {
-  initLinkTable(options, client, (err) => {
+function matchTables (options, client, callback) {
+  initmatchTable(options, client, (err) => {
     if (err) callback(err)
 
     matchPostcodeAndName(options, client, (err) => {
@@ -16,7 +16,7 @@ function linkTables (options, client, callback) {
 
         // How many have not been matched?
         client.query(
-          `select count(*) from ${options.link.schema}.${options.link.table} where match_certainty = 0`,
+          `select count(*) from ${options.match.schema}.${options.match.table} where match_certainty = 0`,
           (err, sourceRows) => {
             console.log(sourceRows.rows[0].count + ' not matched.')
             callback(err)
@@ -27,4 +27,4 @@ function linkTables (options, client, callback) {
   })
 }
 
-module.exports = linkTables
+module.exports = matchTables

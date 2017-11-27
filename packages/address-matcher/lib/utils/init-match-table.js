@@ -1,6 +1,6 @@
 'use strict'
 
-function initLinkTable (options, client, callback) {
+function initmatchTable (options, client, callback) {
   client.query(
     generateStatement(options) + generateCertaintyReferenceTable(options),
     function (err) {
@@ -11,18 +11,18 @@ function initLinkTable (options, client, callback) {
 }
 
 function generateStatement (options) {
-  return `CREATE SCHEMA IF NOT EXISTS ${options.link.schema}; ` +
-    `DROP TABLE IF EXISTS ${options.link.schema}.${options.link.table}; ` +
-    `CREATE TABLE ${options.link.schema}.${options.link.table} (` +
+  return `CREATE SCHEMA IF NOT EXISTS ${options.match.schema}; ` +
+    `DROP TABLE IF EXISTS ${options.match.schema}.${options.match.table}; ` +
+    `CREATE TABLE ${options.match.schema}.${options.match.table} (` +
     `${options.source.id} ${options.source.type} NOT NULL PRIMARY KEY, ` +
     `${options.target.id} ${options.target.type}, ` +
     `match_certainty integer); `
 }
 
 function generateCertaintyReferenceTable (options) {
-  return `CREATE TABLE IF NOT EXISTS ${options.link.schema}.certainty_reference ` +
+  return `CREATE TABLE IF NOT EXISTS ${options.match.schema}.certainty_reference ` +
     `(match_certainty integer NOT NULL PRIMARY KEY, description text); ` +
-    `INSERT INTO ${options.link.schema}.certainty_reference ` +
+    `INSERT INTO ${options.match.schema}.certainty_reference ` +
     `(match_certainty, description) VALUES ` +
     `(0, 'Not matched.'), ` +
     `(1, 'Manually matched.'), ` +
@@ -31,5 +31,5 @@ function generateCertaintyReferenceTable (options) {
     ON CONFLICT (match_certainty) DO NOTHING; `
 }
 
-module.exports = initLinkTable
-initLinkTable.generateStatement = generateStatement
+module.exports = initmatchTable
+initmatchTable.generateStatement = generateStatement

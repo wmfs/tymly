@@ -11,7 +11,7 @@ module.exports = function insertUnmatchedRecords (options, client, callback) {
 }
 
 function generateStatement (options) {
-  return `INSERT INTO ${options.link.schema}.${options.link.table} (${options.source.id}, match_certainty) ` +
+  return `INSERT INTO ${options.match.schema}.${options.match.table} (${options.source.id}, match_certainty) ` +
     `SELECT ${options.source.id}, 0 ` +
     `FROM ${options.source.schema}.${options.source.table} ` +
     `ON CONFLICT (${options.source.id}) do nothing;`

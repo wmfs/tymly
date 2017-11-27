@@ -5,10 +5,10 @@
 const HlPgClient = require('hl-pg-client')
 const path = require('path')
 const expect = require('chai').expect
-const linkTables = require('../lib/index.js')
-const initLinkTables = require('../lib/utils/init-link-table.js')
+const matchTables = require('../lib/index.js')
+const initmatchTables = require('../lib/utils/init-match-table.js')
 const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
-const generateStatementInitTable = initLinkTables.generateStatement
+const generateStatementInitTable = initmatchTables.generateStatement
 const processWhere = matchPostcodeAndName.processWhere
 
 describe('Run some tests', function () {
@@ -16,19 +16,19 @@ describe('Run some tests', function () {
   const client = new HlPgClient(process.env.PG_CONNECTION_STRING)
   const options = {
     source: {
-      schema: 'link_test',
+      schema: 'match_test',
       table: 'food',
       id: 'food_id',
       type: 'bigint'
     },
     target: {
-      schema: 'link_test',
+      schema: 'match_test',
       table: 'addressbase',
       id: 'address_id',
       type: 'bigint'
     },
-    link: {
-      schema: 'link_test_results',
+    match: {
+      schema: 'match_test_results',
       table: 'food_addressbase',
       map: {
         postcode: {
@@ -47,11 +47,11 @@ describe('Run some tests', function () {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'scripts', 'setup.sql'))
   })
 
-  it('Should test the statement to generate link table', (done) => {
+  it('Should test the statement to generate match table', (done) => {
     const statement = generateStatementInitTable(options)
-    expect(statement.trim()).to.eql('CREATE SCHEMA IF NOT EXISTS link_test_results; ' +
-      'DROP TABLE IF EXISTS link_test_results.food_addressbase; ' +
-      'CREATE TABLE link_test_results.food_addressbase ' +
+    expect(statement.trim()).to.eql('CREATE SCHEMA IF NOT EXISTS match_test_results; ' +
+      'DROP TABLE IF EXISTS match_test_results.food_addressbase; ' +
+      'CREATE TABLE match_test_results.food_addressbase ' +
       '(food_id bigint NOT NULL PRIMARY KEY, address_id bigint, match_certainty integer);')
     done()
   })
@@ -143,8 +143,8 @@ describe('Run some tests', function () {
     done()
   })
 
-  it('Should link the tables', (done) => {
-    linkTables(
+  it('Should match the tables', (done) => {
+    matchTables(
       options,
       client,
       (err) => {
@@ -156,7 +156,7 @@ describe('Run some tests', function () {
 
   it('Should check the results', (done) => {
     client.query(
-      `select food_id, address_id from ${options.link.schema}.${options.link.table} where match_certainty != 0`,
+      `select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty != 0`,
       (err, results) => {
         expect(results.rows).to.eql([
           {food_id: '111111', address_id: '111'},
@@ -172,7 +172,7 @@ describe('Run some tests', function () {
 
   it('Should check the results', (done) => {
     client.query(
-      `select food_id, address_id from ${options.link.schema}.${options.link.table} where match_certainty = 0`,
+      `select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty = 0`,
       (err, results) => {
         expect(results.rows).to.eql([
           {food_id: '222222', address_id: null},
