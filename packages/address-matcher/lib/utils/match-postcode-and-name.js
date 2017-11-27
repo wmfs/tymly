@@ -4,7 +4,7 @@ const _ = require('lodash')
 
 function matchPostcodeAndName (options, client, callback) {
   client.query(
-    match(options, 'exact', 2) + ' ' + match(options, 'fuzzy', 3),
+    match(options, 'exact', 2) + match(options, 'fuzzy', 3),
     (err) => {
       callback(err)
     }
@@ -25,7 +25,7 @@ function match (options, type, certainty) {
       statement += processFuzzyWhere(options.link.map.businessName.source, options.link.map.businessName.target)
       break
   }
-  statement += `ON CONFLICT (${options.source.id}) do nothing;`
+  statement += `ON CONFLICT (${options.source.id}) do nothing; `
   return statement
 }
 

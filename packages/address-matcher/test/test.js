@@ -11,8 +11,6 @@ const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
 const generateStatementInitTable = initLinkTables.generateStatement
 const processFuzzyWhere = matchPostcodeAndName.processFuzzyWhere
 const processExactWhere = matchPostcodeAndName.processExactWhere
-// const processWherePartMatchNamePostcode = matchPostcodeAndName.processWherePart
-// const generateStatementMatchNamePostcode = matchPostcodeAndName.generateStatement
 
 describe('Run some tests', function () {
   this.timeout(15000)
@@ -52,10 +50,10 @@ describe('Run some tests', function () {
 
   it('Should test the statement to generate link table', (done) => {
     const statement = generateStatementInitTable(options)
-    expect(statement.trim()).to.eql('CREATE SCHEMA IF NOT EXISTS link_test_results;' +
-      'DROP TABLE IF EXISTS link_test_results.food_addressbase;' +
+    expect(statement.trim()).to.eql('CREATE SCHEMA IF NOT EXISTS link_test_results; ' +
+      'DROP TABLE IF EXISTS link_test_results.food_addressbase; ' +
       'CREATE TABLE link_test_results.food_addressbase ' +
-      '(food_id bigint NOT NULL PRIMARY KEY, address_id bigint,match_certainty integer);')
+      '(food_id bigint NOT NULL PRIMARY KEY, address_id bigint, match_certainty integer);')
     done()
   })
 
@@ -152,7 +150,7 @@ describe('Run some tests', function () {
 
   it('Should check the results', (done) => {
     client.query(
-      `select food_id, address_id from ${options.link.schema}.${options.link.table}`,
+      `select food_id, address_id from ${options.link.schema}.${options.link.table} where match_certainty != 0`,
       (err, results) => {
         expect(results.rows).to.eql([
           {food_id: '111111', address_id: '111'},
@@ -160,6 +158,21 @@ describe('Run some tests', function () {
           {food_id: '444444', address_id: '444'},
           {food_id: '555555', address_id: '555'},
           {food_id: '666666', address_id: '666'}
+        ])
+        done(err)
+      }
+    )
+  })
+
+  it('Should check the results', (done) => {
+    client.query(
+      `select food_id, address_id from ${options.link.schema}.${options.link.table} where match_certainty = 0`,
+      (err, results) => {
+        expect(results.rows).to.eql([
+          {food_id: '222222', address_id: null},
+          {food_id: '333333', address_id: null},
+          {food_id: '777777', address_id: null},
+          {food_id: '888888', address_id: null}
         ])
         done(err)
       }
