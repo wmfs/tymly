@@ -75,6 +75,7 @@ describe('Heritage tests', function () {
     client.query(
       `DELETE FROM wmfs.heritage WHERE uprn::text LIKE '123456789%';`,
       function (err, result) {
+        expect(result.rowCount).to.eql(13)
         expect(err).to.equal(null)
         if (err) {
           done(err)
