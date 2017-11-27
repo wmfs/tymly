@@ -55,24 +55,28 @@ describe('tymly-solr-plugin tests', function () {
   })
 
   it('should generate a SQL SELECT statement', function () {
-    const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
+    if (solrService.solrUrl) {
+      const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
 
-    expect(select).to.be.a('string')
-    expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM tymly_test.students')
+      expect(select).to.be.a('string')
+      expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+        'character_name AS character_name FROM tymly_test.students')
+    }
   })
 
   it('should generate a SQL CREATE VIEW statement', function () {
-    const sqlString = solrService.buildCreateViewStatement(
-      studentsAndStaffModels, studentsAndStaffSearchDocs)
+    if (solrService.solrUrl) {
+      const sqlString = solrService.buildCreateViewStatement(
+        studentsAndStaffModels, studentsAndStaffSearchDocs)
 
-    expect(sqlString).to.be.a('string')
-    expect(sqlString).to.eql('CREATE OR REPLACE VIEW tymly.solr_data AS \n' +
-      'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_name AS character_name FROM tymly_test.students\n' +
-      'UNION\n' +
-      'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-      'character_first_name || \' \' || character_last_name AS character_name FROM tymly_test.staff;')
+      expect(sqlString).to.be.a('string')
+      expect(sqlString).to.eql('CREATE OR REPLACE VIEW tymly.solr_data AS \n' +
+        'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+        'character_name AS character_name FROM tymly_test.students\n' +
+        'UNION\n' +
+        'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+        'character_first_name || \' \' || character_last_name AS character_name FROM tymly_test.staff;')
+    }
   })
 
   it('should have generated a SQL CREATE VIEW statement on tymly boot', function () {
