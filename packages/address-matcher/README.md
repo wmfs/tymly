@@ -55,6 +55,10 @@ The package currently matches on postcode and business name where the column nam
 ```bash
 $ npm install address-matcher --save
 ```
+This package requires the database to have the "fuzzystrmatch" extension for Postgres which is achieved by:
+```
+CREATE EXTENSION "fuzzystrmatch";
+```
 
 ## <a name="license"></a>License
 [MIT](https://github.com/wmfs/pg-delta-file/blob/master/LICENSE)
