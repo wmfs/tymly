@@ -20,7 +20,8 @@ function generateStatement (options) {
 }
 
 function generateCertaintyReferenceTable (options) {
-  return `CREATE TABLE IF NOT EXISTS ${options.link.schema}.certainty_reference ` +
+  return `DROP TABLE IF EXISTS ${options.link.schema}.certainty_reference; ` +
+    `CREATE TABLE ${options.link.schema}.certainty_reference ` +
     `(match_certainty integer NOT NULL PRIMARY KEY, description text); ` +
     `INSERT INTO ${options.link.schema}.certainty_reference ` +
     `(match_certainty, description) VALUES ` +
