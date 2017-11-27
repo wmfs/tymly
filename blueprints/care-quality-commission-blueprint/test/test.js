@@ -127,6 +127,7 @@ describe('CQC tests', function () {
     client.query(
       `DELETE FROM cqc.cqc WHERE location_id::text LIKE '123456789%';`,
       function (err, result) {
+        expect(result.rowCount).to.eql(10)
         expect(err).to.equal(null)
         if (err) {
           done(err)
