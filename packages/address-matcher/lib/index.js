@@ -1,13 +1,13 @@
 'use strict'
 
-const initmatchTable = require('./utils/init-match-table.js')
+const initMatchTable = require('./utils/init-match-table.js')
 const matchPostcodeAndName = require('./utils/match-postcode-and-name.js')
 const insertUnmatchedRecords = require('./utils/insert-unmatched-records.js')
 
 function matchTables (options, client, callback) {
   const statistics = {}
 
-  initmatchTable(options, client, (err) => {
+  initMatchTable(options, client, (err) => {
     if (err) callback(err)
 
     matchPostcodeAndName(options, client, (err) => {
