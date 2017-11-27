@@ -32,6 +32,10 @@
     "occupancy": {
       "type": "integer",
       "description": "Capacity of people the building is holding."
+    },
+    "numBedrooms": {
+      "type": "integer",
+      "description": "Amount of bedrooms the building has."
     }
   }
 }
