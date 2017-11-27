@@ -19,13 +19,13 @@ describe('Run some tests', function () {
     source: {
       schema: 'link_test',
       table: 'food',
-      id: 'fhrsid',
+      id: 'food_id',
       type: 'bigint'
     },
     target: {
       schema: 'link_test',
       table: 'addressbase',
-      id: 'uprn',
+      id: 'address_id',
       type: 'bigint'
     },
     link: {
@@ -53,14 +53,14 @@ describe('Run some tests', function () {
     expect(statement.trim()).to.eql('CREATE SCHEMA IF NOT EXISTS link_test_results;' +
       'DROP TABLE IF EXISTS link_test_results.food_addressbase;' +
       'CREATE TABLE link_test_results.food_addressbase ' +
-      '(fhrsid bigint NOT NULL PRIMARY KEY, uprn bigint,match_certainty integer);')
+      '(food_id bigint NOT NULL PRIMARY KEY, address_id bigint,match_certainty integer);')
     done()
   })
 
   it('Should test the statement to match on name and postcode', (done) => {
     const statement = generateStatementMatchNamePostcode(options)
-    expect(statement.trim()).to.eql('INSERT INTO link_test_results.food_addressbase (fhrsid, uprn, match_certainty) ' +
-      'SELECT source.fhrsid, target.uprn, 2 FROM link_test.food source, link_test.addressbase target ' +
+    expect(statement.trim()).to.eql('INSERT INTO link_test_results.food_addressbase (food_id, address_id, match_certainty) ' +
+      'SELECT source.food_id, target.address_id, 2 FROM link_test.food source, link_test.addressbase target ' +
       'WHERE source.postcode = target.postcode AND ' +
       '(upper(business_name) = organisation_name OR ' +
       'difference(business_name, organisation_name) = 4 OR ' +
@@ -74,7 +74,7 @@ describe('Run some tests', function () {
       'difference(address_line_1, organisation) = 4 OR ' +
       'upper(address_line_1) = building_name OR ' +
       'difference(address_line_1, building_name) = 4) ' +
-      'ON CONFLICT (fhrsid) do nothing;')
+      'ON CONFLICT (food_id) do nothing;')
     done()
   })
 
@@ -145,14 +145,14 @@ describe('Run some tests', function () {
 
   it('Should check the results', (done) => {
     client.query(
-      `select fhrsid, uprn from ${options.link.schema}.${options.link.table}`,
+      `select food_id, address_id from ${options.link.schema}.${options.link.table}`,
       (err, results) => {
         expect(results.rows).to.eql([
-          {fhrsid: '111111', uprn: '111'},
-          {fhrsid: '987654', uprn: '987'},
-          {fhrsid: '444444', uprn: '444'},
-          {fhrsid: '555555', uprn: '555'},
-          {fhrsid: '666666', uprn: '666'}
+          {food_id: '111111', address_id: '111'},
+          {food_id: '987654', address_id: '987'},
+          {food_id: '444444', address_id: '444'},
+          {food_id: '555555', address_id: '555'},
+          {food_id: '666666', address_id: '666'}
         ])
         done(err)
       }

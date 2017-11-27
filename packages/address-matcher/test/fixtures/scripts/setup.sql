@@ -1,10 +1,10 @@
-CREATE EXTENSION "fuzzystrmatch";
+CREATE EXTENSION IF NOT EXISTS "fuzzystrmatch";
 
 CREATE SCHEMA IF NOT EXISTS link_test;
 
 CREATE TABLE link_test.addressbase (
-    uprn bigint NOT NULL PRIMARY KEY,
-    parent_uprn bigint,
+    address_id bigint NOT NULL PRIMARY KEY,
+    parent_address_id bigint,
     longitude numeric(16,8),
     latitude numeric(17,8),
     organisation_name text,
@@ -18,7 +18,7 @@ CREATE TABLE link_test.addressbase (
 );
 
 INSERT INTO link_test.addressbase
-(uprn,parent_uprn,longitude,latitude,organisation_name,organisation,
+(address_id,parent_address_id,longitude,latitude,organisation_name,organisation,
 sub_building_name,building_name,building_number,area_name,street_description,postcode) VALUES
 (111,null,52.48478840,-1.51592770,'TIMS KEBABS',null,null,null,null,'BEDWORTH','CASTLE LANE','CV12 0NF'),
 (100,null,52.48478840,-1.51592770,'TIMS KEBABS',null,null,null,null,'WEDWORTH','CASTLE LANE','B12 0XF'),
@@ -32,7 +32,7 @@ sub_building_name,building_name,building_number,area_name,street_description,pos
 (666,null,52.60086440,-1.61572840,null,'VEGGY LAND',null,null,9,'DORDON','RED LANE','B78 1TR');
 
 CREATE TABLE link_test.food (
-  fhrsid bigint NOT NULL PRIMARY KEY,
+  food_id bigint NOT NULL PRIMARY KEY,
   local_authority_business_id text,
   business_name text,
   business_type text,
@@ -49,7 +49,7 @@ CREATE TABLE link_test.food (
 );
 
 INSERT INTO link_test.food
-(fhrsid, local_authority_business_id, business_name, business_type, business_type_id,
+(food_id, local_authority_business_id, business_name, business_type, business_type_id,
 address_line_1, address_line_2, postcode, rating_value, local_authority_code,
 local_authority_name, longitude, latitude)
 VALUES

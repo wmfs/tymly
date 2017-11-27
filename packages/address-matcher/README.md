@@ -16,13 +16,13 @@ addressMatch(
      source: {
        schema: 'link_test',
        table: 'food',
-       id: 'fhrsid',
+       id: 'food_id',
        type: 'bigint'
      },
      target: {
        schema: 'link_test',
        table: 'addressbase',
-       id: 'uprn',
+       id: 'address_id',
        type: 'bigint'
      },
      link: {
