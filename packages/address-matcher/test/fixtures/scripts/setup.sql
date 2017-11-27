@@ -1,3 +1,5 @@
+CREATE EXTENSION "fuzzystrmatch";
+
 CREATE SCHEMA IF NOT EXISTS link_test;
 
 CREATE TABLE link_test.addressbase (
