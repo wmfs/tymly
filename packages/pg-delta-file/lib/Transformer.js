@@ -5,7 +5,7 @@ const _ = require('lodash')
 const csvEncoder = require('./simple-csv-encoder')
 
 class Transformer extends Transform {
-  constructor (info, table, options) {
+  constructor (info, model, options) {
     super({objectMode: true})
     this.info = info
 
@@ -14,13 +14,18 @@ class Transformer extends Transform {
     const functionStatements = [
       'const csvParts = []'
     ]
-    table.csvColumns.forEach(
+    options.csvExtracts[model].forEach(
       function (csvColumnSource) {
         switch (csvColumnSource[0]) {
           case '$':
             const functionName = csvColumnSource.slice(1)
-            if (functionName === 'ROW_NUM') {
-              functionStatements.push(`csvParts.push(this.info.totalCount)`)
+            switch (functionName) {
+              case 'ROW_NUM':
+                functionStatements.push(`csvParts.push(this.info.totalCount)`)
+                break
+              case 'ACTION':
+                functionStatements.push(`csvParts.push('U')`) // TODO: Action to be inferred
+                break
             }
             break
           case '@':
