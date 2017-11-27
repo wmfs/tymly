@@ -1,0 +1,20 @@
+{
+  "id": "forms",
+  "title": "Forms",
+  "description": "Forms",
+  "type": "object",
+  "properties": {
+    "jsonSchema": {
+      "type": "object",
+      "description": "The jsonSchema for this form"
+    },
+    "uiSchema": {
+      "type": "object",
+      "description": "The uiSchema for this form"
+    },
+    "widgets": {
+      "type": "object",
+      "description": "The widgets associated with this form"
+    }
+  }
+}
