@@ -9,8 +9,7 @@ const linkTables = require('../lib/index.js')
 const initLinkTables = require('../lib/utils/init-link-table.js')
 const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
 const generateStatementInitTable = initLinkTables.generateStatement
-const processFuzzyWhere = matchPostcodeAndName.processFuzzyWhere
-const processExactWhere = matchPostcodeAndName.processExactWhere
+const processWhere = matchPostcodeAndName.processWhere
 
 describe('Run some tests', function () {
   this.timeout(15000)
@@ -58,7 +57,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with both strings', (done) => {
-    const where = processExactWhere(
+    const where = processWhere(
+      'exact',
       ['full_name'],
       ['first_name']
     )
@@ -68,7 +68,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with only source array', (done) => {
-    const where = processExactWhere(
+    const where = processWhere(
+      'exact',
       ['full_name', 'name'],
       ['first_name']
     )
@@ -79,7 +80,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with only target array', (done) => {
-    const where = processExactWhere(
+    const where = processWhere(
+      'exact',
       ['full_name'],
       ['first_name', 'last_name']
     )
@@ -90,7 +92,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with both arrays', (done) => {
-    const where = processExactWhere(
+    const where = processWhere(
+      'exact',
       ['full_name', 'name'],
       ['first_name', 'middle_name']
     )
@@ -103,7 +106,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with only source array', (done) => {
-    const where = processFuzzyWhere(
+    const where = processWhere(
+      'fuzzy',
       ['full_name', 'name'],
       ['first_name']
     )
@@ -114,7 +118,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with only target array', (done) => {
-    const where = processFuzzyWhere(
+    const where = processWhere(
+      'fuzzy',
       ['full_name'],
       ['first_name', 'last_name']
     )
@@ -125,7 +130,8 @@ describe('Run some tests', function () {
   })
 
   it('Should test processing the where part of a statement with both arrays', (done) => {
-    const where = processFuzzyWhere(
+    const where = processWhere(
+      'fuzzy',
       ['full_name', 'name'],
       ['first_name', 'middle_name']
     )

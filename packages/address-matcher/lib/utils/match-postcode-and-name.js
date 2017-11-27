@@ -19,72 +19,39 @@ function match (options, type, certainty) {
     `AND `
   switch (type) {
     case 'exact':
-      statement += processExactWhere(options.link.map.businessName.source, options.link.map.businessName.target)
+      statement += processWhere('exact', options.link.map.businessName.source, options.link.map.businessName.target)
       break
     case 'fuzzy':
-      statement += processFuzzyWhere(options.link.map.businessName.source, options.link.map.businessName.target)
+      statement += processWhere('fuzzy', options.link.map.businessName.source, options.link.map.businessName.target)
       break
   }
   statement += `ON CONFLICT (${options.source.id}) do nothing; `
   return statement
 }
 
-function processExactWhere (source, target) {
-  let statement = ``
-  if (_.isArray(source)) {
-    const parts = []
-    source.map(s => {
-      if (_.isArray(target)) {
+function processWhere (type, source, target) {
+  if (!_.isArray(source)) source = [source]
+  if (!_.isArray(target)) target = [target]
+
+  const parts = []
+  switch (type) {
+    case 'exact':
+      source.map(s => {
         target.map(t => {
           parts.push(`upper(${s}) = upper(${t})`)
         })
-      } else {
-        parts.push(`upper(${s}) = upper(${target})`)
-      }
-    })
-    statement += `(${parts.join(' OR ')}) `
-  } else {
-    if (_.isArray(target)) {
-      const parts = []
-      target.map(t => {
-        parts.push(`upper(${source}) = upper(${t})`)
       })
-      statement += `(${parts.join(' OR ')}) `
-    } else {
-      statement += `(upper(${source}) = upper(${target}) `
-    }
-  }
-  return statement
-}
-
-function processFuzzyWhere (source, target) {
-  let statement = ``
-  if (_.isArray(source)) {
-    const parts = []
-    source.map(s => {
-      if (_.isArray(target)) {
+      break
+    case 'fuzzy':
+      source.map(s => {
         target.map(t => {
           parts.push(`difference(${s}, ${t}) = 4`)
         })
-      } else {
-        parts.push(`difference(${s}, ${target}) = 4`)
-      }
-    })
-    statement += `(${parts.join(' OR ')}) `
-  } else {
-    if (_.isArray(target)) {
-      const parts = []
-      target.map(t => {
-        parts.push(`difference(${source}, ${t}) = 4`)
       })
-      statement += `(${parts.join(' OR ')}) `
-    } else {
-      statement += ` difference(${source}, ${target}) = 4 ) `
-    }
+      break
   }
-  return statement
+  return `(${parts.join(' OR ')}) `
 }
 
 module.exports = matchPostcodeAndName
-matchPostcodeAndName.processExactWhere = processExactWhere
-matchPostcodeAndName.processFuzzyWhere = processFuzzyWhere
+matchPostcodeAndName.processWhere = processWhere
