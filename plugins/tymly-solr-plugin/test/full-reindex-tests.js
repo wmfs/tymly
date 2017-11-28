@@ -5,12 +5,12 @@
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-// const STATE_MACHINE_NAME = 'tymlyTest_fullReindex_1_0'
+const STATE_MACHINE_NAME = 'tymlyTest_fullReindex_1_0'
 
 describe('tymly-solr-plugin full reindex tests', function () {
   this.timeout(5000)
 
-  // let statebox
+  let statebox
 
   it('should run the tymly services', function (done) {
     tymly.boot(
@@ -32,13 +32,14 @@ describe('tymly-solr-plugin full reindex tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        // statebox = tymlyServices.statebox
+        statebox = tymlyServices.statebox
         done()
       }
     )
   })
-  /* TO BE UNCOMMENTED WHEN SOLR IS RUNNING ON TRAVIS
-    it('should start the state resource execution', function (done) {
+
+  it('should start the state resource execution', function (done) {
+    if (process.env.SOLR_URL) {
       statebox.startExecution(
         {},  // input
         STATE_MACHINE_NAME, // state machine name
@@ -55,6 +56,8 @@ describe('tymly-solr-plugin full reindex tests', function () {
           done()
         }
       )
-    })
-  */
+    } else {
+      done()
+    }
+  })
 })
