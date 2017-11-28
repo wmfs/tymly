@@ -1,13 +1,23 @@
 {
   "modelId": "expenses",
   "attributeMapping": {
-    "document_id": "id",
+    "docId": "id",
     "domain": "'search'",
-    "document_type": "'tymly_expenses'",
+    "docType": "'tymly_expenses'",
     "title": "'Expense Claim for ' || first_name || ' ' || last_name",
     "description": "'Expense Claim for ' || first_name || ' ' || last_name || ' (age: ' || age || ' years old, contact number: ' || telephone || ')'",
+    "additionalTerms": "NULL",
     "category": "'expenses'",
-    "language": "'ENG'",
-    "active_event": "true"
+    "eventDate": "NULL",
+    "longitude": "NULL",
+    "latitude": "NULL",
+    "activeEvent": "true",
+    "author": "NULL",
+    "teams": "NULL",
+    "roles": "NULL",
+    "tags": "NULL",
+    "languages": "'ENG'",
+    "rootAncestorId": "NULL",
+    "sortString": "NULL"
   }
 }

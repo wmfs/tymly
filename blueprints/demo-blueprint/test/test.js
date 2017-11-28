@@ -28,12 +28,15 @@ describe('Demo tests', function () {
         config: {}
       },
       function (err, tymlyServices) {
-        expect(err).to.eql(null)
-        models = tymlyServices.storage.models
-        forms = tymlyServices.forms.forms
-        boards = tymlyServices.boards.boards
-        categories = tymlyServices.categories.categories
-        done()
+        if (err) {
+          done(err)
+        } else {
+          models = tymlyServices.storage.models
+          forms = tymlyServices.forms.forms
+          boards = tymlyServices.boards.boards
+          categories = tymlyServices.categories.categories
+          done()
+        }
       }
     )
   })
