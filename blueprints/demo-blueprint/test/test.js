@@ -12,6 +12,7 @@ describe('Demo tests', function () {
   let models
   let forms
   let boards
+  let categories
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -29,15 +30,28 @@ describe('Demo tests', function () {
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
+        categories = tymlyServices.categories.categories
         done()
       }
     )
   })
-
+  it('should get categories', function (done) {
+    expect(categories.expenses.label).to.eql('Expenses')
+    console.log(models.tymly_expenses.properties.firstName)
+    expect(categories.gazetteer.label).to.eql('Gazetteer')
+    expect(categories.fireSafety.label).to.eql('Fire Safety')
+    expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
+    expect(categories.fires.label).to.eql('Fire')
+    expect(categories.hr.label).to.eql('Human Resources')
+    expect(categories.incidents.label).to.eql('Incidents')
+    expect(categories.rtcs.label).to.eql('RTC')
+    expect(categories.water.label).to.eql('Water')
+    expect(categories.workingHydrants.label).to.eql('Working hydrants')
+    done()
+  })
   it('should get favourites', function (done) {
     models.tymly_favouringStartableStateMachines.find('user1')
       .then(result => {
-        console.log(result)
         expect(result[0].userId).to.eql('user1')
         expect(result[0].stateMachineNames).to.eql({user1: ['wmfs_claimAnExpense_1_0', 'wmfs_reportHydrantDefect_1_0']})
         done()
