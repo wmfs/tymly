@@ -6,7 +6,7 @@
   "description",
   "additionalTerms",
   "category",
-  "eventDate",
+  "eventTimestamp",
   "longitude",
   "latitude",
   "activeEvent",
