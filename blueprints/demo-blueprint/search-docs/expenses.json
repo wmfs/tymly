@@ -9,7 +9,7 @@
     "additionalTerms": "NULL::text[]",
     "category": "'expenses'::text",
     "eventTimestamp": "NULL::timestamp with time zone",
-    "point": "NULL::numeric",
+    "point": "NULL::text",
     "activeEvent": "true::boolean",
     "author": "NULL::text",
     "teams": "NULL::text[]",
@@ -18,6 +18,6 @@
     "language": "'ENG'::text",
     "rootAncestorId": "NULL::text",
     "sortString": "'Expense Claim for ' || first_name || ' ' || last_name",
-    "launches": "''"
+    "launches": "''::text"
   }
 }
