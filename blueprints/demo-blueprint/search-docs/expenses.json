@@ -1,6 +1,7 @@
 {
   "modelId": "expenses",
   "attributeMapping": {
+    "id": "'expenses#'::text || id::text",
     "docId": "id::text",
     "domain": "'search'::text",
     "docType": "'tymly_expenses'::text",
