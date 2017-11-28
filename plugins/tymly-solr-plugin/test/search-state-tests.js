@@ -82,9 +82,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
   it('should search with a query input', function (done) {
     statebox.startExecution(
       {
-        query: {
-          characterName: 'Hermione'
-        }
+        query: 'Hermione'
       },  // input
       STATE_MACHINE_NAME, // state machine name
       {

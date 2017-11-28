@@ -64,11 +64,11 @@ class Search {
     if (_.isUndefined(query)) {
       match = true
     } else {
-      Object.keys(query).map(searchField => {
-        if (doc[_.snakeCase(searchField)].toUpperCase().includes(query[searchField].toUpperCase())) match = true
-        // const query = solrClient.createQuery().q({[searchField]: query[searchField]})
-        // solrClient.search(query, (err, result) => { return T/F whether result.response.docs contains doc })
-      })
+      if (doc['actor_name'].toUpperCase().includes(query.toUpperCase())) match = true
+      if (doc['character_name'].toUpperCase().includes(query.toUpperCase())) match = true
+
+      // const query = solrClient.createQuery().q({'*': query})
+      // solrClient.search(query, (err, result) => { return T/F whether result.response.docs contains doc })
     }
     return match
   }
@@ -110,7 +110,7 @@ class Search {
       filters.domain = event.domain
     }
 
-    if (_.isObject(event.query)) {
+    if (_.isString(event.query) && event.query.trim() !== '') {
       filters.query = event.query
     }
 
