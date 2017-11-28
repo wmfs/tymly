@@ -2,7 +2,7 @@
   "modelId": "staff",
   "attributeMapping": {
     "id": "'staff#' || staff_no",
-    "actorName": "first_name || ' ' || last_name",
-    "characterName": "character_first_name || ' ' || character_last_name"
+    "actorName": "upper(first_name || ' ' || last_name)",
+    "characterName": "upper(character_first_name || ' ' || character_last_name)"
   }
 }

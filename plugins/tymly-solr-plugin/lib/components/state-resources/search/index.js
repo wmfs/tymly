@@ -2,48 +2,52 @@
 
 const _ = require('lodash')
 
-// query: 'fire',
-// domain: 'search',
-// orderBy: 'relevance',
-// offset: 0,
-// limit: 10,
-// lat: 52.4802841999,
-// long: -1.87608150675,
-// categoryRestriction: []
-// showActiveEventsOnly: false
-
 class Search {
   init (resourceConfig, env, callback) {
-    this.services = env.bootedServices
+    this.client = env.bootedServices.storage.client
+    // this.services = env.bootedServices
     callback(null)
   }
 
   run (event, context) {
-    const searchDocs = this.services.solr.searchDocs || []
-    const filters = this.processFilters(event)
-    const searchResults = {
-      input: filters
-    }
-    const matchingDocs = this.filterDocs(searchDocs, filters)
-    searchResults.totalHits = matchingDocs.length
-    // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
-    const facets = {}
-    matchingDocs.map(doc => {
-      if (!facets.hasOwnProperty(doc.category)) {
-        facets[doc.category] = 1
-      } else {
-        facets[doc.category]++
+    // const searchDocs = this.services.solr.searchDocs || [] // think searchDocs needs to be records from the view?
+
+    this.client.query(`select * from tymly.solr_data`, (err, results) => {
+      if (err) {
+        context.sendTaskFailure(
+          {
+            error: 'searchFail',
+            cause: err
+          }
+        )
       }
+
+      const filters = this.processFilters(event)
+      const searchResults = {
+        input: filters
+      }
+      const matchingDocs = this.filterDocs(results.rows, filters)
+      searchResults.totalHits = matchingDocs.length
+      // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
+      const facets = {}
+      matchingDocs.map(doc => {
+        if (!facets.hasOwnProperty(doc.category)) {
+          facets[doc.category] = 1
+        } else {
+          facets[doc.category]++
+        }
+      })
+      searchResults.categoryCounts = facets
+      searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
+      context.sendTaskSuccess({searchResults})
     })
-    searchResults.categoryCounts = facets
-    searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
-    context.sendTaskSuccess({searchResults})
   }
 
   filterDocs (docs, filters) {
     const matchingDocs = []
     Object.keys(docs).map(key => {
       const candidate = docs[key]
+      console.log(this.queryMatch(filters.query, candidate))
       if (
         this.domainMatch(filters.domain, candidate) &&
         this.queryMatch(filters.query, candidate) &&
@@ -56,19 +60,17 @@ class Search {
   }
 
   queryMatch (query, doc) {
+    let match = false
     if (_.isUndefined(query)) {
-      // No query restriction so match
-      return true
+      match = true
     } else {
-      // select * tymly.solr_data ...
-      // let searchText = `${doc.title} ${doc.description}`
-      // if (_.isString(doc.additionalTerms)) {
-      //   searchText = searchText + ' ' + doc.additionalTerms
-      // }
-      // searchText = searchText.toLowerCase()
-      // return searchText.includes(query.toLowerCase())
-      return ''
+      Object.keys(query).map(searchField => {
+        if (doc[_.snakeCase(searchField)].toUpperCase().includes(query[searchField].toUpperCase())) match = true
+        // const query = solrClient.createQuery().q({[searchField]: query[searchField]})
+        // solrClient.search(query, (err, result) => { return T/F whether result.response.docs contains doc })
+      })
     }
+    return match
   }
 
   categoryMatch (categoryRestriction, doc) {
@@ -108,7 +110,7 @@ class Search {
       filters.domain = event.domain
     }
 
-    if (_.isString(event.query) && event.query.trim() !== '') {
+    if (_.isObject(event.query)) {
       filters.query = event.query
     }
 
