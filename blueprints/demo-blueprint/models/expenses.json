@@ -1,0 +1,39 @@
+{
+  "title": "expenses",
+  "description": "Holds expense claims",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "description": "First name"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Last name"
+    },
+    "age": {
+      "type": "integer",
+      "description": "Age"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Bio"
+    },
+    "password": {
+      "type": "string",
+      "description": "Password"
+    },
+    "repeat_password": {
+      "type": "string",
+      "description": "Repeat Password"
+    },
+    "telephone": {
+      "type": "string",
+      "description": "Telephone"
+    },
+    "date": {
+      "type": "string",
+      "description": "Date"
+    }
+  }
+}

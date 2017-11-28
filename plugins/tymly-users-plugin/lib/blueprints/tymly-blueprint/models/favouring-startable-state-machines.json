@@ -2,9 +2,7 @@
   "id": "favouring-startable-state-machines",
   "title": "Favouring Startable State Machines",
   "description": "Favouring Startable State Machines",
-  "primaryKey": [
-    "userId"
-  ],
+  "primaryKey": ["userId"],
   "type": "object",
   "properties": {
     "userId": {
@@ -14,6 +12,6 @@
     "stateMachineNames": {
       "type": "object",
       "description": "A list of favourite state machine names"
-      }
     }
+  }
 }

@@ -1,0 +1,8 @@
+{
+  "label": "Fire",
+  "description": "Fire-related incidents",
+  "style": {
+    "icon": "flame",
+    "backgroundColor": "#FF0000"
+  }
+}

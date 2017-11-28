@@ -1,0 +1,31 @@
+{
+  "Comment": "Register an expenses claim.",
+  "version": "1.0",
+  "categories": [
+    "expenses"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "AwaitingHumanInput",
+  "States": {
+    "AwaitingHumanInput": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "formId": "claimAnExpense"
+      },
+      "ResultPath": "$.formData",
+      "Next": "Upserting"
+    },
+    "Upserting": {
+      "Type": "Task",
+      "InputPath": "$.formData",
+      "Resource": "module:upserting",
+      "ResourceConfig": {
+        "modelId": "expenses"
+      },
+      "End": true
+    }
+  }
+}

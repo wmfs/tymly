@@ -1,0 +1,8 @@
+{
+  "label": "Incidents",
+  "description": "Things relating to emergency incidents",
+  "style": {
+    "icon": "flame",
+    "backgroundColor": "#FF0000"
+  }
+}

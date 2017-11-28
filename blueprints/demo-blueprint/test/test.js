@@ -11,6 +11,8 @@ describe('Demo tests', function () {
   this.timeout(5000)
   let models
   let forms
+  let boards
+  let categories
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -27,28 +29,35 @@ describe('Demo tests', function () {
         expect(err).to.eql(null)
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
+        boards = tymlyServices.boards.boards
+        categories = tymlyServices.categories.categories
         done()
       }
     )
   })
   it('should get categories', function (done) {
-    models.tymly_categories.find('Expenses')
-      .then(result => {
-        expect(result[0].label).to.eql('Expenses')
-        expect(result[0].description).to.eql('Things to do with claiming and authorising expenses')
-        expect(result[0].style).to.eql({'icon': 'coin', 'backgroundColor': '#00GG00'})
-        done()
-      })
+    expect(categories.expenses.label).to.eql('Expenses')
+    console.log(models.tymly_expenses.properties.firstName)
+    expect(categories.gazetteer.label).to.eql('Gazetteer')
+    expect(categories.fireSafety.label).to.eql('Fire Safety')
+    expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
+    expect(categories.fires.label).to.eql('Fire')
+    expect(categories.hr.label).to.eql('Human Resources')
+    expect(categories.incidents.label).to.eql('Incidents')
+    expect(categories.rtcs.label).to.eql('RTC')
+    expect(categories.water.label).to.eql('Water')
+    expect(categories.workingHydrants.label).to.eql('Working hydrants')
+    done()
   })
   it('should get favourites', function (done) {
     models.tymly_favouringStartableStateMachines.find('user1')
       .then(result => {
-        console.log(result)
         expect(result[0].userId).to.eql('user1')
         expect(result[0].stateMachineNames).to.eql({user1: ['wmfs_claimAnExpense_1_0', 'wmfs_reportHydrantDefect_1_0']})
         done()
       })
   })
+
   it('should get notifications', function (done) {
     models.tymly_notifications.find('test')
       .then(result => {
@@ -67,6 +76,7 @@ describe('Demo tests', function () {
         done()
       })
   })
+
   it('should get the todos', function (done) {
     models.tymly_todos.find('test')
       .then(result => {
@@ -82,6 +92,7 @@ describe('Demo tests', function () {
         done()
       })
   })
+
   it('should get the watched boards', function (done) {
     models.tymly_watchedBoards.find('test')
       .then(result => {
@@ -97,10 +108,41 @@ describe('Demo tests', function () {
         done()
       })
   })
+
   it('should get forms', function (done) {
     expect(forms['tymly_bookSomeoneSick'].jsonSchema.title).to.eql('Book someone sick')
     expect(forms['tymly_claimAnExpense'].jsonSchema.title).to.eql('Claim an expense')
     expect(forms['tymly_createBlankProperty'].jsonSchema.title).to.eql('Create a blank property')
     done()
+  })
+
+  it('should get boards', function (done) {
+    expect(boards['tymly_expense'].boardTitleTemplate).to.eql('Dashboard')
+    done()
+  })
+
+  it('should get settings', function (done) {
+    models.tymly_settings.find({
+      where: {userId: {equals: 'user1'}}
+    })
+      .then(result => {
+        expect(result[0].userId).to.eql('user1')
+        expect(result[0].categoryRelevance).to.eql({user1: ['incidents', 'hr', 'hydrants', 'gazetteer']})
+        done()
+      })
+  })
+
+  it('should get teams', function (done) {
+    models.tymly_teams.find({
+      where: {
+        title: 'Systems Development'
+      }
+    })
+      .then(result => {
+        expect(result[0].title).to.eql('Systems Development')
+        expect(result[0].description).to.eql('The ICT Systems Development Team at West Midlands Fire Service')
+        expect(result[0].style).to.eql({'icon': 'computer', 'backgroundColor': '#000000'})
+        done()
+      })
   })
 })

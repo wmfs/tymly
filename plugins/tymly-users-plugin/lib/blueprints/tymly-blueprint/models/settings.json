@@ -14,5 +14,5 @@
       "description": "list containing the order of user category relevance"
     }
   },
-  "required": ["userID", "notificationId"]
+  "required": ["userID", "categoryRelevance"]
 }

@@ -16,6 +16,7 @@ describe('PostgreSQL storage tests', function () {
   let client
   let statebox
   let executionName
+  let models
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(
@@ -38,6 +39,7 @@ describe('PostgreSQL storage tests', function () {
         statebox = tymlyServices.statebox
         registryService = tymlyServices.registry
         categoryService = tymlyServices.categories
+        models = tymlyServices.storage.models
         done()
       }
     )
@@ -245,6 +247,21 @@ describe('PostgreSQL storage tests', function () {
         }
       }
     )
+  })
+
+  it('should load seed-data into the db (which has a JSONB column)', function (done) {
+    models.tymlyTest_title.find({where: {title: {equals: 'Miss'}}})
+      .then(result => {
+        console.log(JSON.stringify(result))
+        expect(result[0]).to.have.property('id').and.equal('3')
+        expect(result[0]).to.have.property('title').and.equal('Miss')
+        expect(result[0]).to.have.property('style')
+        expect(result[0].style).to.have.property('backgroundColor').and.equal('#ffffff')
+        done()
+      })
+      .catch(error => {
+        done(error)
+      })
   })
 
   it('should find the seed-data state-machine by name', function () {

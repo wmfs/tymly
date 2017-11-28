@@ -1,13 +1,14 @@
 {
   "propertyNames": [
     "id",
-    "title"
+    "title",
+    "style"
   ],
   "data": [
-    [ 1, "Mr." ],
-    [ 2, "Mrs." ],
-    [ 3, "Miss" ],
-    [ 4, "Ms." ],
-    [ 5, "Dr." ]
+    [ 1, "Mr.", {"backgroundColor": "#ff0000"} ],
+    [ 2, "Mrs.", {"backgroundColor": "#ffff00"} ],
+    [ 3, "Miss", {"backgroundColor": "#ffffff"} ],
+    [ 4, "Ms.", {"backgroundColor": "#00ff00"} ],
+    [ 5, "Dr.", {"backgroundColor": "#0000ff"} ]
   ]
 }

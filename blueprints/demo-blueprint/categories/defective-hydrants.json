@@ -1,0 +1,9 @@
+{
+  "label": "Defective hydrants",
+  "description": "Hydrants which have been reported as defective",
+  "parentCategory": "water",
+  "style": {
+    "icon": "bad-hydrant",
+    "backgroundColor": "#FFFF00"
+  }
+}

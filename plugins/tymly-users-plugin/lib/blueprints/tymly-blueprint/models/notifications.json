@@ -30,5 +30,5 @@
       "description": "A standard launches object that can be used to view the board."
     }
   },
-  "required": ["userID"]
+  "required": ["userId"]
 }
