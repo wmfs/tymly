@@ -18,6 +18,7 @@
     "tags": "NULL::text[]",
     "language": "'ENG'::text",
     "rootAncestorId": "NULL::text",
-    "sortString": "'Expense Claim for ' || first_name || ' ' || last_name"
+    "sortString": "'Expense Claim for ' || first_name || ' ' || last_name",
+    "launches": "''"
   }
 }
