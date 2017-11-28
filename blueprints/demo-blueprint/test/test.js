@@ -37,6 +37,16 @@ describe('Demo tests', function () {
   })
   it('should get categories', function (done) {
     expect(categories.expenses.label).to.eql('Expenses')
+    console.log(models.tymly_expenses.properties.firstName)
+    expect(categories.gazetteer.label).to.eql('Gazetteer')
+    expect(categories.fireSafety.label).to.eql('Fire Safety')
+    expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
+    expect(categories.fires.label).to.eql('Fire')
+    expect(categories.hr.label).to.eql('Human Resources')
+    expect(categories.incidents.label).to.eql('Incidents')
+    expect(categories.rtcs.label).to.eql('RTC')
+    expect(categories.water.label).to.eql('Water')
+    expect(categories.workingHydrants.label).to.eql('Working hydrants')
     done()
   })
   it('should get favourites', function (done) {
