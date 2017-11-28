@@ -1,5 +1,5 @@
 {
-  "namespace": "solr",
+  "namespace": "tymly",
   "name": "solr-blueprint",
   "version": "1.0",
   "label": "solr-blueprint",

@@ -18,7 +18,7 @@ class SolrService {
       callback(null)
     } else {
       options.messages.info(`Using Solr... (${this.solrUrl})`)
-
+      this.searchDocs = options.blueprintComponents.searchDocs
       this.client = options.bootedServices.storage.client
       if (!this.client) {
         callback(boom.notFound('failed to boot solr service: no database client available'))

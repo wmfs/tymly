@@ -7,7 +7,7 @@ const tymly = require('tymly')
 const path = require('path')
 // const STATE_MACHINE_NAME = 'tymlyTest_deltaReindex_1_0'
 
-describe('tymly-solr-plugin tests', function () {
+describe('tymly-solr-plugin delta reindex tests', function () {
   this.timeout(5000)
 
   // let statebox
