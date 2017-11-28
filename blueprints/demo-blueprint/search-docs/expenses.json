@@ -16,7 +16,7 @@
     "teams": "NULL",
     "roles": "NULL",
     "tags": "NULL",
-    "languages": "'ENG'",
+    "languages": "'{\"ENG\"}'",
     "rootAncestorId": "NULL",
     "sortString": "NULL"
   }
