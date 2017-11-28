@@ -1,5 +1,6 @@
 {
   "propertyNames": [
+    "id",
     "userId",
     "teamName",
     "stateMachineTitle",
@@ -10,8 +11,8 @@
     "launches"
   ],
   "data": [
-    [ "test", "ClaimsTeam", "Expenses", "hr", "Claim1", "Walter White is claiming $35 for A large plastic container", {}, {} ],
-    [ "test", "ITTeam", "Sickness", "hr", "Sickness", "Acknowledge Vincent Vega has booked sick Friday 27th October 2017", {}, {} ],
-    [ "test", "ClaimsTeam", "Expenses", "hr", "Claim2", "Walter White is claiming $50 for A large costume", {}, {} ]
+    [ "cdc24f5c-d438-11e7-a2f1-8f832400600b", "test", "ClaimsTeam", "Expenses", "hr", "Claim1", "Walter White is claiming $35 for A large plastic container", {}, {} ],
+    [ "cdc31338-d438-11e7-a2f2-97f8c49032e9", "test", "ITTeam", "Sickness", "hr", "Sickness", "Acknowledge Vincent Vega has booked sick Friday 27th October 2017", {}, {} ],
+    [ "cdc33a5c-d438-11e7-a2f3-5bb79decfe12", "test", "ClaimsTeam", "Expenses", "hr", "Claim2", "Walter White is claiming $50 for A large costume", {}, {} ]
   ]
 }
