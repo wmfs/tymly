@@ -2,7 +2,9 @@
   "blueprintPaths": "TYMLY_BLUEPRINTS_PATH",
   "pluginPaths": "TYMLY_PLUGINS_PATH",
   "config": {
+    "serverPort": "TYMLY_SERVER_PORT",
     "auth": {
+      "certificate": "TYMLY_CERTIFICATE_PATH",
       "secret": "TYMLY_AUTH_SECRET",
       "audience": "TYMLY_AUTH_AUDIENCE"
     },
