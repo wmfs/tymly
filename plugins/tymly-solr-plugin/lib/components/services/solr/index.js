@@ -34,9 +34,9 @@ class SolrService {
           SolrService.constructModelsArray(options.blueprintComponents.models),
           SolrService.constructSearchDocsArray(options.blueprintComponents.searchDocs))
         if (this.createViewSQL) {
-          this.client.query(this.createViewSQL, [], () => {
+          this.client.query(this.createViewSQL, [], (err) => {
             debug('Database view created with SQL: ', this.createViewSQL)
-            callback(null)
+            callback(err)
           })
         } else {
           callback(boom.notFound('failed to construct create view SQL'))
@@ -83,7 +83,7 @@ class SolrService {
   static constructSolrSchemaFieldsArray (fields) {
     const solrSchemaFieldsArray = []
     for (const field of fields) {
-      solrSchemaFieldsArray.push([field, ''])
+      solrSchemaFieldsArray.push([field, field])
     }
     return solrSchemaFieldsArray
   }

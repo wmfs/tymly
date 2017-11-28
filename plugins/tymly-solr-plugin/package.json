@@ -10,7 +10,8 @@
     "debug": "^3.0.1",
     "lodash": "^4.17.4",
     "process": "^0.11.10",
-    "request": "^2.82.0"
+    "request": "^2.82.0",
+    "solr-client": "0.7.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",

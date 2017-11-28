@@ -1,9 +1,4 @@
-DROP VIEW IF EXISTS tymly.solr_data;
-
-DROP TABLE IF EXISTS tymly_test.students;
-DROP TABLE IF EXISTS tymly_test.staff;
-
-CREATE TABLE tymly_test.students (
+CREATE TABLE IF NOT EXISTS tymly_test.students (
   student_no integer NOT NULL,
   first_name text NOT NULL,
   last_name text NOT NULL,
@@ -24,7 +19,7 @@ INSERT INTO tymly_test.students (student_no, first_name, last_name, character_na
 INSERT INTO tymly_test.students (student_no, first_name, last_name, character_name) VALUES (9, 'Oliver', 'Phelps', 'George Weasley');
 INSERT INTO tymly_test.students (student_no, first_name, last_name, character_name) VALUES (10, 'Bonnie', 'Wright', 'Ginny Weasley');
 
-CREATE TABLE tymly_test.staff (
+CREATE TABLE IF NOT EXISTS tymly_test.staff (
   staff_no integer NOT NULL,
   first_name text NOT NULL,
   last_name text NOT NULL,

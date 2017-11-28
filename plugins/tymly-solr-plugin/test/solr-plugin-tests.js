@@ -59,8 +59,8 @@ describe('tymly-solr-plugin tests', function () {
       const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
 
       expect(select).to.be.a('string')
-      expect(select).to.eql('SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_name AS character_name FROM tymly_test.students')
+      expect(select).to.eql('SELECT \'student#\' || student_no AS id, upper(first_name || \' \' || last_name) AS actor_name, ' +
+        'upper(character_name) AS character_name FROM tymly_test.students')
     }
   })
 
