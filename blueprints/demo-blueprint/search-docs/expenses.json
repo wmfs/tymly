@@ -1,0 +1,12 @@
+{
+  "modelId": "expenses",
+  "attributeMapping": {
+    "document_id": "id",
+    "domain": "'search'",
+    "document_type": "'tymly_expenses'",
+    "title": "'Expense Claim for ' || first_name || ' ' || last_name",
+    "description": "'Expense Claim for ' || first_name || ' ' || last_name || ' (age: ' || age || ' years old, contact number: ' || telephone || ')'",
+    "category": "'expenses'",
+    "language": "'ENG'"
+  }
+}

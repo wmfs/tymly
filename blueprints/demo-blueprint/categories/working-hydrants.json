@@ -1,0 +1,9 @@
+{
+  "label": "Working hydrants",
+  "description": "Hydrants which appear to be working",
+  "parentCategory": "water",
+  "style": {
+    "icon": "good-hydrant",
+    "backgroundColor": "#FFFF00"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Human Resources",
+  "description": "Things to do with the human condition. At work.",
+  "style": {
+    "icon": "fingerprint",
+    "backgroundColor": "#888800"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Expenses",
+  "description": "Things to do with claiming and authorising expenses",
+  "style": {
+    "icon": "coin",
+    "backgroundColor": "#00GG00"
+  }
+}

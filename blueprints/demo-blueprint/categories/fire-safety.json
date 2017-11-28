@@ -1,0 +1,8 @@
+{
+  "label": "Fire Safety",
+  "description": "All things Fire Safety incidents",
+  "style": {
+    "icon": "fireSafety",
+    "backgroundColor": "#008800"
+  }
+}
