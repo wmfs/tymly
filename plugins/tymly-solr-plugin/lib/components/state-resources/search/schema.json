@@ -1,1 +1,41 @@
-{}
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Query to perform search on"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Domain"
+    },
+    "orderBy": {
+      "type": "string",
+      "description": "What to order the results by"
+    },
+    "offset": {
+      "type": "integer",
+      "description": "The offset of the results"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "The limit of the results"
+    },
+    "lat": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001,
+      "description": "Latitude"
+    },
+    "long": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001,
+      "description": "Longitude"
+    },
+    "categoryRestriction": {
+      "type": "array",
+      "description": "Categories to restrict the search to"
+    }
+  }
+}
