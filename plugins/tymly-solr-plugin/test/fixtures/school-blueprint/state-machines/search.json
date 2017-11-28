@@ -1,5 +1,5 @@
 {
-  "Comment": "Perform a searcg",
+  "Comment": "Perform a search",
   "version": "1.0",
   "StartAt": "Search",
   "States": {
