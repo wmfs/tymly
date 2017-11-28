@@ -2,8 +2,6 @@
 const tymly = require('tymly')
 const config = require('config')
 const process = require('process')
-const jwt = require('jsonwebtoken')
-const Buffer = require('safe-buffer').Buffer
 
 console.log('Tymly Runner')
 console.log('-------------')
@@ -46,21 +44,12 @@ function startServer (services) {
     return
   }
 
-  const authSecret = confVar('auth', 'secret', 'TYMLY_AUTH_SECRET')
-  const authAudience = confVar('auth', 'audience', 'TYMLY_AUTH_AUDIENCE')
-
   const app = services.server.app
+  const auth = services.auth
   app.listen(config.config.serverPort, function () {
     console.log('\n')
 
-    const adminToken = jwt.sign(
-      {},
-      new Buffer(authSecret, 'base64'),
-      {
-        subject: adminUserId,
-        audience: authAudience
-      }
-    )
+    const adminToken = auth.generateToken(adminUserId)
 
     console.log(`Server listening on port ${config.config.serverPort}!\n`)
     services.rbac.rbac.debug()
