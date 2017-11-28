@@ -1,7 +1,7 @@
 {
   "modelId": "expenses",
   "attributeMapping": {
-    "docId": "id",
+    "documentId": "id",
     "domain": "'search'",
     "docType": "'tymly_expenses'",
     "title": "'Expense Claim for ' || first_name || ' ' || last_name",
