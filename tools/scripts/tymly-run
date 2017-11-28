@@ -1,0 +1,27 @@
+#/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+DEV_DIR=`cd $SCRIPT_DIR/../../ && pwd`
+cd $DEV_DIR
+
+export TYMLY_BLUEPRINTS_PATH="$DEV_DIR/blueprints/*-blueprint"
+export TYMLY_PLUGINS_PATH="$DEV_DIR/plugins/*-plugin"
+
+export TYMLY_CERTIFICATE_PATH="$DEV_DIR/tools/certificate/wmfs.pem"
+export TYMLY_AUTH_AUDIENCE=bUQ3oUgVddfjNAKc3iOq3Lbkx99IQXns
+
+export TYMLY_SERVER_PORT=3210
+
+# need these for now
+export TYMLY_EMAIL_FROM=tymly@xyz.com
+export TYMLY_EMAIL_HOST=localhost
+export TYMLY_EMAIL_POST=25
+
+if [ -z "$PG_CONNECTION_STRING"]
+then
+  export PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432/my_test_db
+  echo PG_CONNECTION_STRING not set, using default $PG_CONNECTION_STRING
+fi
+
+cd packages/tymly-runner
+node lib/index.js
