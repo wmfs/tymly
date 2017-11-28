@@ -12,6 +12,7 @@ describe('Demo tests', function () {
   let models
   let forms
   let boards
+  let categories
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -29,15 +30,18 @@ describe('Demo tests', function () {
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
+        categories = tymlyServices.categories.categories
         done()
       }
     )
   })
-
+  it('should get categories', function (done) {
+    expect(categories.expenses.label).to.eql('Expenses')
+    done()
+  })
   it('should get favourites', function (done) {
     models.tymly_favouringStartableStateMachines.find('user1')
       .then(result => {
-        console.log(result)
         expect(result[0].userId).to.eql('user1')
         expect(result[0].stateMachineNames).to.eql({user1: ['wmfs_claimAnExpense_1_0', 'wmfs_reportHydrantDefect_1_0']})
         done()
