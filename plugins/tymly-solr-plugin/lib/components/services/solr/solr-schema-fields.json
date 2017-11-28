@@ -1,4 +1,21 @@
 [
-  "label",
-  "description"
+  "id",
+  "docId",
+  "domain",
+  "docType",
+  "title",
+  "description",
+  "additionalTerms",
+  "category",
+  "eventDate",
+  "longitude",
+  "latitude",
+  "activeEvent",
+  "author",
+  "teams",
+  "roles",
+  "tags",
+  "languages",
+  "rootAncestorId",
+  "sortString"
 ]
