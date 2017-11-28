@@ -12,6 +12,10 @@
 
     "title": {
       "type": "string"
+    },
+
+    "style": {
+      "type": "object"
     }
   },
 
