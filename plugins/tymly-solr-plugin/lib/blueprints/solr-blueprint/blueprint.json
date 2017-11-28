@@ -1,0 +1,11 @@
+{
+  "namespace": "solr",
+  "name": "solr-blueprint",
+  "version": "1.0",
+  "label": "solr-blueprint",
+  "author": "Tymly",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to handle searching.",
+  "categories": []
+}
