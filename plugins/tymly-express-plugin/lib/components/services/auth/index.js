@@ -3,7 +3,8 @@
 const boom = require('boom')
 const process = require('process')
 const dottie = require('dottie')
-const jwt = require('express-jwt')
+const jwt = require('jsonwebtoken')
+const jwtMiddleware = require('express-jwt')
 const schema = require('./schema.json')
 const Buffer = require('safe-buffer').Buffer
 const fs = require('fs')
@@ -15,13 +16,16 @@ class AuthService {
 
     if (audience && secret) {
       const expressApp = options.bootedServices.server.app
-      this.jwtCheck = jwt(
+      this.jwtCheck = jwtMiddleware(
         {
           secret: secret,
           audience: audience
         }
       )
       expressApp.set('jwtCheck', this.jwtCheck)
+
+      this.secret = secret;
+      this.audience = audience;
 
       options.messages.info('Added JWT Express middleware')
       callback(null)
@@ -30,6 +34,17 @@ class AuthService {
       callback(boom.internal('Failed to set-up authentication middleware: Is $TYMLY_AUTH_SECRET/$TYMLY_AUTH_CERTIFICATE and $TYMLY_AUTH_AUDIENCE set?'))
     }
   } // boot
+
+  generateToken(subject) {
+    return jwt.sign(
+      {},
+      this.secret,
+      {
+        subject: subject,
+        audience: this.audience
+      }
+    )
+  } // generateToken
 
   /**
    * Extracts a userID from an Express request object
