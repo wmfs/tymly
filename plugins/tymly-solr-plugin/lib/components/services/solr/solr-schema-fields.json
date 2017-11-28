@@ -17,5 +17,7 @@
   "language",
   "rootAncestorId",
   "sortString",
-  "launches"
+  "launches",
+  "created",
+  "modified"
 ]
