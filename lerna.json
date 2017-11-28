@@ -3,8 +3,7 @@
   "packages": [
     "packages/*",
     "plugins/*",
-    "blueprints/*",
-    "tools/*"
+    "blueprints/*"
   ],
   "version": "independent",
   "commands":{
