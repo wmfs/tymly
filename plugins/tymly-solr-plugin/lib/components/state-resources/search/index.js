@@ -12,7 +12,7 @@ class Search {
     if (process.env.SOLR_URL) {
       this.solrClient = solr.createClient({
         url: process.env.SOLR_URL,
-        core: 'tymly_new'
+        core: 'tymly_new' // TODO: This will be changed
       })
     }
     callback(null)
@@ -25,13 +25,10 @@ class Search {
     }
 
     if (process.env.SOLR_URL) {
-      const q = this.solrClient.createQuery().q({'collector': event.query})
+      const q = this.solrClient.createQuery().q({'collector': event.query}) // TODO: Query may change
       this.solrClient.search(q, (err, result) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-        searchResults.results = result.response.docs
-        searchResults.totalHits = result.response.docs.length
-        searchResults.categoryCounts = this.countCategories(result.response.docs)
-
+        this.constructSearchResults(searchResults, filters, result.response.docs)
         this.updateSearchHistory(searchResults.results, context.userId, (err) => {
           if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
           context.sendTaskSuccess({searchResults})
@@ -48,16 +45,20 @@ class Search {
       this.client.query(`select * from tymly.solr_data`, (err, results) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
         const matchingDocs = this.filterDocs(results.rows, filters)
-        searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
-        searchResults.totalHits = matchingDocs.length
-        searchResults.categoryCounts = this.countCategories(matchingDocs)
-
+        this.constructSearchResults(searchResults, filters, matchingDocs)
         this.updateSearchHistory(searchResults.results, context.userId, (err) => {
           if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
           context.sendTaskSuccess({searchResults})
         })
       })
     }
+  }
+
+  constructSearchResults (searchResults, filters, results) {
+    searchResults.results = results.slice(filters.offset, (filters.offset + filters.limit))
+    searchResults.totalHits = results.length
+    searchResults.categoryCounts = this.countCategories(results)
+    return searchResults
   }
 
   updateSearchHistory (docs, userId, callback) {
