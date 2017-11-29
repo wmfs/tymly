@@ -59,7 +59,7 @@ class Search {
       docs,
       (candidate, cb) => {
         this.queryMatch(filters.query, candidate, (err, match) => {
-          if (err) callback(err)
+          if (err) cb(err)
 
           if (
             this.domainMatch(filters.domain, candidate) &&
