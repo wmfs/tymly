@@ -58,16 +58,14 @@ class Search {
     async.eachSeries(
       docs,
       (candidate, cb) => {
-        let queryMatch = false
         this.queryMatch(filters.query, candidate, (err, match) => {
           if (err) callback(err)
-          if (match) queryMatch = true
 
           if (
             this.domainMatch(filters.domain, candidate) &&
             this.categoryMatch(filters.categoryRestriction, candidate) &&
             this.activeEventMatch(filters.showActiveEventsOnly, candidate) &&
-            queryMatch) {
+            match) {
             matchingDocs.push(candidate)
           }
           cb()
