@@ -1,0 +1,19 @@
+{
+  "title": "Search History",
+  "description": "The history of searches by users",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The ID of the user who performed the search"
+    },
+    "category": {
+      "type": "string",
+      "description": "The category of the search result"
+    },
+    "docId": {
+      "type": "string",
+      "description": "The title of the search result"
+    }
+  }
+}

@@ -6,6 +6,7 @@ const async = require('async')
 
 class Search {
   init (resourceConfig, env, callback) {
+    this.searchHistory = env.bootedServices.storage.models['tymly_searchHistory']
     this.client = env.bootedServices.storage.client
     this.services = env.bootedServices
     if (process.env.SOLR_URL) {
@@ -40,7 +41,27 @@ class Search {
         // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
         searchResults.categoryCounts = this.countCategories(matchingDocs)
         searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
-        context.sendTaskSuccess({searchResults})
+
+        async.eachSeries(
+          searchResults.results,
+          (r, cb) => {
+            this.searchHistory.upsert(
+              {
+                userId: context.userId || 'n/a',
+                docId: r.doc_id,
+                category: r.category
+              },
+              {},
+              (err) => {
+                cb(err)
+              }
+            )
+          },
+          (err) => {
+            if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+            context.sendTaskSuccess({searchResults})
+          }
+        )
       })
     })
   }
@@ -95,6 +116,7 @@ class Search {
         callback(null, match)
       } else {
         const q = this.solrClient.createQuery().q({'collector': query})
+        // const q = 'q=(title:kebab%20OR%20description:KEBAB)%20AND%20doc_type:BLPU'
         this.solrClient.search(q, (err, result) => {
           const contains = result.response.docs.filter(r => r.id === doc.id)
           if (contains.length > 0) match = true
