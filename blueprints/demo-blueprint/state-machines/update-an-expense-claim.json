@@ -1,0 +1,41 @@
+{
+  "Comment": "Update a pre-existing expenses claim.",
+  "version": "1.0",
+  "categories": [
+    "expenses"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "LoadClaim",
+  "States": {
+    "LoadClaim": {
+      "Type": "Task",
+      "InputPath": "$.claimId",
+      "Resource": "module:findingById",
+      "ResourceConfig": {
+        "modelId": "expenses"
+      },
+      "ResultPath": "$.formData",
+      "Next": "AwaitingHumanInput"
+    },
+    "AwaitingHumanInput": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "formId": "claimAnExpense"
+      },
+      "ResultPath": "$.formData",
+      "Next": "Upserting"
+    },
+    "Upserting": {
+      "Type": "Task",
+      "InputPath": "$.formData",
+      "Resource": "module:upserting",
+      "ResourceConfig": {
+        "modelId": "expenses"
+      },
+      "End": true
+    }
+  }
+}

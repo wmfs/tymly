@@ -19,7 +19,7 @@
     "language": "'ENG'::text",
     "rootAncestorId": "NULL::text",
     "sortString": "'Expense Claim for ' || first_name || ' ' || last_name",
-    "launches": "''::text",
+    "launches": "'{\"launches\":[{\"title\":\"Open Expense Claim\",\"stateMachineName\":\"tymly_updateAnExpenseClaim_1_0\",\"input\":{\"claimId\":\"'::text || id::text || '\"}}]}'::text",
     "created": "_created::timestamp with time zone",
     "modified": "_modified::timestamp with time zone"
   }
