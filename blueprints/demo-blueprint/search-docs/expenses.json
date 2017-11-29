@@ -12,7 +12,7 @@
     "eventTimestamp": "NULL::timestamp with time zone",
     "point": "NULL::text",
     "activeEvent": "true::boolean",
-    "author": "NULL::text",
+    "author": "_created_by::text",
     "teams": "NULL::text[]",
     "roles": "NULL::text[]",
     "tags": "NULL::text[]",
