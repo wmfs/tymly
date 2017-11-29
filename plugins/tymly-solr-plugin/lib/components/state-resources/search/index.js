@@ -38,19 +38,23 @@ class Search {
 
         searchResults.totalHits = matchingDocs.length
         // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
-        const facets = {}
-        matchingDocs.map(doc => {
-          if (!facets.hasOwnProperty(doc.category)) {
-            facets[doc.category] = 1
-          } else {
-            facets[doc.category]++
-          }
-        })
-        searchResults.categoryCounts = facets
+        searchResults.categoryCounts = this.countCategories(matchingDocs)
         searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
         context.sendTaskSuccess({searchResults})
       })
     })
+  }
+
+  countCategories (docs) {
+    const facets = {}
+    docs.map(doc => {
+      if (!facets.hasOwnProperty(doc.category)) {
+        facets[doc.category] = 1
+      } else {
+        facets[doc.category]++
+      }
+    })
+    return facets
   }
 
   filterDocs (docs, filters, callback) {
