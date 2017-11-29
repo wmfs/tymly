@@ -24,8 +24,8 @@ class AuthService {
       )
       expressApp.set('jwtCheck', this.jwtCheck)
 
-      this.secret = secret;
-      this.audience = audience;
+      this.secret = secret
+      this.audience = audience
 
       options.messages.info('Added JWT Express middleware')
       callback(null)
@@ -35,7 +35,7 @@ class AuthService {
     }
   } // boot
 
-  generateToken(subject) {
+  generateToken (subject) {
     return jwt.sign(
       {},
       this.secret,
