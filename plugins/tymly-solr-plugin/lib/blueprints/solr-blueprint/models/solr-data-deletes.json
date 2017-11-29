@@ -1,0 +1,16 @@
+{
+  "title": "Tymly Solr Index Deletes",
+  "description": "A table which holds details of records to be deleted from the solr tymly index",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The id of a record to be deleted from the solr tymly index"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the record in question was deleted"
+    }
+  }
+}
