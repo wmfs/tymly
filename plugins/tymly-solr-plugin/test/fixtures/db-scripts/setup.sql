@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS tymly_test;
+
 CREATE TABLE IF NOT EXISTS tymly_test.students (
   student_no integer NOT NULL,
   first_name text NOT NULL,
