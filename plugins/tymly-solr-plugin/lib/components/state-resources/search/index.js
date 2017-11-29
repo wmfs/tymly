@@ -12,58 +12,75 @@ class Search {
     if (process.env.SOLR_URL) {
       this.solrClient = solr.createClient({
         url: process.env.SOLR_URL,
-        core: 'tymly_new'
+        core: 'tymly_new' // TODO: This will be changed
       })
     }
     callback(null)
   }
 
   run (event, context) {
-    const searchDocs = this.services.solr.searchDocs || []
-    this.searchFields = new Set()
-    Object.keys(searchDocs).map(s => {
-      Object.keys(searchDocs[s].attributeMapping).map(a => {
-        this.searchFields.add(_.snakeCase(a))
-      })
-    })
+    const filters = this.processFilters(event)
+    const searchResults = {
+      input: filters
+    }
 
-    this.client.query(`select * from tymly.solr_data`, (err, results) => {
-      if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-
-      const filters = this.processFilters(event)
-      const searchResults = {
-        input: filters
-      }
-      this.filterDocs(results.rows, filters, (err, matchingDocs) => {
+    if (process.env.SOLR_URL) {
+      const q = this.solrClient.createQuery().q({'collector': event.query}) // TODO: Query may change
+      this.solrClient.search(q, (err, result) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+        this.constructSearchResults(searchResults, filters, result.response.docs)
+        this.updateSearchHistory(searchResults.results, context.userId, (err) => {
+          if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+          context.sendTaskSuccess({searchResults})
+        })
+      })
+    } else {
+      const searchDocs = this.services.solr.searchDocs || []
+      this.searchFields = new Set()
+      Object.keys(searchDocs).map(s => {
+        Object.keys(searchDocs[s].attributeMapping).map(a => {
+          this.searchFields.add(_.snakeCase(a))
+        })
+      })
+      this.client.query(`select * from tymly.solr_data`, (err, results) => {
+        if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+        const matchingDocs = this.filterDocs(results.rows, filters)
+        this.constructSearchResults(searchResults, filters, matchingDocs)
+        this.updateSearchHistory(searchResults.results, context.userId, (err) => {
+          if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+          context.sendTaskSuccess({searchResults})
+        })
+      })
+    }
+  }
 
-        searchResults.totalHits = matchingDocs.length
-        // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
-        searchResults.categoryCounts = this.countCategories(matchingDocs)
-        searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
+  constructSearchResults (searchResults, filters, results) {
+    searchResults.results = results.slice(filters.offset, (filters.offset + filters.limit))
+    searchResults.totalHits = results.length
+    searchResults.categoryCounts = this.countCategories(results)
+    return searchResults
+  }
 
-        async.eachSeries(
-          searchResults.results,
-          (r, cb) => {
-            this.searchHistory.upsert(
-              {
-                userId: context.userId || 'n/a',
-                docId: r.doc_id,
-                category: r.category
-              },
-              {},
-              (err) => {
-                cb(err)
-              }
-            )
+  updateSearchHistory (docs, userId, callback) {
+    async.eachSeries(
+      docs,
+      (r, cb) => {
+        this.searchHistory.upsert(
+          {
+            userId: userId || 'n/a',
+            docId: r.doc_id,
+            category: r.category
           },
+          {},
           (err) => {
-            if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-            context.sendTaskSuccess({searchResults})
+            cb(err)
           }
         )
-      })
-    })
+      },
+      (err) => {
+        callback(err)
+      }
+    )
   }
 
   countCategories (docs) {
@@ -78,52 +95,32 @@ class Search {
     return facets
   }
 
-  filterDocs (docs, filters, callback) {
+  filterDocs (docs, filters) {
     const matchingDocs = []
-    async.eachSeries(
-      docs,
-      (candidate, cb) => {
-        this.queryMatch(filters.query, candidate, (err, match) => {
-          if (err) cb(err)
-
-          if (
-            this.domainMatch(filters.domain, candidate) &&
-            this.categoryMatch(filters.categoryRestriction, candidate) &&
-            this.activeEventMatch(filters.showActiveEventsOnly, candidate) &&
-            match) {
-            matchingDocs.push(candidate)
-          }
-          cb()
-        })
-      },
-      (err) => {
-        callback(err, matchingDocs)
+    docs.map(candidate => {
+      if (
+        this.domainMatch(filters.domain, candidate) &&
+        this.categoryMatch(filters.categoryRestriction, candidate) &&
+        this.activeEventMatch(filters.showActiveEventsOnly, candidate) &&
+        this.queryMatch(filters.query, candidate)) {
+        matchingDocs.push(candidate)
       }
-    )
+    })
+    return matchingDocs
   }
 
-  queryMatch (query, doc, callback) {
+  queryMatch (query, doc) {
     let match = false
     if (_.isUndefined(query)) {
-      callback(null, true)
+      match = true
     } else {
-      if (!process.env.SOLR_URL) {
-        this.searchFields.forEach(s => {
-          if (s !== 'created' && s !== 'modified') {
-            if (doc[s] && doc[s].toString().toUpperCase().includes(query.toUpperCase())) match = true
-          }
-        })
-        callback(null, match)
-      } else {
-        const q = this.solrClient.createQuery().q({'collector': query})
-        // const q = 'q=(title:kebab%20OR%20description:KEBAB)%20AND%20doc_type:BLPU'
-        this.solrClient.search(q, (err, result) => {
-          const contains = result.response.docs.filter(r => r.id === doc.id)
-          if (contains.length > 0) match = true
-          callback(err, match)
-        })
-      }
+      this.searchFields.forEach(s => {
+        if (s !== 'created' && s !== 'modified') {
+          if (doc[s] && doc[s].toString().toUpperCase().includes(query.toUpperCase())) match = true
+        }
+      })
     }
+    return match
   }
 
   categoryMatch (categoryRestriction, doc) {
