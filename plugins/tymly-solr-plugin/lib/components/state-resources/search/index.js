@@ -1,76 +1,105 @@
 'use strict'
 
 const _ = require('lodash')
+const solr = require('solr-client')
+const async = require('async')
 
 class Search {
   init (resourceConfig, env, callback) {
     this.client = env.bootedServices.storage.client
-    // this.services = env.bootedServices
+    this.services = env.bootedServices
+    if (process.env.SOLR_URL) {
+      this.solrClient = solr.createClient({
+        url: process.env.SOLR_URL,
+        core: 'tymly_new'
+      })
+    }
     callback(null)
   }
 
   run (event, context) {
-    // const searchDocs = this.services.solr.searchDocs || [] // think searchDocs needs to be records from the view?
+    const searchDocs = this.services.solr.searchDocs || []
+    this.searchFields = new Set()
+    Object.keys(searchDocs).map(s => {
+      Object.keys(searchDocs[s].attributeMapping).map(a => {
+        this.searchFields.add(_.snakeCase(a))
+      })
+    })
 
     this.client.query(`select * from tymly.solr_data`, (err, results) => {
-      if (err) {
-        context.sendTaskFailure(
-          {
-            error: 'searchFail',
-            cause: err
-          }
-        )
-      }
+      if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
 
       const filters = this.processFilters(event)
       const searchResults = {
         input: filters
       }
-      const matchingDocs = this.filterDocs(results.rows, filters)
-      searchResults.totalHits = matchingDocs.length
-      // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
-      const facets = {}
-      matchingDocs.map(doc => {
-        if (!facets.hasOwnProperty(doc.category)) {
-          facets[doc.category] = 1
-        } else {
-          facets[doc.category]++
-        }
+      this.filterDocs(results.rows, filters, (err, matchingDocs) => {
+        if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
+
+        searchResults.totalHits = matchingDocs.length
+        // if (filters.orderBy) this.orderDocsByRelevance(matchingDocs)
+        const facets = {}
+        matchingDocs.map(doc => {
+          if (!facets.hasOwnProperty(doc.category)) {
+            facets[doc.category] = 1
+          } else {
+            facets[doc.category]++
+          }
+        })
+        searchResults.categoryCounts = facets
+        searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
+        context.sendTaskSuccess({searchResults})
       })
-      searchResults.categoryCounts = facets
-      searchResults.results = matchingDocs.slice(filters.offset, (filters.offset + filters.limit))
-      context.sendTaskSuccess({searchResults})
     })
   }
 
-  filterDocs (docs, filters) {
+  filterDocs (docs, filters, callback) {
     const matchingDocs = []
-    Object.keys(docs).map(key => {
-      const candidate = docs[key]
-      console.log(this.queryMatch(filters.query, candidate))
-      if (
-        this.domainMatch(filters.domain, candidate) &&
-        this.queryMatch(filters.query, candidate) &&
-        this.categoryMatch(filters.categoryRestriction, candidate) &&
-        this.activeEventMatch(filters.showActiveEventsOnly, candidate)) {
-        matchingDocs.push(candidate)
+    async.eachSeries(
+      docs,
+      (candidate, cb) => {
+        let queryMatch = false
+        this.queryMatch(filters.query, candidate, (err, match) => {
+          if (err) callback(err)
+          if (match) queryMatch = true
+
+          if (
+            this.domainMatch(filters.domain, candidate) &&
+            this.categoryMatch(filters.categoryRestriction, candidate) &&
+            this.activeEventMatch(filters.showActiveEventsOnly, candidate) &&
+            queryMatch) {
+            matchingDocs.push(candidate)
+          }
+          cb()
+        })
+      },
+      (err) => {
+        callback(err, matchingDocs)
       }
-    })
-    return matchingDocs
+    )
   }
 
-  queryMatch (query, doc) {
+  queryMatch (query, doc, callback) {
     let match = false
     if (_.isUndefined(query)) {
-      match = true
+      callback(null, true)
     } else {
-      if (doc['actor_name'].toUpperCase().includes(query.toUpperCase())) match = true
-      if (doc['character_name'].toUpperCase().includes(query.toUpperCase())) match = true
-
-      // const query = solrClient.createQuery().q({'*': query})
-      // solrClient.search(query, (err, result) => { return T/F whether result.response.docs contains doc })
+      if (!process.env.SOLR_URL) {
+        this.searchFields.forEach(s => {
+          if (s !== 'created' && s !== 'modified') {
+            if (doc[s] && doc[s].toString().toUpperCase().includes(query.toUpperCase())) match = true
+          }
+        })
+        callback(null, match)
+      } else {
+        const q = this.solrClient.createQuery().q({'collector': query})
+        this.solrClient.search(q, (err, result) => {
+          const contains = result.response.docs.filter(r => r.id === doc.id)
+          if (contains.length > 0) match = true
+          callback(err, match)
+        })
+      }
     }
-    return match
   }
 
   categoryMatch (categoryRestriction, doc) {

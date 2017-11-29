@@ -32,7 +32,7 @@ class SolrService {
 
         this.createViewSQL = this.buildCreateViewStatement(
           SolrService.constructModelsArray(options.blueprintComponents.models),
-          SolrService.constructSearchDocsArray(options.blueprintComponents.searchDocs))
+          SolrService.constructSearchDocsArray(this.searchDocs))
         if (this.createViewSQL) {
           this.client.query(this.createViewSQL, [], (err) => {
             debug('Database view created with SQL: ', this.createViewSQL)
