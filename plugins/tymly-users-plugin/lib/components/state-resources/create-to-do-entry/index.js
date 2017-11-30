@@ -7,15 +7,15 @@ class CreateToDoEntry {
   }
 
   run (event, context) {
-    console.log('>>>' + event)
-    console.log('context:', context)
     const userId = context.userId
     const todoTitle = event.todoTitle
-    console.log('$$$$ - ' + userId + todoTitle)
+    const stateMachineTitle = event.stateMachineTitle
+
     this.todos.upsert(
       {
         userId: userId,
-        todoTitle: todoTitle
+        todoTitle: todoTitle,
+        stateMachineTitle: stateMachineTitle
       },
       {}
     ).then(() => {
