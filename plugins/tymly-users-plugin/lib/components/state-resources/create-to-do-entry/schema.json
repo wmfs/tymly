@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "todoTitle": {
+      "type": "string",
+      "description": "Title of the to do entry"
+    }
+  }
+}
