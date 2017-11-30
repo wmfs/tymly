@@ -1,9 +1,9 @@
-INSERT INTO tymly.categories (label, description, id)
-VALUES ('Gazetteer', 'Things to do with individual buildings and other property', 'a69c0aa1-cde5-11e7-abc4-cec278b6b50a');
-INSERT INTO tymly.categories (label, description, id)
-VALUES ('Fire', 'Fire-related incidents', 'a69c0ab2-cde5-11e7-abc4-cec278b6b50a');
-INSERT INTO tymly.categories (label, description, id)
-VALUES ('Water', 'All things water and hydrants', 'a69c0ac3-cde5-11e7-abc4-cec278b6b50a');
+INSERT INTO tymly.category (name, label)
+VALUES ('Gazetteer', 'Things to do with individual buildings and other property');
+INSERT INTO tymly.category (name, label)
+VALUES ('Fire', 'Fire-related incidents');
+INSERT INTO tymly.category (name, label)
+VALUES ('Water', 'All things water and hydrants');
 
 INSERT INTO tymly.teams (title, description, id)
 VALUES ('Fire Safety (North)', 'Fire Safety Team for the northern region', 'a69c0ad4-cde5-11e7-abc4-cec278b6b50a');
