@@ -1,0 +1,7 @@
+{
+  "CreateToDoEntry": {
+    "Type": "Task",
+    "Resource": "module:createTodoEntry",
+    "InputPath": "$"
+  }
+}
