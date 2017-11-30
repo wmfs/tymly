@@ -80,14 +80,14 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should update a to do entry for a user', function (done) {
+  it('should update a to do entry for a user', function (done) {
     statebox.startExecution(
       {
         todoTitle: 'To Do Expense Claim',
-        stateMachineTitle: 'Updated - Process expense claim for User',
+        stateMachineTitle: 'Process expense claim for User',
         stateMachineCategory: 'Expenses',
-        description: 'Homer Simpson is claiming $12 for A pack of Duff Beer',
-        id: '5200987c-bb03-11e7-abc4-cec278b6b50a'
+        description: 'User is claiming $12 for A pack of Duff Beer',
+        id: '5200987c-bb03-11e7-abc4-cec278b6b111'
       },
       CREATE_TO_DO_ENTRY,
       {
@@ -108,22 +108,35 @@ describe('todo changes tymly-users-plugin tests', function () {
       }
     )
   })
+
+  it('should ensure the created todo is present', function (done) {
+    todos.findById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      function (err, doc) {
+        expect(err).to.eql(null)
+        expect(doc.userId).to.eql('todo-user')
+        expect(doc.description).to.eql('User is claiming $12 for A pack of Duff Beer')
+        done()
+      }
+    )
+  })
+
   // for getUserRemit
-  xit('should create the settings test resources', function () {
+  it('should create the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/setup.sql', client)
   })
 
   // for getUserRemit
-  xit('should create the favourites test resources', function () {
+  it('should create the favourites test resources', function () {
     return sqlScriptRunner('./db-scripts/favourites/setup.sql', client)
   })
 
   // for getTodos
-  xit('should create the todos test resources', function () {
+  it('should create the todos test resources', function () {
     return sqlScriptRunner('./db-scripts/todos/setup.sql', client)
   })
 
-  xit('should start the state machine to get todo changes with no client to do\'s', function (done) {
+  it('should start the state machine to get todo changes with no client to do\'s', function (done) {
     statebox.startExecution(
       {
         clientManifest: {
@@ -158,7 +171,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should start the state machine to get todo changes', function (done) {
+  it('should start the state machine to get todo changes', function (done) {
     statebox.startExecution(
       {
         clientManifest: {
@@ -201,7 +214,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should ensure a todo is present in the list in preparation to remove it', function (done) {
+  it('should ensure a todo is present in the list in preparation to remove it', function (done) {
     todos.findById(
       '5200987c-bb03-11e7-abc4-cec278b6b50a',
       function (err, doc) {
@@ -213,7 +226,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should be able to remove a todo entry from the list', function (done) {
+  it('should be able to remove a todo entry from the list', function (done) {
     statebox.startExecution(
       {
         todoId: '5200987c-bb03-11e7-abc4-cec278b6b50a'
@@ -229,7 +242,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should fail to find the removed todo', function (done) {
+  it('should fail to find the removed todo', function (done) {
     todos.findById(
       '5200987c-bb03-11e7-abc4-cec278b6b50a',
       function (err, doc) {
@@ -240,7 +253,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should fail to find a todo that doesn\'t exist', function (done) {
+  it('should fail to find a todo that doesn\'t exist', function (done) {
     statebox.startExecution(
       {
         todoId: 'FAILHERE'
@@ -259,15 +272,15 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should tear down the settings test resources', function () {
+  it('should tear down the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
   })
 
-  xit('should tear down the favourites test resources', function () {
+  it('should tear down the favourites test resources', function () {
     return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
   })
 
-  xit('should tear down the todos test resources', function () {
+  it('should tear down the todos test resources', function () {
     return sqlScriptRunner('./db-scripts/todos/cleanup.sql', client)
   })
 })
