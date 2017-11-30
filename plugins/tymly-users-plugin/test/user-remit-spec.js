@@ -13,7 +13,11 @@ const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
-  let categories
+  const fakeCategories = {
+    Gazetteer: { label: 'Gazetteer' },
+    Fire: { label: 'Fire' },
+    Water: { label: 'Water' }
+  }
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -33,7 +37,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
-        categories = tymlyServices.categories
+        tymlyServices.categories.categories_ = fakeCategories
         done()
       }
     )
@@ -49,10 +53,6 @@ describe('user-remit tymly-users-plugin tests', function () {
 
   it('should create the remit test resources', function () {
     return sqlScriptRunner('./db-scripts/remit/setup.sql', client)
-  })
-
-  it('refresh category service', () => {
-    return categories.refresh()
   })
 
   it('should start the state machine to get user remit, should get whole remit because client doesn\'t contain anything', function (done) {
