@@ -10,6 +10,7 @@ class GetUserRemit {
     this.todos = env.bootedServices.storage.models['tymly_todos']
     this.forms = env.bootedServices.forms
     this.boards = env.bootedServices.boards
+    this.statebox = env.bootedServices.statebox
     // startables
     callback(null)
   }
@@ -45,6 +46,11 @@ class GetUserRemit {
       promises.push(this.processComponents(userRemit, 'boards', this.boards.boards, clientManifest['boardNames']))
     }
 
+    if (this.statebox) {
+      const startable = this.findStartableMachines(this.statebox.listStateMachines(), this.categories.names)
+      promises.push(this.processComponents(userRemit, 'startable', startable, clientManifest['startable']))
+    }
+
     Promise.all(promises)
       .then(() => { context.sendTaskSuccess({userRemit}) })
       .catch(err => {
@@ -78,6 +84,28 @@ class GetUserRemit {
 
     return userRemit
   } // processComponents
+
+  findStartableMachines (machines, categories) {
+    const startable = { }
+
+    for (const machine of Object.values(machines)) {
+      if (!machine.definition.categories || machine.definition.categories.length !== 0) {
+        continue;
+      }
+      const category = machine.definition.categories[0]
+      if (!categories.includes(category)) {
+        continue;
+      }
+
+      startable[machine.name] = {
+        title: machine.name,
+        description: machine.definition.description,
+        category: category
+      }
+    } // for ...
+
+    return startable
+  } // findStartableMachines
 }
 
 module.exports = GetUserRemit
