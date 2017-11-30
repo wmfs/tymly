@@ -1,0 +1,21 @@
+{
+  "Comment": "State machine to remove todos for a user.",
+  "version": "1.0",
+  "StartAt": "RemoveTodoEntries",
+  "States": {
+    "RemoveTodoEntries": {
+      "Type": "Task",
+      "Resource": "module:removeTodoEntries",
+      "InputPath": "$",
+      "Next": "DeltaReindex"
+    },
+    "DeltaReindex": {
+      "Type": "Task",
+      "Resource": "module:deltaReindex",
+      "ResourceConfig": {
+        "core": "tymly"
+      },
+      "End": true
+    }
+  }
+}

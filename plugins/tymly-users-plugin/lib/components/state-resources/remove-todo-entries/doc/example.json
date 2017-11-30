@@ -1,0 +1,7 @@
+{
+  "RemoveTodoEntries": {
+    "Type": "Task",
+    "Resource": "module:removeTodoEntries",
+    "InputPath": "$.removeTodoEntries"
+  }
+}
