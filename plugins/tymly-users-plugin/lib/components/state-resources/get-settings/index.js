@@ -10,14 +10,8 @@
 class GetSettings {
   init (resourceConfig, env, callback) {
     this.settings = env.bootedServices.storage.models['tymly_settings']
-
-    const categoryModel = env.bootedServices.storage.models['tymly_categories']
-    categoryModel.find({})
-      .then(results => {
-        this.categoryNames = results.map(r => r['label'])
-        callback(null)
-      })
-      .catch(err => callback(err))
+    this.categoryService = env.bootedServices.categories
+    callback(null)
   } // init
 
   run (event, context) {
@@ -30,7 +24,7 @@ class GetSettings {
       .then(settings => {
         const results = settings || { userId: userId }
         if (!results.categoryRelevance) {
-          results.categoryRelevance = this.categoryNames
+          results.categoryRelevance = this.categoryService.names
         }
 
         context.sendTaskSuccess({results})

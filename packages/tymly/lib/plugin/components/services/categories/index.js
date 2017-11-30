@@ -4,7 +4,7 @@ class CategoryService {
   boot (options, callback) {
     const storage = options.bootedServices.storage
 
-    this.categories = {}
+    this.categories_ = {}
     this.categoryModel = storage.models.tymly_category
 
     this.ensureCategories(options.blueprintComponents.categories, options.messages)
@@ -13,6 +13,9 @@ class CategoryService {
       .then(() => callback())
       .catch(err => callback(err))
   }
+
+  get categories() { return this.categories_ }
+  get names() { return Object.keys(this.categories_) }
 
   ensureCategories (blueprintCats, messages) {
     if (!blueprintCats) {
@@ -63,7 +66,7 @@ class CategoryService {
   async refresh () {
     const storedCats = await this.categoryModel.find({})
 
-    this.categories = storedCats.reduce((result, value) => {
+    this.categories_ = storedCats.reduce((result, value) => {
       result[value.name] = {
         category: value.name,
         label: value.label,
@@ -72,7 +75,7 @@ class CategoryService {
       return result
     }, {})
 
-    return this.categories
+    return this.categories_
   } // refresh
 }
 
