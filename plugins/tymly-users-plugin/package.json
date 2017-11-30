@@ -16,7 +16,8 @@
     "tymly": "0.0.15",
     "tymly-pg-plugin": "0.0.6",
     "hl-pg-client": "0.0.1",
-    "tymly-forms-plugin": "0.0.8"
+    "tymly-forms-plugin": "0.0.8",
+    "tymly-solr-plugin": "0.0.4"
   },
   "scripts": {
     "lint": "standard",

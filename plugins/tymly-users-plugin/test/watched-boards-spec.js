@@ -25,7 +25,8 @@ describe('watched-boards tymly-users-plugin tests', function () {
       {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-solr-plugin')
         ]
       },
       function (err, tymlyServices) {
@@ -54,9 +55,8 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // console.log(JSON.stringify(executionDescription, null, 2))
-        expect(executionDescription.currentStateName).to.eql('WatchBoard')
-        expect(executionDescription.currentResource).to.eql('module:watchBoard')
+        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+        expect(executionDescription.currentResource).to.eql('module:deltaReindex')
         expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
