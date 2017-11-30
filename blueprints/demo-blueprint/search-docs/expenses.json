@@ -12,14 +12,14 @@
     "eventTimestamp": "NULL::timestamp with time zone",
     "point": "NULL::text",
     "activeEvent": "true::boolean",
-    "author": "NULL::text",
+    "author": "_created_by::text",
     "teams": "NULL::text[]",
     "roles": "NULL::text[]",
     "tags": "NULL::text[]",
     "language": "'ENG'::text",
     "rootAncestorId": "NULL::text",
     "sortString": "'Expense Claim for ' || first_name || ' ' || last_name",
-    "launches": "''::text",
+    "launches": "'{\"launches\":[{\"title\":\"Open Expense Claim\",\"stateMachineName\":\"tymly_updateAnExpenseClaim_1_0\",\"input\":{\"claimId\":\"expenses#'::text || id::text || '\"}}]}'::text",
     "created": "_created::timestamp with time zone",
     "modified": "_modified::timestamp with time zone"
   }
