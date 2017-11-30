@@ -76,9 +76,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses']})
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('gazetteer')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Gazetteer')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
             'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
@@ -146,7 +146,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       {
         clientManifest: {
           boardNames: [],
-          categoryNames: ['gazetteer', 'hr'],
+          categoryNames: ['Gazetteer', 'hr'],
           teamNames: [],
           todoExecutionNames: [],
           formNames: [],
@@ -167,7 +167,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['fire', 'water'])
+            .to.eql(['Fire', 'Water'])
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()

@@ -1,7 +1,7 @@
 {
-  "label": "Water",
-  "description": "All things water and hydrants",
-  "style": {
+  "name": "Water",
+  "label": "All things water and hydrants",
+  "styling": {
     "icon": "water-drop",
     "backgroundColor": "#FFFF00"
   }
