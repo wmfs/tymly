@@ -9,9 +9,11 @@ const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_TODO_CHANGES_STATE_MACHINE = 'tymly_getTodoChanges_1_0'
+const CREATE_TO_DO_ENTRY = 'tymly_createToDoEntry_1_0'
 const REMOVE_TODO_STATE_MACHINE = 'tymly_removeTodoEntries_1_0'
 
 describe('todo changes tymly-users-plugin tests', function () {
+  this.timeout(50000)
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
   let todos
@@ -37,6 +39,30 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
+  it('should create to do entry', function (done) {
+    statebox.startExecution(
+      {
+        todoTitle: 'xxx'
+      },
+      CREATE_TO_DO_ENTRY,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('CreateToDoEntry')
+          expect(executionDescription.currentResource).to.eql('module:createToDoEntry')
+          expect(executionDescription.stateMachineName).to.eql(CREATE_TO_DO_ENTRY)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
   // for getUserRemit
   it('should create the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/setup.sql', client)
