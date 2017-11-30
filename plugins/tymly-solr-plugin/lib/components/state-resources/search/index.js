@@ -12,7 +12,7 @@ class Search {
     if (process.env.SOLR_URL) {
       this.solrClient = solr.createClient({
         url: process.env.SOLR_URL,
-        core: 'tymly_new' // TODO: This will be changed
+        core: 'tymly'
       })
     }
     callback(null)
@@ -25,7 +25,7 @@ class Search {
     }
 
     if (process.env.SOLR_URL) {
-      const q = this.solrClient.createQuery().q({'collector': event.query}) // TODO: Query may change
+      const q = this.solrClient.createQuery().q({'collector': event.query}) // TODO: Query will need to change
       this.solrClient.search(q, (err, result) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
         this.constructSearchResults(searchResults, filters, result.response.docs)
