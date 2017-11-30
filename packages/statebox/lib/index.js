@@ -113,7 +113,7 @@ class Statebox {
   }
 
   listStateMachines () {
-    stateMachines.listStateMachines()
+    return stateMachines.listStateMachines()
   }
 
   findStateMachineByName (name) {
