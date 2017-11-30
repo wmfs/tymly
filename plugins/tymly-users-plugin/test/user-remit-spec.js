@@ -77,8 +77,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.ctx.userRemit.settings).to.eql({ categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'] })
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Gazetteer', 'Fire', 'Water'])
+            .to.eql(['fire', 'gazetteer', 'water'])
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
+            '5200987c-bb03-11e7-abc4-cec278b6b111',
             'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
             'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
@@ -145,7 +146,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       {
         clientManifest: {
           boardNames: [],
-          categoryNames: ['Gazetteer', 'hr'],
+          categoryNames: ['gazetteer', 'hr'],
           teamNames: [],
           todoExecutionNames: [],
           formNames: [],
@@ -166,7 +167,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Fire', 'Water'])
+            .to.eql(['fire', 'water'])
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()
@@ -203,6 +204,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
+            '5200987c-bb03-11e7-abc4-cec278b6b111',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
             'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
             'a69c1178-cde5-11e7-abc4-cec278b6b50a'

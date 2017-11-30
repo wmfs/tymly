@@ -132,7 +132,7 @@ describe('settings tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.results.userId).to.eql('new-user')
-          expect(executionDescription.ctx.results.categoryRelevance).to.eql([])
+          expect(executionDescription.ctx.results.categoryRelevance).to.eql(['fire', 'gazetteer', 'water'])
           done()
         } catch (err) {
           done(err)
