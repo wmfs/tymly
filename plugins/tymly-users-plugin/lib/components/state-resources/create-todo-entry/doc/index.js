@@ -1,4 +1,4 @@
 module.exports = {
-  description: 'Creates To Do Entry',
+  description: 'Creates ToDo Entry',
   example: require('./example.json')
 }
