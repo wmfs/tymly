@@ -1,27 +1,23 @@
 {
   "plural": "categories",
-
   "primaryKey": ["name"],
-
   "description": "Categories used to help explore/organise blueprints and plugins",
   "type": "object",
 
   "properties": {
-
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of the category"
     },
-
     "label": {
-      "type": "string"
+      "type": "string",
+      "description": "The category's display name"
     },
-
     "styling": {
-      "type": "object"
+      "type": "object",
+      "description": "Any styling applied"
     }
-
   },
 
   "required": ["name", "label"]
-
 }
