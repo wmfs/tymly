@@ -3,8 +3,15 @@
 
 > Tymly blueprint generated via yo tymly:blueprint
 
+> A TymlyJS blueprint to support "CQC care directory" open data as produced by the Care Quality Commission.
+
+
+## About the data
+
+The information and services made available at [CQC](http://www.cqc.org.uk/about-us/transparency/using-cqc-data) are covered by the __Open Government Licence (OGL)__.
+
+* Use of proprietary information available at [CQC](http://www.cqc.org.uk/about-us/transparency/using-cqc-data) is subject to the terms of the [Open Government Licence (OGL)](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/).
+
 ## <a name="license"></a>License
-
-
 
 MIT
