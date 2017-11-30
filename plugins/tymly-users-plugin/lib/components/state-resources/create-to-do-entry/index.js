@@ -10,12 +10,18 @@ class CreateToDoEntry {
     const userId = context.userId
     const todoTitle = event.todoTitle
     const stateMachineTitle = event.stateMachineTitle
+    const stateMachineCategory = event.stateMachineCategory
+    const description = event.description
+    const id = event.id
 
     this.todos.upsert(
       {
         userId: userId,
         todoTitle: todoTitle,
-        stateMachineTitle: stateMachineTitle
+        stateMachineTitle: stateMachineTitle,
+        stateMachineCategory: stateMachineCategory,
+        description: description,
+        id: id
       },
       {}
     ).then(() => {
