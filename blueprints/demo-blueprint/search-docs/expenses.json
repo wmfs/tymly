@@ -9,7 +9,7 @@
     "description": "'Expense Claim for ' || first_name || ' ' || last_name || ' (age: ' || age || ' years old, contact number: ' || telephone || ')'",
     "additionalTerms": "NULL::text[]",
     "category": "'expenses'::text",
-    "eventTimestamp": "NULL::timestamp with time zone",
+    "eventTimestamp": "date::timestamp with time zone",
     "point": "NULL::text",
     "activeEvent": "true::boolean",
     "author": "_created_by::text",
