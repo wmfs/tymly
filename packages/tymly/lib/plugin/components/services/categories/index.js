@@ -14,8 +14,8 @@ class CategoryService {
       .catch(err => callback(err))
   }
 
-  get categories() { return this.categories_ }
-  get names() { return Object.keys(this.categories_) }
+  get categories () { return this.categories_ }
+  get names () { return Object.keys(this.categories_) }
 
   ensureCategories (blueprintCats, messages) {
     if (!blueprintCats) {
