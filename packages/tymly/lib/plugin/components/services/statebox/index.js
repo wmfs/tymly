@@ -54,6 +54,10 @@ class StateboxService {
     return this.statebox.findStateMachines(options)
   }
 
+  listStateMachines () {
+    return this.statebox.listStateMachines()
+  }
+
   startExecution (input, stateMachineName, executionOptions, callback) {
     this.statebox.startExecution(input, stateMachineName, executionOptions, callback)
   }
