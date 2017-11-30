@@ -9,7 +9,7 @@ const path = require('path')
 describe('User-role tests', function () {
   // TODO: MORE! MORE! MORE!
 
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let users
   const secret = 'Shhh!'

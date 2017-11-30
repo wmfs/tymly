@@ -9,7 +9,7 @@ const csv = require('csvtojson')
 const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('Simple CSV and tymly test', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   it('should start Tymly service', function (done) {

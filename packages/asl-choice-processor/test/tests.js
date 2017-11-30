@@ -8,7 +8,7 @@ const expect = chai.expect
 const choiceProcessor = require('./../lib')
 
 describe('Choice tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   it('Should pick a simple state using booleanEquals', function () {
     const calculateNextState = choiceProcessor(

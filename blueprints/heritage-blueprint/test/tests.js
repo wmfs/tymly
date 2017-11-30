@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('Heritage tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
 

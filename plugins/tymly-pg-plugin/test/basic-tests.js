@@ -9,7 +9,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('PostgreSQL storage tests', function () {
-  this.timeout(120000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let registryService
   let categoryService

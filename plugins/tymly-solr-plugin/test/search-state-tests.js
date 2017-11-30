@@ -9,7 +9,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const STATE_MACHINE_NAME = 'tymlyTest_search_1_0'
 
 describe('tymly-solr-plugin search state resource tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let statebox
   let client

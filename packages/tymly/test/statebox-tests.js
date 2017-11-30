@@ -7,7 +7,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 describe('Simple Tymly test', function () {
   const tymly = require('./../lib')
   let statebox
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let rupert
 
   it('should create some basic tymly services to run a simple cat blueprint', function (done) {

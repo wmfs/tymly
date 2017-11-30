@@ -20,7 +20,7 @@ describe('Simple email tests', function () {
   // $TYMLY_WELCOME_RECIPIENTS   | Specifies who should receieive the emails, e.g:
   //                              |    john.doe@tymlyjs.com
 
-  this.timeout(25000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let transportConfig
   let from

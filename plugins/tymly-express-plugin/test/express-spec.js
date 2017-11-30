@@ -27,7 +27,7 @@ function sendToken (adminToken) {
 }
 
 describe('Simple Express tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let app
   let adminToken

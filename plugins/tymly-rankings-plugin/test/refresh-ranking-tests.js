@@ -9,7 +9,7 @@ const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING

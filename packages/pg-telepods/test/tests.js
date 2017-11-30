@@ -12,7 +12,7 @@ const fs = require('fs')
 
 describe('Run the basic-usage example',
   function () {
-    this.timeout(15000)
+    this.timeout(process.env.TIMEOUT || 5000)
     let client
 
     it('Should create a new pg client', () => {

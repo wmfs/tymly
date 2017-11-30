@@ -9,7 +9,7 @@ const expect = require('chai').expect
 const GET_USER_DASHBOARD_STATE_MACHINE = 'tymly_getUserDashboardData_1_0'
 
 describe('user dashboard data tymly-users-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   it('should create some basic tymly services', function (done) {

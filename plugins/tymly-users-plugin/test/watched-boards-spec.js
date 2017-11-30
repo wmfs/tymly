@@ -12,7 +12,7 @@ const WATCH_BOARD_STATE_MACHINE = 'tymly_watchBoard_1_0'
 const UNWATCH_BOARD_STATE_MACHINE = 'tymly_unwatchBoard_1_0'
 
 describe('watched-boards tymly-users-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING

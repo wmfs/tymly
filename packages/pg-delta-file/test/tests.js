@@ -10,7 +10,7 @@ const generateDelta = require('../lib')
 
 describe('Run the basic usage example',
   function () {
-    this.timeout(10000)
+    this.timeout(process.env.TIMEOUT || 5000)
 
     const client = new HlPgClient(process.env.PG_CONNECTION_STRING)
 

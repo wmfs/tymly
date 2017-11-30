@@ -12,7 +12,7 @@ const GET_SETTINGS_STATE_MACHINE = 'tymly_getSettings_1_0'
 const APPLY_SETTINGS_STATE_MACHINE = 'tymly_applySettings_1_0'
 
 describe('settings tymly-users-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING

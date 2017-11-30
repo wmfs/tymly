@@ -11,7 +11,7 @@ const tymly = require('tymly')
 chai.use(chaiSubset)
 
 describe('Demo tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let models
   let forms
   let boards

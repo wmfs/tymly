@@ -7,7 +7,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 describe('Restart statebox test - cat state machine', function () {
   const tymly = require('tymly')
   let statebox
-  this.timeout(10000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let rupert
 
   const tymlyConfig = {
