@@ -38,10 +38,10 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  it('should create to do entry for a user', function (done) {
+  it('should create todo entry for a user', function (done) {
     statebox.startExecution(
       {
-        todoTitle: 'To Do Expense Claim',
+        todoTitle: 'ToDo Expense Claim',
         stateMachineTitle: 'Process expense claim for User',
         stateMachineCategory: 'Expenses',
         description: 'Claiming $12 for A pack of Duff Beer',
@@ -79,10 +79,10 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  it('should update a to do entry for a user', function (done) {
+  it('should update a todo entry for a user', function (done) {
     statebox.startExecution(
       {
-        todoTitle: 'To Do Expense Claim',
+        todoTitle: 'ToDo Expense Claim',
         stateMachineTitle: 'Process expense claim for User',
         stateMachineCategory: 'Expenses',
         description: 'User is claiming $12 for A pack of Duff Beer',
