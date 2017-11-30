@@ -45,7 +45,7 @@ describe('todo changes tymly-users-plugin tests', function () {
         todoTitle: 'To Do Expense Claim',
         stateMachineTitle: 'Process expense claim for User',
         stateMachineCategory: 'Expenses',
-        description: 'Homer Simpson is claiming $12 for A pack of Duff Beer',
+        description: 'Claiming $12 for A pack of Duff Beer',
         id: '5200987c-bb03-11e7-abc4-cec278b6b111'
       },
       CREATE_TO_DO_ENTRY,
@@ -68,13 +68,13 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  xit('should ensure a todo is present in the list in preparation to remove it', function (done) {
+  it('should ensure the created todo is present', function (done) {
     todos.findById(
       '5200987c-bb03-11e7-abc4-cec278b6b111',
       function (err, doc) {
         expect(err).to.eql(null)
-        expect(doc.userId).to.eql('test-user')
-        expect(doc.description).to.eql('Homer Simpson is claiming $12 for A pack of Duff Beer')
+        expect(doc.userId).to.eql('todo-user')
+        expect(doc.description).to.eql('Claiming $12 for A pack of Duff Beer')
         done()
       }
     )
