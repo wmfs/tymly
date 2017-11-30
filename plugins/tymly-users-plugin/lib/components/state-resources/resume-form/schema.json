@@ -1,4 +1,13 @@
 {
   "type": "object",
-  "properties": {}
+  "properties": {
+    "formId": {
+      "type": "string",
+      "description": "The ID of the form to resume"
+    },
+    "model": {
+      "type": "string",
+      "description": "The model of the form"
+    }
+  }
 }
