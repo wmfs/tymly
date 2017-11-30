@@ -46,6 +46,47 @@ describe('todo changes tymly-users-plugin tests', function () {
         stateMachineTitle: 'Process expense claim for User',
         stateMachineCategory: 'Expenses',
         description: 'Homer Simpson is claiming $12 for A pack of Duff Beer',
+        id: '5200987c-bb03-11e7-abc4-cec278b6b111'
+      },
+      CREATE_TO_DO_ENTRY,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'todo-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('CreateToDoEntry')
+          expect(executionDescription.currentResource).to.eql('module:createToDoEntry')
+          expect(executionDescription.stateMachineName).to.eql(CREATE_TO_DO_ENTRY)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
+  xit('should ensure a todo is present in the list in preparation to remove it', function (done) {
+    todos.findById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      function (err, doc) {
+        expect(err).to.eql(null)
+        expect(doc.userId).to.eql('test-user')
+        expect(doc.description).to.eql('Homer Simpson is claiming $12 for A pack of Duff Beer')
+        done()
+      }
+    )
+  })
+
+  xit('should update a to do entry for a user', function (done) {
+    statebox.startExecution(
+      {
+        todoTitle: 'To Do Expense Claim',
+        stateMachineTitle: 'Updated - Process expense claim for User',
+        stateMachineCategory: 'Expenses',
+        description: 'Homer Simpson is claiming $12 for A pack of Duff Beer',
         id: '5200987c-bb03-11e7-abc4-cec278b6b50a'
       },
       CREATE_TO_DO_ENTRY,
