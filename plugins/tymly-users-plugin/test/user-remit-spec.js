@@ -85,7 +85,6 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
             .to.eql(['Gazetteer', 'Fire', 'Water'])
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
-            '5200987c-bb03-11e7-abc4-cec278b6b111',
             'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
             'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
@@ -210,7 +209,6 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
-            '5200987c-bb03-11e7-abc4-cec278b6b111',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
             'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
             'a69c1178-cde5-11e7-abc4-cec278b6b50a'

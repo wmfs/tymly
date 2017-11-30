@@ -120,6 +120,27 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
+  it('should remove the todo created for test', function (done) {
+    todos.destroyById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      (err) => {
+        expect(err).to.eql(null)
+        done(err)
+      }
+    )
+  })
+
+  it('should ensure created todo is removed', function (done) {
+    todos.findById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      function (err, doc) {
+        expect(err).to.eql(null)
+        expect(doc).to.eql(undefined)
+        done(err)
+      }
+    )
+  })
+
   // for getUserRemit
   it('should create the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/setup.sql', client)
