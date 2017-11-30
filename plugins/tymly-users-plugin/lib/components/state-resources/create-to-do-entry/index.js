@@ -15,7 +15,8 @@ class CreateToDoEntry {
     this.todos.upsert(
       {
         userId: userId,
-        todoTitle: todoTitle
+        todoTitle: todoTitle,
+        id: event.id
       },
       {}
     ).then(() => {
