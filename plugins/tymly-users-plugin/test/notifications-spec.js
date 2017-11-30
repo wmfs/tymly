@@ -129,6 +129,6 @@ describe('notifications tymly-users-plugin tests', function () {
   })
 
   it('should clean up the test resources', function () {
-    return sqlScriptRunner('./db-scripts/notifications/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

@@ -14,6 +14,7 @@ const APPLY_SETTINGS_STATE_MACHINE = 'tymly_applySettings_1_0'
 describe('settings tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
+  const fakeCategories = { }
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -30,6 +31,7 @@ describe('settings tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
+        tymlyServices.categories.categories_ = fakeCategories
         done()
       }
     )
@@ -142,6 +144,6 @@ describe('settings tymly-users-plugin tests', function () {
   })
 
   it('should tear down the test resources', function () {
-    return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

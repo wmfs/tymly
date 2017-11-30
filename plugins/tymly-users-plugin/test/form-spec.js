@@ -65,6 +65,6 @@ describe('form state tests', function () {
   })
 
   it('should tear down the test resources', function () {
-    return sqlScriptRunner('./db-scripts/forms/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

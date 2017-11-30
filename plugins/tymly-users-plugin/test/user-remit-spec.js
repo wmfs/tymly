@@ -74,10 +74,11 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(executionDescription.ctx.userRemit.settings).to.eql({ categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'] })
+          expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses']})
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Gazetteer', 'Fire', 'Water'])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Gazetteer')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
             'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
@@ -130,7 +131,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(executionDescription.ctx.userRemit.settings).to.eql({ categoryRelevance: ['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents'] })
+          expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents']})
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql([])
           done()
         } catch (err) {
@@ -328,15 +329,7 @@ describe('user-remit tymly-users-plugin tests', function () {
     )
   })
 
-  it('should tear down the settings test resources', function () {
-    return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
-  })
-
-  it('should tear down the favourites test resources', function () {
-    return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
-  })
-
-  it('should tear down the remit test resources', function () {
-    return sqlScriptRunner('./db-scripts/remit/cleanup.sql', client)
+  it('should tear down the test resources', function () {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

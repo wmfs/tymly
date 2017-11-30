@@ -1,0 +1,24 @@
+{
+  "id": "boards",
+  "title": "Boards",
+  "description": "Boards",
+  "type": "object",
+  "properties": {
+    "boardTitleTemplate": {
+      "type": "string",
+      "description": "The title of the board"
+    },
+    "watchable": {
+      "type": "boolean",
+      "description": "Whether the board is watchable or not"
+    },
+    "category": {
+      "type": "string",
+      "description": "The category the board belongs to"
+    },
+    "content": {
+      "type": "object",
+      "description": "The content of the board"
+    }
+  }
+}
