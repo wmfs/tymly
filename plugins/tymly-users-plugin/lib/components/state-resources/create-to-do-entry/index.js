@@ -7,21 +7,17 @@ class CreateToDoEntry {
   }
 
   run (event, context) {
-    console.log('>>>' + event)
-    console.log('context:', context)
-    const userId = context.userId
-    const todoTitle = event.todoTitle
-    console.log('$$$$ - ' + userId + todoTitle)
+    const upsert = {
+      userId: context.userId,
+      todoTitle: event.todoTitle
+    }
+    if (event.id) upsert.id = event.id
     this.todos.upsert(
-      {
-        userId: userId,
-        todoTitle: todoTitle,
-        id: event.id
-      },
+      upsert,
       {}
-    ).then(() => {
-      context.sendTaskSuccess()
-    }).catch(err => context.sendTaskFailure(err))
+    )
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure(err))
   }
 }
 
