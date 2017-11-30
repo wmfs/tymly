@@ -7,7 +7,6 @@ const rest = require('restler')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-const formsPluginDir = require.resolve('tymly-users-plugin')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -69,8 +68,9 @@ describe('Simple Express tests', function () {
 
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          formsPluginDir,
-          path.resolve(__dirname, './fixtures/plugins/cats-plugin')
+          path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
+          path.resolve('tymly-solr-plugin'),
+          path.resolve('tymly-users-plugin')
         ],
 
         blueprintPaths: [
