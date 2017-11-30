@@ -38,16 +38,60 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  it('should create to do entry', function (done) {
+  it('should create todo entry for a user', function (done) {
     statebox.startExecution(
       {
-        todoTitle: 'xxx',
-        id: '5200987c-bb03-11e7-abc4-cec278b6b50b'
+        todoTitle: 'ToDo Expense Claim',
+        stateMachineTitle: 'Process expense claim for User',
+        stateMachineCategory: 'Expenses',
+        description: 'Claiming $12 for A pack of Duff Beer',
+        id: '5200987c-bb03-11e7-abc4-cec278b6b111'
       },
       CREATE_TO_DO_ENTRY,
       {
         sendResponse: 'COMPLETE',
-        userId: 'test-user'
+        userId: 'todo-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('CreateTodoEntry')
+          expect(executionDescription.currentResource).to.eql('module:createTodoEntry')
+          expect(executionDescription.stateMachineName).to.eql(CREATE_TO_DO_ENTRY)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
+  it('should ensure the created todo is present', function (done) {
+    todos.findById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      function (err, doc) {
+        expect(err).to.eql(null)
+        expect(doc.userId).to.eql('todo-user')
+        expect(doc.description).to.eql('Claiming $12 for A pack of Duff Beer')
+        done()
+      }
+    )
+  })
+
+  it('should update a todo entry for a user', function (done) {
+    statebox.startExecution(
+      {
+        todoTitle: 'ToDo Expense Claim',
+        stateMachineTitle: 'Process expense claim for User',
+        stateMachineCategory: 'Expenses',
+        description: 'User is claiming $12 for A pack of Duff Beer',
+        id: '5200987c-bb03-11e7-abc4-cec278b6b111'
+      },
+      CREATE_TO_DO_ENTRY,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'todo-user'
       },
       function (err, executionDescription) {
         try {
@@ -64,6 +108,19 @@ describe('todo changes tymly-users-plugin tests', function () {
       }
     )
   })
+
+  it('should ensure the created todo is present', function (done) {
+    todos.findById(
+      '5200987c-bb03-11e7-abc4-cec278b6b111',
+      function (err, doc) {
+        expect(err).to.eql(null)
+        expect(doc.userId).to.eql('todo-user')
+        expect(doc.description).to.eql('User is claiming $12 for A pack of Duff Beer')
+        done()
+      }
+    )
+  })
+
   // for getUserRemit
   it('should create the settings test resources', function () {
     return sqlScriptRunner('./db-scripts/settings/setup.sql', client)
@@ -104,7 +161,6 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)).to.eql([
-          '5200987c-bb03-11e7-abc4-cec278b6b50b',
           '5200987c-bb03-11e7-abc4-cec278b6b50a',
           '0d625558-ce99-11e7-b7e3-c38932399c15'
         ])
@@ -145,7 +201,6 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)).to.eql([
-          '5200987c-bb03-11e7-abc4-cec278b6b50b',
           '0d625558-ce99-11e7-b7e3-c38932399c15'
         ])
         expect(executionDescription.ctx.todoChanges.remove.todoChanges).to.eql([
