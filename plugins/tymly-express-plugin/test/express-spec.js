@@ -69,8 +69,8 @@ describe('Simple Express tests', function () {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
           path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
-          path.resolve('tymly-solr-plugin'),
-          path.resolve('tymly-users-plugin')
+          require.resolve('tymly-solr-plugin'),
+          require.resolve('tymly-users-plugin')
         ],
 
         blueprintPaths: [
