@@ -24,7 +24,7 @@ class Transformer extends Transform {
                 functionStatements.push(`csvParts.push(this.info.totalCount)`)
                 break
               case 'ACTION':
-                functionStatements.push(`csvParts.push('U')`) // TODO: Action to be inferred
+                functionStatements.push(`csvParts.push('${options.actionAliases.insert}')`) // TODO: Action to be inferred whether it's new/updated/deleted
                 break
             }
             break
