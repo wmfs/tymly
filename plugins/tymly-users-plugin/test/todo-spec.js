@@ -13,7 +13,6 @@ const CREATE_TO_DO_ENTRY = 'tymly_createToDoEntry_1_0'
 const REMOVE_TODO_STATE_MACHINE = 'tymly_removeTodoEntries_1_0'
 
 describe('todo changes tymly-users-plugin tests', function () {
-  this.timeout(50000)
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
   let todos
