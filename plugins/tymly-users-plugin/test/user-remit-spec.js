@@ -10,7 +10,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 
-xdescribe('user-remit tymly-users-plugin tests', function () {
+describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(5000)
   let statebox
 
