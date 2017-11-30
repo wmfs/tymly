@@ -1,6 +1,6 @@
 'use strict'
 
-class CreateToDoEntry {
+class CreateTodoEntry {
   init (resourceConfig, env, callback) {
     this.todos = env.bootedServices.storage.models['tymly_todos']
     callback(null)
@@ -21,4 +21,4 @@ class CreateToDoEntry {
   }
 }
 
-module.exports = CreateToDoEntry
+module.exports = CreateTodoEntry

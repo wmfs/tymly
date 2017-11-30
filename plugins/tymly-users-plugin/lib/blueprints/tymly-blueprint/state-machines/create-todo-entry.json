@@ -1,11 +1,11 @@
 {
   "Comment": "State machine to apply create a to do entry for a user.",
   "version": "1.0",
-  "StartAt": "CreateToDoEntry",
+  "StartAt": "CreateTodoEntry",
   "States": {
-    "CreateToDoEntry": {
+    "CreateTodoEntry": {
       "Type": "Task",
-      "Resource": "module:createToDoEntry",
+      "Resource": "module:createTodoEntry",
       "InputPath": "$",
       "End": true
     }
