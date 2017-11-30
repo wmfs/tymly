@@ -24,9 +24,9 @@ class CreateToDoEntry {
         id: id
       },
       {}
-    ).then(() => {
-      context.sendTaskSuccess()
-    }).catch(err => context.sendTaskFailure(err))
+    )
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure(err))
   }
 }
 

@@ -3,7 +3,7 @@
   "description": "A table which holds details of records to be deleted from the solr tymly index",
   "type": "object",
   "properties": {
-    "indexId": {
+    "deletedRecordId": {
       "type": "string",
       "description": "The id of a record to be deleted from the solr tymly index"
     }
