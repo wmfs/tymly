@@ -160,7 +160,6 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)).to.eql([
-          '5200987c-bb03-11e7-abc4-cec278b6b50b',
           '5200987c-bb03-11e7-abc4-cec278b6b50a',
           '0d625558-ce99-11e7-b7e3-c38932399c15'
         ])
@@ -201,7 +200,6 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)).to.eql([
-          '5200987c-bb03-11e7-abc4-cec278b6b50b',
           '0d625558-ce99-11e7-b7e3-c38932399c15'
         ])
         expect(executionDescription.ctx.todoChanges.remove.todoChanges).to.eql([
