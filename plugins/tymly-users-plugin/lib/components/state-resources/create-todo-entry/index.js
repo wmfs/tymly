@@ -9,9 +9,13 @@ class CreateTodoEntry {
   run (event, context) {
     const upsert = {
       userId: context.userId,
-      todoTitle: event.todoTitle
+      todoTitle: event.todoTitle,
+      stateMachineTitle: event.stateMachineTitle,
+      stateMachineCategory: event.stateMachineCategory,
+      description: event.description
     }
     if (event.id) upsert.id = event.id
+
     this.todos.upsert(
       upsert,
       {}
