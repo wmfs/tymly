@@ -90,11 +90,11 @@ class GetUserRemit {
 
     for (const machine of Object.values(machines)) {
       if (!machine.definition.categories || machine.definition.categories.length === 0) {
-        continue;
+        continue
       }
       const category = machine.definition.categories[0]
       if (!categories.includes(category)) {
-        continue;
+        continue
       }
 
       startable[machine.name] = {
