@@ -9,7 +9,7 @@ const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 
 describe('PG storage tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let client
   let people

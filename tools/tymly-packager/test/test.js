@@ -186,7 +186,7 @@ describe('Bundler tests', function () {
 
     for (const [label, fixture, packages, expectedTarballs, expectedFiles] of tests) {
       describe(label, function () {
-        this.timeout(10000)
+        this.timeout(process.env.TIMEOUT || 5000)
 
         const fixtureRoot = path.join(searchRoot, fixture)
 
@@ -237,7 +237,7 @@ describe('Bundler tests', function () {
 
     for (const [label, fixture] of tests) {
       describe(label, function () {
-        this.timeout(10000)
+        this.timeout(process.env.TIMEOUT || 5000)
 
         const fixtureRoot = path.join(forDeployRoot, fixture)
 

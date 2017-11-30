@@ -13,7 +13,7 @@ const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
 const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymly_acknowledgeNotifications_1_0'
 
 describe('notifications tymly-users-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
   const limit = '10'
@@ -26,7 +26,8 @@ describe('notifications tymly-users-plugin tests', function () {
       {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-solr-plugin')
         ]
       },
       function (err, tymlyServices) {

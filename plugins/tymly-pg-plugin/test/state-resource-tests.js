@@ -17,7 +17,7 @@ process.on('unhandledRejection', (reason, p) => {
 })
 
 describe('Importing CSV Tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
   let client
   let statebox
@@ -89,7 +89,7 @@ describe('Importing CSV Tests', function () {
 })
 
 describe('Synchronizing Table tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
   let statebox
   let client

@@ -15,7 +15,7 @@ const Statebox = require('./../lib')
 
 DaosToTest.forEach(([name, options]) => {
   describe(`Simple stateMachine tests using ${name}`, function () {
-    this.timeout(5000)
+    this.timeout(process.env.TIMEOUT || 5000)
     let statebox
     let executionName
 

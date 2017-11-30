@@ -12,7 +12,7 @@ const generateStatementInitTable = initMatchTables.generateStatement
 const processWhere = matchPostcodeAndName.processWhere
 
 describe('Run some tests', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
   const client = new HlPgClient(process.env.PG_CONNECTION_STRING)
   const options = {
     source: {

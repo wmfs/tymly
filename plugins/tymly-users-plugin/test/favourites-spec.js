@@ -12,7 +12,7 @@ const GET_FAVOURITE_STATE_MACHINE = 'tymly_getFavouriteStartableNames_1_0'
 const SET_FAVOURITE_STATE_MACHINE = 'tymly_setFavouriteStartableNames_1_0'
 
 describe('favourites tymly-users-plugin tests', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -21,7 +21,8 @@ describe('favourites tymly-users-plugin tests', function () {
       {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-solr-plugin')
         ]
       },
       function (err, tymlyServices) {

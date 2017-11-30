@@ -9,7 +9,7 @@ const expect = require('chai').expect
 // const rimraf = require('rimraf')
 
 describe('data import', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'fsa_refreshFromXmlFile_1_0'
   const OUTPUT_DIR = path.resolve(__dirname, './output')

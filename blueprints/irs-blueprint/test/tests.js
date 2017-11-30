@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 
 describe('data import', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'wmfs_incidentEditor_1_0'
 
@@ -18,7 +18,8 @@ describe('data import', function () {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-solr-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')

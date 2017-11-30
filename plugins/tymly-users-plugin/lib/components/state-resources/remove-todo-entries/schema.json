@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "todoIds": {
+      "type": "array",
+      "description": "Holds the ID's of the todos to remove."
+    }
+  }
+}

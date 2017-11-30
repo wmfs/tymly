@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('Ofsted tests', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'ofsted_refreshFromCsvFile_1_0'
 

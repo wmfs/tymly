@@ -6,7 +6,7 @@ const expect = require('chai').expect
 describe('Category tests', function () {
   const tymly = require('./../lib')
 
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let categoryService
 

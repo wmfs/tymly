@@ -8,7 +8,7 @@ const tymly = require('../lib')
 const path = require('path')
 
 describe('Memory storage tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let people
   let planets

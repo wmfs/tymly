@@ -8,7 +8,7 @@ const tymly = require('../lib')
 const STATE_MACHINE_NAME = 'tymlyTest_setRegistryKey_1_0'
 
 describe('It should test the state resource for setting reg keys', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let statebox
   let registry

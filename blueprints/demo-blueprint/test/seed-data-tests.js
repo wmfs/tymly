@@ -2,16 +2,16 @@
 
 'use strict'
 
-const chai = require('./../node_modules/chai')
+const chai = require('chai')
 const chaiSubset = require('chai-subset')
-const expect = chai.expect
+const expect = require('chai').expect
 const path = require('path')
 const tymly = require('tymly')
 
 chai.use(chaiSubset)
 
 describe('Demo tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let models
   let forms
   let boards
@@ -31,15 +31,11 @@ describe('Demo tests', function () {
         config: {}
       },
       function (err, tymlyServices) {
-        if (err) {
-          done(err)
-        } else {
-          models = tymlyServices.storage.models
-          forms = tymlyServices.forms.forms
-          boards = tymlyServices.boards.boards
-          categories = tymlyServices.categories.categories
-          done()
-        }
+        models = tymlyServices.storage.models
+        forms = tymlyServices.forms.forms
+        boards = tymlyServices.boards.boards
+        categories = tymlyServices.categories.categories
+        done(err)
       }
     )
   })

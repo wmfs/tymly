@@ -23,7 +23,8 @@
     "safe-buffer": "^5.1.1",
     "standard": "^10.0.3",
     "tymly": "0.0.15",
-    "tymly-users-plugin": "0.0.1"
+    "tymly-users-plugin": "0.0.1",
+    "tymly-solr-plugin": "0.0.4"
   },
   "scripts": {
     "lint": "standard",

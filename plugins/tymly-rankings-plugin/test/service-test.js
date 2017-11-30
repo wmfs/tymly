@@ -14,7 +14,7 @@ const generateView = require('./../lib/components/services/rankings/generate-vie
 const generateStats = require('./../lib/components/services/rankings/generate-stats')
 
 describe('Tests the Ranking Service', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)

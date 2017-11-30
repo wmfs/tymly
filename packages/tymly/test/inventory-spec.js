@@ -10,7 +10,7 @@ describe('Simple Inventory tests', function () {
   const pluginPaths = [
     path.resolve(__dirname, './fixtures/plugins/cats-plugin')
   ]
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   it('should boot with an inventory service', function (done) {
     tymly.boot(

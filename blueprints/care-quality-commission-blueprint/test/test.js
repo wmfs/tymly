@@ -8,7 +8,7 @@ const path = require('path')
 const tymly = require('tymly')
 
 describe('CQC tests', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'cqc_refreshFromCsvFile_1_0'
 

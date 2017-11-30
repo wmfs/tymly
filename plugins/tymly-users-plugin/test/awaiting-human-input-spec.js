@@ -9,7 +9,7 @@ const expect = require('chai').expect
 const HEARTBEAT_STATE_MACHINE = 'tymly_testHeartbeat_1_0'
 
 describe('awaitingUserInput state tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   // const pgConnectionString = process.env.PG_CONNECTION_STRING
@@ -20,7 +20,8 @@ describe('awaitingUserInput state tests', function () {
       {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-solr-plugin')
         ]
       },
       function (err, tymlyServices) {

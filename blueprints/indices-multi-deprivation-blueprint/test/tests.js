@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 
 describe('data import', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'dclg_refreshFromCsvFile_1_0'
 

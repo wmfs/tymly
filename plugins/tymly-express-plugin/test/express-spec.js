@@ -7,7 +7,6 @@ const rest = require('restler')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
-const formsPluginDir = require.resolve('tymly-users-plugin')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -27,7 +26,7 @@ function sendToken (adminToken) {
 }
 
 describe('Simple Express tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let app
   let adminToken
@@ -69,8 +68,9 @@ describe('Simple Express tests', function () {
 
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          formsPluginDir,
-          path.resolve(__dirname, './fixtures/plugins/cats-plugin')
+          path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
+          require.resolve('tymly-solr-plugin'),
+          require.resolve('tymly-users-plugin')
         ],
 
         blueprintPaths: [

@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 
 describe('Simple Tymly test', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(

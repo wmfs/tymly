@@ -11,7 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 
 describe('user-remit tymly-users-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
@@ -25,7 +25,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         ],
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          require.resolve('tymly-solr-plugin')
         ]
       },
       function (err, tymlyServices) {

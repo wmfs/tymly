@@ -9,7 +9,7 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 describe('Blueprint Tests', function () {
-  this.timeout(15000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'ordnanceSurvey_importCsvFiles_1_0'
   const LIST_OF_CSV_SOURCE_FILES = [

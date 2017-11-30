@@ -9,7 +9,8 @@
     "standard": "^10.0.3",
     "debug": "^2.6.8",
     "tymly": "0.0.15",
-    "tymly-users-plugin": "0.0.1"
+    "tymly-users-plugin": "0.0.1",
+    "tymly-solr-plugin": "0.0.4"
   },
   "scripts": {
     "start": "node ./lib/index.js",

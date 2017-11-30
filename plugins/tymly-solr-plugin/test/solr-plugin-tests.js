@@ -17,7 +17,7 @@ const studentsAndStaffModels = require('./fixtures/test-resources/students-and-s
 const studentsAndStaffSearchDocs = require('./fixtures/test-resources/students-and-staff-search-docs.json')
 
 describe('tymly-solr-plugin tests', function () {
-  this.timeout(5000)
+  this.timeout(process.env.TIMEOUT || 5000)
 
   let solrService
   let client

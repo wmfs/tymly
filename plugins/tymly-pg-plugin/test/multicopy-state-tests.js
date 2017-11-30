@@ -9,7 +9,7 @@ const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 
 describe('Testing functionality as a state-resource', function () {
-  this.timeout(50000)
+  this.timeout(process.env.TIMEOUT || 5000)
   let client
   let statebox
   let STATE_MACHINE_NAME = 'foodTest_food_1_0'
