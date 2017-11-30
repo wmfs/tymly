@@ -18,7 +18,8 @@ describe('data import', function () {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-solr-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
