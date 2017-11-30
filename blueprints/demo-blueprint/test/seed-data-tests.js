@@ -2,9 +2,9 @@
 
 'use strict'
 
-const chai = require('./../node_modules/chai')
+const chai = require('chai')
 const chaiSubset = require('chai-subset')
-const expect = chai.expect
+const expect = require('chai').expect
 const path = require('path')
 const tymly = require('tymly')
 
@@ -31,15 +31,11 @@ describe('Demo tests', function () {
         config: {}
       },
       function (err, tymlyServices) {
-        if (err) {
-          done(err)
-        } else {
-          models = tymlyServices.storage.models
-          forms = tymlyServices.forms.forms
-          boards = tymlyServices.boards.boards
-          categories = tymlyServices.categories.categories
-          done()
-        }
+        models = tymlyServices.storage.models
+        forms = tymlyServices.forms.forms
+        boards = tymlyServices.boards.boards
+        categories = tymlyServices.categories.categories
+        done(err)
       }
     )
   })
