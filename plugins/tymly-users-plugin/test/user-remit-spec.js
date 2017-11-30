@@ -13,11 +13,6 @@ const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
-  const fakeCategories = {
-    Gazetteer: {label: 'Gazetteer'},
-    Fire: {label: 'Fire'},
-    Water: {label: 'Water'}
-  }
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -37,7 +32,6 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
-        tymlyServices.categories.categories_ = fakeCategories
         done()
       }
     )
@@ -82,8 +76,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses']})
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Gazetteer', 'Fire', 'Water'])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('gazetteer')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
             'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
             'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
@@ -151,7 +146,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       {
         clientManifest: {
           boardNames: [],
-          categoryNames: ['Gazetteer', 'hr'],
+          categoryNames: ['gazetteer', 'hr'],
           teamNames: [],
           todoExecutionNames: [],
           formNames: [],
@@ -172,7 +167,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Fire', 'Water'])
+            .to.eql(['fire', 'water'])
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()
@@ -334,15 +329,7 @@ describe('user-remit tymly-users-plugin tests', function () {
     )
   })
 
-  it('should tear down the settings test resources', function () {
-    return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
-  })
-
-  it('should tear down the favourites test resources', function () {
-    return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
-  })
-
-  it('should tear down the remit test resources', function () {
-    return sqlScriptRunner('./db-scripts/remit/cleanup.sql', client)
+  it('should tear down the test resources', function () {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

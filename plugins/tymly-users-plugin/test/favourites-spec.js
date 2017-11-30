@@ -100,6 +100,6 @@ describe('favourites tymly-users-plugin tests', function () {
   })
 
   it('should tear down the test resources', function () {
-    return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })

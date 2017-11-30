@@ -292,15 +292,7 @@ describe('todo changes tymly-users-plugin tests', function () {
     )
   })
 
-  it('should tear down the settings test resources', function () {
-    return sqlScriptRunner('./db-scripts/settings/cleanup.sql', client)
-  })
-
-  it('should tear down the favourites test resources', function () {
-    return sqlScriptRunner('./db-scripts/favourites/cleanup.sql', client)
-  })
-
-  it('should tear down the todos test resources', function () {
-    return sqlScriptRunner('./db-scripts/todos/cleanup.sql', client)
+  it('should tear down the test resources', function () {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 })
