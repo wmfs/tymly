@@ -1,4 +1,3 @@
-
 INSERT INTO tymly.teams (title, description, id)
 VALUES ('Fire Safety (North)', 'Fire Safety Team for the northern region', 'a69c0ad4-cde5-11e7-abc4-cec278b6b50a');
 INSERT INTO tymly.teams (title, description, id)

@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "todoTitle": {
+      "type": "string",
+      "description": "A specific title to identify each todo entry"
+    },
+    "teamName": {
+      "type": "string",
+      "description": "The team the todo belongs to, if a team"
+    },
+    "stateMachineTitle": {
+      "type": "string",
+      "description": "The title of the state-machine that the todo entry is associated with - use when rendering a UI to group related todo-entries into groups"
+    },
+    "stateMachineCategory": {
+      "type": "string",
+      "description": "To be used to help style categorise/style todo list entries - this is the category name of the state-machine that the todo entry is associated with"
+    },
+    "description": {
+      "type": "string",
+      "description": "More detail to complement todoTitle"
+    },
+    "requiredHumanInput": {
+      "type": "object",
+      "description": "The type of UI component that will need rendering if the user wants to progress this todo entry (either form or board)"
+    },
+    "launches": {
+      "type": "object",
+      "description": "A standard launches object which can be used to offer alternative actions to the user instead of the default behaviour of progressing it (e.g. perhaps allocating it to another user or team... or just viewing a related board)."
+    }
+  }
+}

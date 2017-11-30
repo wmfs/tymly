@@ -1,4 +1,3 @@
-
 DELETE FROM tymly.teams
 WHERE id = 'a69c0ad4-cde5-11e7-abc4-cec278b6b50a';
 DELETE FROM tymly.teams
