@@ -9,7 +9,7 @@ const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_TODO_CHANGES_STATE_MACHINE = 'tymly_getTodoChanges_1_0'
-const CREATE_TO_DO_ENTRY = 'tymly_createToDoEntry_1_0'
+const CREATE_TO_DO_ENTRY = 'tymly_createTodoEntry_1_0'
 const REMOVE_TODO_STATE_MACHINE = 'tymly_removeTodoEntries_1_0'
 
 describe('todo changes tymly-users-plugin tests', function () {
@@ -55,8 +55,8 @@ describe('todo changes tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          expect(executionDescription.currentStateName).to.eql('CreateToDoEntry')
-          expect(executionDescription.currentResource).to.eql('module:createToDoEntry')
+          expect(executionDescription.currentStateName).to.eql('CreateTodoEntry')
+          expect(executionDescription.currentResource).to.eql('module:createTodoEntry')
           expect(executionDescription.stateMachineName).to.eql(CREATE_TO_DO_ENTRY)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           done()
@@ -96,8 +96,8 @@ describe('todo changes tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          expect(executionDescription.currentStateName).to.eql('CreateToDoEntry')
-          expect(executionDescription.currentResource).to.eql('module:createToDoEntry')
+          expect(executionDescription.currentStateName).to.eql('CreateTodoEntry')
+          expect(executionDescription.currentResource).to.eql('module:createTodoEntry')
           expect(executionDescription.stateMachineName).to.eql(CREATE_TO_DO_ENTRY)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           done()
