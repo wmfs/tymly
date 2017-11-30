@@ -5,7 +5,7 @@ const _ = require('lodash')
 
 class GetUserRemit {
   init (resourceConfig, env, callback) {
-    this.categories = env.bootedServices.storage.models['tymly_categories']
+    this.categories = env.bootedServices.categories
     this.teams = env.bootedServices.storage.models['tymly_teams']
     this.todos = env.bootedServices.storage.models['tymly_todos']
     this.forms = env.bootedServices.forms
@@ -29,10 +29,13 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.categories, 'categories', 'label', clientManifest['categoryNames']),
       this.findComponents(userRemit, this.todos, 'todos', 'id', clientManifest['todoExecutionNames']),
       this.findComponents(userRemit, this.teams, 'teams', 'title', clientManifest['teamNames'])
     ]
+
+    if (this.categories) {
+      promises.push(this.processComponents(userRemit, 'categories', this.categories.categories, clientManifest['categoryNames']))
+    }
 
     if (this.forms) {
       promises.push(this.processComponents(userRemit, 'forms', this.forms.forms, clientManifest['formNames']))
