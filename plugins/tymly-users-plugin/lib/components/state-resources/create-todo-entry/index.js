@@ -7,22 +7,17 @@ class CreateTodoEntry {
   }
 
   run (event, context) {
-    const userId = context.userId
-    const todoTitle = event.todoTitle
-    const stateMachineTitle = event.stateMachineTitle
-    const stateMachineCategory = event.stateMachineCategory
-    const description = event.description
-    const id = event.id
+    const upsert = {
+      userId: context.userId,
+      todoTitle: event.todoTitle,
+      stateMachineTitle: event.stateMachineTitle,
+      stateMachineCategory: event.stateMachineCategory,
+      description: event.description
+    }
+    if (event.id) upsert.id = event.id
 
     this.todos.upsert(
-      {
-        userId: userId,
-        todoTitle: todoTitle,
-        stateMachineTitle: stateMachineTitle,
-        stateMachineCategory: stateMachineCategory,
-        description: description,
-        id: id
-      },
+      upsert,
       {}
     )
       .then(() => context.sendTaskSuccess())
