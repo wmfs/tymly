@@ -13,7 +13,8 @@
       "Type": "Task",
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
-        "formId": "claimAnExpense"
+        "uiType": "form",
+        "uiName": "tymly_claimAnExpense"
       },
       "ResultPath": "$.formData",
       "Next": "Upserting"
