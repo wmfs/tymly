@@ -33,17 +33,17 @@ class AwaitingHumanInput {
     }
 
     if (this.uiType === 'board') {
-      this.watchedBoards.find(
-        {where: {userId: {equals: context.userId}}},
-        (err, subscriptions) => {
+      this.watchedBoards.findOne(
+        {
+          where: {
+            userId: {equals: context.userId},
+            feedName: {equals: this.uiName + '|' + data.incidentNumber + '|' + data.incidentYear}
+          }
+        },
+        (err, subscription) => {
           if (err) context.sendTaskFailure({err})
-          requiredHumanInput.subscriptions = []
-          subscriptions.map(s => {
-            requiredHumanInput.subscriptions.push({
-              watchBoardSubscriptionId: s.id,
-              feedName: s.feedName
-            })
-          })
+          requiredHumanInput.watchBoardSubscriptionId = subscription.id
+          requiredHumanInput.feedName = subscription.feedName
           context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
             if (err) throw new Error(err)
             done(executionDescription)
