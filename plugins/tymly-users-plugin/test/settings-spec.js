@@ -57,7 +57,12 @@ describe('settings tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.results.userId).to.eql('test-user')
-          expect(executionDescription.ctx.results.categoryRelevance).to.eql(['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses'])
+          expect(executionDescription.ctx.results.categoryRelevance.length).to.eql(5)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('gazetteer')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('hr')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('hydrants')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('incidents')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('expenses')).to.eql(true)
           done()
         } catch (err) {
           done(err)
@@ -107,9 +112,12 @@ describe('settings tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_SETTINGS_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.results.userId).to.eql('test-user')
-          expect(executionDescription.ctx.results.categoryRelevance).to.eql(
-            ['incidents', 'hr', 'hydrants', 'gazetteer', 'expenses']
-          )
+          expect(executionDescription.ctx.results.categoryRelevance.length).to.eql(5)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('incidents')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('hr')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('hydrants')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('gazetteer')).to.eql(true)
+          expect(executionDescription.ctx.results.categoryRelevance.includes('expenses')).to.eql(true)
           done()
         } catch (err) {
           done(err)

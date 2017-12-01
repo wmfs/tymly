@@ -74,29 +74,46 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['gazetteer', 'hr', 'hydrants', 'incidents', 'expenses']})
-          expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql(['notifications', 'settings'])
+
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.length).to.eql(5)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('gazetteer')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('hr')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('hydrants')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('incidents')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('expenses')).to.eql(true)
+
+          expect(executionDescription.ctx.userRemit.favouriteStartableNames.length).to.eql(2)
+          expect(executionDescription.ctx.userRemit.favouriteStartableNames.includes('notifications')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.favouriteStartableNames.includes('settings')).to.eql(true)
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(3)
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Gazetteer')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
-            'a69c0ac9-cde5-11e7-abc4-cec278b6b50a',
-            'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
-            'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
-            'a69c1178-cde5-11e7-abc4-cec278b6b50a'])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.teams)).to.eql([
-            'Fire Safety (North)',
-            'Birmingham (Red watch)'
-          ])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.forms)).to.eql([
-            'test_addIncidentLogEntry',
-            'test_addIncidentSafetyRecord',
-            'test_bookSomeoneSick'
-          ])
-          expect(Object.keys(executionDescription.ctx.userRemit.add.boards)).to.eql([
-            'test_personalDetails',
-            'test_propertyViewer'
-          ])
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos).length).to.eql(4)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c0ac9-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c0ae8-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c0dcc-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c1178-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.teams).length).to.eql(2)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.teams).includes('Fire Safety (North)')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.teams).includes('Birmingham (Red watch)')).to.eql(true)
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).length).to.eql(3)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentLogEntry')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_bookSomeoneSick')).to.eql(true)
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards).length).to.eql(2)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards).includes('test_personalDetails')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards).includes('test_propertyViewer')).to.eql(true)
+
           expect(executionDescription.ctx.userRemit.remove).to.eql({})
           done()
         } catch (err) {
@@ -131,7 +148,14 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(executionDescription.ctx.userRemit.settings).to.eql({categoryRelevance: ['expenses', 'gazetteer', 'hydrants', 'hr', 'incidents']})
+
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.length).to.eql(5)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('expenses')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('gazetteer')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('hydrants')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('hr')).to.eql(true)
+          expect(executionDescription.ctx.userRemit.settings.categoryRelevance.includes('incidents')).to.eql(true)
+
           expect(executionDescription.ctx.userRemit.favouriteStartableNames).to.eql([])
           done()
         } catch (err) {
@@ -166,8 +190,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories))
-            .to.eql(['Fire', 'Water'])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(2)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()
@@ -203,11 +228,13 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)).to.eql([
-            'a69c0ae8-cde5-11e7-abc4-cec278b6b50a',
-            'a69c0dcc-cde5-11e7-abc4-cec278b6b50a',
-            'a69c1178-cde5-11e7-abc4-cec278b6b50a'
-          ])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos).length).to.eql(3)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c0ae8-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c0dcc-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
+            .includes('a69c1178-cde5-11e7-abc4-cec278b6b50a')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.todos)
             .to.eql(['a69c0ad0-cde5-11e7-abc4-cec278b6b50a'])
           done()
@@ -280,8 +307,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.forms))
-            .to.eql(['test_addIncidentLogEntry', 'test_addIncidentSafetyRecord'])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).length).to.eql(2)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentLogEntry')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.forms)
             .to.eql(['processAnExpenseClaim'])
           done()
