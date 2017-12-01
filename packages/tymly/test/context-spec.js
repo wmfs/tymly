@@ -26,13 +26,15 @@ describe('Context tests', function () {
     statebox.startExecution(
       {},  // input
       'tymlyTest_setContextData_1_0', // state machine name
-      {sendRespose: 'COMPLETE'}, // options
+      {sendResponse: 'COMPLETE'}, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.currentStateName).to.eql('SetDefaults')
         expect(executionDescription.currentResource).to.eql('module:setContextData')
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_setContextData_1_0')
-        expect(executionDescription.status).to.eql('RUNNING')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.formData.catName).to.eql('catName')
+        console.log(executionDescription)
         done()
       }
     )
