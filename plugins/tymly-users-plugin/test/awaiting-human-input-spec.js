@@ -105,7 +105,12 @@ describe('awaitingUserInput state tests', function () {
 
   it('should check the required human input if the user is watching the board', function (done) {
     statebox.startExecution(
-      {},
+      {
+        someDefaultFormData: {
+          incidentNumber: 1,
+          incidentYear: 1999
+        }
+      },
       'test_getBoards_1_0',
       {
         sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput',
@@ -113,9 +118,9 @@ describe('awaitingUserInput state tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        expect(Object.keys(executionDescription.ctx.requiredHumanInput).includes('subscriptions'))
-          .to.eql(true)
-        expect(executionDescription.ctx.requiredHumanInput.subscriptions[0].feedName)
+        expect(Object.keys(executionDescription.ctx.requiredHumanInput)
+          .includes('watchBoardSubscriptionId'))
+        expect(executionDescription.ctx.requiredHumanInput.feedName)
           .to.eql('wmfs_incidentSummary_1_0|1|1999')
         done(err)
       }
