@@ -27,8 +27,12 @@ describe('Context tests', function () {
       {},  // input
       'tymlyTest_setContextData_1_0', // state machine name
       {sendRespose: 'COMPLETE'}, // options
-      function (err, result) {
+      function (err, executionDescription) {
         expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('SetDefaults')
+        expect(executionDescription.currentResource).to.eql('module:setContextData')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_setContextData_1_0')
+        expect(executionDescription.status).to.eql('RUNNING')
         done()
       }
     )
