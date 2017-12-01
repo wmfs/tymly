@@ -26,7 +26,10 @@ describe('Context tests', function () {
     statebox.startExecution(
       {},  // input
       'tymlyTest_setContextData_1_0', // state machine name
-      {sendResponse: 'COMPLETE'}, // options
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'Dave'
+      }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.currentStateName).to.eql('SetDefaults')
@@ -34,7 +37,7 @@ describe('Context tests', function () {
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_setContextData_1_0')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.formData.catName).to.eql('Rupert')
-        expect(executionDescription.ctx.formData.catOwnerId).to.eql('$USERID')
+        expect(executionDescription.ctx.formData.catOwnerId).to.eql('Dave')
         expect(executionDescription.ctx.formData.catBirthday.substring(0, 18)).to.eql(new Date().toISOString().substring(0, 18))
         done()
       }
