@@ -9,6 +9,7 @@ class AwaitingHumanInput {
     this.uiName = resourceConfig.uiName
     this.dataPath = resourceConfig.dataPath
     this.defaults = resourceConfig.defaults
+    this.watchedBoards = env.bootedServices.storage.models['tymly_watchedBoards']
     callback(null)
   }
 
@@ -25,22 +26,36 @@ class AwaitingHumanInput {
       data = _.defaults(data, this.defaults)
     }
 
-    context.sendTaskHeartbeat(
-      {
-        requiredHumanInput: {
-          uiType: this.uiType,
-          uiName: this.uiName,
-          data: data
+    const requiredHumanInput = {
+      uiType: this.uiType,
+      uiName: this.uiName,
+      data: data
+    }
+
+    if (this.uiType === 'board') {
+      this.watchedBoards.find(
+        {where: {userId: {equals: context.userId}}},
+        (err, subscriptions) => {
+          if (err) context.sendTaskFailure({err})
+          requiredHumanInput.subscriptions = []
+          subscriptions.map(s => {
+            requiredHumanInput.subscriptions.push({
+              watchBoardSubscriptionId: s.id,
+              feedName: s.feedName
+            })
+          })
+          context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
+            if (err) throw new Error(err)
+            done(executionDescription)
+          })
         }
-      },
-      function (err, executionDescription) {
-        if (err) {
-          throw new Error(err)
-        } else {
-          done(executionDescription)
-        }
-      }
-    )
+      )
+    } else {
+      context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
+        if (err) throw new Error(err)
+        done(executionDescription)
+      })
+    }
   }
 }
 
