@@ -32,7 +32,7 @@ module.exports = class SetContextData {
           }
         }
       }
-      dottie.set(data, theKey, dottiePath)
+      dottie.set(data, theKey, this.resourceConfig[key])
     }
     console.log(data)
     context.sendTaskSuccess(data)

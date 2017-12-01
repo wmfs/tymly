@@ -33,7 +33,7 @@ describe('Context tests', function () {
         expect(executionDescription.currentResource).to.eql('module:setContextData')
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_setContextData_1_0')
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.formData.catName).to.eql('catName')
+        expect(executionDescription.ctx.formData.catName).to.eql('Rupert')
         console.log(executionDescription)
         done()
       }
