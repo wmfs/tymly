@@ -18,7 +18,7 @@ class GetUserRemit {
   run (event, context) {
     // const userId = context.userId
     const clientManifest = event.clientManifest
-    const settings = { categoryRelevance: event.userSettings.results.categoryRelevance }
+    const settings = { categoryRelevance: event.userSettings.categoryRelevance }
     let favourites = []
     if (event.favourites.results.length > 0) favourites = event.favourites.results[0].stateMachineNames
 

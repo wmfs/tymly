@@ -7,7 +7,6 @@
       "Type": "Task",
       "Resource": "module:getSettings",
       "InputPath": "$",
-      "ResultPath" : "$.userSettings",
       "Next": "GetFavouriteStartableNames"
     },
     "GetFavouriteStartableNames": {
