@@ -31,6 +31,11 @@ module.exports = class SetContextData {
           }
         }
       }
+      console.log(this.resourceConfig[key])
+      if (this.resourceConfig[key] === '$NOW') {
+        this.resourceConfig[key] = new Date().toISOString()
+      }
+      console.log('!!!', context) // userId is undefined in context so where do I get it
       dottie.set(data, theKey, this.resourceConfig[key])
     }
     console.log(data)

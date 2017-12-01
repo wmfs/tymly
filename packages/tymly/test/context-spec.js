@@ -35,7 +35,7 @@ describe('Context tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.formData.catName).to.eql('Rupert')
         expect(executionDescription.ctx.formData.catOwnerId).to.eql('$USERID')
-        expect(executionDescription.ctx.formData.catBirthday).to.eql('$NOW')
+        expect(executionDescription.ctx.formData.catBirthday.substring(0, 18)).to.eql(new Date().toISOString().substring(0, 18))
         done()
       }
     )
