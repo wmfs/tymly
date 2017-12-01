@@ -98,7 +98,8 @@ class GetUserRemit {
       }
 
       startable[machine.name] = {
-        title: machine.name,
+        name: machine.name,
+        title: machine.definition.name,
         description: machine.definition.description,
         category: category
       }
