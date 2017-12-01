@@ -14,17 +14,9 @@ class AwaitingHumanInput {
   }
 
   run (event, context, done) {
-    let data
-
-    if (this.dataPath) {
-      data = jp.value(event, this.dataPath)
-    } else {
-      data = {}
-    }
-
-    if (this.defaults) {
-      data = _.defaults(data, this.defaults)
-    }
+    let data = {}
+    if (this.dataPath) data = jp.value(event, this.dataPath)
+    if (this.defaults) data = _.defaults(data, this.defaults)
 
     const requiredHumanInput = {
       uiType: this.uiType,
@@ -32,12 +24,15 @@ class AwaitingHumanInput {
       data: data
     }
 
+    const feedName = [this.uiName]
+    Object.keys(data).sort().map(k => feedName.push(data[k]))
+
     if (this.uiType === 'board') {
       this.watchedBoards.findOne(
         {
           where: {
             userId: {equals: context.userId},
-            feedName: {equals: this.uiName + '|' + data.incidentNumber + '|' + data.incidentYear}
+            feedName: {equals: feedName.join('|')}
           }
         },
         (err, subscription) => {

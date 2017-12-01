@@ -106,7 +106,7 @@ describe('awaitingUserInput state tests', function () {
   it('should check the required human input if the user is watching the board', function (done) {
     statebox.startExecution(
       {
-        someDefaultFormData: {
+        data: {
           incidentNumber: 1,
           incidentYear: 1999
         }

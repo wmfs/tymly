@@ -9,11 +9,7 @@
       "ResourceConfig": {
         "uiType": "board",
         "uiName": "wmfs_incidentSummary_1_0",
-        "dataPath": "$.someDefaultFormData",
-        "defaults": {
-          "empNo": 0,
-          "status": "Probationary"
-        }
+        "dataPath": "$.data"
       },
       "InputPath": "$",
       "End": true
