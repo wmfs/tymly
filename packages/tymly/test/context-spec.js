@@ -13,10 +13,6 @@ describe('Context tests', function () {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/animal-blueprint')
         ]
-
-        // pluginPaths: [
-        //  path.resolve(__dirname, './fixtures/plugins/cats-plugin')
-        // ]
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
@@ -32,7 +28,6 @@ describe('Context tests', function () {
       'tymlyTest_setContextData_1_0', // state machine name
       {sendRespose: 'COMPLETE'}, // options
       function (err, result) {
-        // console.log(result)
         expect(err).to.eql(null)
         done()
       }

@@ -1,6 +1,6 @@
 'use strict'
-// const _ = require('lodash')
-// const jsonPath = require('jsonpath')
+const _ = require('lodash')
+const dottie = require('dottie')
 module.exports = class SetContextData {
   init (resourceConfig, env, callback) {
     this.resourceConfig = resourceConfig
@@ -8,13 +8,33 @@ module.exports = class SetContextData {
   }
 
   run (event, context) {
-    console.log('!!!', this.resourceConfig)
     // const data = _.cloneDeep(this.resourceConfig)
     const data = {}
     for (const key in this.resourceConfig) {
-      console.log('key', key)
-      console.log('value', this.resourceConfig[key])
+      let dottiePath
+      let theKey
+      if (_.isString(key)) {
+        dottiePath = key
+        if (dottiePath.length > 0) {
+          if (dottiePath[0] === '$') {
+            dottiePath = dottiePath.slice(1)
+          }
+        }
+        if (dottiePath.length > 0) {
+          if (dottiePath[0] === '.') {
+            dottiePath = dottiePath.slice(1)
+            theKey = dottiePath
+          }
+        }
+        if (dottiePath.length > 0) {
+          if (dottiePath.substring(0, 8) === 'formData') {
+            dottiePath = dottiePath.slice(9)
+          }
+        }
+      }
+      dottie.set(data, theKey, dottiePath)
     }
+    console.log(data)
     context.sendTaskSuccess(data)
   }
 }
