@@ -8,7 +8,6 @@ module.exports = class SetContextData {
   }
 
   run (event, context) {
-    // const data = _.cloneDeep(this.resourceConfig)
     const data = {}
     for (const key in this.resourceConfig) {
       let dottiePath

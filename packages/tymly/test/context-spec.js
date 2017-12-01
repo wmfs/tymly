@@ -34,7 +34,8 @@ describe('Context tests', function () {
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_setContextData_1_0')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.formData.catName).to.eql('Rupert')
-        console.log(executionDescription)
+        expect(executionDescription.ctx.formData.catOwnerId).to.eql('$USERID')
+        expect(executionDescription.ctx.formData.catBirthday).to.eql('$NOW')
         done()
       }
     )
