@@ -7,21 +7,39 @@ class WatchBoard {
   }
 
   run (event, context) {
-    const userId = context.userId
     const feedName = event.stateMachineName + '|' + event.key.incidentNumber + '|' + event.key.incidentYear
 
     this.watchedBoards.upsert(
       {
-        userId: userId,
+        userId: context.userId,
         feedName: feedName,
         title: event.title,
         description: event.description,
         startedWatching: new Date().toLocaleString()
       },
       {}
-    ).then(() => {
-      context.sendTaskSuccess()
-    }).catch(err => context.sendTaskFailure(err))
+    )
+      .then(() => {
+        this.watchedBoards.findOne(
+          {
+            where: {
+              userId: {equals: context.userId},
+              feedName: {equals: feedName},
+              title: {equals: event.title},
+              description: {equals: event.description}
+            }
+          }
+        )
+          .then((doc) => {
+            context.sendTaskSuccess({
+              subscriptionId: doc.id,
+              feedName: doc.feedName,
+              startedWatching: doc.startedWatching
+            })
+          })
+          .catch(err => context.sendTaskFailure(err))
+      })
+      .catch(err => context.sendTaskFailure(err))
   }
 }
 
