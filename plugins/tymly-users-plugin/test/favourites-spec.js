@@ -91,9 +91,10 @@ describe('favourites tymly-users-plugin tests', function () {
         expect(executionDescription.stateMachineName).to.eql(GET_FAVOURITE_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.results[0].userId).to.eql('test-user')
-        expect(executionDescription.ctx.results[0].stateMachineNames).to.eql(
-          [ 'wmfs_claimAnExpense_1_0', 'wmfs_reportHydrantDefect_1_0', 'notifications' ]
-        )
+        expect(executionDescription.ctx.results[0].stateMachineNames.length).to.eql(3)
+        expect(executionDescription.ctx.results[0].stateMachineNames.includes('wmfs_claimAnExpense_1_0')).to.eql(true)
+        expect(executionDescription.ctx.results[0].stateMachineNames.includes('wmfs_reportHydrantDefect_1_0')).to.eql(true)
+        expect(executionDescription.ctx.results[0].stateMachineNames.includes('notifications')).to.eql(true)
         done()
       }
     )

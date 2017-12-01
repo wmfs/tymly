@@ -85,7 +85,8 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created), Date.parse(startFrom), 'Notification is more recent than startFrom')
+        assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created),
+          Date.parse(startFrom), 'Notification is more recent than startFrom')
         idToAcknowledge = executionDescription.ctx.userNotifications.notifications[0].id
         done()
       }
