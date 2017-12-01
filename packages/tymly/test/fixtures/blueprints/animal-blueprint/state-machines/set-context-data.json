@@ -1,0 +1,18 @@
+{
+  "Comment": "Test blueprint to set context data",
+  "version": "1.0",
+  "StartAt": "SetDefaults",
+  "States": {
+    "SetDefaults": {
+      "ResourceConfig":{
+        "$.formData.catName": "Rupert",
+        "$.formData.catOwnerId": "$USERID",
+        "$.formData.catBirthday": "$NOW"
+      },
+      "Type": "Task",
+      "Resource": "module:setContextData",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

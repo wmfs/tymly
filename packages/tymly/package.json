@@ -1,4 +1,4 @@
- {
+{
   "name": "tymly",
   "description": "A framework for building and sharing workflows in Node.js",
   "version": "0.0.15",
@@ -11,6 +11,7 @@
     "dottie": "^2.0.0",
     "esprima": "^3.1.3",
     "glob": "^7.1.2",
+    "jsonpath": "^1.0.0",
     "jsonschema": "^1.1.0",
     "lodash": "^4.17.4",
     "lru-cache": "^4.0.2",
