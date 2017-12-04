@@ -98,7 +98,7 @@ async function createBundle (bundle, tgzName) {
   const wd = process.cwd()
   process.chdir(path.join(bundle, '..'))
 
-  await tar.create('bundle', tgzName)
+  await tar.create(path.basename(bundle), tgzName)
 
   process.chdir(wd)
 } // createBundle
@@ -114,7 +114,7 @@ async function buildBundle (searchRoot, packages, bundleName = 'bundle.tgz', log
 
   logger('Populating bundle ...')
   fs.mkdirSync(workDir)
-  const bundle = path.join(workDir, 'bundle')
+  const bundle = path.join(workDir, 'tymly')
   fs.mkdirSync(bundle)
 
   await sprayOutTarballs(bundle, packages, logger)

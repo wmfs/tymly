@@ -1,6 +1,6 @@
 {
-  "blueprintPaths": "/usr/src/tymly/bundle/blueprints/*-blueprint",
-  "pluginPaths": "/usr/src/tymly/bundle/plugins/*-plugin",
+  "blueprintPaths": "/tymly/blueprints/*-blueprint",
+  "pluginPaths": "/tymly/plugins/*-plugin",
   "config": {
     "serverPort": "3000",
     "auth": {
