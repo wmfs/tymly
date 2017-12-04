@@ -10,6 +10,7 @@ class GetUserRemit {
     this.todos = env.bootedServices.storage.models['tymly_todos']
     this.forms = env.bootedServices.forms
     this.boards = env.bootedServices.boards
+    this.statebox = env.bootedServices.statebox
     // startables
     callback(null)
   }
@@ -17,7 +18,7 @@ class GetUserRemit {
   run (event, context) {
     // const userId = context.userId
     const clientManifest = event.clientManifest
-    const settings = { categoryRelevance: event.userSettings.results.categoryRelevance }
+    const settings = { categoryRelevance: event.userSettings.categoryRelevance }
     let favourites = []
     if (event.favourites.results.length > 0) favourites = event.favourites.results[0].stateMachineNames
 
@@ -43,6 +44,11 @@ class GetUserRemit {
 
     if (this.boards) {
       promises.push(this.processComponents(userRemit, 'boards', this.boards.boards, clientManifest['boardNames']))
+    }
+
+    if (this.statebox) {
+      const startable = this.findStartableMachines(this.statebox.listStateMachines(), this.categories.names)
+      promises.push(this.processComponents(userRemit, 'startable', startable, clientManifest['startable']))
     }
 
     Promise.all(promises)
@@ -78,6 +84,29 @@ class GetUserRemit {
 
     return userRemit
   } // processComponents
+
+  findStartableMachines (machines, categories) {
+    const startable = { }
+
+    for (const machine of Object.values(machines)) {
+      if (!machine.definition.categories || machine.definition.categories.length === 0) {
+        continue
+      }
+      const category = machine.definition.categories[0]
+      if (!categories.includes(category)) {
+        continue
+      }
+
+      startable[machine.name] = {
+        name: machine.name,
+        title: machine.definition.name,
+        description: machine.definition.description,
+        category: category
+      }
+    } // for ...
+
+    return startable
+  } // findStartableMachines
 }
 
 module.exports = GetUserRemit

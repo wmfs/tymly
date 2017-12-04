@@ -6,6 +6,7 @@ const jp = require('jsonpath')
 const convertJsonpathToDottie = require('./../../utils/convert-jsonpath-to-dottie')
 const process = require('process')
 const _ = require('lodash')
+const debug = require('debug')('statebox')
 
 // TODO: http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
 class Context {
@@ -18,14 +19,17 @@ class Context {
   }
 
   sendTaskSuccess (output) {
+    debug(`sendTaskSuccess(${this.executionName})`)
     this.task.processTaskSuccess(output, this.executionName)
   }
 
   sendTaskFailure (options) {
+    debug(`sendTaskFailure(${this.executionName})`)
     this.task.processTaskFailure(options, this.executionName)
   }
 
   sendTaskHeartbeat (output, callback) {
+    debug(`sendTaskHeartbeat(${this.executionName})`)
     if (!callback) {
       console.log(new Error('Missing callback parameter in call to sendTaskHeartbeat'))
       callback = () => {}

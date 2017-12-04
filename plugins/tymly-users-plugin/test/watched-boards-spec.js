@@ -59,6 +59,10 @@ describe('watched-boards tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:deltaReindex')
         expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx).includes('subscriptionId')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('startedWatching')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('feedName')).to.eql(true)
+        expect(executionDescription.ctx.feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
         done()
       }
     )

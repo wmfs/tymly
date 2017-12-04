@@ -1,0 +1,18 @@
+{
+  "Comment": "State machine to test required human input of boards.",
+  "version": "1.0",
+  "StartAt": "AwaitingHumanInput",
+  "States": {
+    "AwaitingHumanInput": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "uiType": "board",
+        "uiName": "wmfs_incidentSummary_1_0",
+        "dataPath": "$.data"
+      },
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}

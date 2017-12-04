@@ -22,12 +22,12 @@ class GetSettings {
       }
     })
       .then(settings => {
-        const results = settings || { userId: userId }
-        if (!results.categoryRelevance) {
-          results.categoryRelevance = this.categoryService.names
+        const userSettings = settings || { userId: userId }
+        if (!userSettings.categoryRelevance) {
+          userSettings.categoryRelevance = this.categoryService.names
         }
 
-        context.sendTaskSuccess({results})
+        context.sendTaskSuccess({userSettings})
       })
       .catch(err => {
         console.log('ERROR')

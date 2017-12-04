@@ -9,38 +9,48 @@ class AwaitingHumanInput {
     this.uiName = resourceConfig.uiName
     this.dataPath = resourceConfig.dataPath
     this.defaults = resourceConfig.defaults
+    this.watchedBoards = env.bootedServices.storage.models['tymly_watchedBoards']
     callback(null)
   }
 
   run (event, context, done) {
-    let data
+    let data = {}
+    if (this.dataPath) data = jp.value(event, this.dataPath)
+    if (this.defaults) data = _.defaults(data, this.defaults)
 
-    if (this.dataPath) {
-      data = jp.value(event, this.dataPath)
+    const requiredHumanInput = {
+      uiType: this.uiType,
+      uiName: this.uiName,
+      data: data
+    }
+
+    const feedName = [this.uiName]
+    Object.keys(data).sort().map(k => feedName.push(data[k]))
+
+    if (this.uiType === 'board') {
+      this.watchedBoards.findOne(
+        {
+          where: {
+            userId: {equals: context.userId},
+            feedName: {equals: feedName.join('|')}
+          }
+        },
+        (err, subscription) => {
+          if (err) context.sendTaskFailure({err})
+          requiredHumanInput.watchBoardSubscriptionId = subscription.id
+          requiredHumanInput.feedName = subscription.feedName
+          context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
+            if (err) throw new Error(err)
+            done(executionDescription)
+          })
+        }
+      )
     } else {
-      data = {}
+      context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
+        if (err) throw new Error(err)
+        done(executionDescription)
+      })
     }
-
-    if (this.defaults) {
-      data = _.defaults(data, this.defaults)
-    }
-
-    context.sendTaskHeartbeat(
-      {
-        requiredHumanInput: {
-          uiType: this.uiType,
-          uiName: this.uiName,
-          data: data
-        }
-      },
-      function (err, executionDescription) {
-        if (err) {
-          throw new Error(err)
-        } else {
-          done(executionDescription)
-        }
-      }
-    )
   }
 }
 

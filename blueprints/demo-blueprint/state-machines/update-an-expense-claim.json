@@ -1,6 +1,7 @@
 {
   "Comment": "Update a pre-existing expenses claim.",
   "version": "1.0",
+  "name": "Update an expense claim",
   "categories": [
     "expenses"
   ],
@@ -23,7 +24,8 @@
       "Type": "Task",
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
-        "formId": "claimAnExpense"
+        "uiType": "form",
+        "uiName": "tymly_claimAnExpense"
       },
       "ResultPath": "$.formData",
       "Next": "Upserting"

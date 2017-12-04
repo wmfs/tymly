@@ -1,5 +1,6 @@
 {
   "Comment": "Register an expenses claim.",
+  "name": "Claim an expense",
   "version": "1.0",
   "categories": [
     "expenses"
@@ -13,7 +14,8 @@
       "Type": "Task",
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
-        "formId": "claimAnExpense"
+        "uiType": "form",
+        "uiName": "tymly_claimAnExpense"
       },
       "ResultPath": "$.formData",
       "Next": "Upserting"
