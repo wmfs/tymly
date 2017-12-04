@@ -1,11 +1,11 @@
 {
-  "blueprintPaths": "/usr/src/tymly/bundle/blueprints/*-blueprint",
-  "pluginPaths": "/usr/src/tymly/bundle/plugins/*-plugin",
+  "blueprintPaths": "/tymly/blueprints/*-blueprint",
+  "pluginPaths": "/tymly/plugins/*-plugin",
   "config": {
     "serverPort": "3000",
     "auth": {
-      "secret": "ssh",
-      "audience": "aud"
+      "certificate": "/certificate/tymly-certificate.pem",
+      "audience": "bUQ3oUgVddfjNAKc3iOq3Lbkx99IQXns"
     },
     "admin": {
       "userId": "admin",

@@ -256,4 +256,8 @@ describe('Bundler tests', function () {
 
 function listEntries (tarball) {
   return tar.list(tarball)
+    .then(entries => {
+      entries.sort()
+      return entries
+    })
 } // countEntries
