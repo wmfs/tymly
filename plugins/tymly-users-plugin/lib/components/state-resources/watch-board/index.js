@@ -7,7 +7,10 @@ class WatchBoard {
   }
 
   run (event, context) {
-    const feedName = event.stateMachineName + '|' + event.key.incidentNumber + '|' + event.key.incidentYear
+    let feedName = [event.stateMachineName]
+    if (event.key) Object.keys(event.key).sort().map(k => feedName.push(event.key[k]))
+    feedName = feedName.join('|')
+
     const startedWatching = new Date().toLocaleString()
 
     this.watchedBoards.upsert(
