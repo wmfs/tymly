@@ -5,11 +5,12 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Demo state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE = 'tymly_fillFireSafetyShortAudit_1_0'
-  let statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit, id
+  let statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit
 
   const formData = {
     ignitionSources: 'Good',
@@ -98,7 +99,6 @@ describe('Demo state machine tests', function () {
   it('should check the data is in the fire Safety Audit table', function (done) {
     fireSafetyShortAudit.find({}, (err, doc) => {
       console.log(doc[0])
-      id = doc[0].id
       expect(doc.length).to.eql(1)
       expect(doc[0].ignitionSources).to.eql('Good')
       expect(doc[0].ignitionSourcesComment).to.eql('Ignition Sources are managed very well.')
@@ -119,5 +119,9 @@ describe('Demo state machine tests', function () {
       expect(doc[0].sufficientPrecautions).to.eql('Yes')
       done(err)
     })
+  })
+
+  it('should tear down the test resources', function () {
+    return sqlScriptRunner('./scripts/cleanup.sql', client)
   })
 })
