@@ -1,27 +1,9 @@
-'use strict'
+const ReindexBase = require('../../../impl/reindex-base')
 
-class FullReindex {
-  init (resourceConfig, env, callback) {
-    this.env = env
-    this.core = resourceConfig.core
-    callback(null)
+class FullReindex extends ReindexBase {
+  constructor () {
+    super('executeSolrFullReindex', 'fullReindexFail')
   }
-
-  run (event, context) {
-    const solrService = this.env.bootedServices.solr
-    solrService.executeSolrFullReindex(this.core, function (err) {
-      if (err) {
-        context.sendTaskFailure(
-          {
-            error: 'fullReindexFail',
-            cause: err
-          }
-        )
-      } else {
-        context.sendTaskSuccess()
-      }
-    })
-  }
-}
+} // FullReindex
 
 module.exports = FullReindex
