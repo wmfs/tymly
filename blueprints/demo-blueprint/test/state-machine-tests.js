@@ -16,12 +16,17 @@ describe('Demo state machine tests', function () {
 
   const formData = {
     firstName: 'Homer',
-    lastName: 'Simpson'
+    lastName: 'Simpson',
+    age: 37,
+    reasonForClaim: 'For beers',
+    amountToClaim: 7.50,
+    telephone: 1234123123,
+    date: '1/1/10'
   }
 
   const updatedFormData = {
-    firstName: 'Marge',
-    lastName: 'Simpson'
+    reasonForClaim: 'For more beers',
+    amountToClaim: 15.00
   }
 
   it('should startup tymly', function (done) {
@@ -90,10 +95,16 @@ describe('Demo state machine tests', function () {
 
   it('should check the data is in the expenses table', function (done) {
     expenses.find({}, (err, doc) => {
+      console.log(doc[0])
       id = doc[0].id
       expect(doc.length).to.eql(1)
       expect(doc[0].firstName).to.eql('Homer')
       expect(doc[0].lastName).to.eql('Simpson')
+      expect(doc[0].age).to.eql(37)
+      expect(doc[0].reasonForClaim).to.eql('For beers')
+      expect(doc[0].amountToClaim).to.eql('7.50')
+      expect(doc[0].telephone).to.eql('1234123123')
+      expect(doc[0].date).to.eql('1/1/10')
       done(err)
     })
   })
@@ -149,9 +160,15 @@ describe('Demo state machine tests', function () {
 
   it('should check the updated data is in the expenses table', function (done) {
     expenses.find({}, (err, doc) => {
+      console.log(doc[0])
       expect(doc.length).to.eql(1)
-      expect(doc[0].firstName).to.eql('Marge')
+      expect(doc[0].firstName).to.eql('Homer')
       expect(doc[0].lastName).to.eql('Simpson')
+      expect(doc[0].age).to.eql(37)
+      expect(doc[0].reasonForClaim).to.eql('For more beers')
+      expect(doc[0].amountToClaim).to.eql('15.00')
+      expect(doc[0].telephone).to.eql('1234123123')
+      expect(doc[0].date).to.eql('1/1/10')
       done(err)
     })
   })

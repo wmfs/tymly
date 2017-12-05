@@ -4,6 +4,7 @@ const _ = require('lodash')
 
 module.exports = class Upserting {
   init (resourceConfig, env, callback) {
+    this.setMissingPropertiesToNull = resourceConfig.setMissingPropertiesToNull || false
     this.modelId = resourceConfig.modelId
     const models = env.bootedServices.storage.models
     if (models.hasOwnProperty(this.modelId)) {
@@ -23,7 +24,7 @@ module.exports = class Upserting {
     docToPersist._executionName = context.executionName
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
 
-    this.model.upsert(docToPersist, {})
+    this.model.upsert(docToPersist, { setMissingPropertiesToNull: this.setMissingPropertiesToNull })
       .then(() => context.sendTaskSuccess())
       .catch(err => failed(context, 'FAILED_TO_UPSERT', JSON.stringify(err)))
   } // run
