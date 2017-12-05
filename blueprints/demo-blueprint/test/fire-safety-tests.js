@@ -5,7 +5,6 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Demo state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -54,7 +53,7 @@ describe('Demo state machine tests', function () {
     )
   })
 
-  it('should start execution to claim expense, stops at AwaitingHumanInput', function (done) {
+  it('should start execution to fill in a fire safety short audit form, stops at AwaitingHumanInput', function (done) {
     statebox.startExecution(
       {},
       FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE,
@@ -66,6 +65,18 @@ describe('Demo state machine tests', function () {
         expect(executionDescription.currentStateName).to.eql('AwaitingHumanInput')
         expect(executionDescription.status).to.eql('RUNNING')
         fillFireSafetyShortAuditExecutionName = executionDescription.executionName
+        done(err)
+      }
+    )
+  })
+
+  it('should allow user to enter form data', function (done) {
+    statebox.sendTaskSuccess(
+      fillFireSafetyShortAuditExecutionName,
+      formData,
+      {},
+      (err, executionDescription) => {
+        expect(err).to.eql(null)
         done(err)
       }
     )
