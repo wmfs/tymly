@@ -1,24 +1,15 @@
 {
   "plural": "blueprintDocs",
-
   "primaryKey": ["domain", "docId"],
-
   "description": "A list of already-encountered Blueprint docs",
-
   "type": "object",
-
   "properties": {
-
     "domain": {
       "type": "string"
     },
-
     "docId": {
       "type": "string"
     }
-
   },
-
   "required": ["domain", "docId"]
-
 }

@@ -83,18 +83,21 @@ describe('Demo state machine tests', function () {
     statebox.waitUntilStoppedRunning(
       claimExpenseExecutionName,
       (err, executionDescription) => {
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.formData).to.eql(formData)
-        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done(err)
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.formData).to.eql(formData)
+          expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done(err)
+        } catch (e) {
+          done(e)
+        }
       }
     )
   })
 
   it('should check the data is in the expenses table', function (done) {
     expenses.find({}, (err, doc) => {
-      console.log(doc[0])
       id = doc[0].id
       expect(doc.length).to.eql(1)
       expect(doc[0].firstName).to.eql('Homer')
@@ -148,18 +151,21 @@ describe('Demo state machine tests', function () {
     statebox.waitUntilStoppedRunning(
       updateClaimExecutionName,
       (err, executionDescription) => {
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.formData).to.eql(updatedFormData)
-        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done(err)
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.formData).to.eql(updatedFormData)
+          expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (e) {
+          done(e)
+        }
       }
     )
   })
 
   it('should check the updated data is in the expenses table', function (done) {
     expenses.find({}, (err, doc) => {
-      console.log(doc[0])
       expect(doc.length).to.eql(1)
       expect(doc[0].firstName).to.eql('Homer')
       expect(doc[0].lastName).to.eql('Simpson')

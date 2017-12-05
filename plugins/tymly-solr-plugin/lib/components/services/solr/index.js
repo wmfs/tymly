@@ -10,6 +10,7 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 class SolrService {
   boot (options, callback) {
     this.solrUrl = SolrService._connectionString(options.config)
+    options.messages.info(this.solrUrl ? `Using Solr... (${this.solrUrl})` : 'No Solr URL configured')
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
       options.messages.info('No search-docs configuration found')
@@ -17,10 +18,9 @@ class SolrService {
       this.createViewSQL = null
       callback(null)
     } else {
-      options.messages.info(`Using Solr... (${this.solrUrl})`)
       this.searchDocs = options.blueprintComponents.searchDocs
-      this.client = options.bootedServices.storage.client
-      if (!this.client) {
+      const storageClient = options.bootedServices.storage.client
+      if (!storageClient) {
         callback(boom.notFound('failed to boot solr service: no database client available'))
       } else {
         if (options.config.solrSchemaFields === undefined) {
@@ -34,7 +34,7 @@ class SolrService {
           SolrService.constructModelsArray(options.blueprintComponents.models),
           SolrService.constructSearchDocsArray(this.searchDocs))
         if (this.createViewSQL) {
-          this.client.query(this.createViewSQL, [], (err) => {
+          storageClient.query(this.createViewSQL, [], (err) => {
             debug('Database view created with SQL: ', this.createViewSQL)
             callback(err)
           })
@@ -56,8 +56,8 @@ class SolrService {
       return process.env.SOLR_URL
     }
 
-    debug('Using default Solr URL')
-    return 'http://localhost:8983/solr'
+    debug('No Solr URL foundin config.solrUrl or in SOLR_URL environment variable')
+    return null
   } // _connectionUrl
 
   static constructModelsArray (models) {
@@ -133,50 +133,41 @@ class SolrService {
     }
   }
 
-  buildDataImportPost (command, core) {
-    const uniqueIdentifier = new Date().getTime()
-    return {
-      url: `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
-      form: {
-        'clean': true,
-        'command': command,
-        'commit': true,
-        'core': core,
-        'name': 'dataimport',
-        'optimize': false,
-        'verbose': false
-      }
-    }
-  }
-
   executeSolrFullReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
-    request.post(
-      this.buildDataImportPost('full-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
+    this._executeReindex('full-import', core, cb)
   }
 
   executeSolrDeltaReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
-    request.post(
-      this.buildDataImportPost('delta-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
+    this._executeReindex('delta-import', core, cb)
   }
+
+  _executeReindex (type, core, cb) {
+    if (!this.solrUrl) {
+      return cb(null)
+    }
+
+    request.post(
+      buildDataImportPost(this.solrUrl, type, core),
+        (err, response, body) => (err) ? cb(err) : cb(null, JSON.parse(body))
+    )
+  } // _executeReindex
 }
+
+function buildDataImportPost (solrUrl, command, core) {
+  const uniqueIdentifier = new Date().getTime()
+  return {
+    url: `${solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
+    form: {
+      'clean': true,
+      'command': command,
+      'commit': true,
+      'core': core,
+      'name': 'dataimport',
+      'optimize': false,
+      'verbose': false
+    }
+  }
+} // buildDataImportPost
 
 module.exports = {
   serviceClass: SolrService,

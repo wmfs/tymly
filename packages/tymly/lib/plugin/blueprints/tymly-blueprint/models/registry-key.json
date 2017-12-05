@@ -1,24 +1,15 @@
 {
-
   "plural": "registryKeys",
-
   "primaryKey": ["key"],
-
   "description": "Registry keys",
   "type": "object",
-
   "properties": {
-
     "key": {
       "type": "string"
     },
-
     "value": {
       "type": "object"
     }
-
   },
-
   "required": ["key"]
-
 }
