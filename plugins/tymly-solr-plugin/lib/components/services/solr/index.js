@@ -154,7 +154,7 @@ class SolrService {
       return cb(null)
     }
 
-    request.post (
+    request.post(
       this.buildDataImportPost('full-import', core),
       function (err, response, body) {
         if (err) {
