@@ -3,6 +3,7 @@
 const _ = require('lodash')
 const solr = require('solr-client')
 const async = require('async')
+const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class Search {
   init (resourceConfig, env, callback) {
@@ -19,13 +20,18 @@ class Search {
   }
 
   run (event, context) {
-    const searchDocs = this.services.solr.searchDocs || []
-    this.searchFields = new Set()
-    Object.keys(searchDocs).map(s => {
-      Object.keys(searchDocs[s].attributeMapping).map(a => {
-        this.searchFields.add(_.snakeCase(a))
+    if (this.services.solr.searchDocs) {
+      const searchDocs = this.services.solr.searchDocs
+      this.searchFields = new Set()
+      Object.keys(searchDocs).map(s => {
+        Object.keys(searchDocs[s].attributeMapping).map(a => {
+          this.searchFields.add(_.snakeCase(a))
+        })
       })
-    })
+    } else {
+      this.searchFields = defaultSolrSchemaFields
+    }
+
     const filters = this.processFilters(event)
     const searchResults = {
       input: filters
