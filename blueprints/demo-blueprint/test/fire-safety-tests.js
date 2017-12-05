@@ -81,4 +81,17 @@ describe('Demo state machine tests', function () {
       }
     )
   })
+
+  it('should on form \'complete\' send form data to Upserting', function (done) {
+    statebox.waitUntilStoppedRunning(
+      fillFireSafetyShortAuditExecutionName,
+      (err, executionDescription) => {
+        expect(err).to.eql(null)
+        expect(executionDescription.ctx.formData).to.eql(formData)
+        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done(err)
+      }
+    )
+  })
 })
