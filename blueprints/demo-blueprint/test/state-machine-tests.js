@@ -58,7 +58,6 @@ describe('Demo state machine tests', function () {
         sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
       },
       (err, executionDescription) => {
-        if (err) console.log('ERROR HERE: ', err)
         expect(err).to.eql(null)
         expect(executionDescription.currentStateName).to.eql('AwaitingHumanInput')
         expect(executionDescription.status).to.eql('RUNNING')
@@ -74,7 +73,6 @@ describe('Demo state machine tests', function () {
       formData,
       {},
       (err, executionDescription) => {
-        if (err) console.log('ERROR HERE: ', err)
         expect(err).to.eql(null)
         done(err)
       }
@@ -85,12 +83,15 @@ describe('Demo state machine tests', function () {
     statebox.waitUntilStoppedRunning(
       claimExpenseExecutionName,
       (err, executionDescription) => {
-        if (err) console.log('ERROR HERE: ', err)
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.formData).to.eql(formData)
-        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done(err)
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.formData).to.eql(formData)
+          expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done(err)
+        } catch (e) {
+          done(e)
+        }
       }
     )
   })
@@ -141,7 +142,6 @@ describe('Demo state machine tests', function () {
       updatedFormData,
       {},
       (err, executionDescription) => {
-        if (err) console.log('ERROR HERE: ', err)
         expect(err).to.eql(null)
         done(err)
       }
@@ -152,11 +152,15 @@ describe('Demo state machine tests', function () {
     statebox.waitUntilStoppedRunning(
       updateClaimExecutionName,
       (err, executionDescription) => {
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.formData).to.eql(updatedFormData)
-        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done(err)
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.formData).to.eql(updatedFormData)
+          expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        } catch (e) {
+          done(e)
+        }
       }
     )
   })
