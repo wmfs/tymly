@@ -3,7 +3,6 @@
   "primaryKey": ["name"],
   "description": "Categories used to help explore/organise blueprints and plugins",
   "type": "object",
-
   "properties": {
     "name": {
       "type": "string",
@@ -18,6 +17,5 @@
       "description": "Any styling applied"
     }
   },
-
   "required": ["name", "label"]
 }
