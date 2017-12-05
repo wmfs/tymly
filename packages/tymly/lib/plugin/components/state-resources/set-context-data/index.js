@@ -8,6 +8,7 @@ module.exports = class SetContextData {
   }
 
   run (event, context) {
+    const FORM_DATA_STRING_LENGTH = 8
     const data = {}
     for (const key in this.resourceConfig) {
       let dottiePath
@@ -26,8 +27,8 @@ module.exports = class SetContextData {
           }
         }
         if (dottiePath.length > 0) {
-          if (dottiePath.substring(0, 8) === 'formData') {
-            dottiePath = dottiePath.slice(9)
+          if (dottiePath.substring(0, FORM_DATA_STRING_LENGTH) === 'formData') {
+            dottiePath = dottiePath.slice(FORM_DATA_STRING_LENGTH + 1)
           }
         }
       }

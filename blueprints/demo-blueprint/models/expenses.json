@@ -15,17 +15,13 @@
       "type": "integer",
       "description": "Age"
     },
-    "bio": {
+    "reasonForClaim": {
       "type": "string",
-      "description": "Bio"
+      "description": "Reason for claim"
     },
-    "password": {
-      "type": "string",
-      "description": "Password"
-    },
-    "repeat_password": {
-      "type": "string",
-      "description": "Repeat Password"
+    "amountToClaim": {
+      "type": "number",
+      "multipleOf": 0.01
     },
     "telephone": {
       "type": "string",

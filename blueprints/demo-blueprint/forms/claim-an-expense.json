@@ -20,18 +20,13 @@
         "type": "integer",
         "title": "Age"
       },
-      "bio": {
+      "reasonForClaim": {
         "type": "string",
-        "title": "Bio"
+        "title": "Reason for claim"
       },
-      "password": {
-        "type": "string",
-        "title": "Password",
-        "minLength": 3
-      },
-      "repeat_password": {
-        "type": "string", 
-        "title": "Repeat Password"
+      "amountToClaim": {
+        "type": "number",
+        "multipleOf": 0.01
       },
       "telephone": {
         "type": "string",
@@ -60,16 +55,13 @@
       "ui:title": "Age of person",
       "ui:description": "(earthian year)"
     },
-    "bio": {
-      "ui:widget": "textField"
+    "reasonForClaim": {
+      "ui:widget": "textField",
+      "ui:title": "Reason for claim"
     },
-    "password": {
-      "ui:widget": "textPassword",
-      "ui:help": "Hint: Make it strong!"
-    },
-    "repeat_password": {
-      "ui:widget": "textPassword", 
-      "ui:help": "Make sure it is the same as password"
+    "amountToClaim": {
+      "ui:widget": "textField",
+      "ui:title": "Reason for claim"
     },
     "date": {
       "ui:widget": "alt-datetime"
@@ -97,16 +89,11 @@
       "elements": ["lastName"], 
       "error": "lastName should be a string"
     },
-    "bio": {
+    "reasonForClaim": {
       "expression": "(/[0-9]/).test(bio)", 
       "elements": ["bio"], 
       "error": "bio should be a string"
     },
-    "repeat_password": {
-      "expression": "password !== repeat_password", 
-      "elements": ["password", "repeat_password"], 
-      "error": "Passwords do not match"
-    }, 
     "telephone": {
       "expression": "(/[a-zA-Z]/).test(telephone)", 
       "elements": ["telephone"], 

@@ -133,50 +133,41 @@ class SolrService {
     }
   }
 
-  buildDataImportPost (command, core) {
-    const uniqueIdentifier = new Date().getTime()
-    return {
-      url: `${this.solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
-      form: {
-        'clean': true,
-        'command': command,
-        'commit': true,
-        'core': core,
-        'name': 'dataimport',
-        'optimize': false,
-        'verbose': false
-      }
-    }
-  }
-
   executeSolrFullReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
-    request.post(
-      this.buildDataImportPost('full-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
+    this._executeReindex('full-import', core, cb)
   }
 
   executeSolrDeltaReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
-    request.post(
-      this.buildDataImportPost('delta-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
+    this._executeReindex('delta-import', core, cb)
   }
+
+  _executeReindex (type, core, cb) {
+    if (!process.env.SOLR_URL) {
+      return cb(null)
+    }
+
+    request.post(
+      buildDataImportPost(this.solrUrl, type, core),
+        (err, response, body) => (err) ? cb(err) : cb(null, JSON.parse(body))
+    )
+  } // _executeReindex
 }
+
+function buildDataImportPost (solrUrl, command, core) {
+  const uniqueIdentifier = new Date().getTime()
+  return {
+    url: `${solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
+    form: {
+      'clean': true,
+      'command': command,
+      'commit': true,
+      'core': core,
+      'name': 'dataimport',
+      'optimize': false,
+      'verbose': false
+    }
+  }
+} // buildDataImportPost
 
 module.exports = {
   serviceClass: SolrService,

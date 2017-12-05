@@ -70,7 +70,7 @@ task npmBootstrap (type: Exec) {
 }
 
 task cleanNodeModules (type: Exec,
-                       dependsOn: npmBootstrap) {
+                       dependsOn: [npmBootstrap]) {
   commandLine 'npm', 'run', 'clean'
 }
 task cleanTestFiles (type: Delete) {
@@ -93,17 +93,29 @@ task createTarball (type: Exec,
   commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
 }
 
+String coreDockerDir = './tools/tymly-dockerize-core'
+String coreDockerTag = 'wmfs/tymly-core'
+String serverDockerDir = './tools/tymly-dockerize-server'
+String serverDockerTag = 'wmfs/tymly'
+
 task dropTarfileToDocker (type: Copy,
                           dependsOn: [createTarball]) {
   from tarfileName
-  into './tools/tymly-dockerize'
+  into coreDockerDir
   rename { fileName -> "bundle.tgz" }
 } // dropTarfileToDocker
 
-task dockerImage (type: Exec) {
-  workingDir './tools/tymly-dockerize'
-  commandLine 'docker', 'build', '--tag', 'wmfs/tymly', '.'
-}
+task dockerBuildCore (type: Exec,
+                      dependsOn: [dropTarfileToDocker]) {
+  workingDir coreDockerDir
+  commandLine 'docker', 'build', '--tag', coreDockerTag, '.'
+} // dockerBuildCore
+
+task dockerBuildServer (type: Exec,
+                        dependsOn: [dockerBuildCore]) {
+  workingDir serverDockerDir
+  commandLine 'docker', 'build', '--tag', serverDockerTag, '.'
+} // dockerBuildServer
 
 ////////////////////////////////////////////
 task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
@@ -122,7 +134,7 @@ task bootstrap (type: Exec,
 task test (type:Exec,
            dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
   group 'Build'
-  description 'Runs tests whole test suite'
+  description 'Runs whole test suite'
 
   commandLine 'npm', 'run', 'ci_test'
   environment PG_CONNECTION_STRING: pg_connection
@@ -133,11 +145,7 @@ task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
   description 'Creates an installable Tymly package'
 }
 
-task dockerBuild (type: Exec,
-                  dependsOn: [dropTarfileToDocker]) {
+task dockerBuild (dependsOn: [dockerBuildServer]) {
   group 'Build'
   description 'Build a runnable Tymly Docker image'
-
-  workingDir './tools/tymly-dockerize'
-  commandLine 'docker', 'build', '--tag', 'wmfs/tymly', '.'
-}
+} // dockerBuild

@@ -1,0 +1,23 @@
+[
+  "id",
+  "docId",
+  "domain",
+  "docType",
+  "title",
+  "description",
+  "additionalTerms",
+  "category",
+  "eventTimestamp",
+  "point",
+  "activeEvent",
+  "author",
+  "teams",
+  "roles",
+  "tags",
+  "language",
+  "rootAncestorId",
+  "sortString",
+  "launches",
+  "created",
+  "modified"
+]

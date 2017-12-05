@@ -26,29 +26,30 @@ class RankingService {
 
     async.each(rankingKeysWithValues, (key, cb) => {
       const value = rankings[key]
-      client.query(generateViewStatement({
-        category: _.snakeCase(value.name),
-        schema: _.snakeCase(value.namespace),
-        source: value.source,
-        ranking: value.factors,
-        registry: options.bootedServices.registry.registry[key]
-      }), (err) => {
-        if (err) cb(err)
-        // TODO: 'test' should be inferred
-        generateStats({
-          client: client,
-          category: value.name,
-          schema: value.namespace,
-          pk: value.source.property,
-          name: 'test'
-        }, (err) => {
+      client.query(
+        generateViewStatement({
+          category: _.snakeCase(value.name),
+          schema: _.snakeCase(value.namespace),
+          source: value.source,
+          ranking: value.factors,
+          registry: options.bootedServices.registry.registry[key]
+        }),
+        (err) => {
           if (err) cb(err)
-          cb()
-        })
-      })
+          generateStats({
+            client: client,
+            category: value.name,
+            schema: value.namespace,
+            pk: value.source.property,
+            name: 'test' // TODO: 'test' should be inferred
+          }, (err) => {
+            if (err) cb(err)
+            cb()
+          })
+        }
+      )
     }, (err) => {
       if (err) callback(err)
-      console.log('Finished in ranking service')
       callback(null)
     })
   }
