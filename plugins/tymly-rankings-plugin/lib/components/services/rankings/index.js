@@ -24,8 +24,6 @@ class RankingService {
       }
     })
 
-    console.log('Ranking keys with values:', rankingKeysWithValues)
-
     async.each(rankingKeysWithValues, (key, cb) => {
       const value = rankings[key]
       client.query(
@@ -52,7 +50,6 @@ class RankingService {
       )
     }, (err) => {
       if (err) callback(err)
-      console.log('Finished in ranking service')
       callback(null)
     })
   }
