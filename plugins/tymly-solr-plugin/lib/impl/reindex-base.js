@@ -5,15 +5,16 @@ class ReindexBase {
   }
 
   init (resourceConfig, env, callback) {
-    this.solrService = env.bootedServices.solr
+    this.env = env
     this.core = resourceConfig.core
     callback(null)
   }
 
   run (event, context) {
+    const solrService = this.env.bootedServices.solr
     const errorCode = this.errorCode
 
-    this.solrService[this.functionName](this.core, function (err) {
+    solrService[this.functionName](this.core, function (err) {
       if (err) {
         context.sendTaskFailure(
           {

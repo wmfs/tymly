@@ -150,38 +150,29 @@ class SolrService {
   }
 
   executeSolrFullReindex (core, cb) {
-    if (!process.env.SOLR_URL) {
-      return cb(null)
-    }
-
-    request.post(
-      this.buildDataImportPost('full-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
+    this._executeReindex('full-import', core, cb)
   }
 
   executeSolrDeltaReindex (core, cb) {
+    this._executeReindex('delta-import', core, cb)
+  }
+
+  _executeReindex (type, core, cb) {
     if (!process.env.SOLR_URL) {
       return cb(null)
     }
 
     request.post(
-      this.buildDataImportPost('delta-import', core),
-      function (err, response, body) {
-        if (err) {
-          cb(err)
-        } else {
-          cb(null, JSON.parse(body))
-        }
-      }
-    )
-  }
+            this.buildDataImportPost(type, core),
+            function (err, response, body) {
+              if (err) {
+                cb(err)
+              } else {
+                cb(null, JSON.parse(body))
+              }
+            }
+        )
+  } // _executeReindex
 }
 
 module.exports = {
