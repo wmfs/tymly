@@ -76,5 +76,79 @@
         "description": "Are sufficient precautions in place to safeguard the safety of relevant persons in case of fire?"
       }
     }
+  },
+  "uiSchema": {
+    "ignitionSources": {
+      "ui:widget": "radio",
+      "ui:title": "Ignition Sources"
+    },
+    "ignitionSourcesComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Ignition Sources Comments"
+    },
+    "adequateMeasures": {
+      "ui:widget": "radio",
+      "ui:title": "Adequate Measures"
+    },
+    "adequateMeasuresComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Adequate Measures Comments"
+    },
+    "personsEvacuate": {
+      "ui:widget": "radio",
+      "ui:title": "Persons Evacuate"
+    },
+    "personsEvacuateComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Persons Evacuate Comments"
+    },
+    "escapeRoutes": {
+      "ui:widget": "radio",
+      "ui:title": "Escape Routes"
+    },
+    "escapeRoutesComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Escape Routes Comments"
+    },
+    "adequateEquipment": {
+      "ui:widget": "radio",
+      "ui:title": "Adequate Equipment"
+    },
+    "adequateEquipmentComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Adequate Equipment Comments"
+    },
+    "adequateArrangements": {
+      "ui:widget": "radio",
+      "ui:title": "Adequate Arrangements"
+    },
+    "adequateArrangementsComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Adequate Arrangements Comments"
+    },
+    "adequateInstructions": {
+      "ui:widget": "radio",
+      "ui:title": "Adequate Instructions"
+    },
+    "adequateInstructionsComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Adequate Instructions Comments"
+    },
+    "adequateManagement": {
+      "ui:widget": "radio",
+      "ui:title": "Adequate Management"
+    },
+    "adequateManagementComment": {
+      "ui:widget": "richTextEditor",
+      "ui:title": "Adequate Management Comments"
+    },
+    "sufficientPrecautions ": {
+      "ui:widget": "radio",
+      "ui:title": "Sufficient Precautions"
+    }
+  },
+  "widgets": {
+    "radio": "Radio",
+    "richTextEditor": "RichTextEditor"
   }
 }
