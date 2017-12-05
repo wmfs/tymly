@@ -12,21 +12,33 @@ class Search {
     if (process.env.SOLR_URL) {
       this.solrClient = solr.createClient({
         url: process.env.SOLR_URL,
-        core: 'tymly'
+        core: 'tymly_new'
       })
     }
     callback(null)
   }
 
   run (event, context) {
+    const searchDocs = this.services.solr.searchDocs || []
+    this.searchFields = new Set()
+    Object.keys(searchDocs).map(s => {
+      Object.keys(searchDocs[s].attributeMapping).map(a => {
+        this.searchFields.add(_.snakeCase(a))
+      })
+    })
     const filters = this.processFilters(event)
     const searchResults = {
       input: filters
     }
 
     if (process.env.SOLR_URL) {
-      const q = this.solrClient.createQuery().q({'collector': event.query}) // TODO: Query will need to change
-      this.solrClient.search(q, (err, result) => {
+      const filterQuery = []
+      this.searchFields.forEach(s => {
+        if (s !== 'modified' && s !== 'created') filterQuery.push(`${s}:${event.query}`)
+      })
+      const query = `q=*:*&fq=(${filterQuery.join('%20OR%20')})`
+
+      this.solrClient.search(query, (err, result) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
         this.constructSearchResults(searchResults, filters, result.response.docs)
         this.updateSearchHistory(searchResults.results, context.userId, (err) => {
@@ -35,13 +47,6 @@ class Search {
         })
       })
     } else {
-      const searchDocs = this.services.solr.searchDocs || []
-      this.searchFields = new Set()
-      Object.keys(searchDocs).map(s => {
-        Object.keys(searchDocs[s].attributeMapping).map(a => {
-          this.searchFields.add(_.snakeCase(a))
-        })
-      })
       this.client.query(`select * from tymly.solr_data`, (err, results) => {
         if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
         const matchingDocs = this.filterDocs(results.rows, filters)
