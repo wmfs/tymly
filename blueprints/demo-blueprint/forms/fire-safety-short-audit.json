@@ -1,0 +1,80 @@
+{
+  "jsonSchema": {
+    "title": "Fire Safety Short Audit",
+    "description": "Fire Safety Short Audi",
+    "type": "object",
+    "required": [
+
+    ],
+    "properties": {
+      "ignitionSources": {
+        "type": "string",
+        "description": "Are ignition sources adequately managed and controlled in the premises to reduce the risk of fire?"
+      },
+      "ignitionSourcesComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "adequateMeasures": {
+        "type": "string",
+        "description": "Are adequate measures in place to control the spread of a potential fire in the premises?"
+      },
+      "adequateMeasuresComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "personsEvacuate": {
+        "type": "string",
+        "description": "Can persons evacuate the premises safely in the event of a fire emergency in the premises?"
+      },
+      "personsEvacuateComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "escapeRoutes": {
+        "type": "string",
+        "description": "Can persons use the escape routes and final exits safely?"
+      },
+      "escapeRoutesComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "adequateEquipment": {
+        "type": "string",
+        "description": "Is there adequate equipment in the premises for extinguishing small fires?"
+      },
+      "adequateEquipmentComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "adequateArrangements": {
+        "type": "string",
+        "description": "Are adequate arrangements in place to detect fires and raise the alarm to those people on the premises?"
+      },
+      "adequateArrangementsComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "adequateInstructions": {
+        "type": "string",
+        "description": "Are adequate instructions or guidance on procedures to follow in an emergency provided for employees?"
+      },
+      "adequateInstructionsComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "adequateManagement": {
+        "type": "string",
+        "description": "Are adequate management procedures in place to mitigate the effects of fires in the premises?"
+      },
+      "adequateManagementComment": {
+        "type": "string",
+        "description": "Comment"
+      },
+      "sufficientPrecautions ": {
+        "type": "string",
+        "description": "Are sufficient precautions in place to safeguard the safety of relevant persons in case of fire?"
+      }
+    }
+  }
+}
