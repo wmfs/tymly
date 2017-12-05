@@ -49,34 +49,25 @@ describe('tymly-solr-plugin tests', function () {
     )
   })
 
-  it('should default to local solr instance if not set', function () {
-    expect(solrService.solrUrl).to.be.a('string')
-    expect(solrService.solrUrl).to.eql('http://localhost:8983/solr')
-  })
-
   it('should generate a SQL SELECT statement', function () {
-    if (solrService.solrUrl) {
-      const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
+    const select = solrService.buildSelectStatement(studentsModels, studentsSearchDocs)
 
-      expect(select).to.be.a('string')
-      expect(select).to.eql('SELECT \'student#\' || student_no AS id, upper(first_name || \' \' || last_name) AS actor_name, ' +
-        'upper(character_name) AS character_name FROM tymly_test.students')
-    }
+    expect(select).to.be.a('string')
+    expect(select).to.eql('SELECT \'student#\' || student_no AS id, upper(first_name || \' \' || last_name) AS actor_name, ' +
+      'upper(character_name) AS character_name FROM tymly_test.students')
   })
 
   it('should generate a SQL CREATE VIEW statement', function () {
-    if (solrService.solrUrl) {
-      const sqlString = solrService.buildCreateViewStatement(
-        studentsAndStaffModels, studentsAndStaffSearchDocs)
+    const sqlString = solrService.buildCreateViewStatement(
+      studentsAndStaffModels, studentsAndStaffSearchDocs)
 
-      expect(sqlString).to.be.a('string')
-      expect(sqlString).to.eql('CREATE OR REPLACE VIEW tymly.solr_data AS \n' +
-        'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_name AS character_name FROM tymly_test.students\n' +
-        'UNION\n' +
-        'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
-        'character_first_name || \' \' || character_last_name AS character_name FROM tymly_test.staff;')
-    }
+    expect(sqlString).to.be.a('string')
+    expect(sqlString).to.eql('CREATE OR REPLACE VIEW tymly.solr_data AS \n' +
+      'SELECT \'student#\' || student_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+      'character_name AS character_name FROM tymly_test.students\n' +
+      'UNION\n' +
+      'SELECT \'staff#\' || staff_no AS id, first_name || \' \' || last_name AS actor_name, ' +
+      'character_first_name || \' \' || character_last_name AS character_name FROM tymly_test.staff;')
   })
 
   it('should have generated a SQL CREATE VIEW statement on tymly boot', function () {
@@ -87,14 +78,7 @@ describe('tymly-solr-plugin tests', function () {
     sqlScriptRunner(
       './db-scripts/setup.sql',
       client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
+      err => done(err)
     )
   })
 
@@ -102,27 +86,22 @@ describe('tymly-solr-plugin tests', function () {
     const createViewStatement = solrService.buildCreateViewStatement(
       studentsAndStaffModels, studentsAndStaffSearchDocs)
 
-    client.query(createViewStatement, [], function (err) {
-      expect(err).to.eql(null)
-      if (err) {
-        done(err)
-      } else {
-        done()
-      }
-    })
+    client.query(createViewStatement, [], err => done(err))
   })
 
   it('should return 19 rows when selecting from the view', function (done) {
     client.query(`SELECT * FROM tymly.solr_data ORDER BY character_name ASC;`, [],
       function (err, result) {
-        expect(err).to.eql(null)
         if (err) {
-          done(err)
-        } else {
+          return done(err)
+        }
+        try {
           expect(result.rowCount).to.eql(19)
           expect(result.rows[0].id).to.eql('staff#1')
           expect(result.rows[18].id).to.eql('staff#3')
           done()
+        } catch (e) {
+          done(e)
         }
       }
     )
@@ -144,14 +123,7 @@ describe('tymly-solr-plugin tests', function () {
     sqlScriptRunner(
       './db-scripts/cleanup.sql',
       client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
+      err => done(err)
     )
   })
 })
