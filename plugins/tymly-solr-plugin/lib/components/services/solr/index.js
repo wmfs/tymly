@@ -150,8 +150,11 @@ class SolrService {
   }
 
   executeSolrFullReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
-    request.post(
+    if (!process.env.SOLR_URL) {
+      return cb(null)
+    }
+
+    request.post (
       this.buildDataImportPost('full-import', core),
       function (err, response, body) {
         if (err) {
@@ -164,7 +167,10 @@ class SolrService {
   }
 
   executeSolrDeltaReindex (core, cb) {
-    if (!process.env.SOLR_URL) cb(null)
+    if (!process.env.SOLR_URL) {
+      return cb(null)
+    }
+
     request.post(
       this.buildDataImportPost('delta-import', core),
       function (err, response, body) {
