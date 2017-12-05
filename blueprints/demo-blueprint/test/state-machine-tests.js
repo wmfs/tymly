@@ -8,8 +8,7 @@ const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Demo state machine tests', function () {
-  // this.timeout(process.env.TIMEOUT || 5000)
-  this.timeout(500000)
+  this.timeout(process.env.TIMEOUT || 5000)
   const CLAIM_EXPENSE_STATE_MACHINE = 'tymly_claimAnExpense_1_0'
   const UPDATE_EXPENSE_CLAIM_STATE_MACHINE = 'tymly_updateAnExpenseClaim_1_0'
   let statebox, client, expenses, id, claimExpenseExecutionName, updateClaimExecutionName
