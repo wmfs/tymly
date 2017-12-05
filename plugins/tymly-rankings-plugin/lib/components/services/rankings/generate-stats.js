@@ -22,6 +22,7 @@ module.exports = function generateStats (options, callback) {
       ranges = generateRanges(scores, mean, stdev)
       options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
         if (err) return callback(err)
+
         options.client.query(getViewRowsSQL(options), function (err, res) {
           if (err) return callback(err)
           console.log(options.category + ' - Retrieved rows, calculating ranges')
@@ -42,6 +43,9 @@ module.exports = function generateStats (options, callback) {
           })
         })
       })
+    } else {
+      console.log(options.category + ' - No scores found')
+      callback(null)
     }
   })
 }
