@@ -12,7 +12,7 @@ class Search {
     if (process.env.SOLR_URL) {
       this.solrClient = solr.createClient({
         url: process.env.SOLR_URL,
-        core: 'tymly_new'
+        core: 'tymly'
       })
     }
     callback(null)
