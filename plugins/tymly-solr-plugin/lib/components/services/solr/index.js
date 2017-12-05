@@ -10,6 +10,7 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 class SolrService {
   boot (options, callback) {
     this.solrUrl = SolrService._connectionString(options.config)
+    options.messages.info(this.solrUrl ? `Using Solr... (${this.solrUrl})` : 'No Solr URL configured')
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
       options.messages.info('No search-docs configuration found')
@@ -17,10 +18,9 @@ class SolrService {
       this.createViewSQL = null
       callback(null)
     } else {
-      options.messages.info(`Using Solr... (${this.solrUrl})`)
       this.searchDocs = options.blueprintComponents.searchDocs
-      this.client = options.bootedServices.storage.client
-      if (!this.client) {
+      const storageClient = options.bootedServices.storage.client
+      if (!storageClient) {
         callback(boom.notFound('failed to boot solr service: no database client available'))
       } else {
         if (options.config.solrSchemaFields === undefined) {
@@ -34,7 +34,7 @@ class SolrService {
           SolrService.constructModelsArray(options.blueprintComponents.models),
           SolrService.constructSearchDocsArray(this.searchDocs))
         if (this.createViewSQL) {
-          this.client.query(this.createViewSQL, [], (err) => {
+          storageClient.query(this.createViewSQL, [], (err) => {
             debug('Database view created with SQL: ', this.createViewSQL)
             callback(err)
           })
@@ -56,8 +56,8 @@ class SolrService {
       return process.env.SOLR_URL
     }
 
-    debug('Using default Solr URL')
-    return 'http://localhost:8983/solr'
+    debug('No Solr URL foundin config.solrUrl or in SOLR_URL environment variable')
+    return null
   } // _connectionUrl
 
   static constructModelsArray (models) {
@@ -142,7 +142,7 @@ class SolrService {
   }
 
   _executeReindex (type, core, cb) {
-    if (!process.env.SOLR_URL) {
+    if (!this.solrUrl) {
       return cb(null)
     }
 

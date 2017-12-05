@@ -8,19 +8,26 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 class Search {
   init (resourceConfig, env, callback) {
     this.searchHistory = env.bootedServices.storage.models['tymly_searchHistory']
-    this.client = env.bootedServices.storage.client
+    this.storageClient = env.bootedServices.storage.client
     this.services = env.bootedServices
-    if (process.env.SOLR_URL) {
-      this.solrClient = solr.createClient({
-        url: process.env.SOLR_URL,
-        core: 'tymly'
-      })
-    }
     callback(null)
   }
 
+  get solrClient () {
+    if (this.solrClient_) {
+      return this.solrClient_
+    }
+
+    this.solrClient_ = solr.createClient({
+      url: this.services.solr.solrUrl,
+      core: 'tymly'
+    })
+  } // solrClient
+
   run (event, context) {
-    if (this.services.solr.searchDocs) {
+    const solrService = this.services.solr
+
+    if (solrService.searchDocs) {
       const searchDocs = this.services.solr.searchDocs
       this.searchFields = new Set()
       Object.keys(searchDocs).map(s => {
@@ -33,37 +40,52 @@ class Search {
     }
 
     const filters = this.processFilters(event)
+
+    if (solrService.solrUrl) {
+      this.runSolrSearch(event, context, filters)
+    } else {
+      this.runStorageSearch(context, filters)
+    }
+  } // run
+
+  runSolrSearch (event, context, filters) {
+    const filterQuery = []
+    this.searchFields.forEach(s => {
+      if (s !== 'modified' && s !== 'created') filterQuery.push(`${s}:${event.query}`)
+    })
+    const query = `q=*:*&fq=(${filterQuery.join('%20OR%20')})`
+
+    this.solrClient.search(query, (err, result) => {
+      if (err) {
+        return context.sendTaskFailure({error: 'searchFail', cause: err})
+      }
+      this.processResults(context, result.response.docs, filters)
+    })
+  } // runSolrSearch
+
+  runStorageSearch (context, filters) {
+    this.storageClient.query(`select * from tymly.solr_data`, (err, results) => {
+      if (err) {
+        return context.sendTaskFailure({error: 'searchFail', cause: err})
+      }
+      const matchingDocs = this.filterDocs(results.rows, filters)
+      this.processResults(context, matchingDocs, filters)
+    })
+  } // runStorageSearch
+
+  processResults (context, matchingDocs, filters) {
     const searchResults = {
       input: filters
     }
 
-    if (process.env.SOLR_URL) {
-      const filterQuery = []
-      this.searchFields.forEach(s => {
-        if (s !== 'modified' && s !== 'created') filterQuery.push(`${s}:${event.query}`)
-      })
-      const query = `q=*:*&fq=(${filterQuery.join('%20OR%20')})`
-
-      this.solrClient.search(query, (err, result) => {
-        if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-        this.constructSearchResults(searchResults, filters, result.response.docs)
-        this.updateSearchHistory(searchResults.results, context.userId, (err) => {
-          if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-          context.sendTaskSuccess({searchResults})
-        })
-      })
-    } else {
-      this.client.query(`select * from tymly.solr_data`, (err, results) => {
-        if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-        const matchingDocs = this.filterDocs(results.rows, filters)
-        this.constructSearchResults(searchResults, filters, matchingDocs)
-        this.updateSearchHistory(searchResults.results, context.userId, (err) => {
-          if (err) context.sendTaskFailure({error: 'searchFail', cause: err})
-          context.sendTaskSuccess({searchResults})
-        })
-      })
-    }
-  }
+    this.constructSearchResults(searchResults, filters, matchingDocs)
+    this.updateSearchHistory(searchResults.results, context.userId, (err) => {
+      if (err) {
+        return context.sendTaskFailure({error: 'searchFail', cause: err})
+      }
+      context.sendTaskSuccess({searchResults})
+    })
+  } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
     searchResults.results = results.slice(filters.offset, (filters.offset + filters.limit))
