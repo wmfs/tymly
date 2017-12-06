@@ -10,23 +10,28 @@
     "properties": {
       "firstName": {
         "type": "string",
-        "title": "First name"
+        "title": "First name",
+        "minLength": 1
       },
       "lastName": {
         "type": "string",
-        "title": "Last name"
+        "title": "Last name",
+        "minLength": 1
       },
       "age": {
         "type": "integer",
-        "title": "Age"
+        "title": "Age",
+        "minimum": 0
       },
       "reasonForClaim": {
         "type": "string",
-        "title": "Reason for claim"
+        "title": "Reason for claim",
+        "minLength": 1
       },
       "amountToClaim": {
         "type": "number",
-        "multipleOf": 0.01
+        "multipleOf": 0.01,
+        "minimum": 0.01
       },
       "telephone": {
         "type": "string",
@@ -35,7 +40,8 @@
       },
       "date": {
         "type": "string",
-        "title": "Date"
+        "title": "Date",
+        "minLength": 1
       }
     }
   },
@@ -89,10 +95,20 @@
       "elements": ["lastName"], 
       "error": "lastName should be a string"
     },
+    "age": {
+      "expression": "(/^[^0-9]+$/).test(age)",
+      "elements": ["age"],
+      "error": "You must enter the claimants age"
+    },
     "reasonForClaim": {
       "expression": "(/[0-9]/).test(bio)", 
       "elements": ["bio"], 
       "error": "bio should be a string"
+    },
+    "amountToClaim": {
+      "expression": "(/^[^0-9]+$/).test(age)",
+      "elements": ["amountToClaim"],
+      "error": "You must enter how much is being claimed"
     },
     "telephone": {
       "expression": "(/[a-zA-Z]/).test(telephone)", 
