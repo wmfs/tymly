@@ -18,10 +18,11 @@ class Search {
       return this.solrClient_
     }
 
+    const solrConnection = this.services.solr.solrConnection
     this.solrClient_ = solr.createClient({
-      host: this.services.solrConnection.host,
-      port: this.services.solrConnection.port,
-      path: this.services.solrConnection.path,
+      host: solrConnection.host,
+      port: solrConnection.port,
+      path: solrConnection.path,
       core: 'tymly'
     })
 
@@ -55,7 +56,7 @@ class Search {
   runSolrSearch (event, context, filters) {
     const filterQuery = []
     this.searchFields.forEach(s => {
-      if (s !== 'modified' && s !== 'created') filterQuery.push(`${s}:${event.query}`)
+      if (s !== 'modified' && s !== 'created') filterQuery.push(`${_.camelCase(s)}:${event.query}`)
     })
     const query = `q=*:*&fq=(${filterQuery.join('%20OR%20')})`
 
