@@ -155,10 +155,14 @@ class SolrService {
 
 function buildDataImportPost (solrUrl, command, core) {
   const uniqueIdentifier = new Date().getTime()
+  let clean = true
+  if (command === 'delta-import') {
+    clean = false
+  }
   return {
     url: `${solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
     form: {
-      'clean': true,
+      'clean': clean,
       'command': command,
       'commit': true,
       'core': core,
