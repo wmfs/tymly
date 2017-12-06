@@ -148,7 +148,7 @@ class SolrService {
 
     request.post(
       buildDataImportPost(this.solrUrl, type, core),
-        (err, response, body) => (err) ? cb(err) : cb(null, JSON.parse(body))
+      (err, response, body) => (err) ? cb(err) : cb(null, JSON.parse(body))
     )
   } // _executeReindex
 }
@@ -159,8 +159,12 @@ function buildDataImportPost (solrUrl, command, core) {
   if (command === 'delta-import') {
     clean = false
   }
+  let url = solrUrl
+  if (solrUrl[solrUrl.length-1] !== '/') {
+    url += '/'
+  }
   return {
-    url: `${solrUrl}/${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
+    url: `${url}${core}/dataimport?_=${uniqueIdentifier}&indent=off&wt=json`,
     form: {
       'clean': clean,
       'command': command,
