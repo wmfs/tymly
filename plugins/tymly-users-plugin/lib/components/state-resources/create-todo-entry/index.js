@@ -11,7 +11,8 @@ class CreateTodoEntry {
       userId: context.userId,
       stateMachineTitle: event.stateMachineTitle,
       stateMachineCategory: event.stateMachineCategory,
-      description: event.description
+      description: event.description,
+      launches: event.launches
     }
 
     const todoTitle = [event.todoTitle]
