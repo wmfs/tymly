@@ -62,7 +62,7 @@ $ lerna run test
 
 ## <a name="documentation"></a>Documentation
 
-* General Tymly documentation is available [here](http://www.tymly.io)
+* General Tymly documentation is available [here](https://wmfs.github.io)
 * Please refer to the `README.md` file inside each package for more specific information
 
 
