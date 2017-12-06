@@ -160,7 +160,7 @@ function buildDataImportPost (solrUrl, command, core) {
     clean = false
   }
   let url = solrUrl
-  if (solrUrl[solrUrl.length-1] !== '/') {
+  if (solrUrl[solrUrl.length - 1] !== '/') {
     url += '/'
   }
   return {
