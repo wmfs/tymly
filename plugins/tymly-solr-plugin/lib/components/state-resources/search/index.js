@@ -20,8 +20,10 @@ class Search {
 
     this.solrClient_ = solr.createClient({
       url: this.services.solr.solrUrl,
-      core: 'tymly'
+      core: 'tymly_new'
     })
+
+    return this.solrClient_
   } // solrClient
 
   run (event, context) {
