@@ -25,7 +25,8 @@
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "uiType": "form",
-        "uiName": "tymly_claimAnExpense"
+        "uiName": "tymly_claimAnExpense",
+        "dataPath": "$.formData"
       },
       "ResultPath": "$.formData",
       "Next": "Upserting"

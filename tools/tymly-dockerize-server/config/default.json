@@ -18,7 +18,6 @@
         "host": "email_host",
         "port": 22
       }
-    },
-    "solrUrl": "http://solr_host:8983/solr"
+    }
   }
 }

@@ -24,10 +24,10 @@ class AwaitingHumanInput {
       data: data
     }
 
-    const feedName = [this.uiName]
-    Object.keys(data).sort().map(k => feedName.push(data[k]))
-
     if (this.uiType === 'board') {
+      const feedName = [this.uiName]
+      Object.keys(data).sort().map(k => feedName.push(data[k]))
+
       this.watchedBoards.findOne(
         {
           where: {
