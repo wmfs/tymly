@@ -88,11 +88,29 @@ class Search {
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
-    searchResults.results = results.slice(filters.offset, (filters.offset + filters.limit))
+    searchResults.results = this.jsonifyLaunches(results.slice(filters.offset, (filters.offset + filters.limit)))
     searchResults.totalHits = results.length
     searchResults.categoryCounts = this.countCategories(results)
     return searchResults
   }
+
+  jsonifyLaunches(results) {
+    const withJson = results.map(r => {
+      if (r.launches) {
+        try {
+          // try to parse JSON
+          const launches = JSON.parse(r.launches)
+          if (launches.launches) {
+            r.launches = launches.launches
+          }
+        } catch (e) {
+          // do nothing
+        }
+      }
+      return r
+    })
+    return withJson
+  } // jsonifyLaunches
 
   updateSearchHistory (docs, userId, callback) {
     async.eachSeries(
