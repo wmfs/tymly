@@ -15,6 +15,6 @@ class EmailService {
 
 module.exports = {
   serviceClass: EmailService,
-  bootBefore: ['tymlys'],
+  bootBefore: ['tymly'],
   schema: schema
 }
