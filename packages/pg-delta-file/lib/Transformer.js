@@ -31,8 +31,8 @@ class Transformer extends Transform {
                 const modified = `new Date(sourceRow['${modifiedCol}'])`
                 const since = `new Date('${options.since}')`
 
-                functionStatements.push(`if ((${modified} >= ${since}) && (${created} >= ${since})) csvParts.push('${options.actionAliases.insert}')`)
-                functionStatements.push(`if ((${modified} >= ${since}) && (${created} <= ${since})) csvParts.push('${options.actionAliases.update}')`)
+                functionStatements.push(`if (${modified} >= ${since} && ${created} >= ${since}) csvParts.push('${options.actionAliases.insert}')`)
+                functionStatements.push(`if (${modified} >= ${since} && ${created} <= ${since}) csvParts.push('${options.actionAliases.update}')`)
                 break
             }
             break
