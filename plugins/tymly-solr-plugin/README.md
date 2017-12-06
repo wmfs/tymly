@@ -18,7 +18,7 @@ Before running the tests, you'll need a test PostgreSQL database available and s
 
 ```PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432/my_test_db```
 
-You can also set an optional `SOLR_URL` environment variable to configure what Apache Solr instance to use.  If the environment variable is not set, the plugin will default to `http://localhost:8983/solr`.  You can however explicitly configure what instance to use like this:
+You can also set an optional `SOLR_URL` environment variable to configure what Apache Solr instance to use.  If the environment variable is not set the plugin will default to `http://localhost:8983/solr`.  You can however explicitly configure what instance to use like this:
 
 ```SOLR_URL=http://domain.com:8983/solr```
 
