@@ -19,7 +19,9 @@ class Search {
     }
 
     this.solrClient_ = solr.createClient({
-      url: this.services.solr.solrUrl,
+      host: this.services.solrConnection.host,
+      port: this.services.solrConnection.port,
+      path: this.services.solrConnection.path,
       core: 'tymly'
     })
 
@@ -43,7 +45,7 @@ class Search {
 
     const filters = this.processFilters(event)
 
-    if (solrService.solrUrl) {
+    if (solrService.solrConnection) {
       this.runSolrSearch(event, context, filters)
     } else {
       this.runStorageSearch(context, filters)

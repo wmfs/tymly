@@ -9,7 +9,8 @@ const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class SolrService {
   boot (options, callback) {
-    this.solrUrl = SolrService._connectionString(options.config)
+    this.solrConnection = SolrService._solrConnection(options.config)
+    this.solrUrl = this.solrConnection ? `http://${this.solrConnection.host}:${this.solrConnection.port}${this.solrConnection.path}` : null
     options.messages.info(this.solrUrl ? `Using Solr... (${this.solrUrl})` : 'No Solr URL configured')
 
     if (!options.blueprintComponents.hasOwnProperty('searchDocs')) {
@@ -45,18 +46,22 @@ class SolrService {
     }
   }
 
-  static _connectionString (config) {
-    if (config.solrUrl) {
-      debug('Using config.solrUrl')
-      return config.solrUrl
+  static _solrConnection (config) {
+    const solrConfig = config.solr || {}
+
+    const host = solrConfig.host || process.env.SOLR_HOST
+    const port = solrConfig.port || process.env.SOLR_PORT
+    const path = solrConfig.path || process.env.SOLR_PATH
+
+    if (host && port && path) {
+      return {
+        host: host,
+        port: port,
+        path: path
+      }
     }
 
-    if (process.env.SOLR_URL) {
-      debug('Using SOLR_URL environment variable')
-      return process.env.SOLR_URL
-    }
-
-    debug('No Solr URL foundin config.solrUrl or in SOLR_URL environment variable')
+    debug('No Solr config found in config.solr or in environment variable')
     return null
   } // _connectionUrl
 

@@ -19,6 +19,10 @@
         "port": 22
       }
     },
-    "solrUrl": "http://solr_host:8983/solr"
+    "solr": {
+      "host": "localhost",
+      "port": 8983,
+      "path": "/solr"
+    }
   }
 }

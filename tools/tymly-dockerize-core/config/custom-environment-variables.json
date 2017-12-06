@@ -16,6 +16,10 @@
         "port": "TYMLY_EMAIL_PORT"
       }
     },
-    "solrUrl": "SOLR_URL"
+    "solr": {
+      "host": "SOLR_HOST",
+      "port": "SOLR_PORT",
+      "path": "SOLR_PATH"
+    } 
   }
 }
