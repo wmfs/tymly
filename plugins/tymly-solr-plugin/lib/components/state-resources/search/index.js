@@ -94,7 +94,7 @@ class Search {
     return searchResults
   }
 
-  jsonifyLaunches(results) {
+  jsonifyLaunches (results) {
     const withJson = results.map(r => {
       if (r.launches) {
         try {
