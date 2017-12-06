@@ -24,7 +24,15 @@ class Transformer extends Transform {
                 functionStatements.push(`csvParts.push(this.info.totalCount)`)
                 break
               case 'ACTION':
-                functionStatements.push(`csvParts.push('${options.actionAliases.insert}')`) // TODO: Action to be inferred whether it's new/updated/deleted
+                // TODO: handle deleted action
+                const createdCol = options.createdColumnName || '_created'
+                const modifiedCol = options.modifiedColumnName || '_modified'
+                const created = `new Date(sourceRow['${createdCol}'])`
+                const modified = `new Date(sourceRow['${modifiedCol}'])`
+                const since = `new Date('${options.since}')`
+
+                functionStatements.push(`if ((${modified} >= ${since}) && (${created} >= ${since})) csvParts.push('${options.actionAliases.insert}')`)
+                functionStatements.push(`if ((${modified} >= ${since}) && (${created} <= ${since})) csvParts.push('${options.actionAliases.update}')`)
                 break
             }
             break
@@ -44,7 +52,7 @@ class Transformer extends Transform {
   }
 
   _transform (sourceRow, encoding, callback) {
-    this.info.totalCount ++
+    this.info.totalCount++
     const outputValues = this.getOutputValues(sourceRow)
     callback(null, csvEncoder(outputValues))
   }

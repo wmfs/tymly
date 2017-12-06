@@ -23,10 +23,10 @@ describe('Run the basic usage example',
         {
           namespace: 'springfield',
           client: client,
-          since: '2017-06-02 15:02:38.000000 GMT',
+          since: '2016-06-03 15:02:38.000000 GMT',
           outputFilepath: path.resolve(__dirname, './output', './single-delta.csv'),
           actionAliases: {
-            insert: 'u',
+            insert: 'i',
             update: 'u',
             delete: 'd'
           },
@@ -57,7 +57,7 @@ describe('Run the basic usage example',
           since: '2017-06-02 15:02:38.000000 GMT',
           outputFilepath: path.resolve(__dirname, './output', './multiple-delta.csv'),
           actionAliases: {
-            insert: 'u',
+            insert: 'i',
             update: 'u',
             delete: 'd'
           },

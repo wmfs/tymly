@@ -14,8 +14,8 @@ CREATE TABLE springfield.people (
 );
 
 INSERT INTO springfield.people (hash_sum, social_security_id, first_name, last_name, age, _created, _modified) VALUES
-('AAAAAAAA', 1, 'Homer', 'Simpson', 39, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 15:02:37.000000 GMT'),
-('BBBBBBBB', 2, 'Marge', 'Simpson', 36, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 15:02:38.000000 GMT'),
+('AAAAAAAA', 1, 'Homer', 'Simpson', 39, '2017-12-06 09:20:12.000000 GMT', '2017-06-02 15:02:37.000000 GMT'),
+('BBBBBBBB', 2, 'Marge', 'Simpson', 36, '2016-06-02 15:00:01.000000 GMT', '2017-06-01 15:02:38.000000 GMT'),
 ('EEEEEEEE', 5, 'Montgomery', 'Burns', 123, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 15:02:39.000000 GMT'),
 ('11111111', 6, 'Ned', 'Flanders', 60, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 15:02:40.000000 GMT'),
 ('22222222', 8, 'Bart', 'Simpson', 10, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 18:42:12.000000 BST');
@@ -35,4 +35,4 @@ CREATE TABLE springfield.homes (
 INSERT INTO springfield.homes (id, address, owner_id, _created, _modified) VALUES
 (1, '1 Evergreen Terrace', 1, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 17:00:01.000000 GMT'),
 (2, 'Springfield Nuclear Powerplant', 5, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 16:00:01.000000 GMT'),
-(3, '2 Evergreen Terrace', 6, '2017-06-02 15:00:01.000000 GMT', '2017-06-02 15:20:01.000000 GMT');
+(3, '2 Evergreen Terrace', 6, '2017-06-10 15:02:38.000000 GMT', '2017-06-10 15:20:01.000000 GMT');
