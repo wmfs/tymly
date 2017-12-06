@@ -56,7 +56,7 @@ class Search {
   runSolrSearch (event, context, filters) {
     const filterQuery = []
     this.searchFields.forEach(s => {
-      if (s !== 'modified' && s !== 'created' && s !== 'eventTimestamp' && s !== 'point' && s !== 'activeEvent') filterQuery.push(`${_.camelCase(s)}:${event.query}`)
+      if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${event.query}`)
     })
     const query = `q=*:*&fq=(${filterQuery.join('%20OR%20')})`
 
