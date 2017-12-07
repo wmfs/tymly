@@ -140,15 +140,14 @@
   },
   "uiSchema": {
     "ignitionSources": {
-      "ui:widget": "radio",
-      "ui:title": "Ignition Sources"
+      "ui:widget": "select"
     },
     "ignitionSourcesComment": {
       "ui:widget": "textField",
       "ui:title": "Ignition Sources Comments"
     },
     "adequateMeasures": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Adequate Measures"
     },
     "adequateMeasuresComment": {
@@ -156,7 +155,7 @@
       "ui:title": "Adequate Measures Comments"
     },
     "personsEvacuate": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Persons Evacuate"
     },
     "personsEvacuateComment": {
@@ -164,7 +163,7 @@
       "ui:title": "Persons Evacuate Comments"
     },
     "escapeRoutes": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Escape Routes"
     },
     "escapeRoutesComment": {
@@ -172,7 +171,7 @@
       "ui:title": "Escape Routes Comments"
     },
     "adequateEquipment": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Adequate Equipment"
     },
     "adequateEquipmentComment": {
@@ -180,7 +179,7 @@
       "ui:title": "Adequate Equipment Comments"
     },
     "adequateArrangements": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Adequate Arrangements"
     },
     "adequateArrangementsComment": {
@@ -188,7 +187,7 @@
       "ui:title": "Adequate Arrangements Comments"
     },
     "adequateInstructions": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Adequate Instructions"
     },
     "adequateInstructionsComment": {
@@ -196,7 +195,7 @@
       "ui:title": "Adequate Instructions Comments"
     },
     "adequateManagement": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Adequate Management"
     },
     "adequateManagementComment": {
@@ -204,12 +203,99 @@
       "ui:title": "Adequate Management Comments"
     },
     "sufficientPrecautions ": {
-      "ui:widget": "radio",
+      "ui:widget": "select",
       "ui:title": "Sufficient Precautions"
     }
   },
   "widgets": {
-    "radio": "Radio",
+    "select": "Select",
     "textField": "TextField"
+  },
+  "validation_schema": {
+    "ignitionSources": {
+      "expression": "(/[0-9]/).test(ignitionSources)",
+      "elements": ["ignitionSources"],
+      "error": "ignitionSources should be a string"
+    },
+    "ignitionSourcesComment": {
+      "expression": "(/[0-9]/).test(ignitionSourcesComment)",
+      "elements": ["ignitionSourcesComment"],
+      "error": "ignitionSourcesComment should be a string"
+    },
+    "adequateMeasures": {
+      "expression": "(/[0-9]/).test(adequateMeasures)",
+      "elements": ["adequateMeasures"],
+      "error": "adequateMeasures should be a string"
+    },
+    "adequateMeasuresComment": {
+      "expression": "(/[0-9]/).test(adequateMeasuresComment)",
+      "elements": ["adequateMeasuresComment"],
+      "error": "adequateMeasuresComment should be a string"
+    },
+    "personsEvacuate": {
+      "expression": "(/[0-9]/).test(personsEvacuate)",
+      "elements": ["personsEvacuate"],
+      "error": "personsEvacuate should be a string"
+    },
+    "personsEvacuateComment": {
+      "expression": "(/[0-9]/).test(personsEvacuateComment)",
+      "elements": ["personsEvacuateComment"],
+      "error": "personsEvacuateComment should be a string"
+    },
+    "escapeRoutes": {
+      "expression": "(/[0-9]/).test(escapeRoutes)",
+      "elements": ["escapeRoutes"],
+      "error": "escapeRoutes should be a string"
+    },
+    "escapeRoutesComment": {
+      "expression": "(/[0-9]/).test(escapeRoutesComment)",
+      "elements": ["escapeRoutesComment"],
+      "error": "escapeRoutesComment should be a string"
+    },
+    "adequateEquipment": {
+      "expression": "(/[0-9]/).test(adequateEquipment)",
+      "elements": ["adequateEquipment"],
+      "error": "adequateEquipment should be a string"
+    },
+    "adequateEquipmentComment": {
+      "expression": "(/[0-9]/).test(adequateEquipmentComment)",
+      "elements": ["adequateEquipmentComment"],
+      "error": "adequateEquipmentComment should be a string"
+    },
+    "adequateArrangements": {
+      "expression": "(/[0-9]/).test(adequateArrangements)",
+      "elements": ["adequateArrangements"],
+      "error": "adequateArrangements should be a string"
+    },
+    "adequateArrangementsComment": {
+      "expression": "(/[0-9]/).test(adequateArrangementsComment)",
+      "elements": ["adequateArrangementsComment"],
+      "error": "adequateArrangementsComment should be a string"
+    },
+    "adequateInstructions": {
+      "expression": "(/[0-9]/).test(adequateInstructions)",
+      "elements": ["adequateInstructions"],
+      "error": "adequateInstructions should be a string"
+    },
+    "adequateInstructionsComment": {
+      "expression": "(/[0-9]/).test(adequateInstructionsComment)",
+      "elements": ["adequateInstructionsComment"],
+      "error": "adequateInstructionsComment should be a string"
+    },
+    "adequateManagement": {
+      "expression": "(/[0-9]/).test(adequateManagement)",
+      "elements": ["adequateManagement"],
+      "error": "adequateManagement should be a string"
+    },
+    "adequateManagementComment": {
+      "expression": "(/[0-9]/).test(adequateManagementComment)",
+      "elements": ["adequateManagementComment"],
+      "error": "adequateManagementComment should be a string"
+    },
+    "sufficientPrecautions": {
+      "expression": "(/[0-9]/).test(sufficientPrecautions)",
+      "elements": ["sufficientPrecautions"],
+      "error": "sufficientPrecautions should be a string"
+    }
   }
 }
