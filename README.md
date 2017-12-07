@@ -5,6 +5,8 @@ _An open source low-code platform - that's built for collaboration_
 [![Build Status](https://travis-ci.org/wmfs/tymly.svg?branch=master)](https://travis-ci.org/wmfs/tymly) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/wmfs/tymly/blob/master/CONTRIBUTING.md) [![Gitter](https://badges.gitter.im/wmfs/tymly.svg)](https://gitter.im/wmfs/tymly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 ## <a name="environment-variables"></a>Environment
+
+[![Join the chat at https://gitter.im/wmfs/tymly](https://badges.gitter.im/wmfs/tymly.svg)](https://gitter.im/wmfs/tymly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This here is a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-single-repository-for-all-your-companys-projects/). All of the [packages](https://github.com/wmfs/tymly/tree/master/packages) and [plugins](https://github.com/wmfs/tymly/tree/master/plugins) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
 Ordinarily, you should refer to each package's specific installation instructions.
 
