@@ -11,6 +11,7 @@ class CreateTodoEntry {
       userId: context.userId,
       stateMachineTitle: event.stateMachineTitle,
       stateMachineCategory: event.stateMachineCategory,
+      requiredHumanInput: event.requiredHumanInput,
       description: event.description,
       launches: event.launches
     }
