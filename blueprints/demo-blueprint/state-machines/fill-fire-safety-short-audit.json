@@ -15,7 +15,7 @@
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "uiType": "form",
-        "uiName": "tymly_fillFireSafetyShortAudit"
+        "uiName": "tymly_fireSafetyShortAudit"
       },
       "ResultPath": "$.formData",
       "Next": "Upserting"
