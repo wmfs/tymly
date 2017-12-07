@@ -3,77 +3,129 @@
     "title": "Fire Safety Short Audit",
     "description": "Fire Safety Short Audi",
     "type": "object",
-    "required": [
-
-    ],
+    "required": [],
     "properties": {
       "ignitionSources": {
         "type": "string",
-        "description": "Are ignition sources adequately managed and controlled in the premises to reduce the risk of fire?"
+        "title": "Are ignition sources adequately managed and controlled in the premises to reduce the risk of fire?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "ignitionSourcesComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "adequateMeasures": {
         "type": "string",
-        "description": "Are adequate measures in place to control the spread of a potential fire in the premises?"
+        "title": "Are adequate measures in place to control the spread of a potential fire in the premises?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "adequateMeasuresComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "personsEvacuate": {
         "type": "string",
-        "description": "Can persons evacuate the premises safely in the event of a fire emergency in the premises?"
+        "title": "Can persons evacuate the premises safely in the event of a fire emergency in the premises?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "personsEvacuateComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "escapeRoutes": {
         "type": "string",
-        "description": "Can persons use the escape routes and final exits safely?"
+        "title": "Can persons use the escape routes and final exits safely?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "escapeRoutesComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "adequateEquipment": {
         "type": "string",
-        "description": "Is there adequate equipment in the premises for extinguishing small fires?"
+        "title": "Is there adequate equipment in the premises for extinguishing small fires?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "adequateEquipmentComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "adequateArrangements": {
         "type": "string",
-        "description": "Are adequate arrangements in place to detect fires and raise the alarm to those people on the premises?"
+        "title": "Are adequate arrangements in place to detect fires and raise the alarm to those people on the premises?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "adequateArrangementsComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "adequateInstructions": {
         "type": "string",
-        "description": "Are adequate instructions or guidance on procedures to follow in an emergency provided for employees?"
+        "title": "Are adequate instructions or guidance on procedures to follow in an emergency provided for employees?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "adequateInstructionsComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "adequateManagement": {
         "type": "string",
-        "description": "Are adequate management procedures in place to mitigate the effects of fires in the premises?"
+        "title": "Are adequate management procedures in place to mitigate the effects of fires in the premises?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       },
       "adequateManagementComment": {
         "type": "string",
-        "description": "Comment"
+        "title": "Comment"
       },
       "sufficientPrecautions ": {
         "type": "string",
-        "description": "Are sufficient precautions in place to safeguard the safety of relevant persons in case of fire?"
+        "title": "Are sufficient precautions in place to safeguard the safety of relevant persons in case of fire?",
+        "items": {
+          "enum": [
+            "yes",
+            "no"
+          ]
+        }
       }
     }
   },
