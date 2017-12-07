@@ -1,7 +1,7 @@
 {
   "jsonSchema": {
     "title": "Fire Safety Short Audit",
-    "description": "Fire Safety Short Audi",
+    "description": "Fire Safety Short Audit",
     "type": "object",
     "required": [],
     "properties": {
@@ -135,7 +135,7 @@
       "ui:title": "Ignition Sources"
     },
     "ignitionSourcesComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Ignition Sources Comments"
     },
     "adequateMeasures": {
@@ -143,7 +143,7 @@
       "ui:title": "Adequate Measures"
     },
     "adequateMeasuresComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Adequate Measures Comments"
     },
     "personsEvacuate": {
@@ -151,7 +151,7 @@
       "ui:title": "Persons Evacuate"
     },
     "personsEvacuateComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Persons Evacuate Comments"
     },
     "escapeRoutes": {
@@ -159,7 +159,7 @@
       "ui:title": "Escape Routes"
     },
     "escapeRoutesComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Escape Routes Comments"
     },
     "adequateEquipment": {
@@ -167,7 +167,7 @@
       "ui:title": "Adequate Equipment"
     },
     "adequateEquipmentComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Adequate Equipment Comments"
     },
     "adequateArrangements": {
@@ -175,7 +175,7 @@
       "ui:title": "Adequate Arrangements"
     },
     "adequateArrangementsComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Adequate Arrangements Comments"
     },
     "adequateInstructions": {
@@ -183,7 +183,7 @@
       "ui:title": "Adequate Instructions"
     },
     "adequateInstructionsComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Adequate Instructions Comments"
     },
     "adequateManagement": {
@@ -191,7 +191,7 @@
       "ui:title": "Adequate Management"
     },
     "adequateManagementComment": {
-      "ui:widget": "richTextEditor",
+      "ui:widget": "textField",
       "ui:title": "Adequate Management Comments"
     },
     "sufficientPrecautions ": {
@@ -201,6 +201,6 @@
   },
   "widgets": {
     "radio": "Radio",
-    "richTextEditor": "RichTextEditor"
+    "textField": "TextField"
   }
 }
