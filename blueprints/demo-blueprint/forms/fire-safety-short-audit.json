@@ -10,8 +10,9 @@
         "title": "Are ignition sources adequately managed and controlled in the premises to reduce the risk of fire?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -24,8 +25,9 @@
         "title": "Are adequate measures in place to control the spread of a potential fire in the premises?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -38,8 +40,9 @@
         "title": "Can persons evacuate the premises safely in the event of a fire emergency in the premises?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -52,8 +55,9 @@
         "title": "Can persons use the escape routes and final exits safely?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -66,8 +70,9 @@
         "title": "Is there adequate equipment in the premises for extinguishing small fires?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -80,8 +85,9 @@
         "title": "Are adequate arrangements in place to detect fires and raise the alarm to those people on the premises?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -94,8 +100,9 @@
         "title": "Are adequate instructions or guidance on procedures to follow in an emergency provided for employees?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -108,8 +115,9 @@
         "title": "Are adequate management procedures in place to mitigate the effects of fires in the premises?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       },
@@ -122,8 +130,9 @@
         "title": "Are sufficient precautions in place to safeguard the safety of relevant persons in case of fire?",
         "items": {
           "enum": [
-            "yes",
-            "no"
+            "Good",
+            "Tolerable",
+            "Poor"
           ]
         }
       }
