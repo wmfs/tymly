@@ -86,9 +86,9 @@ describe('watched-boards tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.watchCategories.incidents.total).to.eql(1)
-        expect(executionDescription.ctx.watchCategories.incidents.subscriptions[0].feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
-        subscriptionId = executionDescription.ctx.watchCategories.incidents.subscriptions[0].subscriptionId
+        expect(executionDescription.ctx.watchCategories.incidents['Incident Summary'].total).to.eql(1)
+        expect(executionDescription.ctx.watchCategories.incidents['Incident Summary'].subscriptions[0].feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
+        subscriptionId = executionDescription.ctx.watchCategories.incidents['Incident Summary'].subscriptions[0].subscriptionId
         done()
       }
     )
@@ -173,8 +173,8 @@ describe('watched-boards tymly-users-plugin tests', function () {
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
-        expect(executionDescription.ctx.watchCategories.incidents.total).to.eql(2)
-        expect(executionDescription.ctx.watchCategories.gazetteer.total).to.eql(1)
+        expect(executionDescription.ctx.watchCategories.incidents['Incident Summary'].total).to.eql(2)
+        expect(executionDescription.ctx.watchCategories.gazetteer['Property Viewer'].total).to.eql(1)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }

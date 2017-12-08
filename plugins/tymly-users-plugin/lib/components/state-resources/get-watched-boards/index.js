@@ -26,15 +26,19 @@ class GetWatchedBoards {
         const categories = new Set()
         results.map(r => categories.add(r.category))
         categories.forEach(c => {
-          ctx.watchCategories[c] = {
-            total: 0,
-            subscriptions: []
-          }
+          ctx.watchCategories[c] = {}
         })
 
         results.map(r => {
-          ctx.watchCategories[r.category].total++
-          ctx.watchCategories[r.category].subscriptions.push(
+          if (!Object.keys(ctx.watchCategories[r.category]).includes(r.categoryLabel)) {
+            ctx.watchCategories[r.category][r.categoryLabel] = {
+              total: 0,
+              subscriptions: []
+            }
+          }
+
+          ctx.watchCategories[r.category][r.categoryLabel].total++
+          ctx.watchCategories[r.category][r.categoryLabel].subscriptions.push(
             {
               subscriptionId: r.id,
               feedName: r.feedName,
