@@ -7,7 +7,6 @@ class WatchBoard {
   }
 
   run (event, context) {
-    console.log('event >>>', event)
     let feedName = [event.stateMachineName]
     if (event.key) Object.keys(event.key).sort().map(k => feedName.push(event.key[k]))
     feedName = feedName.join('|')
