@@ -26,7 +26,8 @@ class WatchBoard {
         description: event.description,
         startedWatching: startedWatching,
         launches: JSON.stringify(launches),
-        category: event.category
+        category: event.category,
+        boardName: event.boardName
       },
       {}
     )
