@@ -20,28 +20,37 @@ class GetWatchedBoards {
       },
       (err, results) => {
         if (err) {
-          context.sendTaskFailure(
+          context.sendTaskFailure({error: 'getWatchedBoardsFail', cause: err})
+        }
+
+        const ctx = {
+          watchCategories: {}
+        }
+
+        const categories = new Set()
+        results.map(r => categories.add(r.category))
+        categories.forEach(c => {
+          ctx.watchCategories[c] = {
+            total: 0,
+            subscriptions: []
+          }
+        })
+
+        results.map(r => {
+          ctx.watchCategories[r.category].total++
+          ctx.watchCategories[r.category].subscriptions.push(
             {
-              error: 'getWatchedBoardsFail',
-              cause: err
-            }
-          )
-        } else {
-          const subscriptions = results.map(r => {
-            return {
               subscriptionId: r.id,
               feedName: r.feedName,
               title: r.title,
               description: r.description,
-              startedWatching: r.startedWatching
+              startedWatching: r.startedWatching,
+              launches: r.launches
             }
-          })
+          )
+        })
 
-          context.sendTaskSuccess({
-            total: subscriptions.length,
-            subscriptions: subscriptions
-          })
-        }
+        context.sendTaskSuccess(ctx)
       }
     )
   }

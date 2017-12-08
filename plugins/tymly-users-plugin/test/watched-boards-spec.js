@@ -43,7 +43,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       {
         stateMachineName: 'wmfs_incidentSummary_1_0',
         title: 'Incident 1/1999',
-        category: 'Incident Summary',
+        category: 'incidents',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
           'incidentNumber': 1,
@@ -80,14 +80,99 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // console.log(JSON.stringify(executionDescription, null, 2))
+        console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
         expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
         expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.total).to.eql(1)
-        expect(executionDescription.ctx.subscriptions[0].feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
-        subscriptionId = executionDescription.ctx.subscriptions[0].subscriptionId
+        expect(executionDescription.ctx.watchCategories.incidents.total).to.eql(1)
+        expect(executionDescription.ctx.watchCategories.incidents.subscriptions[0].feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
+        subscriptionId = executionDescription.ctx.watchCategories.incidents.subscriptions[0].subscriptionId
+        done()
+      }
+    )
+  })
+
+  it('should watch another board in the same category', function (done) {
+    statebox.startExecution(
+      {
+        stateMachineName: 'wmfs_incidentSummary_1_0',
+        title: 'Incident 12/2015',
+        category: 'incidents',
+        description: 'Fire with 0 casualties and 0 fatalities',
+        key: {
+          'incidentNumber': 12,
+          'incidentYear': 2015
+        }
+      },
+      WATCH_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+        expect(executionDescription.currentResource).to.eql('module:deltaReindex')
+        expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx).includes('subscriptionId')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('startedWatching')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('feedName')).to.eql(true)
+        expect(executionDescription.ctx.feedName).to.eql('wmfs_incidentSummary_1_0|12|2015')
+        done()
+      }
+    )
+  })
+
+  it('should watch another board in another category', function (done) {
+    statebox.startExecution(
+      {
+        stateMachineName: 'wmfs_propertyViewer_1_0',
+        title: 'URN #4',
+        category: 'gazetteer',
+        description: 'Tymly Kebabs, Streetly, B74 3RU',
+        key: {
+          'urn': 4
+        }
+      },
+      WATCH_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('DeltaReindex')
+        expect(executionDescription.currentResource).to.eql('module:deltaReindex')
+        expect(executionDescription.stateMachineName).to.eql(WATCH_BOARD_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(Object.keys(executionDescription.ctx).includes('subscriptionId')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('startedWatching')).to.eql(true)
+        expect(Object.keys(executionDescription.ctx).includes('feedName')).to.eql(true)
+        expect(executionDescription.ctx.feedName).to.eql('wmfs_propertyViewer_1_0|4')
+        done()
+      }
+    )
+  })
+
+  it('should get multiple watched boards', function (done) {
+    statebox.startExecution(
+      {},
+      GET_WATCHED_BOARDS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('GetWatchedBoards')
+        expect(executionDescription.currentResource).to.eql('module:getWatchedBoards')
+        expect(executionDescription.stateMachineName).to.eql(GET_WATCHED_BOARDS_STATE_MACHINE)
+        expect(executionDescription.ctx.watchCategories.incidents.total).to.eql(2)
+        expect(executionDescription.ctx.watchCategories.gazetteer.total).to.eql(1)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
