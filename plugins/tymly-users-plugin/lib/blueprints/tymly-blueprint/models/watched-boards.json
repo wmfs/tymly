@@ -11,9 +11,9 @@
       "type": "string",
       "description": "The category the board belongs to."
     },
-    "boardName": {
+    "categoryLabel": {
       "type": "string",
-      "description": "The name of the board"
+      "description": "The label for the name of the category the board belongs to"
     },
     "feedName": {
       "type": "string",

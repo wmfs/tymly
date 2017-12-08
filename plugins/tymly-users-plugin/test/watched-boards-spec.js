@@ -44,7 +44,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         stateMachineName: 'wmfs_incidentSummary_1_0',
         title: 'Incident 1/1999',
         category: 'incidents',
-        boardName: 'Incident Summary',
+        categoryLabel: 'Incident Summary',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
           'incidentNumber': 1,
@@ -100,7 +100,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         stateMachineName: 'wmfs_incidentSummary_1_0',
         title: 'Incident 12/2015',
         category: 'incidents',
-        boardName: 'Incident Summary',
+        categoryLabel: 'Incident Summary',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
           'incidentNumber': 12,
@@ -133,7 +133,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         stateMachineName: 'wmfs_propertyViewer_1_0',
         title: 'URN #4',
         category: 'gazetteer',
-        boardName: 'Property Viewer',
+        categoryLabel: 'Property Viewer',
         description: 'Tymly Kebabs, Streetly, B74 3RU',
         key: {
           'urn': 4
