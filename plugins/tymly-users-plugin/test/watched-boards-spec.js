@@ -43,6 +43,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       {
         stateMachineName: 'wmfs_incidentSummary_1_0',
         title: 'Incident 1/1999',
+        category: 'Incident Summary',
         description: 'Fire with 0 casualties and 0 fatalities',
         key: {
           'incidentNumber': 1,
