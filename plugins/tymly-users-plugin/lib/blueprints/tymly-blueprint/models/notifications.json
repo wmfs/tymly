@@ -20,6 +20,11 @@
       "type": "string",
       "description": "The category the notification belongs to"
     },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime the notification was created"
+    },
     "acknowledged": {
       "type": "string",
       "format": "date-time",
