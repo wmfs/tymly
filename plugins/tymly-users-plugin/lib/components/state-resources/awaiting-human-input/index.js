@@ -37,8 +37,10 @@ class AwaitingHumanInput {
         },
         (err, subscription) => {
           if (err) context.sendTaskFailure({err})
-          requiredHumanInput.watchBoardSubscriptionId = subscription.id
-          requiredHumanInput.feedName = subscription.feedName
+          if (subscription) {
+            requiredHumanInput.watchBoardSubscriptionId = subscription.id
+            requiredHumanInput.feedName = subscription.feedName
+          }
           context.sendTaskHeartbeat({requiredHumanInput}, (err, executionDescription) => {
             if (err) throw new Error(err)
             done(executionDescription)
