@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The ID of the user the notification belongs to"
+    },
+    "title": {
+      "type": "string",
+      "description": "A short title describing this notification"
+    },
+    "description": {
+      "type": "string",
+      "description": "A bit more context/information"
+    },
+    "category": {
+      "type": "string",
+      "description": "The category the notification belongs to"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime the notification was created"
+    },
+    "acknowledged": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime the user acknowledged the notification"
+    },
+    "launches": {
+      "type": "object",
+      "description": "A standard launches object that can be used to view the board."
+    }
+  }
+}
+
