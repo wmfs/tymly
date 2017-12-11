@@ -1,7 +1,7 @@
 'use strict'
 
 class CreateNotification {
-  init (env, callback) {
+  init (resourceConfig, env, callback) {
     this.notifications = env.bootedServices.storage.models['tymly_notifications']
     callback(null)
   }
@@ -12,8 +12,6 @@ class CreateNotification {
       title: event.title,
       description: event.description,
       category: event.category,
-      created: '',
-      acknowledged: '',
       launches: event.launches
     }
 
