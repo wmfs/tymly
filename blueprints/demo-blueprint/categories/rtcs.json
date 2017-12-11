@@ -2,7 +2,7 @@
   "label": "RTC",
   "description": "Road Traffic Collision incidents",
   "parentCategory": "incidents",
-  "style": {
+  "styling": {
     "icon": "rtc",
     "backgroundColor": "#FF0000"
   }

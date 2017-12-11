@@ -7,15 +7,13 @@ const chaiSubset = require('chai-subset')
 const expect = require('chai').expect
 const path = require('path')
 const tymly = require('tymly')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 chai.use(chaiSubset)
 
 describe('Demo tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let models
-  let forms
-  let boards
-  let categories
+  let models, forms, boards, categories, client
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -35,6 +33,7 @@ describe('Demo tests', function () {
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
         categories = tymlyServices.categories.categories
+        client = tymlyServices.storage.client
         done(err)
       }
     )
@@ -237,5 +236,9 @@ describe('Demo tests', function () {
       .catch(error => {
         done(error)
       })
+  })
+
+  it('should tear down the test resources', function () {
+    return sqlScriptRunner('./scripts/cleanup.sql', client)
   })
 })

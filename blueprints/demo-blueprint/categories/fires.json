@@ -1,7 +1,7 @@
 {
   "label": "Fire",
   "description": "Fire-related incidents",
-  "style": {
+  "styling": {
     "icon": "flame",
     "backgroundColor": "#FF0000"
   }

@@ -1,7 +1,7 @@
 {
   "label": "Incidents",
   "description": "Things relating to emergency incidents",
-  "style": {
+  "styling": {
     "icon": "flame",
     "backgroundColor": "#FF0000"
   }
