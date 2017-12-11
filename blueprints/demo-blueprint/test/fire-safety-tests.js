@@ -58,16 +58,22 @@ describe('Demo state machine tests', function () {
 
   it('should create a todo task which would start this form', function (done) {
     todos.upsert({
-      userId: 'auth0|5a157ade1932044615a1c502',
-      teamName: null,
+      userId: 'test',
       state_machine_title: 'tymly_fillFireSafetyShortAudit_1_0',
       state_machine_category: 'fireSafety',
-      description: '',
-      todo_title: 'Fill Fire Safety Short Audit',
       id: todoId
     }, {}, (err) => {
       done(err)
     })
+  })
+
+  it('should check this todo task has been added', function (done) {
+    todos.find({where: {id: {equals: todoId}}},
+      (err, docs) => {
+        expect(docs.length).to.eql(1)
+        done(err)
+      }
+    )
   })
 
   it('should start execution to fill in a fire safety short audit form, stops at AwaitingHumanInput', function (done) {
@@ -139,7 +145,7 @@ describe('Demo state machine tests', function () {
   })
 
   it('should check this todo task has been removed after form completion', function (done) {
-    todos.find({where: {userId: {equals: 'auth0|5a157ade1932044615a1c502'}}},
+    todos.find({where: {id: {equals: todoId}}},
       (err, docs) => {
         expect(docs.length).to.eql(0)
         done(err)

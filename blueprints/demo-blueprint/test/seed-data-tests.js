@@ -201,7 +201,7 @@ describe('Demo tests', function () {
   })
 
   it('should get the watched boards', function (done) {
-    models.tymly_watchedBoards.find({where: {userId: {equals: 'auth0|5a157ade1932044615a1c502'}}})
+    models.tymly_watchedBoards.find({where: {userId: {equals: 'test'}}})
       .then(result => {
         expect(result.length).to.eql(4)
         expect(result[0].feedName).to.eql('wmfs_incidentSummary_1_0|1234|2017')
