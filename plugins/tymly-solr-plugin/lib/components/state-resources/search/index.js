@@ -54,11 +54,12 @@ class Search {
   } // run
 
   runSolrSearch (event, context, filters) {
+    const searchTerm = event.query ? `(${event.query.trim().replace(/ /g, '%20')})` : ''
     const filterQuery = []
     this.searchFields.forEach(s => {
-      if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${event.query}`)
+      if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
-    const fq = event.query ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
+    const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
     const query = `q=*:*${fq}&sort=created%20desc`
     console.log(`Solr Query = ${query}`)
 
