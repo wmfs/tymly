@@ -7,6 +7,14 @@
     "userId": {
       "type": "string"
     },
+    "category": {
+      "type": "string",
+      "description": "The category the board belongs to."
+    },
+    "categoryLabel": {
+      "type": "string",
+      "description": "The label for the name of the category the board belongs to"
+    },
     "feedName": {
       "type": "string",
       "description": "A string relating to a particular state-machine-name and key combo. Consider several users requesting updates whenever the details of a particular property change - this equates to a several users subscribing to the property's \"feed\"."

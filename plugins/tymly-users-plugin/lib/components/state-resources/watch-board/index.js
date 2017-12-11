@@ -11,6 +11,11 @@ class WatchBoard {
     if (event.key) Object.keys(event.key).sort().map(k => feedName.push(event.key[k]))
     feedName = feedName.join('|')
 
+    const launches = [{
+      stateMachineName: event.stateMachineName,
+      input: event.key
+    }]
+
     const startedWatching = new Date().toLocaleString()
 
     this.watchedBoards.upsert(
@@ -19,7 +24,10 @@ class WatchBoard {
         feedName: feedName,
         title: event.title,
         description: event.description,
-        startedWatching: startedWatching
+        startedWatching: startedWatching,
+        launches: JSON.stringify(launches),
+        category: event.category,
+        categoryLabel: event.categoryLabel
       },
       {}
     )

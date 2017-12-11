@@ -1,9 +1,5 @@
 'use strict'
 
-/*
-* TODO: Boards should be categorized - this will affect implementation here
-* */
-
 class GetWatchedBoards {
   init (resourceConfig, env, callback) {
     this.watchedBoards = env.bootedServices.storage.models['tymly_watchedBoards']
@@ -20,28 +16,41 @@ class GetWatchedBoards {
       },
       (err, results) => {
         if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'getWatchedBoardsFail',
-              cause: err
+          context.sendTaskFailure({error: 'getWatchedBoardsFail', cause: err})
+        }
+
+        const ctx = {
+          watchCategories: {}
+        }
+
+        const categories = new Set()
+        results.map(r => categories.add(r.category))
+        categories.forEach(c => {
+          ctx.watchCategories[c] = {}
+        })
+
+        results.map(r => {
+          if (!Object.keys(ctx.watchCategories[r.category]).includes(r.categoryLabel)) {
+            ctx.watchCategories[r.category][r.categoryLabel] = {
+              total: 0,
+              subscriptions: []
             }
-          )
-        } else {
-          const subscriptions = results.map(r => {
-            return {
+          }
+
+          ctx.watchCategories[r.category][r.categoryLabel].total++
+          ctx.watchCategories[r.category][r.categoryLabel].subscriptions.push(
+            {
               subscriptionId: r.id,
               feedName: r.feedName,
               title: r.title,
               description: r.description,
-              startedWatching: r.startedWatching
+              startedWatching: r.startedWatching,
+              launches: r.launches
             }
-          })
+          )
+        })
 
-          context.sendTaskSuccess({
-            total: subscriptions.length,
-            subscriptions: subscriptions
-          })
-        }
+        context.sendTaskSuccess(ctx)
       }
     )
   }
