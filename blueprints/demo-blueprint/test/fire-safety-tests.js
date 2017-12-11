@@ -10,7 +10,8 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 describe('Demo state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE = 'tymly_fillFireSafetyShortAudit_1_0'
-  let statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit
+  const todoId = 'cdc33a5c-d438-11e7-a2f3-5bb79decfe33'
+  let statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit, todos
 
   const formData = {
     ignitionSources: 'Good',
@@ -49,14 +50,31 @@ describe('Demo state machine tests', function () {
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         fireSafetyShortAudit = tymlyServices.storage.models['tymly_fireSafetyShortAudit']
+        todos = tymlyServices.storage.models['tymly_todos']
         done(err)
       }
     )
   })
 
+  it('should create a todo task which would start this form', function (done) {
+    todos.upsert({
+      userId: 'auth0|5a157ade1932044615a1c502',
+      teamName: null,
+      state_machine_title: 'tymly_fillFireSafetyShortAudit_1_0',
+      state_machine_category: 'fireSafety',
+      description: '',
+      todo_title: 'Fill Fire Safety Short Audit',
+      id: todoId
+    }, {}, (err) => {
+      done(err)
+    })
+  })
+
   it('should start execution to fill in a fire safety short audit form, stops at AwaitingHumanInput', function (done) {
     statebox.startExecution(
-      {},
+      {
+        todoId: todoId
+      },
       FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE,
       {
         sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
@@ -98,7 +116,6 @@ describe('Demo state machine tests', function () {
 
   it('should check the data is in the fire Safety Audit table', function (done) {
     fireSafetyShortAudit.find({}, (err, doc) => {
-      console.log(doc[0])
       expect(doc.length).to.eql(1)
       expect(doc[0].ignitionSources).to.eql('Good')
       expect(doc[0].ignitionSourcesComment).to.eql('Ignition Sources are managed very well.')
@@ -119,6 +136,15 @@ describe('Demo state machine tests', function () {
       expect(doc[0].sufficientPrecautions).to.eql('Yes')
       done(err)
     })
+  })
+
+  it('should check this todo task has been removed after form completion', function (done) {
+    todos.find({where: {userId: {equals: 'auth0|5a157ade1932044615a1c502'}}},
+      (err, docs) => {
+        expect(docs.length).to.eql(0)
+        done(err)
+      }
+    )
   })
 
   it('should tear down the test resources', function () {

@@ -27,6 +27,13 @@
       "ResourceConfig": {
         "modelId": "fireSafetyShortAudit"
       },
+      "ResultPath": "$.todoId",
+      "Next": "RemoveTodoEntries"
+    },
+    "RemoveTodoEntries": {
+      "Type": "Task",
+      "InputPath": "$",
+      "Resource": "module:removeTodoEntries",
       "Next": "DeltaReindex"
     },
     "DeltaReindex": {

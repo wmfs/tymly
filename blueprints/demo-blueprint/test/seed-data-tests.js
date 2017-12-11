@@ -201,36 +201,13 @@ describe('Demo tests', function () {
   })
 
   it('should get the watched boards', function (done) {
-    models.tymly_watchedBoards.find({where: {userId: {equals: 'test'}}})
+    models.tymly_watchedBoards.find({where: {userId: {equals: 'auth0|5a157ade1932044615a1c502'}}})
       .then(result => {
-        expect(result.length).to.eql(3)
-        expect(result[0]).to.containSubset({
-          id: 'cdc58618-d438-11e7-9a2b-c3fa2d4f5090',
-          userId: 'test',
-          feedName: 'wmfs_incidentSummary_1_0|1234|2017',
-          title: 'Incident 1234/2017',
-          description: 'RTC with 3 casualties and 0 fatalities',
-          startedWatching: null,
-          launches: {}
-        })
-        expect(result[1]).to.containSubset({
-          id: 'cdc6985a-d438-11e7-9a2c-4b7062df5e92',
-          userId: 'test',
-          feedName: 'wmfs_incidentSummary_1_0|1234|2016',
-          title: 'Incident 1234/2016',
-          description: 'RTC with 2 casualties and 0 fatalities',
-          startedWatching: null,
-          launches: {}
-        })
-        expect(result[2]).to.containSubset({
-          id: 'cdc6985b-d438-11e7-9a2d-b727a8830fe2',
-          userId: 'test',
-          feedName: 'wmfs_incidentSummary_1_0|1234|2015',
-          title: 'Incident 1234/2015',
-          description: 'RTC with 2 casualties and 0 fatalities',
-          startedWatching: null,
-          launches: {}
-        })
+        expect(result.length).to.eql(4)
+        expect(result[0].feedName).to.eql('wmfs_incidentSummary_1_0|1234|2017')
+        expect(result[1].feedName).to.eql('wmfs_incidentSummary_1_0|1234|2016')
+        expect(result[2].feedName).to.eql('wmfs_incidentSummary_1_0|1234|2015')
+        expect(result[3].feedName).to.eql('wmfs_propertyViewer_1_0|4')
         done()
       })
       .catch(error => {
