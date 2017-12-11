@@ -1,6 +1,7 @@
 {
   "boardTitleTemplate": "Incidents In Progress",
   "watchable": false,
+  "category": "incidents",
   "content": [
     {
       "widget": "template",
