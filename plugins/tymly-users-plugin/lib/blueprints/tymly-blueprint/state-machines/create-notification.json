@@ -1,0 +1,13 @@
+{
+  "Comment": "State machine to apply create a notification for a user.",
+  "version": "1.0",
+  "StartAt": "CreateNotification",
+  "States": {
+    "CreateNotification": {
+      "Type": "Task",
+      "Resource": "module:createNotification",
+      "InputPath": "$",
+      "End": true
+    }
+  }
+}
