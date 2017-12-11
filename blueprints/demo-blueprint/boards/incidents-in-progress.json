@@ -1,0 +1,12 @@
+{
+  "boardTitleTemplate": "Incidents In Progress",
+  "watchable": false,
+  "content": [
+    {
+      "widget": "template",
+      "config": {
+        "template": "Show incidents in progress here..."
+      }
+    }
+  ]
+}

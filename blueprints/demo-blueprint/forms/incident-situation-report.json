@@ -1,0 +1,11 @@
+{
+  "jsonSchema": {
+    "title": "Incident Situation Report",
+    "description": "Captures Incident Situation Report",
+    "type": "object",
+    "required": [],
+    "properties": {}
+  },
+  "uiSchema": {},
+  "widgets": {}
+}

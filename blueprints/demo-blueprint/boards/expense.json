@@ -1,11 +1,12 @@
 {
-  "boardTitleTemplate": "Dashboard",
-  "watchable": false,
+  "boardTitleTemplate": "Expense ${expenseId}",
+  "watchable": true,
+  "category": "expenses",
   "content": [
     {
       "widget": "template",
       "config": {
-        "template": "Personal dashboard for user!"
+        "template": "We can show some HTML stuff here"
       }
     }
   ]
