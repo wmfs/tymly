@@ -32,7 +32,6 @@ describe('notifications tymly-users-plugin tests', function () {
         ]
       },
       function (err, tymlyServices) {
-        console.log('***')
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         done()
@@ -56,7 +55,6 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetNotifications')
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
@@ -82,7 +80,6 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('GetNotifications')
         expect(executionDescription.currentResource).to.eql('module:getNotifications')
         expect(executionDescription.stateMachineName).to.eql(GET_NOTIFICATIONS_STATE_MACHINE)
@@ -107,7 +104,6 @@ describe('notifications tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        // console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('AcknowledgeNotifications')
         expect(executionDescription.currentResource).to.eql('module:acknowledgeNotifications')
         expect(executionDescription.stateMachineName).to.eql(ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE)
@@ -144,7 +140,6 @@ describe('notifications tymly-users-plugin tests', function () {
         userId: 'testUser1'
       },
       function (err, executionDescription) {
-        console.log(executionDescription)
         expect(err).to.eql(null)
         expect(executionDescription.currentStateName).to.eql('CreateNotification')
         expect(executionDescription.currentResource).to.eql('module:createNotification')
@@ -158,7 +153,6 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `select * from tymly.notifications where user_id = 'testUser1'`,
       (err, result) => {
-        console.log('result: ', result.rows)
         if (err) done(err)
         expect(err).to.eql(null)
         expect(result.rows[0].user_id).to.eql('testUser1')
