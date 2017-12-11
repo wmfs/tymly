@@ -11,6 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
 const ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE = 'tymly_acknowledgeNotifications_1_0'
+const CREATE_NOTIFICATIONS_STATE_MACHINE = 'tymly_createNotification_1_0'
 
 describe('notifications tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -31,6 +32,7 @@ describe('notifications tymly-users-plugin tests', function () {
         ]
       },
       function (err, tymlyServices) {
+        console.log('***')
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         done()
@@ -124,6 +126,44 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(result.rows[0].acknowledged).to.not.eql(null)
         expect(result.rows[0].user_id).to.eql('test-user')
         expect(result.rows[0].title).to.eql('Employee Info #3')
+        done()
+      }
+    )
+  })
+
+  it('should manually create a new notification', function (done) {
+    statebox.startExecution(
+      {
+        title: 'testNotification',
+        description: 'This is a notification used for testing',
+        category: 'test'
+      },
+      CREATE_NOTIFICATIONS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'testUser1'
+      },
+      function (err, executionDescription) {
+        console.log(executionDescription)
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('CreateNotification')
+        expect(executionDescription.currentResource).to.eql('module:createNotification')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should check the notification has been manually created', function (done) {
+    client.query(
+      `select * from tymly.notifications where user_id = 'testUser1'`,
+      (err, result) => {
+        console.log('result: ', result.rows)
+        if (err) done(err)
+        expect(err).to.eql(null)
+        expect(result.rows[0].user_id).to.eql('testUser1')
+        expect(result.rows[0].description).to.eql('This is a notification used for testing')
+        expect(result.rows[0].category).to.eql('test')
         done()
       }
     )
