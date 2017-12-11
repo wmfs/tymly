@@ -25,6 +25,7 @@ class AwaitingHumanInput {
     }
 
     if (this.uiType === 'board') {
+      requiredHumanInput.boardKeys = event
       const feedName = [this.uiName]
       Object.keys(data).sort().map(k => feedName.push(data[k]))
 
