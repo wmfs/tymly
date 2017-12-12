@@ -8,7 +8,7 @@ const expect = require('chai').expect
 const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-describe('Demo state machine tests', function () {
+describe('Incidents state machines', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const GET_INCIDENTS_IN_PROG_STATE_MACHINE = 'tymly_getIncidentsInProgress_1_0'
   const GET_INCIDENT_SUMMARY = 'tymly_incidentSummary_1_0'
@@ -41,7 +41,7 @@ describe('Demo state machine tests', function () {
     return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
-  it('should start execution to get incidents in progress', function (done) {
+  xit('should start execution to get incidents in progress', function (done) {
     statebox.startExecution(
       {},
       GET_INCIDENTS_IN_PROG_STATE_MACHINE,
@@ -104,15 +104,19 @@ describe('Demo state machine tests', function () {
         sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
       },
       (err, executionDescription) => {
-        expect(err).to.eql(null)
-        expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
-        expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentSummary')
-        expect(executionDescription.ctx.requiredHumanInput.data.incidentYear).to.eql(2017)
-        expect(executionDescription.ctx.requiredHumanInput.data.incidentNumber).to.eql('1234')
-        expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(2017)
-        expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1234)
-        // getIncidentSummaryExecName = executionDescription.executionName
-        done(err)
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
+          expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentSummary')
+          expect(executionDescription.ctx.requiredHumanInput.data.incidentYear).to.eql(2017)
+          expect(executionDescription.ctx.requiredHumanInput.data.incidentNumber).to.eql('1234')
+          expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(2017)
+          expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1234)
+          // getIncidentSummaryExecName = executionDescription.executionName
+          done()
+        } catch (e) {
+          done(e)
+        }
       }
     )
   })

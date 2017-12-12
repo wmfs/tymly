@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-describe('Demo state machine tests', function () {
+describe('Todo task state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE = 'tymly_fillFireSafetyShortAudit_1_0'
   const todoId = 'cdc33a5c-d438-11e7-a2f3-5bb79decfe33'
