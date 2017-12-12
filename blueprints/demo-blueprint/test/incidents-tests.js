@@ -5,13 +5,17 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Demo state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const GET_INCIDENTS_IN_PROG_STATE_MACHINE = 'tymly_getIncidentsInProgress_1_0'
   const GET_INCIDENT_SUMMARY = 'tymly_incidentSummary_1_0'
-  let statebox, client // , getIncidentsInProgExecName, getIncidentSummaryExecName
+  let statebox // , getIncidentsInProgExecName, getIncidentSummaryExecName
+
+  const pgConnectionString = process.env.PG_CONNECTION_STRING
+  const client = new HlPgClient(pgConnectionString)
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -28,10 +32,13 @@ describe('Demo state machine tests', function () {
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
-        client = tymlyServices.storage.client
         done(err)
       }
     )
+  })
+
+  it('should set up the test resources', function () {
+    return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
   it('should start execution to get incidents in progress', function (done) {

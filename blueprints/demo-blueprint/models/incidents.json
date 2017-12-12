@@ -36,7 +36,7 @@
     "stationCall": {
       "type": "string"
     },
-    "postitionLabel": {
+    "positionLabel": {
       "type": "string"
     },
     "addressLines": {
