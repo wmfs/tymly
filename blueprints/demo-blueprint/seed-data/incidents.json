@@ -1,0 +1,105 @@
+{
+  "propertyNames": [
+    "id",
+    "incidentNumber",
+    "incidentYear",
+    "lat",
+    "long",
+    "overBorder",
+    "stationArea",
+    "stationResponsible",
+    "stationCall",
+    "postitionLabel",
+    "addressLines",
+    "callTime",
+    "sensitive",
+    "incidentStatus",
+    "callOrigin",
+    "callDetails",
+    "lateCall",
+    "initialType",
+    "mobiliseIncidentType",
+    "incidentResultType",
+    "propertyType",
+    "resourceSummary",
+    "callsigns"
+  ],
+  "data": [
+    [
+      "48871e70-de84-11e7-80c1-9a214cf093ae",
+      1234,
+      2017,
+      52.485076,
+      -1.876554,
+      false,
+      "E01 (Walsall)",
+      "E01 (Walsall)",
+      false,
+      "(401532, 297404)",
+      "LITTLE LONDON HOUSE, WEST BROMWICH STREET, PALFREY, WALSALL",
+      "03-DEC-17 01:03:43",
+      false,
+      "CLOSED",
+      "999",
+      "FIRE ALARM ACTUATING IN THE COMMUNAL LANDING CALLER IN FLAT 36 ON THE 9TH FLOOR",
+      false,
+      "SMOKE DETECTOR HIGH RISE",
+      "A3 Smoke Alarm",
+      "FAE",
+      "Dwellings",
+      {
+        "byCallsignType": [
+          "3 PRL",
+          "0 HP",
+          "0 POD",
+          "0 Other"
+        ],
+        "byAttendance": [
+          "3 Total appliances",
+          "3 Brigade vehicles",
+          "0 Over border vehicles",
+          "3 Acting pumps",
+          "0 Officer cars"
+        ],
+        "firstMobilised": "03-DEC-17 01:06:14",
+        "firstInAttendance": "03-DEC-17 01:10:23",
+        "firstStop": "03-DEC-17 01:20:26",
+        "lastApplianceReturned": "03-DEC-17 01:24:46",
+        "reactionTime": "1 minute and 52 seconds",
+        "responseTime": "5 minutes and 36 seconds"
+      },
+      {
+        "callsigns": [
+          {
+            "callsign": "E011",
+            "type": "PPL",
+            "crewCount": 5,
+            "assigned": "03-DEC-17 01:04:47",
+            "mobilised": "03-DEC-17 01:06:39",
+            "attended": "03-DEC-17 01:10:23",
+            "stop": "03-DEC-17 01:20:26",
+            "released": "03-DEC-17 01:24:46"
+          },
+          {
+            "callsign": "E012",
+            "type": "PPL",
+            "crewCount": 5,
+            "assigned": "03-DEC-17 01:04:47",
+            "mobilised": "03-DEC-17 01:06:43",
+            "attended": "03-DEC-17 01:10:39",
+            "released": "03-DEC-17 01:23:12"
+          },
+          {
+            "callsign": "E021",
+            "type": "PPL",
+            "crewCount": 5,
+            "assigned": "03-DEC-17 01:04:47",
+            "mobilised": "03-DEC-17 01:06:14",
+            "attended": "03-DEC-17 01:13:22",
+            "released": "03-DEC-17 01:15:01"
+          }
+        ]
+      }
+    ]
+  ]
+}

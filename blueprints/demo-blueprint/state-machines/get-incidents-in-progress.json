@@ -1,0 +1,31 @@
+{
+  "Comment": "Gets the incidents in progress.",
+  "name": "Incidents in Progress",
+  "version": "1.0",
+  "categories": [
+    "incidents"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "GetIncidentsInProgress",
+  "States": {
+    "GetIncidentsInProgress": {
+      "Type": "Task",
+      "Resource": "module:getIncidentsInProgress",
+      "ResultPath": "$.incidents",
+      "Next": "AwaitingHumanInput"
+    },
+    "AwaitingHumanInput": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "uiType": "board",
+        "uiName": "tymly_incidentsInProgress",
+        "dataPath": "$.incidents"
+      },
+      "ResultPath": "$",
+      "End": true
+    }
+  }
+}

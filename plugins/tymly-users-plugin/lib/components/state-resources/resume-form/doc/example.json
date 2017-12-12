@@ -1,7 +1,0 @@
-{
-  "ResumeForm": {
-    "Type": "Task",
-    "Resource": "module:resumeForm",
-    "InputPath": "$.resumeForm"
-  }
-}
