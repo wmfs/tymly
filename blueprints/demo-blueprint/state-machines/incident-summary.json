@@ -14,8 +14,7 @@
       "Type": "Task",
       "Resource": "module:getBoard",
       "ResourceConfig": {
-        "model": "incidents",
-        "category": "incident"
+        "model": "incidents"
       },
       "ResultPath": "$.incident",
       "Next": "AwaitingHumanInput"

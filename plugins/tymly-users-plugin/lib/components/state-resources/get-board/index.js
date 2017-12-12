@@ -5,7 +5,6 @@ const _ = require('lodash')
 class GetBoard {
   init (resourceConfig, env, callback) {
     this.model = env.bootedServices.storage.models[`tymly_${_.snakeCase(resourceConfig.model)}`]
-    this.category = resourceConfig.category
     callback(null)
   }
 
