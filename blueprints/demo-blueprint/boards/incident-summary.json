@@ -74,7 +74,7 @@
             "showIfUndefined": true
           },
           {
-            "prompt": "Attendence summary",
+            "prompt": "Attendance summary",
             "dataPath": "resourceSummary.byAttendance",
             "showIfUndefined": true
           },
