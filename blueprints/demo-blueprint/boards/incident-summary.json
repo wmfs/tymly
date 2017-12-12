@@ -1,5 +1,5 @@
 {
-  "boardTitleTemplate": "Incident ${incident.incidentNumber}/${incident.incidentYear}",
+  "boardTitleTemplate": "Incident ${incidentNumber}/${incidentYear}",
   "watchable": true,
   "category": "incidents",
   "content": [
@@ -18,44 +18,46 @@
           "lonProperty": "lon",
           "editable": false,
           "drawing": false,
-          "layers": ["hydrants"],
+          "layers": [
+            "hydrants"
+          ],
           "3d": false,
           "initialZoom": "4"
         },
         "properties": [
           {
             "prompt": "Over border",
-            "dataPath": "incident.overBorder",
+            "dataPath": "overBorder",
             "showIfUndefined": true
           },
           {
             "prompt": "Station area",
-            "dataPath": "incident.stationArea",
+            "dataPath": "stationArea",
             "showIfUndefined": true
           },
           {
             "prompt": "Station responsible",
-            "dataPath": "incident.stationResponsible",
+            "dataPath": "stationResponsible",
             "showIfUndefined": true
           },
           {
             "prompt": "Station call",
-            "dataPath": "incident.stationCall",
+            "dataPath": "stationCall",
             "showIfUndefined": true
           },
           {
             "prompt": "Position latitude",
-            "dataPath": "incident.lat",
+            "dataPath": "lat",
             "showIfUndefined": true
           },
           {
             "prompt": "Position longitude",
-            "dataPath": "incident.long",
+            "dataPath": "long",
             "showIfUndefined": true
           },
           {
             "prompt": "Address",
-            "dataPath": "incident.addressLines",
+            "dataPath": "addressLines",
             "showIfUndefined": true
           }
         ]
@@ -68,43 +70,84 @@
         "properties": [
           {
             "prompt": "Resource usage",
-            "dataPath": "incident.resourceSummary.byCallsignType",
+            "dataPath": "resourceSummary.byCallsignType",
             "showIfUndefined": true
           },
           {
             "prompt": "Attendence summary",
-            "dataPath": "incident.resourceSummary.byAttendance",
+            "dataPath": "resourceSummary.byAttendance",
             "showIfUndefined": true
           },
           {
             "prompt": "First Mobilised",
-            "dataPath": "incident.resourceSummary.firstMobilised",
+            "dataPath": "resourceSummary.firstMobilised",
             "showIfUndefined": true
           },
           {
             "prompt": "First in Attendance",
-            "dataPath": "incident.resourceSummary.firstInAttendance",
+            "dataPath": "resourceSummary.firstInAttendance",
             "showIfUndefined": true
           },
           {
             "prompt": "First Stop",
-            "dataPath": "incident.resourceSummary.firstStop",
+            "dataPath": "resourceSummary.firstStop",
             "showIfUndefined": true
           },
           {
             "prompt": "Last Appliance Returned",
-            "dataPath": "incident.resourceSummary.lastApplianceReturned",
+            "dataPath": "resourceSummary.lastApplianceReturned",
             "showIfUndefined": true
           },
           {
             "prompt": "Reaction Time",
-            "dataPath": "incident.resourceSummary.reactionTime",
+            "dataPath": "resourceSummary.reactionTime",
             "showIfUndefined": true
           },
           {
             "prompt": "Response Time",
-            "dataPath": "incident.resourceSummary.responseTime",
+            "dataPath": "resourceSummary.responseTime",
             "showIfUndefined": true
+          }
+        ]
+      }
+    },
+    {
+      "widget": "tabularlist",
+      "config": {
+        "header": "Individual Resources",
+        "dataPath": "callsigns",
+        "columns": [
+          {
+            "header": "Callsign",
+            "dataPath": "callsign"
+          },
+          {
+            "header": "Type",
+            "dataPath": "type"
+          },
+          {
+            "header": "Crew Count",
+            "dataPath": "crewCount"
+          },
+          {
+            "header": "Assigned",
+            "dataPath": "assigned"
+          },
+          {
+            "header": "Mobilised",
+            "dataPath": "mobilised"
+          },
+          {
+            "header": "Attended",
+            "dataPath": "attended"
+          },
+          {
+            "header": "Stop",
+            "dataPath": "stop"
+          },
+          {
+            "header": "Released",
+            "dataPath": "released"
           }
         ]
       }

@@ -18,7 +18,7 @@ class GetBoard {
 
     this.model.findOne({where}, (err, doc) => {
       if (err) context.sendTaskFailure({error: 'getBoardFail', cause: err})
-      context.sendTaskSuccess({[this.category]: doc})
+      context.sendTaskSuccess(doc)
     })
   }
 }

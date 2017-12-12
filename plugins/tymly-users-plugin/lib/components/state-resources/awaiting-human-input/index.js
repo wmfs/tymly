@@ -27,7 +27,7 @@ class AwaitingHumanInput {
     if (this.uiType === 'board') {
       const boardKeys = event
       if (this.dataPath !== '$') {
-        const keyToRemove = Object.keys(jp.value(event, this.dataPath))[0]
+        const keyToRemove = this.dataPath.split('.')[1]
         delete boardKeys[keyToRemove]
       }
       requiredHumanInput.boardKeys = boardKeys

@@ -100,8 +100,8 @@ describe('Demo state machine tests', function () {
         expect(err).to.eql(null)
         expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
         expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentSummary')
-        expect(executionDescription.ctx.requiredHumanInput.data.incident.incidentYear).to.eql(2017)
-        expect(executionDescription.ctx.requiredHumanInput.data.incident.incidentNumber).to.eql('1234')
+        expect(executionDescription.ctx.requiredHumanInput.data.incidentYear).to.eql(2017)
+        expect(executionDescription.ctx.requiredHumanInput.data.incidentNumber).to.eql('1234')
         expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(2017)
         expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1234)
         // getIncidentSummaryExecName = executionDescription.executionName
