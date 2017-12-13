@@ -121,8 +121,6 @@ describe('awaitingUserInput state tests', function () {
           .includes('watchBoardSubscriptionId'))
         expect(executionDescription.ctx.requiredHumanInput.feedName)
           .to.eql('wmfs_incidentSummary_1_0|1|1999')
-        expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(1999)
-        expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1)
         done(err)
       }
     )
