@@ -25,12 +25,9 @@ class AwaitingHumanInput {
     }
 
     if (this.uiType === 'board') {
-      const boardKeys = event
-      if (this.dataPath !== '$') {
-        const keyToRemove = this.dataPath.split('.')[1]
-        delete boardKeys[keyToRemove]
-      }
-      requiredHumanInput.boardKeys = boardKeys
+      if (event.data) requiredHumanInput.data = event.data
+      if (event.boardKeys) requiredHumanInput.boardKeys = event.boardKeys
+
       const feedName = [this.uiName]
       Object.keys(data).sort().map(k => feedName.push(data[k]))
 

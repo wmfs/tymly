@@ -16,8 +16,8 @@ class GetBoard {
     })
 
     model.findOne({where}, (err, doc) => {
-      if (err) context.sendTaskFailure({error: 'getBoardFail', cause: err})
-      context.sendTaskSuccess(doc)
+      if (err) return context.sendTaskFailure({error: 'getBoardFail', cause: err})
+      context.sendTaskSuccess({data: doc, boardKeys: event})
     })
   }
 }
