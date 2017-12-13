@@ -27,7 +27,16 @@ describe('Demo tests', function () {
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
-        config: {}
+        config: {
+          auth: {
+            secret: 'Shhh!',
+            audience: 'IAmTheAudience!'
+          },
+
+          defaultUsers: {
+            'Dave': ['tymly_tymlyTestAdmin']
+          }
+        }
       },
       function (err, tymlyServices) {
         models = tymlyServices.storage.models

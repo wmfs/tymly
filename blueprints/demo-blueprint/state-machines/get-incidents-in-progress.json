@@ -27,7 +27,6 @@
         "uiName": "tymly_incidentsInProgress",
         "dataPath": "$.incidents"
       },
-      "ResultPath": "$",
       "End": true
     }
   }

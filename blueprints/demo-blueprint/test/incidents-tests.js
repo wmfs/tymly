@@ -5,17 +5,35 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const jwt = require('jsonwebtoken')
+const Buffer = require('safe-buffer').Buffer
 const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Incidents state machines', function () {
   this.timeout(process.env.TIMEOUT || 5000)
+
   const GET_INCIDENTS_IN_PROG_STATE_MACHINE = 'tymly_getIncidentsInProgress_1_0'
   const GET_INCIDENT_SUMMARY = 'tymly_incidentSummary_1_0'
-  let statebox
+
+  let statebox, adminToken
+
+  const secret = 'Shhh!'
+  const audience = 'IAmTheAudience!'
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
+
+  it('should create a usable admin token for Dave', function () {
+    adminToken = jwt.sign(
+      {},
+      new Buffer(secret, 'base64'),
+      {
+        subject: 'Dave',
+        audience: audience
+      }
+    )
+  })
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -29,7 +47,16 @@ describe('Incidents state machines', function () {
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
-        config: {}
+        config: {
+          auth: {
+            secret: secret,
+            audience: audience
+          },
+
+          defaultUsers: {
+            'Dave': ['tymly_tymlyTestAdmin']
+          }
+        }
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
@@ -47,7 +74,9 @@ describe('Incidents state machines', function () {
       {},
       GET_INCIDENTS_IN_PROG_STATE_MACHINE,
       {
-        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput',
+        userId: 'Dave',
+        token: adminToken
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)

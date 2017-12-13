@@ -14,3 +14,10 @@ INSERT INTO tymly.watched_boards
 (user_id,feed_name,category,category_label,title,description,started_watching,launches)
 VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_incidentInProgress_1_0', 'incidents', 'Incidents', 'Incidents In Progress', 'View incidents in progress', null, '[{"input": {}, "stateMachineName": "tymly_getIncidentsInProgress_1_0"}]');
 
+INSERT INTO tymly.notifications
+(user_id, title, category, launches) VALUES
+('auth0|5a157ade1932044615a1c502', 'Incident at a property you are watching', 'incidents', '{}');
+
+INSERT INTO tymly.watched_boards
+(user_id,feed_name,category,category_label,title,description,started_watching,launches)
+VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_viewProperty_1_0', 'gazetteer', 'Gazetteer', 'Gazetteer #1234', 'View property', null, '[{"input": {"uprn": 1234}, "stateMachineName": "wmfs_viewProperty_1_0"}]');

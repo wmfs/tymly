@@ -45,7 +45,16 @@ describe('Todo task state machine tests', function () {
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
-        config: {}
+        config: {
+          auth: {
+            secret: 'Shhh!',
+            audience: 'IAmTheAudience!'
+          },
+
+          defaultUsers: {
+            'Dave': ['tymly_tymlyTestAdmin']
+          }
+        }
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
