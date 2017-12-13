@@ -88,7 +88,7 @@ describe('Incidents state machines', function () {
     )
   })
 
-  xit('should tear down the test resources', function () {
+  it('should tear down the test resources', function () {
     return sqlScriptRunner('./scripts/cleanup.sql', client)
   })
 })
