@@ -1,6 +1,6 @@
 'use strict'
 
-class AcknowledgeNotifications {
+class GetDataFromRestApi {
   init (resourceConfig, env, callback) {
     callback(null)
   }
@@ -10,4 +10,4 @@ class AcknowledgeNotifications {
   }
 }
 
-module.exports = AcknowledgeNotifications
+module.exports = GetDataFromRestApi
