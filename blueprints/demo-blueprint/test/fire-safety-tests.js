@@ -39,7 +39,8 @@ describe('Todo task state machine tests', function () {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-solr-plugin'),
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-express-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')

@@ -2,7 +2,9 @@
   "name": "demo-blueprint",
   "version": "0.0.1",
   "author": "WMFS",
-  "dependencies": {},
+  "dependencies": {
+    "tymly-express-plugin": "0.0.11"
+  },
   "devDependencies": {
     "chai": "^4.1.0",
     "chai-subset": "^1.6.0",

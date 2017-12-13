@@ -12,7 +12,10 @@
   "States": {
     "GetIncidentsInProgress": {
       "Type": "Task",
-      "Resource": "module:getIncidentsInProgress",
+      "Resource": "module:getDataFromRestApi",
+      "ResourceConfig": {
+        "url": "https://tymly.api.net/relay/v1/get-incidents-in-progress"
+      },
       "ResultPath": "$.incidents",
       "Next": "AwaitingHumanInput"
     },
