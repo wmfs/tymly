@@ -12,7 +12,7 @@ describe('Incidents state machines', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const GET_INCIDENTS_IN_PROG_STATE_MACHINE = 'tymly_getIncidentsInProgress_1_0'
   const GET_INCIDENT_SUMMARY = 'tymly_incidentSummary_1_0'
-  let statebox // , getIncidentsInProgExecName, getIncidentSummaryExecName
+  let statebox
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -41,7 +41,7 @@ describe('Incidents state machines', function () {
     return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
-  xit('should start execution to get incidents in progress', function (done) {
+  it('should start execution to get incidents in progress', function (done) {
     statebox.startExecution(
       {},
       GET_INCIDENTS_IN_PROG_STATE_MACHINE,
@@ -56,42 +56,10 @@ describe('Incidents state machines', function () {
         expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
         expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentsInProgress')
         expect(Object.keys(executionDescription.ctx.requiredHumanInput.data).includes('incidents')).to.eql(true)
-        // getIncidentsInProgExecName = executionDescription.executionName
         done(err)
       }
     )
   })
-
-  // it('should continute the execution', function (done) {
-  //   statebox.sendTaskSuccess(
-  //     getIncidentsInProgExecName,
-  //     {},
-  //     {},
-  //     (err, executionDescription) => {
-  //       expect(err).to.eql(null)
-  //       done(err)
-  //     }
-  //   )
-  // })
-  //
-  // it('should complete the execution', function (done) {
-  //   statebox.waitUntilStoppedRunning(
-  //     getIncidentsInProgExecName,
-  //     (err, executionDescription) => {
-  //       try {
-  //         expect(err).to.eql(null)
-  //         expect(executionDescription.executionName).to.eql(getIncidentsInProgExecName)
-  //         expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
-  //         expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentsInProgress')
-  //
-  //         console.log(executionDescription.ctx)
-  //         done(err)
-  //       } catch (e) {
-  //         done(e)
-  //       }
-  //     }
-  //   )
-  // })
 
   it('should start execution to get incident summary', function (done) {
     statebox.startExecution(
@@ -112,7 +80,6 @@ describe('Incidents state machines', function () {
           expect(executionDescription.ctx.requiredHumanInput.data.incidentNumber).to.eql('1234')
           expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(2017)
           expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1234)
-          // getIncidentSummaryExecName = executionDescription.executionName
           done()
         } catch (e) {
           done(e)
@@ -121,7 +88,7 @@ describe('Incidents state machines', function () {
     )
   })
 
-  it('should tear down the test resources', function () {
+  xit('should tear down the test resources', function () {
     return sqlScriptRunner('./scripts/cleanup.sql', client)
   })
 })
