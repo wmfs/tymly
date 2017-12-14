@@ -5,17 +5,35 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const jwt = require('jsonwebtoken')
+const Buffer = require('safe-buffer').Buffer
 const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Incidents state machines', function () {
   this.timeout(process.env.TIMEOUT || 5000)
+
   const GET_INCIDENTS_IN_PROG_STATE_MACHINE = 'tymly_getIncidentsInProgress_1_0'
   const GET_INCIDENT_SUMMARY = 'tymly_incidentSummary_1_0'
-  let statebox // , getIncidentsInProgExecName, getIncidentSummaryExecName
+
+  let statebox, adminToken
+
+  const secret = 'Shhh!'
+  const audience = 'IAmTheAudience!'
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
+
+  it('should create a usable admin token for Dave', function () {
+    adminToken = jwt.sign(
+      {},
+      new Buffer(secret, 'base64'),
+      {
+        subject: 'Dave',
+        audience: audience
+      }
+    )
+  })
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -23,12 +41,22 @@ describe('Incidents state machines', function () {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-solr-plugin'),
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-express-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
-        config: {}
+        config: {
+          auth: {
+            secret: secret,
+            audience: audience
+          },
+
+          defaultUsers: {
+            'Dave': ['tymly_tymlyTestAdmin']
+          }
+        }
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
@@ -41,12 +69,14 @@ describe('Incidents state machines', function () {
     return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
-  xit('should start execution to get incidents in progress', function (done) {
+  it('should start execution to get incidents in progress', function (done) {
     statebox.startExecution(
       {},
       GET_INCIDENTS_IN_PROG_STATE_MACHINE,
       {
-        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput'
+        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput',
+        userId: 'Dave',
+        token: adminToken
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
@@ -56,42 +86,10 @@ describe('Incidents state machines', function () {
         expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
         expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentsInProgress')
         expect(Object.keys(executionDescription.ctx.requiredHumanInput.data).includes('incidents')).to.eql(true)
-        // getIncidentsInProgExecName = executionDescription.executionName
         done(err)
       }
     )
   })
-
-  // it('should continute the execution', function (done) {
-  //   statebox.sendTaskSuccess(
-  //     getIncidentsInProgExecName,
-  //     {},
-  //     {},
-  //     (err, executionDescription) => {
-  //       expect(err).to.eql(null)
-  //       done(err)
-  //     }
-  //   )
-  // })
-  //
-  // it('should complete the execution', function (done) {
-  //   statebox.waitUntilStoppedRunning(
-  //     getIncidentsInProgExecName,
-  //     (err, executionDescription) => {
-  //       try {
-  //         expect(err).to.eql(null)
-  //         expect(executionDescription.executionName).to.eql(getIncidentsInProgExecName)
-  //         expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
-  //         expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentsInProgress')
-  //
-  //         console.log(executionDescription.ctx)
-  //         done(err)
-  //       } catch (e) {
-  //         done(e)
-  //       }
-  //     }
-  //   )
-  // })
 
   it('should start execution to get incident summary', function (done) {
     statebox.startExecution(
@@ -112,7 +110,6 @@ describe('Incidents state machines', function () {
           expect(executionDescription.ctx.requiredHumanInput.data.incidentNumber).to.eql('1234')
           expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentYear).to.eql(2017)
           expect(executionDescription.ctx.requiredHumanInput.boardKeys.incidentNumber).to.eql(1234)
-          // getIncidentSummaryExecName = executionDescription.executionName
           done()
         } catch (e) {
           done(e)

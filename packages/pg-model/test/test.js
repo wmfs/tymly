@@ -16,6 +16,7 @@ chai.use(chaiSubset)
 const expect = chai.expect
 
 describe('Run some basic tests', function () {
+  this.timeout(process.env.TIMEOUT || 5000)
   let client
   let models
   let phobosId

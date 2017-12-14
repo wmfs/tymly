@@ -2,7 +2,9 @@
   "name": "demo-blueprint",
   "version": "0.0.1",
   "author": "WMFS",
-  "dependencies": {},
+  "dependencies": {
+    "tymly-express-plugin": "0.0.11"
+  },
   "devDependencies": {
     "chai": "^4.1.0",
     "chai-subset": "^1.6.0",
@@ -14,7 +16,9 @@
     "tymly-pg-plugin": "0.0.6",
     "tymly-solr-plugin": "0.0.4",
     "tymly-users-plugin": "0.0.1",
-    "hl-pg-client": "0.0.1"
+    "hl-pg-client": "0.0.1",
+    "jsonwebtoken": "7.4.1",
+    "safe-buffer": "5.1.1"
   },
   "scripts": {
     "lint": "standard",

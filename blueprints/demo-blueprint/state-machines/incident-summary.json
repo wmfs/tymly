@@ -16,7 +16,6 @@
       "ResourceConfig": {
         "model": "incidents"
       },
-      "ResultPath": "$.incident",
       "Next": "AwaitingHumanInput"
     },
     "AwaitingHumanInput": {
@@ -24,10 +23,8 @@
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "uiType": "board",
-        "uiName": "tymly_incidentSummary",
-        "dataPath": "$.incident"
+        "uiName": "tymly_incidentSummary"
       },
-      "ResultPath": "$",
       "End": true
     }
   }

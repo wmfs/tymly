@@ -22,6 +22,7 @@ process.on('unhandledRejection', (reason, p) => {
 })
 
 describe('Test promise API', function () {
+  this.timeout(process.env.TIMEOUT || 5000)
   let client
   let models
   let phobosId

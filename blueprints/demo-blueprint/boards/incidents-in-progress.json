@@ -8,6 +8,27 @@
       "config": {
         "template": "Show incidents in progress here..."
       }
+    },
+    {
+      "widget": "tabularlist",
+      "config": {
+        "header": "Incidents",
+        "dataPath": "incidents",
+        "columns": [
+          {
+            "header": "Incident Number",
+            "dataPath": "incidentNumber"
+          },
+          {
+            "header": "Call Time",
+            "dataPath": "callTime"
+          },
+          {
+            "header": "Call Time Year",
+            "dataPath": "callTimeYear"
+          }
+        ]
+      }
     }
   ]
 }

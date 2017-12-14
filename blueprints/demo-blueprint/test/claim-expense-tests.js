@@ -34,12 +34,22 @@ describe('Expenses state machine', function () {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-solr-plugin'),
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-express-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
         ],
-        config: {}
+        config: {
+          auth: {
+            secret: 'Shhh!',
+            audience: 'IAmTheAudience!'
+          },
+
+          defaultUsers: {
+            'Dave': ['tymly_tymlyTestAdmin']
+          }
+        }
       },
       function (err, tymlyServices) {
         statebox = tymlyServices.statebox
