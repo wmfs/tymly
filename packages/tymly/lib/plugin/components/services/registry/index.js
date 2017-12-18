@@ -60,9 +60,9 @@ class RegistryService {
                   cb(null)
                 } else {
                   // Key not in storage, go create
+                  environmentVariable = dottie.get(value, 'schema.properties.environmentVariableName')
                   if (process.env[dottie.get(value, 'schema.properties.environmentVariableName')]) {
                     defaultValue = process.env[dottie.get(value, 'schema.properties.environmentVariableName')]
-                    environmentVariable = dottie.get(value, 'schema.properties.environmentVariableName')
                   } else {
                     if (dottie.get(value, 'schema.properties.value.default')) {
                       defaultValue = dottie.get(value, 'schema.properties.value.default')
