@@ -7,7 +7,7 @@ VALUES (1234,2017,52.485076,-1.876554,false,'E01 (Walsall)','E01 (Walsall)',fals
 
 INSERT INTO tymly.watched_boards
 (user_id,feed_name,category,category_label,title,description,started_watching,launches)
-VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_incidentSummary_1_0|1234|2017', 'incidents', 'Incidents', 'Incident 1234/2017', 'RTC with 3 casualties and 0 fatalities', null, '[{"input": {"incidentYear": 2017, "incidentNumber": 1234}, "stateMachineName": "tymly_incidentSummary_1_0"}]');
+VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_incidentSummary_1_0|1234|2017', 'incidents', 'Incidents', 'Incident 1234/2017', 'RTC with 3 casualties and 0 fatalities', null, '[{"input": {"boardKeys":{"incidentYear": 2017, "incidentNumber": 1234}}, "stateMachineName": "tymly_incidentSummary_1_0"}]');
 
 
 INSERT INTO tymly.watched_boards
@@ -20,4 +20,4 @@ INSERT INTO tymly.notifications
 
 INSERT INTO tymly.watched_boards
 (user_id,feed_name,category,category_label,title,description,started_watching,launches)
-VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_viewProperty_1_0', 'gazetteer', 'Gazetteer', 'Gazetteer #1234', 'View property', null, '[{"input": {"uprn": 1234}, "stateMachineName": "wmfs_viewProperty_1_0"}]');
+VALUES ('auth0|5a157ade1932044615a1c502', 'wmfs_viewProperty_1_0', 'gazetteer', 'Gazetteer', 'Gazetteer #1234', 'View property', null, '[{"input": {"boardKeys":{"uprn": 1234}}, "stateMachineName": "wmfs_viewProperty_1_0"}]');

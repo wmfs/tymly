@@ -69,7 +69,7 @@ describe('Incidents state machines', function () {
     return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
-  it('should start execution to get incidents in progress', function (done) {
+  xit('should start execution to get incidents in progress', function (done) {
     statebox.startExecution(
       {},
       GET_INCIDENTS_IN_PROG_STATE_MACHINE,
@@ -94,8 +94,10 @@ describe('Incidents state machines', function () {
   it('should start execution to get incident summary', function (done) {
     statebox.startExecution(
       {
-        incidentYear: 2017,
-        incidentNumber: 1234
+        boardKeys: {
+          incidentYear: 2017,
+          incidentNumber: 1234
+        }
       },
       GET_INCIDENT_SUMMARY,
       {
