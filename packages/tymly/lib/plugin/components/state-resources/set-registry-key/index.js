@@ -7,20 +7,9 @@ module.exports = class SetRegistryKey {
   }
 
   run (event, context) {
-    this.key = event.key
-    this.value = event.value
-
-    this.registry.set(this.key, this.value, function (err) {
-      if (err) {
-        context.sendTaskFailure(
-          {
-            error: 'SetRegistryKeyFail',
-            cause: err
-          }
-        )
-      } else {
-        context.sendTaskSuccess()
-      }
+    this.registry.set(event.key, event.value, function (err) {
+      if (err) return context.sendTaskFailure({error: 'SetRegistryKeyFail', cause: err})
+      context.sendTaskSuccess()
     })
   }
 }
