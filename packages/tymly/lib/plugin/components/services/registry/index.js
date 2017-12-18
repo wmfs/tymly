@@ -16,7 +16,7 @@ class RegistryService {
     this.bootedRegistry = options.bootedServices.registry
 
     this.registry = {}
-    this.registryKeyModel = storage.models.tymly_registryKey // just describes the registry-key table (columns, etc.)
+    this.registryKeyModel = storage.models.tymly_registryKey // describes the registry-key table (columns, etc.)
     this.blueprintRegistryKeys = options.blueprintComponents.registryKeys || {} // the registry-keys from the blueprint
 
     this.ensureBlueprintKeys(options.messages, function (err) {
@@ -116,11 +116,6 @@ class RegistryService {
   refresh (callback) {
     this.registryKeyModel.find({})
       .then(storedRegistry => {
-        /*
-         * storedRegistry is the rows from the DB
-         * _this.registry is empty before the reduce
-         * _this.registry gets populated after the reduce with what's in storedRegistry
-         */
         this.registry = storedRegistry.reduce((result, value) => {
           result[value.key] = {
             value: value.value.value, // Easy now

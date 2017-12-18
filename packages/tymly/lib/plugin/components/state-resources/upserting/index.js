@@ -11,7 +11,7 @@ module.exports = class Upserting {
       this.model = models[this.modelId]
       callback(null)
     } else {
-      callback(boom.notFound("Unable to initialize Persisting state... unknown model '" + this.modelId + "'", {modelId: this.modelId}))
+      callback(boom.notFound('Unable to initialize Persisting state... unknown model \'' + this.modelId + '\'', {modelId: this.modelId}))
     }
   } // init
 
@@ -21,10 +21,11 @@ module.exports = class Upserting {
     }
 
     const docToPersist = _.cloneDeep(doc)
+
     docToPersist._executionName = context.executionName
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
 
-    this.model.upsert(docToPersist, { setMissingPropertiesToNull: this.setMissingPropertiesToNull })
+    this.model.upsert(docToPersist, {setMissingPropertiesToNull: this.setMissingPropertiesToNull})
       .then(() => context.sendTaskSuccess())
       .catch(err => failed(context, 'FAILED_TO_UPSERT', JSON.stringify(err)))
   } // run
