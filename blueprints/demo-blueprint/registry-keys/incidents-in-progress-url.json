@@ -1,0 +1,14 @@
+{
+  "label": "Incidents in progress url",
+  "description": "URL for getting from Tymly front facing API",
+  "schema": {
+    "properties": {
+      "environmentVariableName": "INCIDENTS_IN_PROGRESS_URL",
+      "value": {
+        "type": "string",
+        "default": "Please insert API URL here"
+      }
+    },
+    "required": ["value"]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "CreateNotification": {
+    "Type": "Task",
+    "Resource": "module:createNotification",
+    "InputPath": "$"
+  }
+}

@@ -7,8 +7,7 @@
   "dependencies": {
     "dottie": "2.0.0",
     "async": "2.6.0",
-    "jsonpath": "0.2.12",
-    "xmlhttprequest": "1.8.0"
+    "jsonpath": "0.2.12"
   },
   "devDependencies": {
     "chai": "4.1.2",

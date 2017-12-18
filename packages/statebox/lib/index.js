@@ -204,6 +204,7 @@ class Statebox {
   } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
+    console.log('sending failure')
     this.ready.then(() => {
       this._sendTaskFailure(executionName, options, executionOptions, callback)
     })

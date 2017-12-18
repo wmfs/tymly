@@ -69,26 +69,25 @@ describe('Incidents state machines', function () {
     return sqlScriptRunner('./scripts/setup.sql', client)
   })
 
-  xit('should start execution to get incidents in progress', function (done) {
-    statebox.startExecution(
-      {},
-      GET_INCIDENTS_IN_PROG_STATE_MACHINE,
-      {
-        sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput',
-        userId: 'Dave',
-        token: adminToken
-      },
-      (err, executionDescription) => {
-        expect(err).to.eql(null)
-        console.log(executionDescription.ctx.requiredHumanInput)
-        expect(executionDescription.currentStateName).to.eql('AwaitingHumanInput')
-        expect(executionDescription.status).to.eql('RUNNING')
-        expect(executionDescription.ctx.requiredHumanInput.uiType).to.eql('board')
-        expect(executionDescription.ctx.requiredHumanInput.uiName).to.eql('tymly_incidentsInProgress')
-        expect(Object.keys(executionDescription.ctx.requiredHumanInput.data).includes('incidents')).to.eql(true)
-        done(err)
-      }
-    )
+  it('should start execution to get incidents in progress', function (done) {
+    if (process.env.INCIDENTS_IN_PROGRESS_URL && process.env.INCIDENTS_IN_PROGRESS_TOKEN) {
+      statebox.startExecution(
+        {},
+        GET_INCIDENTS_IN_PROG_STATE_MACHINE,
+        {
+          sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:awaitingHumanInput',
+          userId: 'Dave',
+          token: adminToken
+        },
+        (err, executionDescription) => {
+          expect(err).to.eql(null)
+          expect(executionDescription.ctx.requiredHumanInput.data.result.incidentsInProgress).to.be.an('array')
+          done(err)
+        }
+      )
+    } else {
+      done()
+    }
   })
 
   it('should start execution to get incident summary', function (done) {

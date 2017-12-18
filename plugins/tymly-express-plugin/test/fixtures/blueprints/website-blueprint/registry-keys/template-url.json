@@ -1,0 +1,13 @@
+{
+  "label": "Template URL",
+  "description": "URL for getting from Tymly front facing API",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "string",
+        "default": "https://api.wmfs.net/relay/v1/incidents-in-progress"
+      }
+    },
+    "required": ["value"]
+  }
+}

@@ -13,8 +13,9 @@
     "GetIncidentsInProgress": {
       "Type": "Task",
       "Resource": "module:getDataFromRestApi",
-      "ResourceConfig": {
-        "url": "https://tymly.api.net/relay/v1/get-incidents-in-progress"
+      "ResourceConfig" : {
+        "templateUrlRegistryKey": "incidentsInProgressUrl",
+        "authTokenRegistryKey": "incidentsInProgressToken"
       },
       "ResultPath": "$.incidents",
       "Next": "AwaitingHumanInput"
