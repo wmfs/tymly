@@ -107,7 +107,7 @@ function addResources (statebox, options) {
 } // _addResources
 
 module.exports = {
-  bootAfter: ['storage', 'temp', 'categories'],
+  bootAfter: ['storage', 'temp', 'categories', 'registry'],
   refProperties: {
     stateMachineName: 'stateMachines'
   },

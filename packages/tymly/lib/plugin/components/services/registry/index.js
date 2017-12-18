@@ -41,12 +41,14 @@ class RegistryService {
   * */
   ensureBlueprintKeys (messages, callback) {
     const _this = this
+    let environmentVariable
 
     if (_this.blueprintRegistryKeys) {
       async.forEachOf(
         _this.blueprintRegistryKeys,
 
         function (value, key, cb) {
+          let defaultValue
           _this.registryKeyModel.findById(
             key,
             function (err, doc) {
@@ -58,10 +60,20 @@ class RegistryService {
                   cb(null)
                 } else {
                   // Key not in storage, go create
-                  const defaultValue = dottie.get(value, 'schema.properties.value.default')
+                  if (process.env[dottie.get(value, 'schema.properties.environmentVariableName')]) {
+                    defaultValue = process.env[dottie.get(value, 'schema.properties.environmentVariableName')]
+                    environmentVariable = dottie.get(value, 'schema.properties.environmentVariableName')
+                  } else {
+                    if (dottie.get(value, 'schema.properties.value.default')) {
+                      defaultValue = dottie.get(value, 'schema.properties.value.default')
+                    } else {
+                      defaultValue = null
+                    }
+                  }
                   _this.registryKeyModel.create(
                     {
                       key: key,
+                      environmentVariableName: environmentVariable,
                       value: {
                         value: defaultValue
                       }
