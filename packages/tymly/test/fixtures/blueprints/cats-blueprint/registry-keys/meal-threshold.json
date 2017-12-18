@@ -3,6 +3,7 @@
   "description": "The number of meals that will cause a cat some mild discomfort",
   "schema": {
     "properties": {
+      "environmentVariableName": "MEAL_THRESHOLD",
       "value": {
         "type": "number",
         "default": 3
