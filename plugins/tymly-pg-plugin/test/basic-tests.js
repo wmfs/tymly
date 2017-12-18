@@ -229,24 +229,22 @@ describe('PostgreSQL storage tests', function () {
   })
 
   it('should ensure the categories service (which has JSONB columns) still works', function () {
-    expect(categoryService.categories).to.eql(
-      {
-        gas: {
-          category: 'gas',
-          label: 'Gas',
-          styling: {
-            'background-color': '#80C342'
-          }
-        },
-        terrestrial: {
-          category: 'terrestrial',
-          label: 'terrestrial',
-          styling: {
-            'background-color': '#5F5F5F '
-          }
-        }
+    expect(Object.keys(categoryService.categories).includes('gas')).to.eql(true)
+    expect(Object.keys(categoryService.categories).includes('terrestrial')).to.eql(true)
+    expect(categoryService.categories['gas']).to.eql({
+      category: 'gas',
+      label: 'Gas',
+      styling: {
+        'background-color': '#80C342'
       }
-    )
+    })
+    expect(categoryService.categories['terrestrial']).to.eql({
+      category: 'terrestrial',
+      label: 'terrestrial',
+      styling: {
+        'background-color': '#5F5F5F '
+      }
+    })
   })
 
   it('should load seed-data into the db (which has a JSONB column)', function (done) {
