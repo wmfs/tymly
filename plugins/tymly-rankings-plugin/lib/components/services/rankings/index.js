@@ -17,14 +17,14 @@ class RankingService {
 
     options.messages.info('Finding rankings')
 
-    const rankingKeysWithValues = Object.keys(rankings).filter(key => {
+    const rankingKeysWithValuesAndRegistry = Object.keys(rankings).filter(key => {
       const value = rankings[key]
-      if (value.source && value.factors) {
+      if (value.source && value.factors && options.bootedServices.registry.registry[key]) {
         return key
       }
     })
 
-    async.each(rankingKeysWithValues, (key, cb) => {
+    async.each(rankingKeysWithValuesAndRegistry, (key, cb) => {
       const value = rankings[key]
       client.query(
         generateViewStatement({
