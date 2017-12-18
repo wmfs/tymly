@@ -8,11 +8,11 @@
   "instigators": [
     "user"
   ],
-  "StartAt": "GetBoard",
+  "StartAt": "GetBoardData",
   "States": {
-    "GetBoard": {
+    "GetBoardData": {
       "Type": "Task",
-      "Resource": "module:getBoard",
+      "Resource": "module:getBoardData",
       "ResourceConfig": {
         "model": "incidents"
       },
