@@ -1,6 +1,6 @@
 'use strict'
 
-class GetBoard {
+class GetBoardData {
   init (resourceConfig, env, callback) {
     this.models = env.bootedServices.storage.models
     this.modelName = resourceConfig.model
@@ -22,4 +22,4 @@ class GetBoard {
   }
 }
 
-module.exports = GetBoard
+module.exports = GetBoardData
