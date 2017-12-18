@@ -1,6 +1,6 @@
 'use strict'
 
-class GetBoard {
+class GetBoardData {
   init (resourceConfig, env, callback) {
     this.models = env.bootedServices.storage.models
     this.modelName = resourceConfig.model
@@ -11,15 +11,15 @@ class GetBoard {
     const model = this.models[`${context.stateMachineMeta.namespace}_${this.modelName}`]
     const where = {}
 
-    Object.keys(event).map(k => {
-      where[k] = {equals: event[k]}
+    Object.keys(event.boardKeys).map(k => {
+      where[k] = {equals: event.boardKeys[k]}
     })
 
     model.findOne({where}, (err, doc) => {
       if (err) return context.sendTaskFailure({error: 'getBoardFail', cause: err})
-      context.sendTaskSuccess({data: doc, boardKeys: event})
+      context.sendTaskSuccess({data: doc, boardKeys: event.boardKeys})
     })
   }
 }
 
-module.exports = GetBoard
+module.exports = GetBoardData
