@@ -41,13 +41,16 @@ class RegistryService {
   * */
   ensureBlueprintKeys (messages, callback) {
     const _this = this
-    let environmentVariable
+    let environmentVariableName
 
     if (_this.blueprintRegistryKeys) {
       async.forEachOf(
         _this.blueprintRegistryKeys,
 
         function (value, key, cb) {
+          const createConfig = {
+            key: key
+          }
           let defaultValue
           _this.registryKeyModel.findById(
             key,
@@ -60,24 +63,16 @@ class RegistryService {
                   cb(null)
                 } else {
                   // Key not in storage, go create
-                  environmentVariable = dottie.get(value, 'schema.properties.environmentVariableName')
-                  if (process.env[dottie.get(value, 'schema.properties.environmentVariableName')]) {
-                    defaultValue = process.env[dottie.get(value, 'schema.properties.environmentVariableName')]
+                  environmentVariableName = dottie.get(value, 'schema.properties.environmentVariableName')
+                  if (process.env[environmentVariableName]) {
+                    defaultValue = process.env[environmentVariableName]
+                    createConfig.environmentVariableName = environmentVariableName
                   } else {
-                    if (dottie.get(value, 'schema.properties.value.default')) {
-                      defaultValue = dottie.get(value, 'schema.properties.value.default')
-                    } else {
-                      defaultValue = null
-                    }
+                    defaultValue = dottie.get(value, 'schema.properties.value.default') || null
                   }
+                  createConfig.value = {value: defaultValue}
                   _this.registryKeyModel.create(
-                    {
-                      key: key,
-                      environmentVariableName: environmentVariable,
-                      value: {
-                        value: defaultValue
-                      }
-                    },
+                    createConfig,
                     {},
                     function (err) {
                       if (err) {

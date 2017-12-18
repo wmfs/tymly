@@ -77,7 +77,7 @@ describe('Registry tests', function () {
     expect(registryService.registry.tymlyTest_mealThreshold.value).to.eql('5')
   })
 
-  it('should change the value in registry using key via registry service to overwrite env vars', function (done) {
+  it('should change the value in registry using key via registry service to overwrite registry value', function (done) {
     let key = 'tymlyTest_mealThreshold'
     registryService.set(key, 2, function (err) {
       expect(err).to.eql(null)
