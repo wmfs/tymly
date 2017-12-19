@@ -27,9 +27,7 @@ class GetDataFromRestApi {
       })
     }
 
-    console.log('1 >>>>', this.templateUrl)
     rest.get(this.templateUrl, options).on('complete', (result, response) => {
-      console.log('2 >>>>', this.templateUrl)
       if (response.statusCode.toString()[0] === '2') {
         if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
         context.sendTaskSuccess({result})
