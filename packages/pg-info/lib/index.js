@@ -86,7 +86,9 @@ const QUERIES = [
   'WHERE split_part(source_table, \'.\', 1) = ANY($1)',
 
   // List of triggers
-  'SELECT * FROM information_schema.triggers WHERE trigger_schema = ANY($1)'
+  'SELECT trigger_name, trigger_schema, event_object_schema, event_object_table, event_manipulation, action_condition, action_statement, action_orientation, action_timing ' +
+  'FROM information_schema.triggers ' +
+  'WHERE trigger_schema = ANY($1)'
 ]
 
 const NotSet = 'NotSet'
@@ -218,13 +220,11 @@ module.exports = function pgInfo (options, callback = NotSet) {
                         tableTriggers.forEach(
                           function (tableTrigger) {
                             triggers[tableTrigger.trigger_name] = {
-                              event_object_schema: tableTrigger.event_object_schema,
-                              event_manipulation: tableTrigger.event_manipulation,
-                              event_object_table: tableTrigger.event_object_table,
-                              action_condition: tableTrigger.action_condition,
-                              action_statement: tableTrigger.action_statement,
-                              action_orientation: tableTrigger.action_orientation,
-                              action_timing: tableTrigger.action_timing
+                              eventManipulation: tableTrigger.event_manipulation,
+                              actionCondition: tableTrigger.action_condition,
+                              actionStatement: tableTrigger.action_statement,
+                              actionOrientation: tableTrigger.action_orientation,
+                              actionTiming: tableTrigger.action_timing
                             }
                           }
                         )

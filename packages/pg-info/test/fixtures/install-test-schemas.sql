@@ -39,7 +39,6 @@ CREATE TABLE pginfo_planets_test.planets
   CONSTRAINT planets_pkey PRIMARY KEY (name)
 );
 
-
 CREATE INDEX other_facts_idx on pginfo_planets_test.planets USING GIN (other_facts);
 
 COMMENT ON TABLE pginfo_planets_test.planets IS 'A list of planets';

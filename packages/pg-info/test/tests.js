@@ -47,23 +47,6 @@ describe('Run the basic-usage example', function () {
         schemas: schemaNames
       },
       function (err, info) {
-        expect(info.schemas.pginfo_planets_test.tables.craters.triggers).to.eql(
-          {
-            new_craters_trigger: {
-              event_object_schema: 'pginfo_planets_test',
-              event_manipulation: 'INSERT',
-              event_object_table: 'craters',
-              action_condition: null,
-              action_statement: 'EXECUTE PROCEDURE append_inserted_craters_row()',
-              action_orientation: 'STATEMENT',
-              action_timing: 'BEFORE'
-            }
-          }
-        )
-        expect(info.schemas.pginfo_people_test.tables.people.triggers).to.eql({})
-        expect(info.schemas.pginfo_planets_test.tables.planets.triggers).to.eql({})
-        expect(info.schemas.pginfo_planets_test.tables.moons.triggers).to.eql({})
-        expect(info.schemas.pginfo_planets_test.tables.new_craters.triggers).to.eql({})
         expect(err).to.equal(null)
         expect(info).to.containSubset(
           {
@@ -435,13 +418,11 @@ const expectedSchemas = {
         },
         'triggers': {
           'new_craters_trigger': {
-            'event_object_schema': 'pginfo_planets_test',
-            'event_manipulation': 'INSERT',
-            'event_object_table': 'craters',
-            'action_condition': null,
-            'action_statement': 'EXECUTE PROCEDURE append_inserted_craters_row()',
-            'action_orientation': 'STATEMENT',
-            'action_timing': 'BEFORE'
+            'eventManipulation': 'INSERT',
+            'actionCondition': null,
+            'actionStatement': 'EXECUTE PROCEDURE append_inserted_craters_row()',
+            'actionOrientation': 'STATEMENT',
+            'actionTiming': 'BEFORE'
           }
         },
         'fkConstraints': {

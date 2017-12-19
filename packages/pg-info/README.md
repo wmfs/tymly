@@ -59,6 +59,7 @@ __In summary, the structure of the output is:__
         * `table` object(s)
             * `column` object(s)
             * `index` object(s)
+            * `trigger` object(s)           
             * `fkConstraint` object(s)
  
 ### `info` object
@@ -177,22 +178,20 @@ __Properties__
 | `unique` | `boolean` | Indicates whether this is a unique index or not |
 | `method` | `string` | The index method used, one of `btree`, `hash`, `gist` or `gin`) |
 
-### `triggers` object
+### `trigger` object
 
 __Example__
 
 ```javascript
 {
   triggers: {
-  	trigger_name: {
-		event_object_schema: 'pginfo_planets_test',
-              	event_manipulation: 'INSERT',
-              	event_object_table: 'craters',
-              	action_condition: null,
-              	action_statement: 'EXECUTE PROCEDURE append_inserted_craters_row()',
-              	action_orientation: 'STATEMENT',
-              	action_timing: 'BEFORE'
-	}
+    someInsertTriggerName: {
+      eventManipulation: 'INSERT',      
+      actionCondition: null,
+      actionStatement: 'EXECUTE PROCEDURE append_inserted_craters_row()',
+      actionOrientation: 'STATEMENT',
+      actionTiming: 'BEFORE'
+    }
   }
 }
 ```
@@ -201,7 +200,11 @@ __Properties__
 
 | property | Type | Notes |
 | -------- | ---- | ----- |
-| `triggers` | `object` | An object containing trigger objects that belong to this table |
+| `eventManipulation` | `string` | Event that fires the trigger (`INSERT`, `UPDATE`, or `DELETE`) |
+| `actionCondition` | `string` | `WHEN` condition of the trigger, null if none (also null if the table is not owned by a currently enabled role) |
+| `actionStatement` | `string` | Statement that is executed by the trigger (currently always `EXECUTE PROCEDURE function(...)`) |
+| `actionOrientation` | `string` | Identifies whether the trigger fires once for each processed row or once for each statement (`ROW` or `STATEMENT`) |
+| `actionTiming` | `string` | Time at which the trigger fires (`BEFORE`, `AFTER`, or `INSTEAD OF`) |
 
 ### `fkConstraint` object
 
