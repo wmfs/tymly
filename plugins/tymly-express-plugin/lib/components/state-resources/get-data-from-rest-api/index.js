@@ -6,8 +6,8 @@ class GetDataFromRestApi {
   init (resourceConfig, env, callback) {
     this.resultPath = resourceConfig.resultPath
     this.registry = env.bootedServices.registry
-    this.templateUrl = this.registry.get('tymly_' + resourceConfig.templateUrlRegistryKey)
-    if (resourceConfig.authTokenRegistryKey) this.authToken = this.registry.get('tymly_' + resourceConfig.authTokenRegistryKey)
+    this.templateUrl = this.registry.get(resourceConfig.namespace + '_' + resourceConfig.templateUrlRegistryKey)
+    if (resourceConfig.authTokenRegistryKey) this.authToken = this.registry.get(resourceConfig.namespace + '_' + resourceConfig.authTokenRegistryKey)
     callback(null)
   }
 
