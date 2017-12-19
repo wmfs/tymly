@@ -7,6 +7,7 @@ const rest = require('restler')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
+const Buffer = require('safe-buffer').Buffer
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -28,17 +29,11 @@ function sendToken (adminToken) {
 describe('Simple Express tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let app
-  let adminToken
-  let irrelevantToken
+  let app, adminToken, irrelevantToken, rupert, alan, statebox
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
   const executionsUrl = `http://localhost:${PORT}/executions/`
   const remitUrl = `http://localhost:${PORT}/remit/`
-  let rupert
-  let alan
-  let statebox
-  const Buffer = require('safe-buffer').Buffer
   const GET_FROM_API_STATE_MACHINE = 'tymlyTest_getFromApi_1_0'
 
   it('should create a usable admin token for Dave', function () {
