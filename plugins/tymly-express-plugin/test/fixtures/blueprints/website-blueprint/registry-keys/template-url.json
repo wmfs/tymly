@@ -5,7 +5,7 @@
     "properties": {
       "value": {
         "type": "string",
-        "default": "https://api.wmfs.net/relay/v1/incidents-in-progress"
+        "default": "Please insert URL here"
       }
     },
     "required": ["value"]
