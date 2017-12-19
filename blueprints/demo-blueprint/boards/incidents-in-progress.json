@@ -4,16 +4,10 @@
   "category": "incidents",
   "content": [
     {
-      "widget": "template",
-      "config": {
-        "template": "Show incidents in progress here..."
-      }
-    },
-    {
       "widget": "tabularlist",
       "config": {
         "header": "Incidents",
-        "dataPath": "incidents",
+        "dataPath": "incidentsInProgress",
         "columns": [
           {
             "header": "Incident Number",

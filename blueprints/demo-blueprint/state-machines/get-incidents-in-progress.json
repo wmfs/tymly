@@ -15,9 +15,10 @@
       "Resource": "module:getDataFromRestApi",
       "ResourceConfig" : {
         "templateUrlRegistryKey": "incidentsInProgressUrl",
-        "authTokenRegistryKey": "incidentsInProgressToken"
+        "authTokenRegistryKey": "incidentsInProgressToken",
+        "resultPath": "incidentsInProgress"
       },
-      "ResultPath": "$.incidents",
+      "ResultPath": "$.incidentsInProgress",
       "Next": "AwaitingHumanInput"
     },
     "AwaitingHumanInput": {
@@ -26,7 +27,7 @@
       "ResourceConfig": {
         "uiType": "board",
         "uiName": "tymly_incidentsInProgress",
-        "dataPath": "$.incidents"
+        "dataPath": "$.incidentsInProgress"
       },
       "End": true
     }

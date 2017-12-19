@@ -4,6 +4,7 @@ const rest = require('restler')
 
 class GetDataFromRestApi {
   init (resourceConfig, env, callback) {
+    this.resultPath = resourceConfig.resultPath
     this.registry = env.bootedServices.registry
     this.templateUrl = this.registry.get('tymly_' + resourceConfig.templateUrlRegistryKey)
     if (resourceConfig.authTokenRegistryKey) this.authToken = this.registry.get('tymly_' + resourceConfig.authTokenRegistryKey)
@@ -18,10 +19,9 @@ class GetDataFromRestApi {
     }
 
     if (this.authToken) options.headers.Authorization = this.authToken
-    console.log(options, this.templateUrl)
-    rest.get(this.templateUrl, options).on('complete', function (result, response) {
+    rest.get(this.templateUrl, options).on('complete', (result, response) => {
       if (response.statusCode.toString()[0] === '2') {
-        context.sendTaskSuccess({result})
+        context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
       } else {
         context.sendTaskFailure({
           statusCode: response.statusCode,
