@@ -59,7 +59,7 @@ describe('Simple Express tests', function () {
   })
 
   it('should create some basic tymly services to run a simple cat blueprint', function (done) {
-    process.env.TEST_API_URL = 'https://jsonplaceholder.typicode.com/posts'
+    process.env.TEST_API_URL = 'http://headers.jsontest.com'
     process.env.TEST_TOKEN = 'testToken'
 
     tymly.boot(
@@ -391,7 +391,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it('should start state machine to claim from an API (https://jsonplaceholder.typicode.com/posts)', function (done) {
+  it('should start state machine to claim from an API (https://jsonplaceholder.typicode.com/posts) and expect the header to be taken through, and sensible data to be returned', function (done) {
     statebox.startExecution(
       {},
       GET_FROM_API_STATE_MACHINE,
@@ -400,10 +400,10 @@ describe('Simple Express tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.ctx.result.Authorization).to.eql(process.env.TEST_TOKEN)
         expect(executionDescription.currentStateName).to.eql('GetDataFromRestApi')
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_getFromApi_1_0')
-        expect(executionDescription.ctx.result).to.be.an('array')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done(err)
       }
     )
