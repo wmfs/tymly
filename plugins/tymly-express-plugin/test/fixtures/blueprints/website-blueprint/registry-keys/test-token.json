@@ -3,6 +3,7 @@
   "description": "Token for getting from Tymly front facing API",
   "schema": {
     "properties": {
+      "environmentVariableName": "TEST_TOKEN",
       "value": {
         "type": "string",
         "default": "Please insert API auth token here"

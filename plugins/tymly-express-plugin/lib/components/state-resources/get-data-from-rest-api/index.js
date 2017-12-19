@@ -21,7 +21,8 @@ class GetDataFromRestApi {
     if (this.authToken) options.headers.Authorization = this.authToken
     rest.get(this.templateUrl, options).on('complete', (result, response) => {
       if (response.statusCode.toString()[0] === '2') {
-        context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
+        if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
+        context.sendTaskSuccess({result})
       } else {
         context.sendTaskFailure({
           statusCode: response.statusCode,

@@ -10,12 +10,10 @@
       "Type": "Task",
       "Resource": "module:getDataFromRestApi",
       "ResourceConfig" : {
-        "templateUrlRegistryKey": "incidentsInProgressUrl",
-        "authTokenRegistryKey": "incidentsInProgressToken",
-        "resultPath": "output",
+        "templateUrlRegistryKey": "testApiUrl",
+        "authTokenRegistryKey": "testToken",
         "namespace": "tymlyTest"
       },
-      "ResultPath": "$.incidents",
       "End": true
     }
   }

@@ -64,6 +64,9 @@ describe('Simple Express tests', function () {
   })
 
   it('should create some basic tymly services to run a simple cat blueprint', function (done) {
+    process.env.TEST_API_URL = 'https://jsonplaceholder.typicode.com/posts'
+    process.env.TEST_TOKEN = 'testToken'
+
     tymly.boot(
       {
 
@@ -388,13 +391,12 @@ describe('Simple Express tests', function () {
 
   it('should get a normal user\'s remit', function (done) {
     rest.get(remitUrl, sendToken(irrelevantToken)).on('complete', function (remit, res) {
-      console.log('>>>>>>>>', remit)
       expect(res.statusCode).to.equal(200)
       done()
     })
   })
 
-  it('should start execution to claim expense, stops at AwaitingHumanInput', function (done) {
+  it('should start state machine to claim from an API (https://jsonplaceholder.typicode.com/posts)', function (done) {
     statebox.startExecution(
       {},
       GET_FROM_API_STATE_MACHINE,
@@ -403,7 +405,10 @@ describe('Simple Express tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        console.log(executionDescription)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentStateName).to.eql('GetDataFromRestApi')
+        expect(executionDescription.stateMachineName).to.eql('tymlyTest_getFromApi_1_0')
+        expect(executionDescription.ctx.result).to.be.an('array')
         done(err)
       }
     )

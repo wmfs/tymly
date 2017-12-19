@@ -3,6 +3,7 @@
   "description": "URL for getting from Tymly front facing API",
   "schema": {
     "properties": {
+      "environmentVariableName": "TEST_API_URL",
       "value": {
         "type": "string",
         "default": "Please insert URL here"
