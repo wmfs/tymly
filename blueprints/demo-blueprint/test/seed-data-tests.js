@@ -21,22 +21,11 @@ describe('Demo tests', function () {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-solr-plugin'),
-          require.resolve('tymly-users-plugin'),
-          require.resolve('tymly-express-plugin')
+          require.resolve('tymly-users-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')
-        ],
-        config: {
-          auth: {
-            secret: 'Shhh!',
-            audience: 'IAmTheAudience!'
-          },
-
-          defaultUsers: {
-            'Dave': ['tymly_tymlyTestAdmin']
-          }
-        }
+        ]
       },
       function (err, tymlyServices) {
         models = tymlyServices.storage.models
