@@ -39,6 +39,7 @@ describe('Simple Express tests', function () {
   let alan
   let statebox
   const Buffer = require('safe-buffer').Buffer
+  const GET_FROM_API_STATE_MACHINE = 'tymlyTest_getFromApi_1_0'
 
   it('should create a usable admin token for Dave', function () {
     adminToken = jwt.sign(
@@ -380,7 +381,6 @@ describe('Simple Express tests', function () {
 
   it('should get an admin\'s remit', function (done) {
     rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
-      console.log('>>>>>>>>', remit)
       expect(res.statusCode).to.equal(200)
       done()
     })
@@ -394,21 +394,18 @@ describe('Simple Express tests', function () {
     })
   })
 
-  /*
-        it('should fail to create a new Rupert tymly (irrelevant roles)', function (done) {
-          rest.postJson(
-            executionsUrl,
-            {
-              namespace: 'tymlyTest',
-              stateMachineName: 'cat',
-              version: '1.0',
-              data: {petName: 'Rupert'}
-            }, sendToken(irrelevantToken)).on('complete', function (err, res) {
-              expect(res.statusCode).to.equal(403)
-              expect(err.error).to.equal('Forbidden')
-              expect(err.message).to.equal('No roles permit this action')
-              done()
-            })
-        })
-        */
+  it('should start execution to claim expense, stops at AwaitingHumanInput', function (done) {
+    statebox.startExecution(
+      {},
+      GET_FROM_API_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        expect(err).to.eql(null)
+        console.log(executionDescription)
+        done(err)
+      }
+    )
+  })
 })
