@@ -1,7 +1,7 @@
 # concrete-paths
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/concrete-paths/LICENSE)
 
-> An option-laden utility to takes general globs, delimited paths etc. and returns an array of absolute paths.
+> An option-laden utility which takes general glob-paths, delimited paths etc. and returns an array of absolute paths.
 
 ## <a name="install"></a>Install
 ```bash
