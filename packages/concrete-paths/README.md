@@ -37,7 +37,7 @@ Then `concrete-paths` can be used in the following ways:
 
 ### Usage 1: Simple glob-pattern string usage
 
-> Please see the `glob` package's [Glob primer](https://www.npmjs.com/package/glob#glob-primer) for more information with working with glob patterns. 
+> Please see the `glob` package's [Glob Primer](https://www.npmjs.com/package/glob#glob-primer) for more information with working with glob patterns. 
 
 ```javascript
 const concretePaths = require('concrete-paths')

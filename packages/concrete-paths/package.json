@@ -17,12 +17,11 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "mocha": "^3.5.0",
+    "mocha": "4.0.1",
     "standard": "^10.0.3"
   },
   "scripts": {
-    "lint": "standard",
-    "test": "standard && mocha"
+    "lint": "standard"
   },
   "license": "MIT",
   "repository": {
