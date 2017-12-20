@@ -37,7 +37,7 @@ Then `concrete-paths` can be used in the following ways:
 
 ### Usage 1: Simple glob-pattern string usage
 
-* Please see the `glob` package's [Glob primer](https://www.npmjs.com/package/glob#glob-primer) for more information with working with glob patterns. 
+> Please see the `glob` package's [Glob primer](https://www.npmjs.com/package/glob#glob-primer) for more information with working with glob patterns. 
 
 ```javascript
 const concretePaths = require('concrete-paths')
@@ -57,7 +57,8 @@ concretePaths('/stuff/**/*.js').then(
 ```
 
 ### Usage 2: Single `;` delimited string
-* Useful when working with values derived from environment variables
+
+> Useful when working with values derived from environment variables.
 
 ```javascript
 const concretePaths = require('concrete-paths')
@@ -78,7 +79,9 @@ concretePaths('/stuff/lib/*.js;/stuff/logs/*.js').then(
 
 
 ### Usage 3: Multiple strings via array
-* Mix-and-match delimited strings, globs etc. in an array of strings.
+
+> Mix-and-match delimited strings, globs etc. in an array of strings.
+
 ```javascript
 const concretePaths = require('concrete-paths')
 
