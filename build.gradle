@@ -128,7 +128,17 @@ task test (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
   group 'Build'
 
   command 'run'
-  cmdArgs 'test', '--', '--', '--reporter', 'xunit', '--reporter-options', 'output=./test/TEST-result.xml'
+  cmdArgs 'test', '--concurrency', '1'
+  environment PG_CONNECTION_STRING: pg_connection
+}
+
+task ci_test (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
+           dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
+  description 'Runs tests, captures output in Jenkins readable XML Files'
+  group 'Build'
+
+  command 'run'
+  cmdArgs 'test', '--concurrency', '1', '--', '--', '--reporter', 'xunit', '--reporter-options', 'output=./test/TEST-result.xml'
   environment PG_CONNECTION_STRING: pg_connection
 }
 
