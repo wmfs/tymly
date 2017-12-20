@@ -32,32 +32,85 @@ postgresEmbedded {
 }
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
+String buildDir='./build'
 
 //////////////////////////////////////
-task cleanNodeModules (type: Delete) {
+task cleanTopLevelNodeModules (type: Delete) {
   delete './node_modules'
+}
+
+task cleanPackageNodeModules (type: org.ysb33r.gradle.nodejs.tasks.LernaTask) {
+  command 'clean'
 }
 
 task cleanTestFiles (type: Delete) {
   delete fileTree(dir: '.', include: '*/*/test/TEST-*.xml')
 }
 
+task cleanBuild (type: Delete) {
+  delete buildDir
+}
+
 task npmBootstrap (type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
   command 'install'
 }
 
-task bootstrap (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
-                dependsOn: [npmBootstrap]) {
-  command 'bootstrap'
+String tarballDir = "${buildDir}/tarball"
+String tarfileName = "${tarballDir}/tymly-${getDate()}.tgz"
+def getDate() { new Date().format('yyyyMMdd-HHmmss') }
+
+task createTarball (type: Exec,
+                    dependsOn: [npmBootstrap]) {
+  doFirst {
+    mkdir tarballDir
+  }
+
+  commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
+}
+
+String coreDockerDir = './tools/tymly-dockerize-core'
+String coreDockerTag = 'wmfs/tymly-core'
+String serverDockerDir = './tools/tymly-dockerize-server'
+String serverDockerTag = 'wmfs/tymly'
+
+task dropTarfileToDocker (type: Copy,
+                          dependsOn: [createTarball]) {
+  from tarfileName
+  into coreDockerDir
+  rename { fileName -> "bundle.tgz" }
+} // dropTarfileToDocker
+
+task dockerBuildCore (type: Exec,
+                      dependsOn: [dropTarfileToDocker]) {
+  workingDir coreDockerDir
+  commandLine 'docker', 'build', '--tag', coreDockerTag, '.'
+} // dockerBuildCore
+
+task dockerBuildServer (type: Exec,
+                        dependsOn: [dockerBuildCore]) {
+  workingDir serverDockerDir
+  commandLine 'docker', 'build', '--tag', serverDockerTag, '.'
+} // dockerBuildServer
+
+//////////////////////////////////////
+// Clean tasks
+task clean (dependsOn: [cleanTestFiles, cleanBuild]) {
+  description 'Clean project output'
+  group 'Build'
+}
+
+task cleanAll (dependsOn: [clean, cleanPackageNodeModules, cleanTopLevelNodeModules]) {
+  description 'Clean project output, discard all node_modules'
+  group 'Build'
 }
 
 //////////////////////////////////////
-task clean (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
-            dependsOn: [cleanTestFiles, cleanNodeModules]) {
-  description 'Clean project'
+// Lerna tasks
+task bootstrap (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
+                dependsOn: [npmBootstrap]) {
+  description 'Lerna bootstrap'
   group 'Build'
-
-  command 'clean'
+  command 'bootstrap'
 }
 
 task lint (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
@@ -78,3 +131,15 @@ task test (type: org.ysb33r.gradle.nodejs.tasks.LernaTask,
   cmdArgs 'test', '--', '--', '--reporter', 'xunit', '--reporter-options', 'output=./test/TEST-result.xml'
   environment PG_CONNECTION_STRING: pg_connection
 }
+
+//////////////////////////////////////
+// Packaging tasks
+task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
+  group 'Build'
+  description 'Creates an installable Tymly package'
+}
+
+task dockerBuild (dependsOn: [dockerBuildServer]) {
+  group 'Build'
+  description 'Build a runnable Tymly Docker image'
+} // dockerBuild

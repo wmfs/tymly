@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "Tim Needham",
   "devDependencies": {
-    "lerna": "^2.0.0"
+    "lerna": "^2.5.1"
   },
   "scripts": {
     "bootstrap": "./node_modules/.bin/lerna bootstrap",
