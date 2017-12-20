@@ -8,32 +8,38 @@
 $ npm install concrete-paths --save
 ```
 
-## <a name="usage"></a>Usage
+## <a name="usages"></a>Usages
+
+__Given a directory containing:__
+
+``` bash
+/stuff
+  /lib
+    file1.js
+    file2.js
+  /logs
+    log1.txt
+    log2.txt
+  /node_modules
+    /some-package1
+      foo.txt
+      bar.txt
+    /some-package2
+      foo.txt
+      bar.txt
+  /test    
+    test1.js
+    test2.js
+    
+```
+
+Then `concrete-paths` can be used in the following ways:
+
+### Usage 1: Simple glob-pattern string usage
+
+* Please see the `glob` package's [Glob primer](https://www.npmjs.com/package/glob#glob-primer) for more information with working with glob patterns. 
 
 ```javascript
-
-// Given file content of:
-//  /stuff
-//    /lib
-//      file1.js
-//      file2.js
-//    /logs
-//      log1.txt
-//      log2.txt
-//    /node_modules
-//      /some-package1
-//        foo.txt
-//        bar.txt
-//      /some-package2
-//        foo.txt
-//        bar.txt
-//    /test    
-//      test1.js
-//      test2.js      
-
-const concretePaths = require('concrete-paths')
-
-// Simple glob string
 concretePaths('/stuff/**/*.js').then(
   function(result) {
     // Result:
@@ -46,7 +52,12 @@ concretePaths('/stuff/**/*.js').then(
   }
 )
 
-// Single ';' delimited string (for use with environment variables)
+```
+
+### Usage 2: Single `;` delimited string
+* Useful when working with values derived from environment variables
+
+```javascript
 concretePaths('/stuff/lib/*.js;/stuff/logs/*.js').then(
   function(result) {
     // Result:
@@ -59,13 +70,17 @@ concretePaths('/stuff/lib/*.js;/stuff/logs/*.js').then(
   }
 )
 
-// Multiple strings via array
+```
+
+
+### Usage 3: Multiple strings via array
+* Mix-and-match delimited strings, globs etc. in an array of strings.
+```javascript
 concretePaths(
   [
     '/stuff/node_modules/some-package1/*',
     '/stuff/lib/*.js;/stuff/logs/*.js'
-  ]
-  
+  ]  
 ).then(
   function(result) {
     // Result:
@@ -82,13 +97,14 @@ concretePaths(
 
 ```
 
+
 ## <a name="api"></a>API
 
-### `concretePaths`(`sourcePaths`, `options`) returns `promise`
+### `concretePaths`(`sourcePaths`, `[options]`) returns `promise`
 
 ### `sourcePaths`
 
-### `options`:
+### `options`
 | Option  | Type | Notes |
 | ------  | ----- | ------ |
 
