@@ -12,8 +12,6 @@ chai.use(chaiSubset)
 const expect = chai.expect
 let client
 
-// Make a Postgres client
-
 describe('Run the basic-usage example', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
@@ -24,20 +22,6 @@ describe('Run the basic-usage example', function () {
 
   it('Should install test schemas', () => {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
-  })
-
-  // Temporarily here and not in script because client.runFile will break the statement down on ';'
-  it('Should create test triggers', () => {
-    return client.query(`CREATE OR REPLACE FUNCTION append_inserted_craters_row() RETURNS trigger AS $BODY$
-    BEGIN INSERT INTO pginfo_planets_test.new_craters (id, title) VALUES (new.id, new.title);
-    RETURN NEW;
-    END;
-    $BODY$ LANGUAGE plpgsql;`)
-  })
-
-  // Temporarily here and not in script because client.runFile will break the statement down on ';'
-  it('Should create test triggers', () => {
-    return client.query(`CREATE TRIGGER new_craters_trigger BEFORE INSERT ON pginfo_planets_test.craters EXECUTE PROCEDURE append_inserted_craters_row();`)
   })
 
   it('Should get some database info (callback)', function (done) {

@@ -29,11 +29,7 @@ class PGClient {
 
   runFile (fileName, callback = NotSet) {
     const sql = fs.readFileSync(fileName, 'utf8')
-    const statements = sql.split(';')
-      .map(s => s.replace(/\n/g, ''))
-      .filter(s => s.length !== 0)
-      .map(s => `${s};`)
-      .map(s => { return { sql: s } })
+    const statements = [{ sql: sql }]
     return this.run(statements, callback)
   } // runFromFile
 } // class PGClient
