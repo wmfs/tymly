@@ -19,7 +19,8 @@ describe('notifications tymly-users-plugin tests', function () {
   const client = new HlPgClient(pgConnectionString)
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
-  let statebox, idToAcknowledge
+  const idToAcknowledge = []
+  let statebox
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -85,7 +86,7 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         assert.isAtLeast(Date.parse(executionDescription.ctx.userNotifications.notifications[0].created),
           Date.parse(startFrom), 'Notification is more recent than startFrom')
-        idToAcknowledge = executionDescription.ctx.userNotifications.notifications[0].id
+        idToAcknowledge.push(executionDescription.ctx.userNotifications.notifications[0].id)
         done()
       }
     )
@@ -94,7 +95,7 @@ describe('notifications tymly-users-plugin tests', function () {
   it('should acknowledge one notification', function (done) {
     statebox.startExecution(
       {
-        notificationIds: [idToAcknowledge]
+        notificationIds: idToAcknowledge
       },
       ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
       {
@@ -114,7 +115,7 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should check the notification is acknowledged', function (done) {
     client.query(
-      `select * from tymly.notifications where id = '${idToAcknowledge}'`,
+      `select * from tymly.notifications where id = '${idToAcknowledge[0]}'`,
       (err, result) => {
         if (err) done(err)
         expect(err).to.eql(null)
@@ -122,6 +123,16 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(result.rows[0].user_id).to.eql('test-user')
         expect(result.rows[0].title).to.eql('Employee Info #3')
         done()
+      }
+    )
+  })
+
+  it('should reset the acknowledged notification for later use', function (done) {
+    client.query(
+      `update tymly.notifications set acknowledged = null where id = '${idToAcknowledge[0]}'`,
+      (err) => {
+        expect(err).to.eql(null)
+        done(err)
       }
     )
   })
@@ -157,6 +168,52 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(result.rows[0].user_id).to.eql('test-user-1')
         expect(result.rows[0].description).to.eql('This is a notification used for testing')
         expect(result.rows[0].category).to.eql('test')
+        idToAcknowledge.push(result.rows[0].id)
+        done()
+      }
+    )
+  })
+
+  it('should acknowledge multiple notifications', function (done) {
+    statebox.startExecution(
+      {
+        notificationIds: idToAcknowledge
+      },
+      ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.currentStateName).to.eql('AcknowledgeNotifications')
+        expect(executionDescription.currentResource).to.eql('module:acknowledgeNotifications')
+        expect(executionDescription.stateMachineName).to.eql(ACKNOWLEDGE_NOTIFICATIONS_STATE_MACHINE)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should check the first notification has been acknowledged', function (done) {
+    client.query(
+      `select * from tymly.notifications where id = '${idToAcknowledge[0]}'`,
+      (err, result) => {
+        if (err) done(err)
+        expect(err).to.eql(null)
+        expect(result.rows[0].acknowledged).to.not.eql(null)
+        done()
+      }
+    )
+  })
+
+  it('should check the second notification has been acknowledged', function (done) {
+    client.query(
+      `select * from tymly.notifications where id = '${idToAcknowledge[1]}'`,
+      (err, result) => {
+        if (err) done(err)
+        expect(err).to.eql(null)
+        expect(result.rows[0].acknowledged).to.not.eql(null)
         done()
       }
     )

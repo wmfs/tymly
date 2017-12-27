@@ -17,7 +17,7 @@ class CreateNotification {
 
     this.notifications.create(create, {})
       .then(() => context.sendTaskSuccess())
-      .catch((err) => context.sendTaskFailure(err))
+      .catch(err => context.sendTaskFailure(err))
   }
 }
 

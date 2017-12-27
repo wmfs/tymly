@@ -1,7 +1,5 @@
 'use strict'
 
-const async = require('async')
-
 class AcknowledgeNotifications {
   init (resourceConfig, env, callback) {
     this.notifications = env.bootedServices.storage.models['tymly_notifications']
@@ -9,34 +7,19 @@ class AcknowledgeNotifications {
   }
 
   run (event, context) {
-    const userId = context.userId
+    const promises = []
 
-    async.eachSeries(event.notificationIds, (id, cb) => {
-      this.notifications.update(
-        {
-          id: id,
-          userId: userId,
-          acknowledged: new Date().toLocaleString()
-        },
-        {
-          setMissingPropertiesToNull: false
-        },
-        function (err) {
-          cb(err)
-        }
-      )
-    }, (err) => {
-      if (err) {
-        context.sendTaskFailure(
-          {
-            error: 'acknowledgeNotificationsFail',
-            cause: err
-          }
-        )
-      } else {
-        context.sendTaskSuccess()
-      }
+    event.notificationIds.map(id => {
+      promises.push(this.notifications.update({
+        id: id,
+        userId: context.userId,
+        acknowledged: new Date().toLocaleString()
+      }, {setMissingPropertiesToNull: false}))
     })
+
+    Promise.all(promises)
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure({error: 'acknowledgeNotificationsFail', cause: err}))
   }
 }
 
