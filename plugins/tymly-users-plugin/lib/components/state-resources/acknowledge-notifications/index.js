@@ -7,14 +7,12 @@ class AcknowledgeNotifications {
   }
 
   run (event, context) {
-    const promises = []
-
-    event.notificationIds.map(id => {
-      promises.push(this.notifications.update({
+    const promises = event.notificationIds.map(id => {
+      return this.notifications.update({
         id: id,
         userId: context.userId,
         acknowledged: new Date().toLocaleString()
-      }, {setMissingPropertiesToNull: false}))
+      }, {setMissingPropertiesToNull: false})
     })
 
     Promise.all(promises)
