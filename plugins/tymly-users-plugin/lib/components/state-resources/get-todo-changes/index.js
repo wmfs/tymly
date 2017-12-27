@@ -13,30 +13,18 @@ class GetTodoChanges {
     const userId = context.userId // what about team name? Get the team this user is in?
     const clientTodoExecutionNames = event.clientTodoExecutionNames
 
-    this.todos.find({
-      where: {
-        userId: {equals: userId}
-      }
-    }, (err, results) => {
-      if (err) {
-        context.sendTaskFailure({
-          error: 'getTodoChangesFail',
-          cause: err
-        })
-      }
-
-      let resultsObj = {}
-      results.map(r => { resultsObj[r['id']] = r })
-
-      let todoChanges = {
-        add: {},
-        remove: []
-      }
-
-      this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodoExecutionNames)
-      context.sendTaskSuccess({todoChanges})
-      // Maybe it should be added to the todos in existing remit - event.userRemit.userRemit
-    })
+    this.todos.find({where: {userId: {equals: userId}}})
+      .then(results => {
+        const resultsObj = {}
+        const todoChanges = {
+          add: {},
+          remove: []
+        }
+        results.map(r => { resultsObj[r['id']] = r })
+        this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodoExecutionNames)
+        context.sendTaskSuccess({todoChanges})
+      })
+      .catch(err => context.sendTaskFailure({error: 'getTodoChangesFail', cause: err}))
   }
 
   processComponents (userRemit, componentType, components, alreadyInClientManifest) {

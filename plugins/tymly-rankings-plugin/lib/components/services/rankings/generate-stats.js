@@ -5,49 +5,40 @@ const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
 
-module.exports = function generateStats (options, callback) {
+module.exports = async function generateStats (options, callback) {
   console.log(options.category + ' - Generating statistics')
 
   let scores = []
-  let ranges
+  let ranges, mean, stdev
 
-  options.client.query(getScoresSQL(options), function (err, result) {
-    if (err) return callback(err)
-    result.rows.map(row => scores.push(row.risk_score))
+  const result = await options.client.query(getScoresSQL(options))
+  result.rows.map(row => scores.push(row.risk_score))
+  mean = stats.mean(scores)
+  stdev = stats.stdev(scores)
 
-    const mean = stats.mean(scores)
-    const stdev = stats.stdev(scores)
+  if (scores.length > 0) {
+    ranges = generateRanges(scores, mean, stdev)
+    await options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges))
+    const res = await options.client.query(getViewRowsSQL(options))
 
-    if (scores.length > 0) {
-      ranges = generateRanges(scores, mean, stdev)
-      options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges), function (err) {
-        if (err) return callback(err)
+    async.eachSeries(res.rows, (r, cb) => {
+      let range = findRange(ranges, r.risk_score)
+      let normal = dist.Normal(mean, stdev)
+      let distribution = normal.pdf(r.risk_score).toFixed(4)
 
-        options.client.query(getViewRowsSQL(options), function (err, res) {
-          if (err) return callback(err)
-          console.log(options.category + ' - Retrieved rows, calculating ranges')
-          async.eachSeries(res.rows, (r, cb) => {
-            let range = findRange(ranges, r.risk_score)
-
-            let normal = dist.Normal(mean, stdev)
-            let distribution = normal.pdf(r.risk_score).toFixed(4)
-
-            options.client.query(updateRangeSQL(options, range, r, distribution), function (err) {
-              if (err) cb(err)
-              cb(null)
-            })
-          }, (err) => {
-            if (err) callback(err)
-            console.log(options.category + ' - Finished generating statistics')
-            callback(null)
-          })
-        })
+      options.client.query(updateRangeSQL(options, range, r, distribution), function (err) {
+        if (err) cb(err)
+        cb(null)
       })
-    } else {
-      console.log(options.category + ' - No scores found')
+    }, (err) => {
+      if (err) callback(err)
+      console.log(options.category + ' - Finished generating statistics')
       callback(null)
-    }
-  })
+    })
+  } else {
+    console.log(options.category + ' - No scores found')
+    callback(null)
+  }
 }
 
 function generateRanges (scores, mean, stdev) {

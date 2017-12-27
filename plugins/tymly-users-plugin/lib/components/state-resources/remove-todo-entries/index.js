@@ -7,21 +7,9 @@ class RemoveTodoEntries {
   }
 
   run (event, context) {
-    this.todos.destroyById(
-      event.todoId,
-      function (err) {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'removeTodoFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
-        }
-      }
-    )
+    this.todos.destroyById(event.todoId)
+      .then(context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure({error: 'removeTodoFail', cause: err}))
   }
 }
 

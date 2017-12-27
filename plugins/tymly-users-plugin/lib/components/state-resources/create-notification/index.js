@@ -15,12 +15,9 @@ class CreateNotification {
       launches: event.launches
     }
 
-    this.notifications.create(
-      create,
-      {}
-    )
+    this.notifications.create(create, {})
       .then(() => context.sendTaskSuccess())
-      .catch(err => context.sendTaskFailure(err))
+      .catch((err) => context.sendTaskFailure(err))
   }
 }
 

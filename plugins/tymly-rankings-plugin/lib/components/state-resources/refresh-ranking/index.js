@@ -10,14 +10,13 @@ class RefreshRanking {
     callback(null)
   }
 
-  run (event, context) {
-    this.schema = event.schema
-    this.category = event.category
-    const key = this.schema + '_' + this.category
-
-    let statement = generateView({
-      category: this.category,
-      schema: this.schema,
+  async run (event, context) {
+    const schema = event.schema
+    const category = event.category
+    const key = schema + '_' + category
+    const statement = generateView({
+      category: category,
+      schema: schema,
       source: this.rankings[key].source,
       ranking: this.rankings[key].factors,
       registry: {
@@ -25,21 +24,9 @@ class RefreshRanking {
       }
     })
 
-    this.client.query(
-      statement,
-      function (err) {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'generateViewFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
-        }
-      }
-    )
+    await this.client.query(statement)
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure({error: 'generateViewFail', cause: err}))
   }
 }
 

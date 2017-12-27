@@ -1,8 +1,6 @@
 'use strict'
 
-const dottie = require('dottie')
-
-// 'new Date(event.startFrom).toLocaleString()' seems to work for timestamp with time zone
+// 'new Date(event.startFrom).toLocaleString()' seems to work for timestamp with time zone as postgres type
 // 'new Date().toLocaleString()' for the current date/time
 
 class GetNotifications {
@@ -12,47 +10,32 @@ class GetNotifications {
   }
 
   run (event, context) {
-    const userId = context.userId
-    const limit = event.limit || 10
-    let executionDescription = {}
-    let payload = {
+    const payload = {
       notifications: []
     }
-    let findOptions = {
+    const findOptions = {
       where: {
-        userId: {equals: userId}
+        userId: {equals: context.userId}
       }
     }
-
     if (event.startFrom) findOptions.where.created = {moreThanEquals: new Date(event.startFrom).toLocaleString()}
 
-    this.notifications.find(
-      findOptions,
-      (err, results) => {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'getNotificationsFail',
-              cause: err
-            }
-          )
-        } else {
-          results.map(r => {
-            payload.notifications.push({
-              id: r.id,
-              title: r.title,
-              description: r.description,
-              category: r.category,
-              created: r.created
-            })
+    this.notifications.find(findOptions)
+      .then(results => {
+        results.map(r => {
+          payload.notifications.push({
+            id: r.id,
+            title: r.title,
+            description: r.description,
+            category: r.category,
+            created: r.created
           })
-          payload.totalNotifications = payload.notifications.length
-          payload.limit = limit
-          dottie.set(executionDescription, 'userNotifications', payload)
-          context.sendTaskSuccess(executionDescription)
-        }
-      }
-    )
+        })
+        payload.totalNotifications = payload.notifications.length
+        payload.limit = event.limit || 10
+        context.sendTaskSuccess({userNotifications: payload})
+      })
+      .catch(err => context.sendTaskFailure({error: 'getNotificationsFail', cause: err}))
   }
 }
 

@@ -20,7 +20,6 @@ module.exports = function generateViewStatement (options) {
     innerSelect.push(`g.${i} as ${i}`)
   })
 
-  // for (const [key, value] of Object.entries(options.ranking)) {
   _.forEach(options.ranking, function (value, key) {
     if (value.hasOwnProperty('sourceProperty')) {
       joinParts.add(generateJoinStatement({

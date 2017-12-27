@@ -7,21 +7,9 @@ class UnwatchBoard {
   }
 
   run (event, context) {
-    this.watchedBoards.destroyById(
-      event.subscriptionId,
-      function (err, doc) {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'unwatchBoardFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
-        }
-      }
-    )
+    this.watchedBoards.destroyById(event.subscriptionId)
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure({error: 'unwatchBoardFail', cause: err}))
   }
 }
 

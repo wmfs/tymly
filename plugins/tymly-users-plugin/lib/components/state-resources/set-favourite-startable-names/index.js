@@ -7,17 +7,15 @@ class SetFavouriteStartableNames {
   }
 
   run (event, context) {
-    const userId = context.userId
-    const newStateMachineNames = event.stateMachineNames
     this.favouringStartableStateMachines.upsert(
       {
-        userId: userId,
-        stateMachineNames: newStateMachineNames
+        userId: context.userId,
+        stateMachineNames: event.stateMachineNames
       },
       {}
-    ).then(() => {
-      context.sendTaskSuccess()
-    }).catch(err => context.sendTaskFailure(err))
+    )
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure(err))
   }
 }
 

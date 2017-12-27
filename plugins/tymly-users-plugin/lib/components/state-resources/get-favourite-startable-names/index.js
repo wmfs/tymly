@@ -1,7 +1,5 @@
 'use strict'
 
-// const dottie = require('dottie')
-
 class GetFavouriteStartableNames {
   init (resourceConfig, env, callback) {
     this.favouringStartableStateMachines = env.bootedServices.storage.models['tymly_favouringStartableStateMachines']
@@ -9,29 +7,11 @@ class GetFavouriteStartableNames {
   }
 
   run (event, context) {
-    const userId = context.userId
-    // let executionDescription = {}
-    this.favouringStartableStateMachines.find(
-      {
-        where: {
-          userId: {equals: userId}
-        }
-      },
-      (err, results) => {
-        if (err) {
-          console.log('ERROR')
-          context.sendTaskFailure(
-            {
-              error: 'getFavouriteStartableNamesFail',
-              cause: err
-            }
-          )
-        } else {
-          // dottie.set(executionDescription, 'favouriteStartableNames', results)
-          context.sendTaskSuccess({results})
-        }
-      }
-    )
+    this.favouringStartableStateMachines.find({
+      where: {userId: {equals: context.userId}}
+    })
+      .then(results => context.sendTaskSuccess({results}))
+      .catch(err => context.sendTaskFailure({error: 'getFavouriteStartableNamesFail', cause: err}))
   }
 }
 

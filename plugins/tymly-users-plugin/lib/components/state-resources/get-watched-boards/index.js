@@ -7,18 +7,8 @@ class GetWatchedBoards {
   }
 
   run (event, context) {
-    const userId = context.userId
-    this.watchedBoards.find(
-      {
-        where: {
-          userId: {equals: userId}
-        }
-      },
-      (err, results) => {
-        if (err) {
-          context.sendTaskFailure({error: 'getWatchedBoardsFail', cause: err})
-        }
-
+    this.watchedBoards.find({where: {userId: {equals: context.userId}}})
+      .then(results => {
         const ctx = {
           watchCategories: {}
         }
@@ -51,8 +41,8 @@ class GetWatchedBoards {
         })
 
         context.sendTaskSuccess(ctx)
-      }
-    )
+      })
+      .catch(err => context.sendTaskFailure({error: 'getWatchedBoardsFail', cause: err}))
   }
 }
 

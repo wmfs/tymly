@@ -7,17 +7,9 @@ class ApplySettings {
   }
 
   run (event, context) {
-    const userId = context.userId
-    const newCategoryRelevance = event.categoryRelevance
-    this.settings.upsert(
-      {
-        userId: userId,
-        categoryRelevance: newCategoryRelevance
-      },
-      {}
-    ).then(() => {
-      context.sendTaskSuccess()
-    }).catch(err => context.sendTaskFailure(err))
+    this.settings.upsert({userId: context.userId, categoryRelevance: event.categoryRelevance}, {})
+      .then(() => context.sendTaskSuccess())
+      .catch((err) => context.sendTaskFailure(err))
   }
 }
 

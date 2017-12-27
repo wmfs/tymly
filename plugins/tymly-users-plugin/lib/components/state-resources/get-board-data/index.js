@@ -15,10 +15,9 @@ class GetBoardData {
       where[k] = {equals: event.boardKeys[k]}
     })
 
-    model.findOne({where}, (err, doc) => {
-      if (err) return context.sendTaskFailure({error: 'getBoardFail', cause: err})
-      context.sendTaskSuccess({data: doc, boardKeys: event.boardKeys})
-    })
+    model.findOne({where})
+      .then(doc => context.sendTaskSuccess({data: doc, boardKeys: event.boardKeys}))
+      .catch(err => context.sendTaskFailure({error: 'getBoardFail', cause: err}))
   }
 }
 

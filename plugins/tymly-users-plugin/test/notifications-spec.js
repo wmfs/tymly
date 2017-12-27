@@ -19,8 +19,7 @@ describe('notifications tymly-users-plugin tests', function () {
   const client = new HlPgClient(pgConnectionString)
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
-  let statebox
-  let idToAcknowledge
+  let statebox, idToAcknowledge
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -137,7 +136,7 @@ describe('notifications tymly-users-plugin tests', function () {
       CREATE_NOTIFICATIONS_STATE_MACHINE,
       {
         sendResponse: 'COMPLETE',
-        userId: 'testUser1'
+        userId: 'test-user-1'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -151,11 +150,11 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should check the notification has been manually created', function (done) {
     client.query(
-      `select * from tymly.notifications where user_id = 'testUser1'`,
+      `select * from tymly.notifications where user_id = 'test-user-1'`,
       (err, result) => {
         if (err) done(err)
         expect(err).to.eql(null)
-        expect(result.rows[0].user_id).to.eql('testUser1')
+        expect(result.rows[0].user_id).to.eql('test-user-1')
         expect(result.rows[0].description).to.eql('This is a notification used for testing')
         expect(result.rows[0].category).to.eql('test')
         done()
