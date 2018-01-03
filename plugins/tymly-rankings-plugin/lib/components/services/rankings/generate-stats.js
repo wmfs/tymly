@@ -26,10 +26,9 @@ module.exports = async function generateStats (options, callback) {
       let normal = dist.Normal(mean, stdev)
       let distribution = normal.pdf(r.risk_score).toFixed(4)
 
-      options.client.query(updateRangeSQL(options, range, r, distribution), function (err) {
-        if (err) cb(err)
-        cb(null)
-      })
+      options.client.query(updateRangeSQL(options, range, r, distribution))
+        .then(() => cb(null))
+        .catch(err => cb(err))
     }, (err) => {
       if (err) callback(err)
       console.log(options.category + ' - Finished generating statistics')

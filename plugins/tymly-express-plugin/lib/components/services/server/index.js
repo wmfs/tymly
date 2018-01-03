@@ -7,8 +7,6 @@ const schema = require('./schema.json')
 
 class ExpressServerService {
   boot (options, callback) {
-    const _this = this
-
     // Create a new Express app
     const app = express()
     app.use(bodyParser.urlencoded({ extended: false }))
@@ -38,11 +36,11 @@ class ExpressServerService {
       options.config,
       options.messages,
       options.bootedServices.temp.tempDir,
-      function (err) {
+      (err) => {
         if (err) {
           callback(err)
         } else {
-          _this.express = express
+          this.express = express
 
           /**
            * @property {Object} app A ready-to-go Express app
@@ -53,11 +51,15 @@ class ExpressServerService {
            *   console.log('Tymly server is available http://localhost:' + port)
            * })
            */
-          _this.app = app
+          this.app = app
           callback(null)
         }
       }
     )
+  }
+
+  shutdown () {
+    // this.server.close()
   }
 }
 

@@ -41,6 +41,10 @@ class PostgresqlStorageService {
       .catch(err => callback(err))
   } // boot
 
+  async shutdown () {
+    await this.client.pool_.end()
+  }
+
   static _connectionString (config) {
     if (config.pgConnectionString) {
       debug('Using config.pgConnectionString')
@@ -95,12 +99,12 @@ class PostgresqlStorageService {
       expectedDbStructure
     )
     const statements = rawStatements.map(s => {
+      // console.log(s)
       return {
         'sql': s,
         'params': []
       }
     })
-
     await this.client.run(statements)
 
     const models = pgModel({

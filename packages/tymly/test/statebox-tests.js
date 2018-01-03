@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 
+const tymly = require('./../lib')
 const path = require('path')
 const expect = require('chai').expect
 const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 
 describe('Simple Tymly test', function () {
-  const tymly = require('./../lib')
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
   let rupert
@@ -71,7 +71,7 @@ describe('Simple Tymly test', function () {
         expect(executionDescription.ctx.gender).to.eql('male')
         expect(executionDescription.ctx.petDiary).to.be.an('array')
         expect(executionDescription.ctx.petDiary[0]).to.equal('Look out, Rupert is waking up!')
-        expect(executionDescription.ctx.petDiary[2]).to.equal("Rupert is walking... where's he off to?")
+        expect(executionDescription.ctx.petDiary[2]).to.equal('Rupert is walking... where\'s he off to?')
         expect(executionDescription.ctx.petDiary[6]).to.equal('Shh, Rupert is eating...')
         done()
       }
@@ -90,7 +90,7 @@ describe('Simple Tymly test', function () {
       'DOG_MACHINE', // state machine name
       {}, // options
       function (err, result) {
-        expect(err.message).to.eql("Unknown stateMachine with name 'DOG_MACHINE'")
+        expect(err.message).to.eql('Unknown stateMachine with name \'DOG_MACHINE\'')
         done()
       }
     )

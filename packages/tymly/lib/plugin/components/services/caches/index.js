@@ -40,6 +40,7 @@ class CacheService {
   set (cacheName, key, value) {
     this[cacheName].set(key, value)
   }
+
   get (cacheName, key) {
     return this[cacheName].get(key)
   }

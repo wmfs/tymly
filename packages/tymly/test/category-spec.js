@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 
+const tymly = require('./../lib')
 const path = require('path')
 const expect = require('chai').expect
 
 describe('Category tests', function () {
-  const tymly = require('./../lib')
-
   this.timeout(process.env.TIMEOUT || 5000)
 
   let categoryService

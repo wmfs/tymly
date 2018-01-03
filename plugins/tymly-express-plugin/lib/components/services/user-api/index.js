@@ -28,5 +28,5 @@ function addExpressApi (express, app, jwtCheck) {
 
 module.exports = {
   serviceClass: UserApiService,
-  bootAfter: ['auth', 'rbac', 'forms']
+  bootAfter: ['auth', 'rbac']
 }

@@ -31,5 +31,5 @@ function addExpressApi (express, app, jwtCheck) {
 
 module.exports = {
   serviceClass: StateboxApiService,
-  bootAfter: ['auth', 'rbac', 'forms', 'statebox']
+  bootAfter: ['auth', 'rbac', 'statebox']
 }

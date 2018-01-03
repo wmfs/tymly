@@ -11,22 +11,11 @@ const COMPONENT_DIR_BLACKLIST = ['test', 'nodeModules']
 const processRefProperties = require('./process-ref-properties')
 
 module.exports = function loadDir (rootDir, allComponents, options) {
-  let quiet
-  if (options.hasOwnProperty('quiet')) {
-    quiet = options.quiet
-  } else {
-    quiet = false
-  }
+  const quiet = options.quiet || false
+  const includeDocumentation = options.includeDocumentation || false
 
   if (!quiet) {
     messages.info(rootDir)
-  }
-
-  let includeDocumentation
-  if (options.hasOwnProperty('includeDocumentation')) {
-    includeDocumentation = options.includeDocumentation
-  } else {
-    includeDocumentation = false
   }
 
   let continueLoading = true

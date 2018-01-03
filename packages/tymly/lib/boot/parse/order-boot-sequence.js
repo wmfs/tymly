@@ -17,39 +17,31 @@ module.exports = function bootSequenceOrder (serviceComponents) {
   // Just hack in some extra bootAfter entries ahead-of-time.
 
   function applyBootBefore () {
-    let service
-    let componentModule
-    let targetComponent
-    let targetBootAfters
+    let componentModule, targetComponent, targetBootAfters
 
-    for (let serviceName in serviceComponents) {
-      if (serviceComponents.hasOwnProperty(serviceName)) {
-        service = serviceComponents[serviceName]
-        componentModule = service.componentModule
+    Object.keys(serviceComponents).map(serviceName => {
+      componentModule = serviceComponents[serviceName].componentModule
 
-        if (componentModule.hasOwnProperty('bootBefore')) {
-          componentModule.bootBefore.forEach(
-            function (bootBeforeService) {
-              targetComponent = serviceComponents[bootBeforeService]
-              if (targetComponent) {
-                targetBootAfters = targetComponent.componentModule.bootAfter || []
-                if (targetBootAfters.indexOf(serviceName) === -1) {
-                  targetBootAfters.push(serviceName)
-                  targetComponent.bootAfter = targetBootAfters
-                }
-              } else {
-                messages.error(
-                  {
-                    name: 'bootOrderFail',
-                    message: `Unable to boot '${serviceName}' service before unknown service '${bootBeforeService}'`
-                  }
-                )
-              }
+      if (componentModule.hasOwnProperty('bootBefore')) {
+        componentModule.bootBefore.forEach((bootBeforeService) => {
+          targetComponent = serviceComponents[bootBeforeService]
+          if (targetComponent) {
+            targetBootAfters = targetComponent.componentModule.bootAfter || []
+            if (targetBootAfters.indexOf(serviceName) === -1) {
+              targetBootAfters.push(serviceName)
+              targetComponent.bootAfter = targetBootAfters
             }
-          )
-        }
+          } else {
+            messages.error(
+              {
+                name: 'bootOrderFail',
+                message: `Unable to boot '${serviceName}' service before unknown service '${bootBeforeService}'`
+              }
+            )
+          }
+        })
       }
-    }
+    })
   }
 
   function addPriorServices (fromServiceName, rootServiceNames, depth) {
