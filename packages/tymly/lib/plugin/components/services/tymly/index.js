@@ -18,6 +18,7 @@ class TymlyService {
         }
       }
     })
+    Object.keys(require.cache).map(k => { delete require.cache[k] })
   }
 }
 

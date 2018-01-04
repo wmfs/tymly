@@ -10,12 +10,14 @@ describe('Shutdown services tests', function () {
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
 
-  it('should boot up tymly with some plugins', function (done) {
+  it('should boot up tymly with some plugins', (done) => {
     tymly.boot(
       {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
-          require.resolve('tymly-express-plugin')
+          require.resolve('tymly-express-plugin'),
+          require.resolve('tymly-users-plugin'),
+          require.resolve('tymly-solr-plugin')
         ],
         config: {
           auth: {
@@ -24,7 +26,7 @@ describe('Shutdown services tests', function () {
           }
         }
       },
-      function (err, tymlyServices) {
+      (err, tymlyServices) => {
         tymlyService = tymlyServices.tymly
         done(err)
       }
@@ -33,5 +35,15 @@ describe('Shutdown services tests', function () {
 
   it('should shut down Tymly and plugins', async () => {
     await tymlyService.shutdown()
+  })
+
+  it('should successfully boot tymly without extra plugins if nothing is being cached', (done) => {
+    tymly.boot(
+      {},
+      (err, tymlyServices) => {
+        tymlyService = tymlyServices.tymly
+        done(err)
+      }
+    )
   })
 })
