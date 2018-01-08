@@ -5,7 +5,7 @@
   "States": {
     "Upserting": {
       "Type": "Task",
-      "InputPath": "$.homer",
+      "InputPath": "$",
       "Resource": "module:upserting",
       "ResourceConfig": {
         "modelId": "people"
@@ -14,7 +14,7 @@
     },
     "FindingById": {
       "Type": "Task",
-      "InputPath": "$.homer.employeeNo",
+      "InputPath": "$.employeeNo",
       "Resource": "module:findingById",
       "ResourceConfig": {
         "modelId": "people"

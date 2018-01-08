@@ -66,26 +66,15 @@ describe('PostgreSQL storage tests', function () {
   it('should start a simple-storage execution', function (done) {
     statebox.startExecution(
       {
-        homer: {
-          employeeNo: 1,
-          firstName: 'Homer',
-          lastName: 'Simpson',
-          age: 39
-        }
+        employeeNo: 1,
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        age: 39
       },  // input
       STATE_MACHINE_NAME, // state machine name
-      {}, // options
-      function (err, result) {
-        expect(err).to.eql(null)
-        executionName = result.executionName
-        done()
-      }
-    )
-  })
-
-  it('should successfully a simple-storage execution', function (done) {
-    statebox.waitUntilStoppedRunning(
-      executionName,
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -100,22 +89,22 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('should succeed on basic input using insert state', function (done) {
+  it('should succeed on another upsert', function (done) {
     statebox.startExecution(
       {
-        skinner: {
-          employeeNo: 50,
-          firstName: 'Seymour',
-          lastName: 'Skinner',
-          age: 48
-        }
+        employeeNo: 50,
+        firstName: 'Seymour',
+        lastName: 'Skinner',
+        age: 48
       },
       STATE_MACHINE_NAME,
-      {},
-      function (err, result) {
-        console.log(statebox)
+      {
+        sendResponse: 'COMPLETE'
+      },
+      function (err, executionDescription) {
+        console.log(executionDescription)
         expect(err).to.eql(null)
-        executionName = result.executionName
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
@@ -128,7 +117,7 @@ describe('PostgreSQL storage tests', function () {
           employeeNo: 50,
           firstName: 'Seymour',
           lastName: 'Skinner',
-          age: 48,
+          age: 42,
           job: ''
         }
       },
@@ -193,7 +182,7 @@ describe('PostgreSQL storage tests', function () {
         skinner: {
           firstName: 'Seymour',
           lastName: 'Skinner',
-          age: 48
+          age: 43
         }
       },
       'tymlyTest_badpeople_1_0',
