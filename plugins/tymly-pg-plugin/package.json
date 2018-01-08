@@ -11,6 +11,7 @@
     "dottie": "^2.0.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.1",
+    "fs-extra": "^4.0.2",
     "hl-pg-client": "0.0.1",
     "pg-delta-file": "0.0.5",
     "pg-diff-sync": "0.0.11",
@@ -24,7 +25,6 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "chai-subset": "^1.6.0",
-    "fs-extra": "^4.0.2",
     "mocha": "^3.5.0",
     "rimraf": "^2.6.2",
     "standard": "^10.0.3"
