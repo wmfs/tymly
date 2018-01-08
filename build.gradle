@@ -65,9 +65,9 @@ task createTarball (type: CrossPlatformExec,
 }
 
 String coreDockerDir = './tools/tymly-dockerize-core'
-String coreDockerTag = 'wmfs/tymly-core'
+String coreDockerTag = 'tymly-core'
 String serverDockerDir = './tools/tymly-dockerize-server'
-String serverDockerTag = 'wmfs/tymly'
+String serverDockerTag = 'tymly'
 
 task dropTarfileToDocker (type: Copy,
                           dependsOn: [createTarball]) {
