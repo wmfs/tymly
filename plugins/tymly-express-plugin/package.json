@@ -14,12 +14,12 @@
     "express-jwt": "^5.1.0",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
+    "restler": "^3.4.0",
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
     "chai": "^4.1.0",
     "mocha": "^3.5.0",
-    "restler": "^3.4.0",
     "safe-buffer": "^5.1.1",
     "standard": "^10.0.3",
     "tymly": "0.0.15",
