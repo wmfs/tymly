@@ -35,6 +35,11 @@ task npmBootstrap (type: CrossPlatformExec) {
   commandLine 'npm', 'install'
 }
 
+task toolsBootstrap (type: CrossPlatformExec) {
+  commandLine 'npm', 'install'
+  workingDir './tools/tymly-packager'
+}
+
 task cleanNodeModules (type: CrossPlatformExec,
                        dependsOn: [npmBootstrap]) {
   commandLine 'npm', 'run', 'clean'
@@ -51,7 +56,7 @@ String tarfileName = "${tarballDir}/tymly-${getDate()}.tgz"
 def getDate() { new Date().format('yyyyMMdd-HHmmss') }
 
 task createTarball (type: CrossPlatformExec,
-                    dependsOn: [npmBootstrap]) {
+                    dependsOn: [npmBootstrap, toolsBootstrap]) {
   doFirst {
     mkdir tarballDir
   }
@@ -98,9 +103,18 @@ task bootstrap (type: CrossPlatformExec,
 }
 
 task test (type: CrossPlatformExec,
-           dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
+           dependsOn: [bootstrap, startPostgres]) {
   group 'Build'
   description 'Runs whole test suite'
+
+  commandLine 'npm', 'run', 'test'
+  environment PG_CONNECTION_STRING: pg_connection
+}
+
+task ci_test (type: CrossPlatformExec,
+              dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
+  group 'Build'
+  description 'Runs whole test suite, generating JUnit style XML output'
 
   commandLine 'npm', 'run', 'ci_test'
   environment PG_CONNECTION_STRING: pg_connection
