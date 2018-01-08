@@ -11,6 +11,10 @@ class PGClient {
     })
   }
 
+  end () {
+    return this.pool_.end()
+  } // end
+
   query (...args) {
     return this.pool_.query(...args)
   } // query

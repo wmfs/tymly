@@ -42,7 +42,7 @@ class PostgresqlStorageService {
   } // boot
 
   async shutdown () {
-    await this.client.pool_.end()
+    await this.client.end()
   }
 
   static _connectionString (config) {
