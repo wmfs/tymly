@@ -58,7 +58,6 @@ describe('Shutdown services tests', function () {
   })
 
   it('should show shutdown order was the reverse of boot', () => {
-    console.log('????', testService3)
     expect(testService3.shutdownOrder).to.eql(
       [
         'testService2',
