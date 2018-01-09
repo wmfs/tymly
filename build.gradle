@@ -12,6 +12,9 @@ apply plugin: "com.github.honourednihilist.gradle-postgresql-embedded"
 apply plugin: "com.github.jlouns.cpe"
 
 import static groovy.io.FileType.DIRECTORIES
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
+def isWindows = isFamily(FAMILY_WINDOWS)
 
 String pg_username = "postgres"
 String pg_password = "postgres"
@@ -28,7 +31,7 @@ postgresEmbedded {
 	password = pg_password
 	artifactStorePath = "./.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
 	stopWhenBuildFinished = true
-	timeoutMillisBeforeStop = 15000
+	timeoutMillisBeforeStop = isWindows ? 15000 : 0
 }
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
@@ -71,7 +74,8 @@ task createTarball (type: CrossPlatformExec,
     mkdir tarballDir
   }
 
-  commandLine './bundleUp', "${projectDir}", '--tar', tarfileName
+  def prefix = isWindows ? '' : './'
+  commandLine "${prefix}bundleUp", "${projectDir}", '--tar', tarfileName
   workingDir './tools/tymly-packager/bin'
 }
 
