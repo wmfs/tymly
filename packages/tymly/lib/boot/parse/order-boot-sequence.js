@@ -90,7 +90,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
   applyBootBefore()
   addPriorServices(null, _.keys(serviceComponents), 0)
 
-   if (!hasErrors) {
+  if (!hasErrors) {
     orderedServiceNames = _.reverse(orderedServiceNames)
     orderedServiceNames = _.uniq(orderedServiceNames)
     orderedServiceComponents = []

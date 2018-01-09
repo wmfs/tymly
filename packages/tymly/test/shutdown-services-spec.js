@@ -26,5 +26,4 @@ describe.only('Shutdown services tests', function () {
   it('should shut down Tymly and plugins', async () => {
     await tymlyService.shutdown()
   })
-
 })
