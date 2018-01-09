@@ -27,10 +27,24 @@ async function repack (tgzName, logger) {
   await tar.create('.', path.join('..', tgzName))
 
   process.chdir(wd)
-  rimraf.sync('package')
+  forceDelete('package')
 
   return tgzName
 } // repackWithNodeModules
+
+function forceDelete(dir) {
+  // sometimes chokes on Windows so retry
+  for (let i = 0; i != 2; ++i) {
+    try {
+      rimraf.sync(dir)
+    }
+    catch (err) {
+      console.log("Couldn't delete ${dir} ", err)
+      if (i == 0)
+        console.log("retrying ...")
+    }
+  }
+}
 
 async function packPackage (directory, tgzName, logger) {
   const wd = process.cwd()
