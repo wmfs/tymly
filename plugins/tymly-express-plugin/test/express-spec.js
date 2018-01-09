@@ -29,7 +29,7 @@ function sendToken (adminToken) {
 describe('Simple Express tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, app, adminToken, irrelevantToken, rupert, alan, statebox
+  let tymlyService, server, adminToken, irrelevantToken, rupert, alan, statebox
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
   const executionsUrl = `http://localhost:${PORT}/executions/`
@@ -97,7 +97,7 @@ describe('Simple Express tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        app = tymlyServices.server.app
+        server = tymlyServices.server
         statebox = tymlyServices.statebox
         tymlyServices.rbac.rbac.debug()
         done()
@@ -106,7 +106,7 @@ describe('Simple Express tests', function () {
   })
 
   it('should start Express app', function (done) {
-    app.listen(PORT, function () {
+    server.listen(PORT, function () {
       console.log('\n')
       console.log(`Example app listening on port ${PORT}!\n`)
       done()

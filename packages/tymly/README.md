@@ -42,8 +42,7 @@ tymly.boot(
       // Do something with those services...
       // (e.g. the 'tymly-express-plugin' provides an Express-powered 'server' service)
       const port = 3000
-      const app = services.server.app
-      app.listen(port, function () {        
+      services.server.listen(port, function () {        
         console.log('Example app listening on port ' + port);       
       })  
     }   

@@ -4,12 +4,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const addStaticDir = require('./add-static-dir')
 const schema = require('./schema.json')
+const debug = require('debug')('tymly-express-plugin')
 
 class ExpressServerService {
   boot (options, callback) {
     // Create a new Express app
     const app = express()
-    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.urlencoded({extended: false}))
     app.use(bodyParser.json())
 
     options.messages.info('Created Express.js app')
@@ -58,8 +59,17 @@ class ExpressServerService {
     )
   }
 
+  listen (port, callback) {
+    this.server = this.app.listen(port, callback)
+  }
+
   shutdown () {
-    // this.server.close()
+    if (this.server) {
+      debug('Shutting down...')
+      this.server.close()
+    } else {
+      debug('Unable to shutdown... server not started?')
+    }
   }
 }
 

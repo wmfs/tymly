@@ -44,9 +44,9 @@ function startServer (services) {
     return
   }
 
-  const app = services.server.app
+  const server = services.server
   const auth = services.auth
-  app.listen(config.config.serverPort, function () {
+  server.listen(config.config.serverPort, function () {
     console.log('\n')
 
     const adminToken = auth.generateToken(adminUserId)
