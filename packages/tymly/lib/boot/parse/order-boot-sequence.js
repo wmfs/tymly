@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('tymly')
 const messages = require('./../../startup-messages')
 const _ = require('lodash')
 
@@ -19,7 +20,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
   function applyBootBefore () {
     let componentModule, targetComponent, targetBootAfters
 
-    Object.keys(serviceComponents).map(serviceName => {
+    Object.keys(serviceComponents).forEach(serviceName => {
       componentModule = serviceComponents[serviceName].componentModule
 
       if (componentModule.hasOwnProperty('bootBefore')) {
@@ -30,6 +31,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
             if (targetBootAfters.indexOf(serviceName) === -1) {
               targetBootAfters.push(serviceName)
               targetComponent.bootAfter = targetBootAfters
+              debug(`  Service '${serviceName}' must boot before  '${bootBeforeService}'`)
             }
           } else {
             messages.error(
@@ -40,6 +42,9 @@ module.exports = function bootSequenceOrder (serviceComponents) {
             )
           }
         })
+      }
+      if (componentModule.hasOwnProperty('bootBefore')) {
+
       }
     })
   }
@@ -56,6 +61,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
               const componentModule = service.componentModule
 
               if (componentModule.hasOwnProperty('bootAfter')) {
+                debug(`  Service '${serviceName}' must boot after  '${componentModule.bootAfter}'`)
                 addPriorServices(serviceName, componentModule.bootAfter, depth + 1)
               }
             } else {
@@ -75,20 +81,18 @@ module.exports = function bootSequenceOrder (serviceComponents) {
       messages.error(
         {
           name: 'tooDeep',
-          message: 'Reached max recursive depth while trying to order services - is there a loop?'
+          message: 'Reached max recursive depth while trying to order services - is there a loop, or does a service boot before/after itself?'
         }
       )
     }
   }
 
   applyBootBefore()
-
   addPriorServices(null, _.keys(serviceComponents), 0)
 
-  if (!hasErrors) {
+   if (!hasErrors) {
     orderedServiceNames = _.reverse(orderedServiceNames)
     orderedServiceNames = _.uniq(orderedServiceNames)
-
     orderedServiceComponents = []
     orderedServiceNames.forEach(
       function (serviceName) {

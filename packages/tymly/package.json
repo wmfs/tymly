@@ -29,11 +29,7 @@
     "chai": "^4.1.0",
     "chai-subset": "^1.5.0",
     "mocha": "^3.5.0",
-    "standard": "^10.0.3",
-    "tymly-pg-plugin": "0.0.6",
-    "tymly-express-plugin": "0.0.11",
-    "tymly-users-plugin": "0.0.1",
-    "tymly-solr-plugin": "0.0.4"
+    "standard": "^10.0.3"
   },
   "scripts": {
     "lint": "standard",

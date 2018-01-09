@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('tymlyService')
 const schema = require('./schema.json')
 const _ = require('lodash')
 
@@ -11,13 +12,19 @@ class TymlyService {
   }
 
   async shutdown () {
+    debug('Shutting down...')
+    console.log('>>>>>>', this.orderedServiceNames)
     await _.reverse(this.orderedServiceNames).map(service => {
       if (service !== 'tymly') {
         if (typeof this.bootedServices[service].shutdown === 'function') {
+          debug(` - ${service} (Shutting down...)`)
           this.bootedServices[service].shutdown()
+        } else {
+          debug(` - ${service} (Skipped - no shutdown function)`)
         }
       }
     })
+    debug(`Shutdown.`)
     Object.keys(require.cache).map(k => { delete require.cache[k] })
   }
 }

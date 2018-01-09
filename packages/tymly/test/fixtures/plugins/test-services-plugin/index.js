@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
-  label: 'Cats',
+  label: 'Demo',
   author: 'Tim Needham',
   version: '1.0',
 
