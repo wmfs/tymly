@@ -28,6 +28,7 @@ describe('Shutdown services tests', function () {
   it('should show the boot order was correct', () => {
     expect(tymlyService.orderedServiceNames).to.eql(
       [ 'inventory',
+        'testService3',
         'caches',
         'storage',
         'functions',
@@ -39,7 +40,6 @@ describe('Shutdown services tests', function () {
         'rbac',
         'users',
         'tymly',
-        'testService3',
         'testService1',
         'testService2'
       ]
@@ -65,5 +65,19 @@ describe('Shutdown services tests', function () {
         'testService3'
       ]
     )
+  })
+
+  it('should successfully boot tymly without any plugins if nothing is being cached', (done) => {
+    tymly.boot(
+      {},
+      (err, tymlyServices) => {
+        tymlyService = tymlyServices.tymly
+        done(err)
+      }
+    )
+  })
+
+  it('should shut down Tymly and plugins', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -14,5 +14,6 @@ class TestService3 {
 
 module.exports = {
   serviceClass: TestService3,
-  bootBefore: ['testServer1']
+  bootBefore: ['testServer1', 'rbac'],
+  bootAfter: ['inventory']
 }
