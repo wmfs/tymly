@@ -22,9 +22,9 @@ describe('Simple email tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let transportConfig
   let from
-  let tymlysService
 
   function failIfNoTransport () {
     if (!transportConfig) {
@@ -79,29 +79,13 @@ describe('Simple email tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        tymlysService = tymlyServices.tymlys
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
   })
 
-  it('should find the send welcome email by id', function () {
-    tymlysService.findFlowById('tymlyTest_sendWelcomeEmail_1_0',
-      function (err, flow) {
-        expect(err).to.eql(null)
-        expect(flow.flowId).to.eql('tymlyTest_sendWelcomeEmail_1_0')
-      }
-    )
-  })
-
-  it('should run a Tymly to illustrate a simple email-sending flow', function (done) {
-    tymlysService.startNewTymly(
-      'tymlyTest_sendWelcomeEmail_1_0',
-      {},
-      function (err, emailSendingTymly) {
-        expect(err).to.eql(null)
-        done()
-      }
-    )
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

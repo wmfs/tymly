@@ -7,6 +7,7 @@ const expect = require('chai').expect
 describe('Category tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let categoryService
 
   it('should load the cat blueprint (which has some registry keys)', function (done) {
@@ -22,6 +23,7 @@ describe('Category tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         categoryService = tymlyServices.categories
         done()
       }
@@ -48,5 +50,9 @@ describe('Category tests', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

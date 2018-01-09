@@ -13,7 +13,7 @@ chai.use(chaiSubset)
 
 describe('Demo tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let models, forms, boards, categories, client
+  let tymlyService, models, forms, boards, categories, client
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -28,6 +28,7 @@ describe('Demo tests', function () {
         ]
       },
       function (err, tymlyServices) {
+        tymlyService = tymlyServices.tymly
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
@@ -216,5 +217,9 @@ describe('Demo tests', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./scripts/cleanup.sql', client)
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

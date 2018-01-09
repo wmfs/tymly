@@ -23,6 +23,8 @@ for (const test of reindexTests) {
     this.timeout(process.env.TIMEOUT || 5000)
 
     let statebox
+    let tymlyService
+
     it('should run the tymly services', function (done) {
       tymly.boot(
         {
@@ -43,6 +45,7 @@ for (const test of reindexTests) {
         },
         function (err, tymlyServices) {
           expect(err).to.eql(null)
+          tymlyService = tymlyServices.tymly
           statebox = tymlyServices.statebox
           done()
         }
@@ -69,6 +72,10 @@ for (const test of reindexTests) {
           }
         }
       )
+    })
+
+    it('should shutdown Tymly', async () => {
+      await tymlyService.shutdown()
     })
   })
 }

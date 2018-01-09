@@ -11,7 +11,7 @@ describe('Expenses state machine', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const CLAIM_EXPENSE_STATE_MACHINE = 'tymly_claimAnExpense_1_0'
   const UPDATE_EXPENSE_CLAIM_STATE_MACHINE = 'tymly_updateAnExpenseClaim_1_0'
-  let statebox, client, expenses, id, claimExpenseExecutionName, updateClaimExecutionName
+  let statebox, client, expenses, id, claimExpenseExecutionName, updateClaimExecutionName, tymlyService
 
   const formData = {
     firstName: 'Homer',
@@ -41,6 +41,7 @@ describe('Expenses state machine', function () {
         ]
       },
       function (err, tymlyServices) {
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         expenses = tymlyServices.storage.models['tymly_expenses']
@@ -179,5 +180,9 @@ describe('Expenses state machine', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./scripts/cleanup.sql', client)
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

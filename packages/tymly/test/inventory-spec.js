@@ -5,6 +5,7 @@ const expect = require('chai').expect
 
 describe('Simple Inventory tests', function () {
   const tymly = require('../lib')
+  let tymlyService
   let inventoryService
   const blueprintPaths = [path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')]
   const pluginPaths = [
@@ -20,6 +21,7 @@ describe('Simple Inventory tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         inventoryService = tymlyServices.inventory
         done()
       }
@@ -39,5 +41,9 @@ describe('Simple Inventory tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -1,8 +1,0 @@
-{
-  "formFilling": {
-    "options": {
-      "formId": "catEditingForm",
-      "target": "catData"
-    }
-  }
-}

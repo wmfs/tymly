@@ -6,6 +6,7 @@ const expect = require('chai').expect
 const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 
 describe('Simple Tymly test', function () {
+  let tymlyService
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
   let rupert
@@ -23,6 +24,7 @@ describe('Simple Tymly test', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         done()
       }
@@ -94,5 +96,9 @@ describe('Simple Tymly test', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -11,6 +11,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_search_1_0'
 describe('tymly-solr-plugin search state resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let statebox
   let client
 
@@ -34,6 +35,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -115,5 +117,9 @@ describe('tymly-solr-plugin search state resource tests', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

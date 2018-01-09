@@ -8,6 +8,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_upsertACatFindACat_1_0'
 describe('Memory tymly-storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let statebox
   let executionName
 
@@ -20,6 +21,7 @@ describe('Memory tymly-storage tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         done()
       }
@@ -64,5 +66,9 @@ describe('Memory tymly-storage tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

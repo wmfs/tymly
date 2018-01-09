@@ -8,6 +8,7 @@ describe('Registry tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let registryService
 
   it('should load the cat blueprint (which has some registry keys)', function (done) {
@@ -23,6 +24,7 @@ describe('Registry tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         registryService = tymlyServices.registry
         done()
       }
@@ -84,5 +86,9 @@ describe('Registry tests', function () {
       expect(registryService.get(key)).to.eql(2)
       done()
     })
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

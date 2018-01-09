@@ -4,6 +4,7 @@ const expect = require('chai').expect
 
 describe('Context tests', function () {
   const tymly = require('./../lib')
+  let tymlyService
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
 
@@ -15,6 +16,7 @@ describe('Context tests', function () {
         ]
       },
       function (err, tymlyServices) {
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         expect(err).to.eql(null)
         done()
@@ -42,5 +44,9 @@ describe('Context tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

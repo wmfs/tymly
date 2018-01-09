@@ -8,6 +8,7 @@ const expect = require('chai').expect
 
 describe('Simple Tymly test', function () {
   this.timeout(process.env.TIMEOUT || 5000)
+  let tymlyService
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -19,9 +20,13 @@ describe('Simple Tymly test', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

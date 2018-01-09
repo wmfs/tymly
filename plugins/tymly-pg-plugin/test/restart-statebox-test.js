@@ -6,6 +6,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 
 describe('Restart statebox test - cat state machine', function () {
   const tymly = require('tymly')
+  let tymlyService
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
   let rupert
@@ -26,6 +27,7 @@ describe('Restart statebox test - cat state machine', function () {
       tymlyConfig,
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         done()
       }
@@ -89,5 +91,9 @@ describe('Restart statebox test - cat state machine', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

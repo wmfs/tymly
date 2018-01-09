@@ -11,6 +11,7 @@ describe('User-role tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let users
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
@@ -41,6 +42,7 @@ describe('User-role tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         users = tymlyServices.users
         done()
       }
@@ -121,5 +123,9 @@ describe('User-role tests', function () {
 
   it('should reset cache', function () {
     users.resetCache()
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

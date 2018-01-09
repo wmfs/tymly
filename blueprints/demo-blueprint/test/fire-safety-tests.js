@@ -11,7 +11,7 @@ describe('Todo task state machine tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const FILL_FIRE_SAFETY_SHORT_AUDIT_STATE_MACHINE = 'tymly_fillFireSafetyShortAudit_1_0'
   const todoId = 'cdc33a5c-d438-11e7-a2f3-5bb79decfe33'
-  let statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit, todos
+  let tymlyService, statebox, client, fillFireSafetyShortAuditExecutionName, fireSafetyShortAudit, todos
 
   const formData = {
     ignitionSources: 'Good',
@@ -46,6 +46,7 @@ describe('Todo task state machine tests', function () {
         ]
       },
       function (err, tymlyServices) {
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         fireSafetyShortAudit = tymlyServices.storage.models['tymly_fireSafetyShortAudit']
@@ -154,5 +155,9 @@ describe('Todo task state machine tests', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./scripts/cleanup.sql', client)
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -11,6 +11,7 @@ describe('data import', function () {
 
   const STATE_MACHINE_NAME = 'dclg_refreshFromCsvFile_1_0'
 
+  let tymlyService
   let statebox
   let client
 
@@ -27,6 +28,7 @@ describe('data import', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -116,5 +118,9 @@ describe('data import', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

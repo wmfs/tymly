@@ -19,6 +19,7 @@ const studentsAndStaffSearchDocs = require('./fixtures/test-resources/students-a
 describe('tymly-solr-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let solrService
   let client
 
@@ -42,6 +43,7 @@ describe('tymly-solr-plugin tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         client = tymlyServices.storage.client
         solrService = tymlyServices.solr
         done()
@@ -125,5 +127,9 @@ describe('tymly-solr-plugin tests', function () {
       client,
       err => done(err)
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

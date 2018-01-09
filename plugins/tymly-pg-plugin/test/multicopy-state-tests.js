@@ -11,6 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner')
 describe('Testing functionality as a state-resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let client
+  let tymlyService
   let statebox
   let STATE_MACHINE_NAME = 'foodTest_food_1_0'
   let executionName
@@ -30,6 +31,7 @@ describe('Testing functionality as a state-resource', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         client = tymlyServices.storage.client
         statebox = tymlyServices.statebox
         done()
@@ -110,5 +112,9 @@ describe('Testing functionality as a state-resource', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

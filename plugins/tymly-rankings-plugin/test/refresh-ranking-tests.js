@@ -11,7 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 describe('Tests the Ranking State Resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox
-
+  let tymlyService
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
 
@@ -34,27 +34,12 @@ describe('Tests the Ranking State Resource', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        // client = tymlyServices.storage.client
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         done()
       }
     )
   })
-
-  // it('should create the test resources', function (done) {
-  //   sqlScriptRunner(
-  //     './db-scripts/setup.sql',
-  //     client,
-  //     function (err) {
-  //       expect(err).to.equal(null)
-  //       if (err) {
-  //         done(err)
-  //       } else {
-  //         done()
-  //       }
-  //     }
-  //   )
-  // })
 
   it('should start the state resource execution to generate view with initial weights', function (done) {
     statebox.startExecution(
@@ -229,5 +214,9 @@ describe('Tests the Ranking State Resource', function () {
         done()
       }
     })
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

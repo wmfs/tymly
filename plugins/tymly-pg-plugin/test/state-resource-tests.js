@@ -20,6 +20,7 @@ describe('Importing CSV Tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
   let client
+  let tymlyService
   let statebox
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
@@ -37,6 +38,7 @@ describe('Importing CSV Tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         client = tymlyServices.storage.client
         statebox = tymlyServices.statebox
         done()
@@ -86,11 +88,16 @@ describe('Importing CSV Tests', function () {
       }
     )
   })
+
+  it('should shutdown Tymly (1)', async () => {
+    await tymlyService.shutdown()
+  })
 })
 
 describe('Synchronizing Table tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
+  let tymlyService
   let statebox
   let client
 
@@ -110,6 +117,7 @@ describe('Synchronizing Table tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         client = tymlyServices.storage.client
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         done()
       }
@@ -157,6 +165,10 @@ describe('Synchronizing Table tests', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })
 

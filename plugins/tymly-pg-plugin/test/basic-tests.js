@@ -11,6 +11,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 describe('PostgreSQL storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let registryService
   let categoryService
   let client
@@ -35,6 +36,7 @@ describe('PostgreSQL storage tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         client = tymlyServices.storage.client
         statebox = tymlyServices.statebox
         registryService = tymlyServices.registry
@@ -292,5 +294,9 @@ describe('PostgreSQL storage tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

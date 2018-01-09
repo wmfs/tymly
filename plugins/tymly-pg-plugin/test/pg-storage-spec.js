@@ -11,6 +11,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner')
 describe('PG storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let client
   let people
   let planets
@@ -30,6 +31,7 @@ describe('PG storage tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         client = tymlyServices.storage.client
         const models = tymlyServices.storage.models
         people = models.tymlyTest_people
@@ -535,5 +537,9 @@ describe('PG storage tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

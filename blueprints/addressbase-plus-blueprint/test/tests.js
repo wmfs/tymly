@@ -19,6 +19,7 @@ describe('Blueprint Tests', function () {
   const UPSERTS_DIR = path.resolve(OUTPUT_AND_INPUT_DIR, './upserts')
   const MANIFEST_FILE = path.resolve(OUTPUT_AND_INPUT_DIR, './manifest.json')
 
+  let tymlyService
   let statebox
   let client
 
@@ -47,6 +48,7 @@ describe('Blueprint Tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -157,5 +159,9 @@ describe('Blueprint Tests', function () {
     } else {
       done()
     }
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -18,6 +18,7 @@ describe('Tests the Ranking Service', function () {
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
+  let tymlyService
 
   it('should create the test resources', () => {
     return sqlScriptRunner('./db-scripts/setup.sql', client)
@@ -36,7 +37,7 @@ describe('Tests the Ranking Service', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
-        // client = tymlyServices.storage.client
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -342,5 +343,9 @@ describe('Tests the Ranking Service', function () {
 
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

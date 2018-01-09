@@ -5,8 +5,6 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-// const fs = require('fs')
-// const rimraf = require('rimraf')
 
 describe('data import', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -14,6 +12,7 @@ describe('data import', function () {
   const STATE_MACHINE_NAME = 'fsa_refreshFromXmlFile_1_0'
   const OUTPUT_DIR = path.resolve(__dirname, './output')
 
+  let tymlyService
   let statebox
   let client
 
@@ -31,6 +30,7 @@ describe('data import', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -120,4 +120,8 @@ describe('data import', function () {
   //     done()
   //   }
   // })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
+  })
 })

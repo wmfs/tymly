@@ -11,7 +11,6 @@ const refresh = main.refresh
 
 describe('Initializing environment...', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-
   let connectionString = process.env.PG_CONNECTION_STRING
   let client = new HlPgClient(connectionString)
 

@@ -12,6 +12,7 @@ describe('Heritage tests', function () {
 
   const STATE_MACHINE_NAME = 'wmfs_refreshFromCsvFile_1_0'
 
+  let tymlyService
   let statebox
   let client
 
@@ -28,6 +29,7 @@ describe('Heritage tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -99,5 +101,9 @@ describe('Heritage tests', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

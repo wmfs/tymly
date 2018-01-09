@@ -10,6 +10,7 @@ const path = require('path')
 describe('Memory storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let people
   let planets
   let star
@@ -24,6 +25,7 @@ describe('Memory storage tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         const models = tymlyServices.storage.models
         people = models.tymlyTest_people
         planets = models.tymlyTest_planets
@@ -637,5 +639,9 @@ describe('Memory storage tests', function () {
         done()
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

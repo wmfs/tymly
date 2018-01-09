@@ -12,6 +12,7 @@ describe('CQC tests', function () {
 
   const STATE_MACHINE_NAME = 'cqc_refreshFromCsvFile_1_0'
 
+  let tymlyService
   let statebox
   let client
 
@@ -28,6 +29,7 @@ describe('CQC tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         done()
@@ -151,5 +153,9 @@ describe('CQC tests', function () {
         }
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

@@ -10,6 +10,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_setRegistryKey_1_0'
 describe('It should test the state resource for setting reg keys', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
+  let tymlyService
   let statebox
   let registry
 
@@ -27,6 +28,7 @@ describe('It should test the state resource for setting reg keys', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.equal(null)
+        tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         registry = tymlyServices.registry
         done()
@@ -63,5 +65,9 @@ describe('It should test the state resource for setting reg keys', function () {
     let value = registry.get(key)
     expect(value).to.eql(2)
     done()
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })

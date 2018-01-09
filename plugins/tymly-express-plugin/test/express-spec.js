@@ -14,10 +14,6 @@ process.on('unhandledRejection', (reason, p) => {
   // application specific logging, throwing an error, or other logic here
 })
 
-// function sleep (time) {
-//   return new Promise((resolve) => setTimeout(resolve, time));
-// }
-
 function sendToken (adminToken) {
   const options = {
     headers: {
@@ -33,7 +29,7 @@ function sendToken (adminToken) {
 describe('Simple Express tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let app, adminToken, irrelevantToken, rupert, alan, statebox
+  let tymlyService, app, adminToken, irrelevantToken, rupert, alan, statebox
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
   const executionsUrl = `http://localhost:${PORT}/executions/`
@@ -100,6 +96,7 @@ describe('Simple Express tests', function () {
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
+        tymlyService = tymlyServices.tymly
         app = tymlyServices.server.app
         statebox = tymlyServices.statebox
         tymlyServices.rbac.rbac.debug()
@@ -415,5 +412,9 @@ describe('Simple Express tests', function () {
         done(err)
       }
     )
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })
