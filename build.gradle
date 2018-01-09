@@ -71,7 +71,8 @@ task createTarball (type: CrossPlatformExec,
     mkdir tarballDir
   }
 
-  commandLine 'npm', 'run', 'bundle', '--', '--tar', tarfileName
+  commandLine './bundleUp', "${projectDir}", '--tar', tarfileName
+  workingDir './tools/tymly-packager/bin'
 }
 
 String coreDockerDir = './tools/tymly-dockerize-core'
