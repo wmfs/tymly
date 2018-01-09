@@ -75,7 +75,7 @@ task createTarball (type: CrossPlatformExec,
   }
 
   def prefix = isWindows ? '' : './'
-  commandLine "${prefix}bundleUp", "${projectDir}", '--tar', tarfileName
+  commandLine "${prefix}bundle", "${projectDir}", '--tar', tarfileName
   workingDir './tools/tymly-packager/bin'
 }
 
