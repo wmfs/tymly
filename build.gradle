@@ -130,7 +130,6 @@ task test (type: CrossPlatformExec,
 
   commandLine 'npm', 'run', 'test'
   if (project.hasProperty('testpackage')) {
-    println "woot ${testpackage}"
     workingDir "./${testpackage}"
   }
 
