@@ -15,6 +15,7 @@ function postInsert (result, ctx) {
 }
 
 describe('Ensure transaction isolation', function () {
+  this.timeout(process.env.TIMEOUT || 5000)
   const client = new PGClient(process.env.PG_CONNECTION_STRING)
 
   const setupScript = [
