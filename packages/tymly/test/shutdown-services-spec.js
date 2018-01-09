@@ -5,7 +5,7 @@
 const tymly = require('./../lib')
 const path = require('path')
 
-describe.only('Shutdown services tests', function () {
+describe('Shutdown services tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let tymlyService
 
@@ -26,5 +26,4 @@ describe.only('Shutdown services tests', function () {
   it('should shut down Tymly and plugins', async () => {
     await tymlyService.shutdown()
   })
-
 })

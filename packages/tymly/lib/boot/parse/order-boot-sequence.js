@@ -30,9 +30,9 @@ module.exports = function bootSequenceOrder (serviceComponents) {
             targetBootAfters = targetComponent.componentModule.bootAfter || []
             if (targetBootAfters.indexOf(serviceName) === -1) {
               targetBootAfters.push(serviceName)
-              targetComponent.bootAfter = targetBootAfters
-              debug(`  Service '${serviceName}' must boot before  '${bootBeforeService}'`)
+              targetComponent.componentModule.bootAfter = targetBootAfters
             }
+            debug(`  Service '${serviceName}' must boot before  '${bootBeforeService}'`)
           } else {
             messages.error(
               {
@@ -61,7 +61,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
               const componentModule = service.componentModule
 
               if (componentModule.hasOwnProperty('bootAfter')) {
-                debug(`  Service '${serviceName}' must boot after  '${componentModule.bootAfter}'`)
+                debug(`  Service '${serviceName}' must boot after '${componentModule.bootAfter}'`)
                 addPriorServices(serviceName, componentModule.bootAfter, depth + 1)
               }
             } else {
@@ -90,7 +90,7 @@ module.exports = function bootSequenceOrder (serviceComponents) {
   applyBootBefore()
   addPriorServices(null, _.keys(serviceComponents), 0)
 
-   if (!hasErrors) {
+  if (!hasErrors) {
     orderedServiceNames = _.reverse(orderedServiceNames)
     orderedServiceNames = _.uniq(orderedServiceNames)
     orderedServiceComponents = []

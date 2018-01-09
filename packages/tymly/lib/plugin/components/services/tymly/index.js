@@ -13,7 +13,6 @@ class TymlyService {
 
   async shutdown () {
     debug('Shutting down...')
-    console.log('>>>>>>', this.orderedServiceNames)
     await _.reverse(this.orderedServiceNames).map(service => {
       if (service !== 'tymly') {
         if (typeof this.bootedServices[service].shutdown === 'function') {
