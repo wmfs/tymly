@@ -32,7 +32,9 @@ postgresEmbedded {
 }
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
-String buildDir="./build"
+String projectDir=project.projectDir.toString()
+String buildDir="${projectDir}/build"
+String testOutputDir="${buildDir}/test"
 
 int test_timeout = 15000
 
@@ -50,11 +52,13 @@ task cleanNodeModules (type: CrossPlatformExec,
                        dependsOn: [npmBootstrap]) {
   commandLine 'npm', 'run', 'clean'
 }
-task cleanTestFiles (type: Delete) {
-  delete fileTree(dir: '.', include: '*/*/test/TEST-*.xml')
-}
+
 task cleanBuild (type: Delete) {
   delete buildDir
+}
+
+task makeTestOutputDir {
+  mkdir testOutputDir
 }
 
 String tarballDir = "${buildDir}/tarball"
@@ -113,8 +117,14 @@ task dockerPushServer (type: CrossPlatformExec,
 } // dockerPushServer
 
 ////////////////////////////////////////////
+task cleanTestFiles (type: Delete) {
+  group 'Clean'
+  description 'Cleans up TEST-*-results.xml files'
+
+  delete testOutputDir
+}
 task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
-  group 'Build'
+  group 'Clean'
   description 'Discards all node_modules directories, cleans up TEST-*.xml files, removes build directory'
 }
 
@@ -129,10 +139,15 @@ task bootstrap (type: CrossPlatformExec,
 def packages = []
 ['packages', 'plugins', 'blueprints'].each { d -> new File("./${d}").traverse(type: DIRECTORIES, maxDepth: 0) { packages << [it.name, it.toString()] } }
 def testTasks = []
-packages.eachWithIndex { p, index ->
+def ci_testTasks = []
+packages.each { p ->
   def name = p[0]
   def dir = p[1]
   def taskName = "test${name.capitalize()}"
+
+  testTasks << taskName
+  ci_testTasks << "ci_${taskName}"
+
   task "${taskName}"(type: CrossPlatformExec,
            dependsOn: [bootstrap, startPostgres]) {
       group 'Test'
@@ -145,8 +160,14 @@ packages.eachWithIndex { p, index ->
       environment TIMEOUT: test_timeout
   }
 
-  task "${index}_${taskName}"(dependsOn: ["${taskName}"]) { }
-  testTasks << "${index}_${taskName}"
+  task "ci_${taskName}"(type: CrossPlatformExec,
+                        dependsOn: [bootstrap, cleanTestFiles, makeTestOutputDir, startPostgres]) {
+    commandLine 'npm', 'run', 'test', '--', '--reporter', 'xunit', '--reporter-options', "output=${testOutputDir}/TEST-${name}-result.xml"
+    workingDir "${dir}"
+
+    environment PG_CONNECTION_STRING: pg_connection
+    environment TIMEOUT: test_timeout
+  }
 }
 
 task test (dependsOn: testTasks) {
@@ -154,14 +175,9 @@ task test (dependsOn: testTasks) {
   description 'Runs whole test suite'
 }
 
-task ci_test (type: CrossPlatformExec,
-              dependsOn: [bootstrap, startPostgres, cleanTestFiles]) {
+task ci_test (dependsOn: ci_testTasks) {
   group 'Build'
   description 'Runs whole test suite, generating JUnit style XML output'
-
-  commandLine 'npm', 'run', 'ci_test'
-  environment PG_CONNECTION_STRING: pg_connection
-  environment TIMEOUT: test_timeout
 }
 
 task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
