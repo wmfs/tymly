@@ -20,7 +20,7 @@ describe('notifications tymly-users-plugin tests', function () {
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
   const idToAcknowledge = []
-  let statebox
+  let statebox, tymlyService
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -34,6 +34,7 @@ describe('notifications tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -221,5 +222,9 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should clean up the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+  })
+
+  it('should shut down Tymly nicely', async () => {
+    await tymlyService.shutdown()
   })
 })

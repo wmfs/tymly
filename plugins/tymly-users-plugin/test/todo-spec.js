@@ -14,8 +14,7 @@ const REMOVE_TODO_STATE_MACHINE = 'tymly_removeTodoEntries_1_0'
 
 describe('todo changes tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox
-  let todos
+  let statebox, todos, tymlyService
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -33,6 +32,7 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         todos = tymlyServices.storage.models['tymly_todos']
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -299,5 +299,9 @@ describe('todo changes tymly-users-plugin tests', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+  })
+
+  it('should shut down Tymly nicely', async () => {
+    await tymlyService.shutdown()
   })
 })

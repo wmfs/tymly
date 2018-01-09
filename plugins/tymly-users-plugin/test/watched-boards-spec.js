@@ -14,7 +14,7 @@ const UNWATCH_BOARD_STATE_MACHINE = 'tymly_unwatchBoard_1_0'
 
 describe('watched-boards tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox
+  let statebox, tymlyService
 
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
@@ -33,6 +33,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -211,5 +212,9 @@ describe('watched-boards tymly-users-plugin tests', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+  })
+
+  it('should shut down Tymly nicely', async () => {
+    await tymlyService.shutdown()
   })
 })

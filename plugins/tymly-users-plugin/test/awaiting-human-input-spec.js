@@ -11,7 +11,7 @@ const HEARTBEAT_STATE_MACHINE = 'tymly_testHeartbeat_1_0'
 
 describe('awaitingUserInput state tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox, client
+  let statebox, client, tymlyService
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -29,6 +29,7 @@ describe('awaitingUserInput state tests', function () {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -128,5 +129,9 @@ describe('awaitingUserInput state tests', function () {
 
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
+  })
+
+  it('should shut down Tymly nicely', async () => {
+    await tymlyService.shutdown()
   })
 })

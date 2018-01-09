@@ -10,7 +10,7 @@ const GET_USER_DASHBOARD_STATE_MACHINE = 'tymly_getUserDashboardData_1_0'
 
 describe('user dashboard data tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox
+  let statebox, tymlyService
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -24,6 +24,7 @@ describe('user dashboard data tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
+        tymlyService = tymlyServices.tymly
         done()
       }
     )
@@ -47,5 +48,9 @@ describe('user dashboard data tymly-users-plugin tests', function () {
         done()
       }
     )
+  })
+
+  it('should shut down Tymly nicely', async () => {
+    await tymlyService.shutdown()
   })
 })
