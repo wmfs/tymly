@@ -129,6 +129,11 @@ task test (type: CrossPlatformExec,
   description 'Runs whole test suite'
 
   commandLine 'npm', 'run', 'test'
+  if (project.hasProperty('testpackage')) {
+    println "woot ${testpackage}"
+    workingDir "./${testpackage}"
+  }
+
   environment PG_CONNECTION_STRING: pg_connection
   environment TIMEOUT: test_timeout
 }
