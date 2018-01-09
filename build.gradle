@@ -129,11 +129,10 @@ task bootstrap (type: CrossPlatformExec,
 def packages = []
 ['packages', 'plugins', 'blueprints'].each { d -> new File("./${d}").traverse(type: DIRECTORIES, maxDepth: 0) { packages << [it.name, it.toString()] } }
 def testTasks = []
-packages.collect { it }.each { p ->
+packages.eachWithIndex { p, index ->
   def name = p[0]
   def dir = p[1]
   def taskName = "test${name.capitalize()}"
-  testTasks << taskName
   task "${taskName}"(type: CrossPlatformExec,
            dependsOn: [bootstrap, startPostgres]) {
       group 'Test'
@@ -145,6 +144,9 @@ packages.collect { it }.each { p ->
       environment PG_CONNECTION_STRING: pg_connection
       environment TIMEOUT: test_timeout
   }
+
+  task "${index}_${taskName}"(dependsOn: ["${taskName}"]) { }
+  testTasks << "${index}_${taskName}"
 }
 
 task test (dependsOn: testTasks) {
