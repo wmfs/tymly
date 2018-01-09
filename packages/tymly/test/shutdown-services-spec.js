@@ -27,7 +27,7 @@ describe('Shutdown services tests', function () {
 
   it('should show the boot order was correct', () => {
     expect(tymlyService.orderedServiceNames).to.eql(
-      [ 'inventory',
+      ['inventory',
         'testService3',
         'caches',
         'storage',
@@ -50,6 +50,18 @@ describe('Shutdown services tests', function () {
         'testService1',
         'testService2'
       ]
+    )
+  })
+
+  it('try to boot without plugins without shutting down, expect failure', (done) => {
+    tymly.boot(
+      {},
+      (err, tymlyServices) => {
+        expect(err.length).to.eql(2)
+        expect(err[0].name).to.eql('unknownService')
+        expect(err[1].name).to.eql('unknownService')
+        done()
+      }
     )
   })
 
