@@ -25,11 +25,14 @@ postgresEmbedded {
 	password = pg_password
 	artifactStorePath = "./.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
 	stopWhenBuildFinished = true
-	timeoutMillisBeforeStop = 0
+	timeoutMillisBeforeStop = 15000
 }
 
 String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
 String buildDir="./build"
+
+int test_timeout = 15000
+
 ////////////////////////////////////////////
 task npmBootstrap (type: CrossPlatformExec) {
   commandLine 'npm', 'install'
@@ -88,6 +91,24 @@ task dockerBuildServer (type: CrossPlatformExec,
   commandLine 'docker', 'build', '--tag', serverDockerTag, '.'
 } // dockerBuildServer
 
+task dockerTagCore (type: CrossPlatformExec) {
+  commandLine 'docker', 'tag', coreDockerTag, "wmfs/${coreDockerTag}"
+} // dockerTagCore
+
+task dockerTagServer (type: CrossPlatformExec) {
+  commandLine 'docker', 'tag', serverDockerTag, "wmfs/${serverDockerTag}"
+} // dockerTagServer
+
+task dockerPushCore (type: CrossPlatformExec,
+                     dependsOn: [dockerTagCore]) {
+  commandLine 'docker', 'push', "wmfs/${coreDockerTag}"
+} // dockerPushCore
+
+task dockerPushServer (type: CrossPlatformExec,
+                       dependsOn: [dockerTagServer]) {
+  commandLine 'docker', 'push', "wmfs/${serverDockerTag}"
+} // dockerPushServer
+
 ////////////////////////////////////////////
 task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
   group 'Build'
@@ -108,7 +129,9 @@ task test (type: CrossPlatformExec,
   description 'Runs whole test suite'
 
   commandLine 'npm', 'run', 'test'
+  workingDir "./${test}"
   environment PG_CONNECTION_STRING: pg_connection
+  environment TIMEOUT: test_timeout
 }
 
 task ci_test (type: CrossPlatformExec,
@@ -118,14 +141,20 @@ task ci_test (type: CrossPlatformExec,
 
   commandLine 'npm', 'run', 'ci_test'
   environment PG_CONNECTION_STRING: pg_connection
+  environment TIMEOUT: test_timeout
 }
 
 task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
   group 'Build'
   description 'Creates an installable Tymly package'
-}
+} // bundle
 
 task dockerBuild (dependsOn: [dockerBuildServer]) {
   group 'Build'
   description 'Build a runnable Tymly Docker image'
 } // dockerBuild
+
+task dockerPush (dependsOn: [dockerPushCore, dockerPushServer]) {
+  group 'Build'
+  description 'Push Tymly Docker images to Hub'
+} // dockerPush
