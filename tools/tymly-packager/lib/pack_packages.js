@@ -18,7 +18,7 @@ async function packing (tgzName, logger) {
 } // packing
 
 async function repack (tgzName, logger) {
-  logger(`... repacking`)
+  logger('... repacking')
   await tar.extract(tgzName)
   fs.unlinkSync(tgzName)
 
@@ -39,9 +39,9 @@ function forceDelete(dir) {
       rimraf.sync(dir)
     }
     catch (err) {
-      console.log("Couldn't delete ${dir} ", err)
+      console.log(`   couldn't delete ${dir} `)
       if (i == 0)
-        console.log("retrying ...")
+        console.log('   retrying ...')
     }
   }
 }
