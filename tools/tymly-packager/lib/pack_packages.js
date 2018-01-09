@@ -32,20 +32,6 @@ async function repack (tgzName, logger) {
   return tgzName
 } // repackWithNodeModules
 
-function forceDelete(dir) {
-  // sometimes chokes on Windows so retry
-  for (let i = 0; i != 2; ++i) {
-    try {
-      rimraf.sync(dir)
-    }
-    catch (err) {
-      console.log(`   couldn't delete ${dir} `)
-      if (i == 0)
-        console.log('   retrying ...')
-    }
-  }
-}
-
 async function packPackage (directory, tgzName, logger) {
   const wd = process.cwd()
   process.chdir(directory)
@@ -79,5 +65,20 @@ async function packPackages (searchRoot, packages, logger = () => {}) {
 
   return results
 } // packPackages
+
+
+function forceDelete(dir) {
+  // sometimes chokes on Windows so retry
+  for (let i = 0; i != 2; ++i) {
+    try {
+      rimraf.sync(dir)
+    }
+    catch (err) {
+      console.log(`   couldn't delete ${dir} `)
+      if (i == 0)
+        console.log('   retrying ...')
+    }
+  }
+}
 
 module.exports = packPackages

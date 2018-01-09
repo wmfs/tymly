@@ -104,7 +104,14 @@ async function createBundle (bundle, tgzName) {
 } // createBundle
 
 function cleanUp (bundle) {
-  rimraf.sync(bundle)
+  // sometimes chokes on Windows so retry
+  for (let i = 0; i != 20; ++i) {
+    try {
+      rimraf.sync(bundle)
+    }
+    catch (err) {
+    }
+  }
 } // cleanUp
 
 async function buildBundle (searchRoot, packages, bundleName = 'bundle.tgz', logger = () => {}) {
