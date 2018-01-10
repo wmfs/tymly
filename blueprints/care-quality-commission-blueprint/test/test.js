@@ -2,7 +2,7 @@
 
 'use strict'
 
-const chai = require('./../node_modules/chai')
+const chai = require('chai')
 const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')

@@ -5,20 +5,20 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "^2.5.0",
-    "check-node-version": "^2.1.0",
-    "debug": "^2.6.8",
-    "documentation": "^5.0.1",
-    "ejs": "^2.5.6",
-    "extend": "^3.0.0",
-    "lodash": "^4.17.4",
-    "sprintf": "^0.1.5",
+    "async": "2.6.0",
+    "check-node-version": "2.1.0",
+    "debug": "3.1.0",
+    "documentation": "5.0.1",
+    "ejs": "2.5.6",
+    "extend": "3.0.0",
+    "lodash": "4.17.4",
+    "sprintf": "0.1.5",
     "tymly": "0.0.15",
-    "upath": "^1.0.0"
+    "upath": "1.0.2"
   },
   "devDependencies": {
     "mocha": "4.0.1",
-    "standard": "^10.0.3"
+    "standard": "10.0.3"
   },
   "scripts": {
     "generate": "node ./scripts/generate"

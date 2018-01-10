@@ -14,22 +14,22 @@
     "url": "https://github.com/wmfs/tymly"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-string": "^1.4.0",
+    "chai": "4.1.2",
+    "chai-string": "1.4.0",
     "mocha": "4.0.1",
-    "standard": "^10.0.3"
+    "standard": "10.0.3"
   },
   "dependencies": {
-    "colors": "^1.1.2",
-    "commander": "^2.11.0",
-    "copy-dir": "^0.3.0",
-    "lerna": "^2.5.1",
-    "lodash.clone": "^4.5.0",
-    "mkdirp": "^0.5.1",
-    "moment": "^2.19.1",
-    "rimraf": "^2.6.2",
-    "tar": "^4.0.2",
-    "upath": "^1.0.0",
-    "username": "^3.0.0"
+    "colors": "1.1.2",
+    "commander": "2.11.0",
+    "copy-dir": "0.3.0",
+    "lerna": "2.5.1",
+    "lodash.clone": "4.5.0",
+    "mkdirp": "0.5.1",
+    "moment": "2.19.1",
+    "rimraf": "2.6.2",
+    "tar": "4.0.2",
+    "upath": "1.0.2",
+    "username": "3.0.0"
   }
 }

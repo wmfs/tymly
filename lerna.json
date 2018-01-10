@@ -6,6 +6,7 @@
     "blueprints/*"
   ],
   "version": "independent",
+  "hoist": true,
   "commands":{
     "publish": {
       "ignore": ["*-blueprint"]

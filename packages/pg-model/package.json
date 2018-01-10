@@ -9,19 +9,19 @@
   ],
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "^2.5.0",
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
-    "dottie": "^2.0.0",
-    "lodash": "^4.17.4"
+    "async": "2.6.0",
+    "boom": "5.2.0",
+    "debug": "3.1.0",
+    "dottie": "2.0.0",
+    "lodash": "4.17.4"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
-    "chai-subset": "^1.5.0",
+    "chai": "4.1.0",
+    "chai-subset": "1.6.0",
     "mocha": "4.0.1",
     "hl-pg-client": "0.0.1",
-    "pg-diff-sync": "^0.0.11",
-    "standard": "^10.0.3"
+    "pg-diff-sync": "0.0.11",
+    "standard": "10.0.3"
   },
   "scripts": {
     "lint": "standard",

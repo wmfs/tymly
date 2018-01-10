@@ -10,23 +10,23 @@
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "^2.5.0",
-    "boom": "^5.2.0",
-    "camelcase-keys": "^4.1.0",
-    "csv-string": "^2.3.2",
-    "debug": "^2.6.8",
-    "lodash": "^4.17.4",
-    "make-dir": "^1.0.0",
-    "pg": "^7.4.0",
-    "pg-copy-streams": "^1.2.0",
-    "pg-query-stream": "^1.0.0",
-    "supercopy": "^0.0.6"
+    "async": "2.6.0",
+    "boom": "5.2.0",
+    "camelcase-keys": "4.1.0",
+    "csv-string": "2.3.2",
+    "debug": "3.1.0",
+    "lodash": "4.17.4",
+    "make-dir": "1.0.0",
+    "pg": "7.4.0",
+    "pg-copy-streams": "1.2.0",
+    "pg-query-stream": "1.0.0",
+    "supercopy": "0.0.6"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
+    "chai": "4.1.0",
     "mocha": "4.0.1",
     "hl-pg-client": "0.0.1",
-    "standard": "^10.0.3"
+    "standard": "10.0.3"
   },
   "scripts": {
     "lint": "standard",

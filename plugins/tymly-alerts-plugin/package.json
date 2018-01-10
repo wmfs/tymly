@@ -5,15 +5,15 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "^5.2.0",
-    "debug": "^2.6.8",
-    "nodemailer": "^2.7.0"
+    "boom": "5.2.0",
+    "debug": "3.1.0",
+    "nodemailer": "2.7.0"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
+    "chai": "4.1.0",
     "mocha": "4.0.1",
-    "standard": "^10.0.3",
-    "tymly": "^0.0.15"
+    "standard": "10.0.3",
+    "tymly": "0.0.15"
   },
   "scripts": {
     "lint": "standard"
