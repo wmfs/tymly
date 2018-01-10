@@ -18,7 +18,6 @@
   "devDependencies": {
     "chai": "4.1.0",
     "mocha": "4.0.1",
-    "pg": "6.4.1",
     "standard": "10.0.3"
   },
   "scripts": {

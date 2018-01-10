@@ -181,4 +181,9 @@ describe('Run some basic tests', function () {
   it('Should cleanup the test data', async () => {
     await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', 'uninstall.sql')))
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })

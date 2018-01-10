@@ -19,7 +19,6 @@
     "glob": "7.1.2",
     "jsonfile": "3.0.1",
     "make-dir": "1.0.0",
-    "pg": "6.4.1",
     "upath": "1.0.2"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ const process = require('process')
 const expect = require('chai').expect
 
 function sqlf (statements) {
-  return statements.map(sql => { return { sql: sql } })
+  return statements.map(sql => { return {sql: sql} })
 }
 
 function postInsert (result, ctx) {
@@ -100,7 +100,7 @@ describe('Ensure transaction isolation', function () {
   it('Fire them off simultaneously', async () => {
     await client.run(sqlf(setupScript))
 
-    const results = [ ]
+    const results = []
 
     const q1 = client.run(test1)
       .then(r => results.push(r))
@@ -122,7 +122,7 @@ describe('Ensure transaction isolation', function () {
   it('Fire conflicting statements simultaneously', async () => {
     await client.run(sqlf(setupScript))
 
-    const results = [ ]
+    const results = []
 
     const q1 = client.run(test2)
       .then(r => results.push(r))
@@ -141,5 +141,9 @@ describe('Ensure transaction isolation', function () {
 
   it('Tear down', () => {
     client.run(sqlf(tearDown))
+  })
+
+  it('Close database connections', () => {
+    client.end()
   })
 })
