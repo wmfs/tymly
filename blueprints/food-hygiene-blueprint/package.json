@@ -6,7 +6,7 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "debug": "^2.6.8",
-    "mocha": "^3.5.0",
+    "mocha": "4.0.1",
     "rimraf": "^2.6.2",
     "standard": "^10.0.3",
     "tymly": "0.0.15",

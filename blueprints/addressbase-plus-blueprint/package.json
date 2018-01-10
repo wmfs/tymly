@@ -7,7 +7,7 @@
     "debug": "^2.6.8",
     "tymly": "0.0.15",
     "tymly-pg-plugin": "0.0.6",
-    "mocha": "^3.5.0",
+    "mocha": "4.0.1",
     "standard": "^10.0.3",
     "rimraf": "^2.6.2"
   },
