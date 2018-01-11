@@ -886,4 +886,9 @@ describe('Test promise API', function () {
   it('Should finally drop-cascade the pg_model_test schema', async () => {
     await client.runFile(path.resolve(__dirname, path.join('fixtures', 'scripts', 'uninstall.sql')))
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })
