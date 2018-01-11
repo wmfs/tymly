@@ -217,4 +217,9 @@ describe('watched-boards tymly-users-plugin tests', function () {
   it('should shut down Tymly nicely', async () => {
     await tymlyService.shutdown()
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })
