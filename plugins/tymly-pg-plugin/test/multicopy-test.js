@@ -76,4 +76,9 @@ describe('Initializing environment...', function () {
       }
     )
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })
