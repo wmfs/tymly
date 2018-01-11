@@ -8,7 +8,7 @@ const path = require('path')
 const smithereens = require('./../lib')
 
 describe('Basic Smithereens tests', function () {
-  it('should smash a simple CSV to smithereens', function (done) {
+  it('should smash a simple CSV to smithereens (failure probably means the people.csv files end of line delimiter has incorrectly been set to CRLF)', function (done) {
     smithereens(
       [
         path.join(__dirname, 'fixtures', 'people.csv')
