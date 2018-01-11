@@ -188,4 +188,9 @@ describe('Run some tests', function () {
   it('Should uninstall test schemas', () => {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'scripts', 'cleanup.sql'))
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })
