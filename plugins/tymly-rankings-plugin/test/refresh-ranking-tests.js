@@ -219,4 +219,9 @@ describe('Tests the Ranking State Resource', function () {
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
+
+  it('Should close database connections', function (done) {
+    client.end()
+    done()
+  })
 })
