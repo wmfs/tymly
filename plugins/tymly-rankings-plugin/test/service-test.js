@@ -15,10 +15,12 @@ const generateStats = require('./../lib/components/services/rankings/generate-st
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
+  let tymlyService
 
+  // explicitly opening a db connection as seom setup needs to be carried
+  // out before tymly can be started up
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
-  let tymlyService
 
   it('should create the test resources', () => {
     return sqlScriptRunner('./db-scripts/setup.sql', client)

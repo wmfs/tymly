@@ -5,7 +5,6 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_TODO_CHANGES_STATE_MACHINE = 'tymly_getTodoChanges_1_0'
@@ -14,10 +13,7 @@ const REMOVE_TODO_STATE_MACHINE = 'tymly_removeTodoEntries_1_0'
 
 describe('todo changes tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox, todos, tymlyService
-
-  const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new HlPgClient(pgConnectionString)
+  let statebox, todos, tymlyService, client
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -33,6 +29,7 @@ describe('todo changes tymly-users-plugin tests', function () {
         statebox = tymlyServices.statebox
         todos = tymlyServices.storage.models['tymly_todos']
         tymlyService = tymlyServices.tymly
+        client = tymlyServices.storage.client
         done()
       }
     )

@@ -19,9 +19,7 @@ process.on('unhandledRejection', (reason, p) => {
 describe('Importing CSV Tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
-  let client
-  let tymlyService
-  let statebox
+  let client, tymlyService, statebox
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(
@@ -97,9 +95,7 @@ describe('Importing CSV Tests', function () {
 describe('Synchronizing Table tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
-  let tymlyService
-  let statebox
-  let client
+  let tymlyService, statebox, client
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(

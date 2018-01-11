@@ -4,7 +4,6 @@
 
 const tymly = require('tymly')
 const path = require('path')
-const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
@@ -13,9 +12,8 @@ const SET_FAVOURITE_STATE_MACHINE = 'tymly_setFavouriteStartableNames_1_0'
 
 describe('favourites tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox, tymlyService
-  const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new HlPgClient(pgConnectionString)
+
+  let statebox, tymlyService, client
   it('should create some basic tymly services', function (done) {
     tymly.boot(
       {
@@ -29,6 +27,7 @@ describe('favourites tymly-users-plugin tests', function () {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         tymlyService = tymlyServices.tymly
+        client = tymlyServices.storage.client
         done()
       }
     )
@@ -107,10 +106,5 @@ describe('favourites tymly-users-plugin tests', function () {
 
   it('should shut down Tymly nicely', async () => {
     await tymlyService.shutdown()
-  })
-
-  it('Should close database connections', function (done) {
-    client.end()
-    done()
   })
 })

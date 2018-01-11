@@ -6,7 +6,6 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const assert = require('chai').assert
-const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
@@ -15,12 +14,10 @@ const CREATE_NOTIFICATIONS_STATE_MACHINE = 'tymly_createNotification_1_0'
 
 describe('notifications tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new HlPgClient(pgConnectionString)
   const limit = '10'
   const startFrom = '2017-10-21T14:20:30.414Z'
   const idToAcknowledge = []
-  let statebox, tymlyService
+  let statebox, tymlyService, client
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -35,6 +32,7 @@ describe('notifications tymly-users-plugin tests', function () {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         tymlyService = tymlyServices.tymly
+        client = tymlyServices.storage.client
         done()
       }
     )
@@ -226,10 +224,5 @@ describe('notifications tymly-users-plugin tests', function () {
 
   it('should shut down Tymly nicely', async () => {
     await tymlyService.shutdown()
-  })
-
-  it('Should close database connections', function (done) {
-    client.end()
-    done()
   })
 })

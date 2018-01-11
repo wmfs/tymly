@@ -13,7 +13,7 @@ const processWhere = matchPostcodeAndName.processWhere
 
 describe('Run some tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  const client = new HlPgClient(process.env.PG_CONNECTION_STRING)
+
   const options = {
     source: {
       schema: 'match_test',
@@ -42,6 +42,12 @@ describe('Run some tests', function () {
       }
     }
   }
+  let client
+
+  it('Should setup database connection', (done) => {
+    client = new HlPgClient(process.env.PG_CONNECTION_STRING)
+    done()
+  })
 
   it('Should install test schemas', () => {
     return client.runFile(path.resolve(__dirname, 'fixtures', 'scripts', 'setup.sql'))

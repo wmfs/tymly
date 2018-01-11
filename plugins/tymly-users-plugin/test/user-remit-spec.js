@@ -5,17 +5,13 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
-const HlPgClient = require('hl-pg-client')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox, tymlyService
-
-  const pgConnectionString = process.env.PG_CONNECTION_STRING
-  const client = new HlPgClient(pgConnectionString)
+  let statebox, tymlyService, client
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -33,6 +29,7 @@ describe('user-remit tymly-users-plugin tests', function () {
         expect(err).to.eql(null)
         statebox = tymlyServices.statebox
         tymlyService = tymlyServices.tymly
+        client = tymlyServices.storage.client
         done()
       }
     )
