@@ -396,7 +396,7 @@ describe('Simple Express tests', function () {
     })
   })
 
-  it('should start state machine to claim from an API (https://jsonplaceholder.typicode.com/posts) and expect the header to be taken through, and sensible data to be returned', function (done) {
+  it('should start state machine to claim from an API (http://headers.jsontest.com/) and expect the header to be taken through, and sensible data to be returned', function (done) {
     statebox.startExecution(
       {},
       GET_FROM_API_STATE_MACHINE,
