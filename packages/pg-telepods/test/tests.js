@@ -92,5 +92,10 @@ describe('Run the basic-usage example',
     it('Should uninstall test schemas', () => {
       return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
     })
+
+    it('Should close database connections', function (done) {
+      client.end()
+      done()
+    })
   }
 )
