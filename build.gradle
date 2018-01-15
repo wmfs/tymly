@@ -15,12 +15,12 @@ import static groovy.io.FileType.DIRECTORIES
 import static org.apache.tools.ant.taskdefs.condition.Os.*
 
 def isWindows = isFamily(FAMILY_WINDOWS)
+def hasPostgres = (System.env.PG_CONNECTION_STRING != null)
 
 String pg_username = "postgres"
 String pg_password = "postgres"
 String pg_db_name = "test_db"
 int pg_port = 54321
-
 
 postgresEmbedded {
 	version = "V9_6_3"
@@ -34,7 +34,8 @@ postgresEmbedded {
 	timeoutMillisBeforeStop = isWindows ? 15000 : 0
 }
 
-String pg_connection="postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
+String pg_connection= hasPostgres ? System.env.PG_CONNECTION_STRING :
+    "postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
 String projectDir=project.projectDir.toString()
 String buildDir="${projectDir}/build"
 String testOutputDir="${buildDir}/test"
@@ -148,6 +149,10 @@ def packages = []
 def testTasks = []
 def ci_testTasks = []
 packages.each { p ->
+  def testDependencies = ['bootstrap']
+  if (!hasPostgres)
+    testDependencies << 'startPostgres'
+
   def name = p[0]
   def dir = p[1]
   def taskName = "test${name.capitalize()}"
@@ -156,7 +161,7 @@ packages.each { p ->
   ci_testTasks << "ci_${taskName}"
 
   task "${taskName}"(type: CrossPlatformExec,
-           dependsOn: [bootstrap, startPostgres]) {
+           dependsOn: testDependencies) {
       group 'Test'
       description "Runs ${name} test suite"
 
@@ -167,8 +172,11 @@ packages.each { p ->
       environment TIMEOUT: test_timeout
   }
 
+  testDependencies << 'cleanTestFiles'
+  testDependencies << 'makeTestOutputDir'
+
   task "ci_${taskName}"(type: CrossPlatformExec,
-                        dependsOn: [bootstrap, cleanTestFiles, makeTestOutputDir, startPostgres]) {
+                        dependsOn: testDependencies) {
     commandLine 'npm', 'run', 'test', '--', '--reporter', 'xunit', '--reporter-options', "output=${testOutputDir}/TEST-${name}-result.xml"
     workingDir "${dir}"
 
