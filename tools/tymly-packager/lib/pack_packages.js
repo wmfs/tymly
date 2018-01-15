@@ -66,17 +66,14 @@ async function packPackages (searchRoot, packages, logger = () => {}) {
   return results
 } // packPackages
 
-
-function forceDelete(dir) {
+function forceDelete (dir) {
   // sometimes chokes on Windows so retry
-  for (let i = 0; i != 2; ++i) {
+  for (let i = 0; i !== 2; ++i) {
     try {
       rimraf.sync(dir)
-    }
-    catch (err) {
+    } catch (err) {
       console.log(`   couldn't delete ${dir} `)
-      if (i == 0)
-        console.log('   retrying ...')
+      if (i === 0) { console.log('   retrying ...') }
     }
   }
 }
