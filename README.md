@@ -7,7 +7,7 @@ _An open source low-code platform - that's built for collaboration_
 ## <a name="environment-variables"></a>Environment
 
 
-This here is a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-single-repository-for-all-your-companys-projects/). All of the [packages](https://github.com/wmfs/tymly/tree/master/packages) and [plugins](https://github.com/wmfs/tymly/tree/master/plugins) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
+Tymly is managed as a [monorepo](http://www.drmaciver.com/2016/10/why-you-should-use-a-single-repository-for-all-your-companys-projects/). All of the [packages](https://github.com/wmfs/tymly/tree/master/packages) and [plugins](https://github.com/wmfs/tymly/tree/master/plugins) maintained inside this repository are independently published on [npmjs.com](https://www.npmjs.com/).
 Ordinarily, you should refer to each package's specific installation instructions.
 
 ### Node.js
@@ -33,13 +33,6 @@ To do anything beyond "_Hello world!_" you'll need to have access to PostgreSQL 
 ``` bash
 PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432/my_test_db
 ```
-
-Any database used by Tymly must be capable of generating universally unique identifiers - this is easily achieved by running the following statement on the receiving database:
-
-```
-CREATE EXTENSION "uuid-ossp";
-```
-
 
 ## <a name="installing"></a>Installation
 
