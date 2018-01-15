@@ -65,6 +65,7 @@ task makeTestOutputDir {
 }
 
 String tarballDir = "${buildDir}/tarball"
+String bundleWorkDir = "${buildDir}/bundle"
 String tarfileName = "${tarballDir}/tymly-${getDate()}.tgz"
 def getDate() { new Date().format('yyyyMMdd-HHmmss') }
 
@@ -72,10 +73,11 @@ task createTarball (type: CrossPlatformExec,
                     dependsOn: [npmBootstrap, toolsBootstrap]) {
   doFirst {
     mkdir tarballDir
+    mkdir bundleWorkDir
   }
 
   def prefix = isWindows ? '' : './'
-  commandLine "${prefix}bundle", "${projectDir}", '--tar', tarfileName
+  commandLine "${prefix}bundle", "${projectDir}", '--tar', tarfileName, '--work', bundleWorkDir
   workingDir './tools/tymly-packager/bin'
 }
 

@@ -202,7 +202,7 @@ describe('Bundler tests', function () {
             packages[t].tarball = expectedTarballs[t]
           }
 
-          const [tarball, filesInBundle] = await buildBundle(fixtureRoot, packages)
+          const [tarball, filesInBundle] = await buildBundle(fixtureRoot, `bundle-${Date.now()}`, packages)
 
           expect(filesInBundle).to.equal(expectedFiles)
 

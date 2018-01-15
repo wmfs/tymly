@@ -105,22 +105,25 @@ async function createBundle (bundle, tgzName) {
 
 function cleanUp (bundle) {
   // sometimes chokes on Windows so retry
-  for (let i = 0; i != 20; ++i) {
+  for (let i = 0; i !== 20; ++i) {
     try {
       rimraf.sync(bundle)
-    }
-    catch (err) {
+    } catch (err) {
     }
   }
 } // cleanUp
 
-async function buildBundle (searchRoot, packages, bundleName = 'bundle.tgz', logger = () => {}) {
-  const workDir = `bundle-${Date.now()}`
+async function buildBundle (searchRoot, workDirRoot, packages, bundleName = 'bundle.tgz', logger = () => {}) {
+  const workDir = `${workDirRoot}/bundle-${Date.now()}`
   const wd = process.cwd()
   process.chdir(searchRoot)
 
   logger('Populating bundle ...')
+  if (!fs.existsSync(workDirRoot)) {
+    fs.mkdirSync(workDirRoot)
+  }
   fs.mkdirSync(workDir)
+
   const bundle = path.join(workDir, 'tymly')
   fs.mkdirSync(bundle)
 
