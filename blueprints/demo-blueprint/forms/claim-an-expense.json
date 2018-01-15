@@ -1,7 +1,7 @@
 {
   "jsonSchema": {
     "title": "Claim an expense",
-    "description": "Claim for some travel or similar",
+    "description": "Claim for some travel or similar expense",
     "type": "object",
     "required": [
       "firstName",
