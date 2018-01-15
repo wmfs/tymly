@@ -5,6 +5,7 @@ node_js:
 
 services:
   - postgresql
+  - docker
 
 addons:
   postgresql: "9.6"
