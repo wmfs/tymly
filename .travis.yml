@@ -44,5 +44,4 @@ before_deploy:
 
 deploy:
   provider: script
-  script: docker push wmfs/tymly
-  script: docker push wmfs/tymly-core
+  script: docker push wmfs/tymly && docker push wmfs/tymly-core
