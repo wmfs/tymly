@@ -7,7 +7,7 @@ class AcknowledgeNotifications {
   }
 
   run (event, context) {
-    const promises = event.notificationIds.map(id => {
+    const promises = event.notificationsToMark.map(id => {
       return this.notifications.update({
         id: id,
         userId: context.userId,
