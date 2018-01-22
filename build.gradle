@@ -145,7 +145,13 @@ task bootstrap (type: CrossPlatformExec,
 }
 
 def packages = []
-['packages', 'plugins', 'blueprints'].each { d -> new File("./${d}").traverse(type: DIRECTORIES, maxDepth: 0) { packages << [it.name, it.toString()] } }
+['packages', 'plugins', 'blueprints'].each {
+  d -> new File("./${d}").traverse(type: DIRECTORIES, maxDepth: 0) {
+    def pkg = new File(it, 'package.json')
+    if (pkg.exists())
+      packages << [it.name, it.toString()]
+  }
+}
 def testTasks = []
 def ci_testTasks = []
 packages.each { p ->
