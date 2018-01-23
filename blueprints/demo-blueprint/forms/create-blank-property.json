@@ -1,8 +1,8 @@
 {
   "jsonSchema": {
     "schema": {
-      "formtitle": "Create Blank Property!!!",
-      "formdescription": "Aenean lacinia bibendum nulla sed consectetur. Maecenas sed diam eget risus varius blandit sit amet non magna. Etiam porta sem malesuada magna mollis euismod. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
+      "formtitle": "Create a blank property",
+      "formdescription": "Create an empty property with minimum defaults",
       "formimage": "mountains2.png",
       "formcolorscheme": "lightblue",
       "type": "object",
@@ -129,12 +129,12 @@
         "work": {
           "type": "object",
           "title": "Work related",
-          "description": "Take my hand old toad ...",
+          "description": "Work related",
           "properties": {
             "disclaimer": {
               "type": "string",
               "title": "Disclaimer",
-              "description": "You just have ti read this ...",
+              "description": "You have read this",
               "text": "Nullam id dolor id nibh ultricies vehicula ut id elit. Donec ullamcorper nulla non metus auctor fringilla. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam."
             },
             "consent": {
@@ -182,13 +182,13 @@
         "hobbies": {
           "type": "object",
           "title": "Hobbies and stuff",
-          "description": "TFIF stuff and more ...",
+          "description": "Hobbies and stuff",
           "properties": {
             "images": {
               "type": "string",
               "title": "Favourite image",
-              "default": "https://picsum.photos/200/300/?image=400",
-              "description": "We can tell a lot from your image preferences!",
+              "default": "http://tymly.ct.tools:3210/static/wmfs/images/blocked-fire-door.jpg",
+              "description": "Image choice",
               "enum": [
                 1,
                 2,
@@ -290,11 +290,6 @@
                   "type": "boolean",
                   "default": false,
                   "title": "Fox Hunting?"
-                },
-                {
-                  "type": "boolean",
-                  "default": false,
-                  "title": "Brexit?"
                 }
               ]
             },
@@ -319,17 +314,17 @@
           "ui:widget": "textField",
           "ui:field": "StandardField",
           "ui:placeholder": "http://",
-          "ui:help": "You know, what people call you!"
+          "ui:help": "Type your first name"
         },
         "lastName": {
           "ui:widget": "textField",
           "ui:field": "StandardField",
-          "ui:help": "So, we can be all formal"
+          "ui:help": "Type your surname"
         },
         "age": {
           "ui:widget": "textField",
           "ui:field": "StandardField",
-          "ui:help": "Don't be shy!"
+          "ui:help": "Your age"
         },
         "address": {
           "location": {
@@ -343,29 +338,29 @@
             "ui:section:field": true,
             "ui:widget": "selectField",
             "ui:field": "StandardField",
-            "ui:help": "Big feet?"
+            "ui:help": ""
           },
           "eyeColour": {
             "ui:widget": "selectField",
             "ui:field": "StandardField",
-            "ui:help": "Blue eyes?"
+            "ui:help": ""
           }
         },
         "status": {
           "drivingLicense": {
             "ui:widget": "switchField",
             "ui:field": "StandardField",
-            "ui:help": "Can you drive?"
+            "ui:help": ""
           },
           "mortgage": {
             "ui:widget": "switchField",
             "ui:field": "StandardField",
-            "ui:help": "Are you indebted to the bank?"
+            "ui:help": ""
           },
           "marital": {
             "ui:widget": "radioField",
             "ui:field": "StandardField",
-            "ui:help": "Are you living in sin?"
+            "ui:help": ""
           }
         }
       },
@@ -373,27 +368,27 @@
         "disclaimer": {
           "ui:widget": "noticeField",
           "ui:field": "StandardField",
-          "ui:help": "Let's get the legal stuff out the way first"
+          "ui:help": ""
         },
         "consent": {
           "ui:widget": "checkField",
           "ui:field": "StandardField",
-          "ui:help": "Do you consent?"
+          "ui:help": ""
         },
         "startDate": {
           "ui:widget": "dateField",
           "ui:field": "StandardField",
-          "ui:help": "Really, that long ago?"
+          "ui:help": ""
         },
         "endDate": {
           "ui:widget": "dateField",
           "ui:field": "StandardField",
-          "ui:help": "Really, that long ago?"
+          "ui:help": ""
         },
         "startTime": {
           "ui:widget": "timeField",
           "ui:field": "StandardField",
-          "ui:help": "Really, that early - whoa!"
+          "ui:help": ""
         },
         "role": {
           "ui:widget": "textField",
@@ -403,12 +398,12 @@
         "happiness": {
           "ui:widget": "sliderField",
           "ui:field": "StandardField",
-          "ui:help": "Psst we won't tell your boss!"
+          "ui:help": ""
         },
         "satisfaction": {
           "ui:widget": "sliderField",
           "ui:field": "StandardField",
-          "ui:help": "Possibly a bit weird to ask!"
+          "ui:help": ""
         }
       },
       "hobbies": {
@@ -443,7 +438,7 @@
         "goals": {
           "ui:widget": "textField",
           "ui:field": "ArrayField",
-          "ui:help": "That all sounds very interesting"
+          "ui:help": ""
         },
         "ratings": {
           "ui:field": "ArrayField",
@@ -475,7 +470,7 @@
         },
         "features": {
           "ui:widget": "textField",
-          "ui:help": "That all sounds very interesting",
+          "ui:help": "",
           "ui:field": "ArrayField"
         }
       }
