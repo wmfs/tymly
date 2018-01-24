@@ -39,6 +39,9 @@ async function list (tgzName) {
         if (entry.type === 'File') {
           l.push(entry.path)
         } // if ...
+        if (entry.type === 'SymbolicLink') {
+          l.push(`${entry.path} -> ${entry.linkpath}`)
+        }
       }
     } // options
   )

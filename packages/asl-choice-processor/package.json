@@ -7,7 +7,7 @@
   "dependencies": {
     "boom": "5.2.0",
     "debug": "3.1.0",
-    "jsonpath": "0.2.12",
+    "jsonpath": "1.0.0",
     "lodash": "4.17.4"
   },
   "devDependencies": {

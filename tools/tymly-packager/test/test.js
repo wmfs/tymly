@@ -179,7 +179,7 @@ describe('Bundler tests', function () {
           path.join('packages', 'package-master', 'package-master-1.0.5.tgz'),
           path.join('packages', 'package-servant', 'package-servant-1.0.0.tgz')
         ],
-        3
+        4
       ]
 
     ]

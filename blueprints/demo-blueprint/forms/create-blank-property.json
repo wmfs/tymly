@@ -1,249 +1,505 @@
 {
   "jsonSchema": {
-    "title": "Create a blank property",
-    "description": "Create an empty property with minimum defaults",
-    "type": "object",
-    "required": [
-      "firstName",
-      "lastName", 
-      "on", 
-      "agree"
-    ],
-    "properties": {
-      "firstName": {
-        "type": "string",
-        "title": "First name"
-      },
-      "lastName": {
-        "type": "string",
-        "title": "Last name"
-      },
-      "description": {
-        "type": "string",
-        "title": "description"
-      },
-      "image": {
-        "type": "string",
-        "title": "http://tymly.ct.tools:3210/static/wmfs/images/blocked-fire-door.jpg"
-      },
-      "itemQuantity": {
-        "type": "integer",
-        "title": "How many did you buy?",
-        "items": {
-          "enum": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10
-          ]
+    "schema": {
+      "formtitle": "Create a blank property",
+      "formdescription": "Create an empty property with minimum defaults",
+      "formimage": "mountains2.png",
+      "formcolorscheme": "lightblue",
+      "type": "object",
+      "properties": {
+        "personal": {
+          "type": "object",
+          "title": "About you",
+          "required": [
+            "firstName",
+            "lastName"
+          ],
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "title": "First name",
+              "description": "Please supply your first name",
+              "minLength": 2
+            },
+            "lastName": {
+              "type": "string",
+              "title": "Last name",
+              "description": "Please supply your last name",
+              "minLength": 2
+            },
+            "age": {
+              "type": "string",
+              "title": "Age",
+              "description": "Please supply your age",
+              "pattern": "\\d+"
+            },
+            "address": {
+              "type": "object",
+              "title": "Where you live",
+              "properties": {
+                "location": {
+                  "type": "array",
+                  "default": [
+                    {
+                      "lng": -1.915263,
+                      "lat": 52.464388
+                    }
+                  ],
+                  "title": "Enter your postcode",
+                  "description": "Promise not to snoop?"
+                }
+              }
+            },
+            "status": {
+              "type": "object",
+              "title": "Stuff you may not want to anwser",
+              "properties": {
+                "drivingLicense": {
+                  "type": "boolean",
+                  "title": "Driving license",
+                  "description": "Do you have a driving license?"
+                },
+                "mortgage": {
+                  "type": "boolean",
+                  "title": "Mortgaged?",
+                  "description": "Do you have a mortgage?"
+                },
+                "marital": {
+                  "type": "string",
+                  "title": "Marital status?",
+                  "enum": [
+                    "married",
+                    "single",
+                    "co-habiting"
+                  ],
+                  "enumNames": [
+                    "married",
+                    "single",
+                    "co-habiting"
+                  ],
+                  "description": "What is your marital status?"
+                }
+              }
+            },
+            "other": {
+              "type": "object",
+              "title": "Other important details",
+              "properties": {
+                "shoeSize": {
+                  "type": "number",
+                  "title": "Shoe size",
+                  "enum": [
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                  ],
+                  "enumNames": [
+                    "five",
+                    "six",
+                    "seven",
+                    "eight",
+                    "nine",
+                    "ten"
+                  ],
+                  "description": "Do you have big feet?"
+                },
+                "eyeColour": {
+                  "type": "number",
+                  "title": "Eye colour",
+                  "enum": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "enumNames": [
+                    "grey",
+                    "green",
+                    "blue",
+                    "brown"
+                  ],
+                  "description": "Blue eyes maybe?"
+                }
+              }
+            }
+          }
+        },
+        "work": {
+          "type": "object",
+          "title": "Work related",
+          "description": "Work related",
+          "properties": {
+            "disclaimer": {
+              "type": "string",
+              "title": "Disclaimer",
+              "description": "You have read this",
+              "text": "Nullam id dolor id nibh ultricies vehicula ut id elit. Donec ullamcorper nulla non metus auctor fringilla. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam."
+            },
+            "consent": {
+              "type": "boolean",
+              "title": "Your consent",
+              "description": "You have to agree to above!"
+            },
+            "startDate": {
+              "type": "string",
+              "title": "Start date",
+              "description": "When did you start work"
+            },
+            "endDate": {
+              "type": "string",
+              "title": "End date",
+              "description": "Are you still working there?"
+            },
+            "role": {
+              "type": "string",
+              "title": "Job role",
+              "description": "What is your job role"
+            },
+            "startTime": {
+              "type": "string",
+              "title": "Start time",
+              "description": "When does you work day start?"
+            },
+            "happiness": {
+              "type": "integer",
+              "title": "Your happiness at work?",
+              "description": "Are you happy in you work?",
+              "maximum": 50,
+              "minimum": 0,
+              "step": 10
+            },
+            "satisfaction": {
+              "type": "integer",
+              "title": "Your satisfaction at work?",
+              "description": "Are you satisfied in you work?",
+              "maximum": 10,
+              "minimum": 0
+            }
+          }
+        },
+        "hobbies": {
+          "type": "object",
+          "title": "Hobbies and stuff",
+          "description": "Hobbies and stuff",
+          "properties": {
+            "images": {
+              "type": "string",
+              "title": "Favourite image",
+              "default": "http://tymly.ct.tools:3210/static/wmfs/images/blocked-fire-door.jpg",
+              "description": "Image choice",
+              "enum": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ],
+              "enumNames": [
+                "https://picsum.photos/200/300/?random",
+                "https://picsum.photos/200/300/?image=1000",
+                "https://picsum.photos/200/300/?image=900",
+                "https://picsum.photos/200/300/?image=800",
+                "https://picsum.photos/200/300/?image=700",
+                "https://picsum.photos/200/300/?image=600",
+                "https://picsum.photos/200/300/?image=500",
+                "https://picsum.photos/200/300/?image=400"
+              ]
+            },
+            "activities": {
+              "type": "array",
+              "title": "Your hobbies?",
+              "description": "What do you do in your free time?",
+              "items": [
+                {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Do you swim?"
+                },
+                {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Do you run?"
+                },
+                {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Do you walk?"
+                },
+                {
+                  "type": "string",
+                  "default": "",
+                  "title": "Use the slider to tell lies"
+                },
+                {
+                  "type": "number",
+                  "default": 50,
+                  "title": "How fit are you?"
+                }
+              ]
+            },
+            "goals": {
+              "type": "array",
+              "title": "Life goals",
+              "description": "What are your goals?",
+              "items": {
+                "type": "string",
+                "default": "",
+                "title": "Life goal"
+              }
+            },
+            "ratings": {
+              "type": "array",
+              "title": "Ratings",
+              "description": "How do rate the following",
+              "items": [
+                {
+                  "type": "number",
+                  "default": 50,
+                  "title": "The Voice?"
+                },
+                {
+                  "type": "number",
+                  "default": 50,
+                  "title": "Britain's Got Talent?"
+                },
+                {
+                  "type": "number",
+                  "default": 50,
+                  "title": "Dancing on Ice?"
+                }
+              ]
+            },
+            "beliefs": {
+              "type": "array",
+              "title": "Your beliefs",
+              "description": "What are your beliefs?",
+              "items": [
+                {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Votes for 16yr olds?"
+                },
+                {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Fox Hunting?"
+                }
+              ]
+            },
+            "features": {
+              "type": "array",
+              "title": "Your features",
+              "description": "Tell us about youself?",
+              "items": {
+                "type": "string",
+                "default": "",
+                "title": "Describe a feature"
+              }
+            }
+          }
         }
-      },
-      "itemPurpose": {
-        "type": "string",
-        "title": "What was it for?",
-        "items": {
-          "enum": [
-            "Equipment",
-            "Stationary",
-            "Travel",
-            "Other"
-          ]
-        }
-      },
-      "itemWhere": {
-        "type": "string",
-        "title": "Where did you buy it?"
-      },
-      "bio": {
-        "type": "string",
-        "title": "Bio"
-      },
-      "dateTime": {
-        "type": "string",
-        "title": "Date Time"
-      },
-      "date": {
-        "type": "string",
-        "title": "Date"
-      },
-      "time": {
-        "type": "integer",
-        "title": "Time"
-      },
-      "on": {
-        "type": "string"
-      },
-      "agree": {
-        "type": "string",
-        "title": "Agree"
-      },
-      "header": {
-        "type": "string",
-        "title": "Notifications"
-      },
-      "html": {
-        "type": "string",
-        "title": "<h1>MAKING THE WEST MIDLANDS SAFER, STRONGER AND HEALTHIER</h1>"
-      },
-      "slider": {
-        "type": "string",
-        "title": ""
-      },
-      "questionnaire": {
-        "type": "string",
-        "title": "When an alarm sounds, what should I do?"
       }
-    }
-  },
-  "uiSchema": {
-    "firstName": {
-      "ui:widget": "textField",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
     },
-    "lastName": {
-      "ui:widget": "textField",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
+    "uiSchema": {
+      "personal": {
+        "ui:section": true,
+        "firstName": {
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:placeholder": "http://",
+          "ui:help": "Type your first name"
+        },
+        "lastName": {
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "Type your surname"
+        },
+        "age": {
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "Your age"
+        },
+        "address": {
+          "location": {
+            "ui:widget": "mapField",
+            "ui:field": "StandardField",
+            "ui:help": "You live where?"
+          }
+        },
+        "other": {
+          "shoeSize": {
+            "ui:section:field": true,
+            "ui:widget": "selectField",
+            "ui:field": "StandardField",
+            "ui:help": ""
+          },
+          "eyeColour": {
+            "ui:widget": "selectField",
+            "ui:field": "StandardField",
+            "ui:help": ""
+          }
+        },
+        "status": {
+          "drivingLicense": {
+            "ui:widget": "switchField",
+            "ui:field": "StandardField",
+            "ui:help": ""
+          },
+          "mortgage": {
+            "ui:widget": "switchField",
+            "ui:field": "StandardField",
+            "ui:help": ""
+          },
+          "marital": {
+            "ui:widget": "radioField",
+            "ui:field": "StandardField",
+            "ui:help": ""
+          }
+        }
+      },
+      "work": {
+        "disclaimer": {
+          "ui:widget": "noticeField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "consent": {
+          "ui:widget": "checkField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "startDate": {
+          "ui:widget": "dateField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "endDate": {
+          "ui:widget": "dateField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "startTime": {
+          "ui:widget": "timeField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "role": {
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "What do you do?"
+        },
+        "happiness": {
+          "ui:widget": "sliderField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        },
+        "satisfaction": {
+          "ui:widget": "sliderField",
+          "ui:field": "StandardField",
+          "ui:help": ""
+        }
+      },
+      "hobbies": {
+        "images": {
+          "ui:widget": "galleryField",
+          "ui:field": "StandardField",
+          "ui:help": "It's hard to choose I know"
+        },
+        "activities": {
+          "ui:field": "ArrayField",
+          "items": [
+            {
+              "ui:widget": "switchField"
+            },
+            {
+              "ui:widget": "switchField"
+            },
+            {
+              "ui:widget": "switchField"
+            },
+            {
+              "ui:widget": "titleField",
+              "ui:options": {
+                "removable": false
+              }
+            },
+            {
+              "ui:widget": "sliderField"
+            }
+          ]
+        },
+        "goals": {
+          "ui:widget": "textField",
+          "ui:field": "ArrayField",
+          "ui:help": ""
+        },
+        "ratings": {
+          "ui:field": "ArrayField",
+          "items": [
+            {
+              "ui:widget": "sliderField"
+            },
+            {
+              "ui:widget": "sliderField"
+            },
+            {
+              "ui:widget": "sliderField"
+            }
+          ]
+        },
+        "beliefs": {
+          "ui:field": "ArrayField",
+          "items": [
+            {
+              "ui:widget": "checkField"
+            },
+            {
+              "ui:widget": "checkField"
+            },
+            {
+              "ui:widget": "checkField"
+            }
+          ]
+        },
+        "features": {
+          "ui:widget": "textField",
+          "ui:help": "",
+          "ui:field": "ArrayField"
+        }
+      }
     },
-    "description": {
-      "ui:widget": "richTextEditor",
-      "title": "description"
+    "formData": {
+      "hobbies": {
+        "beliefs": [
+          true,
+          false,
+          true
+        ]
+      }
     },
-    "image": {
-      "ui:widget": "image",
-      "title": "",
-      "ui:placeholder": "image"
-    },
-    "itemQuantity": {
-      "ui:widget": "select",
-      "ui:title": " "
-    },
-    "itemPurpose": {
-      "ui:widget": "radio",
-      "ui:title": " "
-    },
-    "itemWhere": {
-      "ui:widget": "mapBox",
-      "ui:title": " "
-    },
-    "bio": {
-      "ui:widget": "textField"
-    },
-    "dateTime": {
-      "ui:widget": "dateTimePicker",
-      "title": "",
-      "ui:placeholder": "Date Time"
-    },
-    "date": {
-      "ui:widget": "datePicker",
-      "title": "",
-      "ui:placeholder": "Date"
-    },
-    "time": {
-      "ui:widget": "timePicker",
-      "title": "",
-      "ui:placeholder": "Time"
-    },
-    "on": {
-      "ui:widget": "switch",
-      "title": ""
-    },
-    "agree": {
-      "ui:widget": "checkbox",
-      "title": "",
-      "ui:placeholder": "check"
-    },
-    "header": {
-      "ui:widget": "header",
-      "title": "Header"
-    },
-    "html": {
-      "ui:widget": "html",
-      "title": "Html Content"
-    },
-    "slider": {
-      "ui:widget": "slider",
-      "title": "Agree"
-    },
-    "questionnaire": {
-      "ui:widget": "questionnaire",
-      "title": "Agree"
-    }
-  },
-  "widgets": {
-    "textField": "TextField",
-    "textPassword": "TextPassword",
-    "image": "Image",
-    "mapBox": "MapBox",
-    "dateTimePicker": "DateTimePicker",
-    "datePicker": "DatePicker",
-    "timePicker": "TimePicker",
-    "select": "Select",
-    "radio": "Radio",
-    "switch": "Switch",
-    "checkbox": "Checkbox",
-    "richTextEditor": "RichTextEditor",
-    "header": "Header",
-    "html": "HTML",
-    "slider": "Slider",
-    "questionnaire": "Questionnaire"
-  },
-  "validation_schema": {
-    "firstName": {
-      "expression": "(/[0-9]/).test(firstName)",
-      "elements": [
-        "firstName"
-      ],
-      "error": "firstName should be a string"
-    },
-    "lastName": {
-      "expression": "(/[0-9]/).test(lastName)",
-      "elements": [
-        "lastName"
-      ],
-      "error": "lastName should be a string"
-    },
-    "bio": {
-      "expression": "(/[0-9]/).test(bio)",
-      "elements": [
-        "bio"
-      ],
-      "error": "bio should be a string"
-    },
-    "itemQuantity": {
-      "expression": "itemQuantity > 8",
-      "elements": [
-        "itemQuantity"
-      ],
-      "error": "The quantity should be less than 8"
-    },
-    "itemPurpose": {
-      "expression": "itemPurpose !== 'Travel'",
-      "elements": [
-        "itemPurpose"
-      ],
-      "error": "The item purpose is not correct"
-    },
-    "on": {
-      "expression": "on !== 'true'",
-      "elements": [
-        "on"
-      ],
-      "error": "Please set this to true"
-    },
-    "agree": {
-      "expression": "agree !== 'true'",
-      "elements": [
-        "agree"
-      ],
-      "error": "Please check this option"
+    "validationSchema": {
+      "personal_firstName": {
+        "expression": "personal_firstName === 'Jason'",
+        "elements": [
+          "personal_firstName"
+        ],
+        "error": "Name has to be Jason"
+      },
+      "personal_other_eyeColour": {
+        "expression": "personal_other_shoeSize === 10 && personal_other_eyeColour === 3",
+        "elements": [
+          "personal_other_shoeSize",
+          "personal_other_eyeColour"
+        ],
+        "error": "Must have size 10 feet and blue eyes"
+      }
     }
   }
 }
