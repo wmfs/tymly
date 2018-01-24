@@ -36,7 +36,7 @@ async function list (tgzName) {
       file: tgzName,
       sync: true,
       onentry: entry => {
-        if (entry.type === 'File') {
+        if (['File', 'SymbolicLink'].indexOf(entry.type) !== -1) {
           l.push(entry.path)
         } // if ...
       }
