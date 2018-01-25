@@ -25,6 +25,8 @@ const forDeployRoot = path.resolve(__dirname, './fixtures/for-deploy')
 const allTestDirs = [ searchRoot, forDeployRoot ]
 
 describe('Bundler tests', function () {
+  this.timeout(process.env.TIMEOUT || 10000)
+
   before(() => {
     allTestDirs.forEach(d => rimraf.sync(d))
     allTestDirs.forEach(d => copydir.sync(pristineSource, d))

@@ -1,6 +1,63 @@
-const tar = require('tar')
 const fs = require('fs')
+const path = require('path')
+const tar = require('tar')
 const mkdirp = require('mkdirp')
+
+async function create (directory, tgzName) {
+  const fn = monkeyPatchReadLink()
+  try {
+    return await createTar(directory, tgzName)
+  } finally {
+    fn.restore()
+  }
+} // create
+
+function createTar (directory, tgzName) {
+  return tar.create(
+    {
+      gzip: true,
+      file: tgzName
+    },
+    [directory]
+  )
+} // createTar
+
+const noPatch = { restore: () => {} }
+class RelativeReadlink {
+  constructor () {
+    this.original = fs.readlink
+    fs.readlink = this.relativeReadlink.bind(this)
+  } // constructor
+
+  relativeReadlink (linkFrom, options, callback) {
+    const thunkedOptions = (typeof options !== 'function') ? options : { }
+    const thunkedCallback = (typeof options === 'function' ? options : callback)
+
+    this.original(
+      linkFrom,
+      thunkedOptions,
+      (err, linkTo) => thunkedCallback(err, this.relativize(linkFrom, linkTo))
+    )
+  } // relativeReadlink
+
+  relativize (linkFrom, linkTo) {
+    const relativeLink = path.relative(linkFrom, linkTo)
+      .replace(/\\/g, '/') // convert forward slashes to back slashes
+      .replace('../', '')  // and trim off one level
+
+    return relativeLink
+  } // relativize
+
+  restore () {
+    fs.readlink = this.original
+  } // restore
+} // class RelativeReadlink
+
+function monkeyPatchReadLink () {
+  return (process.platform === 'win32')
+    ? new RelativeReadlink()
+    : noPatch
+} // monkeyPatchReadLink
 
 async function extract (tgzName, wd = process.cwd()) {
   if (!fs.existsSync(wd)) {
@@ -11,22 +68,10 @@ async function extract (tgzName, wd = process.cwd()) {
     {
       gzip: true,
       file: tgzName,
-      sync: true,
       cwd: wd
     }
   )
 } // extract
-
-async function create (directory, tgzName) {
-  return tar.create(
-    {
-      gzip: true,
-      sync: true,
-      file: tgzName
-    },
-    [directory]
-  )
-} // create
 
 async function list (tgzName) {
   const l = []
