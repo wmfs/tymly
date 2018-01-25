@@ -59,7 +59,7 @@ describe('Simple Express tests', function () {
   })
 
   it('should create some basic tymly services to run a simple cat blueprint', function (done) {
-    process.env.TEST_API_URL = 'http://headers.jsontest.com'
+    process.env.TEST_API_URL = 'https://jsonplaceholder.typicode.com/posts/1'
     process.env.TEST_TOKEN = 'testToken'
 
     tymly.boot(
@@ -405,9 +405,17 @@ describe('Simple Express tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        expect(executionDescription.ctx.result.Authorization).to.eql(process.env.TEST_TOKEN)
+        console.log(executionDescription.ctx.result)
         expect(executionDescription.currentStateName).to.eql('GetDataFromRestApi')
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_getFromApi_1_0')
+        expect(executionDescription.ctx.result).to.eql(
+          {
+            userId: 1,
+            id: 1,
+            title: 'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
+            body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
+          }
+        )
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done(err)
       }
