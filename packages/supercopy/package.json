@@ -16,7 +16,7 @@
     "boom": "5.2.0",
     "csv-string": "2.3.2",
     "debug": "3.1.0",
-    "pg": "6.4.1",
+    "pg": "6.4.2",
     "pg-copy-streams": "1.2.0",
     "rimraf": "2.6.2",
     "upath": "1.0.2"
