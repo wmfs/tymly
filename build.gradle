@@ -52,15 +52,6 @@ task toolsBootstrap (type: CrossPlatformExec) {
   workingDir './tools/tymly-packager'
 }
 
-task cleanNodeModules (type: CrossPlatformExec,
-                       dependsOn: [npmBootstrap]) {
-  commandLine 'npm', 'run', 'clean'
-}
-
-task cleanBuild (type: Delete) {
-  delete buildDir
-}
-
 task makeTestOutputDir {
   mkdir testOutputDir
 }
@@ -125,6 +116,80 @@ task dockerPushServer (type: CrossPlatformExec,
 } // dockerPushServer
 
 ////////////////////////////////////////////
+def packages = []
+['packages', 'plugins', 'blueprints'].each {
+  name ->
+  def dir = new File("./${name}")
+  if (!dir.exists())
+    return
+  dir.traverse(type: DIRECTORIES, maxDepth: 0) {
+    def pkg = new File(it, 'package.json')
+    if (pkg.exists())
+      packages << [it.name, it.toString()]
+  }
+}
+def testTasks = []
+def ci_testTasks = []
+def cleanTasks = []
+packages.each { p ->
+  def testDependencies = ['bootstrap']
+  if (!hasPostgres)
+    testDependencies << 'startPostgres'
+
+  def name = p[0]
+  def dir = p[1]
+  def testTaskName = "test${name.capitalize()}"
+  def cleanTaskName = "clean${name.capitalize()}"
+
+  testTasks << testTaskName
+  ci_testTasks << "ci_${testTaskName}"
+  cleanTasks << cleanTaskName
+
+  task "${testTaskName}"(type: CrossPlatformExec,
+           dependsOn: testDependencies) {
+      group 'Test'
+      description "Runs ${name} test suite"
+
+      commandLine 'npm', 'run', 'test'
+      workingDir "${dir}"
+
+      environment PG_CONNECTION_STRING: pg_connection
+      environment TIMEOUT: test_timeout
+  }
+
+  testDependencies << 'cleanTestFiles'
+  testDependencies << 'makeTestOutputDir'
+
+  task "ci_${testTaskName}"(type: CrossPlatformExec,
+                        dependsOn: testDependencies) {
+    commandLine 'npm', 'run', 'test', '--', '--reporter', 'xunit', '--reporter-options', "output=${testOutputDir}/TEST-${name}-result.xml"
+    workingDir "${dir}"
+
+    environment PG_CONNECTION_STRING: pg_connection
+    environment TIMEOUT: test_timeout
+  }
+
+  task "${cleanTaskName}"(type: Delete) {
+    group 'Clean'
+    description 'Cleans ${name} node_modules'
+
+    delete "${dir}/node_modules"
+  }
+}
+
+/////////////////////////////////////
+task cleanNodeModules (dependsOn: cleanTasks) {
+  group 'Clean'
+  description 'Removes all packages, plugin, and blueprint node_modules'
+}
+
+task cleanBuild (type: Delete) {
+  group 'Clean'
+  description 'Removes build directory'
+
+  delete buildDir
+}
+
 task cleanTestFiles (type: Delete) {
   group 'Clean'
   description 'Cleans up TEST-*-results.xml files'
@@ -142,53 +207,6 @@ task bootstrap (type: CrossPlatformExec,
   description 'Installs the npm dependencies'
 
   commandLine 'npm', 'run', 'bootstrap'
-}
-
-def packages = []
-['packages', 'plugins', 'blueprints'].each {
-  d -> new File("./${d}").traverse(type: DIRECTORIES, maxDepth: 0) {
-    def pkg = new File(it, 'package.json')
-    if (pkg.exists())
-      packages << [it.name, it.toString()]
-  }
-}
-def testTasks = []
-def ci_testTasks = []
-packages.each { p ->
-  def testDependencies = ['bootstrap']
-  if (!hasPostgres)
-    testDependencies << 'startPostgres'
-
-  def name = p[0]
-  def dir = p[1]
-  def taskName = "test${name.capitalize()}"
-
-  testTasks << taskName
-  ci_testTasks << "ci_${taskName}"
-
-  task "${taskName}"(type: CrossPlatformExec,
-           dependsOn: testDependencies) {
-      group 'Test'
-      description "Runs ${name} test suite"
-
-      commandLine 'npm', 'run', 'test'
-      workingDir "${dir}"
-
-      environment PG_CONNECTION_STRING: pg_connection
-      environment TIMEOUT: test_timeout
-  }
-
-  testDependencies << 'cleanTestFiles'
-  testDependencies << 'makeTestOutputDir'
-
-  task "ci_${taskName}"(type: CrossPlatformExec,
-                        dependsOn: testDependencies) {
-    commandLine 'npm', 'run', 'test', '--', '--reporter', 'xunit', '--reporter-options', "output=${testOutputDir}/TEST-${name}-result.xml"
-    workingDir "${dir}"
-
-    environment PG_CONNECTION_STRING: pg_connection
-    environment TIMEOUT: test_timeout
-  }
 }
 
 task test (dependsOn: testTasks) {
