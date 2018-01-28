@@ -75,8 +75,6 @@ task createTarball (type: CrossPlatformExec,
 
 String coreDockerDir = './tools/tymly-dockerize-core'
 String coreDockerTag = 'tymly-core'
-String serverDockerDir = './tools/tymly-dockerize-server'
-String serverDockerTag = 'tymly'
 
 task dropTarfileToDocker (type: Copy,
                           dependsOn: [createTarball]) {
@@ -85,35 +83,9 @@ task dropTarfileToDocker (type: Copy,
   rename { fileName -> "bundle.tgz" }
 } // dropTarfileToDocker
 
-task dockerBuildCore (type: CrossPlatformExec,
-                      dependsOn: [dropTarfileToDocker]) {
-  workingDir coreDockerDir
-  commandLine 'docker', 'build', '--tag', coreDockerTag, '.'
-} // dockerBuildCore
-
-task dockerBuildServer (type: CrossPlatformExec,
-                        dependsOn: [dockerBuildCore]) {
-  workingDir serverDockerDir
-  commandLine 'docker', 'build', '--tag', serverDockerTag, '.'
-} // dockerBuildServer
-
 task dockerTagCore (type: CrossPlatformExec) {
   commandLine 'docker', 'tag', coreDockerTag, "wmfs/${coreDockerTag}"
 } // dockerTagCore
-
-task dockerTagServer (type: CrossPlatformExec) {
-  commandLine 'docker', 'tag', serverDockerTag, "wmfs/${serverDockerTag}"
-} // dockerTagServer
-
-task dockerPushCore (type: CrossPlatformExec,
-                     dependsOn: [dockerTagCore]) {
-  commandLine 'docker', 'push', "wmfs/${coreDockerTag}"
-} // dockerPushCore
-
-task dockerPushServer (type: CrossPlatformExec,
-                       dependsOn: [dockerTagServer]) {
-  commandLine 'docker', 'push', "wmfs/${serverDockerTag}"
-} // dockerPushServer
 
 ////////////////////////////////////////////
 def packages = []
@@ -224,12 +196,19 @@ task bundle (dependsOn: [createTarball, dropTarfileToDocker]) {
   description 'Creates an installable Tymly package'
 } // bundle
 
-task dockerBuild (dependsOn: [dockerBuildServer]) {
+task dockerBuild (type: CrossPlatformExec,
+                  dependsOn: [dropTarfileToDocker]) {
   group 'Build'
   description 'Build a runnable Tymly Docker image'
+
+  workingDir coreDockerDir
+  commandLine 'docker', 'build', '--tag', coreDockerTag, '.'
 } // dockerBuild
 
-task dockerPush (dependsOn: [dockerPushCore, dockerPushServer]) {
+task dockerPush (type: CrossPlatformExec,
+                 dependsOn: [dockerTagCore]) {
   group 'Build'
   description 'Push Tymly Docker images to Hub'
+
+  commandLine 'docker', 'push', "wmfs/${coreDockerTag}"
 } // dockerPush

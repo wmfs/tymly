@@ -38,9 +38,8 @@ script:
 before_deploy:
   - docker images
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - docker tag tymly wmfs/tymly
   - docker tag tymly-core wmfs/tymly-core
 
 deploy:
   provider: script
-  script: docker push wmfs/tymly && docker push wmfs/tymly-core
+  script: docker push wmfs/tymly-core
