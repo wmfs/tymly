@@ -1,0 +1,11 @@
+{
+  "namespace": "tymly",
+  "name": "tymly-simple-files-blueprint",
+  "version": "1.0",
+  "label": "tymly-simple-files-blueprint",
+  "author": "Tymly",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to handle file upload.",
+  "categories": []
+}

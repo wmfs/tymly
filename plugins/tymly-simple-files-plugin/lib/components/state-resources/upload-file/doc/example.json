@@ -1,0 +1,7 @@
+{
+  "UploadFile": {
+    "Type": "Task",
+    "Resource": "module:uploadFile",
+    "InputPath": "$.uploadFile"
+  }
+}

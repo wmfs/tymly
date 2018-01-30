@@ -1,0 +1,14 @@
+{
+  "Comment": "State machine to upload file.",
+  "version": "1.0",
+  "StartAt": "UploadFile",
+  "States": {
+    "UploadFile": {
+      "Type": "Task",
+      "Resource": "module:uploadFile",
+      "InputPath": "$",
+      "ResultPath" : "$.ctx",
+      "End": true
+    }
+  }
+}

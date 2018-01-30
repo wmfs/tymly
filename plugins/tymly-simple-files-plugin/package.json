@@ -1,0 +1,34 @@
+{
+  "name": "tymly-simple-files-plugin",
+  "description": "Plugin which handles File Uploads",
+  "version": "0.0.1",
+  "author": "Martina Henry",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "async": "2.6.0",
+    "dottie": "2.0.0",
+    "jsonpath": "1.0.0"
+  },
+  "devDependencies": {
+    "chai": "4.1.0",
+    "mocha": "4.0.1",
+    "standard": "10.0.3",
+    "tymly": "0.0.15",
+    "tymly-pg-plugin": "0.0.6",
+    "hl-pg-client": "0.0.1",
+    "tymly-forms-plugin": "0.0.8",
+    "tymly-solr-plugin": "0.0.4"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && mocha"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}
