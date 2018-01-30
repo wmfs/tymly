@@ -46,6 +46,10 @@ function searchTypeDirectory (directory) {
       continue
     }
 
+    if (candidate === 'ridge-blueprint') {
+      continue
+    }
+
     // it's a winner!
     directories.push(fullPath)
   } // for ...
