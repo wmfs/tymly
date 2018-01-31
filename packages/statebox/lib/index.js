@@ -188,7 +188,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === Status.RUNNING) {
+          if (executionDescription && executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskSuccess(executionDescription, output)
