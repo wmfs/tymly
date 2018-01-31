@@ -22,7 +22,6 @@ before_install:
 
 install:
   - ./gradlew clean
-  - npm i codecov
 
 env:
   global:
@@ -36,10 +35,6 @@ webhooks:
 
 script:
   - ./gradlew test dockerBuild
-
-after_build:
-  provider: script
-  script: script/codecov.sh
 
 before_deploy:
   - docker images
