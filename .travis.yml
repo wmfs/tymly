@@ -20,7 +20,9 @@ before_script:
 before_install:
   - export TZ=Europe/London
 
-install: ./gradlew clean
+install:
+  - ./gradlew clean
+  - npm i codecov
 
 env:
   global:
@@ -34,6 +36,10 @@ webhooks:
 
 script:
   - ./gradlew test dockerBuild
+
+after_build:
+  provider: script
+  script: script/codecov
 
 before_deploy:
   - docker images
