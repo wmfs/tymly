@@ -39,7 +39,7 @@ script:
 
 after_build:
   provider: script
-  script: script/codecov
+  script: script/codecov.sh
 
 before_deploy:
   - docker images
