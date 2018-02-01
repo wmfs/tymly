@@ -1,4 +1,5 @@
 'use strict'
+
 module.exports = function sendTaskHeartbeat (statebox, req, res, env) {
   statebox.sendTaskHeartbeat(
     req.params.executionName,
@@ -6,7 +7,8 @@ module.exports = function sendTaskHeartbeat (statebox, req, res, env) {
     {},
     function (err, executionDescription) {
       if (err) {
-        res.status(500)
+        console.error(err)
+        res.status(500).send()
       } else {
         res.status(200).send(executionDescription)
       }
