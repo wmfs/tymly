@@ -1,0 +1,12 @@
+{
+  "id": "files",
+  "title": "Files",
+  "description": "Uploaded Files",
+  "type": "object",
+  "properties": {
+    "fileName": {
+      "type": "string",
+      "description": "Name of the file uploaded"
+    }
+  }
+}
