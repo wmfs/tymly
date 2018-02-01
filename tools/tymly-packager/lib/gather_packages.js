@@ -46,7 +46,8 @@ function searchTypeDirectory (directory) {
       continue
     }
 
-    if (candidate === 'ridge-blueprint') {
+    if ((candidate === 'ridge-blueprint') ||
+      (candidate === 'tymly-auth-auth0-plugin')) {
       continue
     }
 
