@@ -1,6 +1,7 @@
 'use strict'
 
-var fs = require('file-system')
+const fs = require('file-system')
+const base64 = require('base-64')
 
 class UploadFile {
   init (resourceConfig, env, callback) {
@@ -14,7 +15,12 @@ class UploadFile {
     console.log(event)
     console.log(event.base64)
 
-    fs.writeFile(`C:\\` + event.fileName, event.base64, function (err) {
+    var actualbase64String = event.base64.replace(/^data:+[a-z]+\/+[a-z]+;base64,/, '')
+    console.log(actualbase64String)
+
+    const decodedData = base64.decode(actualbase64String)
+
+    fs.writeFile(`C:\\` + event.fileName, decodedData, function (err) {
       console.log(err)
     })
 
