@@ -9,7 +9,8 @@
     "dottie": "2.0.0",
     "file-extension": "4.0.2",
     "file-system": "2.2.2",
-    "safe-buffer": "5.1.1"
+    "safe-buffer": "5.1.1",
+    "upath": "1.0.2"
   },
   "devDependencies": {
     "chai": "4.1.0",
