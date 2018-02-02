@@ -2,6 +2,7 @@
 
 const fs = require('file-system')
 const Buffer = require('safe-buffer').Buffer
+const fileExtension = require('file-extension')
 
 class UploadFile {
   init (resourceConfig, env, callback) {
@@ -26,7 +27,7 @@ class UploadFile {
       {}
     )
       .then((doc) => {
-        fs.writeFile(`C:\\` + doc.idProperties.id + `.txt`, binaryData, 'binary', function (err) {
+        fs.writeFile(`C:\\ ${doc.idProperties.id}.${fileExtension(event.fileName)}`, binaryData, 'binary', function (err) {
           console.log(err)
         })
         context.sendTaskSuccess({
