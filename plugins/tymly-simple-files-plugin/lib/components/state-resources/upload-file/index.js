@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('file-system')
+
 // const base64 = require('base-64')
 
 class UploadFile {
@@ -13,9 +14,6 @@ class UploadFile {
     const str = event.base64
     var actualbase64String = str.replace(/^data:+[a-z]+\/+[a-z]+;base64,/, '')
 
-    const dataType = str.match(new RegExp('data:' + '(.*)' + ';base64'))
-
-    // const decodedData = base64.decode(actualbase64String)
     const binaryData = new Buffer(actualbase64String, 'base64')
 
     this.files.upsert(
@@ -25,20 +23,9 @@ class UploadFile {
       {}
     )
       .then((doc) => {
-        if (dataType[1] === 'text/plain') {
-          fs.writeFile(`C:\\` + doc.idProperties.id + `.txt`, binaryData, 'binary', function (err) {
-            console.log(err)
-          })
-        } else if (dataType[1] === 'application/pdf') {
-          fs.writeFile(`C:\\` + doc.idProperties.id + `.pdf`, binaryData, 'binary', function (err) {
-            console.log(err)
-          })
-        } else if (dataType[1] === 'application/msword') {
-          fs.writeFile(`C:\\` + doc.idProperties.id + `.doc`, binaryData, 'binary', function (err) {
-            console.log(err)
-          })
-        }
-
+        fs.writeFile(`C:\\` + doc.idProperties.id + `.txt`, binaryData, 'binary', function (err) {
+          console.log(err)
+        })
         context.sendTaskSuccess({
           fileId: doc.idProperties.id,
           fileName: event.fileName
