@@ -6,10 +6,8 @@
   "main": "./lib/index.js",
   "dependencies": {
     "async": "2.6.0",
-    "base-64": "0.1.0",
     "dottie": "2.0.0",
-    "file-system": "2.2.2",
-    "jsonpath": "1.0.0"
+    "file-system": "2.2.2"
   },
   "devDependencies": {
     "chai": "4.1.0",

@@ -2,8 +2,6 @@
 
 const fs = require('file-system')
 
-// const base64 = require('base-64')
-
 class UploadFile {
   init (resourceConfig, env, callback) {
     this.files = env.bootedServices.storage.models['tymly_files']
