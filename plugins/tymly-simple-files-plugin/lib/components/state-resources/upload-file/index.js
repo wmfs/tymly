@@ -28,7 +28,7 @@ class UploadFile {
       {}
     )
       .then((doc) => {
-        fs.writeFile(`${upath.normalize('/tymly-uploads/')}, ${doc.idProperties.id}.${fileExtension(event.fileName)}`, binaryData, 'binary', function (err) {
+        fs.writeFile(`${upath.normalize('/tymly-uploads/')}${doc.idProperties.id}.${fileExtension(event.fileName)}`, binaryData, 'binary', function (err) {
           console.log(err)
         })
         context.sendTaskSuccess({
