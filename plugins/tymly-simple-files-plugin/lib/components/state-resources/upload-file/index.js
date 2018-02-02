@@ -4,10 +4,12 @@ const fs = require('file-system')
 const Buffer = require('safe-buffer').Buffer
 const fileExtension = require('file-extension')
 const upath = require('upath')
+const process = require('process')
 
 class UploadFile {
   init (resourceConfig, env, callback) {
     this.files = env.bootedServices.storage.models['tymly_files']
+    this.uploadDirectoryPath = process.env.TYMLY_UPLOADS_DIRECTORY_PATH || '/tymly_fallback_uploads/'
     callback(null)
   }
 
@@ -28,7 +30,7 @@ class UploadFile {
       {}
     )
       .then((doc) => {
-        fs.writeFile(`${upath.normalize('/tymly-uploads/')}${doc.idProperties.id}.${fileExtension(event.fileName)}`, binaryData, 'binary', function (err) {
+        fs.writeFile(`${upath.normalize(this.uploadDirectoryPath)}${doc.idProperties.id}.${fileExtension(event.fileName)}`, binaryData, 'binary', function (err) {
           console.log(err)
         })
         context.sendTaskSuccess({
