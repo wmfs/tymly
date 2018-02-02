@@ -9,7 +9,6 @@ const process = require('process')
 
 class ExpressServerService {
   boot (options, callback) {
-
     const jsonLimit = process.env.TYMLY_REQUEST_SIZE_LIMIT || '10mb'
 
     // Create a new Express app
