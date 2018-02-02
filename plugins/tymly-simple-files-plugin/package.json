@@ -7,7 +7,8 @@
   "dependencies": {
     "async": "2.6.0",
     "dottie": "2.0.0",
-    "file-system": "2.2.2"
+    "file-system": "2.2.2",
+    "safe-buffer": "5.1.1"
   },
   "devDependencies": {
     "chai": "4.1.0",

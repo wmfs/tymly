@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('file-system')
+const Buffer = require('safe-buffer').Buffer
 
 class UploadFile {
   init (resourceConfig, env, callback) {
@@ -10,9 +11,13 @@ class UploadFile {
 
   run (event, context) {
     const str = event.base64
-    var actualbase64String = str.replace(/^data:+[a-z]+\/+[a-z]+;base64,/, '')
+    let encodedBase64String
+    let binaryData
 
-    const binaryData = new Buffer(actualbase64String, 'base64')
+    if (str) {
+      encodedBase64String = str.replace(/^data:+[a-z]+\/+[a-z]+;base64,/, '')
+      binaryData = new Buffer(encodedBase64String, 'base64')
+    }
 
     this.files.upsert(
       {
