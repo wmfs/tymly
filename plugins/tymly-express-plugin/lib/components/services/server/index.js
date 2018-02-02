@@ -5,15 +5,20 @@ const bodyParser = require('body-parser')
 const addStaticDir = require('./add-static-dir')
 const schema = require('./schema.json')
 const debug = require('debug')('tymly-express-plugin')
+const process = require('process')
 
 class ExpressServerService {
   boot (options, callback) {
+
+    const jsonLimit = process.env.TYMLY_REQUEST_SIZE_LIMIT || '10mb'
+
     // Create a new Express app
     const app = express()
-    app.use(bodyParser.urlencoded({extended: false}))
-    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({extended: false, limit: jsonLimit}))
+    app.use(bodyParser.json({limit: jsonLimit}))
 
     options.messages.info('Created Express.js app')
+    options.messages.detail(`JSON Request Size - ${jsonLimit}`)
 
     // Make Tymly Control available to routes
     app.set('services', options.bootedServices)
