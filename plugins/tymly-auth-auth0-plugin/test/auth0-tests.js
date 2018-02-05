@@ -36,10 +36,10 @@ describe('tymly-auth-auth0-plugin tests', function () {
   //   authService.getEmailFromUserId('test', function (err, jwt) {
   //     if (err) {
   //       done(err)
+  //     } else {
+  //       console.log(JSON.stringify(jwt))
+  //       done()
   //     }
-  //
-  //     console.log(JSON.stringify(jwt))
-  //     done()
   //   })
   // })
 

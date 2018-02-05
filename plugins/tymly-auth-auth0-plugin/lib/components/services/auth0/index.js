@@ -50,17 +50,17 @@ class Auth0Service {
       request(options, function (err, response, body) {
         if (err) {
           callback(boom.boomify(err, { message: 'An unexpected error occurred whilst acquiring an access token' }))
-        }
-
-        if (body.error) {
-          if (body.error_description) {
-            callback(boom.boomify(new Error(body.error_description)))
+        } else {
+          if (body.error) {
+            if (body.error_description) {
+              callback(boom.boomify(new Error(body.error_description)))
+            } else {
+              callback(boom.boomify(new Error(body)))
+            }
           } else {
-            callback(boom.boomify(new Error(body)))
+            callback(null, body)
           }
         }
-
-        callback(null, body)
       })
     }
   }
@@ -69,9 +69,9 @@ class Auth0Service {
     this._getAccessJWT(function (err, jwt) {
       if (err) {
         callback(err)
+      } else {
+        callback(null, jwt)
       }
-
-      callback(null, jwt)
     })
   }
 
