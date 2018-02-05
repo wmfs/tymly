@@ -33,11 +33,11 @@ describe('tymly-auth-auth0-plugin tests', function () {
   })
 
   // it('should retrieve an access token', function (done) {
-  //   authService.getEmailFromUserId('test', function (err, jwt) {
+  //   authService.getEmailFromUserId('auth0|5a157ade1932044615a1c502', function (err, email) {
   //     if (err) {
   //       done(err)
   //     } else {
-  //       console.log(JSON.stringify(jwt))
+  //       expect(email).toBe('tymly@xyz.xom')
   //       done()
   //     }
   //   })

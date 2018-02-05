@@ -2,15 +2,15 @@
 
 const request = require('request')
 const boom = require('boom')
-
-const AUTH0_GRANT_TYPE = 'client_credentials'
-const AUTH0_REQUEST_METHOD = 'POST'
+const debug = require('debug')('tymly-auth-auth0-plugin')
 
 class Auth0Service {
   boot (options, callback) {
     if (process.env.TYMLY_AUTH_DOMAIN) {
-      this.auth0Audience = `https://${process.env.TYMLY_AUTH_DOMAIN}/api/v2/`
       this.auth0GetManagementAPIAccessTokenUrl = `https://${process.env.TYMLY_AUTH_DOMAIN}/oauth/token`
+      this.auth0Audience = `https://${process.env.TYMLY_AUTH_DOMAIN}/api/v2/`
+      this.auth0GetUsersByIdUrlPrefix = `${this.auth0Audience}users/`
+      this.auth0GetUsersByEmailUrl = `${this.auth0Audience}users-by-email`
     }
 
     if (process.env.TYMLY_AUTH_CLIENT_ID) {
@@ -33,13 +33,13 @@ class Auth0Service {
       callback(boom.unauthorized('auth0 client secret has not been setup in the TYMLY_AUTH_CLIENT_SECRET environment variable'))
     } else {
       const options = {
-        method: AUTH0_REQUEST_METHOD,
+        method: 'POST',
         url: this.auth0GetManagementAPIAccessTokenUrl,
         headers: {
           'content-type': 'application/json'
         },
         body: {
-          grant_type: AUTH0_GRANT_TYPE,
+          grant_type: 'client_credentials',
           client_id: this.auth0ClientId,
           client_secret: this.auth0ClientSecret,
           audience: this.auth0Audience
@@ -50,14 +50,11 @@ class Auth0Service {
       request(options, function (err, response, body) {
         if (err) {
           callback(boom.boomify(err, { message: 'An unexpected error occurred whilst acquiring an access token' }))
+        } else if (body.error && body.error_description) {
+          callback(boom.boomify(new Error(body.error_description)))
         } else {
-          if (body.error) {
-            if (body.error_description) {
-              callback(boom.boomify(new Error(body.error_description)))
-            } else {
-              callback(boom.boomify(new Error(body)))
-            }
-          } else {
+          debug('access jwt:', JSON.stringify(body))
+          if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
           }
         }
@@ -70,7 +67,24 @@ class Auth0Service {
       if (err) {
         callback(err)
       } else {
-        callback(null, jwt)
+        const options = {
+          method: 'GET',
+          url: `${this.auth0GetUsersByIdUrlPrefix}${userId}`,
+          headers: {
+            authorization: `Bearer ${jwt.access_token}`
+          }
+        }
+
+        request(options, function (err, response, body) {
+          if (err) {
+            callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert a user id into an email address' }))
+          } else if (!body.email) {
+            callback(boom.boomify(new Error(body)))
+          } else {
+            debug(`user ${userId}:`, JSON.stringify(body))
+            callback(null, body.email)
+          }
+        })
       }
     })
   }
