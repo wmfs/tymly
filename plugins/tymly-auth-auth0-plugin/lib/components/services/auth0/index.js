@@ -90,7 +90,33 @@ class Auth0Service {
   }
 
   getUserIdFromEmail (email, callback) {
-    callback(null)
+    this._getAccessJWT(function (err, jwt) {
+      if (err) {
+        callback(err)
+      } else {
+        const options = {
+          method: 'GET',
+          url: this.auth0GetUsersByEmailUrl,
+          qs: {
+            email: email
+          },
+          headers: {
+            authorization: `Bearer ${jwt.access_token}`
+          }
+        }
+
+        request(options, function (err, response, body) {
+          if (err) {
+            callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert an email address into a user id' }))
+          } else if (!body.user_id) {
+            callback(boom.boomify(new Error(body)))
+          } else {
+            debug(`user ${email}:`, JSON.stringify(body))
+            callback(null, body.user_id)
+          }
+        })
+      }
+    })
   }
 }
 

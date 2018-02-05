@@ -32,12 +32,23 @@ describe('tymly-auth-auth0-plugin tests', function () {
     )
   })
 
-  // it('should retrieve an access token', function (done) {
+  // it('should convert a user id into an email address', function (done) {
   //   authService.getEmailFromUserId('auth0|5a157ade1932044615a1c502', function (err, email) {
   //     if (err) {
   //       done(err)
   //     } else {
   //       expect(email).toBe('tymly@xyz.xom')
+  //       done()
+  //     }
+  //   })
+  // })
+
+  // it('should convert an email address into a user id', function (done) {
+  //   authService.getUserIdFromEmail('tymly@xyz.xom', function (err, email) {
+  //     if (err) {
+  //       done(err)
+  //     } else {
+  //       expect(email).toBe('auth0|5a157ade1932044615a1c502')
   //       done()
   //     }
   //   })
