@@ -50,9 +50,9 @@ class Auth0Service {
       request(options, function (err, response, body) {
         if (err) {
           callback(boom.boomify(err, { message: 'An unexpected error occurred whilst acquiring an access token' }))
-        } else {
-          callback(null, body)
         }
+
+        callback(null, body)
       })
     }
   }
