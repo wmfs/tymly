@@ -2,7 +2,6 @@
 
 const request = require('request')
 const boom = require('boom')
-const debug = require('debug')('tymly-auth-auth0-plugin')
 
 class Auth0Service {
   boot (options, callback) {
@@ -53,7 +52,6 @@ class Auth0Service {
         } else if (body.error && body.error_description) {
           callback(boom.boomify(new Error(body.error_description)))
         } else {
-          debug('access jwt:', JSON.stringify(body))
           if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
           }
@@ -63,25 +61,25 @@ class Auth0Service {
   }
 
   getEmailFromUserId (userId, callback) {
+    const _this = this
     this._getAccessJWT(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
         const options = {
           method: 'GET',
-          url: `${this.auth0GetUsersByIdUrlPrefix}${userId}`,
+          url: `${_this.auth0GetUsersByIdUrlPrefix}${userId}`,
           headers: {
+            'content-type': 'application/json',
             authorization: `Bearer ${jwt.access_token}`
-          }
+          },
+          json: true
         }
 
         request(options, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert a user id into an email address' }))
-          } else if (!body.email) {
-            callback(boom.boomify(new Error(body)))
           } else {
-            debug(`user ${userId}:`, JSON.stringify(body))
             callback(null, body.email)
           }
         })
@@ -90,29 +88,29 @@ class Auth0Service {
   }
 
   getUserIdFromEmail (email, callback) {
+    const _this = this
     this._getAccessJWT(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
         const options = {
           method: 'GET',
-          url: this.auth0GetUsersByEmailUrl,
+          url: _this.auth0GetUsersByEmailUrl,
           qs: {
             email: email
           },
           headers: {
+            'content-type': 'application/json',
             authorization: `Bearer ${jwt.access_token}`
-          }
+          },
+          json: true
         }
 
         request(options, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert an email address into a user id' }))
-          } else if (!body.user_id) {
-            callback(boom.boomify(new Error(body)))
           } else {
-            debug(`user ${email}:`, JSON.stringify(body))
-            callback(null, body.user_id)
+            callback(null, body[0].user_id)
           }
         })
       }
