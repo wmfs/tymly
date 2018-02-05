@@ -8,7 +8,7 @@ const colors = require('colors/safe')
 
 run(...parseArgs(process.argv))
 
-async function run (srcDir, workDir, bundleName, quiet) {
+async function run (srcDir, workDir, exclusions, bundleName, quiet) {
   try {
     if (!quiet) {
       console.log(colors.cyan.bold("It's the Tymly Bundler!"))
@@ -16,7 +16,7 @@ async function run (srcDir, workDir, bundleName, quiet) {
 
     const fullDirectoryName = path.resolve(process.cwd(), srcDir)
     const outputName = bundleName || `${path.basename(fullDirectoryName)}-${moment().format('YYYYMMDD-HHmmss')}.tgz`
-    const tarball = await bundleForDeploy(srcDir, workDir, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
+    const tarball = await bundleForDeploy(srcDir, workDir, exclusions, path.resolve(process.cwd(), outputName), !quiet ? console.log : () => {})
     const displayPath = path.relative(process.cwd(), tarball)
     console.log(colors.cyan(`Created ${displayPath}`))
   } catch (err) {
@@ -32,6 +32,7 @@ function parseArgs (args) {
     .arguments('<directory>')
     .option('-t, --tar <tarball-name>', 'tarball name')
     .option('-w, --work <work-dir>', 'working directory')
+    .option('-x, --exclude <package-dir-1,package-dir-2,...>', 'packages to exclude from the bundle')
     .option('-q, --quiet', 'quiet')
     .action(d => { dir = d })
   commander.parse(args)
@@ -42,7 +43,8 @@ function parseArgs (args) {
 
   const tar = fixSuffix(commander.tar)
   const work = commander.work || '.'
-  return [dir, work, tar, commander.quiet]
+  const exclusions = commander.exclude ? commander.exclude.split(',').map(s => s.trim().toLowerCase()) : []
+  return [dir, work, exclusions, tar, commander.quiet]
 } // parseArgs
 
 function fixSuffix (tar) {
