@@ -6,6 +6,7 @@ const addStaticDir = require('./add-static-dir')
 const schema = require('./schema.json')
 const debug = require('debug')('tymly-express-plugin')
 const process = require('process')
+const helmet = require('helmet')
 
 class ExpressServerService {
   boot (options, callback) {
@@ -13,6 +14,7 @@ class ExpressServerService {
 
     // Create a new Express app
     const app = express()
+    app.use(helmet())
     app.use(bodyParser.urlencoded({extended: false, limit: jsonLimit}))
     app.use(bodyParser.json({limit: jsonLimit}))
 
