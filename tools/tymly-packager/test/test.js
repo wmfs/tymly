@@ -41,16 +41,19 @@ describe('Bundler tests', function () {
       [
         'one top level package',
         'simple-package',
+        [],
         [{directory: 'packages/simple-package', basename: 'simple-package'}]
       ],
       [
         'package with dependencies',
         'package-with-dependencies',
+        [],
         [{directory: 'plugins/package-with-dependencies', basename: 'package-with-dependencies'}]
       ],
       [
         'includes a directory to ignore',
         'mixed',
+        [],
         [
           {directory: 'packages/package-1', basename: 'package-1'},
           {directory: 'packages/package-2', basename: 'package-2'}
@@ -59,16 +62,37 @@ describe('Bundler tests', function () {
       [
         'packages with a dependency from one to another',
         'peer-dependency',
+        [],
         [
           {directory: 'packages/package-master', basename: 'package-master'},
           {directory: 'packages/package-servant', basename: 'package-servant'}
         ]
+      ],
+      [
+        'package with dependencies, exclude \'package-with-dependencies\'',
+        'package-with-dependencies',
+        ['package-with-dependencies'],
+        []
+      ],
+      [
+        'includes a directory to ignore, exclude \'package-2\'',
+        'mixed',
+        ['package-2'],
+        [
+          {directory: 'packages/package-1', basename: 'package-1'}
+        ]
+      ],
+      [
+        'includes a directory to ignore, exclude \'package-1\' and  \'package-2\'',
+        'mixed',
+        ['package-2', 'package-1'],
+        []
       ]
     ]
 
-    for (const [label, fixture, results] of tests) {
+    for (const [label, fixture, exclusions, results] of tests) {
       it(label, () => {
-        let packages = gatherPackages(upath.join(searchRoot, fixture))
+        let packages = gatherPackages(upath.join(searchRoot, fixture), exclusions)
         packages = upath.normalize(JSON.stringify(packages))
         expect(packages).to.deep.equal(JSON.stringify(results))
       }) // it ...
