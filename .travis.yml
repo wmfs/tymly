@@ -26,8 +26,8 @@ install:
 env:
   global:
     - PG_CONNECTION_STRING=postgres://postgres:postgres@localhost:5432
-    - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
     - TIMEOUT=15000
+    - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
     - DEBUG_COLORS=false
     - TYMLY_NIC_AUTH_DOMAIN=$TYMLY_NIC_AUTH_DOMAIN
     - TYMLY_NIC_AUTH_CLIENT_ID=$TYMLY_NIC_AUTH_CLIENT_ID

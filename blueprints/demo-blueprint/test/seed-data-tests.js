@@ -59,7 +59,7 @@ describe('Demo tests', function () {
   })
 
   it('should get forms', function (done) {
-    expect(forms['tymly_bookSomeoneSick'].jsonSchema.title).to.eql('Book someone sick')
+    expect(forms['tymly_bookSomeoneSick'].jsonSchema.schema.formtitle).to.eql('Book someone sick')
     expect(forms['tymly_claimAnExpense'].jsonSchema.schema.formtitle).to.eql('Claim an expense')
     expect(forms['tymly_createBlankProperty'].jsonSchema.schema.formtitle).to.eql('Create a blank property')
     done()
