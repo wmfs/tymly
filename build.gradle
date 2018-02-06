@@ -61,6 +61,8 @@ String bundleWorkDir = "${buildDir}/bundle"
 String tarfileName = "${tarballDir}/tymly-${getDate()}.tgz"
 def getDate() { new Date().format('yyyyMMdd-HHmmss') }
 
+def exclusions = (project.findProperty('exclude') ?: '').toLowerCase()
+
 task createTarball (type: CrossPlatformExec,
                     dependsOn: [npmBootstrap, toolsBootstrap]) {
   doFirst {
@@ -69,7 +71,7 @@ task createTarball (type: CrossPlatformExec,
   }
 
   def prefix = isWindows ? '' : './'
-  commandLine "${prefix}bundle", "${projectDir}", '--tar', tarfileName, '--work', bundleWorkDir
+  commandLine "${prefix}bundle", "${projectDir}", '--tar', tarfileName, '--work', bundleWorkDir, '--exclude', exclusions ?: 'never-mind-just-carry-on'
   workingDir './tools/tymly-packager/bin'
 }
 

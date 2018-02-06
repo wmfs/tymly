@@ -47,5 +47,5 @@ deploy:
 
 after_deploy:
    - curl -LO https://raw.githubusercontent.com/wmfs/tymly/master/tools/trigger-blueprints/trigger-private-blueprints.sh
-   - chmod +x trigger-private-blueprint.sh
-   - ./trigger-private-blueprint.sh
+   - chmod +x ./trigger-private-blueprints.sh
+   - ./trigger-private-blueprints.sh
