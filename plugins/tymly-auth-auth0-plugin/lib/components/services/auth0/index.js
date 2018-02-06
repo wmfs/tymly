@@ -5,19 +5,19 @@ const boom = require('boom')
 
 class Auth0Service {
   boot (options, callback) {
-    if (process.env.TYMLY_AUTH_DOMAIN) {
-      this.auth0GetManagementAPIAccessTokenUrl = `https://${process.env.TYMLY_AUTH_DOMAIN}/oauth/token`
-      this.auth0Audience = `https://${process.env.TYMLY_AUTH_DOMAIN}/api/v2/`
+    if (process.env.TYMLY_NIC_AUTH_DOMAIN) {
+      this.auth0GetManagementAPIAccessTokenUrl = `https://${process.env.TYMLY_NIC_AUTH_DOMAIN}/oauth/token`
+      this.auth0Audience = `https://${process.env.TYMLY_NIC_AUTH_DOMAIN}/api/v2/`
       this.auth0GetUsersByIdUrlPrefix = `${this.auth0Audience}users/`
       this.auth0GetUsersByEmailUrl = `${this.auth0Audience}users-by-email`
     }
 
-    if (process.env.TYMLY_AUTH_CLIENT_ID) {
-      this.auth0ClientId = process.env.TYMLY_AUTH_CLIENT_ID
+    if (process.env.TYMLY_NIC_AUTH_CLIENT_ID) {
+      this.auth0ClientId = process.env.TYMLY_NIC_AUTH_CLIENT_ID
     }
 
-    if (process.env.TYMLY_AUTH_CLIENT_SECRET) {
-      this.auth0ClientSecret = process.env.TYMLY_AUTH_CLIENT_SECRET
+    if (process.env.TYMLY_NIC_AUTH_CLIENT_SECRET) {
+      this.auth0ClientSecret = process.env.TYMLY_NIC_AUTH_CLIENT_SECRET
     }
 
     callback(null)
@@ -25,11 +25,11 @@ class Auth0Service {
 
   _getAccessJWT (callback) {
     if (!this.auth0Audience) {
-      callback(boom.unauthorized('auth0 domain has not been setup in the TYMLY_AUTH_DOMAIN environment variable'))
+      callback(boom.unauthorized('auth0 domain has not been setup in the TYMLY_NIC_AUTH_DOMAIN environment variable'))
     } else if (!this.auth0ClientId) {
-      callback(boom.unauthorized('auth0 client id has not been setup in the TYMLY_AUTH_CLIENT_ID environment variable'))
+      callback(boom.unauthorized('auth0 client id has not been setup in the TYMLY_NIC_AUTH_CLIENT_ID environment variable'))
     } else if (!this.auth0ClientSecret) {
-      callback(boom.unauthorized('auth0 client secret has not been setup in the TYMLY_AUTH_CLIENT_SECRET environment variable'))
+      callback(boom.unauthorized('auth0 client secret has not been setup in the TYMLY_NIC_AUTH_CLIENT_SECRET environment variable'))
     } else {
       const options = {
         method: 'POST',
