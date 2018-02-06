@@ -24,15 +24,14 @@ class Auth0Service {
       this.auth0ClientSecret = process.env.TYMLY_NIC_AUTH0_CLIENT_SECRET
     }
 
+    const cacheOptions = {
+      max: (process.env.TYMLY_USER_CACHE_SIZE || 500),
+      maxAge: (process.env.TYMLY_USER_CACHE_MAX_AGE_IN_MS || THIRTY_MINUTES_IN_MILLISECONDS)
+    }
+
     this.cacheSerice = options.bootedServices.caches
-    this.cacheSerice.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, {
-      max: 500,
-      maxAge: THIRTY_MINUTES_IN_MILLISECONDS
-    })
-    this.cacheSerice.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, {
-      max: 500,
-      maxAge: THIRTY_MINUTES_IN_MILLISECONDS
-    })
+    this.cacheSerice.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, cacheOptions)
+    this.cacheSerice.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, cacheOptions)
 
     callback(null)
   }

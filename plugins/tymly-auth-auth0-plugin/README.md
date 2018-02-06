@@ -14,6 +14,13 @@ Scroll down to the bottom of the page and click the Show Advanced Settings link.
 
 Finally, on the left-hand side of the screen, click on the APIs link.  Click on the Auth0 Management API link.  Click on the Non Interactive Clients tab.  After a few moments, a list of clients will be displayed - find the non-interactive client you just created and switch the toggle next to it to the Authorized position.  Finally, in the clients scopes, find the scope "read:users", tick it and click the update button.
 
+
+## <a name="tuning"></a>Tuning
+The service makes use of a cache so that expensive HTTP requests are kept to a minimum.
+ - By default, the size of this cache is 500, but this can be overridden via the (optional) TYMLY_USER_CACHE_SIZE environment variable.
+ - By default, entries in the cache have a lifetime of 30 minutes, but this can be overridden via the (again optional) TYMLY_USER_CACHE_MAX_AGE_IN_MS environment variable.
+
+
 ## <a name="test"></a>Testing
 
 Before running the tests (and indeed, using the utility functions the service provides), you'll need to set the following environment variables.
