@@ -1,82 +1,80 @@
 {
   "jsonSchema": {
-    "title": "Book someone sick",
-    "description": "Book a member of your team as sick",
-    "type": "object",
-    "required": [
-      "firstName",
-      "lastName"
-    ],
-    "properties": {
+    "schema": {
+      "formtitle": "Book someone sick",
+      "formdescription": "Book a member of your team as sick",
+      "formimage": "mountains2.png",
+      "formcolour": "green",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First name"
+        },
+        "lastName": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "age": {
+          "type": "integer",
+          "title": "Age"
+        },
+        "bio": {
+          "type": "string",
+          "title": "Bio"
+        },
+        "password": {
+          "type": "string",
+          "title": "Password",
+          "minLength": 3
+        },
+        "telephone": {
+          "type": "string",
+          "title": "Telephone",
+          "minLength": 10
+        },
+        "date": {
+          "type": "string",
+          "title": "Date"
+        }
+      }
+    },
+    "uiSchema": {
       "firstName": {
-        "type": "string",
-        "title": "First name"
+        "ui:widget": "textField",
+        "ui:field": "StandardField",
+        "ui:autofocus": true,
+        "ui:emptyValue": ""
       },
       "lastName": {
-        "type": "string",
-        "title": "Last name"
+        "ui:widget": "textField",
+        "ui:field": "StandardField",
+        "ui:autofocus": true,
+        "ui:emptyValue": ""
       },
       "age": {
-        "type": "integer",
-        "title": "Age"
+        "ui:widget": "textField",
+        "ui:field": "StandardField",
+        "ui:section:field": "Age of person",
+        "ui:description": "(earthian year)"
       },
       "bio": {
-        "type": "string",
-        "title": "Bio"
+        "ui:widget": "textField",
+        "ui:field": "StandardField"
       },
       "password": {
-        "type": "string",
-        "title": "Password",
-        "minLength": 3
-      },
-      "telephone": {
-        "type": "string",
-        "title": "Telephone",
-        "minLength": 10
+        "ui:widget": "textField",
+        "ui:field": "StandardField",
+        "ui:help": "Hint: Make it strong!"
       },
       "date": {
-        "type": "string",
-        "title": "Date"
+        "ui:widget": "dateField",
+        "ui:field": "StandardField"
+      },
+      "telephone": {
+        "ui:widget": "textField",
+        "ui:field": "StandardField"
       }
     }
-  },
-  "uiSchema": {
-    "firstName": {
-      "ui:widget": "w_text",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
-    },
-    "lastName": {
-      "ui:widget": "w_text",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
-    },
-    "age": {
-      "ui:widget": "w_text",
-      "ui:title": "Age of person",
-      "ui:description": "(earthian year)"
-    },
-    "bio": {
-      "ui:widget": "w_rte"
-    },
-    "password": {
-      "ui:widget": "w_textPassword",
-      "ui:help": "Hint: Make it strong!"
-    },
-    "date": {
-      "ui:widget": "alt-datetime"
-    },
-    "telephone": {
-      "ui:widget": "w_telephone",
-      "ui:options": {
-        "inputType": "tel"
-      }
-    }
-  },
-  "widgets": {
-    "w_text": "W_Text",
-    "w_rte": "W_Rte",
-    "w_telephone": "W_Text",
-    "w_textPassword": "W_TextPassword"
   }
 }
