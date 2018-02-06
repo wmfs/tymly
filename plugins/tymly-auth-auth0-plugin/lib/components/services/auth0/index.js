@@ -23,7 +23,8 @@ class Auth0Service {
     callback(null)
   }
 
-  getAccessJWT (callback) {
+  getManagementAPIAccessToken (callback) {
+    const _this = this
     if (!this.auth0Audience) {
       callback(boom.unauthorized('auth0 domain has not been configured (the TYMLY_NIC_AUTH0_DOMAIN environment variable is not set)'))
     } else if (!this.auth0ClientId) {
@@ -46,14 +47,14 @@ class Auth0Service {
         json: true
       }, function (err, response, body) {
         if (err) {
-          callback(boom.boomify(err, { message: 'An unexpected error occurred whilst acquiring an access token' }))
-        } else if (body.error && body.error_description) {
-          callback(boom.boomify(new Error(body.error_description)))
+          callback(boom.boomify(err, {message: 'An unexpected error occurred whilst acquiring an access token'}))
         } else {
           if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
+          } else if (body.error && body.error_description) {
+            callback(boom.boomify(new Error(body.error_description)))
           } else if (body) {
-            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
+            callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetManagementAPIAccessTokenUrl}`), {message: JSON.stringify(body)}))
           } else {
             callback(boom.boomify(new Error('No response from auth0')))
           }
@@ -64,13 +65,14 @@ class Auth0Service {
 
   getEmailFromUserId (userId, callback) {
     const _this = this
-    this.getAccessJWT(function (err, jwt) {
+    const url = `${_this.auth0GetUsersByIdUrlPrefix}/${userId}`
+    this.getManagementAPIAccessToken(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
         request({
           method: 'GET',
-          url: `${_this.auth0GetUsersByIdUrlPrefix}/${userId}`,
+          url: url,
           headers: {
             'content-type': 'application/json',
             authorization: `Bearer ${jwt.access_token}`
@@ -79,12 +81,16 @@ class Auth0Service {
         }, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert a user id into an email address' }))
-          } else if (body.email) {
-            callback(null, body.email)
-          } else if (body) {
-            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
           } else {
-            callback(boom.boomify(new Error('No response from auth0')))
+            if (body.email) {
+              callback(null, body.email)
+            } else if (body) {
+              callback(boom.boomify(new Error(`Invalid response from ${url}`), {
+                message: JSON.stringify(body)
+              }))
+            } else {
+              callback(boom.boomify(new Error(`No response from ${url}`)))
+            }
           }
         })
       }
@@ -93,7 +99,7 @@ class Auth0Service {
 
   getUserIdFromEmail (email, callback) {
     const _this = this
-    this.getAccessJWT(function (err, jwt) {
+    this.getManagementAPIAccessToken(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
@@ -111,12 +117,16 @@ class Auth0Service {
         }, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert an email address into a user id' }))
-          } else if (body && body.length === 1 && body[0].user_id) {
-            callback(null, body[0].user_id)
-          } else if (body) {
-            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
           } else {
-            callback(boom.boomify(new Error('No response from auth0')))
+            if (body && body.length === 1 && body[0].user_id) {
+              callback(null, body[0].user_id)
+            } else if (body) {
+              callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetUsersByEmailUrl}`), {
+                message: JSON.stringify(body)
+              }))
+            } else {
+              callback(boom.boomify(new Error(`No response from ${_this.auth0GetUsersByEmailUrl}`)))
+            }
           }
         })
       }
@@ -126,5 +136,5 @@ class Auth0Service {
 
 module.exports = {
   serviceClass: Auth0Service,
-  bootBefore: ['tymly', 'rbac']
+  bootBefore: ['tymly', 'rbac', 'caches']
 }
