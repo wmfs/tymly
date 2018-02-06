@@ -3,6 +3,10 @@
 const request = require('request')
 const boom = require('boom')
 
+const USER_ID_TO_EMAIL_CACHE_NAME = 'userIdToEmail'
+const EMAIL_TO_USER_ID_CACHE_NAME = 'emailToUserId'
+const THIRTY_MINUTES_IN_MILLISECONDS = 1800000
+
 class Auth0Service {
   boot (options, callback) {
     if (process.env.TYMLY_NIC_AUTH0_DOMAIN) {
@@ -20,10 +24,20 @@ class Auth0Service {
       this.auth0ClientSecret = process.env.TYMLY_NIC_AUTH0_CLIENT_SECRET
     }
 
+    this.cacheSerice = options.bootedServices.caches
+    this.cacheSerice.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, {
+      max: 500,
+      maxAge: THIRTY_MINUTES_IN_MILLISECONDS
+    })
+    this.cacheSerice.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, {
+      max: 500,
+      maxAge: THIRTY_MINUTES_IN_MILLISECONDS
+    })
+
     callback(null)
   }
 
-  getManagementAPIAccessToken (callback) {
+  _getManagementAPIAccessToken (callback) {
     const _this = this
     if (!this.auth0Audience) {
       callback(boom.unauthorized('auth0 domain has not been configured (the TYMLY_NIC_AUTH0_DOMAIN environment variable is not set)'))
@@ -47,14 +61,18 @@ class Auth0Service {
         json: true
       }, function (err, response, body) {
         if (err) {
-          callback(boom.boomify(err, {message: 'An unexpected error occurred whilst acquiring an access token'}))
+          callback(boom.boomify(err, {
+            message: 'An unexpected error occurred whilst acquiring an access token'
+          }))
         } else {
           if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
           } else if (body.error && body.error_description) {
             callback(boom.boomify(new Error(body.error_description)))
           } else if (body) {
-            callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetManagementAPIAccessTokenUrl}`), {message: JSON.stringify(body)}))
+            callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetManagementAPIAccessTokenUrl}`), {
+              message: JSON.stringify(body)
+            }))
           } else {
             callback(boom.boomify(new Error('No response from auth0')))
           }
@@ -65,76 +83,95 @@ class Auth0Service {
 
   getEmailFromUserId (userId, callback) {
     const _this = this
-    const url = `${_this.auth0GetUsersByIdUrlPrefix}/${userId}`
-    this.getManagementAPIAccessToken(function (err, jwt) {
-      if (err) {
-        callback(err)
-      } else {
-        request({
-          method: 'GET',
-          url: url,
-          headers: {
-            'content-type': 'application/json',
-            authorization: `Bearer ${jwt.access_token}`
-          },
-          json: true
-        }, function (err, response, body) {
-          if (err) {
-            callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert a user id into an email address' }))
-          } else {
-            if (body.email) {
-              callback(null, body.email)
-            } else if (body) {
-              callback(boom.boomify(new Error(`Invalid response from ${url}`), {
-                message: JSON.stringify(body)
+    const email = this.cacheSerice.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
+    if (email) {
+      callback(null, email)
+    } else {
+      const url = `${_this.auth0GetUsersByIdUrlPrefix}/${userId}`
+      this._getManagementAPIAccessToken(function (err, jwt) {
+        if (err) {
+          callback(err)
+        } else {
+          request({
+            method: 'GET',
+            url: url,
+            headers: {
+              'content-type': 'application/json',
+              authorization: `Bearer ${jwt.access_token}`
+            },
+            json: true
+          }, function (err, response, body) {
+            if (err) {
+              callback(boom.boomify(err, {
+                message: 'An unexpected error occurred whilst attempting to convert a user id into an email address'
               }))
             } else {
-              callback(boom.boomify(new Error(`No response from ${url}`)))
+              if (body.email) {
+                _this.cacheSerice.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, body.email)
+                _this.cacheSerice.set(EMAIL_TO_USER_ID_CACHE_NAME, body.email, userId)
+                callback(null, body.email)
+              } else if (body) {
+                callback(boom.boomify(new Error(`Invalid response from ${url}`), {
+                  message: JSON.stringify(body)
+                }))
+              } else {
+                callback(boom.boomify(new Error(`No response from ${url}`)))
+              }
             }
-          }
-        })
-      }
-    })
+          })
+        }
+      })
+    }
   }
 
   getUserIdFromEmail (email, callback) {
     const _this = this
-    this.getManagementAPIAccessToken(function (err, jwt) {
-      if (err) {
-        callback(err)
-      } else {
-        request({
-          method: 'GET',
-          url: _this.auth0GetUsersByEmailUrl,
-          qs: {
-            email: email
-          },
-          headers: {
-            'content-type': 'application/json',
-            authorization: `Bearer ${jwt.access_token}`
-          },
-          json: true
-        }, function (err, response, body) {
-          if (err) {
-            callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert an email address into a user id' }))
-          } else {
-            if (body && body.length === 1 && body[0].user_id) {
-              callback(null, body[0].user_id)
-            } else if (body) {
-              callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetUsersByEmailUrl}`), {
-                message: JSON.stringify(body)
+    const userId = this.cacheSerice.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
+    if (userId) {
+      callback(null, userId)
+    } else {
+      this._getManagementAPIAccessToken(function (err, jwt) {
+        if (err) {
+          callback(err)
+        } else {
+          request({
+            method: 'GET',
+            url: _this.auth0GetUsersByEmailUrl,
+            qs: {
+              email: email
+            },
+            headers: {
+              'content-type': 'application/json',
+              authorization: `Bearer ${jwt.access_token}`
+            },
+            json: true
+          }, function (err, response, body) {
+            if (err) {
+              callback(boom.boomify(err, {
+                message: 'An unexpected error occurred whilst attempting to convert an email address into a user id'
               }))
             } else {
-              callback(boom.boomify(new Error(`No response from ${_this.auth0GetUsersByEmailUrl}`)))
+              if (body && body.length === 1 && body[0].user_id) {
+                _this.cacheSerice.set(EMAIL_TO_USER_ID_CACHE_NAME, email, body[0].user_id)
+                _this.cacheSerice.set(USER_ID_TO_EMAIL_CACHE_NAME, body[0].user_id, email)
+                callback(null, body[0].user_id)
+              } else if (body) {
+                callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetUsersByEmailUrl}`), {
+                  message: JSON.stringify(body)
+                }))
+              } else {
+                callback(boom.boomify(new Error(`No response from ${_this.auth0GetUsersByEmailUrl}`)))
+              }
             }
-          }
-        })
-      }
-    })
+          })
+        }
+      })
+    }
   }
 }
 
 module.exports = {
   serviceClass: Auth0Service,
-  bootBefore: ['tymly', 'rbac', 'caches']
+  bootBefore: ['tymly', 'rbac'],
+  bootAfter: ['caches']
 }

@@ -32,7 +32,7 @@ describe('tymly-auth-auth0-plugin tests', function () {
     )
   })
 
-  it('should convert a user id into an email address', function (done) {
+  it('should convert a user id into an email address (and cache the relationship between the user id and the auth0 returned email address)', function (done) {
     authService.getEmailFromUserId('auth0|5a157ade1932044615a1c502', function (err, email) {
       if (err) {
         done(err)
@@ -43,7 +43,7 @@ describe('tymly-auth-auth0-plugin tests', function () {
     })
   })
 
-  it('should convert an email address into a user id', function (done) {
+  it('should convert an email address into a user id (which should return instantly via the cache)', function (done) {
     authService.getUserIdFromEmail('tymly@xyz.com', function (err, email) {
       if (err) {
         done(err)
