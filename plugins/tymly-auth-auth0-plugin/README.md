@@ -8,7 +8,7 @@
 $ npm install tymly-auth-auth0-plugin --save
 ```
 
-Once installed, you will need to go to the auth0 management interface and create a new client (type: non-interactive).  On the settings screen, make a note of the DOMAIN, CLIENT ID and the CLIENT SECRET (three environment variables, respectively TYMLY_NIC_AUTH_DOMAIN, TYMLY_NIC_AUTH_CLIENT_ID and TYMLY_NIC_AUTH_CLIENT_SECRET, should be set to their values).
+Once installed, you will need to go to the auth0 management interface and create a new client (type: non-interactive).  On the settings screen, make a note of the DOMAIN, CLIENT ID and the CLIENT SECRET (these three values will need to be setup in three environment variables, respectively TYMLY_NIC_AUTH_DOMAIN, TYMLY_NIC_AUTH_CLIENT_ID and TYMLY_NIC_AUTH_CLIENT_SECRET).
 
 Scroll down to the bottom of the page and click the Show Advanced Settings link.  Click the Grant Types tab and ensure that IMPLCIT, AUTHORIZATION CODE, REFRESH TOKEN and CLIENT CREDENTIALS grants are all ticked.
 
