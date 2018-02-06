@@ -1,0 +1,99 @@
+{
+  "title": "property",
+  "description": "Holds new property details",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "description": "First name"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Last name"
+    },
+    "age": {
+      "type": "integer",
+      "description": "Age"
+    },
+    "address": {
+      "type": "object",
+      "description": "Where you live"
+    },
+    "drivingLicense": {
+      "type": "boolean",
+      "description": "Can you drive?"
+    },
+    "mortgage": {
+      "type": "boolean",
+      "description": "Do you have a mortgage?"
+    },
+    "marital": {
+      "type": "string",
+      "description": "Marital Status?"
+    },
+    "shoeSize": {
+      "type": "number",
+      "description": "What size are your feet?"
+    },
+    "eyeColour": {
+      "type": "number",
+      "description": "What colour are your eyes?"
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "Have you read this?"
+    },
+    "consent": {
+      "type": "boolean",
+      "description": "Do you consent?"
+    },
+    "startDate": {
+      "type": "string",
+      "description": "When did you start work?"
+    },
+    "endDate": {
+      "type": "string",
+      "description": "When did you finish work?"
+    },
+    "role": {
+      "type": "string",
+      "description": "What is your job role?"
+    },
+    "startTime": {
+      "type": "string",
+      "description": "When does your work day start?"
+    },
+    "happiness": {
+      "type": "number",
+      "description": "Are you happy at work?"
+    },
+    "satisfaction": {
+      "type": "string",
+      "description": "Are you satisfied in your work?"
+    },
+    "images": {
+      "type": "string",
+      "description": "Favourite image?"
+    },
+    "activities": {
+      "type": "string",
+      "description": "What are your hobbies?"
+    },
+    "goals": {
+      "type": "string",
+      "description": "Your life goal?"
+    },
+    "ratings": {
+      "type": "string",
+      "description": "How do you rate the following?"
+    },
+    "beliefs": {
+      "type": "string",
+      "description": "What are your beliefs?"
+    },
+    "features": {
+      "type": "string",
+      "description": "Tell us about yourself"
+    }
+  }
+}

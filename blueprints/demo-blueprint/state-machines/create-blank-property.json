@@ -1,0 +1,41 @@
+{
+  "Comment": "Create a new blank property",
+  "name": "Create blank property",
+  "version": "1.0",
+  "categories": [
+    "expenses"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "AwaitingHumanInput",
+  "States": {
+    "AwaitingHumanInput": {
+      "Type": "Task",
+      "Resource": "module:awaitingHumanInput",
+      "ResourceConfig": {
+        "uiType": "form",
+        "uiName": "tymly_createBlankProperty"
+      },
+      "ResultPath": "$.formData",
+      "Next": "Upserting"
+    },
+    "Upserting": {
+      "Type": "Task",
+      "InputPath": "$.formData",
+      "Resource": "module:upserting",
+      "ResourceConfig": {
+        "modelId": "property"
+      },
+      "Next": "DeltaReindex"
+    },
+    "DeltaReindex": {
+      "Type": "Task",
+      "Resource": "module:deltaReindex",
+      "ResourceConfig": {
+        "core": "tymly"
+      },
+      "End": true
+    }
+  }
+}
