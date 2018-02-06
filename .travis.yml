@@ -46,4 +46,6 @@ deploy:
   script: docker push wmfs/tymly-core
 
 after_deploy:
-  - ./tools/trigger-blueprints/trigger-private-blueprints.sh 
+   - curl -LO https://raw.githubusercontent.com/wmfs/tymly/master/tools/trigger-blueprints/trigger-private-blueprints.sh
+   - chmod +x trigger-private-blueprint.sh
+   - ./trigger-private-blueprint.sh
