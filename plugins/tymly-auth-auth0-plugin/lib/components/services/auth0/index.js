@@ -8,7 +8,7 @@ class Auth0Service {
     if (process.env.TYMLY_NIC_AUTH0_DOMAIN) {
       this.auth0GetManagementAPIAccessTokenUrl = `https://${process.env.TYMLY_NIC_AUTH0_DOMAIN}/oauth/token`
       this.auth0Audience = `https://${process.env.TYMLY_NIC_AUTH0_DOMAIN}/api/v2/`
-      this.auth0GetUsersByIdUrlPrefix = `${this.auth0Audience}users/`
+      this.auth0GetUsersByIdUrlPrefix = `${this.auth0Audience}users`
       this.auth0GetUsersByEmailUrl = `${this.auth0Audience}users-by-email`
     }
 
@@ -23,15 +23,15 @@ class Auth0Service {
     callback(null)
   }
 
-  _getAccessJWT (callback) {
+  getAccessJWT (callback) {
     if (!this.auth0Audience) {
-      callback(boom.unauthorized('auth0 domain has not been setup in the TYMLY_NIC_AUTH0_DOMAIN environment variable'))
+      callback(boom.unauthorized('auth0 domain has not been configured (the TYMLY_NIC_AUTH0_DOMAIN environment variable is not set)'))
     } else if (!this.auth0ClientId) {
-      callback(boom.unauthorized('auth0 client id has not been setup in the TYMLY_NIC_AUTH0_CLIENT_ID environment variable'))
+      callback(boom.unauthorized('auth0 client id has not been configured (the TYMLY_NIC_AUTH0_CLIENT_ID environment variable is not set)'))
     } else if (!this.auth0ClientSecret) {
-      callback(boom.unauthorized('auth0 client secret has not been setup in the TYMLY_NIC_AUTH0_CLIENT_SECRET environment variable'))
+      callback(boom.unauthorized('auth0 client secret has not been configured (the TYMLY_NIC_AUTH0_CLIENT_SECRET environment variable is not set)'))
     } else {
-      const options = {
+      request({
         method: 'POST',
         url: this.auth0GetManagementAPIAccessTokenUrl,
         headers: {
@@ -44,9 +44,7 @@ class Auth0Service {
           audience: this.auth0Audience
         },
         json: true
-      }
-
-      request(options, function (err, response, body) {
+      }, function (err, response, body) {
         if (err) {
           callback(boom.boomify(err, { message: 'An unexpected error occurred whilst acquiring an access token' }))
         } else if (body.error && body.error_description) {
@@ -54,6 +52,10 @@ class Auth0Service {
         } else {
           if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
+          } else if (body) {
+            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
+          } else {
+            callback(boom.boomify(new Error('No response from auth0')))
           }
         }
       })
@@ -62,25 +64,27 @@ class Auth0Service {
 
   getEmailFromUserId (userId, callback) {
     const _this = this
-    this._getAccessJWT(function (err, jwt) {
+    this.getAccessJWT(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
-        const options = {
+        request({
           method: 'GET',
-          url: `${_this.auth0GetUsersByIdUrlPrefix}${userId}`,
+          url: `${_this.auth0GetUsersByIdUrlPrefix}/${userId}`,
           headers: {
             'content-type': 'application/json',
             authorization: `Bearer ${jwt.access_token}`
           },
           json: true
-        }
-
-        request(options, function (err, response, body) {
+        }, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert a user id into an email address' }))
-          } else {
+          } else if (body.email) {
             callback(null, body.email)
+          } else if (body) {
+            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
+          } else {
+            callback(boom.boomify(new Error('No response from auth0')))
           }
         })
       }
@@ -89,11 +93,11 @@ class Auth0Service {
 
   getUserIdFromEmail (email, callback) {
     const _this = this
-    this._getAccessJWT(function (err, jwt) {
+    this.getAccessJWT(function (err, jwt) {
       if (err) {
         callback(err)
       } else {
-        const options = {
+        request({
           method: 'GET',
           url: _this.auth0GetUsersByEmailUrl,
           qs: {
@@ -104,13 +108,15 @@ class Auth0Service {
             authorization: `Bearer ${jwt.access_token}`
           },
           json: true
-        }
-
-        request(options, function (err, response, body) {
+        }, function (err, response, body) {
           if (err) {
             callback(boom.boomify(err, { message: 'An unexpected error occurred whilst attempting to convert an email address into a user id' }))
-          } else {
+          } else if (body && body.length === 1 && body[0].user_id) {
             callback(null, body[0].user_id)
+          } else if (body) {
+            callback(boom.boomify(new Error('Invalid response from auth0'), { message: JSON.stringify(body) }))
+          } else {
+            callback(boom.boomify(new Error('No response from auth0')))
           }
         })
       }
