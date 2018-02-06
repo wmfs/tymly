@@ -29,9 +29,6 @@ env:
     - TIMEOUT=15000
     - DEBUG=*,-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
     - DEBUG_COLORS=false
-    - TYMLY_NIC_AUTH_DOMAIN=$TYMLY_NIC_AUTH_DOMAIN
-    - TYMLY_NIC_AUTH_CLIENT_ID=$TYMLY_NIC_AUTH_CLIENT_ID
-    - TYMLY_NIC_AUTH_CLIENT_SECRET=$TYMLY_NIC_AUTH_CLIENT_SECRET
 
 webhooks:
   - https://outlook.office.com/webhook/b88897d4-c48a-4fe2-9097-7c761e69ce94@c8b125d0-ba85-4441-8b06-df523851b190/TravisCI/c969c9d2046a4d9cb8cae895080fe3fa/55765507-4a3a-4ed3-b79b-7ddb4ff8b759
