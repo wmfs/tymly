@@ -1,118 +1,144 @@
 {
   "jsonSchema": {
-    "title": "Claim an expense",
-    "description": "Claim for some travel or similar expense",
-    "type": "object",
-    "required": [
-      "firstName",
-      "lastName"
-    ],
-    "properties": {
-      "firstName": {
-        "type": "string",
-        "title": "First name",
-        "minLength": 1
-      },
-      "lastName": {
-        "type": "string",
-        "title": "Last name",
-        "minLength": 1
-      },
-      "age": {
-        "type": "integer",
-        "title": "Age",
-        "minimum": 0
-      },
-      "reasonForClaim": {
-        "type": "string",
-        "title": "Reason for claim",
-        "minLength": 1
-      },
-      "amountToClaim": {
-        "type": "number",
-        "multipleOf": 0.01,
-        "minimum": 0.01
-      },
-      "telephone": {
-        "type": "string",
-        "title": "Telephone",
-        "minLength": 10
-      },
-      "date": {
-        "type": "string",
-        "title": "Date",
-        "minLength": 1
+    "schema": {
+      "formtitle": "Claim an expense",
+      "formdescription": "Claim for some travel or similar expense",
+      "formimage": "mountains2.png",
+      "formcolour": "green",
+      "type": "object",
+      "properties": {
+        "claimAnExpense": {
+          "type": "object",
+          "title": "Claim an expense",
+          "required": [
+            "firstName",
+            "lastName"
+          ],
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "title": "First name",
+              "minLength": 1
+            },
+            "lastName": {
+              "type": "string",
+              "title": "Last name",
+              "minLength": 1
+            },
+            "age": {
+              "type": "integer",
+              "title": "Age",
+              "minimum": 0
+            },
+            "reasonForClaim": {
+              "type": "string",
+              "title": "Reason for claim",
+              "minLength": 1
+            },
+            "amountToClaim": {
+              "type": "number",
+              "title": "Amount to claim",
+              "multipleOf": 0.01,
+              "minimum": 0.01
+            },
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "minLength": 1
+            },
+            "telephone": {
+              "type": "string",
+              "title": "Telephone",
+              "minLength": 10
+            }
+          }
+        }
+      }
+    },
+    "uiSchema": {
+      "claimAnExpense": {
+        "firstName": {
+          "ui:section:field": "Enter your first name",
+          "ui:widget": "textField",
+          "ui:field": "StandardField"
+        },
+        "lastName": {
+          "ui:section:field": "Enter your last name",
+          "ui:widget": "textField",
+          "ui:field": "StandardField"
+        },
+        "age": {
+          "ui:section:field": "Age of person",
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "(earthian year)"
+        },
+        "reasonForClaim": {
+          "ui:section:field": "Reason for claim",
+          "ui:widget": "textField",
+          "ui:field": "StandardField"
+        },
+        "amountToClaim": {
+          "ui:section:field": "Amount to claim",
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "Amount in GBP (£)"
+        },
+        "date": {
+          "ui:section:field": "Claim date",
+          "ui:widget": "dateField",
+          "ui:field": "StandardField"
+        },
+        "telephone": {
+          "ui:section:field": "Contact number of claimant",
+          "ui:widget": "textField",
+          "ui:field": "StandardField",
+          "ui:help": "Full telephone/mobile number"
+        }
       }
     }
   },
-  "uiSchema": {
-    "firstName": {
-      "ui:widget": "textField",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
-    },
-    "lastName": {
-      "ui:widget": "textField",
-      "ui:autofocus": true,
-      "ui:emptyValue": ""
-    },
-    "age": {
-      "ui:widget": "textField",
-      "ui:title": "Age of person",
-      "ui:description": "(earthian year)"
-    },
-    "reasonForClaim": {
-      "ui:widget": "textField",
-      "ui:title": "Reason for claim"
-    },
-    "amountToClaim": {
-      "ui:widget": "textField",
-      "ui:title": "Reason for claim"
-    },
-    "date": {
-      "ui:widget": "alt-datetime"
-    },
-    "telephone": {
-      "ui:widget": "telephone",
-      "ui:options": {
-        "inputType": "tel"
-      }
-    }
-  },
-  "widgets": {
-    "textField": "TextField",
-    "telephone": "TextField",
-    "textPassword": "TextPassword"
-  }, 
   "validation_schema": {
     "firstName": {
-      "expression": "(/[0-9]/).test(firstName)", 
-      "elements": ["firstName"], 
+      "expression": "(/[0-9]/).test(firstName)",
+      "elements": [
+        "firstName"
+      ],
       "error": "firstName should be a string"
     },
     "lastName": {
-      "expression": "(/[0-9]/).test(lastName)", 
-      "elements": ["lastName"], 
+      "expression": "(/[0-9]/).test(lastName)",
+      "elements": [
+        "lastName"
+      ],
       "error": "lastName should be a string"
     },
     "age": {
       "expression": "(/^[^0-9]+$/).test(age)",
-      "elements": ["age"],
+      "elements": [
+        "age"
+      ],
       "error": "You must enter the claimants age"
     },
     "reasonForClaim": {
-      "expression": "(/[0-9]/).test(bio)", 
-      "elements": ["bio"], 
+      "expression": "(/[0-9]/).test(bio)",
+      "elements": [
+        "bio"
+      ],
       "error": "bio should be a string"
     },
     "amountToClaim": {
       "expression": "(/^[^0-9]+$/).test(age)",
-      "elements": ["amountToClaim"],
+      "elements": [
+        "amountToClaim"
+      ],
       "error": "You must enter how much is being claimed"
     },
     "telephone": {
-      "expression": "(/[a-zA-Z]/).test(telephone)", 
-      "elements": ["telephone"], 
+      "expression": "(/[a-zA-Z]/).test(telephone)",
+      "elements": [
+        "telephone"
+      ],
       "error": "Telephone should only contain numbers"
     }
   }
