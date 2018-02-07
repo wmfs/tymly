@@ -66,8 +66,8 @@ class Auth0Service {
         } else {
           if (body.access_token && body.token_type && body.token_type === 'Bearer') {
             callback(null, body)
-          } else if (body.error && body.error_description) {
-            callback(boom.boomify(new Error(body.error_description)))
+          } else if (body.statusCode && body.error && body.message && body.errorCode) {
+            callback(body)
           } else if (body) {
             callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetManagementAPIAccessTokenUrl}`), {
               message: JSON.stringify(body)
@@ -80,6 +80,12 @@ class Auth0Service {
     }
   }
 
+  /**
+   * Converts a provider user id into an email address, via an auth0 web api
+   * @param {string} userId a provider use id
+   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the email address returned by the auth0 web api
+   * @returns {undefined}
+   */
   getEmailFromUserId (userId, callback) {
     const _this = this
     const email = this.cacheService.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
@@ -106,9 +112,10 @@ class Auth0Service {
               }))
             } else {
               if (body.email) {
-                _this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, body.email)
-                _this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, body.email, userId)
+                _this._addToCache(userId, body.email)
                 callback(null, body.email)
+              } else if (body.statusCode && body.error && body.message && body.errorCode) {
+                callback(body)
               } else if (body) {
                 callback(boom.boomify(new Error(`Invalid response from ${url}`), {
                   message: JSON.stringify(body)
@@ -123,6 +130,12 @@ class Auth0Service {
     }
   }
 
+  /**
+   * Converts an email address into a provider user id, via an auth0 web api
+   * @param {string} email a users email address
+   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the user id returned by the auth0 web api
+   * @returns {undefined}
+   */
   getUserIdFromEmail (email, callback) {
     const _this = this
     const userId = this.cacheService.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
@@ -151,9 +164,10 @@ class Auth0Service {
               }))
             } else {
               if (body && body.length === 1 && body[0].user_id) {
-                _this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, email, body[0].user_id)
-                _this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, body[0].user_id, email)
+                _this._addToCache(body[0].user_id, email)
                 callback(null, body[0].user_id)
+              } else if (body && body.length === 0) {
+                callback(boom.notFound('The user does not exist.'))
               } else if (body) {
                 callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetUsersByEmailUrl}`), {
                   message: JSON.stringify(body)
@@ -166,6 +180,11 @@ class Auth0Service {
         }
       })
     }
+  }
+
+  _addToCache (userId, email) {
+    this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, email, userId)
+    this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, email)
   }
 }
 
