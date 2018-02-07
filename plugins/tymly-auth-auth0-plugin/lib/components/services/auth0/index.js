@@ -29,9 +29,9 @@ class Auth0Service {
       maxAge: (process.env.TYMLY_USER_CACHE_MAX_AGE_IN_MS || THIRTY_MINUTES_IN_MILLISECONDS)
     }
 
-    this.cacheSerice = options.bootedServices.caches
-    this.cacheSerice.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, cacheOptions)
-    this.cacheSerice.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, cacheOptions)
+    this.cacheService = options.bootedServices.caches
+    this.cacheService.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, cacheOptions)
+    this.cacheService.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, cacheOptions)
 
     callback(null)
   }
@@ -82,7 +82,7 @@ class Auth0Service {
 
   getEmailFromUserId (userId, callback) {
     const _this = this
-    const email = this.cacheSerice.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
+    const email = this.cacheService.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
     if (email) {
       callback(null, email)
     } else {
@@ -106,8 +106,8 @@ class Auth0Service {
               }))
             } else {
               if (body.email) {
-                _this.cacheSerice.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, body.email)
-                _this.cacheSerice.set(EMAIL_TO_USER_ID_CACHE_NAME, body.email, userId)
+                _this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, body.email)
+                _this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, body.email, userId)
                 callback(null, body.email)
               } else if (body) {
                 callback(boom.boomify(new Error(`Invalid response from ${url}`), {
@@ -125,7 +125,7 @@ class Auth0Service {
 
   getUserIdFromEmail (email, callback) {
     const _this = this
-    const userId = this.cacheSerice.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
+    const userId = this.cacheService.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
     if (userId) {
       callback(null, userId)
     } else {
@@ -151,8 +151,8 @@ class Auth0Service {
               }))
             } else {
               if (body && body.length === 1 && body[0].user_id) {
-                _this.cacheSerice.set(EMAIL_TO_USER_ID_CACHE_NAME, email, body[0].user_id)
-                _this.cacheSerice.set(USER_ID_TO_EMAIL_CACHE_NAME, body[0].user_id, email)
+                _this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, email, body[0].user_id)
+                _this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, body[0].user_id, email)
                 callback(null, body[0].user_id)
               } else if (body) {
                 callback(boom.boomify(new Error(`Invalid response from ${_this.auth0GetUsersByEmailUrl}`), {
