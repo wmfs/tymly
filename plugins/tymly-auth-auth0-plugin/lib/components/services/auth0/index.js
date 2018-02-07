@@ -2,6 +2,7 @@
 
 const request = require('request')
 const boom = require('boom')
+const debug = require('debug')('tymly-auth-plugin')
 
 const USER_ID_TO_EMAIL_CACHE_NAME = 'userIdToEmail'
 const EMAIL_TO_USER_ID_CACHE_NAME = 'emailToUserId'
@@ -23,6 +24,8 @@ class Auth0Service {
     if (process.env.TYMLY_NIC_AUTH0_CLIENT_SECRET) {
       this.auth0ClientSecret = process.env.TYMLY_NIC_AUTH0_CLIENT_SECRET
     }
+
+    this.webAPITimeoutInMilliseconds = (process.env.WEB_API_TIMEOUT_IN_MS || 3000)
 
     const cacheOptions = {
       max: (process.env.TYMLY_USER_CACHE_SIZE || 500),
@@ -57,7 +60,8 @@ class Auth0Service {
           client_secret: this.auth0ClientSecret,
           audience: this.auth0Audience
         },
-        json: true
+        json: true,
+        timeout: _this.webAPITimeoutInMilliseconds
       }, function (err, response, body) {
         if (err) {
           callback(boom.boomify(err, {
@@ -73,6 +77,7 @@ class Auth0Service {
               message: JSON.stringify(body)
             }))
           } else {
+            debug(`auth0 response status code from ${_this.auth0GetManagementAPIAccessTokenUrl}:`, response && response.statusCode)
             callback(boom.boomify(new Error('No response from auth0')))
           }
         }
@@ -104,7 +109,8 @@ class Auth0Service {
               'content-type': 'application/json',
               authorization: `Bearer ${jwt.access_token}`
             },
-            json: true
+            json: true,
+            timeout: _this.webAPITimeoutInMilliseconds
           }, function (err, response, body) {
             if (err) {
               callback(boom.boomify(err, {
@@ -121,6 +127,7 @@ class Auth0Service {
                   message: JSON.stringify(body)
                 }))
               } else {
+                debug(`auth0 response status code from ${url}:`, response && response.statusCode)
                 callback(boom.boomify(new Error(`No response from ${url}`)))
               }
             }
@@ -156,7 +163,8 @@ class Auth0Service {
               'content-type': 'application/json',
               authorization: `Bearer ${jwt.access_token}`
             },
-            json: true
+            json: true,
+            timeout: _this.webAPITimeoutInMilliseconds
           }, function (err, response, body) {
             if (err) {
               callback(boom.boomify(err, {
@@ -173,6 +181,7 @@ class Auth0Service {
                   message: JSON.stringify(body)
                 }))
               } else {
+                debug(`auth0 response status code from ${_this.auth0GetUsersByEmailUrl}:`, response && response.statusCode)
                 callback(boom.boomify(new Error(`No response from ${_this.auth0GetUsersByEmailUrl}`)))
               }
             }

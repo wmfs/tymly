@@ -19,6 +19,7 @@ Finally, on the left-hand side of the screen, click on the APIs link.  Click on 
 The service makes use of a cache so that expensive HTTP requests are kept to a minimum.
  - By default, the size of this cache is 500, but this can be overridden via the (optional) TYMLY_USER_CACHE_SIZE environment variable.
  - By default, entries in the cache have a lifetime of 30 minutes, but this can be overridden via the (again optional) TYMLY_USER_CACHE_MAX_AGE_IN_MS environment variable.
+ - By default, when invoking external web API calls, a timeout is set to 3 seconds, but this can be overridden via the (optional, yet again) WEB_API_TIMEOUT_IN_MS environment variable.
 
 
 ## <a name="test"></a>Testing
