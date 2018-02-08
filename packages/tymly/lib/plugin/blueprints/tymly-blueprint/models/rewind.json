@@ -5,10 +5,10 @@
     "modelName": {
       "type": "string"
     },
-    "key_string": {
+    "keyString": {
       "type": "string"
     },
-    "old_values": {
+    "oldValues": {
       "type": "object"
     },
     "diff": {
@@ -28,5 +28,6 @@
       "columns": ["created"],
       "unique": false
     }
-  ]
+  ],
+  "audit": false
 }
