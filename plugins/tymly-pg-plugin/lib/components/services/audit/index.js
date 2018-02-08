@@ -43,20 +43,11 @@ class AuditService {
     this.auditFunctions.map(func => {
       Object.keys(this.models).map(async model => {
         const audit = this.models[model].audit !== false
-        let triggerSQL
-        if (audit) {
-          triggerSQL = generateTriggerStatement({
-            model: this.models[model],
-            function: func,
-            action: 'ADD'
-          })
-        } else {
-          triggerSQL = generateTriggerStatement({
-            model: this.models[model],
-            function: func,
-            action: 'REMOVE'
-          })
-        }
+        const triggerSQL = generateTriggerStatement({
+          model: this.models[model],
+          function: func,
+          action: audit ? 'ADD' : 'REMOVE'
+        })
         await this.client.query(triggerSQL)
       })
     })
