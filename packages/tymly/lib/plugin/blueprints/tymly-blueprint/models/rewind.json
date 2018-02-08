@@ -14,5 +14,19 @@
     "diff": {
       "type": "object"
     }
-  }
+  },
+  "indexes": [
+    {
+      "columns": ["model_name"],
+      "unique": false
+    },
+    {
+      "columns": ["key_string"],
+      "unique": false
+    },
+    {
+      "columns": ["created"],
+      "unique": false
+    }
+  ]
 }
