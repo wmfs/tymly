@@ -32,7 +32,8 @@ const executionModelDefinition = {
       'type': 'object'
     }
   },
-  'required': ['uuid']
+  'required': ['uuid'],
+  'audit': false
 } // executionModelDefinition
 
 class StorageServiceDao extends Dao {
