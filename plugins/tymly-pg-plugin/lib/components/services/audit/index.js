@@ -1,5 +1,6 @@
 'use strict'
 
+const _ = require('lodash')
 const path = require('path')
 const schema = require('./schema.json')
 const HlPgClient = require('hl-pg-client')
@@ -39,11 +40,19 @@ class AuditService {
     this.auditFunctions.map(func => {
       Object.keys(this.models).map(async model => {
         const audit = this.models[model].audit !== false
+
+        // Check if trigger already exists - if so then don't query
+        // TODO: Ideally this should be read from pg-info rather than hardcoded but this does the job for now
+        const namespace = _.snakeCase(this.models[model].namespace)
+        const name = _.snakeCase(this.models[model].name)
+        const res = await this.client.query(`SELECT * FROM information_schema.triggers WHERE trigger_name = '${namespace}_${name}_auditor';`)
+        const action = (res.rowCount === 0 && audit) ? 'ADD' : ((res.rowCount === 1 && !audit) ? 'REMOVE' : '')
         const triggerSQL = generateTriggerStatement({
           model: this.models[model],
           function: func,
-          action: audit ? 'ADD' : 'REMOVE'
+          action: action
         })
+
         await this.client.query(triggerSQL)
       })
     })

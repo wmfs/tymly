@@ -16,5 +16,7 @@ module.exports = function generateTriggerStatement (options) {
     case 'REMOVE':
       return `DROP TRIGGER IF EXISTS ${namespace}_${name}_auditor
       ON ${namespace}.${name};`
+    default:
+      return ``
   }
 }
