@@ -29,7 +29,8 @@
     "chai": "4.1.0",
     "chai-subset": "1.6.0",
     "mocha": "4.0.1",
-    "standard": "10.0.3"
+    "standard": "10.0.3",
+    "moment": "2.20.1"
   },
   "scripts": {
     "lint": "standard",
