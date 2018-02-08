@@ -1,0 +1,9 @@
+{
+  "description": "Store History of Tymly",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
