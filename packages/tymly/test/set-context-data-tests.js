@@ -1,6 +1,8 @@
 /* eslint-env mocha */
+
 const path = require('path')
 const expect = require('chai').expect
+const moment = require('moment')
 
 describe('Context tests', function () {
   const tymly = require('./../lib')
@@ -46,6 +48,7 @@ describe('Context tests', function () {
           expect(executionDescription.ctx.formData.catOwnerId).to.eql('auth0|5a157ade1932044615a1c502')
           expect(executionDescription.ctx.formData.catBirthday.substring(0, 10)).to.eql(new Date().toISOString().substring(0, 10))
           expect(executionDescription.ctx.formData.email).to.eql('tymly@xyz.com')
+          expect(moment(executionDescription.ctx.formData.catBirthday, moment.ISO_8601, true).isValid()).to.eql(true)
           done()
         } catch (err) {
           done(err)
