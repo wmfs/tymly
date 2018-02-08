@@ -10,7 +10,7 @@ describe('Context tests', function () {
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
 
-  it('should load the animal blueprint (which has some context data)', function (done) {
+  it('should load the animal blueprint (which makes use of the set-context-data state resource)', function (done) {
     tymly.boot(
       {
         blueprintPaths: [
@@ -29,7 +29,7 @@ describe('Context tests', function () {
     )
   })
 
-  it('should execute the setContextData state machine', function (done) {
+  it('should execute the set-context-data state machine', function (done) {
     statebox.startExecution(
       {},  // input
       'tymlyTest_setContextData_1_0', // state machine name
