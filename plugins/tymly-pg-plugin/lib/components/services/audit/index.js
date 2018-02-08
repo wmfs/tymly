@@ -45,9 +45,17 @@ class AuditService {
         const audit = this.models[model].audit !== false
         let triggerSQL
         if (audit) {
-          triggerSQL = generateTriggerStatement(this.models[model], func, 'ADD')
+          triggerSQL = generateTriggerStatement({
+            model: this.models[model],
+            function: func,
+            action: 'ADD'
+          })
         } else {
-          triggerSQL = generateTriggerStatement(this.models[model], func, 'REMOVE')
+          triggerSQL = generateTriggerStatement({
+            model: this.models[model],
+            function: func,
+            action: 'REMOVE'
+          })
         }
         await this.client.query(triggerSQL)
       })
