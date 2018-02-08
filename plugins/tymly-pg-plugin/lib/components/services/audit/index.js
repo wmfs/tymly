@@ -57,5 +57,5 @@ class AuditService {
 module.exports = {
   schema: schema,
   serviceClass: AuditService,
-  bootAfter: ['storage']
+  bootAfter: ['storage', 'statebox']
 }
