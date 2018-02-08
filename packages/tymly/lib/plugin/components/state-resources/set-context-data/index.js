@@ -47,7 +47,7 @@ module.exports = class SetContextData {
               } else {
                 _this.resourceConfig[key] = email
               }
-              dottie.set(data, theKey, this.resourceConfig[key])
+              dottie.set(data, theKey, _this.resourceConfig[key])
               resolve()
             })
           })
