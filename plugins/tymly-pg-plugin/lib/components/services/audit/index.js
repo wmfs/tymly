@@ -15,8 +15,6 @@ class AuditService {
       this.client = new HlPgClient(connectionString)
       this.auditFunctions = []
 
-      // Runs only scripts found in /pg-scripts beginning with 'audit-'
-      // the rest of the file name is the name of the function
       const promises = Object.keys(this.pgScripts).map(script => {
         const filename = path.parse(this.pgScripts[script].filename).name
         this.auditFunctions.push(filename.substring(filename.indexOf('-') + 1))
@@ -27,7 +25,6 @@ class AuditService {
 
       Promise.all(promises)
         .then(async () => {
-          // Create a trigger for each model without 'audit=false' and for each function
           await this.updateTriggers()
           callback(null)
         })
@@ -38,7 +35,6 @@ class AuditService {
     }
   }
 
-  // TODO: Check if the model already has a trigger, if not - create the trigger
   updateTriggers () {
     this.auditFunctions.map(func => {
       Object.keys(this.models).map(async model => {
