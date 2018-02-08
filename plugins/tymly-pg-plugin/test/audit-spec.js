@@ -6,7 +6,7 @@ const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
 
-describe('PostgreSQL storage tests', function () {
+describe('Audit service tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService
