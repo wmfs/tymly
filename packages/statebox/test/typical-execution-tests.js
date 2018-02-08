@@ -487,5 +487,34 @@ DaosToTest.forEach(([name, options]) => {
         }
       )
     })
+
+    it('Should execute the wait state machine', function (done) {
+      statebox.startExecution(
+          {},
+          'waitState',
+          {},
+          (err, result) => {
+            expect(err).to.eql(null)
+            expect(result.stateMachineName).to.eql('waitState')
+            expect(result.status).to.eql('RUNNING')
+            executionName = result.executionName
+            console.log('execution name: ', executionName)
+            done()
+          })
+    }
+    )
+
+    it('Should wait for the wait state machine to finish and compare the times to check the wait happened', function (done) {
+      statebox.waitUntilStoppedRunning(
+        executionName,
+        function (err, executionDescription) {
+          expect(err).to.eql(null)
+          const diff = new Date().getTime() - new Date(executionDescription.startDate).getTime()
+          expect(diff).to.be.above(3000)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          done()
+        }
+      )
+    })
   })
 })
