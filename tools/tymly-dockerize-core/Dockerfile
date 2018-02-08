@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:8.9.4-slim
 #FROM keymetrics/pm2:latest-alpine
 ARG tarfile=bundle.tgz
 
