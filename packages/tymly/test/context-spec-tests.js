@@ -44,7 +44,7 @@ describe('Context tests', function () {
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(executionDescription.ctx.formData.catName).to.eql('Rupert')
           expect(executionDescription.ctx.formData.catOwnerId).to.eql('auth0|5a157ade1932044615a1c502')
-          expect(executionDescription.ctx.formData.catBirthday.substring(0, 18)).to.eql(new Date().toISOString().substring(0, 18))
+          expect(executionDescription.ctx.formData.catBirthday.substring(0, 10)).to.eql(new Date().toISOString().substring(0, 10))
           expect(executionDescription.ctx.formData.email).to.eql('tymly@xyz.com')
           done()
         } catch (err) {
