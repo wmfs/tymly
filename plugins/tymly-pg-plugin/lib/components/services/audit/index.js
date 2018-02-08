@@ -28,7 +28,7 @@ class AuditService {
       Promise.all(promises)
         .then(async () => {
           // Create a trigger for each model without 'audit=false' and for each function
-          await this.addTriggers()
+          await this.updateTriggers()
           callback(null)
         })
         .catch(err => {
@@ -38,14 +38,26 @@ class AuditService {
     }
   }
 
-  addTriggers () {
+  // TODO: Check if the model already has a trigger, if not - create the trigger
+  updateTriggers () {
     this.auditFunctions.map(func => {
       Object.keys(this.models).map(async model => {
         const audit = this.models[model].audit !== false
+        let triggerSQL
         if (audit) {
-          const triggerSql = generateTriggerStatement(this.models[model], func)
-          await this.client.query(triggerSql)
+          triggerSQL = generateTriggerStatement({
+            model: this.models[model],
+            function: func,
+            action: 'ADD'
+          })
+        } else {
+          triggerSQL = generateTriggerStatement({
+            model: this.models[model],
+            function: func,
+            action: 'REMOVE'
+          })
         }
+        await this.client.query(triggerSQL)
       })
     })
   }
