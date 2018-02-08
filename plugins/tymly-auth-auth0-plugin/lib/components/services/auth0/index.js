@@ -36,6 +36,12 @@ class Auth0Service {
     this.cacheService.defaultIfNotInConfig(USER_ID_TO_EMAIL_CACHE_NAME, cacheOptions)
     this.cacheService.defaultIfNotInConfig(EMAIL_TO_USER_ID_CACHE_NAME, cacheOptions)
 
+    if (process.env.PROXY_URL) {
+      this.request = request.defaults({'proxy': process.env.PROXY_URL})
+    } else {
+      this.request = request.defaults()
+    }
+
     callback(null)
   }
 
@@ -48,7 +54,7 @@ class Auth0Service {
     } else if (!this.auth0ClientSecret) {
       callback(boom.unauthorized('auth0 client secret has not been configured (the TYMLY_NIC_AUTH0_CLIENT_SECRET environment variable is not set)'))
     } else {
-      request({
+      this.request({
         method: 'POST',
         url: this.auth0GetManagementAPIAccessTokenUrl,
         headers: {
@@ -102,7 +108,7 @@ class Auth0Service {
         if (err) {
           callback(err)
         } else {
-          request({
+          _this.request({
             method: 'GET',
             url: url,
             headers: {
@@ -153,7 +159,7 @@ class Auth0Service {
         if (err) {
           callback(err)
         } else {
-          request({
+          _this.request({
             method: 'GET',
             url: _this.auth0GetUsersByEmailUrl,
             qs: {

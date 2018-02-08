@@ -15,6 +15,14 @@ Scroll down to the bottom of the page and click the Show Advanced Settings link.
 Finally, on the left-hand side of the screen, click on the APIs link.  Click on the Auth0 Management API link.  Click on the Non Interactive Clients tab.  After a few moments, a list of clients will be displayed - find the non-interactive client you just created and switch the toggle next to it to the Authorized position.  Finally, in the clients scopes, find the scope "read:users", tick it and click the update button.
 
 
+## <a name="tuning"></a>Proxy Configuration
+It should be obvious, but please note that this plugin makes calls to various web APIs.  If you are behind a firewall which, you may optionally set the PROXY_URL environment variable.  This url will should look something like 'http://[USERNAME]:[PASSWORD]@[PROXY HOST]:[PROXY PORT]'.
+
+Note that if your on a Active Directory network, your username may need to be prefixed with a domain, followed by the three characters '%5C', to separate the domain from the username.
+
+So for example, if your domain is called 'WORLD', your username is 'j.smith', your password is 'superhero', your proxy host is 'proxy.world.net' and your proxy port is 1234, your proxy url would look like "http://world%5Cj.smith:superhero@proxy.world.net:1234".
+
+
 ## <a name="tuning"></a>Tuning
 The service makes use of a cache so that expensive HTTP requests are kept to a minimum.
  - By default, the size of this cache is 500, but this can be overridden via the (optional) TYMLY_USER_CACHE_SIZE environment variable.
