@@ -2,8 +2,17 @@
   "description": "Store History of Tymly",
   "type": "object",
   "properties": {
-    "name": {
+    "modelName": {
       "type": "string"
+    },
+    "key_string": {
+      "type": "string"
+    },
+    "old_values": {
+      "type": "object"
+    },
+    "diff": {
+      "type": "object"
     }
   }
 }
