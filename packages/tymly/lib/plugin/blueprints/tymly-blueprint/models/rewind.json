@@ -1,0 +1,32 @@
+{
+  "description": "Store History of Tymly",
+  "type": "object",
+  "properties": {
+    "modelName": {
+      "type": "string"
+    },
+    "key_string": {
+      "type": "string"
+    },
+    "old_values": {
+      "type": "object"
+    },
+    "diff": {
+      "type": "object"
+    }
+  },
+  "indexes": [
+    {
+      "columns": ["model_name"],
+      "unique": false
+    },
+    {
+      "columns": ["key_string"],
+      "unique": false
+    },
+    {
+      "columns": ["created"],
+      "unique": false
+    }
+  ]
+}
