@@ -35,7 +35,6 @@ class AuditService {
   addTriggers () {
     Object.keys(this.models).map(async model => {
       const audit = this.models[model].audit !== false
-
       if (audit) {
         const triggerSql = generateTriggerStatement(this.models[model])
         await this.client.query(triggerSql)

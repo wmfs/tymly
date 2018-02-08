@@ -1,7 +1,9 @@
 {
   "title": "Animals",
   "description": "Isn't this just a list of animals?",
-  "primaryKey": ["animal"],
+  "primaryKey": [
+    "animal"
+  ],
   "type": "object",
   "properties": {
     "animal": {
@@ -22,12 +24,16 @@
       "description": "Hash assigned to row in animals"
     }
   },
-
   "indexes": [
     {
-      "columns": ["animal"],
+      "columns": [
+        "animal"
+      ],
       "unique": true
     }
   ],
-  "required": ["animal"]
+  "required": [
+    "animal"
+  ],
+  "audit": false
 }
