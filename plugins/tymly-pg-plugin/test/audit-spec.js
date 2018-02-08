@@ -76,6 +76,7 @@ describe('Audit service tests', function () {
       }
     })
       .then(res => {
+        expect(res.length).to.eql(1)
         expect(res[0].diff.colour.from).to.eql('brown')
         expect(res[0].diff.colour.to).to.eql('black')
         rewindIdToDestroy = res[0].id

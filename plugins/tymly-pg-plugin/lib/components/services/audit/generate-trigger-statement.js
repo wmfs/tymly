@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-module.exports = function generateTriggerStatement (model) {
+module.exports = function generateTriggerStatement (model, func) {
   const namespace = _.snakeCase(model.namespace)
   const name = _.snakeCase(model.name)
   const pk = _.snakeCase(model.primaryKey)
@@ -10,5 +10,5 @@ module.exports = function generateTriggerStatement (model) {
   return `CREATE TRIGGER ${namespace}_${name}_auditor 
   BEFORE UPDATE ON ${namespace}.${name} 
   FOR EACH ROW EXECUTE PROCEDURE 
-  tymly.update_processor('${namespace}.${name}', '{${pk}}');`
+  tymly.${_.snakeCase(func)}('${namespace}.${name}', '{${pk}}');`
 }
