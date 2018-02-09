@@ -42,7 +42,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should check the dog', (done) => {
+  it('should check the dog is brown', (done) => {
     models['tymlyTest_animalWithAge'].find({})
       .then(res => {
         expect(res[0].colour).to.eql('brown')
@@ -51,7 +51,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should update the dog', (done) => {
+  it('should update the dog\'s colour to black', (done) => {
     models['tymlyTest_animalWithAge'].update({
       animal: 'dog',
       colour: 'black'
@@ -60,7 +60,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should check the dog', (done) => {
+  it('should check the dog is black', (done) => {
     models['tymlyTest_animalWithAge'].find({})
       .then(res => {
         expect(res[0].colour).to.eql('black')
@@ -94,7 +94,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should check the cat', (done) => {
+  it('should check the cat is ginger', (done) => {
     models['tymlyTest_animalWithYear'].find({})
       .then(res => {
         expect(res[0].colour).to.eql('ginger')
@@ -103,7 +103,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should update the cat', (done) => {
+  it('should update the cat update the cat\'s colour to white', (done) => {
     models['tymlyTest_animalWithYear'].update({
       animal: 'cat',
       colour: 'white'
@@ -112,7 +112,7 @@ describe('Audit service tests', function () {
       .catch(err => done(err))
   })
 
-  it('should check the cat', (done) => {
+  it('should check the cat is white', (done) => {
     models['tymlyTest_animalWithYear'].find({})
       .then(res => {
         expect(res[0].colour).to.eql('white')
