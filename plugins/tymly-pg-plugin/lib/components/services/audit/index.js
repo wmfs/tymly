@@ -51,8 +51,8 @@ class AuditService {
           schemas: this.schemaNames
         })
 
-        const triggers = currentDbStructure.schemas[namespace].tables[name].triggers
-        const trigger = Object.keys(triggers).includes(triggerName)
+        const currentTriggers = currentDbStructure.schemas[namespace].tables[name].triggers
+        const trigger = Object.keys(currentTriggers).includes(triggerName)
         const action = (!trigger && audit) ? 'ADD' : ((trigger && !audit) ? 'REMOVE' : '')
 
         const triggerSQL = generateTriggerStatement({
@@ -64,6 +64,10 @@ class AuditService {
         await this.client.query(triggerSQL)
       })
     })
+  }
+
+  async shutdown () {
+    await this.client.end()
   }
 }
 
