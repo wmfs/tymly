@@ -18,8 +18,8 @@ class AuditService {
 
       const promises = Object.keys(this.pgScripts).map(script => {
         const filename = path.parse(this.pgScripts[script].filename).name
-        this.auditFunctions.push(filename.substring(filename.indexOf('-') + 1))
         if (filename.split('-')[0] === 'audit') {
+          this.auditFunctions.push(filename.substring(filename.indexOf('-') + 1))
           return this.client.runFile(this.pgScripts[script].filePath)
         }
       })
