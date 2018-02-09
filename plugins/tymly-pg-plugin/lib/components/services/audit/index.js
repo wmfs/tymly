@@ -66,10 +66,6 @@ class AuditService {
       })
     })
   }
-
-  async shutdown () {
-    await this.client.end()
-  }
 }
 
 module.exports = {

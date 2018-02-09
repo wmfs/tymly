@@ -2,7 +2,6 @@
 
 'use strict'
 
-const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
@@ -16,12 +15,13 @@ process.on('unhandledRejection', (reason, p) => {
   // application specific logging, throwing an error, or other logic here
 })
 
-describe('Importing CSV Tests', function () {
+describe('State Resource Tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  const STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
+  const IMPORT_STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
+  const SYNC_STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
   let client, tymlyService, statebox
 
-  it('should create some tymly services to test PostgreSQL storage', function (done) {
+  it('should boot Tymly', function (done) {
     tymly.boot(
       {
         pluginPaths: [
@@ -49,7 +49,7 @@ describe('Importing CSV Tests', function () {
       {
         sourceDir: path.resolve(__dirname, './fixtures/input')
       },
-      STATE_MACHINE_NAME,
+      IMPORT_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
@@ -87,45 +87,12 @@ describe('Importing CSV Tests', function () {
     )
   })
 
-  it('should shutdown Tymly (1)', async () => {
-    await tymlyService.shutdown()
-  })
-})
-
-describe('Synchronizing Table tests', function () {
-  this.timeout(process.env.TIMEOUT || 5000)
-  const STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
-  let tymlyService, statebox, client
-
-  it('should create some tymly services to test PostgreSQL storage', function (done) {
-    tymly.boot(
-      {
-        pluginPaths: [
-          path.resolve(__dirname, './../lib')
-        ],
-
-        blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprints/animal-blueprint')
-        ],
-
-        config: {}
-      },
-      function (err, tymlyServices) {
-        expect(err).to.eql(null)
-        client = tymlyServices.storage.client
-        tymlyService = tymlyServices.tymly
-        statebox = tymlyServices.statebox
-        done()
-      }
-    )
-  })
-
   it('should execute synchronizingTable', function (done) {
     statebox.startExecution(
       {
         outputDir: OUTPUT_DIR_PATH
       },
-      STATE_MACHINE_NAME,
+      SYNC_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
@@ -163,22 +130,6 @@ describe('Synchronizing Table tests', function () {
     )
   })
 
-  it('should shutdown Tymly', async () => {
-    await tymlyService.shutdown()
-  })
-})
-
-describe('Clean up', function () {
-  let client = new HlPgClient(process.env.PG_CONNECTION_STRING)
-
-  it('should remove output directory now tests are complete', function (done) {
-    if (fs.existsSync(OUTPUT_DIR_PATH)) {
-      rimraf(OUTPUT_DIR_PATH, {}, done)
-    } else {
-      done()
-    }
-  })
-
   it('should uninstall test schemas', function (done) {
     sqlScriptRunner(
       [
@@ -192,8 +143,15 @@ describe('Clean up', function () {
     )
   })
 
-  it('Should close database connections', function (done) {
-    client.end()
-    done()
+  it('should remove output directory now tests are complete', function (done) {
+    if (fs.existsSync(OUTPUT_DIR_PATH)) {
+      rimraf(OUTPUT_DIR_PATH, {}, done)
+    } else {
+      done()
+    }
+  })
+
+  it('should shutdown Tymly', async () => {
+    await tymlyService.shutdown()
   })
 })
