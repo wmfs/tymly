@@ -2,14 +2,14 @@
   "id": "people",
   "title": "People",
   "description": "Isn't this just a list of people?",
-  "primaryKey": ["employeeNo"],
+  "primaryKey": [
+    "employeeNo"
+  ],
   "type": "object",
   "properties": {
-
     "employeeNo": {
       "type": "string"
     },
-
     "firstName": {
       "type": "string",
       "description": "Person's first name"
@@ -23,12 +23,18 @@
       "minimum": 0
     }
   },
-
   "indexes": [
     {
-      "columns": ["firstName", "lastName"],
+      "columns": [
+        "firstName",
+        "lastName"
+      ],
       "unique": true
     }
   ],
-  "required": ["firstName", "lastName"]
+  "required": [
+    "firstName",
+    "lastName"
+  ],
+  "audit": false
 }
