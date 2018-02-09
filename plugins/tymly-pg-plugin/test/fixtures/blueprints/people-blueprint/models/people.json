@@ -29,5 +29,6 @@
       "unique": true
     }
   ],
-  "required": ["firstName", "lastName"]
+  "required": ["firstName", "lastName"],
+  "audit": false
 }
