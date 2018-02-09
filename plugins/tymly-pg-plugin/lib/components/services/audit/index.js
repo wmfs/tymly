@@ -5,6 +5,7 @@ const path = require('path')
 const schema = require('./schema.json')
 const HlPgClient = require('hl-pg-client')
 const generateTriggerStatement = require('./generate-trigger-statement')
+const debug = require('debug')('tymly-pg-plugin')
 
 class AuditService {
   boot (options, callback) {
@@ -17,8 +18,10 @@ class AuditService {
       this.auditFunctions = []
 
       const promises = Object.keys(this.pgScripts).map(script => {
+        debug(`Found script: ${script}`)
         const filename = path.parse(this.pgScripts[script].filename).name
         if (filename.split('-')[0] === 'audit') {
+          debug(`Found audit function: ${filename.substring(filename.indexOf('-') + 1)}`)
           this.auditFunctions.push(filename.substring(filename.indexOf('-') + 1))
           return this.client.runFile(this.pgScripts[script].filePath)
         }
@@ -29,10 +32,7 @@ class AuditService {
           await this.updateTriggers()
           callback(null)
         })
-        .catch(err => {
-          console.log('ERR:', err)
-          callback(err)
-        })
+        .catch(err => callback(err))
     }
   }
 
@@ -47,6 +47,9 @@ class AuditService {
         const name = _.snakeCase(this.models[model].name)
         const res = await this.client.query(`SELECT * FROM information_schema.triggers WHERE trigger_name = '${namespace}_${name}_auditor';`)
         const action = (res.rowCount === 0 && audit) ? 'ADD' : ((res.rowCount === 1 && !audit) ? 'REMOVE' : '')
+
+        if (action === 'ADD' || action === 'REMOVE') debug(`${action} trigger for ${func} on ${model}`)
+
         const triggerSQL = generateTriggerStatement({
           model: this.models[model],
           function: func,
