@@ -4,9 +4,10 @@ const _ = require('lodash')
 const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
+const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = async function generateStats (options, callback) {
-  console.log(options.category + ' - Generating statistics')
+  debug(options.category + ' - Generating statistics')
 
   let scores = []
   let ranges, mean, stdev
@@ -31,11 +32,11 @@ module.exports = async function generateStats (options, callback) {
         .catch(err => cb(err))
     }, (err) => {
       if (err) callback(err)
-      console.log(options.category + ' - Finished generating statistics')
+      debug(options.category + ' - Finished generating statistics')
       callback(null)
     })
   } else {
-    console.log(options.category + ' - No scores found')
+    debug(options.category + ' - No scores found')
     callback(null)
   }
 }
