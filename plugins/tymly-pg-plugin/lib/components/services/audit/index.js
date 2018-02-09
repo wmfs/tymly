@@ -5,6 +5,7 @@ const path = require('path')
 const schema = require('./schema.json')
 const generateTriggerStatement = require('./generate-trigger-statement')
 const debug = require('debug')('tymly-pg-plugin')
+const pgInfo = require('pg-info')
 
 class AuditService {
   boot (options, callback) {
@@ -12,6 +13,7 @@ class AuditService {
     this.pgScripts = options.blueprintComponents.pgScripts || {}
     this.models = options.blueprintComponents.models || {}
     this.client = options.bootedServices.storage.client
+    this.schemaNames = options.bootedServices.storage.schemaNames
 
     if (connectionString) {
       this.auditFunctions = []
@@ -40,13 +42,18 @@ class AuditService {
       Object.keys(this.models).map(async model => {
         const audit = this.models[model].audit !== false
 
-        // TODO: Read triggers from this.models to check if exists
         const namespace = _.snakeCase(this.models[model].namespace)
         const name = _.snakeCase(this.models[model].name)
-        const res = await this.client.query(`SELECT * FROM information_schema.triggers WHERE trigger_name = '${namespace}_${name}_auditor';`)
-        const action = (res.rowCount === 0 && audit) ? 'ADD' : ((res.rowCount === 1 && !audit) ? 'REMOVE' : '')
+        const triggerName = `${namespace}_${name}_auditor`
 
-        if (action === 'ADD' || action === 'REMOVE') debug(`${action} trigger for ${func} on ${model}`)
+        const currentDbStructure = await pgInfo({
+          client: this.client,
+          schemas: this.schemaNames
+        })
+
+        const triggers = currentDbStructure.schemas[namespace].tables[name].triggers
+        const trigger = Object.keys(triggers).includes(triggerName)
+        const action = (!trigger && audit) ? 'ADD' : ((trigger && !audit) ? 'REMOVE' : '')
 
         const triggerSQL = generateTriggerStatement({
           model: this.models[model],
@@ -57,10 +64,6 @@ class AuditService {
         await this.client.query(triggerSQL)
       })
     })
-  }
-
-  async shutdown () {
-    await this.client.end()
   }
 }
 
