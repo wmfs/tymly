@@ -53,7 +53,8 @@ class AuditService {
 
         const currentTriggers = currentDbStructure.schemas[namespace].tables[name].triggers
         const trigger = Object.keys(currentTriggers).includes(triggerName)
-        const action = (!trigger && audit) ? 'ADD' : ((trigger && !audit) ? 'REMOVE' : '')
+        const action = (!trigger && audit) ? 'ADD' : ((trigger && !audit) ? 'REMOVE' : 'NONE')
+        debug(`Model: ${model}, Wants to audit: ${audit}, Already has trigger: ${trigger}, Action: ${action}`)
 
         const triggerSQL = generateTriggerStatement({
           model: this.models[model],
