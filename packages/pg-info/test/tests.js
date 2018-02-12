@@ -355,7 +355,7 @@ describe('Run the basic-usage example', function () {
             'new_craters_trigger': {
               'eventManipulation': 'INSERT',
               'actionCondition': null,
-              'actionStatement': 'EXECUTE PROCEDURE append_inserted_craters_row()',
+              'actionStatement': 'EXECUTE PROCEDURE pginfo_planets_test.append_inserted_craters_row()',
               'actionOrientation': 'STATEMENT',
               'actionTiming': 'BEFORE'
             }
