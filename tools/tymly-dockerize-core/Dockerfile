@@ -8,5 +8,4 @@ COPY config/*.json config/
 
 #CMD ["pm2-runtime", "--public", "7bi3gcnm986owgh", "--secret", "xxxxxx", "config/pm2.json"]
 
-
 ADD $tarfile .
