@@ -1,4 +1,5 @@
-![Tymly Logo](https://github.com/wmfs/tymly/blob/master/packages/tymly-doc-generator/hugo-site/content/images/tymly-logo.png)
+![Tymly Logo](https://github.com/wmfs/tymly/blob/master/packages/tymly-doc-generator/hugo-site/content/images/tymly-logo.png)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwmfs%2Ftymly.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwmfs%2Ftymly?ref=badge_shield)
+
 
 _An open source low-code platform - that's built for collaboration_
 
@@ -66,3 +67,6 @@ $ lerna run test
 [MIT](https://github.com/wmfs/tymly/blob/master/LICENSE)
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwmfs%2Ftymly.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwmfs%2Ftymly?ref=badge_large)
