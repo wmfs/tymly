@@ -98,7 +98,7 @@
       }
     }
   },
-  "validation_schema": {
+  "validationSchema": {
     "firstName": {
       "expression": "(/[0-9]/).test(firstName)",
       "elements": [
