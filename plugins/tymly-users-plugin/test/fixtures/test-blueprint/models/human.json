@@ -1,0 +1,15 @@
+{
+  "id": "human",
+  "title": "Human",
+  "description": "Human",
+  "type": "object",
+  "primaryKey": ["name"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "string"
+    }
+  }
+}

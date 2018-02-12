@@ -1,0 +1,16 @@
+{
+  "Comment": "Get Single Board",
+  "name": "Get Single Board",
+  "version": "1.0",
+  "StartAt": "GetBoardData",
+  "States": {
+    "GetBoardData": {
+      "Type": "Task",
+      "Resource": "module:getBoardData",
+      "ResourceConfig": {
+        "model": "human"
+      },
+      "End": true
+    }
+  }
+}

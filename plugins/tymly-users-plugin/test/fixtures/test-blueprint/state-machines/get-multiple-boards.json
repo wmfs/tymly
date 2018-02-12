@@ -1,0 +1,16 @@
+{
+  "Comment": "Get Multiple Boards",
+  "name": "Get Multiple Boards",
+  "version": "1.0",
+  "StartAt": "GetBoardData",
+  "States": {
+    "GetBoardData": {
+      "Type": "Task",
+      "Resource": "module:getBoardData",
+      "ResourceConfig": {
+        "model": ["human", "animal"]
+      },
+      "End": true
+    }
+  }
+}

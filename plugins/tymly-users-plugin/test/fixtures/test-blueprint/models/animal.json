@@ -1,0 +1,18 @@
+{
+  "id": "animal",
+  "title": "Animal",
+  "description": "Animal",
+  "type": "object",
+  "primaryKey": ["name"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "age": {
+      "type": "string"
+    }
+  }
+}
