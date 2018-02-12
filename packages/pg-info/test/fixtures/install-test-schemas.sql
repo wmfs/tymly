@@ -101,7 +101,7 @@ CREATE TABLE pginfo_planets_test.new_craters (
     CONSTRAINT new_craters_pkey PRIMARY KEY (id)
 );
 
-CREATE OR REPLACE FUNCTION append_inserted_craters_row() RETURNS trigger AS $BODY$
+CREATE OR REPLACE FUNCTION pginfo_planets_test.append_inserted_craters_row() RETURNS trigger AS $BODY$
     BEGIN
         INSERT INTO pginfo_planets_test.new_craters (id, title) VALUES (new.id, new.title);
         RETURN NEW;

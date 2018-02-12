@@ -360,6 +360,11 @@ describe('Run the basic-usage example', function () {
               'actionTiming': 'BEFORE'
             }
           },
+          'functions': {
+            'append_inserted_craters_row': {
+              'dataType': 'trigger'
+            }
+          },
           'fkConstraints': {
             'craters_to_moons_fk': {
               'targetTable': 'pginfo_planets_test.moons',

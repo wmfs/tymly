@@ -88,7 +88,12 @@ const QUERIES = [
   // List of triggers
   'SELECT trigger_name, trigger_schema, event_object_schema, event_object_table, event_manipulation, action_condition, action_statement, action_orientation, action_timing ' +
   'FROM information_schema.triggers ' +
-  'WHERE trigger_schema = ANY($1)'
+  'WHERE trigger_schema = ANY($1)',
+
+  // List of functions
+  'SELECT * ' +
+  'FROM information_schema.routines ' +
+  'WHERE specific_schema = ANY($1)'
 ]
 
 const NotSet = 'NotSet'
@@ -147,6 +152,7 @@ module.exports = function pgInfo (options, callback = NotSet) {
         const pgIndexes = queryResults[4]
         const pgFkConstraints = queryResults[5]
         const pgTriggers = queryResults[6]
+        const pgFunctions = queryResults[7]
 
         // Loop over each requested schema name
         schemas.forEach(
@@ -229,6 +235,16 @@ module.exports = function pgInfo (options, callback = NotSet) {
                           }
                         )
 
+                        const functions = {}
+                        const tableFunctions = _.filter(pgFunctions, {specific_schema: requestedSchemaName})
+                        tableFunctions.forEach(
+                          function (tableFunction) {
+                            functions[tableFunction.routine_name] = {
+                              dataType: tableFunction.data_type
+                            }
+                          }
+                        )
+
                         const fkConstraints = {}
                         const tableFkConstraints = _.filter(pgFkConstraints, {source_table: requestedSchemaName + '.' + candidatePgTable.table_name})
                         tableFkConstraints.forEach(
@@ -258,6 +274,7 @@ module.exports = function pgInfo (options, callback = NotSet) {
                           columns: columns,
                           indexes: indexes,
                           triggers: triggers,
+                          functions: functions,
                           fkConstraints: fkConstraints
                         }
                       }
