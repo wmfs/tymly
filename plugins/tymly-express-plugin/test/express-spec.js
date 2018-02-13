@@ -3,7 +3,7 @@
 'use strict'
 const PORT = 3003
 const jwt = require('jsonwebtoken')
-const rest = require('restler')
+const request = require('request')
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
@@ -16,12 +16,10 @@ process.on('unhandledRejection', (reason, p) => {
 
 function sendToken (adminToken) {
   const options = {
-    headers: {
-      Accept: '*/*'
-    }
+    Accept: '*/*'
   }
   if (adminToken) {
-    options.headers.authorization = 'Bearer ' + adminToken
+    options.authorization = 'Bearer ' + adminToken
   }
   return options
 }
@@ -36,7 +34,7 @@ describe('Simple Express tests', function () {
   const remitUrl = `http://localhost:${PORT}/remit/`
   const GET_FROM_API_STATE_MACHINE = 'tymlyTest_getFromApi_1_0'
 
-  it('should create a usable admin token for Dave', function () {
+  it('should create a usable admin token for Dave', () => {
     adminToken = jwt.sign(
       {},
       new Buffer(secret, 'base64'),
@@ -47,7 +45,7 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should create a usable token for Steve', function () {
+  it('should create a usable token for Steve', () => {
     irrelevantToken = jwt.sign(
       {},
       new Buffer(secret, 'base64'),
@@ -58,7 +56,7 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should create some basic tymly services to run a simple cat blueprint', function (done) {
+  it('should create some basic tymly services to run a simple cat blueprint', (done) => {
     process.env.TEST_API_URL = remitUrl
     process.env.TEST_TOKEN = 'Bearer ' + adminToken
 
@@ -94,7 +92,7 @@ describe('Simple Express tests', function () {
         }
 
       },
-      function (err, tymlyServices) {
+      (err, tymlyServices) => {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         server = tymlyServices.server
@@ -105,120 +103,147 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should start Express app', function (done) {
-    server.listen(PORT, function () {
-      console.log('\n')
-      console.log(`Example app listening on port ${PORT}!\n`)
-      done()
-    })
-  })
-
-  // CHECK THAT A VALID JWT REQUIRED TO USE /TYMLY'S API
-  // ---------------------------------------------------
-
-  it('should fail to create a new Tymly without a JWT', function (done) {
-    rest.postJson(
-      executionsUrl,
-      {
-        stateMachineName: 'tymlyTest_cat_1_0',
-        data: {petName: 'Rupert'}
-      }
-    ).on(
-      'complete',
-      function (rupert, res) {
-        expect(res.statusCode).to.equal(401)
+  it('should start Express app', (done) => {
+    server.listen(
+      PORT,
+      () => {
+        console.log('\n')
+        console.log(`Example app listening on port ${PORT}!\n`)
         done()
       }
     )
   })
 
-  it('should fail updating a Tymly without a JWT', function (done) {
-    rest.putJson(
-      executionsUrl + '/' + alan,
+  // CHECK THAT A VALID JWT REQUIRED TO USE /TYMLY'S API
+  // ---------------------------------------------------
+
+  it('should fail to create a new Tymly without a JWT', (done) => {
+    request(
       {
-        action: 'SendTaskHeartbeat',
-        output: {
-          sound: 'Car engine'
+        url: executionsUrl,
+        method: 'POST',
+        json: {
+          stateMachineName: 'tymlyTest_cat_1_0',
+          data: {petName: 'Rupert'}
         }
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(401)
+        done(err)
+      })
+  })
+
+  it('should fail updating a Tymly without a JWT', (done) => {
+    request(
+      {
+        url: executionsUrl + alan,
+        method: 'PUT',
+        json: {
+          action: 'SendTaskHeartbeat',
+          output: {
+            sound: 'Car engine'
+          }
+        }
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(401)
+        done(err)
+      })
+  })
+
+  it('should fail getting a Tymly without a JWT', (done) => {
+    request(
+      {
+        url: executionsUrl + rupert,
+        method: 'GET'
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(401)
+        done(err)
       }
-    ).on('complete', function (errHtml, res) {
-      expect(res.statusCode).to.equal(401)
-      done()
-    })
+    )
   })
 
-  it('should fail getting a Tymly without a JWT', function (done) {
-    rest.get(executionsUrl + rupert).on('complete', function (badTymly, res) {
-      expect(res.statusCode).to.equal(401)
-      done()
-    })
-  })
-
-  it('should fail getting the user\'s remit without a JWT', function (done) {
-    rest.get(remitUrl).on('complete', function (remit, res) {
-      expect(res.statusCode).to.equal(401)
-      done()
-    })
+  it('should fail getting the user\'s remit without a JWT', (done) => {
+    request(
+      {
+        url: remitUrl,
+        method: 'GET'
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(401)
+        done(err)
+      }
+    )
   })
 
   // VALID JWTs SHOULD WORK
   // ----------------------
-  it('should create a new Rupert execution', function (done) {
-    rest.postJson(
-      executionsUrl,
+  it('should create a new Rupert execution', (done) => {
+    request(
       {
-        stateMachineName: 'tymlyTest_cat_1_0',
-        input: {
-          petName: 'Rupert',
-          gender: 'male',
-          hoursSinceLastMotion: 11,
-          hoursSinceLastMeal: 5,
-          petDiary: []
-        },
-        options: {
-          instigatingClient: {
-            appName: 'tymly-express-plugin',
-            domain: 'express-spec.js'
-          }
-        }
-      },
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(201)
-      expect(executionDescription.status).to.eql('RUNNING')
-      expect(executionDescription.currentStateName).to.eql('WakingUp')
-      expect(executionDescription.ctx.petName).to.eql('Rupert')
-      expect(executionDescription.executionOptions).to.eql(
-        {
-          action: 'startExecution',
-          instigatingClient: {
-            appName: 'tymly-express-plugin',
-            domain: 'express-spec.js'
+        url: executionsUrl,
+        method: 'POST',
+        json: {
+          stateMachineName: 'tymlyTest_cat_1_0',
+          input: {
+            petName: 'Rupert',
+            gender: 'male',
+            hoursSinceLastMotion: 11,
+            hoursSinceLastMeal: 5,
+            petDiary: []
           },
-          'stateMachineName': 'tymlyTest_cat_1_0',
-          userId: 'Dave'
-        }
-      )
-      rupert = executionDescription.executionName
-      done()
-    })
+          options: {
+            instigatingClient: {
+              appName: 'tymly-express-plugin',
+              domain: 'express-spec.js'
+            }
+          }
+        },
+        headers: sendToken(adminToken)
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(201)
+        expect(body.status).to.eql('RUNNING')
+        expect(body.currentStateName).to.eql('WakingUp')
+        expect(body.ctx.petName).to.eql('Rupert')
+        expect(body.executionOptions).to.eql(
+          {
+            action: 'startExecution',
+            instigatingClient: {
+              appName: 'tymly-express-plugin',
+              domain: 'express-spec.js'
+            },
+            'stateMachineName': 'tymlyTest_cat_1_0',
+            userId: 'Dave'
+          }
+        )
+        rupert = body.executionName
+        done(err)
+      }
+    )
   })
 
-  it('should get Rupert execution description', function (done) {
-    rest.get(
-      executionsUrl + '/' + rupert,
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(200)
-      expect(executionDescription.ctx.petName).to.equal('Rupert')
-      done()
-    })
+  it('should get Rupert execution description', (done) => {
+    request(
+      {
+        url: executionsUrl + rupert,
+        method: 'GET',
+        headers: sendToken(adminToken),
+        json: true
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(200)
+        expect(body.ctx.petName).to.equal('Rupert')
+        done(err)
+      }
+    )
   })
 
-  it('should successfully complete Rupert\'s day', function (done) {
+  it('should successfully complete Rupert\'s day', (done) => {
     statebox.waitUntilStoppedRunning(
       rupert,
-      function (err, executionDescription) {
+      (err, executionDescription) => {
         try {
           expect(err).to.eql(null)
           expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -239,79 +264,93 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should create a new Alan execution', function (done) {
-    rest.postJson(
-      executionsUrl,
+  it('should create a new Alan execution', (done) => {
+    request(
       {
-        stateMachineName: 'tymlyTest_listeningCat_1_0',
-        input: {
-          petName: 'Alan',
-          gender: 'male',
-          petDiary: []
-        }
+        url: executionsUrl,
+        method: 'POST',
+        json: {
+          stateMachineName: 'tymlyTest_listeningCat_1_0',
+          input: {
+            petName: 'Alan',
+            gender: 'male',
+            petDiary: []
+          }
+        },
+        headers: sendToken(adminToken)
       },
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(201)
-      expect(executionDescription.status).to.eql('RUNNING')
-      expect(executionDescription.currentStateName).to.eql('WakingUp')
-      expect(executionDescription.ctx.petName).to.eql('Alan')
-      alan = executionDescription.executionName
-      done()
-    })
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(201)
+        expect(body.status).to.eql('RUNNING')
+        expect(body.currentStateName).to.eql('WakingUp')
+        expect(body.ctx.petName).to.eql('Alan')
+        alan = body.executionName
+        done(err)
+      }
+    )
   })
-  it('should wait a while', function (done) {
+
+  it('should wait a while', (done) => {
     setTimeout(done, 250)
   })
 
-  it('should update Alan execution with a heartbeat', function (done) {
-    rest.putJson(
-      executionsUrl + '/' + alan,
+  it('should update Alan execution with a heartbeat', (done) => {
+    request(
       {
-        action: 'SendTaskHeartbeat',
-        output: {
-          sound: 'Car engine'
-        }
+        url: executionsUrl + alan,
+        method: 'PUT',
+        json: {
+          action: 'SendTaskHeartbeat',
+          output: {
+            sound: 'Car engine'
+          }
+        },
+        headers: sendToken(adminToken)
       },
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(200)
-      expect(executionDescription.status).to.equal('RUNNING')
-      expect(executionDescription.currentStateName).to.equal('Listening')
-      expect(executionDescription.ctx.sound).to.equal('Car engine')
-      done()
-    })
+      (err, res, body) => {
+        console.log('>>>>', res)
+        expect(res.statusCode).to.equal(200)
+        expect(body.status).to.equal('RUNNING')
+        expect(body.currentStateName).to.equal('Listening')
+        expect(body.ctx.sound).to.equal('Car engine')
+        done(err)
+      }
+    )
   })
 
-  it('should wait a while longer', function (done) {
+  it('should wait a while longer', (done) => {
     setTimeout(done, 250)
   })
 
-  it('should sendTaskSuccess() to the Alan execution', function (done) {
-    rest.putJson(
-      executionsUrl + '/' + alan,
+  it('should sendTaskSuccess() to the Alan execution', (done) => {
+    request(
       {
-        action: 'SendTaskSuccess',
-        output: {
-          order: [
-            {
-              product: 'Fresh Tuna',
-              quantity: 25
-            }
-          ]
-        }
+        url: executionsUrl + alan,
+        method: 'PUT',
+        json: {
+          action: 'SendTaskSuccess',
+          output: {
+            order: [
+              {
+                product: 'Fresh Tuna',
+                quantity: 25
+              }
+            ]
+          }
+        },
+        headers: sendToken(adminToken)
       },
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(200)
-      done()
-    })
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(200)
+        done(err)
+      }
+    )
   })
 
-  it('should successfully complete Alans\'s awakening', function (done) {
+  it('should successfully complete Alans\'s awakening', (done) => {
     statebox.waitUntilStoppedRunning(
       alan,
-      function (err, executionDescription) {
+      (err, executionDescription) => {
         try {
           expect(err).to.eql(null)
           expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -336,67 +375,96 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should create another new Alan execution', function (done) {
-    rest.postJson(
-      executionsUrl,
+  it('should create another new Alan execution', (done) => {
+    request(
       {
-        stateMachineName: 'tymlyTest_listeningCat_1_0',
-        input: {
-          petName: 'Alan',
-          gender: 'male',
-          petDiary: []
-        }
+        url: executionsUrl,
+        method: 'POST',
+        json: {
+          stateMachineName: 'tymlyTest_listeningCat_1_0',
+          input: {
+            petName: 'Alan',
+            gender: 'male',
+            petDiary: []
+          }
+        },
+        headers: sendToken(adminToken)
       },
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(201)
-      expect(executionDescription.status).to.eql('RUNNING')
-      expect(executionDescription.currentStateName).to.eql('WakingUp')
-      expect(executionDescription.ctx.petName).to.eql('Alan')
-      alan = executionDescription.executionName
-      done()
-    })
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(201)
+        expect(body.status).to.eql('RUNNING')
+        expect(body.currentStateName).to.eql('WakingUp')
+        expect(body.ctx.petName).to.eql('Alan')
+        alan = body.executionName
+        done(err)
+      }
+    )
   })
 
-  it('should cancel a new Alan tymly', function (done) {
-    rest.del(
-      executionsUrl + alan,
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(204)
-      done()
-    })
+  it('should cancel a new Alan tymly', (done) => {
+    request(
+      {
+        url: executionsUrl + alan,
+        method: 'DELETE',
+        headers: sendToken(adminToken)
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(204)
+        done(err)
+      }
+    )
   })
 
-  it('should get stopped Alan execution-description', function (done) {
-    rest.get(
-      executionsUrl + '/' + alan,
-      sendToken(adminToken)
-    ).on('complete', function (executionDescription, res) {
-      expect(res.statusCode).to.equal(200)
-      expect(executionDescription.ctx.petName).to.equal('Alan')
-      expect(executionDescription.status).to.equal('STOPPED')
-      expect(executionDescription.errorCode).to.equal('STOPPED')
-      expect(executionDescription.errorCause).to.equal('Execution stopped externally')
-      done()
-    })
+  it('should get stopped Alan execution-description', (done) => {
+    request(
+      {
+        url: executionsUrl + alan,
+        method: 'GET',
+        headers: sendToken(adminToken),
+        json: true
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(200)
+        expect(body.ctx.petName).to.equal('Alan')
+        expect(body.status).to.equal('STOPPED')
+        expect(body.errorCode).to.equal('STOPPED')
+        expect(body.errorCause).to.equal('Execution stopped externally')
+        done(err)
+      }
+    )
   })
 
-  it('should get an admin\'s remit', function (done) {
-    rest.get(remitUrl, sendToken(adminToken)).on('complete', function (remit, res) {
-      expect(res.statusCode).to.equal(200)
-      done()
-    })
+  it('should get an admin\'s remit', (done) => {
+    request(
+      {
+        url: remitUrl,
+        method: 'GET',
+        headers: sendToken(adminToken),
+        json: true
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(200)
+        done(err)
+      }
+    )
   })
 
-  it('should get a normal user\'s remit', function (done) {
-    rest.get(remitUrl, sendToken(irrelevantToken)).on('complete', function (remit, res) {
-      expect(res.statusCode).to.equal(200)
-      done()
-    })
+  it('should get a normal user\'s remit', (done) => {
+    request(
+      {
+        url: remitUrl,
+        method: 'GET',
+        headers: sendToken(irrelevantToken),
+        json: true
+      },
+      (err, res, body) => {
+        expect(res.statusCode).to.equal(200)
+        done(err)
+      }
+    )
   })
 
-  it('should start state machine to claim from an API (our localhost booted address [remit]) and expect the header to be taken through, and sensible data to be returned', function (done) {
+  it('should start state machine to claim from an API (our localhost booted address [remit]) and expect the header to be taken through, and sensible data to be returned', (done) => {
     statebox.startExecution(
       {},
       GET_FROM_API_STATE_MACHINE,
