@@ -1,6 +1,6 @@
 'use strict'
 
-const rest = require('restler')
+const requestPromise = require('request-promise-native')
 
 class GetDataFromRestApi {
   init (resourceConfig, env, callback) {
@@ -9,14 +9,18 @@ class GetDataFromRestApi {
     if (resourceConfig.authTokenRegistryKey) this.authToken = registry.get(resourceConfig.namespace + '_' + resourceConfig.authTokenRegistryKey)
     if (resourceConfig.resultPath) this.resultPath = resourceConfig.resultPath
     if (resourceConfig.paramPath) this.paramPath = resourceConfig.paramPath
+    console.log('resource config: ', resourceConfig)
     callback(null)
   }
 
   run (event, context) {
     const options = {
+      uri: this.templateUrl,
       headers: {
-        Accept: '*/*'
-      }
+        'User-Agent': 'Request-Promise'
+      },
+      json: true,
+      resolveWithFullResponse: true
     }
 
     if (this.authToken) options.headers.Authorization = this.authToken
@@ -27,19 +31,20 @@ class GetDataFromRestApi {
       })
     }
 
-    rest.get(this.templateUrl, options).on('complete', (result, response) => {
-      if (response.statusCode.toString()[0] === '2') {
-        if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
-        context.sendTaskSuccess({result})
-      } else {
-        console.log(`Tried to GET '${this.templateUrl}' with '${this.authToken}' ` +
-          `but received ${response.statusCode}: ${response.statusMessage}`)
-        context.sendTaskFailure({
-          statusCode: response.statusCode,
-          cause: response.statusMessage
-        })
-      }
-    })
+    requestPromise(options)
+      .then((result) => {
+        if (result.statusCode.toString()[0] === '2') {
+          if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
+          context.sendTaskSuccess(result.body)
+        } else {
+          console.log(`Tried to GET '${this.templateUrl}' with '${this.authToken}' ` +
+            `but received ${result.statusCode}: ${result.statusMessage}`)
+          context.sendTaskFailure({
+            statusCode: result.statusCode,
+            cause: result.statusMessage
+          })
+        }
+      })
   }
 }
 
