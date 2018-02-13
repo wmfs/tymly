@@ -34,7 +34,7 @@ class GetDataFromRestApi {
     requestPromise(options)
       .then((result) => {
         if (result.statusCode.toString()[0] === '2') {
-          if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result[this.resultPath]})
+          if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result.body[this.resultPath]})
           context.sendTaskSuccess(result.body)
         } else {
           console.log(`Tried to GET '${this.templateUrl}' with '${this.authToken}' ` +
