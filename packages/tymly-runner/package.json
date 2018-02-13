@@ -20,7 +20,8 @@
   "scripts": {
     "start": "node ./lib/index.js",
     "lint": "standard",
-    "test": "standard && mocha"
+    "test": "standard && mocha",
+    "start-nodemon": "nodemon --watch C:/development/tymly/blueprints --watch C:/development/private-blueprints -e json ./lib/index.js --legacy-watch"
   },
   "license": "MIT",
   "repository": {
