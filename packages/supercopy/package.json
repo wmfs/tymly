@@ -14,7 +14,7 @@
   "dependencies": {
     "async": "2.6.0",
     "boom": "7.1.1",
-    "csv-string": "2.3.2",
+    "csv-string": "3.1.2",
     "debug": "3.1.0",
     "pg": "7.4.1",
     "pg-copy-streams": "1.2.0",
