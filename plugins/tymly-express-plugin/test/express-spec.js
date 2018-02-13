@@ -405,11 +405,10 @@ describe('Simple Express tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        console.log(executionDescription)
         expect(executionDescription.currentStateName).to.eql('GetDataFromRestApi')
         expect(executionDescription.stateMachineName).to.eql('tymlyTest_getFromApi_1_0')
-        expect(executionDescription.ctx.result.stateMachinesUserCanStart)
-        expect(executionDescription.ctx.result.forms)
+        expect(executionDescription.ctx.stateMachinesUserCanStart)
+        expect(executionDescription.ctx.forms)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done(err)
       }
