@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "8.5"
+  - "node"
 
 services:
   - postgresql
@@ -19,9 +19,6 @@ before_script:
 
 before_install:
   - export TZ=Europe/London
-
-install:
-  - ./gradlew clean
 
 env:
   global:
