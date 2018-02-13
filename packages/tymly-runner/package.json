@@ -6,7 +6,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "boom": "5.2.0",
-    "config": "1.26.1",
+    "config": "1.29.4",
     "debug": "3.1.0",
     "lodash": "4.17.4",
     "safe-buffer": "5.1.1",
