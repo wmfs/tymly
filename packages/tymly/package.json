@@ -13,7 +13,7 @@
     "glob": "7.1.2",
     "jsonschema": "1.1.0",
     "lodash": "4.17.4",
-    "lru-cache": "4.0.2",
+    "lru-cache": "4.1.1",
     "mkdirp": "0.5.1",
     "mongodb-extended-json": "1.10.0",
     "read-pkg-up": "3.0.0",
