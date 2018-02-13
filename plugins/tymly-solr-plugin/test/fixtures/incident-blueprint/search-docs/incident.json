@@ -1,0 +1,26 @@
+{
+  "modelId": "incident",
+  "attributeMapping": {
+    "id": "'incident#'::text ||inc_no::text",
+    "docId": "inc_no::text",
+    "domain": "'search'::text",
+    "docType": "'tymlyTest_incident'::text",
+    "title": "inc_no::text",
+    "description": "description::text",
+    "additionalTerms": "NULL::text[]",
+    "category": "'IIP'::text",
+    "eventTimestamp": "NULL::timestamp with time zone",
+    "point": "NULL::text",
+    "activeEvent": "true::boolean",
+    "author": "'incident'::text",
+    "teams": "NULL::text[]",
+    "roles": "NULL::text[]",
+    "tags": "NULL::text[]",
+    "language": "'ENG'::text",
+    "rootAncestorId": "NULL::text",
+    "sortString": "inc_no::text",
+    "launches": "''",
+    "created": "_created::timestamp with time zone",
+    "modified": "_modified::timestamp with time zone"
+  }
+}

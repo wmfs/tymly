@@ -1,0 +1,14 @@
+{
+
+  "namespace": "tymlyTest",
+  "name": "incident",
+  "version": "1.0",
+
+  "label": "Incident",
+  "author": "wmfs",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to support Solr tests",
+  "categories": ["incidents"]
+
+}

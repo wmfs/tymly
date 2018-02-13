@@ -1,0 +1,29 @@
+{
+  "namespace": "tymly_test",
+  "id": "incident",
+  "title": "incident",
+  "description": "Incidents",
+  "primaryKey": [
+    "incNo"
+  ],
+  "type": "object",
+  "properties": {
+    "incNo": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "indexes": [
+    {
+      "columns": [
+        "inc_no"
+      ],
+      "unique": true
+    }
+  ],
+  "required": [
+    "incNo"
+  ]
+}
