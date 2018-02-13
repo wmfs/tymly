@@ -18,7 +18,7 @@
     "mongodb-extended-json": "1.10.0",
     "read-pkg-up": "3.0.0",
     "split": "1.0.0",
-    "sprintf-js": "1.0.3",
+    "sprintf-js": "1.1.1",
     "statebox": "0.0.6",
     "static-eval": "2.0.0",
     "underscore-query": "3.3.2",
