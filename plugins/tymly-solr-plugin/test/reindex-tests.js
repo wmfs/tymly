@@ -2,6 +2,7 @@
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const reindexTests = [
   {
@@ -22,8 +23,7 @@ for (const test of reindexTests) {
   describe(`tymly-solr-plugin ${test.name} tests`, function () {
     this.timeout(process.env.TIMEOUT || 5000)
 
-    let statebox
-    let tymlyService
+    let statebox, tymlyService, client
 
     it('should run the tymly services', function (done) {
       tymly.boot(
@@ -47,6 +47,7 @@ for (const test of reindexTests) {
           expect(err).to.eql(null)
           tymlyService = tymlyServices.tymly
           statebox = tymlyServices.statebox
+          client = tymlyServices.storage.client
           done()
         }
       )
@@ -70,6 +71,17 @@ for (const test of reindexTests) {
           } catch (e) {
             done(e)
           }
+        }
+      )
+    })
+
+    it('should cleanup test resources', (done) => {
+      sqlScriptRunner(
+        './db-scripts/cleanup.sql',
+        client,
+        (err) => {
+          expect(err).to.equal(null)
+          done(err)
         }
       )
     })

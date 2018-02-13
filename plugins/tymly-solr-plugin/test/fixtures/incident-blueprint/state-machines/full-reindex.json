@@ -1,0 +1,15 @@
+{
+  "Comment": "Perform a full reindex",
+  "version": "1.0",
+  "StartAt": "FullReindex",
+  "States": {
+    "FullReindex": {
+      "Type": "Task",
+      "Resource": "module:fullReindex",
+      "ResourceConfig": {
+        "core": "tymly"
+      },
+      "End": true
+    }
+  }
+}

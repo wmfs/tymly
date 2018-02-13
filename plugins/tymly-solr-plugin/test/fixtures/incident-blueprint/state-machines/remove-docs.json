@@ -1,0 +1,19 @@
+{
+  "Comment": "State machine to remove documents.",
+  "version": "1.0",
+  "StartAt": "RemoveDocs",
+  "States": {
+    "RemoveDocs": {
+      "Type": "Task",
+      "Resource": "module:removeDocs",
+      "InputPath": "$",
+      "ResourceConfig": {
+        "query": {
+          "category": "IIP",
+          "activeEvent": true
+        }
+      },
+      "End": true
+    }
+  }
+}
