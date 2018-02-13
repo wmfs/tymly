@@ -12,7 +12,7 @@
   "dependencies": {
     "async": "2.6.0",
     "babyparse": "0.4.6",
-    "boom": "5.2.0",
+    "boom": "7.1.1",
     "debug": "3.1.0",
     "fs": "0.0.1-security",
     "lodash": "4.17.4",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai": "4.1.0",
-    "mocha": "4.0.1",
+    "mocha": "5.0.0",
     "hl-pg-client": "0.0.1",
     "standard": "10.0.3"
   },
