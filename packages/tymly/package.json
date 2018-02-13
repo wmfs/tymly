@@ -16,7 +16,7 @@
     "lru-cache": "4.0.2",
     "mkdirp": "0.5.1",
     "mongodb-extended-json": "1.10.0",
-    "read-pkg-up": "2.0.0",
+    "read-pkg-up": "3.0.0",
     "split": "1.0.0",
     "sprintf-js": "1.0.3",
     "statebox": "0.0.6",
