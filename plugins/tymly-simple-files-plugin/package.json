@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "chai": "4.1.0",
-    "mocha": "4.0.1",
+    "mocha": "5.0.1",
     "standard": "10.0.3",
     "tymly": "0.0.15",
     "tymly-pg-plugin": "0.0.6",
