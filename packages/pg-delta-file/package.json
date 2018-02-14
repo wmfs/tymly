@@ -16,7 +16,7 @@
     "debug": "3.1.0",
     "fs": "0.0.1-security",
     "lodash": "4.17.4",
-    "make-dir": "1.0.0",
+    "make-dir": "1.1.0",
     "pg": "7.4.1",
     "pg-query-stream": "1.0.0"
   },
