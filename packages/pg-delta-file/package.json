@@ -17,7 +17,7 @@
     "fs": "0.0.1-security",
     "lodash": "4.17.4",
     "make-dir": "1.0.0",
-    "pg": "6.4.2",
+    "pg": "7.4.1",
     "pg-query-stream": "1.0.0"
   },
   "devDependencies": {
