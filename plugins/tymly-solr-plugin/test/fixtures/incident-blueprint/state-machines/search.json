@@ -1,0 +1,13 @@
+{
+  "Comment": "Perform a search",
+  "version": "1.0",
+  "StartAt": "Search",
+  "States": {
+    "Search": {
+      "Type": "Task",
+      "Resource": "module:search",
+      "ResourceConfig": {},
+      "End": true
+    }
+  }
+}
