@@ -19,7 +19,7 @@
     "make-dir": "1.1.0",
     "pg": "7.4.0",
     "pg-copy-streams": "1.2.0",
-    "pg-query-stream": "1.0.0",
+    "pg-query-stream": "1.1.1",
     "supercopy": "0.0.6"
   },
   "devDependencies": {
