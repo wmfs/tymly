@@ -23,8 +23,8 @@
     "AddDocs": {
       "Type": "Task",
       "Resource": "module:addDocs",
+      "InputPath": "$.incidents",
       "ResourceConfig": {
-        "dataPath": "$.incidents",
         "mapping": {
           "id": "incNo",
           "docId": "incNo",

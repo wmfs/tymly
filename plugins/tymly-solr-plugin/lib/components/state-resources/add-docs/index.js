@@ -1,18 +1,16 @@
 const solr = require('solr-client')
-const jp = require('jsonpath')
 
 class AddDocs {
   init (resourceConfig, env, callback) {
     this.env = env
     this.core = resourceConfig.core
     this.services = env.bootedServices
-    this.dataPath = resourceConfig.dataPath
     this.mapping = resourceConfig.mapping
     callback(null)
   }
 
   run (event, context) {
-    const data = [jp.value(event, this.dataPath)]
+    const data = [event]
 
     const docs = data.map(d => {
       const doc = {}
