@@ -26,19 +26,14 @@ class AddDocs {
           }
         }
       })
-      console.log(doc)
       return doc
     })
     this.solrClient.add(docs, (err) => {
-      if (err) {
-        console.log(err)
-        context.sendTaskFailure(err)
-      } else {
-        this.solrClient.commit((err, obj) => {
-          if (err) return context.sendTaskFailure(err)
-          context.sendTaskSuccess(obj)
-        })
-      }
+      if (err) return context.sendTaskFailure({error: 'addDocsFail', cause: err})
+      this.solrClient.commit((err, obj) => {
+        if (err) return context.sendTaskFailure({error: 'addDocsFail', cause: err})
+        context.sendTaskSuccess()
+      })
     })
   }
 

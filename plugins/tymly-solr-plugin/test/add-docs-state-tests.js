@@ -11,10 +11,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_addDocs_1_0'
 describe('tymly-solr-plugin add docs resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService
-  let statebox
-  let client
-  let numHits
+  let tymlyService, statebox, client
 
   it('should run the tymly services', function (done) {
     tymly.boot(
@@ -42,21 +39,12 @@ describe('tymly-solr-plugin add docs resource tests', function () {
     process.env.SOLR_PORT &&
     process.env.SOLR_HOST) {
     it('should create test resources', function (done) {
-      sqlScriptRunner(
-        './db-scripts/incident-setup.sql',
-        client,
-        function (err) {
-          expect(err).to.equal(null)
-          if (err) {
-            done(err)
-          } else {
-            done()
-          }
-        }
-      )
+      client.query(`INSERT INTO tymly_test.incident (inc_no, description) VALUES (1, 'A bad incident');`, (err) => {
+        done(err)
+      })
     })
 
-    it('should ensure the record to be inserted isnt already there', done => {
+    it('should ensure the record to be inserted isn\'t already there', done => {
       statebox.startExecution(
         {},
         'tymlyTest_search_1_0',
@@ -65,9 +53,7 @@ describe('tymly-solr-plugin add docs resource tests', function () {
         },
         function (err, executionDescription) {
           expect(err).to.eql(null)
-          console.log(executionDescription)
-          numHits = executionDescription.ctx.searchResults.totalHits
-          console.log(executionDescription.ctx)
+          expect(executionDescription.ctx.searchResults.totalHits).to.eql(0)
           done(err)
         }
       )
@@ -84,7 +70,6 @@ describe('tymly-solr-plugin add docs resource tests', function () {
         }, // options
         function (err, executionDescription) {
           expect(err).to.eql(null)
-          // console.log(executionDescription)
           expect(executionDescription.currentStateName).to.eql('AddDocs')
           expect(executionDescription.currentResource).to.eql('module:addDocs')
           expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -102,8 +87,7 @@ describe('tymly-solr-plugin add docs resource tests', function () {
         },
         function (err, executionDescription) {
           expect(err).to.eql(null)
-          expect(executionDescription.ctx.searchResults.totalHits).to.eql(numHits + 1)
-          console.log(executionDescription.ctx)
+          expect(executionDescription.ctx.searchResults.totalHits).to.eql(1)
           done(err)
         }
       )
@@ -118,21 +102,22 @@ describe('tymly-solr-plugin add docs resource tests', function () {
         },
         function (err, executionDescription) {
           expect(err).to.eql(null)
+          console.log(executionDescription)
           done(err)
         }
       )
     })
 
-    it('perform reindex', (done) => {
+    it('should ensure the record has been removed', done => {
       statebox.startExecution(
         {},
-        'tymlyTest_fullReindex_1_0',
+        'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
         },
-        (err, executionDescription) => {
+        function (err, executionDescription) {
           expect(err).to.eql(null)
-          console.log(JSON.stringify(executionDescription, null, 2))
+          expect(executionDescription.ctx.searchResults.totalHits).to.eql(0)
           done(err)
         }
       )

@@ -31,16 +31,13 @@ class removeDocs {
 
     debug(`Deleteing docs where ${query.join(' AND ')}`)
 
-    this.solrClient.deleteByQuery(
-      query.join(' AND '),
-      (err, obj) => {
+    this.solrClient.deleteByQuery(query.join(' AND '), (err, obj) => {
+      if (err) return context.sendTaskFailure({error: 'removeDocsFail', cause: err})
+      this.solrClient.commit((err, res) => {
         if (err) return context.sendTaskFailure({error: 'removeDocsFail', cause: err})
-        this.solrClient.commit((err, res) => {
-          if (err) return context.sendTaskFailure({error: 'removeDocsFail', cause: err})
-          context.sendTaskSuccess()
-        })
-      }
-    )
+        context.sendTaskSuccess()
+      })
+    })
   } // run
 }
 
