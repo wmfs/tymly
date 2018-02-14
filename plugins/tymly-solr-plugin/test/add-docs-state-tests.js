@@ -102,7 +102,6 @@ describe('tymly-solr-plugin add docs resource tests', function () {
         },
         function (err, executionDescription) {
           expect(err).to.eql(null)
-          console.log(executionDescription)
           done(err)
         }
       )
