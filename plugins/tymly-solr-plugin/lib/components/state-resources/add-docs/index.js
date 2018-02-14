@@ -12,22 +12,14 @@ class AddDocs {
 
   run (event, context) {
     const data = _.isArray(event) ? event : [event]
-
     const docs = data.map(d => {
       const doc = {}
       Object.keys(this.mapping).map(mapKey => {
         if (this.mapping[mapKey] === '$NOW') {
           doc[mapKey] = new Date()
         } else if (_.isString(this.mapping[mapKey])) {
-          let stringToSet = ``
-          this.mapping[mapKey].split('||').map(m => {
-            if (d[m]) {
-              stringToSet += d[m]
-            } else {
-              stringToSet += m
-            }
-          })
-          doc[mapKey] = stringToSet
+          const string = this.mapping[mapKey].split('||').map(m => d[m] ? d[m] : m)
+          doc[mapKey] = string.join('')
         } else {
           doc[mapKey] = this.mapping[mapKey]
         }
