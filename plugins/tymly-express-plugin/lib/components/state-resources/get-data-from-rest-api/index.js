@@ -29,7 +29,7 @@ class GetDataFromRestApi {
     }
 
     if (this.authToken) options.headers.Authorization = this.authToken
-    
+
     requestPromise(options)
       .then((result) => {
         if (result.statusCode.toString()[0] === '2') {
