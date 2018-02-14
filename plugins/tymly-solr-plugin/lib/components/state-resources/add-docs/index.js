@@ -1,4 +1,5 @@
 const solr = require('solr-client')
+const _ = require('lodash')
 
 class AddDocs {
   init (resourceConfig, env, callback) {
@@ -10,7 +11,7 @@ class AddDocs {
   }
 
   run (event, context) {
-    const data = [event]
+    const data = _.isArray(event) ? event : [event]
 
     const docs = data.map(d => {
       const doc = {}
