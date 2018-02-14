@@ -1,0 +1,48 @@
+{
+  "Comment": "Gets the incidents in progress.",
+  "name": "Incidents in Progress",
+  "version": "1.0",
+  "categories": [
+    "iip"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "StartAt": "GetStuff",
+  "States": {
+    "GetStuff": {
+      "Type": "Task",
+      "InputPath": "$.id",
+      "Resource": "module:findingById",
+      "ResourceConfig": {
+        "modelId": "incident"
+      },
+      "ResultPath": "$.incidents",
+      "Next": "AddDocs"
+    },
+    "AddDocs": {
+      "Type": "Task",
+      "Resource": "module:addDocs",
+      "ResourceConfig": {
+        "dataPath": "$.incidents",
+        "mapping": {
+          "id": "incNo",
+          "docId": "incNo",
+          "domain": "search",
+          "docType": "incident",
+          "title": "incNo",
+          "description": "description",
+          "category": "IIP",
+          "activeEvent": true,
+          "author": "incident",
+          "language": "ENG",
+          "sortString": "incNo",
+          "created": "$NOW",
+          "modified": "$NOW"
+        }
+      },
+      "ResultPath": "$.incidents",
+      "End": true
+    }
+  }
+}
