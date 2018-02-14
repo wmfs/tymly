@@ -12,7 +12,7 @@
   "dependencies": {
     "async": "2.6.0",
     "boom": "7.1.1",
-    "camelcase-keys": "4.1.0",
+    "camelcase-keys": "4.2.0",
     "csv-string": "2.3.2",
     "debug": "3.1.0",
     "lodash": "4.17.4",
