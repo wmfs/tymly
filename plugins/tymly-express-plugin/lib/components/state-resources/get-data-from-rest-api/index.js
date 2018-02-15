@@ -7,9 +7,17 @@ class GetDataFromRestApi {
     this.registry = env.bootedServices.registry
     this.namespace = resourceConfig.namespace
     this.templateUrlRegistryKey = resourceConfig.templateUrlRegistryKey
+
     if (resourceConfig.authTokenRegistryKey) this.authToken = this.registry.get(resourceConfig.namespace + '_' + resourceConfig.authTokenRegistryKey)
     if (resourceConfig.resultPath) this.resultPath = resourceConfig.resultPath
     if (resourceConfig.paramPath) this.paramPath = resourceConfig.paramPath
+
+    if (process.env.PROXY_URL) {
+      this.requestPromise = requestPromise.defaults({'proxy': process.env.PROXY_URL})
+    } else {
+      this.requestPromise = requestPromise.defaults()
+    }
+
     callback(null)
   }
 
@@ -32,7 +40,7 @@ class GetDataFromRestApi {
 
     if (this.authToken) options.headers.Authorization = this.authToken
 
-    requestPromise(options)
+    this.requestPromise(options)
       .then((result) => {
         if (result.statusCode.toString()[0] === '2') {
           if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result.body[this.resultPath]})
