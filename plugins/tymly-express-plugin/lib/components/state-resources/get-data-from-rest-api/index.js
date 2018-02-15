@@ -12,6 +12,8 @@ class GetDataFromRestApi {
     if (resourceConfig.resultPath) this.resultPath = resourceConfig.resultPath
     if (resourceConfig.paramPath) this.paramPath = resourceConfig.paramPath
 
+    this.webAPITimeoutInMilliseconds = (process.env.WEB_API_TIMEOUT_IN_MS || 3000)
+
     if (process.env.PROXY_URL) {
       this.requestPromise = requestPromise.defaults({'proxy': process.env.PROXY_URL})
     } else {
@@ -35,7 +37,8 @@ class GetDataFromRestApi {
         'User-Agent': 'Request-Promise'
       },
       json: true,
-      resolveWithFullResponse: true
+      resolveWithFullResponse: true,
+      timeout: this.webAPITimeoutInMilliseconds
     }
 
     if (this.authToken) options.headers.Authorization = this.authToken
