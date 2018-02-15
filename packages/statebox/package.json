@@ -18,7 +18,7 @@
     "debug": "3.1.0",
     "dottie": "2.0.0",
     "jsonpath": "1.0.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.5",
     "uuid": "3.2.1"
   },
   "devDependencies": {

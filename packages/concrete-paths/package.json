@@ -12,7 +12,7 @@
   "dependencies": {
     "debug": "3.1.0",
     "globby": "8.0.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.5",
     "upath": "1.0.2"
   },
   "devDependencies": {
