@@ -82,13 +82,11 @@ describe('Blueprint Tests', function () {
 
   it('should have created an output folder containing an upserts folder', function (done) {
     fs.stat(OUTPUT_AND_INPUT_DIR, function (err, outputStats) {
-      expect(err).to.eql(null)
       if (err) {
         console.log(OUTPUT_AND_INPUT_DIR, outputStats)
         done(err)
       } else {
         fs.stat(UPSERTS_DIR, function (err, upsertsStats) {
-          expect(err).to.eql(null)
           if (err) {
             console.log(UPSERTS_DIR, upsertsStats)
             done(err)
@@ -102,7 +100,6 @@ describe('Blueprint Tests', function () {
 
   it('should have created a manifest.json file', function (done) {
     fs.stat(MANIFEST_FILE, function (err, manifestStats) {
-      expect(err).to.eql(null)
       if (err) {
         done(err)
       } else {
@@ -128,7 +125,6 @@ describe('Blueprint Tests', function () {
   it('should have created an addressbase-holding.csv file', function (done) {
     const CSV_FILE = path.resolve(UPSERTS_DIR, './addressbase-holding.csv')
     fs.stat(CSV_FILE, function (err, csvStats) {
-      expect(err).to.eql(null)
       if (err) {
         console.log(CSV_FILE, csvStats)
         done(err)
@@ -141,7 +137,6 @@ describe('Blueprint Tests', function () {
   it('should return 20 rows when selecting from the newly populated table', function (done) {
     client.query('SELECT uprn, hash_sum FROM ordnance_survey.addressbase_holding ORDER BY uprn ASC;', [],
       function (err, result) {
-        expect(err).to.eql(null)
         if (err) {
           done(err)
         } else {
@@ -161,7 +156,7 @@ describe('Blueprint Tests', function () {
     }
   })
 
-  it('should shutdown Tymly', async () => {
-    await tymlyService.shutdown()
+  it('should shutdown Tymly', () => {
+    return tymlyService.shutdown()
   })
 })
