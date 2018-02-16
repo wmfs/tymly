@@ -116,8 +116,7 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `select * from tymly.notifications where id = '${notificationsToMark[0]}'`,
       (err, result) => {
-        if (err) done(err)
-        expect(err).to.eql(null)
+        if (err) return done(err)
         expect(result.rows[0].acknowledged).to.not.eql(null)
         expect(result.rows[0].user_id).to.eql('test-user')
         expect(result.rows[0].title).to.eql('Employee Info #3')
@@ -130,7 +129,6 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `update tymly.notifications set acknowledged = null where id = '${notificationsToMark[0]}'`,
       (err) => {
-        expect(err).to.eql(null)
         done(err)
       }
     )
@@ -162,8 +160,7 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `select * from tymly.notifications where user_id = 'test-user-1'`,
       (err, result) => {
-        if (err) done(err)
-        expect(err).to.eql(null)
+        if (err) return done(err)
         expect(result.rows[0].user_id).to.eql('test-user-1')
         expect(result.rows[0].description).to.eql('This is a notification used for testing')
         expect(result.rows[0].category).to.eql('test')
@@ -198,8 +195,7 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `select * from tymly.notifications where id = '${notificationsToMark[0]}'`,
       (err, result) => {
-        if (err) done(err)
-        expect(err).to.eql(null)
+        if (err) return done(err)
         expect(result.rows[0].acknowledged).to.not.eql(null)
         done()
       }
@@ -210,8 +206,7 @@ describe('notifications tymly-users-plugin tests', function () {
     client.query(
       `select * from tymly.notifications where id = '${notificationsToMark[1]}'`,
       (err, result) => {
-        if (err) done(err)
-        expect(err).to.eql(null)
+        if (err) return done(err)
         expect(result.rows[0].acknowledged).to.not.eql(null)
         done()
       }
