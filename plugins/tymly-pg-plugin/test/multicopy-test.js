@@ -45,7 +45,9 @@ describe('Initializing environment...', function () {
     client.query(
       'select * from refresh_test.btest',
       function (err, result) {
-        expect(err).to.eql(null)
+        if (err) {
+          return done(err)
+        }
 
         console.log(result.rows)
 

@@ -66,7 +66,6 @@ describe('State Resource Tests', function () {
     client.query(
       'select * from tymly_test.animal_with_age',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -109,7 +108,6 @@ describe('State Resource Tests', function () {
     client.query(
       'select * from tymly_test.animal_with_year',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {

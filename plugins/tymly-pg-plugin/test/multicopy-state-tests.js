@@ -71,7 +71,9 @@ describe('Testing functionality as a state-resource', function () {
     client.query(
       'select * from food_test.meat',
       function (err, result) {
-        expect(err).to.eql(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows[0].food_name).to.eql('steak')
         expect(result.rows[1].food_name).to.eql('kebab')
         expect(result.rows[2].food_name).to.eql('chicken')
@@ -88,7 +90,9 @@ describe('Testing functionality as a state-resource', function () {
     client.query(
       'select * from food_test.veg',
       function (err, result) {
-        expect(err).to.eql(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows[0].food_name).to.eql('peas')
         expect(result.rows[1].food_name).to.eql('carrot')
         expect(result.rows[2].food_name).to.eql('potato')
