@@ -54,7 +54,9 @@ describe('Tests the Ranking State Resource', function () {
         sendResponse: 'COMPLETE'
       }, // options
       function (err, executionDescription) {
-        expect(err).to.eql(null)
+        if (err) {
+          return done(err)
+        }
         console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         expect(executionDescription.currentResource).to.eql('module:refreshRanking')
@@ -69,7 +71,6 @@ describe('Tests the Ranking State Resource', function () {
     client.query(
       'select * from test.factory_scores',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -178,7 +179,9 @@ describe('Tests the Ranking State Resource', function () {
         sendResponse: 'COMPLETE'
       }, // options
       function (err, executionDescription) {
-        expect(err).to.eql(null)
+        if (err) {
+          return done(err)
+        }
         console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         expect(executionDescription.currentResource).to.eql('module:refreshRanking')
@@ -191,7 +194,6 @@ describe('Tests the Ranking State Resource', function () {
 
   it('should ensure the scores have been adjusted accordingly to the new weights - the usage score has changed from 8 to 12', function (done) {
     client.query('select * from test.factory_scores', function (err, result) {
-      expect(err).to.equal(null)
       if (err) {
         done(err)
       } else {
@@ -209,12 +211,7 @@ describe('Tests the Ranking State Resource', function () {
 
   it('should delete this registry key', function (done) {
     client.query('DELETE FROM tymly.registry_key WHERE key = \'test_factory\'', function (err) {
-      expect(err).to.equal(null)
-      if (err) {
-        done(err)
-      } else {
-        done()
-      }
+      done(err)
     })
   })
 

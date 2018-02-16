@@ -205,12 +205,7 @@ describe('Tests the Ranking Service', function () {
     client.query(
       'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.address_label,scores.usage_score,scores.food_standards_score,scores.incidents_score,scores.heritage_score,scores.usage_score+scores.food_standards_score+scores.incidents_score+scores.heritage_score as risk_score FROM (SELECT g.uprn,g.address_label as address_label,8 as usage_score ,CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score ,CASE WHEN incidents.amount = 0 THEN 0 WHEN incidents.amount = 1 THEN 6 WHEN incidents.amount > 1 THEN 16 ELSE 0 END AS incidents_score ,CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score  FROM test.gazetteer g  LEFT JOIN test.food food ON food.uprn = g.uprn  LEFT JOIN test.incidents incidents ON incidents.uprn = g.uprn  LEFT JOIN test.heritage heritage ON heritage.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores;',
       function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
+        done(err)
       }
     )
   })
@@ -219,7 +214,6 @@ describe('Tests the Ranking Service', function () {
     client.query(
       'select * from test.factory_scores',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -291,9 +285,7 @@ describe('Tests the Ranking Service', function () {
       pk: 'uprn',
       name: 'test'
     }, function (err) {
-      expect(err).to.equal(null)
-      if (err) done(err)
-      done()
+      done(err)
     })
   })
 
@@ -301,9 +293,8 @@ describe('Tests the Ranking Service', function () {
     client.query(
       'SELECT * FROM test.test_stats',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
-          done(err)
+          return done(err)
         }
         expect(result.rows[0]).to.eql({
           category: 'factory',
@@ -327,9 +318,9 @@ describe('Tests the Ranking Service', function () {
     client.query(
       'SELECT * FROM test.uprn_to_range',
       function (err, result) {
-        expect(err).to.equal(null)
-        if (err) done(err)
-        console.log(result.rows)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows).to.eql([
           {uprn: '1', range: 'very-high', distribution: '0.0185'},
           {uprn: '2', range: 'medium', distribution: '0.0409'},
