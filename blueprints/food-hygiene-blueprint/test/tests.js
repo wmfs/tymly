@@ -66,7 +66,6 @@ describe('data import', function () {
       'hygiene, structural, confidence_in_management, scheme_type, new_rating_pending, longitude, latitude ' +
       'from fsa.food_ratings order by fhrsid;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -86,11 +85,10 @@ describe('data import', function () {
     client.query(
       `DELETE FROM fsa.food_ratings WHERE fhrsid::text LIKE '123456789%';`,
       function (err, result) {
-        expect(result.rowCount).to.eql(5)
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
+          expect(result.rowCount).to.eql(5)
           done()
         }
       }
@@ -101,7 +99,6 @@ describe('data import', function () {
     client.query(
       'select * from fsa.food_ratings;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {

@@ -50,7 +50,9 @@ describe('Run some basic tests', function () {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
-        expect(err).to.equal(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows).to.eql(
           [
             {adult_no: 10, first_name: 'Homer', last_name: 'Simpson'},
@@ -73,7 +75,9 @@ describe('Run some basic tests', function () {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
-        expect(err).to.equal(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows).to.eql(
           [
             {'child_no': 10, 'first_name': 'Lisa', 'last_name': 'Simpson'},
@@ -137,8 +141,7 @@ describe('Run some basic tests', function () {
         debug: true
       },
       function (err) {
-        expect(err).to.equal(null)
-        done()
+        done(err)
       }
     )
   })
@@ -147,7 +150,9 @@ describe('Run some basic tests', function () {
     client.query(
       'select adult_no,first_name,last_name from supercopy_test.adults order by adult_no',
       function (err, result) {
-        expect(err).to.equal(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows).to.eql(
           [
             {adult_no: 30, first_name: 'Maud', last_name: 'Flanders'},
@@ -166,7 +171,9 @@ describe('Run some basic tests', function () {
     client.query(
       'select child_no,first_name,last_name from supercopy_test.children order by child_no',
       function (err, result) {
-        expect(err).to.equal(null)
+        if (err) {
+          return done(err)
+        }
         expect(result.rows).to.eql(
           [
             {'child_no': 50, 'first_name': 'Todd', 'last_name': 'Flanders'},

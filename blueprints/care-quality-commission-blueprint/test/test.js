@@ -61,9 +61,8 @@ describe('CQC tests', function () {
       'from cqc.cqc ' +
       'order by location_id',
       function (err, result) {
-        expect(err).to.eql(null)
         if (err) {
-          console.error(err)
+          done(err)
         } else {
           expect(result.rows).to.eql(
             [
@@ -129,11 +128,10 @@ describe('CQC tests', function () {
     client.query(
       `DELETE FROM cqc.cqc WHERE location_id::text LIKE '123456789%';`,
       function (err, result) {
-        expect(result.rowCount).to.eql(10)
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
+          expect(result.rowCount).to.eql(10)
           done()
         }
       }
@@ -144,7 +142,6 @@ describe('CQC tests', function () {
     client.query(
       'select * from cqc.cqc;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {

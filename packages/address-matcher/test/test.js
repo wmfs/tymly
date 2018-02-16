@@ -154,8 +154,7 @@ describe('Run some tests', function () {
       options,
       client,
       (err) => {
-        expect(err).to.equal(null)
-        done()
+        done(err)
       }
     )
   })

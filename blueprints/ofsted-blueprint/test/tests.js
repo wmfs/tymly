@@ -59,7 +59,6 @@ describe('Ofsted tests', function () {
     client.query(
       'select urn, school_name, ofsted_phase, region, local_authority, postcode, TO_CHAR(inspection_date, \'DD/MM/YYYY\') AS inspection_date, overall_effectiveness, effectiveness_of_leadership from ofsted.ofsted order by urn;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -197,7 +196,6 @@ describe('Ofsted tests', function () {
     client.query(
       `delete from ofsted.ofsted where urn::text like '1000%';`,
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {

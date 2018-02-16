@@ -58,7 +58,6 @@ describe('data import', function () {
     client.query(
       'select uprn, footprint, floors, height, sprinkler_coverage from wmfs.building order by uprn;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -125,11 +124,10 @@ describe('data import', function () {
     client.query(
       `DELETE FROM wmfs.building WHERE uprn::text LIKE '123456789%';`,
       function (err, result) {
-        expect(result.rowCount).to.eql(7)
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
+          expect(result.rowCount).to.eql(7)
           done()
         }
       }
@@ -140,7 +138,6 @@ describe('data import', function () {
     client.query(
       'select * from wmfs.building;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {

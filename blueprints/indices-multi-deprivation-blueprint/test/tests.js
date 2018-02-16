@@ -75,7 +75,6 @@ describe('data import', function () {
       'dependent_children_aged_015_mid_2012, population_aged_1659_mid_2012, older_population_aged_60_and_over_mid_2012, ' +
       'working_age_population_185964 from dclg.imd order by lsoa_code_2011;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
@@ -94,11 +93,10 @@ describe('data import', function () {
     client.query(
       `DELETE FROM dclg.imd WHERE lsoa_code_2011::text LIKE '123456789%';`,
       function (err, result) {
-        expect(err).to.equal(null)
-        expect(result.rowCount).to.eql(9)
         if (err) {
           done(err)
         } else {
+          expect(result.rowCount).to.eql(9)
           done()
         }
       }
@@ -109,7 +107,6 @@ describe('data import', function () {
     client.query(
       'select * from dclg.imd;',
       function (err, result) {
-        expect(err).to.equal(null)
         if (err) {
           done(err)
         } else {
