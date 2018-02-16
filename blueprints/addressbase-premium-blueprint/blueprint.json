@@ -1,0 +1,12 @@
+{
+  "namespace": "ordnanceSurvey",
+  "name": "addressbasePremium",
+  "version": "1.0",
+
+  "label": "Addressbase Premium",
+  "author": "Jez Higgins",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to support Ordnance Survey's Addressbase Premium",
+  "categories": ["address", "addressbase", "gazetteer"]
+}
