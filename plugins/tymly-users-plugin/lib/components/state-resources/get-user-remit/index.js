@@ -93,7 +93,7 @@ class GetUserRemit {
           if (clientShasum && formShasum === clientShasum) {
             return
           } else {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, formShasum)
+            dottie.set(userRemit, `add.${componentType}.${componentName}`, this.forms.forms[componentName])
           }
         } else if (componentType === 'boards') {
           const boardShasum = this.boards.boards[componentName].shasum
@@ -101,7 +101,7 @@ class GetUserRemit {
           if (clientShasum && boardShasum === clientShasum) {
             return
           } else {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, boardShasum)
+            dottie.set(userRemit, `add.${componentType}.${componentName}`, this.boards.boards[componentName])
           }
         } else {
           dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
