@@ -9,7 +9,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('watched-boards tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, statebox, client, animalModel, humanModel
+  let tymlyService, statebox, client, animalModel, humanModel, boardService, formService
   const GET_SINGLE_BOARD_STATE_MACHINE = 'test_getSingleBoard_1_0'
   const GET_MULTIPLE_BOARDS_STATE_MACHINE = 'test_getMultipleBoards_1_0'
 
@@ -30,12 +30,29 @@ describe('watched-boards tymly-users-plugin tests', function () {
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
-        console.log(tymlyServices.storage.models)
         animalModel = tymlyServices.storage.models['test_animal']
         humanModel = tymlyServices.storage.models['test_human']
+        boardService = tymlyServices.boards
+        formService = tymlyServices.forms
         done()
       }
     )
+  })
+
+  it('should ensure each form has a shasum associated with it', (done) => {
+    console.log(Object.keys(formService.forms))
+    Object.keys(formService.forms).map((form) => {
+      expect(formService.forms[form].shasum)
+    })
+    done()
+  })
+
+  it('should ensure each board has a shasum associated with it', (done) => {
+    console.log(Object.keys(boardService.boards))
+    Object.keys(boardService.boards).map((board) => {
+      expect(boardService.boards[board].shasum)
+    })
+    done()
   })
 
   it('insert some \'human\' test data', (done) => {
@@ -70,7 +87,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       (err, executionDescription) => {
-        console.log(executionDescription.ctx.data)
+        console.log(executionDescription)
         expect(executionDescription.ctx.data.name).to.eql('Alfred')
         expect(executionDescription.ctx.data.age).to.eql('57')
         expect(err).to.eql(null)
