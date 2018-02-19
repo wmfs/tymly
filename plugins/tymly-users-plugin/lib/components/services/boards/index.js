@@ -1,5 +1,7 @@
 'use strict'
 
+const shasum = require('shasum')
+
 class BoardsService {
   boot (options, callback) {
     this.boards = {}
@@ -11,6 +13,7 @@ class BoardsService {
       if (boardDefinitions.hasOwnProperty(boardId)) {
         options.messages.info(boardId)
         boardDefinition = boardDefinitions[boardId]
+        boardDefinition.shasum = shasum(boardDefinition)
         this.boards[boardId] = boardDefinition
       }
     }
