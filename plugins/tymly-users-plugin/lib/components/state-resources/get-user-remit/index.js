@@ -112,7 +112,7 @@ class GetUserRemit {
     let namesToRemove
     if (_.isArray(alreadyInClientManifest)) {
       namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
-    } else if (_.isObject(alreadyInClientManifest)) {
+    } else if (_.isPlainObject(alreadyInClientManifest)) {
       namesToRemove = _.difference(Object.keys(alreadyInClientManifest), Object.keys(components))
     }
     if (namesToRemove.length > 0) {
