@@ -1,5 +1,7 @@
 'use strict'
 
+const shasum = require('shasum')
+
 class FormsService {
   boot (options, callback) {
     this.forms = {}
@@ -11,6 +13,7 @@ class FormsService {
       if (formDefinitions.hasOwnProperty(formId)) {
         options.messages.info(formId)
         formDefinition = formDefinitions[formId]
+        formDefinition.shasum = shasum(formDefinition)
         this.forms[formId] = formDefinition
       }
     }
