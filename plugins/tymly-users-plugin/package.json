@@ -7,7 +7,8 @@
   "dependencies": {
     "dottie": "2.0.0",
     "async": "2.6.0",
-    "jsonpath": "1.0.0"
+    "jsonpath": "1.0.0",
+    "shasum": "1.0.2"
   },
   "devDependencies": {
     "chai": "4.1.0",
