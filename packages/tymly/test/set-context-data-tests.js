@@ -10,6 +10,19 @@ describe('Context tests', function () {
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
 
+  const envVars = [
+    'TYMLY_NIC_AUTH0_CLIENT_ID',
+    'TYMLY_NIC_AUTH0_CLIENT_SECRET',
+    'TYMLY_NIC_AUTH0_DOMAIN'
+  ]
+
+  const err = envVars.map(v => { return !process.env[v] ? v : null }).filter(v => !!v)
+  const varsFound = err.length === 0
+  if (!varsFound) {
+    xit('Skipping set-context-data-tests because AUTH0 env vars not set')
+    return
+  }
+
   it('should load the animal blueprint (which makes use of the set-context-data state resource)', function (done) {
     tymly.boot(
       {
