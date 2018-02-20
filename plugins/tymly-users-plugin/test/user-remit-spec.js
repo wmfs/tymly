@@ -303,18 +303,18 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log(executionDescription.ctx.userRemit.add.forms)
           // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).length).to.eql(3)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.forms).length).to.eql(2)
           expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentLogEntry')).to.eql(true)
           expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.forms)
             .to.eql(['processAnExpenseClaim'])
-          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick'].shasum).to.eql('0d6decf12e4ced2f862735be6c3df15543075fd8')
+          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick']).to.eql(undefined)
+          expect(executionDescription.ctx.userRemit.remove.forms['test_bookSomeoneSick']).to.eql(undefined)
           done()
         } catch (err) {
           done(err)
