@@ -1,6 +1,10 @@
 /* eslint-env mocha */
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+chai.use(dirtyChai)
+
+const expect = chai.expect
 const Readable = require('stream').Readable
 
 const xmlSubtreeProcessor = require('../lib/xml-subtree-processor')
@@ -13,7 +17,7 @@ function stream (text) {
 } // stream
 
 describe('xml-subtree-processor', () => {
-  it('parse doc and hand back subtrees', async () => {
+  it('count requested subtrees', async () => {
     let count = 0
 
     await xmlSubtreeProcessor(
@@ -23,5 +27,30 @@ describe('xml-subtree-processor', () => {
     )
 
     expect(count).to.equal(2)
+  })
+
+  it('find subtree regardless of how deeply nested', async () => {
+    let count = 0
+
+    await xmlSubtreeProcessor(
+      stream('<root><h><h><h><h><h><h><d><d><a><a><y><afs><a><sub/></a></afs></y></a></a></d></d></h><sub/></h></h></h></h></h></root>'),
+      'sub',
+      () => ++count
+    )
+
+    expect(count).to.equal(2)
+  })
+
+  it('extract subtree with text', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<root><sub>Hello</sub></root>'),
+      'sub',
+      sub => { tree = sub }
+    )
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({ '#text': 'Hello' })
   })
 })
