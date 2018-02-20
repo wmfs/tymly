@@ -11,7 +11,9 @@ class SubTreeCapture {
   } // constructor
 
   startElement (name) {
-    this.capturing ? this.capture(name) : this.shouldCapture(name)
+    if (this.capturing || this.shouldCapture(name)) {
+      this.pushTree()
+    }
   } // startElement
 
   endElement (name) {
@@ -20,13 +22,9 @@ class SubTreeCapture {
     }
 
     if (this.isLastTree) {
-      this.callback(this.subTrees.pop())
+      this.emitTree()
     } else {
-      const tree = this.subTrees.pop()
-      const parent = this.subTrees[this.subTrees.length - 1]
-      const children = parent[name] ? parent[name] : []
-      children.push(tree)
-      parent[name] = children
+      this.hoist(name)
     }
   } // endElement
 
@@ -39,32 +37,46 @@ class SubTreeCapture {
     this.tree[TEXT] = fullText
   } // text
 
+  // ////////////////////////////
   get tree () {
     return this.subTrees[this.subTrees.length - 1]
   } // tree
 
   get capturing () {
     return this.subTrees.length !== 0
-  }
+  } // capturing
 
   get isLastTree () {
     return this.subTrees.length === 1
-  }
+  } // isLastTree
+
+  get parentTree () {
+    return this.subTrees[this.subTrees.length - 2]
+  } // parentTree
 
   // ////////////////////////////
+  pushTree () {
+    this.subTrees.push({})
+  } // pushTree
+
+  popTree () {
+    return this.subTrees.pop()
+  } // popTree
+
+  emitTree () {
+    this.callback(this.popTree())
+  } // emitTree
+
+  hoist (name) {
+    const parent = this.parentTree
+    const children = parent[name] ? parent[name] : []
+    children.push(this.popTree())
+    parent[name] = children
+  } // hoist
+
   shouldCapture (name) {
-    if (name !== this.elementName) {
-      return
-    }
-
-    this.subTrees.push({})
+    return (name === this.elementName)
   } // shouldCapture
-
-  capture () {
-    ++this.depth
-
-    this.subTrees.push({})
-  } // capture
 } // class SubTreeCapture
 
 function xmlSubtreeProcessor (inputStream, elementName, subTreeCallback) {
