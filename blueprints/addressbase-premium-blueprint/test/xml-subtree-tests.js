@@ -54,6 +54,19 @@ describe('xml-subtree-processor', () => {
     expect(tree).to.eql({ '#text': 'Hello' })
   })
 
+  it('extract subtrees with text', async () => {
+    let tree = []
+
+    await xmlSubtreeProcessor(
+      stream('<body><p><line>Hello</line><line>World!</line></p></body>'),
+      'line',
+      sub => { tree.push(sub) }
+    )
+
+    expect(tree).to.exist()
+    expect(tree).to.eql([{ '#text': 'Hello' }, { '#text': 'World!' }])
+  })
+
   it('extract subtree with nested elements', async () => {
     let tree = null
 
@@ -66,6 +79,38 @@ describe('xml-subtree-processor', () => {
     expect(tree).to.exist()
     expect(tree).to.eql({
       line: [{ '#text': 'Hello' }, { '#text': 'World!' }]
+    })
+  })
+
+  it('extract subtree with deeply nested elements', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<body><p><line>Hello <strong>World!</strong></line></p></body>'),
+      'p',
+      sub => { tree = sub }
+    )
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      line: [{ '#text': 'Hello ', strong: [{ '#text': 'World!' }] }]
+    })
+  })
+
+  it('match on prefix:name not {url}name because parser is not namespace aware', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<a:body xmlns:a="urn:testing"><a:p><a:line>Hello <strong>World!</strong></a:line></a:p></a:body>'),
+      'a:p',
+      sub => {
+        tree = sub
+      }
+    )
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      'a:line': [{'#text': 'Hello ', strong: [{'#text': 'World!'}]}]
     })
   })
 })
