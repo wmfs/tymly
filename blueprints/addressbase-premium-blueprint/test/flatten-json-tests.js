@@ -93,4 +93,38 @@ describe('flatten-json-to-csv', () => {
       '500'
     ]
   )
+
+  buildTests(
+    'nested object, set context on one of three subobjects',
+    {
+      item: [
+        {
+          title: 'A painting',
+          description: 'Picasso!'
+        },
+        {
+          title: 'Some lovely fruit',
+          description: 'Pomelo'
+        },
+        {
+          title: 'A pair of trousers',
+          description: 'Old man corduroys'
+        }
+      ],
+      price: 500
+    },
+    '$.item[1]',
+    [
+      '@.title',
+      '$.missing',
+      '@.description',
+      '$.price'
+    ],
+    [
+      'Some lovely fruit',
+      '',
+      'Pomelo',
+      '500'
+    ]
+  )
 })
