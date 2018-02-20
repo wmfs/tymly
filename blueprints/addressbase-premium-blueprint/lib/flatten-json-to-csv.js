@@ -1,6 +1,6 @@
 const jp = require('jsonpath')
 
-function flattenJson(json, pathList) {
+function flattenJson (json, pathList) {
   const elements =
     pathList.map(path => jp.query(json, path))
 
