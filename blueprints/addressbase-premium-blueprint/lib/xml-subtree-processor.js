@@ -7,29 +7,31 @@ class SubTreeCapture {
     this.elementName = elementName
     this.callback = subTreeCallback
 
-    this.depth = 0
+    this.subTrees = []
   } // constructor
 
   startElement (name) {
-    this.depth ? this.capture(name) : this.shouldCapture(name)
+    this.capturing ? this.capture(name) : this.shouldCapture(name)
   } // startElement
 
-  endElement () {
-    if (!this.depth) {
+  endElement (name) {
+    if (!this.capturing) {
       return
     }
 
-    --this.depth
-
-    if (this.depth !== 0) {
-      return
+    if (this.isLastTree) {
+      this.callback(this.subTrees.pop())
+    } else {
+      const tree = this.subTrees.pop()
+      const parent = this.subTrees[this.subTrees.length - 1]
+      const children = parent[name] ? parent[name] : []
+      children.push(tree)
+      parent[name] = children
     }
-
-    this.callback(this.subTrees[0])
   } // endElement
 
   text (t) {
-    if (!this.depth) {
+    if (!this.capturing) {
       return
     }
 
@@ -37,9 +39,17 @@ class SubTreeCapture {
     this.tree[TEXT] = fullText
   } // text
 
-  get tree() {
-    return this.subTrees[this.subTrees.length-1]
+  get tree () {
+    return this.subTrees[this.subTrees.length - 1]
   } // tree
+
+  get capturing () {
+    return this.subTrees.length !== 0
+  }
+
+  get isLastTree () {
+    return this.subTrees.length === 1
+  }
 
   // ////////////////////////////
   shouldCapture (name) {
@@ -47,12 +57,13 @@ class SubTreeCapture {
       return
     }
 
-    this.subTrees = [ { } ]
-    this.depth = 1
+    this.subTrees.push({})
   } // shouldCapture
 
-  capture (name) {
+  capture () {
+    ++this.depth
 
+    this.subTrees.push({})
   } // capture
 } // class SubTreeCapture
 
@@ -63,7 +74,7 @@ function xmlSubtreeProcessor (inputStream, elementName, subTreeCallback) {
     const capture = new SubTreeCapture(elementName, subTreeCallback)
 
     parser.on('opentag', node => capture.startElement(node.name))
-    parser.on('closetag', () => capture.endElement())
+    parser.on('closetag', name => capture.endElement(name))
     parser.on('text', text => capture.text(text))
 
     parser.on('error', err => reject(err))

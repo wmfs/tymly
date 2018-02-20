@@ -53,4 +53,19 @@ describe('xml-subtree-processor', () => {
     expect(tree).to.exist()
     expect(tree).to.eql({ '#text': 'Hello' })
   })
+
+  it('extract subtree with nested elements', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<body><p><line>Hello</line><line>World!</line></p></body>'),
+      'p',
+      sub => { tree = sub }
+    )
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      line: [{ '#text': 'Hello' }, { '#text': 'World!' }]
+    })
+  })
 })
