@@ -15,7 +15,6 @@ function buildTests (title, json, ...args) {
 
       const testArgs = contextPath ? [ contextPath, testPaths ] : [ testPaths ]
 
-
       it(`Extract ${i} field${i - 1 ? 's' : ''}`, () => {
         const actual = flattenJson(json, ...testArgs)
 
