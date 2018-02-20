@@ -289,7 +289,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           teamNames: [],
           todoExecutionNames: [],
           formNames: {
-            'test_bookSomeoneSick': '',
+            'test_bookSomeoneSick': 'WRONGSHASUM',
             'processAnExpenseClaim': ''
           },
           startable: []
@@ -303,6 +303,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
+          console.log(executionDescription.ctx.userRemit.add.forms)
           // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
@@ -313,6 +314,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.forms)
             .to.eql(['processAnExpenseClaim'])
+          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick'].shasum).to.not.eql('WRONGSHASUM')
           done()
         } catch (err) {
           done(err)
@@ -326,7 +328,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       {
         clientManifest: {
           boardNames: {
-            'test_personalDetails': '',
+            'test_personalDetails': 'WRONGSHASUM',
             'test_expenses': ''
           },
           categoryNames: [],
@@ -355,6 +357,7 @@ describe('user-remit tymly-users-plugin tests', function () {
               'test_propertyViewer'
             ]
           )
+          expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails'].shasum).to.not.eql('WRONGSHASUM')
           expect(executionDescription.ctx.userRemit.remove.boards)
             .to.eql(['test_expenses'])
           done()
