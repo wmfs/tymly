@@ -41,7 +41,7 @@ describe('Memory tymly-storage tests', function () {
           'size': 'large',
           'comment': 'Stunning.'
         }
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {

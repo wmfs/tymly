@@ -21,9 +21,9 @@ describe('xml-subtree-processor', () => {
     let count = 0
 
     return xmlSubtreeProcessor(
-        stream('<root><sub/><ignore/><sub/></root>'),
-        'sub'
-      )
+      stream('<root><sub/><ignore/><sub/></root>'),
+      'sub'
+    )
       .each(() => ++count)
       .then(() => expect(count).to.equal(2))
   })

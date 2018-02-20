@@ -70,8 +70,8 @@ class MemoryModel {
         if (!_this.primaryKeyProvided) {
           copy.id = uuid()
         }
-//        copy.created = now
-//        copy.updated = now
+        //        copy.created = now
+        //        copy.updated = now
         _this.data.push(copy)
 
         if (!idProperties) {

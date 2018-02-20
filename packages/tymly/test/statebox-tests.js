@@ -49,7 +49,7 @@ describe('Simple Tymly test', function () {
         hoursSinceLastMotion: 11,
         hoursSinceLastMeal: 5,
         petDiary: []
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {
@@ -88,7 +88,7 @@ describe('Simple Tymly test', function () {
         hoursSinceLastMotion: 1,
         hoursSinceLastMeal: 0,
         petDiary: []
-      },  // input
+      }, // input
       'DOG_MACHINE', // state machine name
       {}, // options
       function (err, result) {

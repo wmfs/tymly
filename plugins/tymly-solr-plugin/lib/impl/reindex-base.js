@@ -21,7 +21,7 @@ class ReindexBase {
             error: errorCode,
             cause: err
           }
-                )
+        )
       } else {
         context.sendTaskSuccess()
       }

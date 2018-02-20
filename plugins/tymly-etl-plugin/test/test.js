@@ -38,7 +38,7 @@ describe('Simple CSV and tymly test', function () {
         sourceFilePaths: path.resolve(__dirname, 'fixtures', 'people.csv'),
         outputDirRootPath: path.resolve(__dirname, 'fixtures', 'output'),
         sourceDir: path.resolve(__dirname, 'fixtures', 'output')
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'

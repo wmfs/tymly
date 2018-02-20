@@ -32,7 +32,7 @@ module.exports = function pgModel (options) {
               tableName: tableName,
               table: table
             },
-              options
+            options
           )
 
           dottie.set(

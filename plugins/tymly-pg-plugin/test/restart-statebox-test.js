@@ -47,7 +47,7 @@ describe('Restart statebox test - cat state machine', function () {
         hoursSinceLastMotion: 11,
         hoursSinceLastMeal: 5,
         petDiary: []
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {

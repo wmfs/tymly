@@ -63,7 +63,7 @@ describe('tymly-solr-plugin add docs resource tests', function () {
       statebox.startExecution(
         {
           id: 1
-        },  // input
+        }, // input
         STATE_MACHINE_NAME, // state machine name
         {
           sendResponse: 'COMPLETE'

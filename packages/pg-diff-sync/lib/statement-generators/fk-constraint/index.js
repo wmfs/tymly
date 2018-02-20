@@ -11,19 +11,19 @@ module.exports = function fkConstraintStatementGenerator (fkConstraintId, fkCons
 
   if (_.isUndefined(fkConstraint.base)) {
     statements.push(
-       template(
-         {
-           fkConstraintName: parts[2],
-           schemaName: parts[0],
-           tableId: tableId,
-           targetTableId: fkConstraint.target.targetTable,
-           sourceColumns: fkConstraint.target.sourceColumns,
-           targetColumns: fkConstraint.target.targetColumns,
-           matchType: fkConstraint.target.matchType,
-           updateAction: fkConstraint.target.updateAction,
-           deleteAction: fkConstraint.target.deleteAction
-         }
-       )
-     )
+      template(
+        {
+          fkConstraintName: parts[2],
+          schemaName: parts[0],
+          tableId: tableId,
+          targetTableId: fkConstraint.target.targetTable,
+          sourceColumns: fkConstraint.target.sourceColumns,
+          targetColumns: fkConstraint.target.targetColumns,
+          matchType: fkConstraint.target.matchType,
+          updateAction: fkConstraint.target.updateAction,
+          deleteAction: fkConstraint.target.deleteAction
+        }
+      )
+    )
   }
 }

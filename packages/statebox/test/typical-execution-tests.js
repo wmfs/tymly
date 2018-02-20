@@ -40,7 +40,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloWorld', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloWorld', // state machine name
         {}, // options
         function (err, executionDescription) {
@@ -68,7 +68,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloThenWorldThroughException', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloThenWorldThroughException', // state machine name
         {}, // options
         function (err, executionDescription) {
@@ -110,7 +110,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloWorld, but receive SUCCEEDED response {sendResponse: \'COMPLETE\'}', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloWorld', // state machine name
         {
           sendResponse: 'COMPLETE'
@@ -125,7 +125,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloThenWorld', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloThenWorld', // state machine name
         {}, // options
         function (err, result) {
@@ -152,7 +152,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloThenFailure', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloThenFailure', // state machine name
         {}, // options
         function (err, executionDescription) {
@@ -182,7 +182,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloThenUncaughtFailure', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloThenUncaughtFailure', // state machine name
         {}, // options
         function (err, executionDescription) {
@@ -212,7 +212,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should execute helloThenFailure, but receive FAILED response {sendResponse: \'COMPLETE\'}', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'helloThenFailure', // state machine name
         {
           sendResponse: 'COMPLETE'
@@ -232,7 +232,7 @@ DaosToTest.forEach(([name, options]) => {
           number1: 3,
           operator: '+',
           number2: 2
-        },  // input
+        }, // input
         'calculator', // state machine name
         {}, // options
         function (err, result) {
@@ -264,7 +264,7 @@ DaosToTest.forEach(([name, options]) => {
           number1: 3,
           operator: '-',
           number2: 2
-        },  // input
+        }, // input
         'calculator', // state machine name
         {}, // options
         function (err, result) {
@@ -298,7 +298,7 @@ DaosToTest.forEach(([name, options]) => {
             number2: 2
           },
           operator: '-'
-        },  // input
+        }, // input
         'calculatorWithInputPaths', // state machine name
         {}, // options
         function (err, result) {
@@ -490,17 +490,17 @@ DaosToTest.forEach(([name, options]) => {
 
     it('Should execute the wait state machine', function (done) {
       statebox.startExecution(
-          {},
-          'waitState',
-          {},
-          (err, result) => {
-            expect(err).to.eql(null)
-            expect(result.stateMachineName).to.eql('waitState')
-            expect(result.status).to.eql('RUNNING')
-            executionName = result.executionName
-            console.log('execution name: ', executionName)
-            done()
-          })
+        {},
+        'waitState',
+        {},
+        (err, result) => {
+          expect(err).to.eql(null)
+          expect(result.stateMachineName).to.eql('waitState')
+          expect(result.status).to.eql('RUNNING')
+          executionName = result.executionName
+          console.log('execution name: ', executionName)
+          done()
+        })
     }
     )
 

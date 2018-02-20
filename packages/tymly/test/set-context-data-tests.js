@@ -44,7 +44,7 @@ describe('Context tests', function () {
 
   it('should execute the set-context-data state machine', function (done) {
     statebox.startExecution(
-      {},  // input
+      {}, // input
       'tymlyTest_setContextData_1_0', // state machine name
       {
         sendResponse: 'COMPLETE',

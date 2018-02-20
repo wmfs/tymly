@@ -40,7 +40,7 @@ describe('data import', function () {
     statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, './fixtures/input')
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'

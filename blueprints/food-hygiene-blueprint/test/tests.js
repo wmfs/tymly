@@ -44,7 +44,7 @@ describe('data import', function () {
         xmlPath: path.resolve(__dirname, './fixtures/food_ratings.xml'),
         csvPath: path.resolve(__dirname, './output/inserts/food_ratings.csv'),
         sourceDir: OUTPUT_DIR
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
