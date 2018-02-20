@@ -289,7 +289,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           teamNames: [],
           todoExecutionNames: [],
           formNames: {
-            'test_bookSomeoneSick': 'WRONGSHASUM',
+            'test_bookSomeoneSick': '0d6decf12e4ced2f862735be6c3df15543075fd8',
             'processAnExpenseClaim': ''
           },
           startable: []
@@ -314,7 +314,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.forms)
             .to.eql(['processAnExpenseClaim'])
-          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick'].shasum).to.not.eql('WRONGSHASUM')
+          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick'].shasum).to.eql('0d6decf12e4ced2f862735be6c3df15543075fd8')
           done()
         } catch (err) {
           done(err)
