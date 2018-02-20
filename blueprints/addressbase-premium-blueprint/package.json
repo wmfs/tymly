@@ -15,9 +15,11 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
+    "sax": "^1.2.4",
     "tymly": "0.0.15"
   },
   "devDependencies": {
+    "chai": "4.1.0",
     "mocha": "5.0.1",
     "standard": "10.0.3"
   }
