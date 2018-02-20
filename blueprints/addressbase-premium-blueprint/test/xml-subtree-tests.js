@@ -17,16 +17,15 @@ function stream (text) {
 } // stream
 
 describe('xml-subtree-processor', () => {
-  it('count requested subtrees', async () => {
+  it('count requested subtrees', () => {
     let count = 0
 
-    await xmlSubtreeProcessor(
+    return xmlSubtreeProcessor(
         stream('<root><sub/><ignore/><sub/></root>'),
-        'sub',
-        () => ++count
-    )
-
-    expect(count).to.equal(2)
+        'sub'
+      )
+      .each(() => ++count)
+      .then(() => expect(count).to.equal(2))
   })
 
   it('find subtree regardless of how deeply nested', async () => {
@@ -34,9 +33,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<root><h><h><h><h><h><h><d><d><a><a><y><afs><a><sub/></a></afs></y></a></a></d></d></h><sub/></h></h></h></h></h></root>'),
-      'sub',
-      () => ++count
-    )
+      'sub'
+    ).each(() => ++count)
 
     expect(count).to.equal(2)
   })
@@ -46,9 +44,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<root><sub>Hello</sub></root>'),
-      'sub',
-      sub => { tree = sub }
-    )
+      'sub'
+    ).each(sub => { tree = sub })
 
     expect(tree).to.exist()
     expect(tree).to.eql({ '#text': 'Hello' })
@@ -59,9 +56,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<body><p><line>Hello</line><line>World!</line></p></body>'),
-      'line',
-      sub => { tree.push(sub) }
-    )
+      'line'
+    ).each(sub => { tree.push(sub) })
 
     expect(tree).to.exist()
     expect(tree).to.eql([{ '#text': 'Hello' }, { '#text': 'World!' }])
@@ -72,9 +68,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<body><p><line>Hello</line><line>World!</line></p></body>'),
-      'p',
-      sub => { tree = sub }
-    )
+      'p'
+    ).each(sub => { tree = sub })
 
     expect(tree).to.exist()
     expect(tree).to.eql({
@@ -87,9 +82,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<body><p><line>Hello <strong>World!</strong></line></p></body>'),
-      'p',
-      sub => { tree = sub }
-    )
+      'p'
+    ).each(sub => { tree = sub })
 
     expect(tree).to.exist()
     expect(tree).to.eql({
@@ -102,11 +96,8 @@ describe('xml-subtree-processor', () => {
 
     await xmlSubtreeProcessor(
       stream('<a:body xmlns:a="urn:testing"><a:p><a:line>Hello <strong>World!</strong></a:line></a:p></a:body>'),
-      'a:p',
-      sub => {
-        tree = sub
-      }
-    )
+      'a:p'
+    ).each(sub => { tree = sub })
 
     expect(tree).to.exist()
     expect(tree).to.eql({

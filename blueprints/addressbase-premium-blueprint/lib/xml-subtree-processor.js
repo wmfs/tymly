@@ -1,4 +1,5 @@
 const sax = require('sax')
+const EachPromise = require('./each-promise')
 
 const TEXT = '#text'
 
@@ -79,11 +80,11 @@ class SubTreeCapture {
   } // shouldCapture
 } // class SubTreeCapture
 
-function xmlSubtreeProcessor (inputStream, elementName, subTreeCallback) {
-  return new Promise((resolve, reject) => {
+function xmlSubtreeProcessor (inputStream, elementName) {
+  return new EachPromise((each, resolve, reject) => {
     const parser = sax.createStream(true)
 
-    const capture = new SubTreeCapture(elementName, subTreeCallback)
+    const capture = new SubTreeCapture(elementName, each)
 
     parser.on('opentag', node => capture.startElement(node.name))
     parser.on('closetag', name => capture.endElement(name))
