@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 
+const path = require('path')
 const tymly = require('tymly')
 
 describe('Addressbase premium tests', function () {
@@ -10,6 +11,9 @@ describe('Addressbase premium tests', function () {
   it('start tymly', done => {
     tymly.boot(
       {
+        blueprintPaths: [
+          path.resolve(__dirname, './..')
+        ]
       },
       (err, tymlyServices) => {
         if (err) {
