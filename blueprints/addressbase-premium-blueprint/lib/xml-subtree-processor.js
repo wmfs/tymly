@@ -3,7 +3,7 @@ const sax = require('sax')
 const TEXT = '#text'
 
 class SubTreeCapture {
-  constructor(elementName, subTreeCallback) {
+  constructor (elementName, subTreeCallback) {
     this.elementName = elementName
     this.callback = subTreeCallback
 
