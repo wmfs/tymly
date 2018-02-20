@@ -37,9 +37,9 @@ describe('xml-transform-to-csv', () => {
         '@.description',
         '$.price'
       ]
-    ).each(line => { console.log(line); results.push(line) })
+    ).each(line => results.push(line))
 
-    expect(results).to.equal([
+    expect(results).to.eql([
       'A painting,,Picasso!,500',
       'Some lovely fruit,,Pomelo,500',
       'A pair of trousers,,Old man corduroys,500'
