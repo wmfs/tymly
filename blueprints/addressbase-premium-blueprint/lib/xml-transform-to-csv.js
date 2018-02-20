@@ -4,7 +4,7 @@ const xmlSubtreeProcessor = require('./xml-subtree-processor')
 const flattenJson = require('./flatten-json-to-csv')
 const jp = require('jsonpath')
 
-function processSubtree(
+function processSubtree (
   subTree,
   pivotPath,
   selectPaths
@@ -23,7 +23,7 @@ function processSubtree(
   })
 } // processSubtree
 
-function xmlTransformToCsv(
+function xmlTransformToCsv (
   inputStream,
   elementName,
   pivotPath,
