@@ -9,6 +9,7 @@ function simplify(value) {
 } // simplify
 
 function simplifyArray(array) {
+  if (array.length === 1) return simplify(array[0])
   return array.map(v => simplify(v))
 } // simplifyArray
 

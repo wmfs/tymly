@@ -41,15 +41,42 @@ describe('make more jsony', () => {
 
   it('fancier xml2json example', () => {
     const xml2json = {
-      line: [{ '#text': 'Hello' }, { strong: { '#text': 'World!' } }]
+      item: [
+        {
+          title: [{ "#text": "A painting" }],
+          description: [{ "#text": "Picasso!" }]
+        },
+        {
+          title: [{ "#text": "Some lovely fruit" }],
+          description: [{ "#text": "Pomelo" }]
+        },
+        {
+          title: [{ "#text": "A pair of trousers" }],
+          description: [{ "#text": "Old man corduroys" }]
+        }
+      ],
+      price: [{ "#text": "500" }]
     }
     const expected = {
-      line: [ 'Hello', { strong: 'World!'} ]
+      item: [
+        {
+          title: "A painting",
+          description: "Picasso!"
+        },
+        {
+          title: "Some lovely fruit",
+          description: "Pomelo"
+        },
+        {
+          title: "A pair of trousers",
+          description: "Old man corduroys"
+        }
+      ],
+      price: "500"
     }
 
     const actual = simplifyJson(xml2json)
 
     expect(actual).to.eql(expected)
   })
-
 })
