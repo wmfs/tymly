@@ -43,36 +43,36 @@ describe('make more jsony', () => {
     const xml2json = {
       item: [
         {
-          title: [{ "#text": "A painting" }],
-          description: [{ "#text": "Picasso!" }]
+          title: [{ '#text': 'A painting' }],
+          description: [{ '#text': 'Picasso!' }]
         },
         {
-          title: [{ "#text": "Some lovely fruit" }],
-          description: [{ "#text": "Pomelo" }]
+          title: [{ '#text': 'Some lovely fruit' }],
+          description: [{ '#text': 'Pomelo' }]
         },
         {
-          title: [{ "#text": "A pair of trousers" }],
-          description: [{ "#text": "Old man corduroys" }]
+          title: [{ '#text': 'A pair of trousers' }],
+          description: [{ '#text': 'Old man corduroys' }]
         }
       ],
-      price: [{ "#text": "500" }]
+      price: [{ '#text': '500' }]
     }
     const expected = {
       item: [
         {
-          title: "A painting",
-          description: "Picasso!"
+          title: 'A painting',
+          description: 'Picasso!'
         },
         {
-          title: "Some lovely fruit",
-          description: "Pomelo"
+          title: 'Some lovely fruit',
+          description: 'Pomelo'
         },
         {
-          title: "A pair of trousers",
-          description: "Old man corduroys"
+          title: 'A pair of trousers',
+          description: 'Old man corduroys'
         }
       ],
-      price: "500"
+      price: '500'
     }
 
     const actual = simplifyJson(xml2json)
