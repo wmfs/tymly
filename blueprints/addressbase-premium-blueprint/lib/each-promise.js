@@ -5,7 +5,7 @@ class EachPromise {
     this.promise_ = null
     this.body_ = body
 
-    setTimeout(this.start, 100)
+    setTimeout(() => this.start(), 100)
   } // constructor
 
   start () {
@@ -32,7 +32,8 @@ class EachPromise {
 
   makePromise () {
     this.promise_ = new Promise((resolve, reject) => {
-      this.body_(this.eachCb_,
+      this.body_(
+        this.eachCb_,
         resolve,
         reject)
     })
