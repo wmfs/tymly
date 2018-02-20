@@ -76,9 +76,9 @@ class GetUserRemit {
     for (const componentName of Object.keys(components)) {
       let exists = false
       if (alreadyInClientManifest.hasOwnProperty(componentName)) {
-        if (componentType === 'forms' && _.get(this.clientManifest, `formNames[${componentName}].shasum`) === this.forms.forms[componentName].shasum) {
+        if (componentType === 'forms' && _.get(this.clientManifest, `formNames[${componentName}]`) === this.forms.forms[componentName].shasum) {
           exists = true
-        } else if (componentType === 'boards' && _.get(this.clientManifest, `formNames[${componentName}].shasum`) === this.boards.boards[componentName].shasum) {
+        } else if (componentType === 'boards' && _.get(this.clientManifest, `formNames[${componentName}]`) === this.boards.boards[componentName].shasum) {
           exists = true
         }
       } else if (_.isArray(alreadyInClientManifest)) {
@@ -89,7 +89,7 @@ class GetUserRemit {
       if (!exists) {
         if (componentType === 'forms') {
           const formShasum = this.forms.forms[componentName].shasum
-          const clientShasum = _.get(this.clientManifest, `formNames[${componentName}].shasum`)
+          const clientShasum = _.get(this.clientManifest, `formNames[${componentName}]`)
           if (clientShasum && formShasum === clientShasum) {
             return
           } else {
@@ -97,7 +97,7 @@ class GetUserRemit {
           }
         } else if (componentType === 'boards') {
           const boardShasum = this.boards.boards[componentName].shasum
-          const clientShasum = _.get(this.clientManifest, `boardNames[${componentName}].shasum`)
+          const clientShasum = _.get(this.clientManifest, `boardNames[${componentName}]`)
           if (clientShasum && boardShasum === clientShasum) {
             return
           } else {
