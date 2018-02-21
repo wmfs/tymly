@@ -16,7 +16,7 @@
     "chai": "4.1.0",
     "mocha": "5.0.1",
     "standard": "11.0.0",
-    "nodemon": "1.14.12"
+    "nodemon": "1.15.1"
   },
   "scripts": {
     "start": "node ./lib/index.js",
