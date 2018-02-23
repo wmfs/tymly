@@ -1,24 +1,63 @@
 'use strict'
 
+const path = require('path')
 const shasum = require('shasum')
+const formMaker = require('form-maker')
+const memFs = require('mem-fs')
+const editor = require('mem-fs-editor')
 
 class FormsService {
   boot (options, callback) {
     this.forms = {}
 
     const formDefinitions = options.blueprintComponents.forms || {}
-    let formDefinition
 
-    for (let formId in formDefinitions) {
-      if (formDefinitions.hasOwnProperty(formId)) {
-        options.messages.info(formId)
-        formDefinition = formDefinitions[formId]
-        formDefinition.shasum = shasum(formDefinition)
-        this.forms[formId] = formDefinition
+    Object.keys(formDefinitions).map(async formId => {
+      if (formDefinitions[formId].ext === '.yml') {
+        const store = memFs.create()
+        const virtualFs = editor.create(store)
+
+        const ops = {
+          yamlPath: formDefinitions[formId].filePath,
+          namespace: formDefinitions[formId].namespace
+        }
+        ops.formName = path.basename(ops.yamlPath, '.yml')
+        ops.modelName = path.basename(ops.yamlPath, '.yml')
+
+        const result = await this.generateForm(ops)
+
+        const blueprintPath = ops.yamlPath.split(path.join('forms', ops.formName + '.yml'))[0] // Is there an easier way to do this?
+
+        await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'forms', ops.formName + '.json'), result.form, virtualFs)
+        await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'state-machines', ops.formName + '.json'), result.stateMachine, virtualFs)
+
+        // If there's no model with the given modelName it should generate that model too
+        // Boot before storage so it can make the model
+
+        // Do shasum thing on form
+      } else {
+        const formDef = formDefinitions[formId]
+        formDef.shasum = shasum(formDef)
+        this.forms[formId] = formDef
       }
-    }
+    })
 
     callback(null)
+  }
+
+  generateForm (options) {
+    return new Promise((resolve, reject) => formMaker(options, (err, result) => {
+      if (err) reject(err)
+      else resolve(result)
+    }))
+  }
+
+  writeJSONToBlueprint (blueprintPath, object, virtualFs) {
+    virtualFs.writeJSON(blueprintPath, object, null, 2)
+    return new Promise((resolve, reject) => virtualFs.commit((err) => {
+      if (err) reject(err)
+      else resolve()
+    }))
   }
 }
 
@@ -27,5 +66,5 @@ module.exports = {
   refProperties: {
     formId: 'forms'
   },
-  bootBefore: ['tymly', 'rbac']
+  bootBefore: ['tymly', 'rbac', 'storage']
 }
