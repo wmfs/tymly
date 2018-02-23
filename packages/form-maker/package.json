@@ -1,7 +1,7 @@
 {
   "name": "form-maker",
-  "description": "Automatically generates form content based on all models specified in a blueprint.",
-  "version": "0.0.5",
+  "description": "Automatically generates a form and state machine based on a yaml.",
+  "version": "0.0.6",
   "author": "Meena Hoda",
   "keywords": [
     "form",
@@ -9,17 +9,7 @@
   ],
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "2.6.0",
-    "boom": "7.1.1",
-    "csv-string": "2.3.2",
-    "debug": "3.1.0",
-    "dottie": "2.0.0",
-    "first-line": "1.0.2",
-    "fs": "0.0.1-security",
-    "glob": "7.1.2",
-    "jsonfile": "3.0.1",
-    "make-dir": "1.0.0",
-    "upath": "1.0.2"
+    "js-yaml": "3.10.0"
   },
   "devDependencies": {
     "chai": "4.1.0",

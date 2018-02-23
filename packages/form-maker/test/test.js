@@ -1,48 +1,46 @@
 /* eslint-env mocha */
-'use strict'
 
-const formMaker = require('./../lib')
 const expect = require('chai').expect
 const path = require('path')
-const glob = require('glob')
-const _ = require('lodash')
+const yamlToJs = require('../lib/utils/yaml-to-js')
+const YamlToFormAndStateMachine = require('../lib')
 
-describe('Run some basic tests', function () {
-  let blueprintPath = 'fixtures/blueprints/people-blueprint' // '../../../blueprints/addressbox-blueprint'
-  it('Should generate form schema and editor flow', function (done) {
-    formMaker(
-      {
-        blueprintDir: path.join(__dirname, blueprintPath) // 'c:/development/blueprints/addressbox-blueprint'
-      },
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
-  })
-  it('Should have created a forms directory', function (done) {
-    glob(path.join(__dirname, blueprintPath + '/forms'), function (err, files) {
-      expect(err).to.equal(null)
-      expect(files).to.deep.equal([
-        _.replace(path.join(__dirname, blueprintPath, '/forms'), /\\/g, '/')
-      ])
-      done()
-    })
+describe('Run the form-maker tests', function () {
+  const options = {
+    namespace: 'test',
+    formName: 'people',
+    modelName: 'people',
+    yamlPath: path.resolve(__dirname, 'fixtures', 'people-blueprint', 'people.yml')
+  }
+
+  it('should convert the yaml file to json', (done) => {
+    const obj = yamlToJs(path.resolve(__dirname, 'fixtures', 'people-blueprint', options.formName + '.yml'))
+    expect(obj.form.name).to.eql('people')
+    expect(obj.form.title).to.eql('People')
+    expect(obj.model.jsonSchemaPaths).to.eql('./models/people.json')
+    done()
   })
 
-  it('Should have created an editor flow file', function (done) {
-    glob(path.join(__dirname, blueprintPath + '/state-machines/*-editor.json'), function (err, files) {
-      expect(err).to.equal(null)
-      expect(files).to.not.equal(null)
-      done()
-    })
-  })
+  it('should do both conversions in one', (done) => {
+    YamlToFormAndStateMachine(options, (err, result) => {
+      expect(err).to.eql(null)
 
-  it('Should have created a form file', function (done) {
-    glob(path.join(__dirname, blueprintPath + '/forms/*'), function (err, files) {
-      expect(err).to.equal(null)
-      expect(files).to.not.equal(null)
-      done()
+      expect(result.form.jsonSchema.schema.formtitle).to.eql('People')
+      expect(result.form.jsonSchema.schema.properties.general.properties.firstName.type).to.eql('string')
+      expect(result.form.jsonSchema.schema.properties.general.properties.firstName.title).to.eql('First name.')
+      expect(result.form.jsonSchema.schema.properties.general.properties.dateOfBirth.format).to.eql('date-time')
+      expect(result.form.jsonSchema.schema.properties.general.properties.homeAddress.format).to.eql('address')
+      expect(result.form.jsonSchema.schema.properties.general.properties.avatar.format).to.eql('file')
+      expect(result.form.jsonSchema.schema.properties.general.properties.favouriteColour.enum[0]).to.eql('BLUE')
+      expect(result.form.jsonSchema.schema.properties.general.properties.favouriteColour.enumNames[0]).to.eql('Blue')
+      expect(result.form.jsonSchema.schema.properties.general.required).to.eql(['firstName', 'lastName'])
+      expect(result.form.jsonSchema.conditionalSchema.general_firstName.expression).to.eql('(general_firstName)')
+      expect(result.form.jsonSchema.conditionalSchema.general_firstName.dependents).to.eql(['general_lastName'])
+
+      expect(result.stateMachine.Comment).to.eql('A bunch of people.')
+      expect(result.stateMachine.categories).to.eql(['people'])
+
+      done(err)
     })
   })
 })
