@@ -87,7 +87,7 @@ describe('xml-transform-to-csv', () => {
     }
   })
 
-  xit('conditional selection', async () => {
+  it('conditional selection', async () => {
     const results = []
 
     await xmlTransform(
@@ -98,15 +98,15 @@ describe('xml-transform-to-csv', () => {
         '@.title',
         '$.missing',
         '@.description',
-        '@[?(@.description=="Pomelo")]',
+        { test: '@.description=="Pomelo"', value: 'LOVE IT' },
         '$.price'
       ]
     ).each(line => results.push(line))
 
     expect(results).to.eql([
-      'A painting,,Picasso!,500',
-      'Some lovely fruit,,Pomelo,500',
-      'A pair of trousers,,Old man corduroys,500'
+      'A painting,,Picasso!,,500',
+      'Some lovely fruit,,Pomelo,LOVE IT,500',
+      'A pair of trousers,,Old man corduroys,,500'
     ])
   })
 })
