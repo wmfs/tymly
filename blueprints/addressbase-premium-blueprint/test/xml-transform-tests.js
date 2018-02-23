@@ -76,7 +76,7 @@ describe('xml-transform-to-csv', () => {
     try {
       await testFn().each(() => {})
     } catch (err) {
-      expect(err.message).to.startsWith('Lexical error')
+      expect(err.message).to.startWith('Lexical error')
     }
 
     try {

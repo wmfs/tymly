@@ -126,4 +126,69 @@ describe('flatten-json-to-csv', () => {
       '500'
     ]
   )
+
+  describe('conditional selection', () => {
+    const json = {
+      item: [
+        {
+          title: 'A painting',
+          description: 'Picasso!'
+        },
+        {
+          title: 'Some lovely fruit',
+          description: 'Pomelo'
+        },
+        {
+          title: 'A pair of trousers',
+          smell: 'A bit lagery'
+        }
+      ],
+      price: 500
+    }
+
+    for (let i = 0; i !== json.item.length; ++i) {
+      const item = json.item[i]
+      buildTests(
+        `is ${item.title} a citrus?`,
+        json,
+        `$.item[${i}]`,
+        [
+          '@.title',
+          '@.description',
+          {
+            test: '@.description=="Pomelo"',
+            value: 'one of the four original citrus'
+          },
+          '$.price'
+        ],
+        [
+          item.title,
+          item.description,
+          i === 1 ? 'one of the four original citrus' : '',
+          500
+        ]
+      )
+
+      buildTests(
+        `is ${json.item[i].title} not a citrus?`,
+        json,
+        `$.item[${i}]`,
+        [
+          '@.title',
+          '@.description',
+          {
+            test: '@.description!="Pomelo"',
+            value: 'sadly not a citrus'
+          },
+          '$.price'
+        ],
+        [
+          item.title,
+          item.description,
+          i === 1 ? '' : 'sadly not a citrus',
+          500
+        ]
+      )
+    }
+  })
 })
