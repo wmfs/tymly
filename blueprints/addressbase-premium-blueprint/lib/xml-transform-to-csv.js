@@ -5,7 +5,7 @@ const simplifyJson = require('./simplify-json')
 const flattenJson = require('./flatten-json-to-csv')
 const jp = require('jsonpath')
 
-function* processSubtree (
+function * processSubtree (
   subTree,
   pivotPath,
   selectPaths
@@ -18,7 +18,7 @@ function* processSubtree (
 
     const csv = flattenJson(cleanTree, contextPath, selectPaths)
 
-    yield(csv)
+    yield (csv)
   }
 } // processSubtree
 
@@ -31,9 +31,9 @@ function xmlTransformToCsv (
   return new EachPromise((each, resolve, reject) => {
     xmlSubtreeProcessor(inputStream, elementName)
       .each(subTree => {
-          for (const line of processSubtree(subTree, pivotPath, selectPaths)) {
-              each(line)
-          }
+        for (const line of processSubtree(subTree, pivotPath, selectPaths)) {
+          each(line)
+        }
       })
       .then(() => resolve())
       .catch(err => reject(err))

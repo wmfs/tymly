@@ -26,7 +26,7 @@ class EachPromise {
 
   makePromise () {
     if (this.eachCb_ === null) {
-      throw new Error("EachPromise without an each()")
+      throw new Error('EachPromise without an each()')
     }
     clearTimeout(this.starter_)
     this.promise_ = new Promise((resolve, reject) => {
@@ -39,9 +39,8 @@ class EachPromise {
     return this.promise_
   } // makePromise
 
-  eachIteration(each, reject) {
-    if (this.stopped_)
-      return
+  eachIteration (each, reject) {
+    if (this.stopped_) { return }
 
     try {
       this.eachCb_(each)
@@ -51,7 +50,7 @@ class EachPromise {
     }
   } // eachIteration
 
-  stopped() {
+  stopped () {
     this.stopped_ = true
   } // stopped
 } // class EachPromise
