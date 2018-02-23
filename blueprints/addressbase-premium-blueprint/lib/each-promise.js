@@ -1,25 +1,19 @@
 class EachPromise {
   constructor (body) {
-    this.eachCb_ = () => { }
-
-    this.promise_ = null
+    this.eachCb_ = null
+    this.stopped_ = false
     this.body_ = body
 
-    setTimeout(() => this.start(), 100)
+    this.starter_ = setTimeout(() => this.ohDear(), 100)
   } // constructor
 
-  start () {
-    if (this.isThened) return
-
-    this.body_(this.eachCb_, () => {}, err => { throw err })
+  ohDear () {
+    throw new Error(`EachPromise without an each, then, or catch`)
   } // startBody
-
-  get isThened () { return this.promise_ !== null }
 
   each (eachCb) {
     this.eachCb_ = eachCb
-    this.each = undefined
-    return this
+    return this.makePromise()
   } // each
 
   then (thenCb) {
@@ -31,14 +25,35 @@ class EachPromise {
   } // catchCb
 
   makePromise () {
+    if (this.eachCb_ === null) {
+      throw new Error("EachPromise without an each()")
+    }
+    clearTimeout(this.starter_)
     this.promise_ = new Promise((resolve, reject) => {
       this.body_(
-        this.eachCb_,
-        resolve,
-        reject)
+        each => this.eachIteration(each, reject),
+        result => { this.stopped(); resolve(result) },
+        err => { this.stopped(); reject(err) }
+      )
     })
     return this.promise_
-  }
+  } // makePromise
+
+  eachIteration(each, reject) {
+    if (this.stopped_)
+      return
+
+    try {
+      this.eachCb_(each)
+    } catch (err) {
+      this.stopped()
+      reject(err)
+    }
+  } // eachIteration
+
+  stopped() {
+    this.stopped_ = true
+  } // stopped
 } // class EachPromise
 
 module.exports = EachPromise
