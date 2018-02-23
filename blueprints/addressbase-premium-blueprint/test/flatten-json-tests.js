@@ -149,7 +149,7 @@ describe('flatten-json-to-csv', () => {
     for (let i = 0; i !== json.item.length; ++i) {
       const item = json.item[i]
       buildTests(
-        `is ${item.title} a citrus?`,
+        `is ${item.title} a citrus?  fixed value output`,
         json,
         `$.item[${i}]`,
         [
@@ -186,6 +186,28 @@ describe('flatten-json-to-csv', () => {
           item.title,
           item.description,
           i === 1 ? '' : 'sadly not a citrus',
+          500
+        ]
+      )
+    }
+
+    for (let i = 0; i !== json.item.length; ++i) {
+      const item = json.item[i]
+      buildTests(
+        `test ${item.title} and select`,
+        json,
+        `$.item[${i}]`,
+        [
+          '@.title',
+          {
+            test: '@.title=="Some lovely fruit"',
+            select: '@.description'
+          },
+          '$.price'
+        ],
+        [
+          item.title,
+          i === 1 ? item.description : '',
           500
         ]
       )

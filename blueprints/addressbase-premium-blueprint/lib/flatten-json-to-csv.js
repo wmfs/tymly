@@ -14,8 +14,11 @@ function validateConditional (cond) {
   if (!cond.test) {
     throw new Error('Conditional must have test')
   }
-  if (!cond.value) {
-    throw new Error('Conditional must have value')
+  if (!cond.value && !cond.select) {
+    throw new Error('Conditional must have value or select')
+  }
+  if (cond.value && cond.select) {
+    throw new Error('Conditional can not have value and select')
   }
 } // validateConditional
 
@@ -33,20 +36,26 @@ function evalJsonQuery (json, path) {
 } // evalJsonQuery
 
 function jsonConditionalOp (path, contextPath) {
-  return json => evalJsonConditional(json, path, contextPath)
+  return json => evalJsonConditional(
+    json,
+    evalJsonQuery(json, contextPath),
+    path.test,
+    path.value,
+    path.select ? transformPath(path.select, contextPath) : null
+  )
 } // jsonConditionalOp
 
-function evalJsonConditional (json, path, contextPath) {
-  const contextNode = evalJsonQuery(json, contextPath)
+function evalJsonConditional (json, contextNode, test, value, select) {
   if (!contextNode) return null
 
   const wrapped = {
     wrap: contextNode
   }
-  const testExpr = `$.wrap[?(${path.test})]`
+  const testExpr = `$.wrap[?(${test})]`
   const testResult = evalJsonQuery(wrapped, testExpr)
 
-  return (testResult.length) ? path.value : null
+  if (!testResult.length) return null
+  return value || select(json)
 } // evalJsonConditional
 
 /// /////////////////////
