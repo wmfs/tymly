@@ -2,7 +2,7 @@
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
-    // application specific logging, throwing an error, or other logic here
+  // application specific logging, throwing an error, or other logic here
 })
 
 const chai = require('chai')
@@ -56,16 +56,16 @@ describe('xml-transform-to-csv', () => {
 
   it('error propagation', async () => {
     const testFn = () => xmlTransform(
-          stream(xmlSource),
-          'items',
-          '(!!! bad json path!!!)',
+      stream(xmlSource),
+      'items',
+      '(!!! bad json path!!!)',
       [
         '@.title',
         '$.missing',
         '@.description',
         '$.price'
       ]
-      )
+    )
 
     try {
       await testFn()
@@ -91,17 +91,17 @@ describe('xml-transform-to-csv', () => {
     const results = []
 
     await xmlTransform(
-            stream(xmlSource),
-            'items',
-            '$.item',
+      stream(xmlSource),
+      'items',
+      '$.item',
       [
         '@.title',
         '$.missing',
         '@.description',
-        '(@.description=="Pomelo")',
+        '@[?(@.description=="Pomelo")]',
         '$.price'
       ]
-        ).each(line => results.push(line))
+    ).each(line => results.push(line))
 
     expect(results).to.eql([
       'A painting,,Picasso!,500',
