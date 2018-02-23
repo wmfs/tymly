@@ -9,7 +9,24 @@ $ npm test
 ```
 
 ## <a name="usage"></a>Usage
-Coming soon...
+const formMaker = require('form-maker')
+
+```javascript
+const formMaker = require('form-maker')
+
+formMaker (
+  {
+    namespace: 'test',
+    formName: 'peopleForm',
+    modelName: 'peopleModel',
+    yamlPath: 'path/to/yaml/file'
+  },
+  function (err, result) {
+    // result.form - holds the generated form object
+    // result.stateMachine - holds the generated state machine object
+  }
+)
+```
 
 ## <a name="license"></a>License
 [MIT](https://github.com/wmfs/tymly-runner/blob/master/LICENSE)
