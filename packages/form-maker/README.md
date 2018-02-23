@@ -9,16 +9,15 @@ $ npm test
 ```
 
 ## <a name="usage"></a>Usage
-const formMaker = require('form-maker')
 
 ```javascript
 const formMaker = require('form-maker')
 
 formMaker (
   {
-    namespace: 'test',
-    formName: 'peopleForm',
-    modelName: 'peopleModel',
+    namespace: 'test', // the namespace of the model you want to save form data to
+    formName: 'peopleForm', // name of the form
+    modelName: 'peopleModel', // name of the model that you want to save form data to
     yamlPath: 'path/to/yaml/file'
   },
   function (err, result) {
