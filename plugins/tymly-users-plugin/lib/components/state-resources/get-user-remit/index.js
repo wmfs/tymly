@@ -78,7 +78,7 @@ class GetUserRemit {
       if (alreadyInClientManifest.hasOwnProperty(componentName)) {
         if (componentType === 'forms' && _.get(this.clientManifest, `formNames[${componentName}]`) === this.forms.forms[componentName].shasum) {
           exists = true
-        } else if (componentType === 'boards' && _.get(this.clientManifest, `formNames[${componentName}]`) === this.boards.boards[componentName].shasum) {
+        } else if (componentType === 'boards' && _.get(this.clientManifest, `boardNames[${componentName}]`) === this.boards.boards[componentName].shasum) {
           exists = true
         }
       } else if (_.isArray(alreadyInClientManifest)) {
