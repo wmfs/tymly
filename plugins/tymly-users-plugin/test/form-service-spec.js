@@ -7,7 +7,7 @@ const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-describe('notifications tymly-users-plugin tests', function () {
+describe('Form Service tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let tymlyService, client, storage, forms
 
