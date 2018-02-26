@@ -13,13 +13,14 @@ class FormsService {
     const formDefinitions = options.blueprintComponents.forms || {}
 
     Object.keys(formDefinitions).map(async formId => {
-      if (formDefinitions[formId].ext === '.yml') {
+      const formDef = formDefinitions[formId]
+      if (formDef.ext === '.yml') {
         const store = memFs.create()
         const virtualFs = editor.create(store)
 
         const ops = {
-          yamlPath: formDefinitions[formId].filePath,
-          namespace: formDefinitions[formId].namespace
+          yamlPath: formDef.filePath,
+          namespace: formDef.namespace
         }
         ops.formName = path.basename(ops.yamlPath, '.yml')
         ops.modelName = path.basename(ops.yamlPath, '.yml')
@@ -32,13 +33,10 @@ class FormsService {
         await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'state-machines', ops.formName + '.json'), result.stateMachine, virtualFs)
         // Check the model doesn't already exist before producing it maybe?
         await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'models', ops.modelName + '.json'), result.model, virtualFs)
-
-        // Do shasum thing on form
-      } else {
-        const formDef = formDefinitions[formId]
-        formDef.shasum = shasum(formDef)
-        this.forms[formId] = formDef
       }
+
+      formDef.shasum = shasum(formDef)
+      this.forms[formId] = formDef
     })
 
     callback(null)
