@@ -368,6 +368,51 @@ describe('user-remit tymly-users-plugin tests', function () {
     )
   })
 
+  it('should test shasum remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: {
+            'test_expenses': '',
+            'test_personalDetails': '7f9187a7193896052bd2a97b42c4bc7a4f4f0b60'
+          },
+          categoryNames: [],
+          teamNames: [],
+          todoExecutionNames: [],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          console.log('\n\n^^^', executionDescription.ctx.userRemit.add)
+          expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+          expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+          expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards))
+            .to.eql(
+            [
+              'test_propertyViewer'
+            ]
+          )
+          expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails']).to.eql(undefined)
+          expect(executionDescription.ctx.userRemit.remove.boards)
+            .to.eql(['test_expenses'])
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
