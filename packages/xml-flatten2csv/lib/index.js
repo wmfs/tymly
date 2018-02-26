@@ -67,14 +67,14 @@ function closeOutputStream (outputStream) {
   )
 } // closeOutputStream
 
-function writeField(outputStream, field, type) {
+function writeField (outputStream, field, type) {
   if (!field) return
 
   const quote = (type === stringType) ? '"' : ''
   outputStream.write(`${quote}${field}${quote}`)
 } // writeField
 
-function writeHeaderLine(outputStream, headers) {
+function writeHeaderLine (outputStream, headers) {
   const types = headers.map(() => stringType)
   writeLine(outputStream, headers, types)
 } // writeHeaderLine
@@ -94,7 +94,7 @@ function writeLine (outputStream, fields, types) {
   outputStream.uncork()
 } // writeLine
 
-async function xmlFlatten2Csv(options) {
+async function xmlFlatten2Csv (options) {
   const selectors = selectPaths(options.headerMap)
   const headers = selectHeaders(options.headerMap)
   const types = selectTypes(options.headerMap)

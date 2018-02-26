@@ -58,7 +58,7 @@ function evalJsonConditional (json, contextNode, test, value, select) {
   return value || select(json)
 } // evalJsonConditional
 
-function unwrapArray(field) {
+function unwrapArray (field) {
   return field.length ? field[0] : null
 } // unwrapArray
 

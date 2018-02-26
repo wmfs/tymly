@@ -100,5 +100,4 @@ describe('xmlFlatten2csv', () => {
       assert.fail('Did not throw')
     })
   })
-
 })
