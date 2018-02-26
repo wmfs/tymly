@@ -4,7 +4,7 @@
         <People>
             <Person>
                 <Name>Maggie</Name>
-                <Age>3</Age>
+                <Age>1</Age>
                 <Siblings>
                     <Brother>Bart</Brother>
                     <Sister>Lisa</Sister>
@@ -12,10 +12,18 @@
             </Person>
             <Person>
                 <Name>Lisa</Name>
-                <Age>3</Age>
+                <Age>8</Age>
                 <Siblings>
                     <Brother>Bart</Brother>
                     <Sister>Maggie</Sister>
+                </Siblings>
+            </Person>
+            <Person>
+                <Name>Bart</Name>
+                <Age>10</Age>
+                <Siblings>
+                    <Sister>Lisa</Sister>
+                    <Brother>Maggie (wait! what?)</Brother>
                 </Siblings>
             </Person>
             <Person>

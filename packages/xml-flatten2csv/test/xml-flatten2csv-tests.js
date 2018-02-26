@@ -23,8 +23,8 @@ describe('xmlFlatten2csv', () => {
         ['$.Title', 'title', 'string'],
         ['@.Name', 'name', 'string'],
         ['@.Age', 'age', 'integer'],
-        ['@.Siblings.Brother', 'brother', 'string'],
-        ['@.Siblings.Sister', 'sister', 'string']
+        ['@.Siblings.Sister', 'sister', 'string'],
+        ['@.Siblings.Brother', 'brother', 'string']
       ]
     })
 

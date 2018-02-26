@@ -1,7 +1,8 @@
-title,name,age,gender,brother,sister
-"Cape Feare","Maggie",3,"Bart","Lisa"
-"Cape Feare","Lisa",3,"Bart","Maggie"
+"title","name","age","sister","brother"
+"Cape Feare","Maggie",1,"Lisa","Bart"
+"Cape Feare","Lisa",8,"Maggie","Bart"
+"Cape Feare","Bart",10,"Lisa","Maggie (wait! what?)"
 "Cape Feare","Marge",36,,
-"Cape Feare","Sideshow Bob",
+"Cape Feare","Sideshow Bob",,,
 "Homer Loves Flanders","Homer",39,,
-"Homer Loves Flanders","Ned Flanders",60,,,
+"Homer Loves Flanders","Ned Flanders",60,,
