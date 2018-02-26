@@ -4,10 +4,12 @@ const fs = require('fs')
 const sax = require('sax')
 const dottie = require('dottie')
 const _ = require('lodash')
-const endOfLine = require('os').EOL
 const path = require('path')
 const mkdirp = require('mkdirp')
 const debug = require('debug')
+
+const endOfLine = require('os').EOL
+const comma = ','
 
 module.exports = function (options, callback) {
   const outputPath = path.dirname(options.csvPath)
@@ -85,11 +87,8 @@ module.exports = function (options, callback) {
 function writeHeadersToFile (headerMap, outputStream) {
   let headerString = ''
   for (let [idx, header] of headerMap.entries()) {
-    if (idx === headerMap.length - 1) { // it's the last entry
-      headerString += header[1] + endOfLine
-    } else {
-      headerString += header[1] + ', '
-    }
+    const separator = (idx === headerMap.length - 1) ? endOfLine : comma
+    headerString += header[1] + separator
   }
   outputStream.write(headerString)
 }
@@ -98,49 +97,27 @@ function writeRecordToFile (record, headerMap, outputStream) {
   let recordString = ''
 
   for (let [idx, header] of headerMap.entries()) {
+    const separator = (idx === headerMap.length - 1) ? endOfLine : comma
+
     if (_.isObject(record[header[3]])) { // it's a parent node
-      if (idx === headerMap.length - 1) { // it's the last entry
-        if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
-          if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[3]][header[0]] + '"' + endOfLine
-          } else { // it's a number or date
-            recordString += record[header[3]][header[0]] + endOfLine
-          }
-        } else { // it does not contain a value for property
-          recordString += endOfLine
+      if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
+        if (header[2] === 'string') { // it's a string
+          recordString += '"' + record[header[3]][header[0]] + '"' + separator
+        } else { // it's a number or date
+          recordString += record[header[3]][header[0]] + separator
         }
-      } else { // it is not the last entry
-        if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
-          if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[3]][header[0]] + '",'
-          } else { // it's number or date
-            recordString += record[header[3]][header[0]] + ','
-          }
-        } else { // it does not contain a value for property
-          recordString += ','
-        }
+      } else { // it does not contain a value for property
+        recordString += separator
       }
     } else {
-      if (idx === headerMap.length - 1) { // it's the last entry
-        if (record.hasOwnProperty(header[0])) { // it does contain a value for property
-          if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[0]] + '"' + endOfLine
-          } else { // it's a number or date
-            recordString += record[header[0]] + endOfLine
-          }
-        } else { // it does not contain a value for property
-          recordString += endOfLine
+      if (record.hasOwnProperty(header[0])) { // it does contain a value for property
+        if (header[2] === 'string') { // it's a string
+          recordString += '"' + record[header[0]] + '"' + separator
+        } else { // it's a number or date
+          recordString += record[header[0]] + separator
         }
-      } else { // it is not the last entry
-        if (record.hasOwnProperty(header[0])) { // it does contain a value for property
-          if (header[2] === 'string') { // it's a string
-            recordString += '"' + record[header[0]] + '",'
-          } else { // it's a number or date
-            recordString += record[header[0]] + ','
-          }
-        } else { // it does not contain a value for property
-          recordString += ','
-        }
+      } else { // it does not contain a value for property
+        recordString += separator
       }
     }
   }
