@@ -6,10 +6,11 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
+const fs = require('fs')
 
 describe('Form Service tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, client // , storage, forms
+  let tymlyService, client, forms // , storage
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -27,22 +28,39 @@ describe('Form Service tymly-users-plugin tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         // storage = tymlyServices.storage
-        // forms = tymlyServices.forms
+        forms = tymlyServices.forms
         client = tymlyServices.storage.client
         done()
       }
     )
   })
 
-  // it('should check the storage', (done) => {
-  //   expect(Object.keys(storage.models).includes('test_people')).to.eql(true)
+  it('should check the properties of the forms', (done) => {
+    expect(Object.keys(forms.forms).includes('test_people')).to.eql(true)
+    done()
+  })
+
+  // it('should check the properties of the storage model', (done) => {
+  //   console.log(Object.keys(storage.models))
+  //   // expect(storage.models['test_people'].propertyIds).to.eql(['firstName',
+  //   //   'lastName',
+  //   //   'age',
+  //   //   'dateOfBirth',
+  //   //   'homeAddress',
+  //   //   'avatar',
+  //   //   'favouriteColour',
+  //   //   'id'])
   //   done()
   // })
 
-  // it('should check the forms', (done) => {
-  //   expect(Object.keys(forms.forms).includes('test_people')).to.eql(true)
-  //   done()
-  // })
+  it('should clean up the generated files', (done) => {
+    fs.unlinkSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'forms', 'people.json'))
+    fs.unlinkSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'models', 'people.json'))
+    fs.unlinkSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'state-machines', 'people.json'))
+    fs.rmdirSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'models'))
+    fs.rmdirSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'state-machines'))
+    done()
+  })
 
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
