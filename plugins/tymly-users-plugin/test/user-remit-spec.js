@@ -350,13 +350,10 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.boards))
-            .to.eql(
-            [
-              'test_personalDetails',
-              'test_propertyViewer'
-            ]
-          )
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards)).to.eql([
+            'test_personalDetails',
+            'test_propertyViewer'
+          ])
           expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails'].shasum).to.not.eql('WRONGSHASUM')
           expect(executionDescription.ctx.userRemit.remove.boards)
             .to.eql(['test_expenses'])
@@ -396,12 +393,7 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.boards))
-            .to.eql(
-            [
-              'test_propertyViewer'
-            ]
-          )
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards)).to.eql(['test_propertyViewer'])
           expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails']).to.eql(undefined)
           expect(executionDescription.ctx.userRemit.remove.boards)
             .to.eql(['test_expenses'])
