@@ -30,6 +30,7 @@ class FormsService {
 
         await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'forms', ops.formName + '.json'), result.form, virtualFs)
         await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'state-machines', ops.formName + '.json'), result.stateMachine, virtualFs)
+        // Check the model doesn't already exist before producing it maybe?
         await this.writeJSONToBlueprint(path.resolve(blueprintPath, 'models', ops.modelName + '.json'), result.model, virtualFs)
 
         // Do shasum thing on form
