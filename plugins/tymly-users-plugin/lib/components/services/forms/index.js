@@ -16,17 +16,18 @@ class FormsService {
     Object.keys(formDefinitions).map(formId => {
       const formDef = formDefinitions[formId]
       if (formDef.ext === '.yml') {
-        const ops = {
+        const meta = {
           yamlPath: formDef.filePath,
           namespace: formDef.namespace
         }
-        ops.formName = path.basename(ops.yamlPath, '.yml')
-        ops.modelName = path.basename(ops.yamlPath, '.yml')
+        meta.formName = path.basename(meta.yamlPath, '.yml')
+        meta.modelName = path.basename(meta.yamlPath, '.yml')
 
-        const blueprintPath = ops.yamlPath.split(path.join('forms', ops.formName + '.yml'))[0]
+        const blueprintPath = meta.yamlPath.split(path.join('forms', meta.formName + '.yml'))[0]
         if (!fs.existsSync(path.resolve(blueprintPath, 'state-machines'))) fs.mkdirSync(path.resolve(blueprintPath, 'state-machines'))
         if (!fs.existsSync(path.resolve(blueprintPath, 'models'))) fs.mkdirSync(path.resolve(blueprintPath, 'models'))
-        promises.push(this.writeBlueprintFiles(ops, blueprintPath))
+
+        promises.push(this.writeBlueprintFiles(options, meta, blueprintPath))
 
         formId = path.basename(formId, '.yml')
       }
@@ -42,32 +43,48 @@ class FormsService {
       .catch(err => callback(err))
   }
 
-  writeBlueprintFiles (options, blueprintPath) {
+  writeBlueprintFiles (options, meta, blueprintPath) {
     return new Promise((resolve, reject) => {
-      formMaker(options, (err, result) => {
+      formMaker(meta, (err, result) => {
         if (err) return reject(err)
-        jsonfile.writeFile(path.resolve(blueprintPath, 'forms', options.formName + '.json'), result.form, {
+        jsonfile.writeFile(path.resolve(blueprintPath, 'forms', meta.formName + '.json'), result.form, {
           spaces: 2,
           EOL: '\n'
         }, err => {
           if (err) return reject(err)
-          jsonfile.writeFile(path.resolve(blueprintPath, 'state-machines', options.formName + '.json'), result.stateMachine, {
+          jsonfile.writeFile(path.resolve(blueprintPath, 'state-machines', meta.formName + '.json'), result.stateMachine, {
             spaces: 2,
             EOL: '\n'
           }, err => {
             if (err) return reject(err)
-            // Check if model exists first
-            jsonfile.writeFile(path.resolve(blueprintPath, 'models', options.formName + '.json'), result.model, {
-              spaces: 2,
-              EOL: '\n'
-            }, err => {
-              if (err) reject(err)
-              else resolve()
-            })
+            if (!options.blueprintComponents.models[`${options.namespace}_${options.modelName}`]) {
+              jsonfile.writeFile(path.resolve(blueprintPath, 'models', meta.modelName + '.json'), result.model, {
+                spaces: 2,
+                EOL: '\n'
+              }, err => {
+                if (err) return reject(err)
+                options.blueprintComponents.models[`${options.namespace}_${options.modelName}`] = getModelDefinition(result.model, meta)
+                resolve()
+              })
+            } else {
+              resolve()
+            }
           })
         })
       })
     })
+  }
+}
+
+function getModelDefinition (model, meta) {
+  return {
+    title: model.title,
+    description: model.description,
+    type: 'object',
+    properties: model.properties,
+    namespace: meta.namespace,
+    id: meta.modelName,
+    name: meta.modelName
   }
 }
 

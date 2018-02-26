@@ -10,7 +10,7 @@ const fs = require('fs')
 
 describe('Form Service tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, client, forms // , storage
+  let tymlyService, client, forms, storage
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -27,7 +27,7 @@ describe('Form Service tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        // storage = tymlyServices.storage
+        storage = tymlyServices.storage
         forms = tymlyServices.forms
         client = tymlyServices.storage.client
         done()
@@ -40,18 +40,18 @@ describe('Form Service tymly-users-plugin tests', function () {
     done()
   })
 
-  // it('should check the properties of the storage model', (done) => {
-  //   console.log(Object.keys(storage.models))
-  //   // expect(storage.models['test_people'].propertyIds).to.eql(['firstName',
-  //   //   'lastName',
-  //   //   'age',
-  //   //   'dateOfBirth',
-  //   //   'homeAddress',
-  //   //   'avatar',
-  //   //   'favouriteColour',
-  //   //   'id'])
-  //   done()
-  // })
+  it('should check the properties of the storage model', (done) => {
+    expect(Object.keys(storage.models).includes('test_people')).to.eql(true)
+    expect(storage.models['test_people'].propertyIds).to.eql(['firstName',
+      'lastName',
+      'age',
+      'dateOfBirth',
+      'homeAddress',
+      'avatar',
+      'favouriteColour',
+      'id'])
+    done()
+  })
 
   it('should clean up the generated files', (done) => {
     fs.unlinkSync(path.resolve(__dirname, 'fixtures', 'people-blueprint', 'forms', 'people.json'))
