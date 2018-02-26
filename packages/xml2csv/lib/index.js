@@ -97,29 +97,18 @@ function writeRecordToFile (record, headerMap, outputStream) {
   let recordString = ''
 
   for (let [idx, header] of headerMap.entries()) {
+    const field = _.isObject(record[header[3]]) ? record[header[3]][header[0]] : record[header[0]]
     const separator = (idx === headerMap.length - 1) ? endOfLine : comma
 
-    if (_.isObject(record[header[3]])) { // it's a parent node
-      if (record[header[3]].hasOwnProperty(header[0])) { // it contains a value for property
-        if (header[2] === 'string') { // it's a string
-          recordString += '"' + record[header[3]][header[0]] + '"' + separator
-        } else { // it's a number or date
-          recordString += record[header[3]][header[0]] + separator
-        }
-      } else { // it does not contain a value for property
-        recordString += separator
-      }
-    } else {
-      if (record.hasOwnProperty(header[0])) { // it does contain a value for property
-        if (header[2] === 'string') { // it's a string
-          recordString += '"' + record[header[0]] + '"' + separator
-        } else { // it's a number or date
-          recordString += record[header[0]] + separator
-        }
-      } else { // it does not contain a value for property
-        recordString += separator
-      }
-    }
+    recordString += writeField(field, header[2], separator)
   }
   outputStream.write(recordString)
+}
+
+function writeField(field, type, separator) {
+  if (!field) return separator
+
+  const quote = type === 'string' ? '"' : ''
+
+  return `${quote}${field}${quote}${separator}`
 }
