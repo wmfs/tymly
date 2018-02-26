@@ -43,7 +43,7 @@ describe('Testing functionality as a state-resource', function () {
     statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, 'fixtures', 'food-data')
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {

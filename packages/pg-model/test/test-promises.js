@@ -144,7 +144,7 @@ describe('Test promise API', function () {
             'severity': 'ERROR',
             'table': 'person'
           }
-          )
+        )
       }
       )
   })
@@ -180,7 +180,7 @@ describe('Test promise API', function () {
           }
         )
       }
-    )
+      )
   })
 
   it('should find a person via primary key', function () {
@@ -194,7 +194,7 @@ describe('Test promise API', function () {
             'age': 8
           }
         )
-    )
+      )
   })
 
   it("should fail finding a person that's not there", function () {

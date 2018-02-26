@@ -48,7 +48,7 @@ describe('Tests the Ranking State Resource', function () {
       {
         schema: 'test',
         category: 'factory'
-      },  // input
+      }, // input
       'test_refreshRanking_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -173,7 +173,7 @@ describe('Tests the Ranking State Resource', function () {
           schema: 'test',
           category: 'factory'
         }
-      },  // input
+      }, // input
       'wmfs_setAndRefresh_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'

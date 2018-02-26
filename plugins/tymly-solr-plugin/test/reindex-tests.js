@@ -55,7 +55,7 @@ for (const test of reindexTests) {
 
     it(`should start the ${test.stateMachine} state machine`, function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         test.stateMachine, // state machine name
         {
           sendResponse: 'COMPLETE'

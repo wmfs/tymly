@@ -72,7 +72,7 @@ describe('PostgreSQL storage tests', function () {
         firstName: 'Homer',
         lastName: 'Simpson',
         age: 39
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -262,7 +262,7 @@ describe('PostgreSQL storage tests', function () {
     statebox.startExecution(
       {
         idToFind: 3
-      },  // input
+      }, // input
       'tymlyTest_seedDataTest_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'

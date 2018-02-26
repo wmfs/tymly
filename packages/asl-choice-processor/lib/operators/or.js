@@ -2,6 +2,6 @@
 
 module.exports = function orOperator (inputValue, comparisonValue, candidateStateName, cache) {
   let nextState
-// TODO: The 'Or' operator needs writing
+  // TODO: The 'Or' operator needs writing
   return nextState
 }

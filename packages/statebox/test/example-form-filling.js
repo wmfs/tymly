@@ -40,7 +40,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should start form-filling state machine', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'formFilling', // state machine name
         {}, // options
         function (err, result) {
@@ -142,7 +142,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should start form-filling state machine', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'formFilling', // state machine name
         {}, // options
         function (err, result) {
@@ -203,7 +203,7 @@ DaosToTest.forEach(([name, options]) => {
 
     it('should start form-filling state machine, and respond once all the code in \'FormFilling\' has run', function (done) {
       statebox.startExecution(
-        {},  // input
+        {}, // input
         'formFilling', // state machine name
         {
           sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:formFilling'

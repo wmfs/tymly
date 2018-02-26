@@ -3,10 +3,10 @@
 const async = require('async')
 
 module.exports = function rbacDataLoader (
-    roleModel,
-    roleMembershipModel,
-    permissionModel,
-    callback) {
+  roleModel,
+  roleMembershipModel,
+  permissionModel,
+  callback) {
   const data = {}
 
   const tasks = [
@@ -58,13 +58,13 @@ module.exports = function rbacDataLoader (
   ]
 
   async.parallel(
-        tasks,
-        function (err) {
-          if (err) {
-            callback(err)
-          } else {
-            callback(null, data)
-          }
-        }
-    )
+    tasks,
+    function (err) {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null, data)
+      }
+    }
+  )
 }

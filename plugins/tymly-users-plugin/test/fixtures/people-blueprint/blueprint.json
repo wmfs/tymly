@@ -1,0 +1,11 @@
+{
+  "namespace": "test",
+  "name": "people-blueprint",
+  "version": "1.0",
+  "label": "people-blueprint",
+  "author": "Tymly",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint with a form yml.",
+  "categories": []
+}

@@ -32,7 +32,7 @@ module.exports = function (schemas, options, callback) {
                         namespace: sourceDir.namespace,
                         content: content
                       }
-                      )
+                    )
                     cb2(null)
                   }
                 }

@@ -60,7 +60,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
 
   it('should search with no input (everything)', function (done) {
     statebox.startExecution(
-      {},  // input
+      {}, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -85,7 +85,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
     statebox.startExecution(
       {
         query: 'Hermione'
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'

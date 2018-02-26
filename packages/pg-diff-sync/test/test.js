@@ -36,15 +36,15 @@ describe('Run some basic tests', function () {
         'ALTER TABLE pg_diff_sync_test.people ADD PRIMARY KEY (employee_no);',
         'CREATE UNIQUE INDEX people_first_name_last_name_idx ON pg_diff_sync_test.people USING btree (first_name,last_name);'
       ]
-      )
+    )
   }
   )
 
   it('should build nothing when both structures are the same', function () {
     const statements = pgDiffSync(people, people)
     expect(statements).to.eql(
-        []
-      )
+      []
+    )
   }
   )
 
@@ -55,7 +55,7 @@ describe('Run some basic tests', function () {
         'ALTER TABLE pg_diff_sync_test.people ADD COLUMN manager_no text;',
         "COMMENT ON COLUMN pg_diff_sync_test.people.manager_no IS 'The employee_no of this person''''s manager - if there is one';"
       ]
-      )
+    )
   }
   )
 
@@ -154,7 +154,7 @@ describe('Run some basic tests', function () {
         'ALTER TABLE pg_diff_sync_test.craters ADD CONSTRAINT craters_to_moons_fk FOREIGN KEY (moons_id) REFERENCES pg_diff_sync_test.moons (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;',
         'ALTER TABLE pg_diff_sync_test.moons ADD CONSTRAINT moons_to_planets_fk FOREIGN KEY (planets_name) REFERENCES pg_diff_sync_test.planets (name) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;'
       ]
-      )
+    )
   }
   )
 })
