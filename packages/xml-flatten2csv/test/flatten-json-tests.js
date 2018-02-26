@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect
 
-const flattenJson = require('../lib/flatten-json-to-csv')
+const flattenJson = require('../lib/flatten-json')
 
 function buildTests (title, json, ...args) {
   const contextPath = args.length === 3 ? args[0] : null
@@ -11,14 +11,14 @@ function buildTests (title, json, ...args) {
   describe(title, () => {
     for (let i = 1; i <= pathArray.length; ++i) {
       const testPaths = pathArray.slice(0, i)
-      const testExpected = expectedArray.slice(0, i).join()
+      const testExpected = expectedArray.slice(0, i)
 
       const testArgs = contextPath ? [ contextPath, testPaths ] : [ testPaths ]
 
       it(`Extract ${i} field${i - 1 ? 's' : ''}`, () => {
         const actual = flattenJson(json, ...testArgs)
 
-        expect(actual).to.equal(testExpected)
+        expect(actual).to.eql(testExpected)
       })
     }
   })
@@ -40,9 +40,9 @@ describe('flatten-json-to-csv', () => {
     ],
     [
       'Some lovely fruit',
-      '',
+      null,
       'Pomelo',
-      '500'
+      500
     ]
   )
 
@@ -63,9 +63,9 @@ describe('flatten-json-to-csv', () => {
     ],
     [
       'Some lovely fruit',
-      '',
+      null,
       'Pomelo',
-      '500'
+      500
     ]
   )
 
@@ -87,9 +87,9 @@ describe('flatten-json-to-csv', () => {
     ],
     [
       'Some lovely fruit',
-      '',
+      null,
       'Pomelo',
-      '500'
+      500
     ]
   )
 
@@ -121,9 +121,9 @@ describe('flatten-json-to-csv', () => {
     ],
     [
       'Some lovely fruit',
-      '',
+      null,
       'Pomelo',
-      '500'
+      500
     ]
   )
 
@@ -163,8 +163,8 @@ describe('flatten-json-to-csv', () => {
         ],
         [
           item.title,
-          item.description,
-          i === 1 ? 'one of the four original citrus' : '',
+          item.description || null,
+          i === 1 ? 'one of the four original citrus' : null,
           500
         ]
       )
@@ -184,8 +184,8 @@ describe('flatten-json-to-csv', () => {
         ],
         [
           item.title,
-          item.description,
-          i === 1 ? '' : 'sadly not a citrus',
+          item.description || null,
+          i !== 1 ? 'sadly not a citrus' : null,
           500
         ]
       )
@@ -207,7 +207,7 @@ describe('flatten-json-to-csv', () => {
         ],
         [
           item.title,
-          i === 1 ? item.description : '',
+          i === 1 ? item.description : null,
           500
         ]
       )

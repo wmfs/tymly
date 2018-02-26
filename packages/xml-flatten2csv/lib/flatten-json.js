@@ -58,6 +58,10 @@ function evalJsonConditional (json, contextNode, test, value, select) {
   return value || select(json)
 } // evalJsonConditional
 
+function unwrapArray(field) {
+  return field.length ? field[0] : null
+} // unwrapArray
+
 /// /////////////////////
 function flattenJson (json, ...args) {
   const contextPath = args.length === 2 ? args[0] : null
@@ -65,9 +69,10 @@ function flattenJson (json, ...args) {
 
   const queries = transformPaths(paths, contextPath)
 
-  const elements = queries.map(query => query(json))
+  const selections = queries.map(query => query(json))
+  const fields = selections.map(field => Array.isArray(field) ? unwrapArray(field) : field)
 
-  return elements.join()
+  return fields
 } // flattenJson
 
 module.exports = flattenJson

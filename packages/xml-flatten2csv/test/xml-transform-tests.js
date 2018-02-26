@@ -45,7 +45,7 @@ describe('xml-transform-to-csv', () => {
         '@.description',
         '$.price'
       ]
-    ).each(line => results.push(line))
+    ).each(fields => results.push(fields.join()))
 
     expect(results).to.eql([
       'A painting,,Picasso!,500',
@@ -101,7 +101,7 @@ describe('xml-transform-to-csv', () => {
         { test: '@.description=="Pomelo"', value: 'LOVE IT' },
         '$.price'
       ]
-    ).each(line => results.push(line))
+    ).each(fields => results.push(fields.join()))
 
     expect(results).to.eql([
       'A painting,,Picasso!,,500',

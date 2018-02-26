@@ -2,7 +2,7 @@
 const EachPromise = require('./each-promise')
 const xmlSubtreeProcessor = require('./xml-subtree-processor')
 const simplifyJson = require('./simplify-json')
-const flattenJson = require('./flatten-json-to-csv')
+const flattenJson = require('./flatten-json')
 const jp = require('jsonpath')
 
 function * processSubtree (
