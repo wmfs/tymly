@@ -44,6 +44,8 @@ describe('Run the form-maker tests', function () {
       expect(result.model.properties.firstName.type).to.eql('string')
       expect(result.model.properties.firstName.description).to.eql('First name.')
 
+      expect(result.categories[0].label).to.eql('People')
+
       done(err)
     })
   })
