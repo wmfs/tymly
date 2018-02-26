@@ -1,0 +1,43 @@
+<Simpsons>
+    <Episode>
+        <Title>Cape Feare</Title>
+        <People>
+            <Person>
+                <Name>Maggie</Name>
+                <Age>3</Age>
+                <Siblings>
+                    <Brother>Bart</Brother>
+                    <Sister>Lisa</Sister>
+                </Siblings>
+            </Person>
+            <Person>
+                <Name>Lisa</Name>
+                <Age>3</Age>
+                <Siblings>
+                    <Brother>Bart</Brother>
+                    <Sister>Maggie</Sister>
+                </Siblings>
+            </Person>
+            <Person>
+                <Name>Marge</Name>
+                <Age>36</Age>
+            </Person>
+            <Person>
+                <Name>Sideshow Bob</Name>
+            </Person>
+        </People>
+    </Episode>
+    <Episode>
+        <Title>Homer Loves Flanders</Title>
+        <People>
+            <Person>
+                <Name>Homer</Name>
+                <Age>39</Age>
+            </Person>
+            <Person>
+                <Name>Ned Flanders</Name>
+                <Age>60</Age>
+            </Person>
+        </People>
+    </Episode>
+</Simpsons>
