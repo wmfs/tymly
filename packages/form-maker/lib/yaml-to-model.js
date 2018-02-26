@@ -34,9 +34,9 @@ class YamlToModel {
           description: widget.description
         }
 
-        if (widget.format) properties[widget.title].format = widget.format
+        if (widget.format === 'date-time') properties[widget.title].format = widget.format
 
-        if (widget.enums) {
+        if (widget.type === 'array') {
           properties[widget.title].type = 'array'
           properties[widget.title].items = {
             type: 'string'
