@@ -34,15 +34,15 @@ describe('Form Service tymly-users-plugin tests', function () {
     )
   })
 
-  it('should check the storage', (done) => {
-    expect(Object.keys(storage.models).includes('test_people')).to.eql(true)
-    done()
-  })
+  // it('should check the storage', (done) => {
+  //   expect(Object.keys(storage.models).includes('test_people')).to.eql(true)
+  //   done()
+  // })
 
-  it('should check the forms', (done) => {
-    expect(Object.keys(forms.forms).includes('test_people')).to.eql(true)
-    done()
-  })
+  // it('should check the forms', (done) => {
+  //   expect(Object.keys(forms.forms).includes('test_people')).to.eql(true)
+  //   done()
+  // })
 
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
