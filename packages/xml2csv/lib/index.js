@@ -105,7 +105,7 @@ function writeRecordToFile (record, headerMap, outputStream) {
   outputStream.write(recordString)
 }
 
-function writeField(field, type, separator) {
+function writeField (field, type, separator) {
   if (!field) return separator
 
   const quote = type === 'string' ? '"' : ''
