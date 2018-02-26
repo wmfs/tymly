@@ -73,7 +73,7 @@ class YamlToForm {
         field = 'StandardField'
         break
       case 'array':
-        if (schema.enum && schema.enum.length > 4) {
+        if (schema.enum) {
           widget = 'checkField'
           field = 'ArrayField'
         }
