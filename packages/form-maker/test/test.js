@@ -40,6 +40,10 @@ describe('Run the form-maker tests', function () {
       expect(result.stateMachine.Comment).to.eql('A bunch of people.')
       expect(result.stateMachine.categories).to.eql(['people'])
 
+      expect(result.model.title).to.eql('People')
+      expect(result.model.properties.firstName.type).to.eql('string')
+      expect(result.model.properties.firstName.description).to.eql('First name.')
+
       done(err)
     })
   })
