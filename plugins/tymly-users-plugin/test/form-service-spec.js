@@ -9,7 +9,7 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Form Service tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, client, storage, forms
+  let tymlyService, client // , storage, forms
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -26,8 +26,8 @@ describe('Form Service tymly-users-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        storage = tymlyServices.storage
-        forms = tymlyServices.forms
+        // storage = tymlyServices.storage
+        // forms = tymlyServices.forms
         client = tymlyServices.storage.client
         done()
       }
