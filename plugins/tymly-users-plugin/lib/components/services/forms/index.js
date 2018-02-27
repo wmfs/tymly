@@ -43,6 +43,7 @@ class FormsService {
       .catch(err => callback(err))
   }
 
+  // TODO: Create the categories if needed - categories can be found at result.categories (it's an array)
   writeBlueprintFiles (options, meta, blueprintPath) {
     return new Promise((resolve, reject) => {
       formMaker(meta, (err, result) => {
@@ -57,13 +58,14 @@ class FormsService {
             EOL: '\n'
           }, err => {
             if (err) return reject(err)
-            if (!options.blueprintComponents.models[`${options.namespace}_${options.modelName}`]) {
+            if (!options.blueprintComponents.models[`${meta.namespace}_${meta.modelName}`]) {
               jsonfile.writeFile(path.resolve(blueprintPath, 'models', meta.modelName + '.json'), result.model, {
                 spaces: 2,
                 EOL: '\n'
               }, err => {
                 if (err) return reject(err)
-                options.blueprintComponents.models[`${options.namespace}_${options.modelName}`] = getModelDefinition(result.model, meta)
+                options.blueprintComponents.models[`${meta.namespace}_${meta.modelName}`] = getModelDefinition(result.model, meta)
+                options.blueprintComponents.stateMachines[`${meta.namespace}_${meta.formName}_1_0`] = getStateMachineDefinition(result.stateMachine, meta)
                 resolve()
               })
             } else {
@@ -86,6 +88,12 @@ function getModelDefinition (model, meta) {
     id: meta.modelName,
     name: meta.modelName
   }
+}
+
+function getStateMachineDefinition (stateMachine, meta) {
+  stateMachine.namespace = meta.namespace
+  stateMachine.id = meta.formName
+  return stateMachine
 }
 
 module.exports = {

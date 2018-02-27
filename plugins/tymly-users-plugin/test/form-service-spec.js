@@ -10,7 +10,7 @@ const fs = require('fs')
 
 describe('Form Service tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, client, forms, storage
+  let tymlyService, client, forms, storage, statebox
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -30,6 +30,7 @@ describe('Form Service tymly-users-plugin tests', function () {
         storage = tymlyServices.storage
         forms = tymlyServices.forms
         client = tymlyServices.storage.client
+        statebox = tymlyServices.statebox
         done()
       }
     )
@@ -50,6 +51,11 @@ describe('Form Service tymly-users-plugin tests', function () {
       'avatar',
       'favouriteColour',
       'id'])
+    done()
+  })
+
+  it('should check the state machine', (done) => {
+    expect(statebox.statebox.options.blueprintComponents.stateMachines['test_people_1_0'].Comment).to.eql('A bunch of people.')
     done()
   })
 
