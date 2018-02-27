@@ -1,0 +1,13 @@
+{
+  "namespace": "tymlyTest",
+  "name": "xmlFlatten",
+  "version": "1.0",
+
+  "label": "Test",
+  "author": "Testy 'Test' McTestington",
+
+  "organisation": "Tymly",
+  "description": "xmlflatten test blueprint",
+  "categories": ["xml", "test"]
+
+}
