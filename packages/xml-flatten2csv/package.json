@@ -2,14 +2,20 @@
   "name": "xml-flatten2csv",
   "version": "0.0.1",
   "author": "Jez Higgins",
+  "keywords": [
+    "xml",
+    "convert",
+    "csv"
+  ],
   "license": "MIT",
+  "main": "./lib/index.js",
   "scripts": {
     "lint": "standard",
     "test": "standard && mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wmfs/tymly/packages/xml-flatten2csv"
+    "url": "https://github.com/wmfs/tymly/"
   },
   "bugs": {
     "url": "https://github.com/wmfs/tymly/issues"
