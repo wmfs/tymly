@@ -97,7 +97,7 @@ class Search {
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
-    searchResults.results = this.jsonifyLaunches(results.slice(filters.offset, (filters.offset + filters.limit)))
+    searchResults.results = this.jsonifyLaunches(results)
     searchResults.categoryCounts = this.countCategories(results)
     return searchResults
   }
