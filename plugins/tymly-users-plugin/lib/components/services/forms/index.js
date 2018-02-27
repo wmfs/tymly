@@ -13,41 +13,28 @@ class FormsService {
 
     const formDefinitions = options.blueprintComponents.forms || {}
     const promises = []
-    const ymlFiles = []
 
     Object.keys(formDefinitions).map(formId => {
       const formDef = formDefinitions[formId]
       if (formDef.ext === '.yml') {
-        ymlFiles.push(formDef)
-      } else {
-        options.messages.info(formId)
-        formDef.shasum = shasum(formDef)
-        this.forms[formId] = formDef
-      }
-    })
+        formId = formDef.namespace + '_' + _.camelCase(path.basename(formDef.filePath, '.yml'))
+        if (!Object.keys(formDefinitions).includes(formId)) {
+          const meta = {
+            yamlPath: formDef.filePath,
+            namespace: formDef.namespace
+          }
+          meta.formName = path.basename(meta.yamlPath, '.yml')
+          meta.modelName = path.basename(meta.yamlPath, '.yml')
 
-    ymlFiles.map(yml => {
-      const formId = yml.namespace + '_' + _.camelCase(path.basename(yml.filePath, '.yml'))
-      if (!Object.keys(formDefinitions).includes(formId)) {
-        console.log(`${formId} to be created`)
-        const formDef = formDefinitions[formId + '.yml']
+          const blueprintPath = meta.yamlPath.split(path.join('forms', meta.formName + '.yml'))[0]
+          if (!fs.existsSync(path.resolve(blueprintPath, 'state-machines'))) fs.mkdirSync(path.resolve(blueprintPath, 'state-machines'))
+          if (!fs.existsSync(path.resolve(blueprintPath, 'models'))) fs.mkdirSync(path.resolve(blueprintPath, 'models'))
 
-        const meta = {
-          yamlPath: formDef.filePath,
-          namespace: formDef.namespace
+          promises.push(this.writeBlueprintFiles(options, meta, blueprintPath))
         }
-        meta.formName = path.basename(meta.yamlPath, '.yml')
-        meta.modelName = path.basename(meta.yamlPath, '.yml')
-
-        const blueprintPath = meta.yamlPath.split(path.join('forms', meta.formName + '.yml'))[0]
-        if (!fs.existsSync(path.resolve(blueprintPath, 'state-machines'))) fs.mkdirSync(path.resolve(blueprintPath, 'state-machines'))
-        if (!fs.existsSync(path.resolve(blueprintPath, 'models'))) fs.mkdirSync(path.resolve(blueprintPath, 'models'))
-
-        promises.push(this.writeBlueprintFiles(options, meta, blueprintPath))
-        options.messages.info(formId)
-        formDef.shasum = shasum(formDef)
-        this.forms[formId] = formDef
       }
+      formDef.shasum = shasum(formDef)
+      this.forms[formId] = formDef
     })
 
     Promise.all(promises)
