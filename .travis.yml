@@ -29,6 +29,7 @@ env:
 
 webhooks:
   - https://outlook.office.com/webhook/b88897d4-c48a-4fe2-9097-7c761e69ce94@c8b125d0-ba85-4441-8b06-df523851b190/TravisCI/c969c9d2046a4d9cb8cae895080fe3fa/55765507-4a3a-4ed3-b79b-7ddb4ff8b759
+  - https://outlook.office.com/webhook/4aa91bf8-7a72-4bd6-ab49-1d2d86b542e6@c8b125d0-ba85-4441-8b06-df523851b190/TravisCI/9a4dd60c14914770841c9194d3fad54a/0a6746f8-6e5b-4cdc-9362-4a8ffa4f31bb
 
 script:
   - ./gradlew test dockerBuild
