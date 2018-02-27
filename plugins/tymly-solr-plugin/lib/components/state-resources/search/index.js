@@ -67,7 +67,7 @@ class Search {
       if (err) {
         return context.sendTaskFailure({error: 'searchFail', cause: err})
       }
-      this.processResults(context, result.response.docs, filters)
+      this.processResults(context, result.response.docs, filters, result.response.numFound)
     })
   } // runSolrSearch
 
@@ -81,9 +81,10 @@ class Search {
     })
   } // runStorageSearch
 
-  processResults (context, matchingDocs, filters) {
+  processResults (context, matchingDocs, filters, totalHits) {
     const searchResults = {
-      input: filters
+      input: filters,
+      totalHits: totalHits
     }
 
     this.constructSearchResults(searchResults, filters, matchingDocs)
@@ -97,7 +98,6 @@ class Search {
 
   constructSearchResults (searchResults, filters, results) {
     searchResults.results = this.jsonifyLaunches(results.slice(filters.offset, (filters.offset + filters.limit)))
-    searchResults.totalHits = results.length
     searchResults.categoryCounts = this.countCategories(results)
     return searchResults
   }
