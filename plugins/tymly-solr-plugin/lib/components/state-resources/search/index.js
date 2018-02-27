@@ -77,7 +77,7 @@ class Search {
         return context.sendTaskFailure({error: 'searchFail', cause: err})
       }
       const matchingDocs = this.filterDocs(results.rows, filters)
-      this.processResults(context, matchingDocs, filters)
+      this.processResults(context, matchingDocs, filters, matchingDocs.length)
     })
   } // runStorageSearch
 
