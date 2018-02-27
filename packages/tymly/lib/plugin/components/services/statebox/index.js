@@ -59,11 +59,11 @@ class StateboxService {
   }
 
   startExecution (input, stateMachineName, executionOptions, callback) {
-    this.statebox.startExecution(input, stateMachineName, executionOptions, callback)
+    return this.statebox.startExecution(input, stateMachineName, executionOptions, callback)
   }
 
   stopExecution (cause, error, executionName, executionOptions, callback) {
-    this.statebox.stopExecution(cause, error, executionName, executionOptions, callback)
+    return this.statebox.stopExecution(cause, error, executionName, executionOptions, callback)
   }
 
   listExecutions (executionOptions, callback) {

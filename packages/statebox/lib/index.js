@@ -128,19 +128,39 @@ class Statebox {
     return stateMachines.findStates(options)
   }
 
+  _promised (fn, ...args) {
+    return new Promise((resolve, reject) => {
+      fn.call(this, ...args, (err, result) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+  } // promised
+
   startExecution (input, stateMachineName, executionOptions, callback) {
-    this.ready.then(() =>
-      executioner(input, stateMachineName, executionOptions, this.options, callback)
+    return this.ready.then(() =>
+      this._execute(input, stateMachineName, executionOptions, callback)
     )
   } // startExecution
 
   stopExecution (cause, errorCode, executionName, executionOptions, callback) {
-    this.ready.then(() =>
+    return this.ready.then(() =>
       this._stopExecution(cause, errorCode, executionName, executionOptions, callback)
     )
   } // stopExecution
 
+  _execute (input, stateMachineName, executionOptions, callback) {
+    if (!callback) return this._promised(this._execute, input, stateMachineName, executionOptions)
+
+    executioner(input, stateMachineName, executionOptions, this.options, callback)
+  } // _execute
+
   _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
+    if (!callback) return this._promised(this._stopExecution, cause, errorCode, executionName, executionOptions)
+
     const _this = this
     this.options.dao.findExecutionByName(
       executionName,
