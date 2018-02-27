@@ -7,7 +7,7 @@ const assert = require('chai').assert
 const xmlFlatten2csv = require('../lib')
 
 describe('xmlFlatten2csv', () => {
-  it('convert simple xml to csv', async () => {
+  it('extract xml to csv', async () => {
     const sourceFile = path.resolve(__dirname, 'fixtures', 'simpsons.xml')
     const outputFile = path.resolve(__dirname, 'output', 'simpsons.csv')
     const expectedFile = path.resolve(__dirname, 'expected', 'simpsons.csv')
@@ -25,6 +25,32 @@ describe('xmlFlatten2csv', () => {
         ['@.Age', 'age', 'integer'],
         ['@.Siblings.Sister', 'sister', 'string'],
         ['@.Siblings.Brother', 'brother', 'string']
+      ]
+    })
+
+    const output = fs.readFileSync(outputFile, { encoding: 'utf8' }).split('\n')
+    const expected = fs.readFileSync(expectedFile, { encoding: 'utf8' }).split('\n')
+
+    expect(output).to.eql(expected)
+  })
+
+  it('extract xml to csv, with conditions', async () => {
+    const sourceFile = path.resolve(__dirname, 'fixtures', 'simpsons.xml')
+    const outputFile = path.resolve(__dirname, 'output', 'simpsons-conditions.csv')
+    const expectedFile = path.resolve(__dirname, 'expected', 'simpsons-conditions.csv')
+
+    if (fs.existsSync(outputFile)) fs.unlinkSync(outputFile)
+
+    await xmlFlatten2csv({
+      xmlPath: sourceFile,
+      csvPath: outputFile,
+      rootXMLElement: 'Episode',
+      pivotPath: '$.People.Person',
+      headerMap: [
+        ['$.Title', 'title', 'string'],
+        ['@.Name', 'name', 'string'],
+        [{test: '@.Age<=16', value: 'yes'}, 'child', 'string'],
+        [{test: '@.Age>16', select: '@.Age'}, 'age', 'integer']
       ]
     })
 
