@@ -29,7 +29,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/tymly/smithereens"
+		"url": "https://github.com/wmfs/tymly"
 	},
 	"bugs": {
 		"url": "https://github.com/wmfs/tymly/issues"
