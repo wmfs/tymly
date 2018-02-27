@@ -60,7 +60,7 @@ class Search {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
-    const query = `q=*:*${fq}&sort=created%20desc`
+    const query = `q=*:*${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
