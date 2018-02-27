@@ -5,6 +5,7 @@ const shasum = require('shasum')
 const formMaker = require('form-maker')
 const jsonfile = require('jsonfile')
 const fs = require('fs')
+const _ = require('lodash')
 
 class FormsService {
   boot (options, callback) {
@@ -12,10 +13,25 @@ class FormsService {
 
     const formDefinitions = options.blueprintComponents.forms || {}
     const promises = []
+    const ymlFiles = []
 
     Object.keys(formDefinitions).map(formId => {
       const formDef = formDefinitions[formId]
       if (formDef.ext === '.yml') {
+        ymlFiles.push(formDef)
+      } else {
+        options.messages.info(formId)
+        formDef.shasum = shasum(formDef)
+        this.forms[formId] = formDef
+      }
+    })
+
+    ymlFiles.map(yml => {
+      const formId = yml.namespace + '_' + _.camelCase(path.basename(yml.filePath, '.yml'))
+      if (!Object.keys(formDefinitions).includes(formId)) {
+        console.log(`${formId} to be created`)
+        const formDef = formDefinitions[formId + '.yml']
+
         const meta = {
           yamlPath: formDef.filePath,
           namespace: formDef.namespace
@@ -28,14 +44,10 @@ class FormsService {
         if (!fs.existsSync(path.resolve(blueprintPath, 'models'))) fs.mkdirSync(path.resolve(blueprintPath, 'models'))
 
         promises.push(this.writeBlueprintFiles(options, meta, blueprintPath))
-
-        formId = path.basename(formId, '.yml')
+        options.messages.info(formId)
+        formDef.shasum = shasum(formDef)
+        this.forms[formId] = formDef
       }
-
-      options.messages.info(formId)
-      // Do we need to put the form contents into formDef?
-      formDef.shasum = shasum(formDef)
-      this.forms[formId] = formDef
     })
 
     Promise.all(promises)
