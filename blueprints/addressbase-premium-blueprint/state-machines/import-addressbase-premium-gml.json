@@ -1,0 +1,32 @@
+{
+  "Comment": "import AddressBase Premium GML",
+  "version": "1.0",
+  "StartAt": "ExtractStreets",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ExtractStreets": {
+      "Type": "Task",
+      "Resource": "module:flattenXmlFiles",
+      "ResourceConfig": {
+        "rootXMLElement": "streetMember",
+        "pivotPath": "$..StreetDescriptiveIdentifier",
+        "headerMap": [
+          ["$.Street.changeType", "changeType", "string"],
+          ["$.Street.usrn", "usrn", "number"],
+          ["@.streetDescription", "description", "string"],
+          ["@.townName", "townName", "string"],
+          ["@.administrativeArea", "administrativeArea","string"],
+          ["$.Street.streetSurface", "surface", "number"],
+          ["$.Street.streetClassification", "classification", "number"]
+        ],
+        "namespace": "strip"
+      },
+      "End": true
+    }
+  }
+}
