@@ -14,5 +14,5 @@
       "description": "Path to data"
     }
   },
-  "required": ["uiName", "uiType", "dataPath"]
+  "required": ["uiName", "uiType"]
 }
