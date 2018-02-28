@@ -6,6 +6,7 @@ class FlattenXmlFiles {
     this.rootXMLElement = resourceConfig.rootXMLElement
     this.pivotPath = resourceConfig.pivotPath
     this.headerMap = resourceConfig.headerMap
+    this.namespace = resourceConfig.namespace
     callback(null)
   }
 
@@ -16,7 +17,8 @@ class FlattenXmlFiles {
         csvPath: event.csvPath,
         rootXMLElement: this.rootXMLElement,
         pivotPath: this.pivotPath,
-        headerMap: this.headerMap
+        headerMap: this.headerMap,
+        namespace: this.namespace
       }
     )
       .then(() => context.sendTaskSuccess())
