@@ -72,7 +72,7 @@ describe('xmlFlatten State Resource', function () {
       const propertyExpected = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
       expect(property).to.eql(propertyExpected)
     })
-    
+
     it('shutdown Tymly', () => {
       return tymlyService.shutdown()
     })
