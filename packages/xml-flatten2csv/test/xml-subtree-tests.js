@@ -104,4 +104,34 @@ describe('xml-subtree-processor', () => {
       'a:line': [{'#text': 'Hello ', strong: [{'#text': 'World!'}]}]
     })
   })
+
+  it('strip namespace prefixes', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<a:body xmlns:a="urn:testing" xmlns:b="urn:moretesting"><a:p><a:line>Hello <b:strong>World!</b:strong></a:line></a:p></a:body>'),
+      'p',
+      { namespace: 'strip' }
+    ).each(sub => { tree = sub })
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      line: [{'#text': 'Hello ', strong: [{'#text': 'World!'}]}]
+    })
+  })
+
+  it('switch namespace prefixes', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream('<a:body xmlns:a="urn:testing" xmlns:b="urn:moretesting"><a:p><a:line>Hello <b:strong>World!</b:strong></a:line></a:p></a:body>'),
+      'a__p',
+      { namespace: '__' }
+    ).each(sub => { tree = sub })
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      a__line: [{'#text': 'Hello ', b__strong: [{'#text': 'World!'}]}]
+    })
+  })
 })

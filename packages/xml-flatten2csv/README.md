@@ -92,6 +92,7 @@ Output:
 | `rootXMLElement`      | `string`  | The XML root tag for each subtree to process, 
 | `pivotPath`           | `string`  | The jsonpath of the elements to split records on
 | `headerMap`           | `[array]` | See the [Header Map](#headerMap) section for more details.
+| `namespace`           | `string`  | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else 
 
 ### <a name="headerMap"></a>options.headerMap
 
