@@ -19,6 +19,8 @@ describe('xmlFlatten State Resource', function () {
   const sourceFile = path.resolve(fixture, 'input', 'exeter-extract.xml')
   const streetsFile = path.resolve(fixture, 'output', 'streets.csv')
   const streetsExpectedFile = path.resolve(fixture, 'expected', 'streets.csv')
+  const propertyFile = path.resolve(fixture, 'output', 'property.csv')
+  const propertyExpectedFile = path.resolve(fixture, 'expected', 'property.csv')
 
   describe('blueprint', () => {
     let tymlyService
@@ -46,24 +48,31 @@ describe('xmlFlatten State Resource', function () {
     it('run the execution to process the XML file', async () => {
       const executionDescription = await statebox.startExecution(
         {
-          xmlPath: sourceFile,
-          csvPath: streetsFile
+          streets: {
+            xmlPath: sourceFile,
+            csvPath: streetsFile
+          },
+          property: {
+            xmlPath: sourceFile,
+            csvPath: propertyFile
+          }
         }, // input
         STATE_MACHINE_NAME, // state machine name
         {
           sendResponse: 'COMPLETE'
         } // options
       )
-
       expect(executionDescription.status).to.eql('SUCCEEDED')
-      expect(executionDescription.currentStateName).to.eql('ExtractStreets')
 
-      const output = fs.readFileSync(streetsFile, {encoding: 'utf8'}).split('\n')
-      const expected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
+      const streets = fs.readFileSync(streetsFile, {encoding: 'utf8'}).split('\n')
+      const streetsExpected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
+      expect(streets).to.eql(streetsExpected)
 
-      expect(output).to.eql(expected)
+      const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+      const propertyExpected = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
+      expect(property).to.eql(propertyExpected)
     })
-
+    
     it('shutdown Tymly', () => {
       return tymlyService.shutdown()
     })
