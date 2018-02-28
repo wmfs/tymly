@@ -12,6 +12,10 @@
     "dataPath": {
       "type": "string",
       "description": "Path to data"
+    },
+    "defaults": {
+      "type": "object",
+      "description": "Default values"
     }
   },
   "required": []

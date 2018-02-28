@@ -4,6 +4,7 @@ const _ = require('lodash')
 
 class GetBoardData {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.models = env.bootedServices.storage.models
     this.modelName = resourceConfig.model
     callback(null)
