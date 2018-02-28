@@ -5,6 +5,7 @@
     "Goodbye": {
       "Type": "Task",
       "Resource": "module:goodbye",
+      "ResourceConfig": {},
       "End": true
     }
   }

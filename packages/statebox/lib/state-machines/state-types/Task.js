@@ -115,17 +115,30 @@ class Task extends BaseStateType {
       this.resource.init(_this.definition.ResourceConfig || {}, env, (err) => {
         if (err) return callback(err)
         if (_.get(this.resource, 'schema.required')) {
-          let valid = true
           this.resource.schema.required.map(requiredProperty => {
             if (this.ResourceConfig) {
-              if (!Object.keys(this.ResourceConfig).includes(requiredProperty)) valid = false
+              if (!Object.keys(this.ResourceConfig).includes(requiredProperty)) {
+                callback(new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`))
+              } else {
+                switch (this.resource.schema.properties[requiredProperty].type) {
+                  case 'object':
+                    if (!_.isPlainObject(this.ResourceConfig[requiredProperty])) {
+                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be an object`))
+                    }
+                    break
+                  case 'string':
+                    if (!_.isString(this.ResourceConfig[requiredProperty])) {
+                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be a string`))
+                    }
+                    break
+                }
+              }
             } else {
-              valid = false
+              callback(new Error(`State machine '${this.stateMachineName}' is missing a ResourceConfig`))
             }
           })
 
-          if (!valid) callback(new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`))
-          else callback(null)
+          callback(null)
         } else {
           callback(null)
         }
