@@ -2,7 +2,7 @@ const ReindexBase = require('../../../impl/reindex-base')
 
 class FullReindex extends ReindexBase {
   constructor () {
-    super('executeSolrFullReindex', 'fullReindexFail')
+    super('executeSolrFullReindex', 'fullReindexFail', require('./schema.json'))
   }
 } // FullReindex
 

@@ -1,7 +1,8 @@
 class ReindexBase {
-  constructor (functionName, errorCode) {
+  constructor (functionName, errorCode, schema) {
     this.functionName = functionName
     this.errorCode = errorCode
+    this.schema = schema
   }
 
   init (resourceConfig, env, callback) {

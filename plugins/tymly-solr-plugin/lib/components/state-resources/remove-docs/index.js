@@ -5,6 +5,7 @@ const debug = require('debug')('remove-docs')
 
 class removeDocs {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.services = env.bootedServices
     this.query = resourceConfig.query
     callback(null)

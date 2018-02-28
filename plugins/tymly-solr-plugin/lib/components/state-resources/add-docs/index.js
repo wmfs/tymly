@@ -3,6 +3,7 @@ const _ = require('lodash')
 
 class AddDocs {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.env = env
     this.core = resourceConfig.core
     this.services = env.bootedServices
