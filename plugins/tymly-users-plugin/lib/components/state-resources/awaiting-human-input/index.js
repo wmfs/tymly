@@ -5,6 +5,7 @@ const _ = require('lodash')
 
 class AwaitingHumanInput {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.uiType = resourceConfig.uiType
     this.uiName = resourceConfig.uiName
     this.dataPath = resourceConfig.dataPath

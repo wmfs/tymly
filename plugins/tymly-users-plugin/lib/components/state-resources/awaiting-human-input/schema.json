@@ -1,4 +1,18 @@
 {
   "type": "object",
-  "properties": {}
+  "properties": {
+    "uiName": {
+      "type": "string",
+      "description": "Name of the UI board or form"
+    },
+    "uiType": {
+      "type": "string",
+      "description": "Type of UI, either board or form"
+    },
+    "dataPath": {
+      "type": "string",
+      "description": "Path to data"
+    }
+  },
+  "required": ["uiName", "uiType", "dataPath"]
 }

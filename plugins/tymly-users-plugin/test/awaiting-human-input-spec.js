@@ -116,7 +116,6 @@ describe('awaitingUserInput state tests', function () {
         userId: 'test-user'
       },
       (err, executionDescription) => {
-        console.log(executionDescription.ctx)
         expect(err).to.eql(null)
         expect(Object.keys(executionDescription.ctx.requiredHumanInput)
           .includes('watchBoardSubscriptionId'))
