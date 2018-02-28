@@ -1,0 +1,11 @@
+{
+  "Comment": "Testing the required resource config",
+  "StartAt": "Goodbye",
+  "States": {
+    "Goodbye": {
+      "Type": "Task",
+      "Resource": "module:goodbye",
+      "End": true
+    }
+  }
+}

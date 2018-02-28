@@ -87,6 +87,7 @@ class Task extends BaseStateType {
       this.stateType = 'Task'
       const parts = stateDefinition.Resource.split(':')
       this.resourceType = parts[0]
+      this.ResourceConfig = stateDefinition.ResourceConfig
       switch (this.resourceType) {
         case 'module':
           const moduleName = parts[1]
@@ -111,11 +112,24 @@ class Task extends BaseStateType {
     this.resourceExpectsDoneCallback = this.resource.run.length === 3
 
     if (_.isFunction(this.resource.init)) {
-      this.resource.init(
-        _this.definition.ResourceConfig || {},
-        env,
-        callback
-      )
+      this.resource.init(_this.definition.ResourceConfig || {}, env, (err) => {
+        if (err) return callback(err)
+        if (_.get(this.resource, 'schema.required')) {
+          let valid = true
+          this.resource.schema.required.map(requiredProperty => {
+            if (this.ResourceConfig) {
+              if (!Object.keys(this.ResourceConfig).includes(requiredProperty)) valid = false
+            } else {
+              valid = false
+            }
+          })
+
+          if (!valid) callback(new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`))
+          else callback(null)
+        } else {
+          callback(null)
+        }
+      })
     } else {
       callback(null)
     }
