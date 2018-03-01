@@ -43,7 +43,7 @@
           ["$.changeType", "changeType", "string"],
           ["$.blpuState", "state", "number"],
           ["$.blpuStateDate", "state_date", "date"],
-          ["$.classificationCode", "class", "string"],
+          ["$..classificationCode", "class", "string"],
           ["$.parentUPRN", "parent_uprn", "number"],
           ["$.todo", "x", "string"],
           ["$.todo", "y", "string"],
