@@ -77,6 +77,25 @@ describe('xml-subtree-processor', () => {
     })
   })
 
+  it('strip extraneous whitespace nested elements', async () => {
+    let tree = null
+
+    await xmlSubtreeProcessor(
+      stream(`<body>
+  <p>
+    <line>Hello</line>
+    <line>World!</line>
+  </p>
+</body>`),
+      'p'
+    ).each(sub => { tree = sub })
+
+    expect(tree).to.exist()
+    expect(tree).to.eql({
+      line: [{ '#text': 'Hello' }, { '#text': 'World!' }]
+    })
+  })
+
   it('extract subtree with deeply nested elements', async () => {
     let tree = null
 

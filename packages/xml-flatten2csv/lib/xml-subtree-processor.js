@@ -45,6 +45,10 @@ class SubTreeCapture {
       return
     }
 
+    if (!t.trim().length) {
+      return
+    }
+
     const fullText = this.tree[TEXT] ? this.tree[TEXT] + t : t
     this.tree[TEXT] = fullText
   } // text
