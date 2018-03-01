@@ -38,6 +38,7 @@
         "pivotPath": "$..LandPropertyIdentifier",
         "headerMap": [
           ["@.lpiKey", "lpi_key", "string"],
+          ["@.logicalStatus", "lpi_status", "number"],
           ["$.uprn", "uprn", "number"],
           ["$..udprn", "udprn", "number"],
           ["$.changeType", "changeType", "string"],
