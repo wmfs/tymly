@@ -54,7 +54,7 @@
           ["$.country", "country", "string"],
           ["$.startDate", "la_start_date", "date"],
           ["$.lastUpdateDate", "last_update_date", "date"],
-          ["$.todo", "entry_date", "string"],
+          ["$.entryDate", "entry_date", "date"],
           ["$.todo", "rm_organisation_name", "string"],
           ["$.todo", "la_organisation", "string"],
           ["$.todo", "department_name", "string"],
