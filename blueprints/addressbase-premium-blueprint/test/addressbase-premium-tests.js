@@ -11,7 +11,7 @@ const expect = require('chai').expect
 
 const STATE_MACHINE_NAME = 'ordnanceSurvey_importAddressbasePremiumGml_1_0'
 
-describe('xmlFlatten State Resource', function () {
+describe('process addressbase-premium', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   const fixture = path.resolve(__dirname, 'fixtures')
