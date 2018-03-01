@@ -2,7 +2,7 @@ const jp = require('jsonpath')
 
 function transformPath (path, contextPath = '$') {
   if (typeof path === 'string') {
-    return jsonQueryOp(path.replace('@', contextPath))
+    return jsonQueryOp(path[0] === '@' ? path.replace('@', contextPath) : path)
   }
 
   // ok, it's a conditional
