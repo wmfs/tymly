@@ -52,7 +52,7 @@
           ["$.rpc", "rpc", "number"],
           ["$.localCustodianCode", "local_custodian_code", "number"],
           ["$.country", "country", "string"],
-          ["$.todo", "la_start_date", "string"],
+          ["$.startDate", "la_start_date", "date"],
           ["$.todo", "last_update_date", "string"],
           ["$.todo", "entry_date", "string"],
           ["$.todo", "rm_organisation_name", "string"],
