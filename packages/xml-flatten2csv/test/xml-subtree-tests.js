@@ -67,13 +67,16 @@ describe('xml-subtree-processor', () => {
     let tree = null
 
     await xmlSubtreeProcessor(
-      stream('<body><p><line>Hello</line><line>World!</line></p></body>'),
+      stream('<body><p><line><lineItem>Hello</lineItem></line><line><lineItem>World!</lineItem></line></p></body>'),
       'p'
     ).each(sub => { tree = sub })
 
     expect(tree).to.exist()
     expect(tree).to.eql({
-      line: [{ '#text': 'Hello' }, { '#text': 'World!' }]
+      line: [
+        { lineItem: [{'#text': 'Hello'}] },
+        { lineItem: [{'#text': 'World!'}] }
+      ]
     })
   })
 

@@ -19,7 +19,17 @@ function * processPivotArray (tree, pivotPath, count, selectPaths) {
 
     yield (csv)
   }
-} // processPivot
+} // processPivotArray
+
+function * processSteppedArray (tree, pivotPath, selectPaths) {
+  const pivotPaths = jp.paths(tree, pivotPath).map(path => jp.stringify(path))
+
+  for (const contextPath of pivotPaths) {
+    const csv = flattenJson(tree, contextPath, selectPaths)
+
+    yield (csv)
+  }
+} // processSteppedArray
 
 function * processSubtree (
   subTree,
@@ -28,11 +38,13 @@ function * processSubtree (
 ) {
   const cleanTree = simplifyJson(subTree)
 
-  const pivots = jp.query(cleanTree, pivotPath)[0]
+  const pivots = jp.query(cleanTree, pivotPath)
 
-  if (Array.isArray(pivots)) {
-    yield * processPivotArray(cleanTree, pivotPath, pivots.length, selectPaths)
-  } else if (pivots) {
+  if (pivots.length > 1) {
+    yield * processSteppedArray(cleanTree, pivotPath, selectPaths)
+  } else if (Array.isArray(pivots[0])) {
+    yield * processPivotArray(cleanTree, pivotPath, pivots[0].length, selectPaths)
+  } else if (pivots[0]) {
     yield * processPivot(cleanTree, pivotPath, selectPaths)
   }
 } // processSubtree
