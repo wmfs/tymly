@@ -11,7 +11,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "async": "2.6.0",
-    "boom": "72.0",
+    "boom": "7.2.0",
     "camelcase-keys": "4.2.0",
     "csv-string": "3.1.2",
     "debug": "3.1.0",
