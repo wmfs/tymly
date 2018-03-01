@@ -107,7 +107,7 @@
           ["$.postcodeLocator", "postcode_locator", "string"],
           ["$..DeliveryPointAddress.postcodeType", "postcode_type", "string"],
           ["$..DeliveryPointAddress.deliveryPointSuffix", "delivery_point_suffix", "string"],
-          ["$.todo", "addressbase_portal", "string"],
+          ["$.addressbasePostal", "addressbase_postal", "string"],
           ["$.todo", "po_box_number", "string"],
           ["$.todo", "ward_code", "string"],
           ["$.todo", "parish_code", "string"],
