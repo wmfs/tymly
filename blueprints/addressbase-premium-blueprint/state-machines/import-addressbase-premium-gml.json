@@ -44,7 +44,7 @@
           ["$.blpuState", "state", "number"],
           ["$.blpuStateDate", "state_date", "date"],
           ["$.classificationCode", "class", "string"],
-          ["$.todo", "parent_uprn", "string"],
+          ["$.parentUPRN", "parent_uprn", "number"],
           ["$.todo", "x", "string"],
           ["$.todo", "y", "string"],
           ["$.todo", "longitude", "string"],
