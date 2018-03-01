@@ -104,7 +104,7 @@
           ["$..DeliveryPointAddress.postTown", "post_town", "string"],
           ["$..DeliveryPointAddress.welshPostTown", "welsh_post_town", "string"],
           ["$..DeliveryPointAddress.postcode", "postcode", "string"],
-          ["$.todo", "postcode_locator", "string"],
+          ["$.postcodeLocator", "postcode_locator", "string"],
           ["$..DeliveryPointAddress.postcodeType", "postcode_type", "string"],
           ["$..DeliveryPointAddress.deliveryPointSuffix", "delivery_point_suffix", "string"],
           ["$.todo", "addressbase_portal", "string"],
