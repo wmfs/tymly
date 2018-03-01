@@ -50,7 +50,7 @@
           ["$.todo", "longitude", "string"],
           ["$.todo", "latitude", "string"],
           ["$.todo", "rpc", "string"],
-          ["$.todo", "local_custodian_code", "string"],
+          ["$.localCustodianCode", "local_custodian_code", "number"],
           ["$.todo", "country", "string"],
           ["$.todo", "la_start_date", "string"],
           ["$.todo", "last_update_date", "string"],
