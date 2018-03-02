@@ -14,10 +14,10 @@ module.exports = async function generateStats (options, callback) {
 
   const result = await options.client.query(getScoresSQL(options))
   result.rows.map(row => scores.push(row.risk_score))
-  mean = stats.mean(scores)
-  stdev = stats.stdev(scores)
 
   if (scores.length > 0) {
+    mean = stats.mean(scores)
+    stdev = stats.stdev(scores)
     ranges = generateRanges(scores, mean, stdev)
     await options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges))
     const res = await options.client.query(getViewRowsSQL(options))
@@ -27,7 +27,12 @@ module.exports = async function generateStats (options, callback) {
       let normal = dist.Normal(mean, stdev)
       let distribution = normal.pdf(r.risk_score).toFixed(4)
 
-      options.client.query(updateRangeSQL(options, range, r, distribution))
+      options.rankingModel.upsert({
+        [options.pk]: r[_.snakeCase(options.pk)],
+        rankingName: options.category,
+        range: _.kebabCase(range),
+        distribution: distribution
+      }, {})
         .then(() => cb(null))
         .catch(err => cb(err))
     }, (err) => {
@@ -98,16 +103,6 @@ function getScoresSQL (options) {
 
 function getViewRowsSQL (options) {
   return `SELECT ${_.snakeCase(options.pk)}, risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
-}
-
-function updateRangeSQL (options, range, row, distribution) {
-  return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range 
-  (${_.snakeCase(options.pk)} bigint not null primary key, range text, distribution numeric);
-  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range (${_.snakeCase(options.pk)}, range, distribution)
-  VALUES (${row[_.snakeCase(options.pk)]}, '${_.kebabCase(range)}', ${distribution})
-  ON CONFLICT (${_.snakeCase(options.pk)}) DO UPDATE SET
-  range = '${_.kebabCase(range)}',
-  distribution = ${distribution};`
 }
 
 function generateStatsSQL (options, scores, mean, stdev, ranges) {

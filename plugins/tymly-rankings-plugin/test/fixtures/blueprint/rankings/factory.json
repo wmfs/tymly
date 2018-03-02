@@ -1,6 +1,7 @@
 {
   "label": "Factory ranking",
   "description": "Maps where to find the data and weightings for each factor",
+  "rankingModel": "rankingUprns",
   "source": {
     "model": "gazetteer",
     "property": "uprn",

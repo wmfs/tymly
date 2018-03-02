@@ -26,6 +26,8 @@ class RankingService {
 
     async.each(rankingKeysWithValuesAndRegistry, (key, cb) => {
       const value = rankings[key]
+      const rankingModel = options.bootedServices.storage.models[`${_.camelCase(value.namespace)}_${value.rankingModel}`]
+
       client.query(
         generateViewStatement({
           category: _.snakeCase(value.name),
@@ -41,7 +43,8 @@ class RankingService {
             category: value.name,
             schema: value.namespace,
             pk: value.source.property,
-            name: 'test' // TODO: 'test' should be inferred
+            name: value.namespace,
+            rankingModel: rankingModel
           }, (err) => {
             if (err) cb(err)
             cb()
@@ -57,5 +60,5 @@ class RankingService {
 
 module.exports = {
   serviceClass: RankingService,
-  bootAfter: ['registry']
+  bootAfter: ['registry', 'storage']
 }

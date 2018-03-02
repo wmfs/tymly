@@ -15,7 +15,7 @@ const generateStats = require('./../lib/components/services/rankings/generate-st
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService
+  let tymlyService, rankingModel
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -40,6 +40,7 @@ describe('Tests the Ranking Service', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
+        rankingModel = tymlyServices.storage.models['test_rankingUprns']
         done()
       }
     )
@@ -283,7 +284,8 @@ describe('Tests the Ranking Service', function () {
       category: 'factory',
       schema: 'test',
       pk: 'uprn',
-      name: 'test'
+      name: 'test',
+      rankingModel: rankingModel
     }, function (err) {
       done(err)
     })
@@ -316,19 +318,34 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the data in uprn_to_range', function (done) {
     client.query(
-      'SELECT * FROM test.uprn_to_range',
+      'SELECT * FROM test.ranking_uprns',
       function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows).to.eql([
-          {uprn: '1', range: 'very-high', distribution: '0.0185'},
-          {uprn: '2', range: 'medium', distribution: '0.0409'},
-          {uprn: '3', range: 'medium', distribution: '0.0354'},
-          {uprn: '4', range: 'medium', distribution: '0.0455'},
-          {uprn: '5', range: 'very-high', distribution: '0.0247'},
-          {uprn: '6', range: 'very-low', distribution: '0.0166'}
-        ])
+        if (err) return done(err)
+
+        expect(result.rows[0].uprn).to.eql('1')
+        expect(result.rows[0].range).to.eql('very-high')
+        expect(result.rows[0].distribution).to.eql('0.0185')
+
+        expect(result.rows[1].uprn).to.eql('2')
+        expect(result.rows[1].range).to.eql('medium')
+        expect(result.rows[1].distribution).to.eql('0.0409')
+
+        expect(result.rows[2].uprn).to.eql('3')
+        expect(result.rows[2].range).to.eql('medium')
+        expect(result.rows[2].distribution).to.eql('0.0354')
+
+        expect(result.rows[3].uprn).to.eql('4')
+        expect(result.rows[3].range).to.eql('medium')
+        expect(result.rows[3].distribution).to.eql('0.0455')
+
+        expect(result.rows[4].uprn).to.eql('5')
+        expect(result.rows[4].range).to.eql('very-high')
+        expect(result.rows[4].distribution).to.eql('0.0247')
+
+        expect(result.rows[5].uprn).to.eql('6')
+        expect(result.rows[5].range).to.eql('very-low')
+        expect(result.rows[5].distribution).to.eql('0.0166')
+
         done()
       }
     )

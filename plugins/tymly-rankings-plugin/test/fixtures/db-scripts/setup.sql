@@ -15,7 +15,9 @@ CREATE TABLE test.gazetteer (
 
 CREATE TABLE test.ranking_uprns (
  uprn bigint not null primary key,
- ranking_name text not null
+ ranking_name text not null,
+ range text,
+ distribution numeric
 );
 
 CREATE TABLE test.food (
