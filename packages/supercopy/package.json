@@ -19,7 +19,7 @@
     "pg": "7.4.1",
     "pg-copy-streams": "1.2.0",
     "rimraf": "2.6.2",
-    "upath": "1.0.2"
+    "upath": "1.0.4"
   },
   "devDependencies": {
     "chai": "4.1.0",

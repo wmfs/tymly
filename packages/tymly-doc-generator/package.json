@@ -14,7 +14,7 @@
     "lodash": "4.17.5",
     "sprintf": "0.1.5",
     "tymly": "0.0.15",
-    "upath": "1.0.2"
+    "upath": "1.0.4"
   },
   "devDependencies": {
     "mocha": "5.0.1",
