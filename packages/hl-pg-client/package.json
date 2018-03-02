@@ -12,7 +12,7 @@
     "pg": "7.4.1"
   },
   "devDependencies": {
-    "chai": "4.1.0",
+    "chai": "4.1.2",
     "mocha": "5.0.1",
     "standard": "11.0.0"
   },
