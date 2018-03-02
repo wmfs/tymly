@@ -15,7 +15,7 @@ const generateStats = require('./../lib/components/services/rankings/generate-st
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, rankingModel
+  let tymlyService, rankingModel, statsModel
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -41,6 +41,7 @@ describe('Tests the Ranking Service', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         rankingModel = tymlyServices.storage.models['test_rankingUprns']
+        statsModel = tymlyServices.storage.models['test_modelStats']
         done()
       }
     )
@@ -285,7 +286,8 @@ describe('Tests the Ranking Service', function () {
       schema: 'test',
       pk: 'uprn',
       name: 'test',
-      rankingModel: rankingModel
+      rankingModel: rankingModel,
+      statsModel: statsModel
     }, function (err) {
       done(err)
     })
@@ -293,24 +295,22 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the data in the statistics table', function (done) {
     client.query(
-      'SELECT * FROM test.test_stats',
+      'SELECT * FROM test.model_stats',
       function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows[0]).to.eql({
-          category: 'factory',
-          count: '6',
-          mean: '22.33',
-          median: '21.00',
-          variance: '73.89',
-          stdev: '8.60',
-          ranges: {
-            veryLow: {lowerBound: 0, upperBound: '13.74'},
-            veryHigh: {lowerBound: '30.94', upperBound: 34},
-            medium: {lowerBound: '13.75', upperBound: '30.93'}
-          }
+        if (err) return done(err)
+
+        expect(result.rows[0].category).to.eql('factory')
+        expect(result.rows[0].count).to.eql(6)
+        expect(result.rows[0].mean).to.eql('22.33')
+        expect(result.rows[0].median).to.eql('21.00')
+        expect(result.rows[0].variance).to.eql('73.89')
+        expect(result.rows[0].stdev).to.eql('8.60')
+        expect(result.rows[0].ranges).to.eql({
+          veryLow: {lowerBound: 0, upperBound: '13.74'},
+          veryHigh: {lowerBound: '30.94', upperBound: 34},
+          medium: {lowerBound: '13.75', upperBound: '30.93'}
         })
+
         done()
       }
     )

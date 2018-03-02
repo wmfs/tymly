@@ -19,7 +19,17 @@ module.exports = async function generateStats (options, callback) {
     mean = stats.mean(scores)
     stdev = stats.stdev(scores)
     ranges = generateRanges(scores, mean, stdev)
-    await options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges))
+
+    await options.statsModel.upsert({
+      category: _.kebabCase(options.category),
+      count: scores.length,
+      mean: mean.toFixed(2),
+      median: stats.median(scores).toFixed(2),
+      variance: stats.variance(scores).toFixed(2),
+      stdev: stdev.toFixed(2),
+      ranges: JSON.stringify(ranges)
+    }, {})
+
     const res = await options.client.query(getViewRowsSQL(options))
 
     async.eachSeries(res.rows, (r, cb) => {
@@ -103,19 +113,4 @@ function getScoresSQL (options) {
 
 function getViewRowsSQL (options) {
   return `SELECT ${_.snakeCase(options.pk)}, risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
-}
-
-function generateStatsSQL (options, scores, mean, stdev, ranges) {
-  return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats
-  (category text not null primary key, count numeric, mean numeric, median numeric, variance numeric, stdev numeric, ranges jsonb);
-  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category, count, mean, median, variance, stdev, ranges)
-  VALUES ('${_.kebabCase(options.category)}', ${scores.length}, ${mean.toFixed(2)}, ${stats.median(scores).toFixed(2)},
-  ${stats.variance(scores).toFixed(2)}, ${stdev.toFixed(2)}, '${JSON.stringify(ranges)}')
-  ON CONFLICT (category) DO UPDATE SET
-  count = ${scores.length},
-  mean = ${mean.toFixed(2)},
-  median = ${stats.median(scores).toFixed(2)},
-  variance = ${stats.variance(scores).toFixed(2)},
-  stdev = ${stdev.toFixed(2)},
-  ranges = '${JSON.stringify(ranges)}';`
 }
