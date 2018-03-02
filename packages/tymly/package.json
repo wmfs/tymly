@@ -21,7 +21,7 @@
     "sprintf-js": "1.1.1",
     "statebox": "0.0.6",
     "underscore-query": "3.3.2",
-    "upath": "1.0.2",
+    "upath": "1.0.4",
     "uuid": "3.2.1"
   },
   "devDependencies": {
