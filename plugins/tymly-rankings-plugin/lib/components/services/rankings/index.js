@@ -7,6 +7,7 @@ const generateStats = require('./generate-stats')
 
 class RankingService {
   boot (options, callback) {
+    this.viewSQL = {}
     const client = options.bootedServices.storage.client
     const rankings = options.blueprintComponents.rankings
 
@@ -29,14 +30,16 @@ class RankingService {
       const rankingModel = options.bootedServices.storage.models[`${_.camelCase(value.namespace)}_${value.rankingModel}`]
       const statsModel = options.bootedServices.storage.models[`${_.camelCase(value.namespace)}_${value.statsModel}`]
 
+      this.viewSQL[key] = generateViewStatement({
+        category: _.snakeCase(value.name),
+        schema: _.snakeCase(value.namespace),
+        source: value.source,
+        ranking: value.factors,
+        registry: options.bootedServices.registry.registry[key]
+      })
+
       client.query(
-        generateViewStatement({
-          category: _.snakeCase(value.name),
-          schema: _.snakeCase(value.namespace),
-          source: value.source,
-          ranking: value.factors,
-          registry: options.bootedServices.registry.registry[key]
-        }),
+        this.viewSQL[key],
         (err) => {
           if (err) cb(err)
           generateStats({
