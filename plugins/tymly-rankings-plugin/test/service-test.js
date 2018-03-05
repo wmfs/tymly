@@ -11,11 +11,10 @@ const existsCase = require('./../lib/components/services/rankings/case-statement
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
-const generateStats = require('./../lib/components/services/rankings/generate-stats')
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, registry, rankingModel, statsModel
+  let tymlyService, rankingModel, statsModel
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -40,7 +39,6 @@ describe('Tests the Ranking Service', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        registry = tymlyServices.registry.registry['test_factory']
         rankingModel = tymlyServices.storage.models['test_rankingUprns']
         statsModel = tymlyServices.storage.models['test_modelStats']
         done()
@@ -280,77 +278,60 @@ describe('Tests the Ranking Service', function () {
     )
   })
 
-  it('should generate a statistics table', function (done) {
-    generateStats({
-      client: client,
-      category: 'factory',
-      schema: 'test',
-      pk: 'uprn',
-      name: 'test',
-      rankingModel: rankingModel,
-      statsModel: statsModel,
-      registry: registry
-    }, function (err) {
-      done(err)
-    })
-  })
-
-  it('should check the data in the statistics table', function (done) {
-    client.query(
-      'SELECT * FROM test.model_stats',
-      function (err, result) {
-        if (err) return done(err)
-
-        expect(result.rows[0].category).to.eql('factory')
-        expect(result.rows[0].count).to.eql(6)
-        expect(result.rows[0].mean).to.eql('22.33')
-        expect(result.rows[0].median).to.eql('21.00')
-        expect(result.rows[0].variance).to.eql('73.89')
-        expect(result.rows[0].stdev).to.eql('8.60')
-        expect(result.rows[0].ranges).to.eql({
-          veryLow: {lowerBound: 0, upperBound: '13.74', exponent: '0.01'},
-          veryHigh: {lowerBound: '30.94', upperBound: 34, exponent: '0.03'},
-          medium: {lowerBound: '13.75', upperBound: '30.93', exponent: '0.02'}
+  it('should check the data in the statistics model', function (done) {
+    statsModel.find({})
+      .then(result => {
+        expect(result[0].category).to.eql('factory')
+        expect(result[0].count).to.eql(6)
+        expect(result[0].mean).to.eql('22.33')
+        expect(result[0].median).to.eql('21.00')
+        expect(result[0].variance).to.eql('73.89')
+        expect(result[0].stdev).to.eql('8.60')
+        expect(result[0].ranges).to.eql({
+          veryLow: {lowerBound: 0, upperBound: '13.74', exponent: '-0.00088'},
+          veryHigh: {lowerBound: '30.94', upperBound: 34, exponent: '-0.0075'},
+          medium: {lowerBound: '13.75', upperBound: '30.93', exponent: '-0.0004'}
         })
-
         done()
-      }
-    )
+      })
+      .catch(err => done(err))
   })
 
-  it('should check the data in uprn_to_range', function (done) {
-    client.query(
-      'SELECT * FROM test.ranking_uprns',
-      function (err, result) {
-        if (err) return done(err)
+  it('should check the data in ranking model', function (done) {
+    rankingModel.find({})
+      .then(result => {
+        expect(result[0].uprn).to.eql('1')
+        expect(result[0].range).to.eql('very-high')
+        expect(result[0].distribution).to.eql('0.0185')
+        expect(result[0].growthCurve).to.eql('0.42710')
 
-        expect(result.rows[0].uprn).to.eql('1')
-        expect(result.rows[0].range).to.eql('very-high')
-        expect(result.rows[0].distribution).to.eql('0.0185')
+        expect(result[1].uprn).to.eql('2')
+        expect(result[1].range).to.eql('medium')
+        expect(result[1].distribution).to.eql('0.0409')
+        expect(result[1].growthCurve).to.eql('0.22231')
 
-        expect(result.rows[1].uprn).to.eql('2')
-        expect(result.rows[1].range).to.eql('medium')
-        expect(result.rows[1].distribution).to.eql('0.0409')
+        expect(result[2].uprn).to.eql('3')
+        expect(result[2].range).to.eql('medium')
+        expect(result[2].distribution).to.eql('0.0354')
+        expect(result[2].growthCurve).to.eql('0.19996')
 
-        expect(result.rows[2].uprn).to.eql('3')
-        expect(result.rows[2].range).to.eql('medium')
-        expect(result.rows[2].distribution).to.eql('0.0354')
+        expect(result[3].uprn).to.eql('4')
+        expect(result[3].range).to.eql('medium')
+        expect(result[3].distribution).to.eql('0.0455')
+        expect(result[3].growthCurve).to.eql('0.29303')
 
-        expect(result.rows[3].uprn).to.eql('4')
-        expect(result.rows[3].range).to.eql('medium')
-        expect(result.rows[3].distribution).to.eql('0.0455')
+        expect(result[4].uprn).to.eql('5')
+        expect(result[4].range).to.eql('very-high')
+        expect(result[4].distribution).to.eql('0.0247')
+        expect(result[4].growthCurve).to.eql('0.70401')
 
-        expect(result.rows[4].uprn).to.eql('5')
-        expect(result.rows[4].range).to.eql('very-high')
-        expect(result.rows[4].distribution).to.eql('0.0247')
-
-        expect(result.rows[5].uprn).to.eql('6')
-        expect(result.rows[5].range).to.eql('very-low')
-        expect(result.rows[5].distribution).to.eql('0.0166')
-
+        expect(result[5].uprn).to.eql('6')
+        expect(result[5].range).to.eql('very-low')
+        expect(result[5].distribution).to.eql('0.0166')
+        expect(result[5].growthCurve).to.eql(null)
         done()
-      }
-    )
+      })
+      .catch(err => done(err))
   })
 
   it('should clean up the test resources', () => {

@@ -4,6 +4,7 @@ const _ = require('lodash')
 const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
+const moment = require('moment')
 const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = async function generateStats (options, callback) {
@@ -33,19 +34,26 @@ module.exports = async function generateStats (options, callback) {
     const res = await options.client.query(getViewRowsSQL(options))
 
     async.eachSeries(res.rows, (r, cb) => {
-      let range = findRange(ranges, r.risk_score)
-      let normal = dist.Normal(mean, stdev)
-      let distribution = normal.pdf(r.risk_score).toFixed(4)
+      const range = findRange(ranges, r.risk_score)
+      const normal = dist.Normal(mean, stdev)
+      const distribution = normal.pdf(r.risk_score).toFixed(4)
 
-      // calculate the growth curve here and upsert to rankingModel below
+      options.rankingModel.findById(r.uprn)
+        .then(row => {
+          const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
 
-      options.rankingModel.upsert({
-        [options.pk]: r[_.snakeCase(options.pk)],
-        rankingName: options.category,
-        range: _.kebabCase(range),
-        distribution: distribution
-      }, {})
-        .then(() => cb(null))
+          options.rankingModel.upsert({
+            [options.pk]: r[_.snakeCase(options.pk)],
+            rankingName: options.category,
+            range: _.kebabCase(range),
+            distribution: distribution,
+            growthCurve: growthCurve
+          }, {
+            setMissingPropertiesToNull: false
+          })
+            .then(() => cb(null))
+            .catch(err => cb(err))
+        })
         .catch(err => cb(err))
     }, (err) => {
       if (err) callback(err)
@@ -56,6 +64,16 @@ module.exports = async function generateStats (options, callback) {
     debug(options.category + ' - No scores found')
     callback(null)
   }
+}
+
+function calculateGrowthCurve (exp, lastAuditDate, riskScore) {
+  const daysSince = moment().diff(lastAuditDate, 'days')
+  const expression = Math.exp(exp * daysSince)
+  const denominator = 1 + (81 * expression)
+
+  debug(`${riskScore} / ( 1 + ( 81 * ( ${daysSince} ^ ${exp} ) ) )`)
+
+  return riskScore / denominator
 }
 
 function generateRanges (scores, mean, stdev, exponents) {
