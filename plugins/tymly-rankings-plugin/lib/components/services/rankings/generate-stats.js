@@ -18,7 +18,7 @@ module.exports = async function generateStats (options, callback) {
   if (scores.length > 0) {
     mean = stats.mean(scores)
     stdev = stats.stdev(scores)
-    ranges = generateRanges(scores, mean, stdev)
+    ranges = generateRanges(scores, mean, stdev, options.registry.value.exponent)
 
     await options.statsModel.upsert({
       category: _.kebabCase(options.category),
@@ -36,6 +36,8 @@ module.exports = async function generateStats (options, callback) {
       let range = findRange(ranges, r.risk_score)
       let normal = dist.Normal(mean, stdev)
       let distribution = normal.pdf(r.risk_score).toFixed(4)
+
+      // calculate the growth curve here and upsert to rankingModel below
 
       options.rankingModel.upsert({
         [options.pk]: r[_.snakeCase(options.pk)],
@@ -56,43 +58,51 @@ module.exports = async function generateStats (options, callback) {
   }
 }
 
-function generateRanges (scores, mean, stdev) {
+function generateRanges (scores, mean, stdev, exponents) {
   if (scores.length > 10000) {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - (2 * +stdev)).toFixed(2)
+        upperBound: (+mean - (2 * +stdev)).toFixed(2),
+        exponent: exponents.veryLow
       },
       low: {
         lowerBound: (+mean - (2 * +stdev) + +0.01).toFixed(2),
-        upperBound: (+mean - +stdev).toFixed(2)
+        upperBound: (+mean - +stdev).toFixed(2),
+        exponent: exponents.low
       },
       medium: {
         lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2)
+        upperBound: (+mean + +stdev).toFixed(2),
+        exponent: exponents.medium
       },
       high: {
         lowerBound: (+mean + +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + (2 * +stdev)).toFixed(2)
+        upperBound: (+mean + (2 * +stdev)).toFixed(2),
+        exponent: exponents.high
       },
       veryHigh: {
         lowerBound: (+mean + (2 * +stdev) + +0.01).toFixed(2),
-        upperBound: Math.max(...scores)
+        upperBound: Math.max(...scores),
+        exponent: exponents.veryHigh
       }
     }
   } else {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - +stdev).toFixed(2)
+        upperBound: (+mean - +stdev).toFixed(2),
+        exponent: exponents.veryLow
       },
       medium: {
         lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2)
+        upperBound: (+mean + +stdev).toFixed(2),
+        exponent: exponents.medium
       },
       veryHigh: {
         lowerBound: (+mean + +stdev + +0.01).toFixed(2),
-        upperBound: Math.max(...scores)
+        upperBound: Math.max(...scores),
+        exponent: exponents.veryHigh
       }
     }
   }
@@ -107,7 +117,6 @@ function findRange (ranges, score) {
 }
 
 function getScoresSQL (options) {
-  // TODO: 'risk' in risk_score should be inferred
   return `SELECT risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
 }
 

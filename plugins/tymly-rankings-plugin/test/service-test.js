@@ -15,7 +15,7 @@ const generateStats = require('./../lib/components/services/rankings/generate-st
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, rankingModel, statsModel
+  let tymlyService, registry, rankingModel, statsModel
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -40,6 +40,7 @@ describe('Tests the Ranking Service', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
+        registry = tymlyServices.registry.registry['test_factory']
         rankingModel = tymlyServices.storage.models['test_rankingUprns']
         statsModel = tymlyServices.storage.models['test_modelStats']
         done()
@@ -287,7 +288,8 @@ describe('Tests the Ranking Service', function () {
       pk: 'uprn',
       name: 'test',
       rankingModel: rankingModel,
-      statsModel: statsModel
+      statsModel: statsModel,
+      registry: registry
     }, function (err) {
       done(err)
     })
@@ -306,9 +308,9 @@ describe('Tests the Ranking Service', function () {
         expect(result.rows[0].variance).to.eql('73.89')
         expect(result.rows[0].stdev).to.eql('8.60')
         expect(result.rows[0].ranges).to.eql({
-          veryLow: {lowerBound: 0, upperBound: '13.74'},
-          veryHigh: {lowerBound: '30.94', upperBound: 34},
-          medium: {lowerBound: '13.75', upperBound: '30.93'}
+          veryLow: {lowerBound: 0, upperBound: '13.74', exponent: '0.01'},
+          veryHigh: {lowerBound: '30.94', upperBound: 34, exponent: '0.03'},
+          medium: {lowerBound: '13.75', upperBound: '30.93', exponent: '0.02'}
         })
 
         done()

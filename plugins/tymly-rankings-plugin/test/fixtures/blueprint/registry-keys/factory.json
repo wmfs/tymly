@@ -6,6 +6,11 @@
       "value": {
         "type": "object",
         "default": {
+          "exponent": {
+            "veryLow": "0.01",
+            "medium": "0.02",
+            "veryHigh": "0.03"
+          },
           "usage": {
             "type": "constant",
             "score": 8

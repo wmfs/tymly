@@ -9,3 +9,4 @@ DROP TABLE IF EXISTS test.ranking_uprns;
 DROP TABLE IF EXISTS test.model_stats;
 
 DROP SCHEMA IF EXISTS test;
+DROP SCHEMA IF EXISTS tymly CASCADE;
