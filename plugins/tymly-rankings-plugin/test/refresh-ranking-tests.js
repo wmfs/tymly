@@ -209,12 +209,6 @@ describe('Tests the Ranking State Resource', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 
-  it('should delete this registry key', function (done) {
-    client.query('DELETE FROM tymly.registry_key WHERE key = \'test_factory\'', function (err) {
-      done(err)
-    })
-  })
-
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
