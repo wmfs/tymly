@@ -1,7 +1,7 @@
 {
 	"name": "xml2csv",
 	"description": "Convert XML file to CSV file",
-	"version": "0.0.8",
+	"version": "1.0.1",
 	"keywords": [
 		"xml",
 		"convert",
