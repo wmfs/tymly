@@ -9,7 +9,7 @@
     "debug": "3.1.0",
     "glob": "7.1.2",
     "smithereens": "0.0.8",
-    "xml2csv": "0.0.8",
+    "xml2csv": "1.0.1",
     "xml-flatten2csv": "0.0.1"
   },
   "devDependencies": {
