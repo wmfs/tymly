@@ -113,6 +113,11 @@ describe('Tests the Ranking State Resource', function () {
         setRegistryKey: {
           key: 'test_factory',
           value: {
+            'exponent': {
+              'veryLow': '0.01',
+              'medium': '0.02',
+              'veryHigh': '0.03'
+            },
             'usage': {
               'type': 'constant',
               'score': 12

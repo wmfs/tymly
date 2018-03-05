@@ -9,11 +9,32 @@
       "type": "integer",
       "maxLength": 12
     },
+    "address": {
+      "type": "object"
+    },
+    "premiseUse": {
+      "type": "object"
+    },
     "footprint": {
       "type": "number",
       "maxLength": 6,
       "multipleOf": 0.01,
       "description": "The area of the building in sq. meters."
+    },
+    "constructionType": {
+      "type": "string"
+    },
+    "isDomestic": {
+      "type": "boolean"
+    },
+    "isNonDomestic": {
+      "type": "boolean"
+    },
+    "premiseType": {
+      "type": "string"
+    },
+    "FSEC": {
+      "type": "string"
     },
     "floors": {
       "type": "integer",
