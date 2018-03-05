@@ -46,7 +46,8 @@ class RankingService {
             pk: value.source.property,
             name: value.namespace,
             rankingModel: rankingModel,
-            statsModel: statsModel
+            statsModel: statsModel,
+            registry: options.bootedServices.registry.registry[key]
           }, (err) => {
             if (err) cb(err)
             cb()
