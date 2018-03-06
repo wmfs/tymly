@@ -14,7 +14,7 @@ const generateView = require('./../lib/components/services/rankings/generate-vie
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, rankingModel, statsModel, viewSQL
+  let tymlyService, statebox, rankingModel, statsModel, viewSQL, growthCurveBefore
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -39,6 +39,7 @@ describe('Tests the Ranking Service', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
+        statebox = tymlyServices.statebox
         rankingModel = tymlyServices.storage.models['test_rankingUprns']
         statsModel = tymlyServices.storage.models['test_modelStats']
         viewSQL = tymlyServices.rankings.viewSQL
@@ -203,9 +204,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should execute the generated view statement', function (done) {
-    client.query(viewSQL['test_factory'], (err) => {
-      done(err)
-    })
+    client.query(viewSQL['test_factory'], (err) => done(err))
   })
 
   it('should ensure the generated view holds the correct data', function (done) {
@@ -297,30 +296,32 @@ describe('Tests the Ranking Service', function () {
   it('should check the data in ranking model', function (done) {
     rankingModel.find({})
       .then(result => {
+        growthCurveBefore = result[4].growthCurve
+
         expect(result[0].uprn).to.eql('1')
         expect(result[0].range).to.eql('very-high')
         expect(result[0].distribution).to.eql('0.0185')
-        expect(result[0].growthCurve).to.eql('0.42710')
+        expect(result[0].growthCurve).to.not.eql(null)
 
         expect(result[1].uprn).to.eql('2')
         expect(result[1].range).to.eql('medium')
         expect(result[1].distribution).to.eql('0.0409')
-        expect(result[1].growthCurve).to.eql('0.22231')
+        expect(result[1].growthCurve).to.not.eql(null)
 
         expect(result[2].uprn).to.eql('3')
         expect(result[2].range).to.eql('medium')
         expect(result[2].distribution).to.eql('0.0354')
-        expect(result[2].growthCurve).to.eql('0.19996')
+        expect(result[2].growthCurve).to.not.eql(null)
 
         expect(result[3].uprn).to.eql('4')
         expect(result[3].range).to.eql('medium')
         expect(result[3].distribution).to.eql('0.0455')
-        expect(result[3].growthCurve).to.eql('0.29303')
+        expect(result[3].growthCurve).to.not.eql(null)
 
         expect(result[4].uprn).to.eql('5')
         expect(result[4].range).to.eql('very-high')
         expect(result[4].distribution).to.eql('0.0247')
-        expect(result[4].growthCurve).to.eql('0.70401')
+        expect(result[4].growthCurve).to.not.eql(null)
 
         expect(result[5].uprn).to.eql('6')
         expect(result[5].range).to.eql('very-low')
@@ -329,6 +330,45 @@ describe('Tests the Ranking Service', function () {
         done()
       })
       .catch(err => done(err))
+  })
+
+  it('should change the date for one of the factory properties', (done) => {
+    rankingModel.upsert({
+      uprn: 5,
+      rankingName: 'factory',
+      lastAuditDate: '2018-03-05 09:52:31.62943+01'
+    }, {
+      setMissingPropertiesToNull: false
+    })
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  it('should refresh the rankings for factory via state machine since we\'ve changed the date', (done) => {
+    statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory'
+      },
+      'test_refreshRanking_1_0',
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
+        done()
+      }
+    )
+  })
+
+  it('should check the growth curve has changed', (done) => {
+    rankingModel.findById(5, (err, doc) => {
+      expect(+doc.growthCurve).to.be.lt(+growthCurveBefore)
+      done(err)
+    })
   })
 
   it('should clean up the test resources', () => {

@@ -10,16 +10,13 @@ const debug = require('debug')('tymly-rankings-plugin')
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
-  let scores = []
-  let ranges, mean, stdev
-
   const result = await options.client.query(getScoresSQL(options))
-  result.rows.map(row => scores.push(row.risk_score))
+  const scores = result.rows.map(row => row.risk_score)
 
   if (scores.length > 0) {
-    mean = stats.mean(scores)
-    stdev = stats.stdev(scores)
-    ranges = generateRanges(scores, mean, stdev, options.registry.value.exponent)
+    const mean = stats.mean(scores)
+    const stdev = stats.stdev(scores)
+    const ranges = generateRanges(scores, mean, stdev, options.registry.value.exponent)
 
     await options.statsModel.upsert({
       category: _.kebabCase(options.category),
@@ -40,6 +37,7 @@ module.exports = async function generateStats (options, callback) {
 
       options.rankingModel.findById(r.uprn)
         .then(row => {
+          // TODO: Make this less specific and more generic to any rankings
           const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
 
           options.rankingModel.upsert({
@@ -66,12 +64,12 @@ module.exports = async function generateStats (options, callback) {
   }
 }
 
-function calculateGrowthCurve (exp, lastAuditDate, riskScore) {
-  const daysSince = moment().diff(lastAuditDate, 'days')
+function calculateGrowthCurve (exp, date, riskScore) {
+  const daysSince = moment().diff(date, 'days')
   const expression = Math.exp(exp * daysSince)
   const denominator = 1 + (81 * expression)
 
-  debug(`${riskScore} / ( 1 + ( 81 * ( ${daysSince} ^ ${exp} ) ) )`)
+  debug(`Calculating growth curve: ${riskScore} / ( 1 + ( 81 * ( ${daysSince} ^ ${exp} ) ) ) = ${riskScore / denominator}`)
 
   return riskScore / denominator
 }
