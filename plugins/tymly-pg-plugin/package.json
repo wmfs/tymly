@@ -15,7 +15,7 @@
     "pg-diff-sync": "0.0.11",
     "pg-info": "0.0.15",
     "pg-model": "0.0.9",
-    "pg-telepods": "0.0.6",
+    "pg-telepods": "0.0.4",
     "relationize": "0.0.19",
     "supercopy": "0.0.6",
     "tymly": "0.0.15"
