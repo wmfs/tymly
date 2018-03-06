@@ -53,8 +53,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -127,8 +127,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -169,8 +169,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: ['Gazetteer', 'hr'],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -207,8 +207,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
+          teams: [],
+          todos: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
           formNames: {},
           startable: []
         }
@@ -249,8 +249,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: ['Birmingham (Red watch)', 'Another team'],
-          todoExecutionNames: [],
+          teams: ['Birmingham (Red watch)', 'Another team'],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -286,8 +286,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {
             'test_bookSomeoneSick': '0d6decf12e4ced2f862735be6c3df15543075fd8',
             'processAnExpenseClaim': ''
@@ -332,8 +332,8 @@ describe('user-remit tymly-users-plugin tests', function () {
             'test_expenses': ''
           },
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }
@@ -374,8 +374,8 @@ describe('user-remit tymly-users-plugin tests', function () {
             'test_personalDetails': '7f9187a7193896052bd2a97b42c4bc7a4f4f0b60'
           },
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }

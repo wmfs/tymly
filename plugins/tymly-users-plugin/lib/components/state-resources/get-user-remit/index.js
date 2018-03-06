@@ -30,8 +30,8 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todoExecutionNames']),
-      this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teamNames'])
+      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todos']),
+      this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teams'])
     ]
 
     if (this.categories) {
@@ -52,15 +52,8 @@ class GetUserRemit {
     }
 
     Promise.all(promises)
-      .then(() => {
-        context.sendTaskSuccess({userRemit})
-      })
-      .catch(err => {
-        context.sendTaskFailure({
-          error: 'getUserRemitFail',
-          cause: err
-        })
-      })
+      .then(() => context.sendTaskSuccess({userRemit}))
+      .catch(err => context.sendTaskFailure({error: 'getUserRemitFail', cause: err}))
   }
 
   findComponents (userRemit, model, componentType, titleCol, alreadyInClientManifest) {
@@ -86,6 +79,7 @@ class GetUserRemit {
           exists = true
         }
       }
+
       if (!exists) {
         if (componentType === 'forms') {
           const formShasum = this.forms.forms[componentName].shasum

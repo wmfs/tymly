@@ -160,12 +160,12 @@ describe('todo changes tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: [],
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }, // for getUserRemit
-        clientTodoExecutionNames: [] // for getTodos
+        clientTodos: [] // for getTodos
       },
       GET_TODO_CHANGES_STATE_MACHINE,
       {
@@ -195,12 +195,12 @@ describe('todo changes tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: [],
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }, // for getUserRemit
-        clientTodoExecutionNames: [
+        clientTodos: [
           '5200987c-bb03-11e7-abc4-cec278b6b50a',
           '52009d36-bb03-11e7-abc4-cec278b6b50a',
           '52009e4e-bb03-11e7-abc4-cec278b6b50a',
