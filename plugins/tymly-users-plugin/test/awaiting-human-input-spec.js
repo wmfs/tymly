@@ -107,8 +107,10 @@ describe('awaitingUserInput state tests', function () {
   it('should check the required human input if the user is watching the board', function (done) {
     statebox.startExecution(
       {
-        incidentNumber: 1,
-        incidentYear: 1999
+        boardKeys: {
+          incidentNumber: 1,
+          incidentYear: 1999
+        }
       },
       'test_getBoards_1_0',
       {
