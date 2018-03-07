@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "node"
+  - node
 
 services:
   - postgresql
@@ -26,6 +26,7 @@ env:
     - TIMEOUT=15000
     - DEBUG=-mocha:runner,-mocha:runnable,-mocha:suite,-eslint:config,-eslint:config-ops,-eslint:cli-engine,-eslint:glob-util,-eslint:config-file,-eslint:code-path
     - DEBUG_COLORS=false
+    - COMMIT=${TRAVIS_COMMIT::7}
 
 webhooks:
   - https://outlook.office.com/webhook/b88897d4-c48a-4fe2-9097-7c761e69ce94@c8b125d0-ba85-4441-8b06-df523851b190/TravisCI/c969c9d2046a4d9cb8cae895080fe3fa/55765507-4a3a-4ed3-b79b-7ddb4ff8b759
@@ -36,11 +37,11 @@ script:
 before_deploy:
   - docker images
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - docker tag tymly-core wmfs/tymly-core
+  - docker tag tymly-core wmfs/tymly-core && docker tag tymly-core wmfs/tymly-core:$COMMIT
 
 deploy:
   provider: script
-  script: docker push wmfs/tymly-core
+  script: docker push wmfs/tymly-core && docker push wmfs/tymly-core:$COMMIT
 
 after_deploy:
    - curl -LO https://raw.githubusercontent.com/wmfs/tymly/master/tools/trigger-blueprints/trigger-private-blueprints.sh

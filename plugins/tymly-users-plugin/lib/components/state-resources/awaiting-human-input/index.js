@@ -30,7 +30,7 @@ class AwaitingHumanInput {
       requiredHumanInput.boardKeys = event.boardKeys || {}
 
       const feedName = [this.uiName]
-      Object.keys(data).sort().map(k => feedName.push(data[k]))
+      Object.keys(requiredHumanInput.boardKeys).sort().map(k => feedName.push(requiredHumanInput.boardKeys[k]))
 
       this.watchedBoards.findOne(
         {
