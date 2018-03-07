@@ -81,6 +81,13 @@ describe('Ensure transaction isolation', function () {
   ])
   test2.forEach(s => { s.postStatementHook = postInsert })
 
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
+
   it('Fire off some sql statements', async () => {
     await client.run(sqlf(setupScript))
     const result = await client.run(test1)

@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+
 const chai = require('chai')
 chai.use(require('chai-string'))
 const expect = chai.expect

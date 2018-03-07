@@ -8,12 +8,20 @@ const expect = chai.expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const main = require('../lib/components/state-resources/importing-csv-files/multicopy.js')
 const refresh = main.refresh
+const process = require('process')
 
 describe('Initializing environment...', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let connectionString = process.env.PG_CONNECTION_STRING
   let client = new HlPgClient(connectionString)
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('Should setup DB env', function (done) {
     sqlScriptRunner(

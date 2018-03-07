@@ -8,12 +8,20 @@ const expect = require('chai').expect
 const path = require('path')
 const tymly = require('tymly')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
+const process = require('process')
 
 chai.use(chaiSubset)
 
 describe('Demo tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let tymlyService, models, forms, boards, categories, client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should startup tymly', function (done) {
     tymly.boot(

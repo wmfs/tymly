@@ -5,6 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const HEARTBEAT_STATE_MACHINE = 'tymly_testHeartbeat_1_0'
@@ -12,6 +13,13 @@ const HEARTBEAT_STATE_MACHINE = 'tymly_testHeartbeat_1_0'
 describe('awaitingUserInput state tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox, client, tymlyService
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(

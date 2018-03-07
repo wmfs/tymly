@@ -6,6 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
@@ -15,6 +16,13 @@ const generateView = require('./../lib/components/services/rankings/generate-vie
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let tymlyService, statebox, rankingModel, statsModel, viewSQL, growthCurveBefore
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up

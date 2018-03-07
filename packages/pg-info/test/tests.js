@@ -18,6 +18,13 @@ describe('Run the basic-usage example', function () {
   const expectedSchemas = require(path.resolve(__dirname, 'fixtures', 'expected-schema.json'))
   let client
 
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
+
   it('Should create a new pg client', () => {
     const pgConnectionString = process.env.PG_CONNECTION_STRING
     client = new HlPgClient(pgConnectionString)

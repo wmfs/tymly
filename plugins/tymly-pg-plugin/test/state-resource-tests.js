@@ -7,6 +7,7 @@ const tymly = require('tymly')
 const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
 const OUTPUT_DIR_PATH = path.resolve(__dirname, './output')
 
@@ -20,6 +21,13 @@ describe('State Resource Tests', function () {
   const IMPORT_STATE_MACHINE_NAME = 'tymlyTest_importCsv_1_0'
   const SYNC_STATE_MACHINE_NAME = 'tymlyTest_syncAnimal_1_0'
   let client, tymlyService, statebox
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should boot Tymly', function (done) {
     tymly.boot(

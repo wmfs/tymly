@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 
 'use strict'
+
 const PORT = 3003
 const jwt = require('jsonwebtoken')
 const request = require('request')
