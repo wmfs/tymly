@@ -51,21 +51,22 @@ class Search {
       const filters = this.processFilters(event)
 
       if (solrService.solrUrl) {
-        this.runSolrSearch(event, context, filters)
+        this.runSolrSearch(event, context, filters, userRoles)
       } else {
         this.runStorageSearch(context, filters, userRoles)
       }
     })
   } // run
 
-  runSolrSearch (event, context, filters) {
+  runSolrSearch (event, context, filters, userRoles) {
     const searchTerm = event.query ? `(${event.query.trim().replace(/ /g, '%20')})` : ''
     const filterQuery = []
     this.searchFields.forEach(s => {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
-    const query = `q=*:*${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
+    const userRolesQuery = userRoles.length > 0 ? userRoles.map(r => r).join('%20OR%20') : '$everyone'
+    const query = `q=*:*%20AND%20roles:(${userRolesQuery})${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
