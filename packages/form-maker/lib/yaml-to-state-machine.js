@@ -37,7 +37,15 @@ class YamlToStateMachine {
           },
           End: true
         }
-      }
+      },
+      restrictions: [
+        {
+          roleId: '$authenticated',
+          allows: [
+            '*'
+          ]
+        }
+      ]
     }
 
     callback(null, stateMachine)
