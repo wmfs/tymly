@@ -29,5 +29,13 @@
       "ResultPath": "$.catDocFromStorage",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }
