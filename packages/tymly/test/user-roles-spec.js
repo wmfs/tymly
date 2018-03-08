@@ -103,7 +103,7 @@ describe('User-role tests', function () {
         'lucy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', 'tymlyTest_developer'])
+          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
           done()
         })
     )
@@ -115,7 +115,7 @@ describe('User-role tests', function () {
         'lucy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', 'tymlyTest_developer'])
+          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
           done()
         })
     )
@@ -127,7 +127,7 @@ describe('User-role tests', function () {
         'mommy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_boss', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
+          expect(roles).to.eql(['tymlyTest_boss', '$everyone', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
           done()
         })
     )
@@ -139,7 +139,7 @@ describe('User-role tests', function () {
         'molly',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_developer'])
+          expect(roles).to.eql(['tymlyTest_developer', '$everyone'])
           done()
         })
     )
@@ -151,7 +151,7 @@ describe('User-role tests', function () {
         'daddy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestAdmin'])
+          expect(roles).to.eql(['tymlyTest_tymlyTestAdmin', '$everyone'])
           done()
         })
     )

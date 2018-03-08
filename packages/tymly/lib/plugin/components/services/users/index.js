@@ -116,7 +116,7 @@ class UsersService {
           if (err) return callback(err)
           cachedRoles = _.uniq(_.map(roles, 'roleId'))
 
-          const inhertiedRoles = []
+          const inhertiedRoles = ['$everyone']
           cachedRoles.map(roleId => {
             Object.keys(this.rbac.rbac.inherits).map(inheritedBy => {
               if (this.rbac.rbac.inherits[inheritedBy].includes(roleId)) {
