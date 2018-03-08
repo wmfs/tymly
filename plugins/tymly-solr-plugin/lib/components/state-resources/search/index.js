@@ -36,8 +36,7 @@ class Search {
     if (context.userId) {
       usersService.getUserRoles(context.userId, (err, userRoles) => {
         if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
-
-        userRoles.push('$authenticated')
+        if (!userRoles.includes('$authenticated')) userRoles.push('$authenticated')
 
         if (solrService.searchDocs) {
           const searchDocs = this.services.solr.searchDocs
@@ -74,7 +73,7 @@ class Search {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
-    const userRolesQuery = userRoles.length > 0 ? userRoles.map(r => r).join('%20OR%20') : '$everyone'
+    const userRolesQuery = userRoles.map(r => r).join('%20OR%20')
     const query = `q=*:*%20AND%20roles:(${userRolesQuery})${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
@@ -87,7 +86,7 @@ class Search {
   } // runSolrSearch
 
   runStorageSearch (context, filters, userRoles) {
-    const where = userRoles.length > 0 ? userRoles.map(role => `'${role}' = any(roles)`) : [`'$everyone' = any(roles)`]
+    const where = userRoles.map(role => `'${role}' = any(roles)`)
     const query = `select * from tymly.solr_data` + (where.length > 0 ? ` where ${where.join(' or ')}` : ``)
 
     this.storageClient.query(query, (err, results) => {
