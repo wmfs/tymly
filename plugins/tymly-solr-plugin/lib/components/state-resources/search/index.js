@@ -30,27 +30,32 @@ class Search {
   } // solrClient
 
   run (event, context) {
+    const usersService = this.services.users
     const solrService = this.services.solr
 
-    if (solrService.searchDocs) {
-      const searchDocs = this.services.solr.searchDocs
-      this.searchFields = new Set()
-      Object.keys(searchDocs).map(s => {
-        Object.keys(searchDocs[s].attributeMapping).map(a => {
-          this.searchFields.add(_.snakeCase(a))
+    usersService.getUserRoles(context.userId, (err, userRoles) => {
+      if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
+
+      if (solrService.searchDocs) {
+        const searchDocs = this.services.solr.searchDocs
+        this.searchFields = new Set()
+        Object.keys(searchDocs).map(s => {
+          Object.keys(searchDocs[s].attributeMapping).map(a => {
+            this.searchFields.add(_.snakeCase(a))
+          })
         })
-      })
-    } else {
-      this.searchFields = defaultSolrSchemaFields
-    }
+      } else {
+        this.searchFields = defaultSolrSchemaFields
+      }
 
-    const filters = this.processFilters(event)
+      const filters = this.processFilters(event)
 
-    if (solrService.solrUrl) {
-      this.runSolrSearch(event, context, filters)
-    } else {
-      this.runStorageSearch(context, filters)
-    }
+      if (solrService.solrUrl) {
+        this.runSolrSearch(event, context, filters)
+      } else {
+        this.runStorageSearch(context, filters, userRoles)
+      }
+    })
   } // run
 
   runSolrSearch (event, context, filters) {
@@ -71,8 +76,11 @@ class Search {
     })
   } // runSolrSearch
 
-  runStorageSearch (context, filters) {
-    this.storageClient.query(`select * from tymly.solr_data`, (err, results) => {
+  runStorageSearch (context, filters, userRoles) {
+    const where = userRoles.length > 0 ? userRoles.map(role => `'${role}' = any(roles)`) : [`'$everyone' = any(roles)`]
+    const query = `select * from tymly.solr_data` + (where.length > 0 ? ` where ${where.join(' or ')}` : ``)
+
+    this.storageClient.query(query, (err, results) => {
       if (err) {
         return context.sendTaskFailure({error: 'searchFail', cause: err})
       }

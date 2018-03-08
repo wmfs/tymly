@@ -3,6 +3,7 @@
   "attributeMapping": {
     "id": "'student#' || student_no",
     "actorName": "upper(first_name || ' ' || last_name)",
-    "characterName": "upper(character_name)"
+    "characterName": "upper(character_name)",
+    "roles": "'{\"tymlyTest_boss\"}'::text[]"
   }
 }

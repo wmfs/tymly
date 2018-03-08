@@ -12,9 +12,7 @@ const STATE_MACHINE_NAME = 'tymlyTest_search_1_0'
 describe('tymly-solr-plugin search state resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService
-  let statebox
-  let client
+  let tymlyService, statebox, client, users
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -37,7 +35,8 @@ describe('tymly-solr-plugin search state resource tests', function () {
           solrSchemaFields: [
             'id',
             'actorName',
-            'characterName'
+            'characterName',
+            'roles'
           ]
         }
       },
@@ -45,6 +44,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
+        users = tymlyServices.users
         client = tymlyServices.storage.client
         done()
       }
@@ -66,12 +66,35 @@ describe('tymly-solr-plugin search state resource tests', function () {
     )
   })
 
-  it('should search with no input (everything)', function (done) {
+  it('should ensure John Smith is the boss and a minor', (done) => {
+    expect(users.ensureUserRoles(
+      'john.smith',
+      ['tymlyTest_boss', 'tymlyTest_minor'],
+      (err) => {
+        expect(err).to.eql(null)
+        done(err)
+      })
+    )
+  })
+
+  it('should ensure Jane Smith is a minor', (done) => {
+    expect(users.ensureUserRoles(
+      'jane.smith',
+      ['tymlyTest_minor'],
+      (err) => {
+        expect(err).to.eql(null)
+        done(err)
+      })
+    )
+  })
+
+  it('should search with no input (everything) as a user with the highest roles', function (done) {
     statebox.startExecution(
       {}, // input
       STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'john.smith'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -81,15 +104,15 @@ describe('tymly-solr-plugin search state resource tests', function () {
         expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.searchResults.totalHits).to.eql(19)
-        expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('GINNY WEASLEY')
-        expect(executionDescription.ctx.searchResults.results[1].character_name).to.eql('HERMIONE GRANGER')
-        expect(executionDescription.ctx.searchResults.results[2].character_name).to.eql('ALBUS DUMBLEDORE')
+        expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('RUBEUS HAGRID')
+        expect(executionDescription.ctx.searchResults.results[1].character_name).to.eql('SEVERUS SNAPE')
+        expect(executionDescription.ctx.searchResults.results[2].character_name).to.eql('GEORGE WEASLEY')
         done()
       }
     )
   })
 
-  it('should search with a query input', function (done) {
+  it('should search with a query input as a user with the highest roles', function (done) {
     statebox.startExecution(
       {
         query: 'Hermione'
@@ -97,7 +120,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE',
-        userId: 'user1'
+        userId: 'john.smith'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
@@ -108,6 +131,39 @@ describe('tymly-solr-plugin search state resource tests', function () {
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.searchResults.totalHits).to.eql(1)
         expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('HERMIONE GRANGER')
+        done()
+      }
+    )
+  })
+
+  it('should search with a query input as a user without any roles', function (done) {
+    statebox.startExecution(
+      {}, // input
+      STATE_MACHINE_NAME, // state machine name
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'jim.smith'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.ctx.searchResults.totalHits).to.eql(0)
+        expect(executionDescription.ctx.searchResults.results.length).to.eql(0)
+        done()
+      }
+    )
+  })
+
+  it('should fail to search when user role is a minor', function (done) {
+    statebox.startExecution(
+      {}, // input
+      STATE_MACHINE_NAME, // state machine name
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'jane.smith'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        console.log(JSON.stringify(executionDescription, null, 2))
         done()
       }
     )
