@@ -74,7 +74,8 @@ class Search {
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
     const userRolesQuery = userRoles.map(r => r).join('%20OR%20')
-    const query = `q=*:*%20AND%20roles:(${userRolesQuery})${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
+    const activeEvent = filters.showActiveEventsOnly ? `%20AND%20activeEvent:true` : ``
+    const query = `q=*:*%20AND%20roles:(${userRolesQuery})${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
