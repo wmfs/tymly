@@ -36,6 +36,8 @@ class Search {
     usersService.getUserRoles(context.userId, (err, userRoles) => {
       if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
 
+      userRoles.push('$authenticated')
+
       if (solrService.searchDocs) {
         const searchDocs = this.services.solr.searchDocs
         this.searchFields = new Set()
