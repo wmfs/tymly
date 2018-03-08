@@ -19,8 +19,13 @@ class AddDocs {
         if (this.mapping[mapKey] === '$NOW') {
           doc[mapKey] = new Date()
         } else if (_.isString(this.mapping[mapKey])) {
-          const string = this.mapping[mapKey].split('||').map(m => d[m] ? d[m] : m)
-          doc[mapKey] = string.join('')
+          const cast = this.mapping[mapKey].split('::')[1]
+          if (cast) {
+            doc[mapKey] = this.mapping[mapKey].split('::')[0]
+          } else {
+            const string = this.mapping[mapKey].split('||').map(m => d[m] ? d[m] : m)
+            doc[mapKey] = string.join('')
+          }
         } else {
           doc[mapKey] = this.mapping[mapKey]
         }
