@@ -5,6 +5,7 @@
 const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const STATE_MACHINE_NAME = 'tymlyTest_addDocs_1_0'
 
@@ -12,6 +13,13 @@ describe('tymly-solr-plugin add docs resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService, statebox, client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should run the tymly services', function (done) {
     tymly.boot(
@@ -46,7 +54,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record to be inserted isn\'t already there', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
@@ -80,7 +91,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record was added', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
@@ -109,7 +123,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record has been removed', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'

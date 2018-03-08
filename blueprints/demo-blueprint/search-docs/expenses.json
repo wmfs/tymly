@@ -14,7 +14,7 @@
     "activeEvent": "true::boolean",
     "author": "'tymly_expenses'::text",
     "teams": "NULL::text[]",
-    "roles": "NULL::text[]",
+    "roles": "'{\"claiment\"}'::text[]",
     "tags": "NULL::text[]",
     "language": "'ENG'::text",
     "rootAncestorId": "NULL::text",

@@ -35,6 +35,7 @@
           "category": "IIP",
           "activeEvent": true,
           "author": "incident",
+          "roles": "$authenticated, role1::text[]",
           "language": "ENG",
           "sortString": "incNo",
           "created": "$NOW",

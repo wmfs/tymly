@@ -7,9 +7,9 @@
         "type": "object",
         "default": {
           "exponent": {
-            "veryLow": "0.01",
-            "medium": "0.02",
-            "veryHigh": "0.03"
+            "veryLow": "-0.00088",
+            "medium": "-0.0004",
+            "veryHigh": "-0.0075"
           },
           "usage": {
             "type": "constant",

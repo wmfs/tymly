@@ -4,7 +4,8 @@
     "attributeMapping": {
       "id": "'student#' || student_no",
       "actorName": "first_name || ' ' || last_name",
-      "characterName": "@characterName"
+      "characterName": "@characterName",
+      "roles": "'{\"tymlyTest_boss\"}'::text[]"
     },
     "namespace": "tymlyTest",
     "id": "students",
@@ -15,7 +16,8 @@
     "attributeMapping": {
       "id": "'staff#' || staff_no",
       "actorName": "first_name || ' ' || last_name",
-      "characterName": "character_first_name || ' ' || character_last_name"
+      "characterName": "character_first_name || ' ' || character_last_name",
+      "roles": "'{\"tymlyTest_boss\"}'::text[]"
     },
     "namespace": "tymlyTest",
     "id": "staff",

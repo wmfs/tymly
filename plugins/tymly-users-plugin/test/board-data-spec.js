@@ -5,6 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('watched-boards tymly-users-plugin tests', function () {
@@ -12,6 +13,13 @@ describe('watched-boards tymly-users-plugin tests', function () {
   let tymlyService, statebox, client, animalModel, humanModel, boardService, formService
   const GET_SINGLE_BOARD_STATE_MACHINE = 'test_getSingleBoard_1_0'
   const GET_MULTIPLE_BOARDS_STATE_MACHINE = 'test_getMultipleBoards_1_0'
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(

@@ -10,6 +10,7 @@ const initMatchTables = require('../lib/utils/init-match-table.js')
 const matchPostcodeAndName = require('../lib/utils/match-postcode-and-name.js')
 const generateStatementInitTable = initMatchTables.generateStatement
 const processWhere = matchPostcodeAndName.processWhere
+const process = require('process')
 
 describe('Run some tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -43,6 +44,13 @@ describe('Run some tests', function () {
     }
   }
   let client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('Should setup database connection', (done) => {
     client = new HlPgClient(process.env.PG_CONNECTION_STRING)

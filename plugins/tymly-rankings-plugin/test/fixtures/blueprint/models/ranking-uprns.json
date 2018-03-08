@@ -21,6 +21,19 @@
     "distribution": {
       "type": "number",
       "description": "The distribution this property falls within"
+    },
+    "lastAudit": {
+      "type": "string"
+    },
+    "lastAuditDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastEnforcementAction": {
+      "type": "string"
+    },
+    "growthCurve": {
+      "type": "number"
     }
   },
   "required": [

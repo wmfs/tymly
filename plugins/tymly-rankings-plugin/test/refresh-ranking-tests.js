@@ -6,6 +6,7 @@ const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
 const HlPgClient = require('hl-pg-client')
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
@@ -16,6 +17,13 @@ describe('Tests the Ranking State Resource', function () {
   // out before tymly can be started up
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create the test resources', () => {
     return sqlScriptRunner('./db-scripts/setup.sql', client)

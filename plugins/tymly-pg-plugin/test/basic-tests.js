@@ -6,6 +6,7 @@ const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
+const process = require('process')
 const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('PostgreSQL storage tests', function () {
@@ -18,6 +19,13 @@ describe('PostgreSQL storage tests', function () {
   let statebox
   let executionName
   let models
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(

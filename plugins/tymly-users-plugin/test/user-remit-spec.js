@@ -5,6 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
@@ -12,6 +13,13 @@ const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox, tymlyService, client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -53,8 +61,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -127,8 +135,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -169,8 +177,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: ['Gazetteer', 'hr'],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -207,8 +215,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
+          teams: [],
+          todos: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
           formNames: {},
           startable: []
         }
@@ -249,8 +257,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: ['Birmingham (Red watch)', 'Another team'],
-          todoExecutionNames: [],
+          teams: ['Birmingham (Red watch)', 'Another team'],
+          todos: [],
           formNames: {},
           startable: []
         }
@@ -286,8 +294,8 @@ describe('user-remit tymly-users-plugin tests', function () {
         clientManifest: {
           boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: {
             'test_bookSomeoneSick': '0d6decf12e4ced2f862735be6c3df15543075fd8',
             'processAnExpenseClaim': ''
@@ -332,8 +340,8 @@ describe('user-remit tymly-users-plugin tests', function () {
             'test_expenses': ''
           },
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }
@@ -374,8 +382,8 @@ describe('user-remit tymly-users-plugin tests', function () {
             'test_personalDetails': '7f9187a7193896052bd2a97b42c4bc7a4f4f0b60'
           },
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }

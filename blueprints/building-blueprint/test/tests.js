@@ -5,6 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 
 describe('data import', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -14,6 +15,13 @@ describe('data import', function () {
   let tymlyService
   let statebox
   let client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should startup tymly', function (done) {
     tymly.boot(
@@ -56,7 +64,7 @@ describe('data import', function () {
 
   it('Should be the correct data in the database', function (done) {
     client.query(
-      'select uprn, footprint, floors, height, sprinkler_coverage from wmfs.building order by uprn;',
+      'select uprn, building_area, building_floors, height_of_building, sprinkler_coverage from wmfs.building order by uprn',
       function (err, result) {
         if (err) {
           done(err)
@@ -64,51 +72,51 @@ describe('data import', function () {
           expect(result.rows).to.eql(
             [
               {
-                'floors': 2,
-                'footprint': '700.00',
-                'height': '5.00',
+                'building_floors': 2,
+                'building_area': '700.00',
+                'height_of_building': '5.00',
                 'sprinkler_coverage': 100,
                 'uprn': '1234567890'
               },
               {
-                'floors': 3,
-                'footprint': '1500.00',
-                'height': '7.00',
+                'building_floors': 3,
+                'building_area': '1500.00',
+                'height_of_building': '7.00',
                 'sprinkler_coverage': 75,
                 'uprn': '1234567891'
               },
               {
-                'floors': 1,
-                'footprint': '120.00',
-                'height': '6.00',
+                'building_floors': 1,
+                'building_area': '120.00',
+                'height_of_building': '6.00',
                 'sprinkler_coverage': 40,
                 'uprn': '1234567892'
               },
               {
-                'floors': 8,
-                'footprint': '10000.00',
-                'height': '24.00',
+                'building_floors': 8,
+                'building_area': '1000.00',
+                'height_of_building': '24.00',
                 'sprinkler_coverage': 100,
                 'uprn': '1234567893'
               },
               {
-                'floors': 20,
-                'footprint': '1750.00',
-                'height': '60.00',
+                'building_floors': 20,
+                'building_area': '1750.00',
+                'height_of_building': '60.00',
                 'sprinkler_coverage': 50,
                 'uprn': '1234567894'
               },
               {
-                'floors': 14,
-                'footprint': '12500.00',
-                'height': '48.00',
+                'building_floors': 14,
+                'building_area': '12500.00',
+                'height_of_building': '48.00',
                 'sprinkler_coverage': 60,
                 'uprn': '1234567895'
               },
               {
-                'floors': 1,
-                'footprint': '350.00',
-                'height': '10.00',
+                'building_floors': 1,
+                'building_area': '350.00',
+                'height_of_building': '10.00',
                 'sprinkler_coverage': 100,
                 'uprn': '1234567896'
               }

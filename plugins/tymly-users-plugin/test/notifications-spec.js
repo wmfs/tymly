@@ -6,6 +6,7 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 const assert = require('chai').assert
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_NOTIFICATIONS_STATE_MACHINE = 'tymly_getNotifications_1_0'
@@ -18,6 +19,13 @@ describe('notifications tymly-users-plugin tests', function () {
   const startFrom = '2017-10-21T14:20:30.414Z'
   const notificationsToMark = []
   let statebox, tymlyService, client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(

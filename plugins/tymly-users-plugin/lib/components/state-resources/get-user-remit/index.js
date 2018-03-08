@@ -30,8 +30,8 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todoExecutionNames']),
-      this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teamNames'])
+      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todos']),
+      this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teams'])
     ]
 
     if (this.categories) {
@@ -52,15 +52,8 @@ class GetUserRemit {
     }
 
     Promise.all(promises)
-      .then(() => {
-        context.sendTaskSuccess({userRemit})
-      })
-      .catch(err => {
-        context.sendTaskFailure({
-          error: 'getUserRemitFail',
-          cause: err
-        })
-      })
+      .then(() => context.sendTaskSuccess({userRemit}))
+      .catch(err => context.sendTaskFailure({error: 'getUserRemitFail', cause: err}))
   }
 
   findComponents (userRemit, model, componentType, titleCol, alreadyInClientManifest) {
@@ -73,41 +66,25 @@ class GetUserRemit {
   } // findComponents
 
   processComponents (userRemit, componentType, components, alreadyInClientManifest) {
-    for (const componentName of Object.keys(components)) {
-      let exists = false
-      if (alreadyInClientManifest.hasOwnProperty(componentName)) {
-        if (componentType === 'forms' && _.get(this.clientManifest, `formNames[${componentName}]`) === this.forms.forms[componentName].shasum) {
-          exists = true
-        } else if (componentType === 'boards' && _.get(this.clientManifest, `boardNames[${componentName}]`) === this.boards.boards[componentName].shasum) {
-          exists = true
+    Object.keys(components).map(componentName => {
+      if (componentType === 'forms') {
+        const formShasum = this.forms.forms[componentName].shasum
+        const clientShasum = alreadyInClientManifest[componentName]
+        if (formShasum !== clientShasum) {
+          dottie.set(userRemit, `add.${componentType}.${componentName}`, this.forms.forms[componentName])
         }
-      } else if (_.isArray(alreadyInClientManifest)) {
-        if (alreadyInClientManifest.indexOf(componentName) !== -1) {
-          exists = true
+      } else if (componentType === 'boards') {
+        const boardShasum = this.boards.boards[componentName].shasum
+        const clientShasum = alreadyInClientManifest[componentName]
+        if (boardShasum !== clientShasum) {
+          dottie.set(userRemit, `add.${componentType}.${componentName}`, this.boards.boards[componentName])
         }
-      }
-      if (!exists) {
-        if (componentType === 'forms') {
-          const formShasum = this.forms.forms[componentName].shasum
-          const clientShasum = _.get(this.clientManifest, `formNames[${componentName}]`)
-          if (clientShasum && formShasum === clientShasum) {
-            return
-          } else {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, this.forms.forms[componentName])
-          }
-        } else if (componentType === 'boards') {
-          const boardShasum = this.boards.boards[componentName].shasum
-          const clientShasum = _.get(this.clientManifest, `boardNames[${componentName}]`)
-          if (clientShasum && boardShasum === clientShasum) {
-            return
-          } else {
-            dottie.set(userRemit, `add.${componentType}.${componentName}`, this.boards.boards[componentName])
-          }
-        } else {
+      } else {
+        if (alreadyInClientManifest.indexOf(componentName) === -1) {
           dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
         }
       }
-    }
+    })
 
     let namesToRemove
     if (_.isArray(alreadyInClientManifest)) {
