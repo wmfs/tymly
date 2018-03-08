@@ -100,8 +100,6 @@ class UsersService {
    * )
    */
   getUserRoles (userId, callback) {
-    const _this = this
-
     let cachedRoles = this.userMembershipsCache.get(userId)
 
     if (_.isArray(cachedRoles)) {
@@ -114,15 +112,21 @@ class UsersService {
             memberId: {equals: userId}
           }
         },
-        function (err, roles) {
-          if (err) {
-            callback(err)
-          } else {
-            cachedRoles = _.uniq(_.map(roles, 'roleId'))
+        (err, roles) => {
+          if (err) return callback(err)
+          cachedRoles = _.uniq(_.map(roles, 'roleId'))
 
-            _this.userMembershipsCache.set(userId, cachedRoles)
-            callback(null, cachedRoles)
-          }
+          const inhertiedRoles = []
+          cachedRoles.map(roleId => {
+            Object.keys(this.rbac.rbac.inherits).map(inheritedBy => {
+              if (this.rbac.rbac.inherits[inheritedBy].includes(roleId)) {
+                inhertiedRoles.push(inheritedBy)
+              }
+            })
+          })
+          cachedRoles = _.uniq(cachedRoles.concat(inhertiedRoles))
+          this.userMembershipsCache.set(userId, cachedRoles)
+          callback(null, cachedRoles)
         }
       )
     }

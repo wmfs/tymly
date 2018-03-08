@@ -11,8 +11,8 @@ describe('User-role tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService
-  let users
+  let tymlyService, users
+
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
 
@@ -97,25 +97,61 @@ describe('User-role tests', function () {
     )
   })
 
-  it("should get Lucy's roles via storage", function (done) {
+  it('should get Lucy\'s roles via storage', function (done) {
     expect(
       users.getUserRoles(
         'lucy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql([ 'tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader' ])
+          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', 'tymlyTest_developer'])
           done()
         })
     )
   })
 
-  it("should get Lucy's roles via cache", function (done) {
+  it('should get Lucy\'s roles via cache', function (done) {
     expect(
       users.getUserRoles(
         'lucy',
         function (err, roles) {
           expect(err).to.eql(null)
-          expect(roles).to.eql([ 'tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader' ])
+          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', 'tymlyTest_developer'])
+          done()
+        })
+    )
+  })
+
+  it('should get Mommy\'s roles via storage', function (done) {
+    expect(
+      users.getUserRoles(
+        'mommy',
+        function (err, roles) {
+          expect(err).to.eql(null)
+          expect(roles).to.eql(['tymlyTest_boss', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
+          done()
+        })
+    )
+  })
+
+  it('should get Molly\'s roles via storage', function (done) {
+    expect(
+      users.getUserRoles(
+        'molly',
+        function (err, roles) {
+          expect(err).to.eql(null)
+          expect(roles).to.eql(['tymlyTest_developer'])
+          done()
+        })
+    )
+  })
+
+  it('should get Daddy\'s roles via storage', function (done) {
+    expect(
+      users.getUserRoles(
+        'daddy',
+        function (err, roles) {
+          expect(err).to.eql(null)
+          expect(roles).to.eql(['tymlyTest_tymlyTestAdmin'])
           done()
         })
     )
