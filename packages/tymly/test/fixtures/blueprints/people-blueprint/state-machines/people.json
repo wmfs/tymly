@@ -14,5 +14,13 @@
       "Resource": "module:findingById",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }
