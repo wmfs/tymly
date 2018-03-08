@@ -163,7 +163,25 @@ describe('tymly-solr-plugin search state resource tests', function () {
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.ctx.searchResults.totalHits).to.eql(0)
+        expect(executionDescription.ctx.searchResults.results.length).to.eql(0)
+        done()
+      }
+    )
+  })
+
+  it('should fail to search with no user id', function (done) {
+    statebox.startExecution(
+      {}, // input
+      STATE_MACHINE_NAME, // state machine name
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
+      function (err, executionDescription) {
+        expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.errorCode).to.eql('noUserIdSearchFail')
+        expect(executionDescription.errorMessage).to.eql('No user ID found when trying to search.')
         done()
       }
     )

@@ -33,31 +33,38 @@ class Search {
     const usersService = this.services.users
     const solrService = this.services.solr
 
-    usersService.getUserRoles(context.userId, (err, userRoles) => {
-      if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
+    if (context.userId) {
+      usersService.getUserRoles(context.userId, (err, userRoles) => {
+        if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
 
-      userRoles.push('$authenticated')
+        userRoles.push('$authenticated')
 
-      if (solrService.searchDocs) {
-        const searchDocs = this.services.solr.searchDocs
-        this.searchFields = new Set()
-        Object.keys(searchDocs).map(s => {
-          Object.keys(searchDocs[s].attributeMapping).map(a => {
-            this.searchFields.add(_.snakeCase(a))
+        if (solrService.searchDocs) {
+          const searchDocs = this.services.solr.searchDocs
+          this.searchFields = new Set()
+          Object.keys(searchDocs).map(s => {
+            Object.keys(searchDocs[s].attributeMapping).map(a => {
+              this.searchFields.add(_.snakeCase(a))
+            })
           })
-        })
-      } else {
-        this.searchFields = defaultSolrSchemaFields
-      }
+        } else {
+          this.searchFields = defaultSolrSchemaFields
+        }
 
-      const filters = this.processFilters(event)
+        const filters = this.processFilters(event)
 
-      if (solrService.solrUrl) {
-        this.runSolrSearch(event, context, filters, userRoles)
-      } else {
-        this.runStorageSearch(context, filters, userRoles)
-      }
-    })
+        if (solrService.solrUrl) {
+          this.runSolrSearch(event, context, filters, userRoles)
+        } else {
+          this.runStorageSearch(context, filters, userRoles)
+        }
+      })
+    } else {
+      context.sendTaskFailure({
+        error: 'noUserIdSearchFail',
+        cause: 'No user ID found when trying to search.'
+      })
+    }
   } // run
 
   runSolrSearch (event, context, filters, userRoles) {
