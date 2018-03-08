@@ -96,7 +96,8 @@ describe('tymly-solr-plugin search state resource tests', function () {
       }, // input
       STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'user1'
       }, // options
       function (err, executionDescription) {
         expect(err).to.eql(null)

@@ -20,8 +20,8 @@ class AddDocs {
           doc[mapKey] = new Date()
         } else if (_.isString(this.mapping[mapKey])) {
           const cast = this.mapping[mapKey].split('::')[1]
-          if (cast) {
-            doc[mapKey] = this.mapping[mapKey].split('::')[0]
+          if (cast === 'text[]') {
+            doc[mapKey] = this.mapping[mapKey].split('::')[0].replace(/\s+/g, '').split(',')
           } else {
             const string = this.mapping[mapKey].split('||').map(m => d[m] ? d[m] : m)
             doc[mapKey] = string.join('')

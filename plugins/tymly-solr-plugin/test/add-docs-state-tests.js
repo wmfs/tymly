@@ -54,7 +54,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record to be inserted isn\'t already there', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
@@ -88,7 +91,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record was added', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
@@ -117,7 +123,10 @@ describe('tymly-solr-plugin add docs resource tests', function () {
 
     it('should ensure the record has been removed', done => {
       statebox.startExecution(
-        {},
+        {
+          offset: 0,
+          limit: 10
+        },
         'tymlyTest_search_1_0',
         {
           sendResponse: 'COMPLETE'
