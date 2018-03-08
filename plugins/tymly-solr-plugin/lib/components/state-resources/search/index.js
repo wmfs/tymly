@@ -73,9 +73,9 @@ class Search {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
-    const userRolesQuery = userRoles.map(r => r).join('%20OR%20')
+    const userRolesQuery = `%20AND%20roles:(${userRoles.map(r => r).join('%20OR%20')})`
     const activeEvent = filters.showActiveEventsOnly ? `%20AND%20activeEvent:true` : ``
-    const query = `q=*:*%20AND%20roles:(${userRolesQuery})${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
+    const query = `q=*:*${userRolesQuery}${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
