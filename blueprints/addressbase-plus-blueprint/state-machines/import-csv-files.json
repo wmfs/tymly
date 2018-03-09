@@ -2,9 +2,7 @@
   "Comment": "import gazetteer data",
   "version": "1.0",
   "StartAt": "ProcessingCsvFiles",
-  "categories": [
-    "gazetteer"
-  ],
+  "categories": [],
   "instigators": [
     "user"
   ],
