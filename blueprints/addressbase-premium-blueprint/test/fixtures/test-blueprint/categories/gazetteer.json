@@ -1,0 +1,8 @@
+{
+  "label": "Gazetteer",
+  "description": "Gazetteer",
+  "style": {
+    "icon": "fireSafety",
+    "backgroundColor": "#008800"
+  }
+}
