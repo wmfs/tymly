@@ -23,7 +23,9 @@ class GetBoardData {
       Promise.all(findPromises)
         .then(docs => {
           const data = {}
-          models.map((model, idx) => data[model.modelId] = docs[idx])
+          models.map((model, idx) => {
+            data[model.modelId] = docs[idx]
+          })
           Object.keys(event).map(key => {
             if (key !== 'boardKeys') data[key] = event[key]
           })
