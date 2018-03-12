@@ -14,5 +14,13 @@
       "ResultPath": "$.foundTitle",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }
