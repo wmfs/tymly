@@ -3,11 +3,13 @@
 const _ = require('lodash')
 const respond = require('../../../../util/respond')
 const debug = require('debug')('statebox')
+const boom = require('boom')
 
 module.exports = function startExecution (req, res) {
   const services = req.app.get('services')
   const authService = services.auth
   const statebox = services.statebox
+  const rbac = services.rbac
   const stateMachineName = req.body.stateMachineName
 
   const input = cloneOrDefault(req.body.input)
@@ -21,7 +23,8 @@ module.exports = function startExecution (req, res) {
     options.userId = userId
   }
 
-  debug(`Request to '${options.action}' on '${options.stateMachineName}' (by user '${options.userId}')`)
+  const rbacAuthenticated = rbac.checkRoleAuthorization(options.userId, options, ['test_developer'], 'stateMachine', options.stateMachineName, options.action)
+  debug(`Request to '${options.action}' on '${options.stateMachineName}' (by user '${options.userId}') - ${rbacAuthenticated}`)
 
   statebox.startExecution(
     input,
@@ -34,5 +37,5 @@ module.exports = function startExecution (req, res) {
 }
 
 function cloneOrDefault (obj) {
-  return obj ? _.cloneDeep(obj) : { }
+  return obj ? _.cloneDeep(obj) : {}
 }
