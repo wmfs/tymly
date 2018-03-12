@@ -34,7 +34,8 @@ describe('process addressbase-premium', function () {
             path.resolve(__dirname, './../../../plugins/tymly-etl-plugin')
           ],
           blueprintPaths: [
-            path.resolve(__dirname, './..')
+            path.resolve(__dirname, './..'),
+            path.resolve(__dirname, './fixtures/test-blueprint')
           ]
         },
         (err, tymlyServices) => {

@@ -1,0 +1,8 @@
+{
+  "label": "Test",
+  "description": "Test category",
+  "styling": {
+    "icon": "test",
+    "backgroundColor": "#00GG00"
+  }
+}

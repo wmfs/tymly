@@ -1,0 +1,8 @@
+{
+  "label": "Website",
+  "description": "Website category",
+  "styling": {
+    "icon": "website",
+    "backgroundColor": "#FFFF00"
+  }
+}

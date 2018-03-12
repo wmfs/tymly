@@ -1,0 +1,8 @@
+{
+  "label": "Posts",
+  "description": "Posts category",
+  "styling": {
+    "icon": "post",
+    "backgroundColor": "#00GG00"
+  }
+}
