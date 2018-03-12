@@ -30,7 +30,7 @@ class FlattenXmlFiles {
       )
   } // run
 
-  preProcessHeaderMap(options, headerMap) {
+  preProcessHeaderMap (options, headerMap) {
     return headerMap.map(entry => {
       const transformer = entry[0].transform
       if (transformer) {
