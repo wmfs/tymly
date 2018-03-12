@@ -49,11 +49,12 @@ describe('Expenses state machine', function () {
         ]
       },
       function (err, tymlyServices) {
+        expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
         expenses = tymlyServices.storage.models['tymly_expenses']
-        done(err)
+        done()
       }
     )
   })

@@ -36,13 +36,14 @@ describe('Demo tests', function () {
         ]
       },
       function (err, tymlyServices) {
+        expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
         categories = tymlyServices.categories.categories
         client = tymlyServices.storage.client
-        done(err)
+        done()
       }
     )
   })
