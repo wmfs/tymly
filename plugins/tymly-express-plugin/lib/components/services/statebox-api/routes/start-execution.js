@@ -3,7 +3,6 @@
 const _ = require('lodash')
 const respond = require('../../../../util/respond')
 const debug = require('debug')('statebox')
-const boom = require('boom')
 
 module.exports = function startExecution (req, res) {
   const services = req.app.get('services')
