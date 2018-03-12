@@ -110,9 +110,9 @@
           ["$.addressbasePostal", "addressbase_postal", "string"],
           ["$..DeliveryPointAddress.poBoxNumber", "po_box_number", "string"],
           ["$.applicationCrossReferenceMember[?(@.ApplicationCrossReference.source=='7666OW')]..crossReference", "ward_code", "string", "comment - 7666OW = ONS Ward Code."],
-          ["$.todo", "parish_code", "string"],
+          ["$.applicationCrossReferenceMember[?(@.ApplicationCrossReference.source=='7666OP')]..crossReference", "parish_code", "string", "comment - 7666OP = ONS Parish Code."],
           ["$.todo", "rm_start_date", "string"],
-          ["$.todo", "multi_occ_count", "string"],
+          ["$.multiOccCount", "multi_occ_count", "number"],
           ["$.todo", "voa_ndrp_desc_code", "string"],
           ["$.todo", "voa_ndr_scat_code", "string"],
           ["$.todo", "alt_language", "string"]
