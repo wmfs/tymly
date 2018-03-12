@@ -60,6 +60,32 @@ describe('xmlFlatten2csv', () => {
     expect(output).to.eql(expected)
   })
 
+  it('extract xml to csv, with transforms', async () => {
+    const sourceFile = path.resolve(__dirname, 'fixtures', 'simpsons.xml')
+    const outputFile = path.resolve(__dirname, 'output', 'simpsons-transforms.csv')
+    const expectedFile = path.resolve(__dirname, 'expected', 'simpsons-transforms.csv')
+
+    if (fs.existsSync(outputFile)) fs.unlinkSync(outputFile)
+
+    await xmlFlatten2csv({
+      xmlPath: sourceFile,
+      csvPath: outputFile,
+      rootXMLElement: 'Episode',
+      pivotPath: '$.People.Person',
+      headerMap: [
+        ['$.Title', 'title', 'string'],
+        [{select: '@.Name', transform: v => v.toUpperCase()}, 'name', 'string'],
+        [{test: '@.Age<=16', value: 'yes'}, 'child', 'string'],
+        [{test: '@.Age>16', select: '@.Age', transform: v => `${v} years old`}, 'age', 'string']
+      ]
+    })
+
+    const output = fs.readFileSync(outputFile, { encoding: 'utf8' }).split('\n')
+    const expected = fs.readFileSync(expectedFile, { encoding: 'utf8' }).split('\n')
+
+    expect(output).to.eql(expected)
+  })
+
   describe('error cases', () => {
     const sourceFile = path.resolve(__dirname, 'fixtures', 'simpsons.xml')
     const outputFile = path.resolve(__dirname, 'output', 'fail.csv')

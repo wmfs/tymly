@@ -7,18 +7,29 @@ function transformPath (path, contextPath = '$') {
 
   // ok, it's a conditional
   validateConditional(path)
+
+  if (path.select && !path.test) {
+    return jsonTransformOp(path, contextPath)
+  }
   return jsonConditionalOp(path, contextPath)
 } // transformPath
 
 function validateConditional (cond) {
-  if (!cond.test) {
-    throw new Error('Conditional must have test')
+  if (!cond.test && !cond.transform) {
+    throw new Error('Operation must have test and/or transform')
   }
+
+  if (cond.value) {
+    if (cond.transform) {
+      throw new Error('Transform can not have a value, it can only have a select')
+    }
+    if (cond.test && cond.select) {
+      throw new Error('Test can not have value and select')
+    }
+  }
+
   if (!cond.value && !cond.select) {
-    throw new Error('Conditional must have value or select')
-  }
-  if (cond.value && cond.select) {
-    throw new Error('Conditional can not have value and select')
+    throw new Error('Operation must have value or select')
   }
 } // validateConditional
 
@@ -35,17 +46,20 @@ function evalJsonQuery (json, path) {
   return jp.query(json, path)
 } // evalJsonQuery
 
+const identityFn = v => v
+
 function jsonConditionalOp (path, contextPath) {
   return json => evalJsonConditional(
     json,
     evalJsonQuery(json, contextPath),
     path.test,
+    path.transform ? path.transform : identityFn,
     path.value,
     path.select ? transformPath(path.select, contextPath) : null
   )
 } // jsonConditionalOp
 
-function evalJsonConditional (json, contextNode, test, value, select) {
+function evalJsonConditional (json, contextNode, test, transform, value, select) {
   if (!contextNode) return null
 
   const wrapped = {
@@ -55,7 +69,22 @@ function evalJsonConditional (json, contextNode, test, value, select) {
   const testResult = evalJsonQuery(wrapped, testExpr)
 
   if (!testResult.length) return null
-  return value || select(json)
+  return value || select(json).map(transform)
+} // evalJsonConditional
+
+function jsonTransformOp (path, contextPath) {
+  return json => evalJsonTransform(
+    json,
+    evalJsonQuery(json, contextPath),
+    path.transform,
+    transformPath(path.select, contextPath)
+  )
+} // jsonConditionalOp
+
+function evalJsonTransform (json, contextNode, transform, select) {
+  if (!contextNode) return null
+
+  return select(json).map(transform)
 } // evalJsonConditional
 
 function unwrapArray (field) {
