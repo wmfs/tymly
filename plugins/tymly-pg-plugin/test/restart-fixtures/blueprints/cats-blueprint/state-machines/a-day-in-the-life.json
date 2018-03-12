@@ -79,5 +79,13 @@
       "Resource": "module:sleeping",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }
