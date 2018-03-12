@@ -108,7 +108,7 @@
           ["$..DeliveryPointAddress.postcodeType", "postcode_type", "string"],
           ["$..DeliveryPointAddress.deliveryPointSuffix", "delivery_point_suffix", "string"],
           ["$.addressbasePostal", "addressbase_postal", "string"],
-          ["$.todo", "po_box_number", "string"],
+          ["$..DeliveryPointAddress.poBoxNumber", "po_box_number", "string"],
           ["$.todo", "ward_code", "string"],
           ["$.todo", "parish_code", "string"],
           ["$.todo", "rm_start_date", "string"],
