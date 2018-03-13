@@ -14,7 +14,7 @@
       "type": "object",
       "description": "Property address"
     },
-    "premiseUse": {
+    "premisesUse": {
       "type": "object"
     },
     "constructionType": {
@@ -36,7 +36,7 @@
       "type": "integer",
       "description": "Year of Imagery used as revision source"
     },
-    "premiseType": {
+    "premisesType": {
       "type": "string"
     },
     "FSEC": {
