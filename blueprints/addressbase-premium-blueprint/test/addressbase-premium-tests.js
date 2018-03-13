@@ -18,7 +18,8 @@ describe('process addressbase-premium', function () {
   const fixture = path.resolve(__dirname, 'fixtures')
 
   const inputDir = path.resolve(fixture, 'input')
-  const flattenedDir = path.resolve(fixture, 'output', 'flattened')
+  const outputDir = path.resolve(fixture, 'output')
+  const flattenedDir = path.resolve(outputDir, 'flattened')
 
   const expectedDir = path.resolve(fixture, 'expected')
 
@@ -27,6 +28,7 @@ describe('process addressbase-premium', function () {
   const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
   const propertyFile = path.resolve(flattenedDir, 'property.csv')
   const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
+  const upsertsExpectedFile = path.resolve(outputDir, 'upserts', 'property.csv')
 
   describe('blueprint', () => {
     let tymlyService
@@ -61,7 +63,9 @@ describe('process addressbase-premium', function () {
           },
           property: {
             xmlPath: sourceFile,
-            csvPath: propertyFile
+            csvPath: propertyFile,
+            sourceFilePaths: [ propertyFile ],
+            outputDirRootPath: outputDir
           }
         }, // input
         STATE_MACHINE_NAME, // state machine name
@@ -82,8 +86,25 @@ describe('process addressbase-premium', function () {
       expect(property).to.eql(propertyExpected)
     })
 
+    it('verify the smithereens output', () => {
+      const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+        .map(line => line.replace(/"/g, ''))      // strip quote marks
+        .map(line => stripColumn(line, 4))  // strip changeState marker
+
+      const upsertExpected = fs.readFileSync(upsertsExpectedFile, {encoding: 'utf8'}).split('\r\n')
+        .map(line => stripColumn(line, 1))  // strip hashsum
+
+      expect(property).to.eql(upsertExpected)
+    })
+
     it('shutdown Tymly', () => {
       return tymlyService.shutdown()
     })
   }) // blueprint
+
+  function stripColumn(line, index) {
+    const cols = line.split(',')
+    cols.splice(index, 1)
+    return cols.join()
+  }
 })
