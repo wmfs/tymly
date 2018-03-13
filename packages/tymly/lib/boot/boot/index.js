@@ -24,19 +24,23 @@ module.exports = function serviceBoot (options, callback) {
       const service = new ServiceClass()
 
       bootedServices[serviceComponent.name] = service
-      service.boot(
-        {
-          bootedServices: bootedServices,
-          parsedServices: options.parsedServices,
-          pluginComponents: options.pluginComponents,
-          blueprintComponents: options.blueprintComponents,
-          pluginPaths: options.pluginPaths,
-          blueprintPaths: options.blueprintPaths,
-          config: config,
-          messages: messages
-        },
-        cb
-      )
+      try {
+        service.boot(
+          {
+            bootedServices: bootedServices,
+            parsedServices: options.parsedServices,
+            pluginComponents: options.pluginComponents,
+            blueprintComponents: options.blueprintComponents,
+            pluginPaths: options.pluginPaths,
+            blueprintPaths: options.blueprintPaths,
+            config: config,
+            messages: messages
+          },
+          cb
+        )
+      } catch (err) {
+        cb(err)
+      }
     },
 
     function (err) {
