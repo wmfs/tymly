@@ -17,11 +17,16 @@ describe('process addressbase-premium', function () {
 
   const fixture = path.resolve(__dirname, 'fixtures')
 
-  const sourceFile = path.resolve(fixture, 'input', 'exeter-extract.xml')
-  const streetsFile = path.resolve(fixture, 'output', 'streets.csv')
-  const streetsExpectedFile = path.resolve(fixture, 'expected', 'streets.csv')
-  const propertyFile = path.resolve(fixture, 'output', 'property.csv')
-  const propertyExpectedFile = path.resolve(fixture, 'expected', 'property.csv')
+  const inputDir = path.resolve(fixture, 'input')
+  const flattenedDir = path.resolve(fixture, 'output', 'flattened')
+
+  const expectedDir = path.resolve(fixture, 'expected')
+
+  const sourceFile = path.resolve(inputDir, 'exeter-extract.xml')
+  const streetsFile = path.resolve(flattenedDir, 'streets.csv')
+  const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
+  const propertyFile = path.resolve(flattenedDir, 'property.csv')
+  const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
 
   describe('blueprint', () => {
     let tymlyService
@@ -65,7 +70,9 @@ describe('process addressbase-premium', function () {
         } // options
       )
       expect(executionDescription.status).to.eql('SUCCEEDED')
+    })
 
+    it('verify the flattened csv outout', () => {
       const streets = fs.readFileSync(streetsFile, {encoding: 'utf8'}).split('\n')
       const streetsExpected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
       expect(streets).to.eql(streetsExpected)
