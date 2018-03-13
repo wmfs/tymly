@@ -227,54 +227,60 @@ describe('Tests the Ranking Service', function () {
             address_label: '1 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 66
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
             address_label: '2 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 18
+            risk_score: 34
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
             address_label: '3 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 16
+            risk_score: 48
           })
           expect(result.rows[3]).to.eql({
             uprn: '4',
             address_label: '4 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 2,
-            risk_score: 24
+            risk_score: 56
           })
           expect(result.rows[4]).to.eql({
             uprn: '5',
             address_label: '5 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 0,
-            risk_score: 32
+            risk_score: 64
           })
           expect(result.rows[5]).to.eql({
             uprn: '6',
             address_label: '6 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 0,
             heritage_score: 0,
-            risk_score: 10
+            risk_score: 42
           })
           done()
         }
@@ -287,14 +293,14 @@ describe('Tests the Ranking Service', function () {
       .then(result => {
         expect(result[0].category).to.eql('factory')
         expect(result[0].count).to.eql(6)
-        expect(result[0].mean).to.eql('22.33')
-        expect(result[0].median).to.eql('21.00')
-        expect(result[0].variance).to.eql('73.89')
-        expect(result[0].stdev).to.eql('8.60')
+        expect(result[0].mean).to.eql('51.67')
+        expect(result[0].median).to.eql('52.00')
+        expect(result[0].variance).to.eql('132.56')
+        expect(result[0].stdev).to.eql('11.51')
         expect(result[0].ranges).to.eql({
-          veryLow: {lowerBound: 0, upperBound: '13.74', exponent: '-0.00088'},
-          veryHigh: {lowerBound: '30.94', upperBound: 34, exponent: '-0.0075'},
-          medium: {lowerBound: '13.75', upperBound: '30.93', exponent: '-0.0004'}
+          veryLow: {lowerBound: 0, upperBound: '40.15', exponent: '-0.00088'},
+          veryHigh: {lowerBound: '63.19', upperBound: 66, exponent: '-0.0075'},
+          medium: {lowerBound: '40.16', upperBound: '63.18', exponent: '-0.0004'}
         })
         done()
       })
@@ -308,32 +314,32 @@ describe('Tests the Ranking Service', function () {
 
         expect(result[0].uprn).to.eql('1')
         expect(result[0].range).to.eql('very-high')
-        expect(result[0].distribution).to.eql('0.0185')
+        expect(result[0].distribution).to.eql('0.0160')
         expect(result[0].growthCurve).to.not.eql(null)
 
         expect(result[1].uprn).to.eql('2')
-        expect(result[1].range).to.eql('medium')
-        expect(result[1].distribution).to.eql('0.0409')
+        expect(result[1].range).to.eql('very-low')
+        expect(result[1].distribution).to.eql('0.0107')
         expect(result[1].growthCurve).to.not.eql(null)
 
         expect(result[2].uprn).to.eql('3')
         expect(result[2].range).to.eql('medium')
-        expect(result[2].distribution).to.eql('0.0354')
+        expect(result[2].distribution).to.eql('0.0329')
         expect(result[2].growthCurve).to.not.eql(null)
 
         expect(result[3].uprn).to.eql('4')
         expect(result[3].range).to.eql('medium')
-        expect(result[3].distribution).to.eql('0.0455')
+        expect(result[3].distribution).to.eql('0.0323')
         expect(result[3].growthCurve).to.not.eql(null)
 
         expect(result[4].uprn).to.eql('5')
         expect(result[4].range).to.eql('very-high')
-        expect(result[4].distribution).to.eql('0.0247')
+        expect(result[4].distribution).to.eql('0.0195')
         expect(result[4].growthCurve).to.not.eql(null)
 
         expect(result[5].uprn).to.eql('6')
-        expect(result[5].range).to.eql('very-low')
-        expect(result[5].distribution).to.eql('0.0166')
+        expect(result[5].range).to.eql('medium')
+        expect(result[5].distribution).to.eql('0.0244')
         expect(result[5].growthCurve).to.eql(null)
         done()
       })

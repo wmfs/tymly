@@ -15,6 +15,11 @@
       "model": "food",
       "property": "rating"
     },
+    "fsManagement": {
+      "namespace": "test",
+      "model": "fsman",
+      "property": "rating"
+    },
     "incidents": {
       "namespace": "test",
       "model": "incidents",

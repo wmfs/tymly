@@ -87,27 +87,30 @@ describe('Tests the Ranking State Resource', function () {
             address_label: '1 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 66
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
             address_label: '2 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 18
+            risk_score: 34
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
             address_label: '3 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 16
+            risk_score: 48
           })
           done()
         }
@@ -150,6 +153,27 @@ describe('Tests the Ranking State Resource', function () {
                   'type': 'numeric-constant',
                   'numericValue': 5,
                   'score': 2
+                }
+              ]
+            },
+            'fsManagement': {
+              'type': 'options',
+              'default': 0,
+              'options': [
+                {
+                  'type': 'numeric-rangetext-constant',
+                  'textualValue': 'Very Low',
+                  'score': 32
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'Average',
+                  'score': 0
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'Average',
+                  'score': 0
                 }
               ]
             },
@@ -217,15 +241,12 @@ describe('Tests the Ranking State Resource', function () {
       }
     })
   })
-
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
-
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
-
   it('Should close database connections', function (done) {
     client.end()
     done()

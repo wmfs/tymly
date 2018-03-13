@@ -3,6 +3,7 @@ CREATE SCHEMA IF NOT EXISTS test;
 DROP VIEW IF EXISTS test.factory_scores;
 
 DROP TABLE IF EXISTS test.food;
+DROP TABLE IF EXISTS test.fsman;
 DROP TABLE IF EXISTS test.incidents;
 DROP TABLE IF EXISTS test.heritage;
 DROP TABLE IF EXISTS test.gazetteer;
@@ -27,6 +28,11 @@ CREATE TABLE test.ranking_uprns (
 CREATE TABLE test.food (
  uprn bigint not null primary key,
  rating int
+);
+
+CREATE TABLE test.fsman (
+ uprn bigint not null primary key,
+ rating text
 );
 
 CREATE TABLE test.incidents (
@@ -58,6 +64,13 @@ INSERT INTO test.food (uprn, rating) VALUES (3, '5');
 INSERT INTO test.food (uprn, rating) VALUES (4, '0');
 INSERT INTO test.food (uprn, rating) VALUES (5, '2');
 INSERT INTO test.food (uprn, rating) VALUES (6, '5');
+
+INSERT INTO test.fsman (uprn, rating) VALUES (1, 'Very low');
+INSERT INTO test.fsman (uprn, rating) VALUES (2, 'Low');
+INSERT INTO test.fsman (uprn, rating) VALUES (3, 'Very low');
+INSERT INTO test.fsman (uprn, rating) VALUES (4, 'Very low');
+INSERT INTO test.fsman (uprn, rating) VALUES (5, 'Very low');
+INSERT INTO test.fsman (uprn, rating) VALUES (6, 'Very low');
 
 INSERT INTO test.incidents (uprn, amount) VALUES (1, '5');
 INSERT INTO test.incidents (uprn, amount) VALUES (2, '0');
