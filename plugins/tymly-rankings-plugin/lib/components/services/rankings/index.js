@@ -41,7 +41,7 @@ class RankingService {
       client.query(
         this.viewSQL[key],
         (err) => {
-          if (err) cb(err)
+          if (err) return cb(err)
           generateStats({
             client: client,
             category: value.name,
@@ -52,14 +52,12 @@ class RankingService {
             statsModel: statsModel,
             registry: options.bootedServices.registry.registry[key]
           }, (err) => {
-            if (err) cb(err)
-            cb()
+            cb(err)
           })
         }
       )
     }, (err) => {
-      if (err) callback(err)
-      callback(null)
+      callback(err)
     })
   }
 }
