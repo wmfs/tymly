@@ -113,17 +113,8 @@ describe('Testing functionality as a state-resource', function () {
     )
   })
 
-  it('should clean up DB env', function (done) {
-    sqlScriptRunner(
-      [
-        'cleanup.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('should clean up DB env', async () => {
+    await sqlScriptRunner.cleanup(client)
   })
 
   it('should shutdown Tymly', async () => {

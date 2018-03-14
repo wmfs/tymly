@@ -534,17 +534,8 @@ describe('PG storage tests', function () {
     )
   })
 
-  it('Should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should uninstall test schemas', async () => {
+    sqlScriptRunner.uninstall(client)
   })
 
   it('should shutdown Tymly', async () => {

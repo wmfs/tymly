@@ -55,17 +55,8 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {
-    sqlScriptRunner(
-      [
-        'install.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should initially drop-cascade the pg_model_test schema, if one exists', async () => {
+    await sqlScriptRunner.install(client)
   })
 
   it('should find the simple-storage state-machine by name', function () {
@@ -291,17 +282,8 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('Should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should uninstall test schemas', async () => {
+    await sqlScriptRunner.uninstall(client)
   })
 
   it('should shutdown Tymly', async () => {

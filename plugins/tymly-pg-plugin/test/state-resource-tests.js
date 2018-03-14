@@ -136,17 +136,8 @@ describe('State Resource Tests', function () {
     )
   })
 
-  it('should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('should uninstall test schemas', async () => {
+    sqlScriptRunner.uninstall(client)
   })
 
   it('should remove output directory now tests are complete', function (done) {

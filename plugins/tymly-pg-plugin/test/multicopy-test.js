@@ -22,12 +22,8 @@ describe('Multicopy tests', function () {
     }
   })
 
-  it('setup DB env', function (done) {
-    sqlScriptRunner(
-      ['./setup.sql'],
-      client,
-      err => done(err)
-    )
+  it('setup DB env', async () => {
+    await sqlScriptRunner.setup(client)
   })
 
   it('make a call to the multicopy and check data is entered', async () => {
@@ -49,12 +45,8 @@ describe('Multicopy tests', function () {
     expect(result.rows).to.eql(expected)
   })
 
-  it('cleanup the test data', function (done) {
-    sqlScriptRunner(
-      ['./cleanup.sql'],
-      client,
-      err => done(err)
-    )
+  it('cleanup the test data', async () => {
+    await sqlScriptRunner.cleanup(client)
   })
 
   it('close database connections', function (done) {
