@@ -4,7 +4,7 @@
 'use strict'
 
 const supercopy = require('supercopy')
-const multicopy = require('./multicopy.js')
+const multicopy = require('./multicopy')
 
 class ImportingCsvFiles {
   init (resourceConfig, env, callback) {
@@ -12,55 +12,41 @@ class ImportingCsvFiles {
     this.topDownTableOrder = resourceConfig.topDownTableOrder
     this.client = env.bootedServices.storage.client
     this.truncateTables = resourceConfig.truncateTables || false
-    this.multicopyVar = resourceConfig.multicopy || false
+    this.multicopy = resourceConfig.multicopy || false
     callback(null)
   }
 
   run (event, context) {
-    if (this.multicopyVar === true) {
-      multicopy.refresh(
-        event,
-        this.client
-        ,
-        function (err) {
-          if (err) {
-            context.sendTaskFailure(
-              {
-                error: 'multicopyFail',
-                cause: err
-              }
-            )
-          } else {
-            context.sendTaskSuccess()
-          }
-        }
-      )
-    } else {
-      return supercopy(
-        {
-          sourceDir: event,
-          headerColumnPkPrefix: this.headerColumnPkPrefix,
-          topDownTableOrder: this.topDownTableOrder,
-          client: this.client,
-          schemaName: context.stateMachineMeta.schemaName,
-          truncateTables: this.truncateTables,
-          debug: true
-        },
-        function (err) {
-          if (err) {
-            context.sendTaskFailure(
-              {
-                error: 'supercopyFail',
-                cause: err
-              }
-            )
-          } else {
-            context.sendTaskSuccess()
-          }
-        }
-      )
-    }
-  }
-}
+    const operation = this.multicopy
+      ? this.doMulticopy(event)
+      : this.doCopy(event, context)
+
+    operation
+      .then(() => context.sendTaskSuccess())
+      .catch(err => context.sendTaskFailure({
+        error: this.multicopy ? 'multicopyFail' : 'supercopyFail',
+        cause: err
+      }))
+  } // run
+
+  doMulticopy (event) {
+    return multicopy(
+      event,
+      this.client
+    )
+  } // doMulticopy
+
+  doCopy (event, context) {
+    return supercopy({
+      sourceDir: event,
+      headerColumnPkPrefix: this.headerColumnNamePkPrefix,
+      topDownTableOrder: this.topDownTableOrder,
+      client: this.client,
+      schemaName: context.stateMachineMeta.schemaName,
+      truncateTables: this.truncateTables,
+      debug: true
+    })
+  } // doCopy
+} // class ImportingCsvFiles
 
 module.exports = ImportingCsvFiles

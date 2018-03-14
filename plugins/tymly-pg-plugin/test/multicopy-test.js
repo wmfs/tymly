@@ -6,11 +6,10 @@ const HlPgClient = require('hl-pg-client')
 const chai = require('chai')
 const expect = chai.expect
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
-const main = require('../lib/components/state-resources/importing-csv-files/multicopy.js')
-const refresh = main.refresh
+const multicopy = require('../lib/components/state-resources/importing-csv-files/multicopy.js')
 const process = require('process')
 
-describe('Initializing environment...', function () {
+describe('Multicopy tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let connectionString = process.env.PG_CONNECTION_STRING
@@ -23,72 +22,42 @@ describe('Initializing environment...', function () {
     }
   })
 
-  it('Should setup DB env', function (done) {
+  it('setup DB env', function (done) {
     sqlScriptRunner(
       ['./setup.sql'],
       client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) {
-          done(err)
-        } else {
-          done()
-        }
-      }
+      err => done(err)
     )
   })
 
-  it('Should make a call to the refresh and check data is entered', function (done) {
-    refresh(
+  it('make a call to the multicopy and check data is entered', async () => {
+    await multicopy(
       'test/fixtures/multicopy-data',
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
+      client
     )
   })
 
-  it('Should check data in the tables are as they should be', function (done) {
-    client.query(
-      'select * from refresh_test.btest',
-      function (err, result) {
-        if (err) {
-          return done(err)
-        }
+  it('check data in the tables are as they be', async () => {
+    const expected = [
+      { id: '1', info: 'first' },
+      { id: '2', info: 'second' },
+      { id: '3', info: 'third' },
+      { id: '4', info: 'fourth' }
+    ]
 
-        console.log(result.rows)
-
-        expect(result.rows[0].id).to.eql('1')
-        expect(result.rows[0].info).to.eql('first')
-
-        expect(result.rows[1].id).to.eql('2')
-        expect(result.rows[1].info).to.eql('second')
-
-        expect(result.rows[2].id).to.eql('3')
-        expect(result.rows[2].info).to.eql('third')
-
-        expect(result.rows[3].id).to.eql('4')
-        expect(result.rows[3].info).to.eql('fourth')
-
-        done()
-      }
-    )
+    const result = await client.query('select * from refresh_test.btest')
+    expect(result.rows).to.eql(expected)
   })
 
-  it('Should cleanup the test data', function (done) {
+  it('cleanup the test data', function (done) {
     sqlScriptRunner(
       ['./cleanup.sql'],
       client,
-      function (err) {
-        expect(err).to.equal(null)
-        if (err) console.log('ERR: ', err)
-        done()
-      }
+      err => done(err)
     )
   })
 
-  it('Should close database connections', function (done) {
+  it('close database connections', function (done) {
     client.end()
     done()
   })
