@@ -1,0 +1,401 @@
+{
+  "title": "address",
+  "description": "Record of address types from AddressBase data",
+  "primaryKey": ["lpiKey"],
+  "type": "object",
+  "properties": {
+    "lpiKey": {
+      "type": "string",
+      "maxLength": 14,
+      "description": "Unique Land Property Identifier (LPI) assigned by the Ordnance Survey"
+    },
+    "hashSum": {
+      "type": "string",
+      "description": "Hash representing column data"
+    },
+    "lpiStatus": {
+      "type": "integer",
+      "maxLength": 1,
+      "description": "LPI Logical Status, 1: Approved, 3: Alternative, 6: Provisional, 8: Historical"
+    },
+    "uprn": {
+      "type": "integer",
+      "maxLength": 12,
+      "description": "Unique Property Reference Number (UPRN) assigned by the LLPG Custodian or Ordnance Survey"
+    },
+    "udprn": {
+      "type": "integer",
+      "maxLength": 8,
+      "description": "Royal Mail's Unique Delivery Point Reference Number (UDPRN)"
+    },
+    "state": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "A code identifying the current state of the property. Source: Contributing Local Authority"
+    },
+    "stateDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date on which the property achieved its current state in the real world. Source: Contributing Local Authority",
+      "condition": "State Date must be present if State is present"
+    },
+    "class": {
+      "type": "string",
+      "maxLength": 6,
+      "description": "Classification of the address record. Source: Contributing Local Authority"
+    },
+    "parentUPRN": {
+      "type": "integer",
+      "maxLength": 12,
+      "description": "UPRN of the parent record if a parent child relationship exists. Source: Contributing Local Authority"
+    },
+    "x": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the eastings location in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "y": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the northings location in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "longitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Longitude location in accordance with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "latitude": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Latitude in accordance with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "rpc": {
+      "type": "integer",
+      "description": "Representative Point Code. This code is used to reflect positional accuracy. Source: Contributing Local Authority"
+    },
+    "localCustodianCode": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "Unique identifier of the LLPG Custodian"
+    },
+    "country": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "The country in which a record can be found"
+    },
+    "laStartDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which the address record was inserted into the database. Source: Contributing Local Authority"
+    },
+    "lastUpdateDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which any of the attributes on this record was last changed"
+    },
+    "entryDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which this record was inserted into the Local Authority database"
+    },
+    "rmOrganisationName": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "The organisation name is the business name given to a delivery point within a building or small group of buildings. For example: TOURIST INFORMATION CENTRE. This field could also include entries for churches, public houses, and libraries. Source: Royal Mail"
+    },
+    "laOrganisation": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Name of current occupier as provided by the Local Authority Custodian"
+    },
+    "departmentName": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "For some organisations, department name is indicated because mail is received by subdivisions of the main organisation at distinct delivery point. For example: Organisation name is ABC COMMUNICATIONS but RM Department Name is MARKETING DEPARTMENT. Source: Royal Mail"
+    },
+    "legalName": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Registered legal name of the organisation. Source: Contributing Local Authority"
+    },
+    "subBuildingName": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "The sub-building name and/or number are identifiers for subdivisions of properties. For example: Sub-building Name is FLAT 3, Building name is POPLAR COURT, Thoroughfare is LONDON ROAD. NOTE: If the address is styled 3 POPLAR COURT all the text will be shown in the building name attribute and the sub-building name will be empty. The building number will be shown in this field when it contains a range, decimal, or non-numeric character (see Building Number). Source: Royal Mail"
+    },
+    "buildingName": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "The building name is a description applied to a single building or small group of buildings, such as Highfield House. This also includes those building numbers that contain non-numeric digits, such as 44A. Some descriptive names, when included with the rest of the address, are sufficient to identify the property uniquely and unambiguously, for example, MAGISTRATES COURT. Sometimes the building name will be a blend of distinctive and descriptive naming, for example: RAILWAY TARVERN (PUBLIC HOUSE) or THE COURT ROYAL (HOTEL). Source: Royal Mail"
+    },
+    "buildingNumber": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "The building number is a number given to a single building or small group of buildings, thus identifying it from its neighbours, for example, 44. Buildings numbers that contain a range, decimals, or non-numeric characters do not appear in this field but will be found in the buildingName or sub-BuildingName fields. Source: Royal Mail",
+      "condition": "Building name must be present if RM organisation name or building number or PO Box Number are all not"
+    },
+    "saoStartNumber": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "The number of secondary addressable object (SAO), or the start of the number range. Source: Contributing Local Authority",
+      "condition": "If a SAO Start Number is present a PAO Start Number or PAO text must also be present"
+    },
+    "saoStartSuffix": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "The suffix to the SAO_START_NUMBER. Source: Contributing Local Authority",
+      "condition": "If a SAO Start Suffix is present a SAO Start Number must also be present"
+    },
+    "saoEndNumber": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "The end of the number range for the SAO where SAO_START_NUMBER contains the start of the range. Source: Contributing Local Authority",
+      "condition": "If SAO End Number is present a SAO Start Number must also be present"
+    },
+    "saoEndSuffix": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "The suffix to the SAO_END_SUFFIX. Source: Contributing Local Authority",
+      "condition": "If a SAO End Suffix is present a SAO End Number must also be present"
+    },
+    "saoText": {
+      "type": "string",
+      "maxLength": 90,
+      "description": "Describes the SAO, such as Maisonette. Source: Contributing Local Authority",
+      "condition": "If SAO Text is present a PAO Start Number or PAO Text must also be present"
+    },
+    "altLanguageSAOText": {
+      "type": "string",
+      "maxLength": 90,
+      "description": "Describes the SAO, such as Maisonette, in an alternative language (defined by the language code). Source: Contributing Local Authority"
+    },
+    "paoStartNumber": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "The number of the primary accessible object (PAO) or the start of the number range. Source: Contributing Local Authority"
+    },
+    "paoStartSuffix": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "The suffix to the PAO_START_NUMBER. Source: Contributing Local Authority",
+      "condition": "If a PAO Start Suffix is present a PAO Start Number must also be present"
+    },
+    "paoEndNumber": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "The end of the number range for the PAO where PAO_START_NUMBER contains the start of the range. Source: Contributing Local Authority",
+      "condition": "If a PAO End Number is present a PAO Start Number must also be present"
+    },
+    "paoEndSuffix": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "The suffix to the pao_end_number. Source: Contributing Local Authority",
+      "condition": "If a PAO End Suffix is present a PAO End Number must also be present"
+    },
+    "paoText": {
+      "type": "string",
+      "maxLength": 90,
+      "description": "Name describing the PAO, such as Sunrise Towers, in an alternative language. Source: Contributing Local Authority"
+    },
+    "altLanguagePAOText": {
+      "type": "string",
+      "maxLength": 90,
+      "description": "Name describing the PAO, such as Sunrise Towers, in an alternative language. Source: Contributing Local Authority"
+    },
+    "usrn": {
+      "type": "integer",
+      "maxLength": 8,
+      "description": "Unique Street Reference Number. Source: Contributing Local Authority"
+    },
+    "usrnMatchIndicator": {
+      "type": "integer",
+      "description": "This field indicates how the item was matched to a USRN. 1 is matched manually to the most accessible USRN and 2 is matched spatially to the nearest USRN that may not be the nearest accessible street. Source: Contributing Local Authority/Ordnance Survey"
+    },
+    "areaName": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "Third level of geographic area name, for example, to record island names or property groups such as crofts. Source: Contributing Local Authority"
+    },
+    "level": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "Memorandum of the vertical position of the property. Source: Contributing Local Authority"
+    },
+    "officialFlag": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "Status of the address. Source: Contributing Local Authority"
+    },
+    "osAddressTOID": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Unique identifier provided by Ordnance Survey"
+    },
+    "osAddressTOIDVersion": {
+      "type": "integer",
+      "maxLength": 3,
+      "description": "The version of the OS Address TOID that the product relates to. Source: Ordnance Survey",
+      "condition": "OS Address TOID Version must be present if OS Address TOID is present"
+    },
+    "osRoadLinkTOID": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "The OS MasterMap Integrated Transport Network (ITN) road link that the addressable object refers to. Source: Ordnance Survey"
+    },
+    "osRoadLinkTOIDVersion": {
+      "type": "integer",
+      "maxLength": 3,
+      "description": "The version of the OS Road Link TOID the product relates to",
+      "condition": "OS Roadlink TOID Version must be present if OS Road Link TOID is present"
+    },
+    "osTopoTOID": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "The OS MasterMap Topography Layer TOID that the addressable object refers to"
+    },
+    "osTopoTOIDVersion": {
+      "type": "integer",
+      "maxLength": 3,
+      "description": "The version of the OS Topo TOID the product relates to",
+      "condition": "OS Topo TOID Version must be present if OS Topo TOID is present"
+    },
+    "voaCTRecord": {
+      "type": "integer",
+      "maxLength": 50,
+      "description": "The unique reference to the Valuation Office Agency (VOA) council tax record which the addressable object refers to"
+    },
+    "voaNDRRecord": {
+      "type": "integer",
+      "maxLength": 50,
+      "description": "The unique reference to the VOA non-domestic rate which the addressable object refers to"
+    },
+    "dependentThoroughfare": {
+      "type": "string",
+      "maxLength": 80,
+      "description": "In certain places, for example, town centres, there are name thoroughfares within other name thoroughfares, for example, parades of shops on a high street where different parades have their own identity. For example, KINGS PARADE, HIGH STREET, and QUEENS PARADE, HIGH STREET. Source: Royal Mail"
+    },
+    "thoroughfare": {
+      "type": "string",
+      "maxLength": 80,
+      "description": "A thoroughfare in AddressBase is fundamentally a road, track, or named access route on which there are Royal Mail delivery points, for example, HIGH STREET. Source: Royal Mail",
+      "condition": "Thoroughfare must be present if dependent thoroughfare is present"
+    },
+    "welshDependentThoroughfare": {
+      "type": "string",
+      "maxLength": 80,
+      "description": "The Welsh translation of DEPENDENT_THOROUGHFARE. Source: Royal Mail",
+      "condition": "If a Welsh Dependent Thoroughfare is present, a Welsh Thoroughfare must also be present"
+    },
+    "welshThoroughfare": {
+      "type": "string",
+      "maxLength": 80,
+      "description": "The Welsh translation of THOROUGHFARE. Source: Royal Mail"
+    },
+    "doubleDependentLocality": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "This is used to distinguish between similar thoroughfares or the same thoroughfare within a dependent locality. For example, Millbrook Industrial Esate and Cranford Estate in this situation: BRUNEL WAY, MILLBROOK INDUSTRIAL ESTATE, MILLBROOK SOUTHAMPTON and BRUNEL WAY, CRANFORD ESTATE, MILLBROOK, SOUTHAMPTON. Source: Royal Mail",
+      "condition": "If a Double Dependent Locality is present, a Dependent Locality must also be present"
+    },
+    "dependentLocality": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "Dependent locality areas define an area within a post town. These are only necessary for postal purposes and are used to aid differentiation where there are thoroughfares of the same name in the same locality. For example, HIGH STREET in SHIRLEY and SWAYTHLING in this situation: HIGH STREET, SHIRLEY, SOUTHAMPTON and HIGH STREET, SWAYTHLING, SOUTHAMPTON. Source: Royal Mail"
+    },
+    "welshDoubleDependentLocality": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "The Welsh translation of Double Dependent Locality. Source: Royal Mail",
+      "condition": "If a Welsh Double Dependent Locality is present, a Welsh Dependent Locality must also be present"
+    },
+    "welshDependentLocality": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "The Welsh translation of DEPENDENT_LOCALITY. Source: Royal Mail"
+    },
+    "postTown": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "The town or city in which the Royal Mail sorting office is located which services this record. There may be more than one, possibly several, sorting offices in a town or city"
+    },
+    "welshPostTown": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "The Welsh translation of post town value. Source: Royal Mail"
+    },
+    "postcode": {
+      "type": "string",
+      "maxLength": 8,
+      "description": "A postcode is an abbreviated form of address made up of combinations of between five and seven alphanumeric characters. These are used by Royal Mail to help with the automated sorting of mail. A postcode may cover between 1 and 100 addresses. There are two main components of a postcode, for example, NW6 4DP: The outward code(or 'outcode'). The first two-four characters of the postcode constituting the postcode area and the postcode district, for example NW6. It is the part of the postcode that enables mail to be sent from the accepting office to the correct area for delivery. The inward code (or 'incode'). The last three characters of the postcode constituting the postcode sector and the postcode unit, for example 4DP. It is used to sort mail at the local delivery office. Source: Royal Mail",
+      "condition": "Postcode must be present if Royal Mail's Unique Delivery Point Reference Number (UDPRN) is present"
+    },
+    "postcodeLocator": {
+      "type": "string",
+      "maxLength": 8,
+      "description": "This field contains the Royal Mail Postcode Address File (PAF) postcode where the local authority address has been matched to PAF, i.e. the POSTCODE field. Where a match has not been made, the postcode information is sourced from the local authority in collaboration with Royal Mail. Where the local authority do not hold a valid postcode Code-Point with Polygons is used to spatially derive the postcode based on the position of the coordinates. This field must be used in conjunction with the RPC field to determine the accuracy of its position. Source: Royal Mail, Contributing Local Authority, or Ordnance Survey"
+    },
+    "postcodeType": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "Describes the address as a small or large user as defined by Royal Mail"
+    },
+    "deliveryPointSuffix": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "A two character code uniquely identifying an individual delivery point within a postcode. Source: Royal Mail",
+      "condition": "Delivery Point Suffix must be present if Royal Mail's Unique Delivery Point Reference Number (UDPRN) is present"
+    },
+    "addressbasePostal": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "Identifies addresses which are believed to be capable of receiving mail as defined specifically for the AddressBase product, and details their relationship with other AddressBase Postal records. N.B. this field identifies some addresses which the AddressBase product believes to be capable of receiving mail which are not contained within the Royal Mail PAF database, such as flats behind a door which has a single letter box",
+      "condition": "If AddressBase Postal value is 'D' UDPRN must be present"
+    },
+    "poBoxNumber": {
+      "type": "string",
+      "maxLength": 6,
+      "description": "Post Office Box (PO Box) number. Source: Royal Mail"
+    },
+    "wardCode": {
+      "type": "string",
+      "maxLength": 9,
+      "description": "The ONS GSS code of the electoral ward (England and Scotland) or the electoral division (Wales) name in which the property is situated, as assigned spatially from the latest Boundary-Line set. Boundary-Line ward boundary areas are produced directly from Statutory Instruments, which are authorised from the owning boundary changing bodies; namely the Local Government and Parliamentary Boundary Commissions"
+    },
+    "parishCode": {
+      "type": "string",
+      "maxLength": 9,
+      "description": "The ONS GSS code of the parish, town or community in which the property is situated, as assigned spatially from the latest Boundary-Line set. Boundary-Line parish boundaries are produced directly from Statutory Instruments, which are authorised from the owning boundary changing bodies; namely The Local Government and Parliamentary Boundary Commissions"
+    },
+    "rmStartDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date on which the Royal Mail address was loaded into the NAG (National Address Gazetteer - as maintained by Geoplace) hub. Source: Royal Mail"
+    },
+    "multiOccCount": {
+      "type": "integer",
+      "maxLength": 4,
+      "description": "This is a count of all the child UPRN's for this record if a parent-child relationship exists. Source: Ordnance Survey"
+    },
+    "voaNdrpDescCode": {
+      "type": "string",
+      "maxLength": 5,
+      "description": "VOA Non-domestic rates primary description code, for example, IF2. The first letter is the primary category: C=commercial, E=education, F=formula-assessed utility, I=industrial, L=leisure, M=miscellaneous, N=non-formula-assessed utility, T=treasury(crown). The second letter provides further detail, for example: O=office, F=factory. The third and fourth digit is optional and occurs where further subdivision is required, for example, IF1=mill, IF2=works, IF3=workshop, IF4=business unit. Source: Valuation Office Agency"
+    },
+    "voaNdrScatCode": {
+      "type": "string",
+      "maxLength": 4,
+      "description": "VOA non-domestic rates special category code, for example, 016. While the primary description code above provides a general level of classification, there is a SCat code for every kind of premise that VOA rates. For example, within PDesc IF2 (industrial/factory/works) there are 009 (aluminium works), 016 (artificial fibre works), 052 (cement works), 055 (chemical works), 110 (foundries), 142 (iron/steel works), 192 (motor vehicle works), and 198 (newspaper printing works). Source: Valuation Office Agency"
+    },
+    "altLanguage": {
+      "type": "string",
+      "maxLength": 3,
+      "description": "Field describing the language of the alternative records"
+    }
+  },
+  "required": ["lpiKey", "lpiStatus", "uprn", "changeType", "class", "position", "positionLatLong", "rpc", "localCustodianCode", "country", "laStartDate", "lastUpdateDate", "entryDate", "usrn", "usrnMatchIndicator", "streetDescription", "administrativeArea", "postcodeLocator", "addressbasePostal"]
+}
+

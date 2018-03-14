@@ -94,8 +94,8 @@
           ["$..DeliveryPointAddress.welshThoroughfare", "welsh_thoroughfare", "string"],
           ["$..DeliveryPointAddress.doubleDependentLocality", "double_dependent_locality", "string"],
           ["$..DeliveryPointAddress.dependentLocality", "dependent_locality", "string"],
-          ["$..DeliveryPointAddress.welshDoubleDependentLocality", "welsh_dependent_locality", "string"],
-          ["$..DeliveryPointAddress.welshDependentLocality", "welsh_double_dependent_locality", "string"],
+          ["$..DeliveryPointAddress.welshDoubleDependentLocality", "welsh_double_dependent_locality", "string"],
+          ["$..DeliveryPointAddress.welshDependentLocality", "welsh_dependent_locality", "string"],
           ["$..DeliveryPointAddress.postTown", "post_town", "string"],
           ["$..DeliveryPointAddress.welshPostTown", "welsh_post_town", "string"],
           ["$..DeliveryPointAddress.postcode", "postcode", "string"],
@@ -142,7 +142,7 @@
           "columnIndex": 4,
           "valueToFileMap": {
             "U&I": {
-              "filename": "property",
+              "filename": "addressbase_premium_holding",
               "outputColumns": [
                 { "name": "lpi_key", "columnIndex": 0 },
                 { "name": "hash_sum", "type": "hash" },
@@ -201,8 +201,8 @@
                 { "name": "welsh_thoroughfare", "columnIndex": 54 },
                 { "name": "double_dependent_locality", "columnIndex": 55 },
                 { "name": "dependent_locality", "columnIndex": 56 },
-                { "name": "welsh_dependent_locality", "columnIndex": 57 },
-                { "name": "welsh_double_dependent_locality", "columnIndex": 58 },
+                { "name": "welsh_double_dependent_locality", "columnIndex": 57 },
+                { "name": "welsh_dependent_locality", "columnIndex": 58 },
                 { "name": "post_town", "columnIndex": 59 },
                 { "name": "welsh_post_town", "columnIndex": 60 },
                 { "name": "postcode", "columnIndex": 61 },
@@ -221,7 +221,7 @@
               ]
             },
             "D": {
-              "filename": "property",
+              "filename": "addressbase_premium_holding",
               "outputColumns": [
                 {
                   "name": "lpi_key",
@@ -232,8 +232,22 @@
           }
         }
       },
+      "Next": "ImportPropertiesCsvFiles"
+    },
+    "ImportPropertiesCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.property.outputDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "addressbase_premium_holding"
+        ],
+        "truncateTables": true
+      },
       "End": true
     }
+
 
   },
   "restrictions": [

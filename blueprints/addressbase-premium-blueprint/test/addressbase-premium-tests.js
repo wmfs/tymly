@@ -28,17 +28,26 @@ describe('process addressbase-premium', function () {
   const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
   const propertyFile = path.resolve(flattenedDir, 'property.csv')
   const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
-  const upsertsExpectedFile = path.resolve(outputDir, 'upserts', 'property.csv')
+  const upsertsExpectedFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_holding.csv')
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   describe('blueprint', () => {
     let tymlyService
     let statebox
+    let client
 
     it('start Tymly service', (done) => {
       tymly.boot(
         {
           pluginPaths: [
-            path.resolve(__dirname, './../../../plugins/tymly-etl-plugin')
+            path.resolve(__dirname, './../../../plugins/tymly-etl-plugin'),
+            path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
           ],
           blueprintPaths: [
             path.resolve(__dirname, './..'),
@@ -49,6 +58,7 @@ describe('process addressbase-premium', function () {
           if (err) return done(err)
           tymlyService = tymlyServices.tymly
           statebox = tymlyServices.statebox
+          client = tymlyServices.storage.client
           done()
         }
       )
@@ -65,7 +75,8 @@ describe('process addressbase-premium', function () {
             xmlPath: sourceFile,
             csvPath: propertyFile,
             sourceFilePaths: [ propertyFile ],
-            outputDirRootPath: outputDir
+            outputDirRootPath: outputDir,
+            outputDir: outputDir
           }
         }, // input
         STATE_MACHINE_NAME, // state machine name
@@ -79,11 +90,11 @@ describe('process addressbase-premium', function () {
     it('verify the flattened csv outout', () => {
       const streets = fs.readFileSync(streetsFile, {encoding: 'utf8'}).split('\n')
       const streetsExpected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
-      expect(streets).to.eql(streetsExpected)
+      expect(streetsExpected).to.eql(streets)
 
       const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
       const propertyExpected = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
-      expect(property).to.eql(propertyExpected)
+      expect(propertyExpected).to.eql(property)
     })
 
     it('verify the smithereens output', () => {
@@ -94,7 +105,20 @@ describe('process addressbase-premium', function () {
       const upsertExpected = fs.readFileSync(upsertsExpectedFile, {encoding: 'utf8'}).split('\r\n')
         .map(line => stripColumn(line, 1)) // strip hashsum
 
-      expect(property).to.eql(upsertExpected)
+      expect(upsertExpected).to.eql(property)
+    })
+
+    it('verify the database import', async () => {
+      const propertyLpis = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+        .map(line => line.split(',')[0]) // extract LPI
+        .slice(1, -1) // drop header line, and empty last line
+        .map(line => line.replace(/"/g, '')) // strip quote marks
+        .sort()
+
+      const importLpis = (await client.query('SELECT lpi_key FROM ordnance_survey.addressbase_premium_holding ORDER BY lpi_key ASC;'))
+        .rows.map(row => row.lpi_key)
+
+      expect(importLpis).to.eql(propertyLpis)
     })
 
     it('shutdown Tymly', () => {
