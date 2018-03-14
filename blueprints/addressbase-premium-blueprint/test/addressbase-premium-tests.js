@@ -88,11 +88,11 @@ describe('process addressbase-premium', function () {
 
     it('verify the smithereens output', () => {
       const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
-        .map(line => line.replace(/"/g, ''))      // strip quote marks
-        .map(line => stripColumn(line, 4))  // strip changeState marker
+        .map(line => line.replace(/"/g, '')) // strip quote marks
+        .map(line => stripColumn(line, 4)) // strip changeState marker
 
       const upsertExpected = fs.readFileSync(upsertsExpectedFile, {encoding: 'utf8'}).split('\r\n')
-        .map(line => stripColumn(line, 1))  // strip hashsum
+        .map(line => stripColumn(line, 1)) // strip hashsum
 
       expect(property).to.eql(upsertExpected)
     })
@@ -102,7 +102,7 @@ describe('process addressbase-premium', function () {
     })
   }) // blueprint
 
-  function stripColumn(line, index) {
+  function stripColumn (line, index) {
     const cols = line.split(',')
     cols.splice(index, 1)
     return cols.join()
