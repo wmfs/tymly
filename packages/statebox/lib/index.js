@@ -161,30 +161,22 @@ class Statebox {
   _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
     if (!callback) return this._promised(this._stopExecution, cause, errorCode, executionName, executionOptions)
 
-    const _this = this
-    this.options.dao.findExecutionByName(
-      executionName,
-      function (err, executionDescription) {
-        if (err) {
-          callback(err)
+    this.options.dao.findExecutionByName(executionName)
+      .then(executionDescription => {
+        if (executionDescription && executionDescription.status === Status.RUNNING) {
+          this.options.dao.stopExecution(
+            cause,
+            errorCode,
+            executionName,
+            executionOptions,
+            callback
+          )
         } else {
-          if (executionDescription.status === Status.RUNNING) {
-            _this.options.dao.stopExecution(
-              cause,
-              errorCode,
-              executionName,
-              executionOptions,
-              callback
-            )
-          } else {
-            callback(
-              new Error(`Execution is not running, and cannot be stopped (executionName='${executionName}')`)
-            )
-          }
+          callback(new Error(`Execution is not running, and cannot be stopped (executionName='${executionName}')`))
         }
-      }
-    )
-  }
+      })
+      .catch(err => callback(err))
+  } // _stopExecution
 
   listExecutions (executionOptions, callback) {
     callback(null)
@@ -236,7 +228,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === Status.RUNNING) {
+          if (executionDescription && executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskFailure(executionDescription, options, callback)
@@ -262,7 +254,7 @@ class Statebox {
         if (err) {
           callback(err)
         } else {
-          if (executionDescription.status === Status.RUNNING) {
+          if (executionDescription && executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
             stateToRun.runTaskHeartbeat(executionDescription, output, callback)
@@ -277,13 +269,17 @@ class Statebox {
   } // _sendTaskHeartbeat
 
   waitUntilStoppedRunning (executionName, callback) {
-    this.ready.then(() =>
-      this._waitUntilStoppedRunning(executionName)
-        .then(executionDescription => callback(null, executionDescription))
-        .catch(err => callback(err, null))
+    return this.ready.then(() =>
+      this._waitUntilStoppedRunning(executionName, callback)
     )
   } // waitUntilStoppedRunning
-  async _waitUntilStoppedRunning (executionName) {
+  async _waitUntilStoppedRunning (executionName, callback) {
+    if (callback) {
+      this._waitUntilStoppedRunning(executionName)
+        .then(executionDescription => callback(null, executionDescription))
+        .catch(err => callback(err))
+    } // if ...
+
     let notFound = 0
 
     do {

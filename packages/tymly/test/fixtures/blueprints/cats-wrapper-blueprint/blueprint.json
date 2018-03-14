@@ -1,0 +1,14 @@
+{
+
+  "namespace": "tymlyTest",
+  "name": "catsWrapper",
+  "version": "1.0",
+
+  "label": "Cats",
+  "author": "Tim Needham",
+
+  "organisation": "Tymly",
+  "description": "An example blueprint that invokes another blueprint ...",
+  "categories": ["cats", "pets"]
+
+}

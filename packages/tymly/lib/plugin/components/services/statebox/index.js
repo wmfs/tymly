@@ -87,7 +87,7 @@ class StateboxService {
   }
 
   waitUntilStoppedRunning (executionName, callback) {
-    this.statebox.waitUntilStoppedRunning(executionName, callback)
+    return this.statebox.waitUntilStoppedRunning(executionName, callback)
   }
 } // class StateboxService
 
