@@ -7,6 +7,7 @@ const path = require('path')
 const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
 const process = require('process')
+const moment = require('moment')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
@@ -346,11 +347,11 @@ describe('Tests the Ranking Service', function () {
       .catch(err => done(err))
   })
 
-  it('should change the date for one of the factory properties', (done) => {
+  it('should change the date for one of the factory properties to be today\'s date', (done) => {
     rankingModel.upsert({
       uprn: 5,
       rankingName: 'factory',
-      lastAuditDate: '2018-03-05 09:52:31.62943+01'
+      lastAuditDate: new Date()
     }, {
       setMissingPropertiesToNull: false
     })
@@ -380,7 +381,47 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed', (done) => {
     rankingModel.findById(5, (err, doc) => {
-      expect(+doc.growthCurve).to.be.lt(+growthCurveBefore)
+      expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
+      expect(+doc.growthCurve).to.eql(0.78049)
+      done(err)
+    })
+  })
+
+  it('should change the date for one of the factory properties to be 20 days ago', (done) => {
+    rankingModel.upsert({
+      uprn: 5,
+      rankingName: 'factory',
+      lastAuditDate: moment().subtract(20, 'days')
+    }, {
+      setMissingPropertiesToNull: false
+    })
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  it('should refresh the rankings for factory via state machine since we\'ve changed the date again', (done) => {
+    statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory'
+      },
+      'test_refreshRanking_1_0',
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
+        done()
+      }
+    )
+  })
+
+  it('should check the growth curve has changed again', (done) => {
+    rankingModel.findById(5, (err, doc) => {
+      expect(+doc.growthCurve).to.eql(0.90501)
       done(err)
     })
   })
