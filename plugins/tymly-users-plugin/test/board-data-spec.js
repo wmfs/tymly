@@ -126,6 +126,38 @@ describe('get-board-data tymly-users-plugin tests', function () {
     )
   })
 
+  it('run state machine with no input - single', function (done) {
+    statebox.startExecution(
+      {},
+      GET_SINGLE_BOARD_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      (err, executionDescription) => {
+        expect(executionDescription.ctx.data).to.eql({})
+        expect(err).to.eql(null)
+        done(err)
+      }
+    )
+  })
+
+  it('run state machine with no input - multiple', function (done) {
+    statebox.startExecution(
+      {},
+      GET_MULTIPLE_BOARDS_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      (err, executionDescription) => {
+        expect(executionDescription.ctx.data).to.eql({})
+        expect(err).to.eql(null)
+        done(err)
+      }
+    )
+  })
+
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })

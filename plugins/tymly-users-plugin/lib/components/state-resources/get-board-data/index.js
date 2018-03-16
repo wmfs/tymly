@@ -11,6 +11,7 @@ class GetBoardData {
   }
 
   run (event, context) {
+    if (!event.boardKeys) return context.sendTaskSuccess({data: {}, boardKeys: {}})
     const where = {}
 
     Object.keys(event.boardKeys).map(k => {
