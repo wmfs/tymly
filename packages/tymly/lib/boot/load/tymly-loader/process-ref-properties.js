@@ -17,13 +17,14 @@ module.exports = function (blueprintComponents, refProperties, pluginComponents,
 
   function checkReference (root, key, value) {
     const fullReference = getFullReference(refProperties[key], value)
-    if (fullReference) {
-      root[key] = fullReference
-    } else {
+
+    if (!fullReference) {
       messages.error({
         name: 'referencePropertyFail',
         message: `Unable to establish full reference for ${refProperties[key]} with id '${value}'`
       })
+    } else if (key !== 'categories') {
+      root[key] = fullReference
     }
   }
 
@@ -37,14 +38,7 @@ module.exports = function (blueprintComponents, refProperties, pluginComponents,
         if (refProperties[key] && _.isString(value) && value !== '*') {
           checkReference(root, key, value)
         } else if (refProperties[key] && _.isArray(value)) {
-          value.map(val => {
-            if (!getFullReference(refProperties[key], val)) {
-              messages.error({
-                name: 'referencePropertyFail',
-                message: `Unable to establish full reference for ${refProperties[key]} with id '${val}'`
-              })
-            }
-          })
+          value.map(val => checkReference(root, key, val))
         } else {
           scan(value)
         }
