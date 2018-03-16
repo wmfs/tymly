@@ -105,8 +105,8 @@ class GetUserRemit {
       if (!machine.definition.categories || machine.definition.categories.length === 0) {
         continue
       }
-      const category = machine.definition.categories[0]
-      if (!categories.includes(category)) {
+      const category = _.isString(machine.definition.categories) ? machine.definition.categories : machine.definition.categories[0]
+      if (!categories.includes(category.split('_')[1])) {
         continue
       }
 
@@ -114,7 +114,7 @@ class GetUserRemit {
         name: machine.name,
         title: machine.definition.name,
         description: machine.definition.description,
-        category: category
+        category: category.split('_')[1]
       }
     } // for ...
 

@@ -1,6 +1,6 @@
 {
-  "name": "Fire",
-  "label": "Fire-related incidents",
+  "label": "Fire",
+  "description": "Fire-related incidents",
   "styling": {
     "icon": "flame",
     "backgroundColor": "#FF0000"

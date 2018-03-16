@@ -3,6 +3,7 @@
   "name": "Get Single Board",
   "version": "1.0",
   "StartAt": "GetBoardData",
+  "categories": [],
   "States": {
     "GetBoardData": {
       "Type": "Task",

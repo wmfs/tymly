@@ -93,9 +93,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.ctx.userRemit.favouriteStartableNames.includes('settings')).to.eql(true)
 
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(3)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Gazetteer')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('gazetteer')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
 
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos).length).to.eql(4)
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
@@ -176,7 +176,7 @@ describe('user-remit tymly-users-plugin tests', function () {
       {
         clientManifest: {
           boardNames: {},
-          categoryNames: ['Gazetteer', 'hr'],
+          categoryNames: ['gazetteer', 'hr'],
           teams: [],
           todos: [],
           formNames: {},
@@ -197,8 +197,8 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(2)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()
@@ -396,7 +396,6 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          console.log('\n\n^^^', executionDescription.ctx.userRemit.add)
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
