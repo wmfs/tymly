@@ -34,6 +34,10 @@
     },
     "growthCurve": {
       "type": "number"
+    },
+    "updatedRiskScore": {
+      "type": "number",
+      "description": "An updated risk score calculated using growth curve"
     }
   },
   "required": [

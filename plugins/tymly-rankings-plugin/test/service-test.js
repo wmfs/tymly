@@ -13,6 +13,7 @@ const existsCase = require('./../lib/components/services/rankings/case-statement
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
+const calculateNewRiskScore = require('./../lib/components/services/rankings/calculate-new-risk-score.js')
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -317,31 +318,37 @@ describe('Tests the Ranking Service', function () {
         expect(result[0].range).to.eql('very-high')
         expect(result[0].distribution).to.eql('0.0160')
         expect(result[0].growthCurve).to.not.eql(null)
+        expect(result[0].updatedRiskScore).to.not.eql(null)
 
         expect(result[1].uprn).to.eql('2')
         expect(result[1].range).to.eql('very-low')
         expect(result[1].distribution).to.eql('0.0107')
         expect(result[1].growthCurve).to.not.eql(null)
+        expect(result[1].updatedRiskScore).to.not.eql(null)
 
         expect(result[2].uprn).to.eql('3')
         expect(result[2].range).to.eql('medium')
         expect(result[2].distribution).to.eql('0.0329')
         expect(result[2].growthCurve).to.not.eql(null)
+        expect(result[2].updatedRiskScore).to.not.eql(null)
 
         expect(result[3].uprn).to.eql('4')
         expect(result[3].range).to.eql('medium')
         expect(result[3].distribution).to.eql('0.0323')
         expect(result[3].growthCurve).to.not.eql(null)
+        expect(result[3].updatedRiskScore).to.not.eql(null)
 
         expect(result[4].uprn).to.eql('5')
         expect(result[4].range).to.eql('very-high')
         expect(result[4].distribution).to.eql('0.0195')
         expect(result[4].growthCurve).to.not.eql(null)
+        expect(result[4].updatedRiskScore).to.not.eql(null)
 
         expect(result[5].uprn).to.eql('6')
         expect(result[5].range).to.eql('medium')
         expect(result[5].distribution).to.eql('0.0244')
         expect(result[5].growthCurve).to.eql(null)
+        expect(result[5].updatedRiskScore).to.eql(null)
         done()
       })
       .catch(err => done(err))
@@ -383,6 +390,7 @@ describe('Tests the Ranking Service', function () {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
       expect(+doc.growthCurve).to.eql(0.78049)
+      expect(+doc.updatedRiskScore).to.eql(63.96)
       done(err)
     })
   })
@@ -422,8 +430,25 @@ describe('Tests the Ranking Service', function () {
   it('should check the growth curve has changed again', (done) => {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.eql(0.90501)
+      expect(+doc.updatedRiskScore).to.eql(64)
       done(err)
     })
+  })
+
+  it('should calculate new risk score', (done) => {
+    const options = {
+      riskScore: 146,
+      growthCurve: 1.78,
+      mean: 88.19,
+      stdev: 11.81
+    }
+
+    const highExpected = options.growthCurve + options.mean + options.stdev
+    const lowExpected = (options.riskScore / 2) + options.growthCurve
+
+    expect(+calculateNewRiskScore('veryHigh', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(highExpected)
+    expect(+calculateNewRiskScore('veryLow', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(lowExpected)
+    done()
   })
 
   it('should clean up the test resources', () => {

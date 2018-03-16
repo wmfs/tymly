@@ -5,6 +5,7 @@ const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
 const moment = require('moment')
+const calculateNewRiskScore = require('./calculate-new-risk-score')
 const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = async function generateStats (options, callback) {
@@ -37,15 +38,16 @@ module.exports = async function generateStats (options, callback) {
 
       options.rankingModel.findById(r.uprn)
         .then(row => {
-          // TODO: Make this less specific and more generic to any rankings
           const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
+          const updatedRiskScore = growthCurve ? calculateNewRiskScore(range, r.risk_score, growthCurve, mean, stdev) : null
 
           options.rankingModel.upsert({
             [options.pk]: r[_.snakeCase(options.pk)],
             rankingName: options.category,
             range: _.kebabCase(range),
             distribution: distribution,
-            growthCurve: growthCurve
+            growthCurve: growthCurve,
+            updatedRiskScore: updatedRiskScore
           }, {
             setMissingPropertiesToNull: false
           })
