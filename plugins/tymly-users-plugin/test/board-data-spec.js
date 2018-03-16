@@ -135,8 +135,8 @@ describe('get-board-data tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       (err, executionDescription) => {
-        expect(executionDescription.ctx.data).to.eql({})
         expect(err).to.eql(null)
+        expect(executionDescription.ctx.data).to.eql({})
         done(err)
       }
     )
@@ -151,8 +151,8 @@ describe('get-board-data tymly-users-plugin tests', function () {
         userId: 'test-user'
       },
       (err, executionDescription) => {
-        expect(executionDescription.ctx.data).to.eql({})
         expect(err).to.eql(null)
+        expect(executionDescription.ctx.data).to.eql({})
         done(err)
       }
     )
