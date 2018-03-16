@@ -8,7 +8,7 @@ const expect = require('chai').expect
 const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-describe('watched-boards tymly-users-plugin tests', function () {
+describe('get-board-data tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let tymlyService, statebox, client, animalModel, humanModel, boardService, formService
   const GET_SINGLE_BOARD_STATE_MACHINE = 'test_getSingleBoard_1_0'
