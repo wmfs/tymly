@@ -1,0 +1,139 @@
+{
+  "Comment": "Process properties.csv ",
+  "version": "1.0",
+  "StartAt": "ProcessPropertiesCsvFiles",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ProcessPropertiesCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.property",
+      "Resource": "module:processingCsvFiles",
+      "ResourceConfig": {
+        "parser": {
+          "quote": "\"",
+          "delimiter": ",",
+          "newline": "\n",
+          "skipFirstLine": true,
+          "trimWhitespace": true
+        },
+        "dirSplits": [
+          {
+            "columnIndex": 4,
+            "valueToDirMap": {
+              "U": "upserts",
+              "D": "deletes",
+              "I": "upserts"
+            }
+          }
+        ],
+        "fileSplits": {
+          "columnIndex": 4,
+          "valueToFileMap": {
+            "U&I": {
+              "filename": "addressbase_premium_holding",
+              "outputColumns": [
+                { "name": "lpi_key", "columnIndex": 0 },
+                { "name": "hash_sum", "type": "hash" },
+                { "name": "lpi_status", "columnIndex": 1 },
+                { "name": "uprn", "columnIndex": 2 },
+                { "name": "udprn", "columnIndex": 3 },
+                { "name": "state", "columnIndex": 5 },
+                { "name": "state_date", "columnIndex": 6 },
+                { "name": "class", "columnIndex": 7 },
+                { "name": "parent_uprn", "columnIndex": 8 },
+                { "name": "x", "columnIndex": 9 },
+                { "name": "y", "columnIndex": 10 },
+                { "name": "longitude", "columnIndex": 11 },
+                { "name": "latitude", "columnIndex": 12 },
+                { "name": "rpc", "columnIndex": 13 },
+                { "name": "local_custodian_code", "columnIndex": 14 },
+                { "name": "country", "columnIndex": 15 },
+                { "name": "la_start_date", "columnIndex": 16 },
+                { "name": "last_update_date", "columnIndex": 17 },
+                { "name": "entry_date", "columnIndex": 18 },
+                { "name": "rm_organisation_name", "columnIndex": 19 },
+                { "name": "la_organisation", "columnIndex": 20 },
+                { "name": "department_name", "columnIndex": 21 },
+                { "name": "legal_name", "columnIndex": 22 },
+                { "name": "sub_building_name", "columnIndex": 23 },
+                { "name": "building_name", "columnIndex": 24 },
+                { "name": "building_number", "columnIndex": 25 },
+                { "name": "sao_start_number", "columnIndex": 26 },
+                { "name": "sao_start_suffix", "columnIndex": 27 },
+                { "name": "sao_end_number", "columnIndex": 28 },
+                { "name": "sao_end_suffix", "columnIndex": 29 },
+                { "name": "sao_text", "columnIndex": 30 },
+                { "name": "alt_language_sao_text", "columnIndex": 31 },
+                { "name": "pao_start_number", "columnIndex": 32 },
+                { "name": "pao_start_suffix", "columnIndex": 33 },
+                { "name": "pao_end_number", "columnIndex": 34 },
+                { "name": "pao_end_suffix", "columnIndex": 35 },
+                { "name": "pao_text", "columnIndex": 36 },
+                { "name": "alt_language_pao_text", "columnIndex": 37 },
+                { "name": "usrn", "columnIndex": 38 },
+                { "name": "usrn_match_indicator", "columnIndex": 39 },
+                { "name": "area_name", "columnIndex": 40 },
+                { "name": "level", "columnIndex": 41 },
+                { "name": "official_flag", "columnIndex": 42 },
+                { "name": "os_address_toid", "columnIndex": 43 },
+                { "name": "os_address_toid_version", "columnIndex": 44 },
+                { "name": "os_road_link_toid", "columnIndex": 45 },
+                { "name": "os_road_link_toid_version", "columnIndex": 46 },
+                { "name": "os_topo_toid", "columnIndex": 47 },
+                { "name": "os_topo_toid_version", "columnIndex": 48 },
+                { "name": "voa_ct_record", "columnIndex": 49 },
+                { "name": "voa_ndr_record", "columnIndex": 50 },
+                { "name": "dependent_thoroughfare", "columnIndex": 51 },
+                { "name": "thoroughfare", "columnIndex": 52 },
+                { "name": "welsh_dependent_thoroughfare", "columnIndex": 53 },
+                { "name": "welsh_thoroughfare", "columnIndex": 54 },
+                { "name": "double_dependent_locality", "columnIndex": 55 },
+                { "name": "dependent_locality", "columnIndex": 56 },
+                { "name": "welsh_double_dependent_locality", "columnIndex": 57 },
+                { "name": "welsh_dependent_locality", "columnIndex": 58 },
+                { "name": "post_town", "columnIndex": 59 },
+                { "name": "welsh_post_town", "columnIndex": 60 },
+                { "name": "postcode", "columnIndex": 61 },
+                { "name": "postcode_locator", "columnIndex": 62 },
+                { "name": "postcode_type", "columnIndex": 63 },
+                { "name": "delivery_point_suffix", "columnIndex": 64 },
+                { "name": "addressbase_postal", "columnIndex": 65 },
+                { "name": "po_box_number", "columnIndex": 66 },
+                { "name": "ward_code", "columnIndex": 67 },
+                { "name": "parish_code", "columnIndex": 68 },
+                { "name": "rm_start_date", "columnIndex": 69 },
+                { "name": "multi_occ_count", "columnIndex": 70 },
+                { "name": "voa_ndrp_desc_code", "columnIndex": 71 },
+                { "name": "voa_ndr_scat_code", "columnIndex": 72 },
+                { "name": "alt_language", "columnIndex": 73 }
+              ]
+            },
+            "D": {
+              "filename": "addressbase_premium_holding",
+              "outputColumns": [
+                {
+                  "name": "lpi_key",
+                  "columnIndex": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

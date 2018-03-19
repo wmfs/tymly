@@ -1,0 +1,36 @@
+{
+  "Comment": "import properties csv into the database",
+  "version": "1.0",
+  "StartAt": "ImportPropertiesCsvFiles",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportPropertiesCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.property.outputDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "addressbase_premium_holding"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+
+
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
