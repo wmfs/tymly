@@ -41,6 +41,12 @@ class Model {
       props[p] = c
       return props
     }, {})
+
+    this.columnToPropertyType = {}
+    this.columnNames.map(col => {
+      this.columnToPropertyType[col] = table.columns[col].dataType
+    })
+
     this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
     this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
     this.pkColumnNames = table.pkColumnNames
@@ -229,7 +235,9 @@ class Model {
 
     _.forOwn(doc, (value, id) => {
       if (this.attributeIds.indexOf(id) !== -1) {
-        if (id === 'launches') value = JSON.stringify(value)
+        if (this.columnToPropertyType[this.columnToPropertyId[id]] === 'jsonb') {
+          value = JSON.stringify(value)
+        }
         parsed.attributeProperties[id] = value
         parsed.keyAndAttributeProperties[id] = value
       } else {
