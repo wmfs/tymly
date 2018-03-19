@@ -5,7 +5,7 @@ module.exports = function calculateNewRiskScore (range, riskScore, growthCurve, 
   switch (range) {
     case 'veryHigh':
     case 'high':
-      value = +growthCurve + +mean + +stdev
+      value = ((+mean + +stdev) / 2) + +growthCurve
       break
     case 'medium':
     case 'low':

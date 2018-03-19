@@ -390,7 +390,7 @@ describe('Tests the Ranking Service', function () {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
       expect(+doc.growthCurve).to.eql(0.78049)
-      expect(+doc.updatedRiskScore).to.eql(63.96)
+      expect(+doc.updatedRiskScore).to.eql(32.37)
       done(err)
     })
   })
@@ -430,7 +430,7 @@ describe('Tests the Ranking Service', function () {
   it('should check the growth curve has changed again', (done) => {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.eql(0.90501)
-      expect(+doc.updatedRiskScore).to.eql(64)
+      expect(+doc.updatedRiskScore).to.eql(32.49)
       done(err)
     })
   })
@@ -443,7 +443,7 @@ describe('Tests the Ranking Service', function () {
       stdev: 11.81
     }
 
-    const highExpected = options.growthCurve + options.mean + options.stdev
+    const highExpected = options.growthCurve + ((options.mean + options.stdev) / 2)
     const lowExpected = (options.riskScore / 2) + options.growthCurve
 
     expect(+calculateNewRiskScore('veryHigh', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(highExpected)
