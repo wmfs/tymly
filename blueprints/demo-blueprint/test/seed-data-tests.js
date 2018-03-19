@@ -55,8 +55,6 @@ describe('Demo tests', function () {
 
   it('should get categories', function (done) {
     expect(categories.expenses.label).to.eql('Expenses')
-    expect(categories.gazetteer.label).to.eql('Gazetteer')
-    expect(categories.fireSafety.label).to.eql('Fire Safety')
     expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
     expect(categories.fires.label).to.eql('Fire')
     expect(categories.hr.label).to.eql('Human Resources')
