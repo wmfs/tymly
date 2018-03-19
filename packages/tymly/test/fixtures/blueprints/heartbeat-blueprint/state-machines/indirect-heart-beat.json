@@ -1,0 +1,22 @@
+{
+  "Comment": "A wrapper around 'human input'",
+  "StartAt": "Start",
+  "States": {
+    "Start": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "tymlyTest_heartBeat"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

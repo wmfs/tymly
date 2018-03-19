@@ -3,7 +3,9 @@
 const tymly = require('./../lib')
 const path = require('path')
 const expect = require('chai').expect
-const STATE_MACHINE_NAME = 'tymlyTest_indirectDayInTheLife'
+const DAY_IN_THE_LIFE = 'tymlyTest_indirectDayInTheLife'
+const HEARTBEAT = 'tymlyTest_heartBeat'
+const INDIRECT_HEARTBEAT = 'tymlyTest_indirectHeartBeat'
 
 describe('run-state-machine state resource test', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -18,11 +20,13 @@ describe('run-state-machine state resource test', function () {
         {
           blueprintPaths: [
             path.resolve(__dirname, './fixtures/blueprints/cats-blueprint'),
-            path.resolve(__dirname, './fixtures/blueprints/cats-wrapper-blueprint')
+            path.resolve(__dirname, './fixtures/blueprints/cats-wrapper-blueprint'),
+            path.resolve(__dirname, './fixtures/blueprints/heartbeat-blueprint')
           ],
 
           pluginPaths: [
-            path.resolve(__dirname, './fixtures/plugins/cats-plugin')
+            path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
+            path.resolve(__dirname, './fixtures/plugins/heartbeat-plugin')
           ]
         },
         function (err, tymlyServices) {
@@ -34,10 +38,12 @@ describe('run-state-machine state resource test', function () {
       )
     })
 
-    it('find cat wrapper state machine', () => {
-      const stateMachine = statebox.findStateMachineByName(STATE_MACHINE_NAME)
-      expect(stateMachine.name).to.eql(STATE_MACHINE_NAME)
-    })
+    for (const machine of [DAY_IN_THE_LIFE, HEARTBEAT, INDIRECT_HEARTBEAT]) {
+      it(`find ${machine} state machine`, () => {
+        const stateMachine = statebox.findStateMachineByName(machine)
+        expect(stateMachine.name).to.eql(machine)
+      })
+    } // for ...
 
     it('should execute cat state machine', async () => {
       const result = await statebox.startExecution(
@@ -48,7 +54,7 @@ describe('run-state-machine state resource test', function () {
           hoursSinceLastMeal: 5,
           petDiary: []
         }, // input
-        STATE_MACHINE_NAME, // state machine name
+        DAY_IN_THE_LIFE, // state machine name
         {}
       )
 
@@ -59,7 +65,7 @@ describe('run-state-machine state resource test', function () {
       const executionDescription = await statebox.waitUntilStoppedRunning(rupert)
 
       expect(executionDescription.status).to.eql('SUCCEEDED')
-      expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
+      expect(executionDescription.stateMachineName).to.eql(DAY_IN_THE_LIFE)
       expect(executionDescription.currentStateName).to.eql('Start')
       expect(executionDescription.ctx.hoursSinceLastMeal).to.eql(0)
       expect(executionDescription.ctx.hoursSinceLastMotion).to.eql(0)
@@ -69,6 +75,23 @@ describe('run-state-machine state resource test', function () {
       expect(executionDescription.ctx.petDiary[2]).to.equal('Rupert is walking... where\'s he off to?')
       expect(executionDescription.ctx.petDiary[6]).to.equal('Shh, Rupert is eating...')
     })
+
+    for (const machine of [HEARTBEAT, INDIRECT_HEARTBEAT]) {
+      it(`verify ${machine} state machine`, async () => {
+        const heartbeatDescription = await statebox.startExecution(
+          {},
+          machine,
+          {
+            sendResponse: 'AFTER_RESOURCE_CALLBACK.TYPE:heartBeat'
+          }
+        )
+
+        expect(heartbeatDescription.currentResource).to.eql('module:heartBeat')
+        expect(heartbeatDescription.stateMachineName).to.eql(machine)
+        expect(heartbeatDescription.status).to.eql('RUNNING')
+        expect(heartbeatDescription.ctx.heartbeat).to.eql({ heart: 'ba-dum-dum' })
+      })
+    }
 
     it('shutdown Tymly', async () => {
       await tymlyService.shutdown()
