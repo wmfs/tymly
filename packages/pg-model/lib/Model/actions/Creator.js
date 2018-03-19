@@ -81,11 +81,6 @@ class Creator {
 
       statement += ` RETURNING ${_this.primaryKeyColumns.join(', ')};`
 
-      parsedDoc.keyAndAttributeValues = parsedDoc.keyAndAttributeValues.map(val => {
-        if (_.isArray(val)) val = JSON.stringify(val)
-        return val
-      })
-
       const scriptEntry = {
         sql: statement,
         params: parsedDoc.keyAndAttributeValues,

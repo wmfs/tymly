@@ -459,57 +459,6 @@ describe('PG storage tests', function () {
     )
   })
 
-  it('should upsert (insert) a person with an object', function (done) {
-    people.upsert(
-      {
-        employeeNo: '4',
-        firstName: 'Marge',
-        lastName: 'Simpson',
-        age: 45,
-        children: {name: 'Lisa', age: 13}
-      },
-      {},
-      function (err, idProperties) {
-        expect(idProperties).to.eql(
-          {
-            idProperties: {
-              employeeNo: '4'
-            }
-          }
-        )
-        expect(err).to.equal(null)
-        done()
-      }
-    )
-  })
-
-  it('should upsert (insert) a person with an array as an object', function (done) {
-    people.upsert(
-      {
-        employeeNo: '4',
-        firstName: 'Marge',
-        lastName: 'Simpson',
-        age: 45,
-        children: [
-          {name: 'Lisa', age: 13},
-          {name: 'Bart', age: 12}
-        ]
-      },
-      {},
-      function (err, idProperties) {
-        expect(idProperties).to.eql(
-          {
-            idProperties: {
-              employeeNo: '4'
-            }
-          }
-        )
-        expect(err).to.equal(null)
-        done()
-      }
-    )
-  })
-
   it('should upsert (insert) Grampa', function (done) {
     people.upsert(
       {
