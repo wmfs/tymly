@@ -33,8 +33,14 @@ class Model {
     this.fkConstraints = table.fkConstraints
 
     this.columnNames = Object.keys(table.columns)
-    this.columnToPropertyId = this.columnNames.reduce((cols, col) => { cols[col] = _.camelCase(col); return cols }, { })
-    this.propertyIdToColumn = Object.entries(this.columnToPropertyId).map(([col, prop]) => [prop, col]).reduce((props, [p, c]) => { props[p] = c; return props }, { })
+    this.columnToPropertyId = this.columnNames.reduce((cols, col) => {
+      cols[col] = _.camelCase(col)
+      return cols
+    }, {})
+    this.propertyIdToColumn = Object.entries(this.columnToPropertyId).map(([col, prop]) => [prop, col]).reduce((props, [p, c]) => {
+      props[p] = c
+      return props
+    }, {})
     this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
     this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
     this.pkColumnNames = table.pkColumnNames
@@ -42,7 +48,7 @@ class Model {
     this.attributeIds = _.difference(this.propertyIds, this.pkPropertyIds)
 
     this.subDocIds = [] // Populated once all state-machines are available
-    this.fkColumnNames = Object.values(table.fkConstraints).reduce((cols, constraint) => cols.concat(constraint.sourceColumns), [ ])
+    this.fkColumnNames = Object.values(table.fkConstraints).reduce((cols, constraint) => cols.concat(constraint.sourceColumns), [])
     this.fkPropertyIds = this.fkColumnNames.map(fkColumnName => _.camelCase(fkColumnName))
     this.attributeIdsWithoutfkPropertyIds = _.difference(this.attributeIds, this.fkPropertyIds)
 
@@ -71,6 +77,7 @@ class Model {
     }
     return this.propertyIdToColumn[propertyIds]
   }
+
   create (jsonData, options = {}, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.create, jsonData, options)

@@ -4,11 +4,9 @@
   "primaryKey": ["employeeNo"],
   "type": "object",
   "properties": {
-
     "employeeNo": {
       "type": "number"
     },
-
     "firstName": {
       "type": "string",
       "description": "Person's first name"
@@ -20,9 +18,11 @@
       "description": "Age in years",
       "type": "integer",
       "minimum": 0
+    },
+    "children": {
+      "type": "object"
     }
   },
-
   "indexes": [
     {
       "columns": ["firstName", "lastName"],

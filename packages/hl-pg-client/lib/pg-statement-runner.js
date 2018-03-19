@@ -10,7 +10,8 @@ async function pgScriptRunner (pool, statementsAndParams) {
   try {
     ensureBeginAndEnd(statementsAndParams)
 
-    const ctx = { }
+    const ctx = {}
+
     for (const data of statementsAndParams) {
       try {
         if (data.preStatementHook) {
