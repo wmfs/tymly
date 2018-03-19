@@ -1,0 +1,45 @@
+{
+  "Comment": "Import Properties from AddressBase Premium GML",
+  "version": "1.0",
+  "StartAt": "ExtractProperties",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ExtractProperties": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_extractAddressbasePremiumPropertiesToCsv_1_0"
+      },
+      "Next": "ProcessPropertiesCsvFiles"
+    },
+    "ProcessPropertiesCsvFiles": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_processPropertiesCsv_1_0"
+      },
+      "Next": "ImportPropertiesCsvFiles"
+    },
+    "ImportPropertiesCsvFiles": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_importPropertiesCsv_1_0"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
