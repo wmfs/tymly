@@ -53,20 +53,6 @@ describe('Demo tests', function () {
     done()
   })
 
-  it('should get categories', function (done) {
-    expect(categories.expenses.label).to.eql('Expenses')
-    expect(categories.gazetteer.label).to.eql('Gazetteer')
-    expect(categories.fireSafety.label).to.eql('Fire Safety')
-    expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
-    expect(categories.fires.label).to.eql('Fire')
-    expect(categories.hr.label).to.eql('Human Resources')
-    expect(categories.incidents.label).to.eql('Incidents')
-    expect(categories.rtcs.label).to.eql('RTC')
-    expect(categories.water.label).to.eql('Water')
-    expect(categories.workingHydrants.label).to.eql('Working hydrants')
-    done()
-  })
-
   it('should get forms', function (done) {
     expect(forms['tymly_bookSomeoneSick'].jsonSchema.schema.formtitle).to.eql('Book someone sick')
     expect(forms['tymly_claimAnExpense'].jsonSchema.schema.formtitle).to.eql('Claim an expense')
