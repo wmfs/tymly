@@ -30,6 +30,8 @@ module.exports = function startExecution (req, res) {
     stateMachineName,
     options,
     function (err, executionDescription) {
+      if (err) debug('err:', err)
+      if (executionDescription) debug('executionDescription:', executionDescription)
       respond(res, err, executionDescription, 201, 'Statebox returned an error while attempting to start')
     }
   )
