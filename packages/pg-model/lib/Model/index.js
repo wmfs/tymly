@@ -233,6 +233,7 @@ class Model {
       doc,
       function (value, id) {
         if (_this.attributeIds.indexOf(id) !== -1) {
+          if (id === 'launches') value = JSON.stringify(value)
           parsed.attributeProperties[id] = value
           parsed.keyAndAttributeProperties[id] = value
         } else {
