@@ -1,5 +1,5 @@
 {
-  "Comment": "Import AddressBase Premium GML",
+  "Comment": "Import Streets from AddressBase Premium GML",
   "version": "1.0",
   "StartAt": "ExtractStreets",
   "categories": [
@@ -13,15 +13,7 @@
       "Type": "Task",
       "Resource": "module:runStateMachine",
       "ResourceConfig": {
-        "stateMachine": "ordnanceSurvey_importAddressbasePremiumStreets_1_0"
-      },
-      "Next": "ExtractProperties"
-    },
-    "ExtractProperties": {
-      "Type": "Task",
-      "Resource": "module:runStateMachine",
-      "ResourceConfig": {
-        "stateMachine": "ordnanceSurvey_importAddressbasePremiumProperties_1_0"
+        "stateMachine": "ordnanceSurvey_extractAddressbasePremiumStreetsToCsv_1_0"
       },
       "End": true
     }
