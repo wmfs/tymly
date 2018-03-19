@@ -15,7 +15,7 @@ class CallbackManager {
   }
 
   getAndRemoveCallback (eventName, executionName) {
-    if (this.callbacks.hasOwnProperty(executionName) && this.callbacks[executionName].eventName === eventName) {
+    if (this.hasEvent(eventName, executionName)) {
       const callback = this.callbacks[executionName].callback
       delete this.callbacks[executionName]
       return callback
