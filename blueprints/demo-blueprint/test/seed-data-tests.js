@@ -14,7 +14,7 @@ chai.use(chaiSubset)
 
 describe('Demo tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, models, forms, boards, categories, client
+  let tymlyService, models, forms, boards, client
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -41,7 +41,6 @@ describe('Demo tests', function () {
         models = tymlyServices.storage.models
         forms = tymlyServices.forms.forms
         boards = tymlyServices.boards.boards
-        categories = tymlyServices.categories.categories
         client = tymlyServices.storage.client
         done()
       }
