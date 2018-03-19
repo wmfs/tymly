@@ -8,6 +8,7 @@ process.on('unhandledRejection', (reason, p) => {
 const tymly = require('tymly')
 const path = require('path')
 const fs = require('fs')
+const rimraf = require('rimraf')
 const expect = require('chai').expect
 
 const STATE_MACHINE_NAME = 'ordnanceSurvey_importAddressbasePremiumGml_1_0'
@@ -34,6 +35,10 @@ describe('process addressbase-premium', function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
       console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
       this.skip()
+    }
+
+    if (fs.existsSync(outputDir)) {
+      rimraf.sync(outputDir)
     }
   })
 
