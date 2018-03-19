@@ -206,8 +206,6 @@ class Model {
   }
 
   parseDoc (doc, options) {
-    const _this = this
-
     // Parse options
     let includeNullFks
     if (options) {
@@ -229,31 +227,28 @@ class Model {
       subDocs: {}
     }
 
-    _.forOwn(
-      doc,
-      function (value, id) {
-        if (_this.attributeIds.indexOf(id) !== -1) {
-          if (id === 'launches') value = JSON.stringify(value)
-          parsed.attributeProperties[id] = value
+    _.forOwn(doc, (value, id) => {
+      if (this.attributeIds.indexOf(id) !== -1) {
+        if (id === 'launches') value = JSON.stringify(value)
+        parsed.attributeProperties[id] = value
+        parsed.keyAndAttributeProperties[id] = value
+      } else {
+        if (this.pkPropertyIds.indexOf(id) !== -1) {
+          parsed.keyProperties[id] = value
           parsed.keyAndAttributeProperties[id] = value
         } else {
-          if (_this.pkPropertyIds.indexOf(id) !== -1) {
-            parsed.keyProperties[id] = value
-            parsed.keyAndAttributeProperties[id] = value
+          if (id[0] === '_') {
+            parsed.readOnlyProperties[id] = value
           } else {
-            if (id[0] === '_') {
-              parsed.readOnlyProperties[id] = value
+            if (this.subDocIds.indexOf(id) !== -1) {
+              parsed.subDocs[id] = value
             } else {
-              if (_this.subDocIds.indexOf(id) !== -1) {
-                parsed.subDocs[id] = value
-              } else {
-                parsed.unknownProperties[id] = value
-              }
+              parsed.unknownProperties[id] = value
             }
           }
         }
       }
-    )
+    })
 
     if (includeNullFks) {
       this.fkPropertyIds.forEach(
@@ -275,7 +270,7 @@ class Model {
     parsed.keyAndAttributeColumns = this.columnify(_.keys(parsed.keyAndAttributeProperties))
     parsed.keyAndAttributeValues = _.values(parsed.keyAndAttributeProperties)
 
-    parsed.missingAttributeIds = _.difference(_this.attributeIdsWithoutfkPropertyIds, _.keys(parsed.attributeProperties))
+    parsed.missingAttributeIds = _.difference(this.attributeIdsWithoutfkPropertyIds, _.keys(parsed.attributeProperties))
     parsed.missingAttributeColumnNames = this.columnify(parsed.missingAttributeIds)
 
     parsed.primaryKeyValues = {}
