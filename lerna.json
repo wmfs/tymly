@@ -2,8 +2,7 @@
   "lerna": "2.0.0",
   "packages": [
     "packages/*",
-    "plugins/*",
-    "blueprints/*"
+    "plugins/*"
   ],
   "version": "independent",
   "hoist": true,
