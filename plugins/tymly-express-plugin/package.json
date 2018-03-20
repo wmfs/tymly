@@ -16,7 +16,7 @@
     "helmet": "3.12.0",
     "lodash": "4.17.5",
     "sprintf": "0.1.5",
-    "request": "2.83.0",
+    "request": "2.85.0",
     "request-promise-native": "1.0.5"
   },
   "devDependencies": {
