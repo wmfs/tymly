@@ -2,6 +2,7 @@
 
 const _ = require('lodash')
 const dottie = require('dottie')
+const jp = require('jsonpath')
 
 module.exports = class SetContextData {
   init (resourceConfig, env, callback) {
@@ -13,13 +14,12 @@ module.exports = class SetContextData {
   run (event, context) {
     const FORM_DATA_STRING_LENGTH = 8
     const data = {}
-    const _this = this
 
     const setters = Object.keys(this.resourceConfig).map(key => {
-      let dottiePath
       let theKey
       if (_.isString(key) && key.length > 0) {
-        dottiePath = key
+        let dottiePath = key
+
         if (dottiePath[0] === '$') {
           dottiePath = dottiePath.slice(1)
         }
@@ -34,20 +34,22 @@ module.exports = class SetContextData {
         }
       }
 
-      if (this.resourceConfig[key] === '$NOW') {
+      if (this.resourceConfig[key].substring(0, 2) === '$.') {
+        this.resourceConfig[key] = jp.value(event, this.resourceConfig[key])
+      } else if (this.resourceConfig[key] === '$NOW') {
         this.resourceConfig[key] = new Date().toISOString()
       } else if (this.resourceConfig[key] === '$USERID') {
         this.resourceConfig[key] = context.userId
       } else if (this.resourceConfig[key] === '$EMAIL') {
-        if (_this.auth0Service) {
+        if (this.auth0Service) {
           return new Promise((resolve, reject) => {
-            _this.auth0Service.getEmailFromUserId(context.userId, function (err, email) {
+            this.auth0Service.getEmailFromUserId(context.userId, (err, email) => {
               if (err) {
-                _this.resourceConfig[key] = ''
+                this.resourceConfig[key] = ''
               } else {
-                _this.resourceConfig[key] = email
+                this.resourceConfig[key] = email
               }
-              dottie.set(data, theKey, _this.resourceConfig[key])
+              dottie.set(data, theKey, this.resourceConfig[key])
               resolve()
             })
           })
