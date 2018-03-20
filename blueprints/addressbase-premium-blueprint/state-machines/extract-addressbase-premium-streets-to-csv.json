@@ -22,6 +22,7 @@
           ["$.state", "state", "number"],
           ["$.stateDate", "state_date", "date"],
           ["@.streetDescription", "description", "string"],
+          ["@.locality", "locality","string"],
           ["@.townName", "townName", "string"],
           ["@.administrativeArea", "administrativeArea","string"],
           ["$.streetSurface", "surface", "number"],
@@ -34,6 +35,7 @@
           [{"select": "$.streetStartLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "start_latitude", "number"],
           [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "end_longitude", "number"],
           [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_latitude", "number"]
+
         ],
         "namespace": "strip"
       },
