@@ -1,7 +1,7 @@
 {
   "name": "tymly-doc-generator",
   "description": "For generating Tymly documentation",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -13,7 +13,7 @@
     "extend": "3.0.0",
     "lodash": "4.17.5",
     "sprintf": "0.1.5",
-    "tymly": "^0.0.16",
+    "tymly": "^0.0.17",
     "upath": "1.0.4"
   },
   "devDependencies": {

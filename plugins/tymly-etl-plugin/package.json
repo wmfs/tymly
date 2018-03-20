@@ -1,7 +1,7 @@
 {
   "name": "tymly-etl-plugin",
   "description": "A collection of states for helping with Extract, Transform and Load tasks.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Aron Moore",
   "main": "./lib/index.js",
   "dependencies": {
@@ -9,7 +9,7 @@
     "debug": "3.1.0",
     "glob": "7.1.2",
     "smithereens": "^0.0.9",
-    "tymly": "^0.0.16",
+    "tymly": "^0.0.17",
     "xml-flatten2csv": "^0.0.2",
     "xml2csv": "^1.0.2"
   },

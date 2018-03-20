@@ -1,7 +1,7 @@
 {
   "name": "tymly",
   "description": "A framework for building and sharing workflows in Node.js",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -19,7 +19,7 @@
     "read-pkg-up": "3.0.0",
     "split": "1.0.1",
     "sprintf-js": "1.1.1",
-    "statebox": "^0.0.7",
+    "statebox": "^0.0.8",
     "underscore-query": "3.3.2",
     "upath": "1.0.4",
     "uuid": "3.2.1"

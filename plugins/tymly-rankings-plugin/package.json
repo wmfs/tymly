@@ -1,7 +1,7 @@
 {
   "name": "tymly-rankings-plugin",
   "description": "Plugin which handles ranking of data",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Liliana Judge",
   "main": "./lib/index.js",
   "dependencies": {
@@ -20,8 +20,8 @@
     "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
     "standard": "11.0.1",
-    "tymly": "^0.0.16",
-    "tymly-pg-plugin": "^0.0.7"
+    "tymly": "^0.0.17",
+    "tymly-pg-plugin": "^0.0.8"
   },
   "scripts": {
     "lint": "standard",
