@@ -1,0 +1,11 @@
+{
+  "propertyNames": [
+    "value",
+    "description"
+  ],
+  "data": [
+    ["1", "Metalled"],
+    ["2", "Unmetalled"],
+    ["3", "Mixed"]
+  ]
+}

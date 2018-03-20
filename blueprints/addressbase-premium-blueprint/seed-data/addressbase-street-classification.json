@@ -1,0 +1,13 @@
+{
+  "propertyNames": [
+    "value",
+    "description"
+  ],
+  "data": [
+    ["4", "Pedestrian way or footpath"],
+    ["6", "Cycletrack or cycleway"],
+    ["8", "All vehicles"],
+    ["9", "Restrcited byway"],
+    ["10", "Bridleway"]
+  ]
+}

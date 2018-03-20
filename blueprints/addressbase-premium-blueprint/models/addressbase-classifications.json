@@ -1,0 +1,40 @@
+{
+  "title": "Addressbase Plus Classification Codes",
+  "description": "Addressbase Plus Classification Codes",
+  "primaryKey": [
+    "concatenated"
+  ],
+  "type": "object",
+  "properties": {
+    "concatenated": {
+      "type": "string"
+    },
+    "classDesc": {
+      "type": "string"
+    },
+    "primaryCode": {
+      "type": "string"
+    },
+    "secondaryCode": {
+      "type": "string"
+    },
+    "tertiaryCode": {
+      "type": "string"
+    },
+    "quaternaryCode": {
+      "type": "string"
+    },
+    "primaryDesc": {
+      "type": "string"
+    },
+    "secondaryDesc": {
+      "type": "string"
+    },
+    "tertiaryDesc": {
+      "type": "string"
+    },
+    "quaternaryDesc": {
+      "type": "string"
+    }
+  }
+}

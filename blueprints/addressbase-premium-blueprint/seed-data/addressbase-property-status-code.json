@@ -1,0 +1,12 @@
+{
+  "propertyNames": [
+    "value",
+    "description"
+  ],
+  "data": [
+    ["1", "Approved"],
+    ["3", "Alternative"],
+    ["6", "Provisional"],
+    ["8", "Historical"]
+  ]
+}

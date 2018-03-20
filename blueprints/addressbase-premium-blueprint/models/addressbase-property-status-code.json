@@ -1,0 +1,18 @@
+{
+  "title": "propertyStatusCode",
+  "description": "provides a value to show the lifecycle stage of the address record",
+  "primaryKey": ["value"],
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "integer",
+      "maxLength": 2
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 20
+    }
+  },
+  "required": ["value", "description"]
+}
+

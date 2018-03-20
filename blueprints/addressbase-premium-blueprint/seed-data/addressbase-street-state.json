@@ -1,0 +1,11 @@
+{
+  "propertyNames": [
+    "value",
+    "description"
+  ],
+  "data": [
+    ["1", "Under construction"],
+    ["2", "Open"],
+    ["4", "Permanently closed"]
+  ]
+}
