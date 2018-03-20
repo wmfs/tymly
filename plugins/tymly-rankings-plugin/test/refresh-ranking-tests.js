@@ -6,6 +6,7 @@ const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
 const HlPgClient = require('hl-pg-client')
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
@@ -16,6 +17,13 @@ describe('Tests the Ranking State Resource', function () {
   // out before tymly can be started up
   const pgConnectionString = process.env.PG_CONNECTION_STRING
   const client = new HlPgClient(pgConnectionString)
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create the test resources', () => {
     return sqlScriptRunner('./db-scripts/setup.sql', client)
@@ -48,7 +56,7 @@ describe('Tests the Ranking State Resource', function () {
       {
         schema: 'test',
         category: 'factory'
-      },  // input
+      }, // input
       'test_refreshRanking_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -79,27 +87,30 @@ describe('Tests the Ranking State Resource', function () {
             address_label: '1 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 66
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
             address_label: '2 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 18
+            risk_score: 34
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
             address_label: '3 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 16
+            risk_score: 48
           })
           done()
         }
@@ -113,6 +124,11 @@ describe('Tests the Ranking State Resource', function () {
         setRegistryKey: {
           key: 'test_factory',
           value: {
+            'exponent': {
+              'veryLow': '0.01',
+              'medium': '0.02',
+              'veryHigh': '0.03'
+            },
             'usage': {
               'type': 'constant',
               'score': 12
@@ -137,6 +153,27 @@ describe('Tests the Ranking State Resource', function () {
                   'type': 'numeric-constant',
                   'numericValue': 5,
                   'score': 2
+                }
+              ]
+            },
+            'fsManagement': {
+              'type': 'options',
+              'default': 0,
+              'options': [
+                {
+                  'type': 'numeric-rangetext-constant',
+                  'textualValue': 'Very Low',
+                  'score': 32
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'Average',
+                  'score': 0
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'Average',
+                  'score': 0
                 }
               ]
             },
@@ -173,7 +210,7 @@ describe('Tests the Ranking State Resource', function () {
           schema: 'test',
           category: 'factory'
         }
-      },  // input
+      }, // input
       'wmfs_setAndRefresh_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -204,21 +241,12 @@ describe('Tests the Ranking State Resource', function () {
       }
     })
   })
-
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
-
-  it('should delete this registry key', function (done) {
-    client.query('DELETE FROM tymly.registry_key WHERE key = \'test_factory\'', function (err) {
-      done(err)
-    })
-  })
-
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
-
   it('Should close database connections', function (done) {
     client.end()
     done()

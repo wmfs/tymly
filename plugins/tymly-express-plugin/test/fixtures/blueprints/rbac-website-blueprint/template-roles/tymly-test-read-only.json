@@ -1,0 +1,11 @@
+{
+  "label": "Get anything in the TymlyTest namespace... useful for dashboards",
+  "grants": [
+    {
+      "stateMachineName": "*",
+      "allows": [
+        "get"
+      ]
+    }
+  ]
+}

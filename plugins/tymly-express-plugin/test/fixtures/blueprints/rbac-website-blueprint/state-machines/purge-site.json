@@ -1,0 +1,21 @@
+{
+  "Comment": "Take it all down... NOW!!!",
+  "version": "1.0",
+  "StartAt": "Logging",
+  "instigators": [
+    "user"
+  ],
+  "categories": [
+    "website"
+  ],
+  "States": {
+    "Logging": {
+      "Type": "Task",
+      "Resource": "module:logging",
+      "ResourceConfig": {
+        "template": "Purge site!"
+      },
+      "End": true
+    }
+  }
+}

@@ -33,8 +33,19 @@ class Model {
     this.fkConstraints = table.fkConstraints
 
     this.columnNames = Object.keys(table.columns)
-    this.columnToPropertyId = this.columnNames.reduce((cols, col) => { cols[col] = _.camelCase(col); return cols }, { })
-    this.propertyIdToColumn = Object.entries(this.columnToPropertyId).map(([col, prop]) => [prop, col]).reduce((props, [p, c]) => { props[p] = c; return props }, { })
+    this.columnToPropertyId = this.columnNames.reduce((cols, col) => {
+      cols[col] = _.camelCase(col)
+      return cols
+    }, {})
+    this.propertyIdToColumn = Object.entries(this.columnToPropertyId).map(([col, prop]) => [prop, col]).reduce((props, [p, c]) => {
+      props[p] = c
+      return props
+    }, {})
+    this.columnToPropertyType = this.columnNames.reduce((cols, col) => {
+      cols[col] = table.columns[col].dataType
+      return cols
+    }, {})
+
     this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
     this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
     this.pkColumnNames = table.pkColumnNames
@@ -42,7 +53,7 @@ class Model {
     this.attributeIds = _.difference(this.propertyIds, this.pkPropertyIds)
 
     this.subDocIds = [] // Populated once all state-machines are available
-    this.fkColumnNames = Object.values(table.fkConstraints).reduce((cols, constraint) => cols.concat(constraint.sourceColumns), [ ])
+    this.fkColumnNames = Object.values(table.fkConstraints).reduce((cols, constraint) => cols.concat(constraint.sourceColumns), [])
     this.fkPropertyIds = this.fkColumnNames.map(fkColumnName => _.camelCase(fkColumnName))
     this.attributeIdsWithoutfkPropertyIds = _.difference(this.attributeIds, this.fkPropertyIds)
 
@@ -71,6 +82,7 @@ class Model {
     }
     return this.propertyIdToColumn[propertyIds]
   }
+
   create (jsonData, options = {}, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.create, jsonData, options)
@@ -199,8 +211,6 @@ class Model {
   }
 
   parseDoc (doc, options) {
-    const _this = this
-
     // Parse options
     let includeNullFks
     if (options) {
@@ -222,30 +232,30 @@ class Model {
       subDocs: {}
     }
 
-    _.forOwn(
-      doc,
-      function (value, id) {
-        if (_this.attributeIds.indexOf(id) !== -1) {
-          parsed.attributeProperties[id] = value
+    _.forOwn(doc, (value, id) => {
+      if (this.attributeIds.indexOf(id) !== -1) {
+        if (this.columnToPropertyType[this.columnToPropertyId[id]] === 'jsonb') {
+          if (_.isArray(value)) value = JSON.stringify(value)
+        }
+        parsed.attributeProperties[id] = value
+        parsed.keyAndAttributeProperties[id] = value
+      } else {
+        if (this.pkPropertyIds.indexOf(id) !== -1) {
+          parsed.keyProperties[id] = value
           parsed.keyAndAttributeProperties[id] = value
         } else {
-          if (_this.pkPropertyIds.indexOf(id) !== -1) {
-            parsed.keyProperties[id] = value
-            parsed.keyAndAttributeProperties[id] = value
+          if (id[0] === '_') {
+            parsed.readOnlyProperties[id] = value
           } else {
-            if (id[0] === '_') {
-              parsed.readOnlyProperties[id] = value
+            if (this.subDocIds.indexOf(id) !== -1) {
+              parsed.subDocs[id] = value
             } else {
-              if (_this.subDocIds.indexOf(id) !== -1) {
-                parsed.subDocs[id] = value
-              } else {
-                parsed.unknownProperties[id] = value
-              }
+              parsed.unknownProperties[id] = value
             }
           }
         }
       }
-    )
+    })
 
     if (includeNullFks) {
       this.fkPropertyIds.forEach(
@@ -267,7 +277,7 @@ class Model {
     parsed.keyAndAttributeColumns = this.columnify(_.keys(parsed.keyAndAttributeProperties))
     parsed.keyAndAttributeValues = _.values(parsed.keyAndAttributeProperties)
 
-    parsed.missingAttributeIds = _.difference(_this.attributeIdsWithoutfkPropertyIds, _.keys(parsed.attributeProperties))
+    parsed.missingAttributeIds = _.difference(this.attributeIdsWithoutfkPropertyIds, _.keys(parsed.attributeProperties))
     parsed.missingAttributeColumnNames = this.columnify(parsed.missingAttributeIds)
 
     parsed.primaryKeyValues = {}

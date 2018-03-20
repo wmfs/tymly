@@ -1,0 +1,8 @@
+{
+  "label": "Incidents in Progress",
+  "description": "Incidents in Progress",
+  "styling": {
+    "icon": "iip",
+    "backgroundColor": "#ffffff"
+  }
+}

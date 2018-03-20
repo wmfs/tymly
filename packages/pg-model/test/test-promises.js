@@ -28,6 +28,13 @@ describe('Test promise API', function () {
   let phobosId
   let stickneyId
 
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
+
   it('Should create a new pg client', function () {
     client = new HlPgClient(process.env.PG_CONNECTION_STRING)
   })
@@ -144,7 +151,7 @@ describe('Test promise API', function () {
             'severity': 'ERROR',
             'table': 'person'
           }
-          )
+        )
       }
       )
   })
@@ -180,7 +187,7 @@ describe('Test promise API', function () {
           }
         )
       }
-    )
+      )
   })
 
   it('should find a person via primary key', function () {
@@ -194,7 +201,7 @@ describe('Test promise API', function () {
             'age': 8
           }
         )
-    )
+      )
   })
 
   it("should fail finding a person that's not there", function () {

@@ -1,0 +1,25 @@
+{
+  "Comment": "Flatten a Simpsons XML to CSV.",
+  "version": "1.0",
+  "StartAt": "FlattenXmlFile",
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "FlattenXmlFile": {
+      "Type": "Task",
+      "Resource": "module:flattenXmlFiles",
+      "ResourceConfig": {
+        "rootXMLElement": "Episode",
+        "pivotPath": "$.People.Person",
+        "headerMap": [
+          ["$.Title", "title", "string"],
+          ["@.Name", "name", "string"],
+          [{"test": "@.Age<=16", "value": "yes"}, "child", "string"],
+          [{"test": "@.Age>16", "select": "@.Age"}, "age", "integer"]
+        ]
+      },
+      "End": true
+    }
+  }
+}

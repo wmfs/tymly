@@ -1,0 +1,11 @@
+{
+  "label": "tymlyTest Admin",
+  "description": "Do anything in the TymlyTest namespace",
+
+  "grants": [
+    {
+      "stateMachineName": "*",
+      "allows": ["*"]
+    }
+  ]
+}

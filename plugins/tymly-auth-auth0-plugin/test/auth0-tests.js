@@ -12,6 +12,19 @@ describe('tymly-auth-auth0-plugin tests', function () {
   let tymlyService
   let authService
 
+  const envVars = [
+    'TYMLY_NIC_AUTH0_CLIENT_ID',
+    'TYMLY_NIC_AUTH0_CLIENT_SECRET',
+    'TYMLY_NIC_AUTH0_DOMAIN'
+  ]
+
+  const err = envVars.map(v => { return !process.env[v] ? v : null }).filter(v => !!v)
+  const varsFound = err.length === 0
+  if (!varsFound) {
+    xit('Skipping Auth0 plugin because AUTH0 env vars not set')
+    return
+  }
+
   it('should create some basic tymly services', function (done) {
     tymly.boot(
       {

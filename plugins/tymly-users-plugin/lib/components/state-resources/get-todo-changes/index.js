@@ -11,7 +11,7 @@ class GetTodoChanges {
 
   run (event, context) {
     const userId = context.userId // what about team name? Get the team this user is in?
-    const clientTodoExecutionNames = event.clientTodoExecutionNames
+    const clientTodos = event.clientTodos
 
     this.todos.find({where: {userId: {equals: userId}}})
       .then(results => {
@@ -21,7 +21,7 @@ class GetTodoChanges {
           remove: []
         }
         results.map(r => { resultsObj[r['id']] = r })
-        this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodoExecutionNames)
+        this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodos)
         context.sendTaskSuccess({todoChanges})
       })
       .catch(err => context.sendTaskFailure({error: 'getTodoChangesFail', cause: err}))

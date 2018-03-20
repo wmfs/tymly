@@ -30,60 +30,79 @@ class Search {
   } // solrClient
 
   run (event, context) {
+    const usersService = this.services.users
     const solrService = this.services.solr
 
-    if (solrService.searchDocs) {
-      const searchDocs = this.services.solr.searchDocs
-      this.searchFields = new Set()
-      Object.keys(searchDocs).map(s => {
-        Object.keys(searchDocs[s].attributeMapping).map(a => {
-          this.searchFields.add(_.snakeCase(a))
-        })
+    if (context.userId) {
+      usersService.getUserRoles(context.userId, (err, userRoles) => {
+        if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
+        if (!userRoles.includes('$authenticated')) userRoles.push('$authenticated')
+
+        if (solrService.searchDocs) {
+          const searchDocs = this.services.solr.searchDocs
+          this.searchFields = new Set()
+          Object.keys(searchDocs).map(s => {
+            Object.keys(searchDocs[s].attributeMapping).map(a => {
+              this.searchFields.add(_.snakeCase(a))
+            })
+          })
+        } else {
+          this.searchFields = defaultSolrSchemaFields
+        }
+
+        const filters = this.processFilters(event)
+
+        if (solrService.solrUrl) {
+          this.runSolrSearch(event, context, filters, userRoles)
+        } else {
+          this.runStorageSearch(context, filters, userRoles)
+        }
       })
     } else {
-      this.searchFields = defaultSolrSchemaFields
-    }
-
-    const filters = this.processFilters(event)
-
-    if (solrService.solrUrl) {
-      this.runSolrSearch(event, context, filters)
-    } else {
-      this.runStorageSearch(context, filters)
+      context.sendTaskFailure({
+        error: 'noUserIdSearchFail',
+        cause: 'No user ID found when trying to search.'
+      })
     }
   } // run
 
-  runSolrSearch (event, context, filters) {
+  runSolrSearch (event, context, filters, userRoles) {
     const searchTerm = event.query ? `(${event.query.trim().replace(/ /g, '%20')})` : ''
     const filterQuery = []
     this.searchFields.forEach(s => {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
     })
     const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
-    const query = `q=*:*${fq}&sort=created%20desc`
+    const userRolesQuery = `%20AND%20roles:(${userRoles.map(r => r).join('%20OR%20')})`
+    const activeEvent = filters.showActiveEventsOnly ? `%20AND%20activeEvent:true` : ``
+    const query = `q=*:*${userRolesQuery}${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
       if (err) {
         return context.sendTaskFailure({error: 'searchFail', cause: err})
       }
-      this.processResults(context, result.response.docs, filters)
+      this.processResults(context, result.response.docs, filters, result.response.numFound)
     })
   } // runSolrSearch
 
-  runStorageSearch (context, filters) {
-    this.storageClient.query(`select * from tymly.solr_data`, (err, results) => {
+  runStorageSearch (context, filters, userRoles) {
+    const where = userRoles.map(role => `'${role}' = any(roles)`)
+    const query = `select * from tymly.solr_data` + (where.length > 0 ? ` where ${where.join(' or ')}` : ``)
+
+    this.storageClient.query(query, (err, results) => {
       if (err) {
         return context.sendTaskFailure({error: 'searchFail', cause: err})
       }
       const matchingDocs = this.filterDocs(results.rows, filters)
-      this.processResults(context, matchingDocs, filters)
+      this.processResults(context, matchingDocs, filters, matchingDocs.length)
     })
   } // runStorageSearch
 
-  processResults (context, matchingDocs, filters) {
+  processResults (context, matchingDocs, filters, totalHits) {
     const searchResults = {
-      input: filters
+      input: filters,
+      totalHits: totalHits
     }
 
     this.constructSearchResults(searchResults, filters, matchingDocs)
@@ -96,8 +115,7 @@ class Search {
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
-    searchResults.results = this.jsonifyLaunches(results.slice(filters.offset, (filters.offset + filters.limit)))
-    searchResults.totalHits = results.length
+    searchResults.results = this.jsonifyLaunches(results)
     searchResults.categoryCounts = this.countCategories(results)
     return searchResults
   }

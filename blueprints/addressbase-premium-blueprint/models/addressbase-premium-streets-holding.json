@@ -1,0 +1,30 @@
+{
+  "title": "streets",
+  "description": "Record of streets from AddressBase Premium data",
+  "primaryKey": ["usrn"],
+  "type": "object",
+  "properties": {
+    "usrn": {
+      "type": "integer",
+      "maxLength": 8,
+      "description": "Unique Street Reference Number. Source: Contributing Local Authority"
+    },
+    "streetDescription": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Name taken from the Local Land and Property Gazetteer (LLPG) street name"
+    },
+    "townName": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "The name of the town the address is within. Source: Contributing Local Authority"
+    },
+    "administrativeArea": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "Local Highway Authority Name. Source: Contributing Local Authority"
+    }
+  },
+  "required": ["usrn", "streetDescription", "townName", "administrativeArea"]
+}
+

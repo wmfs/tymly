@@ -6,16 +6,25 @@ const tymly = require('tymly')
 const path = require('path')
 const HlPgClient = require('hl-pg-client')
 const expect = require('chai').expect
+const process = require('process')
+const moment = require('moment')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const existsCase = require('./../lib/components/services/rankings/case-statements/exists.js')
 const optionCase = require('./../lib/components/services/rankings/case-statements/option.js')
 const constantCase = require('./../lib/components/services/rankings/case-statements/constant.js')
 const generateView = require('./../lib/components/services/rankings/generate-view-statement.js')
-const generateStats = require('./../lib/components/services/rankings/generate-stats')
+const calculateNewRiskScore = require('./../lib/components/services/rankings/calculate-new-risk-score.js')
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService
+  let tymlyService, statebox, rankingModel, statsModel, viewSQL, growthCurveBefore
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -40,6 +49,10 @@ describe('Tests the Ranking Service', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
+        statebox = tymlyServices.statebox
+        rankingModel = tymlyServices.storage.models['test_rankingUprns']
+        statsModel = tymlyServices.storage.models['test_modelStats']
+        viewSQL = tymlyServices.rankings.viewSQL
         done()
       }
     )
@@ -201,13 +214,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should execute the generated view statement', function (done) {
-    // TODO: This should run the service based on the /fixtures/blueprint rather than hardcoded the statement produced by it
-    client.query(
-      'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.address_label,scores.usage_score,scores.food_standards_score,scores.incidents_score,scores.heritage_score,scores.usage_score+scores.food_standards_score+scores.incidents_score+scores.heritage_score as risk_score FROM (SELECT g.uprn,g.address_label as address_label,8 as usage_score ,CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score ,CASE WHEN incidents.amount = 0 THEN 0 WHEN incidents.amount = 1 THEN 6 WHEN incidents.amount > 1 THEN 16 ELSE 0 END AS incidents_score ,CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score  FROM test.gazetteer g  LEFT JOIN test.food food ON food.uprn = g.uprn  LEFT JOIN test.incidents incidents ON incidents.uprn = g.uprn  LEFT JOIN test.heritage heritage ON heritage.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores;',
-      function (err) {
-        done(err)
-      }
-    )
+    client.query(viewSQL['test_factory'], (err) => done(err))
   })
 
   it('should ensure the generated view holds the correct data', function (done) {
@@ -222,54 +229,60 @@ describe('Tests the Ranking Service', function () {
             address_label: '1 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 66
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
             address_label: '2 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 18
+            risk_score: 34
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
             address_label: '3 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 16
+            risk_score: 48
           })
           expect(result.rows[3]).to.eql({
             uprn: '4',
             address_label: '4 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 2,
-            risk_score: 24
+            risk_score: 56
           })
           expect(result.rows[4]).to.eql({
             uprn: '5',
             address_label: '5 abc lane',
             usage_score: 8,
             food_standards_score: 8,
+            fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 0,
-            risk_score: 32
+            risk_score: 64
           })
           expect(result.rows[5]).to.eql({
             uprn: '6',
             address_label: '6 abc lane',
             usage_score: 8,
             food_standards_score: 2,
+            fs_management_score: 32,
             incidents_score: 0,
             heritage_score: 0,
-            risk_score: 10
+            risk_score: 42
           })
           done()
         }
@@ -277,61 +290,165 @@ describe('Tests the Ranking Service', function () {
     )
   })
 
-  it('should generate a statistics table', function (done) {
-    generateStats({
-      client: client,
-      category: 'factory',
-      schema: 'test',
-      pk: 'uprn',
-      name: 'test'
-    }, function (err) {
+  it('should check the data in the statistics model', function (done) {
+    statsModel.find({})
+      .then(result => {
+        expect(result[0].category).to.eql('factory')
+        expect(result[0].count).to.eql(6)
+        expect(result[0].mean).to.eql('51.67')
+        expect(result[0].median).to.eql('52.00')
+        expect(result[0].variance).to.eql('132.56')
+        expect(result[0].stdev).to.eql('11.51')
+        expect(result[0].ranges).to.eql({
+          veryLow: {lowerBound: 0, upperBound: '40.15', exponent: '-0.00088'},
+          veryHigh: {lowerBound: '63.19', upperBound: 66, exponent: '-0.0075'},
+          medium: {lowerBound: '40.16', upperBound: '63.18', exponent: '-0.0004'}
+        })
+        done()
+      })
+      .catch(err => done(err))
+  })
+
+  it('should check the data in ranking model', function (done) {
+    rankingModel.find({})
+      .then(result => {
+        growthCurveBefore = result[4].growthCurve
+
+        expect(result[0].uprn).to.eql('1')
+        expect(result[0].range).to.eql('very-high')
+        expect(result[0].distribution).to.eql('0.0160')
+        expect(result[0].growthCurve).to.not.eql(null)
+        expect(result[0].updatedRiskScore).to.not.eql(null)
+
+        expect(result[1].uprn).to.eql('2')
+        expect(result[1].range).to.eql('very-low')
+        expect(result[1].distribution).to.eql('0.0107')
+        expect(result[1].growthCurve).to.not.eql(null)
+        expect(result[1].updatedRiskScore).to.not.eql(null)
+
+        expect(result[2].uprn).to.eql('3')
+        expect(result[2].range).to.eql('medium')
+        expect(result[2].distribution).to.eql('0.0329')
+        expect(result[2].growthCurve).to.not.eql(null)
+        expect(result[2].updatedRiskScore).to.not.eql(null)
+
+        expect(result[3].uprn).to.eql('4')
+        expect(result[3].range).to.eql('medium')
+        expect(result[3].distribution).to.eql('0.0323')
+        expect(result[3].growthCurve).to.not.eql(null)
+        expect(result[3].updatedRiskScore).to.not.eql(null)
+
+        expect(result[4].uprn).to.eql('5')
+        expect(result[4].range).to.eql('very-high')
+        expect(result[4].distribution).to.eql('0.0195')
+        expect(result[4].growthCurve).to.not.eql(null)
+        expect(result[4].updatedRiskScore).to.not.eql(null)
+
+        expect(result[5].uprn).to.eql('6')
+        expect(result[5].range).to.eql('medium')
+        expect(result[5].distribution).to.eql('0.0244')
+        expect(result[5].growthCurve).to.eql(null)
+        expect(result[5].updatedRiskScore).to.eql(null)
+        done()
+      })
+      .catch(err => done(err))
+  })
+
+  it('should change the date for one of the factory properties to be today\'s date', (done) => {
+    rankingModel.upsert({
+      uprn: 5,
+      rankingName: 'factory',
+      lastAuditDate: new Date()
+    }, {
+      setMissingPropertiesToNull: false
+    })
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  it('should refresh the rankings for factory via state machine since we\'ve changed the date', (done) => {
+    statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory'
+      },
+      'test_refreshRanking_1_0',
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
+        done()
+      }
+    )
+  })
+
+  it('should check the growth curve has changed', (done) => {
+    rankingModel.findById(5, (err, doc) => {
+      expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
+      expect(+doc.growthCurve).to.eql(0.78049)
+      expect(+doc.updatedRiskScore).to.eql(32.37)
       done(err)
     })
   })
 
-  it('should check the data in the statistics table', function (done) {
-    client.query(
-      'SELECT * FROM test.test_stats',
-      function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows[0]).to.eql({
-          category: 'factory',
-          count: '6',
-          mean: '22.33',
-          median: '21.00',
-          variance: '73.89',
-          stdev: '8.60',
-          ranges: {
-            veryLow: {lowerBound: 0, upperBound: '13.74'},
-            veryHigh: {lowerBound: '30.94', upperBound: 34},
-            medium: {lowerBound: '13.75', upperBound: '30.93'}
-          }
-        })
+  it('should change the date for one of the factory properties to be 20 days ago', (done) => {
+    rankingModel.upsert({
+      uprn: 5,
+      rankingName: 'factory',
+      lastAuditDate: moment().subtract(20, 'days')
+    }, {
+      setMissingPropertiesToNull: false
+    })
+      .then(() => done())
+      .catch(err => done(err))
+  })
+
+  it('should refresh the rankings for factory via state machine since we\'ve changed the date again', (done) => {
+    statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory'
+      },
+      'test_refreshRanking_1_0',
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         done()
       }
     )
   })
 
-  it('should check the data in uprn_to_range', function (done) {
-    client.query(
-      'SELECT * FROM test.uprn_to_range',
-      function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows).to.eql([
-          {uprn: '1', range: 'very-high', distribution: '0.0185'},
-          {uprn: '2', range: 'medium', distribution: '0.0409'},
-          {uprn: '3', range: 'medium', distribution: '0.0354'},
-          {uprn: '4', range: 'medium', distribution: '0.0455'},
-          {uprn: '5', range: 'very-high', distribution: '0.0247'},
-          {uprn: '6', range: 'very-low', distribution: '0.0166'}
-        ])
-        done()
-      }
-    )
+  it('should check the growth curve has changed again', (done) => {
+    rankingModel.findById(5, (err, doc) => {
+      expect(+doc.growthCurve).to.eql(0.90501)
+      expect(+doc.updatedRiskScore).to.eql(32.49)
+      done(err)
+    })
+  })
+
+  it('should calculate new risk score', (done) => {
+    const options = {
+      riskScore: 146,
+      growthCurve: 1.78,
+      mean: 88.19,
+      stdev: 11.81
+    }
+
+    const highExpected = options.growthCurve + ((options.mean + options.stdev) / 2)
+    const lowExpected = (options.riskScore / 2) + options.growthCurve
+
+    expect(+calculateNewRiskScore('veryHigh', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(highExpected)
+    expect(+calculateNewRiskScore('veryLow', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(lowExpected)
+    done()
   })
 
   it('should clean up the test resources', () => {

@@ -81,5 +81,8 @@ class CategoryService {
 
 module.exports = {
   serviceClass: CategoryService,
+  refProperties: {
+    categories: 'categories'
+  },
   bootAfter: ['storage']
 }

@@ -104,7 +104,7 @@ describe('Memory Model promise tests', function () {
           {
             'name': 'DuplicatePrimaryKey'
           }
-          )
+        )
       }
       )
   })
@@ -128,7 +128,7 @@ describe('Memory Model promise tests', function () {
           }
         )
       }
-    )
+      )
   })
 
   it('should find a person via primary key', function () {
@@ -142,7 +142,7 @@ describe('Memory Model promise tests', function () {
             'age': 8
           }
         )
-    )
+      )
   })
 
   it("should fail finding a person that's not there", function () {

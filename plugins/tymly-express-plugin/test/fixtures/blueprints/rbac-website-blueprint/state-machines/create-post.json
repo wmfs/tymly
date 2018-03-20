@@ -1,0 +1,30 @@
+{
+  "Comment": "Add a pearl-of-wisdom to a thread",
+  "version": "1.0",
+  "StartAt": "Logging",
+  "instigators": [
+    "user"
+  ],
+  "categories": [
+    "website",
+    "posts"
+  ],
+  "States": {
+    "Logging": {
+      "Type": "Task",
+      "Resource": "module:logging",
+      "ResourceConfig": {
+        "template": "Create post!"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}

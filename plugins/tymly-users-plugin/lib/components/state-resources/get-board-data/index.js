@@ -4,12 +4,14 @@ const _ = require('lodash')
 
 class GetBoardData {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.models = env.bootedServices.storage.models
     this.modelName = resourceConfig.model
     callback(null)
   }
 
   run (event, context) {
+    if (!event.boardKeys) return context.sendTaskSuccess({data: {}, boardKeys: {}})
     const where = {}
 
     Object.keys(event.boardKeys).map(k => {
@@ -24,6 +26,9 @@ class GetBoardData {
           const data = {}
           models.map((model, idx) => {
             data[model.modelId] = docs[idx]
+          })
+          Object.keys(event).map(key => {
+            if (key !== 'boardKeys') data[key] = event[key]
           })
           context.sendTaskSuccess({data: data, boardKeys: event.boardKeys})
         })

@@ -1,0 +1,41 @@
+{
+  "title": "Model statistics",
+  "description": "The statistics for the model",
+  "primaryKey": [
+    "category"
+  ],
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The name of the category"
+    },
+    "count": {
+      "type": "integer",
+      "description": "The number of records for this category"
+    },
+    "mean": {
+      "type": "number",
+      "description": "The mean"
+    },
+    "median": {
+      "type": "number",
+      "description": "The median"
+    },
+    "variance": {
+      "type": "number",
+      "description": "The variance"
+    },
+    "stdev": {
+      "type": "number",
+      "description": "The standard deviation"
+    },
+    "ranges": {
+      "type": "object",
+      "description": "Holds the minimum and maximum values for each range as well as the exponent"
+    }
+  },
+  "required": [
+    "category"
+  ]
+}

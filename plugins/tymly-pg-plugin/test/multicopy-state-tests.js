@@ -7,6 +7,7 @@ const tymly = require('tymly')
 const expect = chai.expect
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
+const process = require('process')
 
 describe('Testing functionality as a state-resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -15,6 +16,13 @@ describe('Testing functionality as a state-resource', function () {
   let statebox
   let STATE_MACHINE_NAME = 'foodTest_food_1_0'
   let executionName
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(
@@ -43,7 +51,7 @@ describe('Testing functionality as a state-resource', function () {
     statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, 'fixtures', 'food-data')
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {
@@ -105,17 +113,8 @@ describe('Testing functionality as a state-resource', function () {
     )
   })
 
-  it('should clean up DB env', function (done) {
-    sqlScriptRunner(
-      [
-        'cleanup.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('should clean up DB env', async () => {
+    await sqlScriptRunner.cleanup(client)
   })
 
   it('should shutdown Tymly', async () => {

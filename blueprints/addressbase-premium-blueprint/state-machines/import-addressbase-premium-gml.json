@@ -1,0 +1,37 @@
+{
+  "Comment": "Import AddressBase Premium GML",
+  "version": "1.0",
+  "StartAt": "ExtractStreets",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ExtractStreets": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_importAddressbasePremiumStreets_1_0"
+      },
+      "Next": "ExtractProperties"
+    },
+    "ExtractProperties": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_importAddressbasePremiumProperties_1_0"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

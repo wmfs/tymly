@@ -1,4 +1,9 @@
 {
   "type": "object",
-  "properties": {}
+  "properties": {
+    "model": {
+      "description": "The name of the model(s) to get data from, can be a string or array."
+    }
+  },
+  "required": ["model"]
 }

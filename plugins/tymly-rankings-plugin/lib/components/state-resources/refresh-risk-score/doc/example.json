@@ -1,0 +1,10 @@
+{
+  "RefreshRiskScore": {
+    "Type": "Task",
+    "Resource": "module:refreshRiskScore",
+    "ResourceConfig": {
+      "schema": "test",
+      "category": "factory"
+    }
+  }
+}

@@ -3,6 +3,7 @@
   "attributeMapping": {
     "id": "'staff#' || staff_no",
     "actorName": "upper(first_name || ' ' || last_name)",
-    "characterName": "upper(character_first_name || ' ' || character_last_name)"
+    "characterName": "upper(character_first_name || ' ' || character_last_name)",
+    "roles": "'{\"tymlyTest_boss\"}'::text[]"
   }
 }

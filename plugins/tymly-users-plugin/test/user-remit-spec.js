@@ -5,6 +5,7 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
@@ -12,6 +13,13 @@ const GET_USER_REMIT_STATE_MACHINE = 'tymly_getUserRemit_1_0'
 describe('user-remit tymly-users-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
   let statebox, tymlyService, client
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some basic tymly services', function (done) {
     tymly.boot(
@@ -51,11 +59,11 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
+          boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
-          formNames: [],
+          teams: [],
+          todos: [],
+          formNames: {},
           startable: []
         }
       },
@@ -85,9 +93,9 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.ctx.userRemit.favouriteStartableNames.includes('settings')).to.eql(true)
 
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(3)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Gazetteer')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('gazetteer')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
 
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos).length).to.eql(4)
           expect(Object.keys(executionDescription.ctx.userRemit.add.todos)
@@ -125,11 +133,11 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
+          boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
-          formNames: [],
+          teams: [],
+          todos: [],
+          formNames: {},
           startable: []
         }
       },
@@ -167,11 +175,11 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
-          categoryNames: ['Gazetteer', 'hr'],
-          teamNames: [],
-          todoExecutionNames: [],
-          formNames: [],
+          boardNames: {},
+          categoryNames: ['gazetteer', 'hr'],
+          teams: [],
+          todos: [],
+          formNames: {},
           startable: []
         }
       },
@@ -189,8 +197,8 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
           expect(Object.keys(executionDescription.ctx.userRemit.add.categories).length).to.eql(2)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Fire')).to.eql(true)
-          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('Water')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('fire')).to.eql(true)
+          expect(Object.keys(executionDescription.ctx.userRemit.add.categories).includes('water')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.categories)
             .to.eql(['hr'])
           done()
@@ -205,11 +213,11 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
+          boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
-          formNames: [],
+          teams: [],
+          todos: ['a69c0ac9-cde5-11e7-abc4-cec278b6b50a', 'a69c0ad0-cde5-11e7-abc4-cec278b6b50a'],
+          formNames: {},
           startable: []
         }
       },
@@ -247,11 +255,11 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
+          boardNames: {},
           categoryNames: [],
-          teamNames: ['Birmingham (Red watch)', 'Another team'],
-          todoExecutionNames: [],
-          formNames: [],
+          teams: ['Birmingham (Red watch)', 'Another team'],
+          todos: [],
+          formNames: {},
           startable: []
         }
       },
@@ -284,11 +292,14 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: [],
+          boardNames: {},
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
-          formNames: ['test_bookSomeoneSick', 'processAnExpenseClaim'],
+          teams: [],
+          todos: [],
+          formNames: {
+            'test_bookSomeoneSick': '0d6decf12e4ced2f862735be6c3df15543075fd8',
+            'processAnExpenseClaim': ''
+          },
           startable: []
         }
       },
@@ -310,6 +321,8 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(Object.keys(executionDescription.ctx.userRemit.add.forms).includes('test_addIncidentSafetyRecord')).to.eql(true)
           expect(executionDescription.ctx.userRemit.remove.forms)
             .to.eql(['processAnExpenseClaim'])
+          expect(executionDescription.ctx.userRemit.add.forms['test_bookSomeoneSick']).to.eql(undefined)
+          expect(executionDescription.ctx.userRemit.remove.forms['test_bookSomeoneSick']).to.eql(undefined)
           done()
         } catch (err) {
           done(err)
@@ -322,10 +335,13 @@ describe('user-remit tymly-users-plugin tests', function () {
     statebox.startExecution(
       {
         clientManifest: {
-          boardNames: ['test_personalDetails', 'test_expenses'],
+          boardNames: {
+            'test_personalDetails': 'WRONGSHASUM',
+            'test_expenses': ''
+          },
           categoryNames: [],
-          teamNames: [],
-          todoExecutionNames: [],
+          teams: [],
+          todos: [],
           formNames: [],
           startable: []
         }
@@ -338,13 +354,54 @@ describe('user-remit tymly-users-plugin tests', function () {
       function (err, executionDescription) {
         try {
           expect(err).to.eql(null)
-          // console.log(JSON.stringify(executionDescription, null, 2))
           expect(executionDescription.currentStateName).to.eql('GetUserRemit')
           expect(executionDescription.currentResource).to.eql('module:getUserRemit')
           expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
           expect(executionDescription.status).to.eql('SUCCEEDED')
-          expect(Object.keys(executionDescription.ctx.userRemit.add.boards))
-            .to.eql(['test_propertyViewer'])
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards)).to.eql([
+            'test_personalDetails',
+            'test_propertyViewer'
+          ])
+          expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails'].shasum).to.not.eql('WRONGSHASUM')
+          expect(executionDescription.ctx.userRemit.remove.boards)
+            .to.eql(['test_expenses'])
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
+  it('should test shasum remit', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: {
+            'test_expenses': '',
+            'test_personalDetails': '7f9187a7193896052bd2a97b42c4bc7a4f4f0b60'
+          },
+          categoryNames: [],
+          teams: [],
+          todos: [],
+          formNames: [],
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+          expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+          expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(Object.keys(executionDescription.ctx.userRemit.add.boards)).to.eql(['test_propertyViewer'])
+          expect(executionDescription.ctx.userRemit.add.boards['test_personalDetails']).to.eql(undefined)
           expect(executionDescription.ctx.userRemit.remove.boards)
             .to.eql(['test_expenses'])
           done()

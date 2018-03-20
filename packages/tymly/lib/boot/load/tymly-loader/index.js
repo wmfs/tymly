@@ -3,6 +3,7 @@
 const loadDir = require('./load-dir')
 const messages = require('./../../../startup-messages')
 const pathExploder = require('./path-exploder')
+const processRefProperties = require('./process-ref-properties')
 
 // Options:
 //   sourceLabel
@@ -23,6 +24,10 @@ module.exports = function tymlyLoader (options) {
   explodedPaths.forEach(function (rootDir) {
     loadDir(rootDir, components, options)
   })
+
+  if (options['refProperties']) {
+    processRefProperties(components, options.refProperties, options.pluginComponent)
+  }
 
   return components
 }

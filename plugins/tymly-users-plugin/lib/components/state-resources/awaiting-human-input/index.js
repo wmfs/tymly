@@ -5,6 +5,7 @@ const _ = require('lodash')
 
 class AwaitingHumanInput {
   init (resourceConfig, env, callback) {
+    this.schema = require('./schema.json')
     this.uiType = resourceConfig.uiType
     this.uiName = resourceConfig.uiName
     this.dataPath = resourceConfig.dataPath
@@ -29,7 +30,7 @@ class AwaitingHumanInput {
       requiredHumanInput.boardKeys = event.boardKeys || {}
 
       const feedName = [this.uiName]
-      Object.keys(data).sort().map(k => feedName.push(data[k]))
+      Object.keys(requiredHumanInput.boardKeys).sort().map(k => feedName.push(requiredHumanInput.boardKeys[k]))
 
       this.watchedBoards.findOne(
         {

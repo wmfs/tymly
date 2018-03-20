@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "type": "string",
+      "description": "The schema to refresh the ranking within"
+    },
+    "category": {
+      "type": "string",
+      "description": "Identifies the property type to refresh e.g. factory, hospital etc."
+    }
+  }
+}

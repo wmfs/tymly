@@ -11,22 +11,22 @@
   "main": "./lib/index.js",
   "dependencies": {
     "async": "2.6.0",
-    "boom": "7.1.1",
+    "boom": "7.2.0",
     "camelcase-keys": "4.2.0",
     "csv-string": "3.1.2",
     "debug": "3.1.0",
     "lodash": "4.17.5",
-    "make-dir": "1.1.0",
+    "make-dir": "1.2.0",
     "pg": "7.4.1",
     "pg-copy-streams": "1.2.0",
     "pg-query-stream": "1.1.1",
     "supercopy": "0.0.6"
   },
   "devDependencies": {
-    "chai": "4.1.0",
-    "mocha": "5.0.1",
+    "chai": "4.1.2",
+    "mocha": "5.0.4",
     "hl-pg-client": "0.0.1",
-    "standard": "10.0.3"
+    "standard": "11.0.1"
   },
   "scripts": {
     "lint": "standard",

@@ -69,5 +69,13 @@
       "Resource": "module:g",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }

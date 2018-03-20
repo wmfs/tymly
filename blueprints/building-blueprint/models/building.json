@@ -7,35 +7,141 @@
   "properties": {
     "uprn": {
       "type": "integer",
-      "maxLength": 12
+      "maxLength": 12,
+      "description": "Unique number for each Property Polygon"
     },
-    "footprint": {
-      "type": "number",
-      "maxLength": 6,
-      "multipleOf": 0.01,
-      "description": "The area of the building in sq. meters."
+    "address": {
+      "type": "object",
+      "description": "Property address"
     },
-    "floors": {
+    "premisesUse": {
+      "type": "object"
+    },
+    "constructionType": {
+      "type": "string"
+    },
+    "isDomesticOrNonDomestic": {
       "type": "integer",
-      "description": "Number of floors in the building."
+      "description": "Code used to distinguish Domestic and Non Domestic"
     },
-    "height": {
+    "resNonres": {
+      "type": "integer",
+      "description": "Code used to distinguish Res and Non Res"
+    },
+    "dateOfPrimarySource": {
+      "type": "integer",
+      "description": "Year of Imagery used as primary source"
+    },
+    "dateOfRevision": {
+      "type": "integer",
+      "description": "Year of Imagery used as revision source"
+    },
+    "premisesType": {
+      "type": "string"
+    },
+    "FSEC": {
+      "type": "string"
+    },
+    "propertyArea": {
       "type": "number",
-      "maxLength": 4,
+      "maxLength": 32,
       "multipleOf": 0.01,
-      "description": "Height of the building."
+      "description": "Area in square metresof each Property"
+    },
+    "buildingArea": {
+      "type": "number",
+      "maxLength": 32,
+      "multipleOf": 0.01,
+      "description": "Area in square metresof each Building"
+    },
+    "heightOfBuilding": {
+      "type": "number",
+      "maxLength": 32,
+      "multipleOf": 0.01,
+      "description": "Height of the building"
     },
     "sprinklerCoverage": {
       "type": "integer",
-      "description": "Percentage of sprinkler coverage of the building."
+      "description": "Percentage of sprinkler coverage of the building"
     },
-    "occupancy": {
+    "occupants": {
       "type": "integer",
-      "description": "Capacity of people the building is holding."
+      "description": "Capacity of people the building is holding"
     },
     "numBedrooms": {
       "type": "integer",
-      "description": "Amount of bedrooms the building has."
+      "description": "Amount of bedrooms the building has"
+    },
+    "compartmentation": {
+      "type": "string"
+    },
+    "households": {
+      "type": "number",
+      "description": "Number of households"
+    },
+    "buildingClassText": {
+      "type": "string",
+      "description": "Code text"
+    },
+    "buildingSubStructure": {
+      "type": "integer",
+      "description": "Sub Structure Building Code"
+    },
+    "buildingSsText": {
+      "type": "string",
+      "description": "Sub Structure text"
+    },
+    "buildingRoofType": {
+      "type": "integer",
+      "description": "Roof Type Building Code"
+    },
+    "buildingRtText": {
+      "type": "string",
+      "description": "Roof Type text"
+    },
+    "buildingWallType": {
+      "type": "integer",
+      "description": "Wall Type Building Code"
+    },
+    "buildingWallTypeText": {
+      "type": "string",
+      "description": "Wall Type text"
+    },
+    "buildingAge": {
+      "type": "integer",
+      "description": "Age Period Building Code"
+    },
+    "buildingAgeText": {
+      "type": "string",
+      "description": "Age Period text"
+    },
+    "buildingUseCode": {
+      "type": "integer",
+      "description": "Building Use Code"
+    },
+    "buildingUseText": {
+      "type": "string",
+      "description": "Building use code text"
+    },
+    "buildingFloors": {
+      "type": "integer",
+      "description": "Number of floors in the building"
+    },
+    "buildingFloorText": {
+      "type": "string",
+      "description": "Floor Number Text Description"
+    },
+    "qualityCode": {
+      "type": "string",
+      "description": "Quality of interpretation Code"
+    },
+    "base": {
+      "type": "number",
+      "description": "Code used to identify existence of Basements"
+    },
+    "knownBuildingDate": {
+      "type": "number",
+      "description": "Known build date of any building, if known"
     }
   }
 }

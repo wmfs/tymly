@@ -7,6 +7,7 @@ const expect = chai.expect
 const tymly = require('tymly')
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
+const process = require('process')
 
 describe('PG storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -16,6 +17,13 @@ describe('PG storage tests', function () {
   let people
   let planets
   let star
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some out-the-box tymly services to test PG storage state-machines', (done) => {
     tymly.boot(
@@ -451,6 +459,57 @@ describe('PG storage tests', function () {
     )
   })
 
+  it('should upsert (insert) a person with an object', function (done) {
+    people.upsert(
+      {
+        employeeNo: '4',
+        firstName: 'Marge',
+        lastName: 'Simpson',
+        age: 45,
+        children: {name: 'Lisa', age: 13}
+      },
+      {},
+      function (err, idProperties) {
+        expect(idProperties).to.eql(
+          {
+            idProperties: {
+              employeeNo: '4'
+            }
+          }
+        )
+        expect(err).to.equal(null)
+        done()
+      }
+    )
+  })
+
+  it('should upsert (insert) a person with an array as an object', function (done) {
+    people.upsert(
+      {
+        employeeNo: '4',
+        firstName: 'Marge',
+        lastName: 'Simpson',
+        age: 45,
+        children: [
+          {name: 'Lisa', age: 13},
+          {name: 'Bart', age: 12}
+        ]
+      },
+      {},
+      function (err, idProperties) {
+        expect(idProperties).to.eql(
+          {
+            idProperties: {
+              employeeNo: '4'
+            }
+          }
+        )
+        expect(err).to.equal(null)
+        done()
+      }
+    )
+  })
+
   it('should upsert (insert) Grampa', function (done) {
     people.upsert(
       {
@@ -526,17 +585,8 @@ describe('PG storage tests', function () {
     )
   })
 
-  it('Should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should uninstall test schemas', async () => {
+    sqlScriptRunner.uninstall(client)
   })
 
   it('should shutdown Tymly', async () => {

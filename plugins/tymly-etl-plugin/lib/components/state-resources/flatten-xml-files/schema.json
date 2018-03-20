@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "entities": {
+      "type": "object",
+      "description": "Transforms XML to CSV using supplied mapping."
+    }
+  }
+}

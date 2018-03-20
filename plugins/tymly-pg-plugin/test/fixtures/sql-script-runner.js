@@ -1,10 +1,12 @@
 const path = require('path')
-const async = require('async')
 
-module.exports = function installTestSchemas (filenames, client, callback) {
-  async.eachSeries(
-    filenames,
-    (filename, cb) => client.runFile(path.resolve(__dirname, path.join('scripts', filename)), cb),
-    callback
-  )
+module.exports = {
+  install: client => installTestSchemas('install.sql', client),
+  uninstall: client => installTestSchemas('uninstall.sql', client),
+  setup: client => installTestSchemas('setup.sql', client),
+  cleanup: client => installTestSchemas('cleanup.sql', client)
+}
+
+function installTestSchemas (filename, client) {
+  return client.runFile(path.resolve(__dirname, path.join('scripts', filename)))
 }

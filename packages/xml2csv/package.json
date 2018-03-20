@@ -1,7 +1,7 @@
 {
 	"name": "xml2csv",
 	"description": "Convert XML file to CSV file",
-	"version": "0.0.8",
+	"version": "1.0.1",
 	"keywords": [
 		"xml",
 		"convert",
@@ -17,10 +17,10 @@
 		"sax": "1.2.4"
 	},
 	"devDependencies": {
-		"chai": "4.1.0",
+		"chai": "4.1.2",
 		"chai-subset": "1.6.0",
-		"mocha": "5.0.1",
-		"standard": "10.0.3"
+		"mocha": "5.0.4",
+		"standard": "11.0.1"
 	},
 	"scripts": {
 		"lint": "standard",
@@ -29,7 +29,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/tymly/smithereens"
+		"url": "https://github.com/wmfs/tymly"
 	},
 	"bugs": {
 		"url": "https://github.com/wmfs/tymly/issues"

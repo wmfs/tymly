@@ -1,0 +1,14 @@
+{
+
+  "namespace": "tymlyTest",
+  "name": "website",
+  "version": "1.0",
+
+  "label": "Website",
+  "author": "Martina Henry",
+
+  "organisation": "Tymlys",
+  "description": "An example Tymly Blueprint to help test ACL roles.",
+  "categories": ["acl", "roles", "permissions"]
+
+}

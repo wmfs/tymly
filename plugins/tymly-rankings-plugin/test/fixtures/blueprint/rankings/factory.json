@@ -1,6 +1,8 @@
 {
   "label": "Factory ranking",
   "description": "Maps where to find the data and weightings for each factor",
+  "rankingModel": "rankingUprns",
+  "statsModel": "modelStats",
   "source": {
     "model": "gazetteer",
     "property": "uprn",
@@ -11,6 +13,11 @@
     "foodStandards": {
       "namespace": "test",
       "model": "food",
+      "property": "rating"
+    },
+    "fsManagement": {
+      "namespace": "test",
+      "model": "fsman",
       "property": "rating"
     },
     "incidents": {

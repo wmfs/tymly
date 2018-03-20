@@ -26,58 +26,58 @@ class Rbac {
 
     let roleList
     data.roles.forEach(
-            function (role) {
-              roleList = [role.roleId]
-              _this.addSuperRoles(role.roleId, roleList, memberships)
-              _this.inherits[role.roleId] = roleList
-            }
-        )
+      function (role) {
+        roleList = [role.roleId]
+        _this.addSuperRoles(role.roleId, roleList, memberships)
+        _this.inherits[role.roleId] = roleList
+      }
+    )
 
     let key
     let inheritList
     data.permissions.forEach(
-            function (permission) {
-              permission.allows.forEach(
+      function (permission) {
+        permission.allows.forEach(
 
-                    function (allow) {
-                      key = [
-                        'stateMachine',
-                        permission.stateMachineName,
-                        allow
-                      ].join('.')
+          function (allow) {
+            key = [
+              'stateMachine',
+              permission.stateMachineName,
+              allow
+            ].join('.')
 
-                      roleList = dottie.get(_this.index, key)
+            roleList = dottie.get(_this.index, key)
 
-                      if (!roleList) {
-                        roleList = []
-                      }
-
-                      inheritList = _this.inherits[permission.roleId]
-
-                      if (inheritList) {
-                        roleList = _.union(roleList, inheritList)
-                      }
-
-                      dottie.set(_this.index, key, roleList)
-                    }
-
-                )
+            if (!roleList) {
+              roleList = []
             }
+
+            inheritList = _this.inherits[permission.roleId]
+
+            if (inheritList) {
+              roleList = _.union(roleList, inheritList)
+            }
+
+            dottie.set(_this.index, key, roleList)
+          }
+
         )
+      }
+    )
   }
 
   addSuperRoles (rootRoleId, list, memberships) {
     const _this = this
     memberships.forEach(
-            function (membership) {
-              if (membership.memberId === rootRoleId) {
-                if (list.indexOf(membership.roleId) === -1) {
-                  list.push(membership.roleId)
-                  _this.addSuperRoles(membership.roleId, list, memberships)
-                }
-              }
-            }
-        )
+      function (membership) {
+        if (membership.memberId === rootRoleId) {
+          if (list.indexOf(membership.roleId) === -1) {
+            list.push(membership.roleId)
+            _this.addSuperRoles(membership.roleId, list, memberships)
+          }
+        }
+      }
+    )
   }
 
   debug () {

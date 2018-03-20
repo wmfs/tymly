@@ -6,6 +6,11 @@
       "value": {
         "type": "object",
         "default": {
+          "exponent": {
+            "veryLow": "-0.00088",
+            "medium": "-0.0004",
+            "veryHigh": "-0.0075"
+          },
           "usage": {
             "type": "constant",
             "score": 8
@@ -30,6 +35,37 @@
                 "type": "numeric-constant",
                 "numericValue": 5,
                 "score": 2
+              }
+            ]
+          },
+          "fsManagement": {
+            "type": "options",
+            "default": 0,
+            "options": [
+              {
+                "type": "text-constant",
+                "textualValue": "Very Low",
+                "score": 32
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "Low",
+                "score": 16
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "Average",
+                "score": 0
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "High",
+                "score": -8
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "Very High",
+                "score": -16
               }
             ]
           },

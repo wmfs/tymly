@@ -1,0 +1,21 @@
+{
+  "Comment": "State machine to test refresh risk score state resource",
+  "version": "1.0",
+  "StartAt": "RefreshRiskScore",
+  "States": {
+    "RefreshRiskScore": {
+      "Type": "Task",
+      "Resource": "module:refreshRiskScore",
+      "InputPath": "$",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

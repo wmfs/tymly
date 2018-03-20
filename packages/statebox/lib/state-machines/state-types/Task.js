@@ -87,6 +87,7 @@ class Task extends BaseStateType {
       this.stateType = 'Task'
       const parts = stateDefinition.Resource.split(':')
       this.resourceType = parts[0]
+      this.ResourceConfig = stateDefinition.ResourceConfig
       switch (this.resourceType) {
         case 'module':
           const moduleName = parts[1]
@@ -111,11 +112,37 @@ class Task extends BaseStateType {
     this.resourceExpectsDoneCallback = this.resource.run.length === 3
 
     if (_.isFunction(this.resource.init)) {
-      this.resource.init(
-        _this.definition.ResourceConfig || {},
-        env,
-        callback
-      )
+      this.resource.init(_this.definition.ResourceConfig || {}, env, (err) => {
+        if (err) return callback(err)
+        if (_.get(this.resource, 'schema.required')) {
+          this.resource.schema.required.map(requiredProperty => {
+            if (this.ResourceConfig) {
+              if (!Object.keys(this.ResourceConfig).includes(requiredProperty)) {
+                callback(new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`))
+              } else {
+                switch (this.resource.schema.properties[requiredProperty].type) {
+                  case 'object':
+                    if (!_.isPlainObject(this.ResourceConfig[requiredProperty])) {
+                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be an object`))
+                    }
+                    break
+                  case 'string':
+                    if (!_.isString(this.ResourceConfig[requiredProperty])) {
+                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be a string`))
+                    }
+                    break
+                }
+              }
+            } else {
+              callback(new Error(`State machine '${this.stateMachineName}' is missing a ResourceConfig`))
+            }
+          })
+
+          callback(null)
+        } else {
+          callback(null)
+        }
+      })
     } else {
       callback(null)
     }

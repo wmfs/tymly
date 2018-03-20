@@ -1,0 +1,44 @@
+form:
+  name: people
+  title: People
+  colorScheme: lightblue
+  header:
+    image: /default.jpg
+    description: A bunch of people.
+  categories:
+    - people
+  instigators:
+    - user
+model:
+  jsonSchemaPaths: ./models/people.json
+sections:
+  general:
+    widgets:
+      - title: firstName*
+        type: string
+        description: First name.
+        condition:
+          expression: "(general_firstName)"
+          dependents:
+          -  general_lastName
+      - title: lastName*
+        type: string
+        description: Last name.
+      - title: age
+        type: number
+        description: Age.
+      - title: dateOfBirth
+        type: string
+        format: date-time
+      - title: homeAddress
+        type: string
+        format: address
+      - title: avatar
+        type: array
+        format: file
+      - title: favouriteColour
+        type: string
+        enums:
+        - BLUE|Blue
+        - RED|Red
+        - YELLOW|Yellow

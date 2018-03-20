@@ -2,6 +2,7 @@
   "Comment": "State machine to test required human input of boards.",
   "version": "1.0",
   "StartAt": "AwaitingHumanInput",
+  "categories": ["fire"],
   "States": {
     "AwaitingHumanInput": {
       "Type": "Task",
@@ -14,5 +15,13 @@
       "InputPath": "$",
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }

@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "object",
+      "description": "Provides some filters for the query"
+    }
+  },
+  "required": ["query"]
+}

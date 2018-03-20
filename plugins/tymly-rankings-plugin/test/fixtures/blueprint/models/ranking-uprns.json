@@ -1,0 +1,46 @@
+{
+  "title": "ranking-uprns",
+  "description": "Holds the property type for each property",
+  "primaryKey": [
+    "uprn"
+  ],
+  "type": "object",
+  "properties": {
+    "uprn": {
+      "type": "integer",
+      "maxLength": 12
+    },
+    "rankingName": {
+      "type": "string",
+      "description": "A property type descriptor"
+    },
+    "range": {
+      "type": "string",
+      "description": "The range this property falls within"
+    },
+    "distribution": {
+      "type": "number",
+      "description": "The distribution this property falls within"
+    },
+    "lastAudit": {
+      "type": "string"
+    },
+    "lastAuditDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastEnforcementAction": {
+      "type": "string"
+    },
+    "growthCurve": {
+      "type": "number"
+    },
+    "updatedRiskScore": {
+      "type": "number",
+      "description": "An updated risk score calculated using growth curve"
+    }
+  },
+  "required": [
+    "uprn"
+  ]
+}

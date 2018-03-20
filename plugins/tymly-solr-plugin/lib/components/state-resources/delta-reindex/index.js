@@ -2,7 +2,7 @@ const ReindexBase = require('../../../impl/reindex-base')
 
 class DeltaReindex extends ReindexBase {
   constructor () {
-    super('executeSolrDeltaReindex', 'deltaReindexFail')
+    super('executeSolrDeltaReindex', 'deltaReindexFail', require('./schema.json'))
   }
 }
 

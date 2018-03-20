@@ -80,6 +80,7 @@ class Creator {
       }
 
       statement += ` RETURNING ${_this.primaryKeyColumns.join(', ')};`
+
       const scriptEntry = {
         sql: statement,
         params: parsedDoc.keyAndAttributeValues,

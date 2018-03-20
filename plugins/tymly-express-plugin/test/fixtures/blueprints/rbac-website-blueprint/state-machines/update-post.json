@@ -1,0 +1,31 @@
+{
+  "label": "Update website post",
+  "Comment": "Change an existing post",
+  "version": "1.0",
+  "StartAt": "Logging",
+  "instigators": [
+    "user"
+  ],
+  "categories": [
+    "website",
+    "posts"
+  ],
+  "States": {
+    "Logging": {
+      "Type": "Task",
+      "Resource": "module:logging",
+      "ResourceConfig": {
+        "template": "Update post!"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$owner",
+      "allows": [
+        "create"
+      ]
+    }
+  ]
+}

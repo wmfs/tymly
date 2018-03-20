@@ -6,6 +6,7 @@ const expect = require('chai').expect
 const tymly = require('tymly')
 const path = require('path')
 const sqlScriptRunner = require('./fixtures/sql-script-runner')
+const process = require('process')
 const STATE_MACHINE_NAME = 'tymlyTest_people_1_0'
 
 describe('PostgreSQL storage tests', function () {
@@ -18,6 +19,13 @@ describe('PostgreSQL storage tests', function () {
   let statebox
   let executionName
   let models
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('should create some tymly services to test PostgreSQL storage', function (done) {
     tymly.boot(
@@ -47,17 +55,8 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('Should initially drop-cascade the pg_model_test schema, if one exists', function (done) {
-    sqlScriptRunner(
-      [
-        'install.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should initially drop-cascade the pg_model_test schema, if one exists', async () => {
+    await sqlScriptRunner.install(client)
   })
 
   it('should find the simple-storage state-machine by name', function () {
@@ -72,7 +71,7 @@ describe('PostgreSQL storage tests', function () {
         firstName: 'Homer',
         lastName: 'Simpson',
         age: 39
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -262,7 +261,7 @@ describe('PostgreSQL storage tests', function () {
     statebox.startExecution(
       {
         idToFind: 3
-      },  // input
+      }, // input
       'tymlyTest_seedDataTest_1_0', // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -283,17 +282,8 @@ describe('PostgreSQL storage tests', function () {
     )
   })
 
-  it('Should uninstall test schemas', function (done) {
-    sqlScriptRunner(
-      [
-        'uninstall.sql'
-      ],
-      client,
-      function (err) {
-        expect(err).to.equal(null)
-        done()
-      }
-    )
+  it('Should uninstall test schemas', async () => {
+    await sqlScriptRunner.uninstall(client)
   })
 
   it('should shutdown Tymly', async () => {

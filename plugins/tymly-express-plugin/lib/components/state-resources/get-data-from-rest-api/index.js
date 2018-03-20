@@ -45,16 +45,20 @@ class GetDataFromRestApi {
 
     this.requestPromise(options)
       .then((result) => {
-        if (result.statusCode.toString()[0] === '2') {
-          if (this.resultPath) return context.sendTaskSuccess({[this.resultPath]: result.body[this.resultPath]})
-          context.sendTaskSuccess(result.body)
-        } else {
-          console.log(`Tried to GET '${this.templateUrl}' with '${this.authToken}' ` +
-            `but received ${result.statusCode}: ${result.statusMessage}`)
-          context.sendTaskFailure({
-            statusCode: result.statusCode,
-            cause: result.statusMessage
-          })
+        switch (result.statusCode) {
+          case 200: // OK
+            if (this.resultPath) context.sendTaskSuccess({[this.resultPath]: result.body[this.resultPath]})
+            else context.sendTaskSuccess(result.body)
+            break
+          case 204: // No content
+            if (this.resultPath) context.sendTaskSuccess({[this.resultPath]: []})
+            else context.sendTaskSuccess([])
+            break
+          default:
+            console.log(`Tried to GET '${this.templateUrl}' with '${this.authToken}' ` +
+              `but received ${result.statusCode}: ${result.statusMessage}`)
+            context.sendTaskFailure({statusCode: result.statusCode, cause: result.statusMessage})
+            break
         }
       })
   }

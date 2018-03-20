@@ -4,31 +4,56 @@ const _ = require('lodash')
 const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
+const moment = require('moment')
+const calculateNewRiskScore = require('./calculate-new-risk-score')
 const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
-  let scores = []
-  let ranges, mean, stdev
-
   const result = await options.client.query(getScoresSQL(options))
-  result.rows.map(row => scores.push(row.risk_score))
-  mean = stats.mean(scores)
-  stdev = stats.stdev(scores)
+  const scores = result.rows.map(row => row.risk_score)
 
   if (scores.length > 0) {
-    ranges = generateRanges(scores, mean, stdev)
-    await options.client.query(generateStatsSQL(options, scores, mean, stdev, ranges))
+    const mean = stats.mean(scores)
+    const stdev = stats.stdev(scores)
+    const ranges = generateRanges(scores, mean, stdev, options.registry.value.exponent)
+
+    await options.statsModel.upsert({
+      category: _.kebabCase(options.category),
+      count: scores.length,
+      mean: mean.toFixed(2),
+      median: stats.median(scores).toFixed(2),
+      variance: stats.variance(scores).toFixed(2),
+      stdev: stdev.toFixed(2),
+      ranges: JSON.stringify(ranges)
+    }, {})
+
     const res = await options.client.query(getViewRowsSQL(options))
 
     async.eachSeries(res.rows, (r, cb) => {
-      let range = findRange(ranges, r.risk_score)
-      let normal = dist.Normal(mean, stdev)
-      let distribution = normal.pdf(r.risk_score).toFixed(4)
+      const range = findRange(ranges, r.risk_score)
+      const normal = dist.Normal(mean, stdev)
+      const distribution = normal.pdf(r.risk_score).toFixed(4)
 
-      options.client.query(updateRangeSQL(options, range, r, distribution))
-        .then(() => cb(null))
+      options.rankingModel.findById(r.uprn)
+        .then(row => {
+          const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
+          const updatedRiskScore = growthCurve ? calculateNewRiskScore(range, r.risk_score, growthCurve, mean, stdev) : null
+
+          options.rankingModel.upsert({
+            [options.pk]: r[_.snakeCase(options.pk)],
+            rankingName: options.category,
+            range: _.kebabCase(range),
+            distribution: distribution,
+            growthCurve: growthCurve,
+            updatedRiskScore: updatedRiskScore
+          }, {
+            setMissingPropertiesToNull: false
+          })
+            .then(() => cb(null))
+            .catch(err => cb(err))
+        })
         .catch(err => cb(err))
     }, (err) => {
       if (err) callback(err)
@@ -41,43 +66,61 @@ module.exports = async function generateStats (options, callback) {
   }
 }
 
-function generateRanges (scores, mean, stdev) {
+function calculateGrowthCurve (exp, date, riskScore) {
+  const daysSince = moment().diff(date, 'days')
+  const expression = Math.exp(exp * daysSince)
+  const denominator = 1 + (81 * expression)
+
+  debug(`Calculating growth curve: ${riskScore} / ( 1 + ( 81 * ( ${daysSince} ^ ${exp} ) ) ) = ${riskScore / denominator}`)
+
+  return riskScore / denominator
+}
+
+function generateRanges (scores, mean, stdev, exponents) {
   if (scores.length > 10000) {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - (2 * +stdev)).toFixed(2)
+        upperBound: (+mean - (2 * +stdev)).toFixed(2),
+        exponent: exponents.veryLow
       },
       low: {
         lowerBound: (+mean - (2 * +stdev) + +0.01).toFixed(2),
-        upperBound: (+mean - +stdev).toFixed(2)
+        upperBound: (+mean - +stdev).toFixed(2),
+        exponent: exponents.low
       },
       medium: {
         lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2)
+        upperBound: (+mean + +stdev).toFixed(2),
+        exponent: exponents.medium
       },
       high: {
         lowerBound: (+mean + +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + (2 * +stdev)).toFixed(2)
+        upperBound: (+mean + (2 * +stdev)).toFixed(2),
+        exponent: exponents.high
       },
       veryHigh: {
         lowerBound: (+mean + (2 * +stdev) + +0.01).toFixed(2),
-        upperBound: Math.max(...scores)
+        upperBound: Math.max(...scores),
+        exponent: exponents.veryHigh
       }
     }
   } else {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - +stdev).toFixed(2)
+        upperBound: (+mean - +stdev).toFixed(2),
+        exponent: exponents.veryLow
       },
       medium: {
         lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2)
+        upperBound: (+mean + +stdev).toFixed(2),
+        exponent: exponents.medium
       },
       veryHigh: {
         lowerBound: (+mean + +stdev + +0.01).toFixed(2),
-        upperBound: Math.max(...scores)
+        upperBound: Math.max(...scores),
+        exponent: exponents.veryHigh
       }
     }
   }
@@ -92,35 +135,9 @@ function findRange (ranges, score) {
 }
 
 function getScoresSQL (options) {
-  // TODO: 'risk' in risk_score should be inferred
   return `SELECT risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
 }
 
 function getViewRowsSQL (options) {
   return `SELECT ${_.snakeCase(options.pk)}, risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
-}
-
-function updateRangeSQL (options, range, row, distribution) {
-  return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range 
-  (${_.snakeCase(options.pk)} bigint not null primary key, range text, distribution numeric);
-  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.pk)}_to_range (${_.snakeCase(options.pk)}, range, distribution)
-  VALUES (${row[_.snakeCase(options.pk)]}, '${_.kebabCase(range)}', ${distribution})
-  ON CONFLICT (${_.snakeCase(options.pk)}) DO UPDATE SET
-  range = '${_.kebabCase(range)}',
-  distribution = ${distribution};`
-}
-
-function generateStatsSQL (options, scores, mean, stdev, ranges) {
-  return `CREATE TABLE IF NOT EXISTS ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats
-  (category text not null primary key, count numeric, mean numeric, median numeric, variance numeric, stdev numeric, ranges jsonb);
-  INSERT INTO ${_.snakeCase(options.schema)}.${_.snakeCase(options.name)}_stats (category, count, mean, median, variance, stdev, ranges)
-  VALUES ('${_.kebabCase(options.category)}', ${scores.length}, ${mean.toFixed(2)}, ${stats.median(scores).toFixed(2)},
-  ${stats.variance(scores).toFixed(2)}, ${stdev.toFixed(2)}, '${JSON.stringify(ranges)}')
-  ON CONFLICT (category) DO UPDATE SET
-  count = ${scores.length},
-  mean = ${mean.toFixed(2)},
-  median = ${stats.median(scores).toFixed(2)},
-  variance = ${stats.variance(scores).toFixed(2)},
-  stdev = ${stdev.toFixed(2)},
-  ranges = '${JSON.stringify(ranges)}';`
 }

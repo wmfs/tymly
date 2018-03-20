@@ -2,6 +2,7 @@
 
 const path = require('path')
 const expect = require('chai').expect
+const process = require('process')
 const STATE_MACHINE_NAME = 'tymlyTest_aDayInTheLife'
 
 describe('Restart statebox test - cat state machine', function () {
@@ -21,6 +22,13 @@ describe('Restart statebox test - cat state machine', function () {
       path.resolve(__dirname, './restart-fixtures/plugins/cats-plugin')
     ]
   }
+
+  before(function () {
+    if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
+      console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
+      this.skip()
+    }
+  })
 
   it('boot tymly', function (done) {
     tymly.boot(
@@ -47,7 +55,7 @@ describe('Restart statebox test - cat state machine', function () {
         hoursSinceLastMotion: 11,
         hoursSinceLastMeal: 5,
         petDiary: []
-      },  // input
+      }, // input
       STATE_MACHINE_NAME, // state machine name
       {}, // options
       function (err, result) {

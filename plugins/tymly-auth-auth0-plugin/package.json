@@ -5,15 +5,15 @@
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
-    "boom": "7.1.1",
+    "boom": "7.2.0",
     "debug": "3.1.0",
-    "request": "2.83.0",
+    "request": "2.85.0",
     "retry": "0.10.1"
   },
   "devDependencies": {
-    "chai": "4.1.0",
-    "mocha": "5.0.1",
-    "standard": "10.0.3",
+    "chai": "4.1.2",
+    "mocha": "5.0.4",
+    "standard": "11.0.1",
     "tymly": "0.0.15"
   },
   "scripts": {

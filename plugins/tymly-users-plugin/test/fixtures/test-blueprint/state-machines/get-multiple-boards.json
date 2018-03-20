@@ -3,6 +3,7 @@
   "name": "Get Multiple Boards",
   "version": "1.0",
   "StartAt": "GetBoardData",
+  "categories": [],
   "States": {
     "GetBoardData": {
       "Type": "Task",
@@ -12,5 +13,13 @@
       },
       "End": true
     }
-  }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
 }
