@@ -34,7 +34,10 @@
           [{"select": "$.streetStartLatLong.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "start_longitude", "number"],
           [{"select": "$.streetStartLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "start_latitude", "number"],
           [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "end_longitude", "number"],
-          [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_latitude", "number"]
+          [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_latitude", "number"],
+          ["$.startDate", "start_date", "date"],
+          ["$.lastUpdateDate", "last_update_date", "date"],
+          ["$.entryDate", "entry_date", "date"]
 
         ],
         "namespace": "strip"
