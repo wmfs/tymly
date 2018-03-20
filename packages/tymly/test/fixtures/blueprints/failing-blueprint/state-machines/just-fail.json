@@ -1,0 +1,18 @@
+{
+  "StartAt": "JustFail",
+  "States": {
+    "JustFail": {
+      "Type": "Task",
+      "Resource": "module:justFail",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

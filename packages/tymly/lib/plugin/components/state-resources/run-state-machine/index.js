@@ -1,4 +1,5 @@
 const COMPLETE = 'COMPLETE'
+const FAILED = 'FAILED'
 
 class RunStateMachine {
   init (stateConfig, options, callback) {
@@ -11,7 +12,10 @@ class RunStateMachine {
   async run (event, context, done) {
     const exists = this.statebox.findStateMachineByName(this.stateMachine)
     if (!exists) {
-      return context.sendTaskFailure(new Error(`Reference state machine ${this.stateMachine}`))
+      return context.sendTaskFailure({
+        error: 'runStateMachine',
+        cause: new Error(`Reference state machine ${this.stateMachine}`)
+      })
     }
 
     const responseName = desiredResponse(context)
@@ -24,7 +28,12 @@ class RunStateMachine {
     )
 
     if (COMPLETE === responseName) {
-      context.sendTaskSuccess(execDesc.ctx)
+      if (FAILED !== execDesc.status) { return context.sendTaskSuccess(execDesc.ctx) }
+
+      context.sendTaskFailure({
+        error: execDesc.errorCode,
+        cause: execDesc.errorMessage
+      })
     } else {
       context.sendTaskHeartbeat(execDesc.ctx, (err, executionDescription) => {
         if (err) throw new Error(err)

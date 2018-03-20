@@ -6,6 +6,8 @@ const expect = require('chai').expect
 const DAY_IN_THE_LIFE = 'tymlyTest_indirectDayInTheLife'
 const HEARTBEAT = 'tymlyTest_heartBeat'
 const INDIRECT_HEARTBEAT = 'tymlyTest_indirectHeartBeat'
+const JUSTFAIL = 'tymlyTest_justFail'
+const INDIRECT_JUSTFAIL = 'tymlyTest_indirectJustFail'
 
 describe('run-state-machine state resource test', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -144,7 +146,63 @@ describe('run-state-machine state resource test', function () {
       const executionDescription = await statebox.waitUntilStoppedRunning(rupert)
 
       expect(executionDescription.status).to.eql('FAILED')
+      expect(executionDescription.errorCode).to.eql('runStateMachine')
       expect(executionDescription.stateMachineName).to.eql(DAY_IN_THE_LIFE)
+      expect(executionDescription.currentStateName).to.eql('Start')
+    })
+
+    it('shutdown Tymly', async () => {
+      await tymlyService.shutdown()
+    })
+  })
+
+  describe('negative test - wrapped state machine fails', () => {
+    let tymlyService
+    let statebox
+    let rupert
+
+    it('boot tymly', function (done) {
+      tymly.boot(
+        {
+          blueprintPaths: [
+            path.resolve(__dirname, './fixtures/blueprints/failing-blueprint')
+          ],
+          pluginPaths: [
+            path.resolve(__dirname, './fixtures/plugins/justfail-plugin')
+          ]
+        },
+        function (err, tymlyServices) {
+          expect(err).to.eql(null)
+          tymlyService = tymlyServices.tymly
+          statebox = tymlyServices.statebox
+          done()
+        }
+      )
+    })
+
+    for (const machine of [JUSTFAIL, INDIRECT_JUSTFAIL]) {
+      it(`find ${machine} state machine`, () => {
+        const stateMachine = statebox.findStateMachineByName(machine)
+        expect(stateMachine.name).to.eql(machine)
+      })
+    } // for ...
+
+    it('execute state machine', async () => {
+      const result = await statebox.startExecution(
+        { }, // input
+        INDIRECT_JUSTFAIL, // state machine name
+        {}
+      )
+
+      rupert = result.executionName
+    })
+
+    it('failed to run', async () => {
+      const executionDescription = await statebox.waitUntilStoppedRunning(rupert)
+
+      expect(executionDescription.status).to.eql('FAILED')
+      expect(executionDescription.errorCode).to.eql('justFail')
+      expect(executionDescription.stateMachineName).to.eql(INDIRECT_JUSTFAIL)
       expect(executionDescription.currentStateName).to.eql('Start')
     })
 

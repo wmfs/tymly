@@ -1,0 +1,11 @@
+{
+  "namespace": "tymlyTest",
+  "name": "failing",
+  "version": "1.0",
+
+  "label": "Test",
+  "author": "Jez Higgins",
+
+  "organisation": "Tymly",
+  "description": "An example blueprint that invokes another blueprint ..."
+}
