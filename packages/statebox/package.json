@@ -12,7 +12,7 @@
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
-    "asl-choice-processor": "^0.0.5",
+    "asl-choice-processor": "0.0.5",
     "async": "2.6.0",
     "boom": "7.2.0",
     "debug": "3.1.0",
