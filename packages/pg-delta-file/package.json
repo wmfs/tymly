@@ -1,7 +1,7 @@
 {
   "name": "pg-delta-file",
   "description": "Outputs change-only-update CSV files (or “delta” files) that contain all the necessary actions required to re-synchronize rows in a cloned table.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": [
     "etl",
     "pg",
@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
-    "hl-pg-client": "0.0.1",
     "standard": "11.0.1"
   },
   "scripts": {

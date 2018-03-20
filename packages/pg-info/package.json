@@ -1,7 +1,7 @@
 {
   "name": "pg-info",
   "description": "Grabs metadata from a PostgreSQL database",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "author": "Tim Needham",
   "keywords": [
     "postgresql"
@@ -16,8 +16,8 @@
   "devDependencies": {
     "chai": "4.1.2",
     "chai-subset": "1.6.0",
+    "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
-    "hl-pg-client": "0.0.1",
     "standard": "11.0.1"
   },
   "scripts": {

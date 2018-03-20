@@ -1,7 +1,7 @@
 {
   "name": "tymly-simple-files-plugin",
   "description": "Plugin which handles File Uploads",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Martina Henry",
   "main": "./lib/index.js",
   "dependencies": {
@@ -14,13 +14,13 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
     "standard": "11.0.1",
-    "tymly": "0.0.15",
-    "tymly-pg-plugin": "0.0.6",
-    "hl-pg-client": "0.0.1",
+    "tymly": "^0.0.16",
     "tymly-forms-plugin": "0.0.8",
-    "tymly-solr-plugin": "0.0.4"
+    "tymly-pg-plugin": "^0.0.7",
+    "tymly-solr-plugin": "^0.0.5"
   },
   "scripts": {
     "lint": "standard",

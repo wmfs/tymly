@@ -1,7 +1,7 @@
 {
   "name": "pg-telepods",
   "description": "Takes the contents of one PostgreSQL table, applies a transformation function to each row and ensures a target table is kept in sync",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "keywords": [
     "etl",
     "pg",
@@ -20,12 +20,12 @@
     "pg": "7.4.1",
     "pg-copy-streams": "1.2.0",
     "pg-query-stream": "1.1.1",
-    "supercopy": "0.0.6"
+    "supercopy": "^0.0.7"
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
-    "hl-pg-client": "0.0.1",
     "standard": "11.0.1"
   },
   "scripts": {

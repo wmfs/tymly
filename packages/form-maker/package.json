@@ -1,7 +1,7 @@
 {
   "name": "form-maker",
   "description": "Automatically generates a form and state machine based on a yaml.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Meena Hoda",
   "keywords": [
     "form",

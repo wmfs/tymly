@@ -1,7 +1,7 @@
 {
   "name": "smithereens",
   "description": "Smash CSV files into more manageable files based on column values",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "keywords": [
     "etl",
     "csv"

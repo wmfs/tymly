@@ -1,7 +1,7 @@
 {
   "name": "pg-diff-sync",
   "description": "Takes two objects that describe the structure of a database and produces the PostgreSQL statements required to get from one to the other.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Tim Needham",
   "keywords": [
     "pg",

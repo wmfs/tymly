@@ -1,7 +1,7 @@
 {
   "name": "concrete-paths",
   "description": "An option-laden utility to takes general globs, delimited paths etc. and returns an array of absolute paths.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Tim Needham",
   "keywords": [
     "path",

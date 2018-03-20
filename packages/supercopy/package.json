@@ -1,7 +1,7 @@
 {
   "name": "supercopy",
   "description": "Takes a specifically-named directory structure of CSV files and conjures bulk insert, update and delete statements and applies them to a PostgreSQL database.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Tim Needham",
   "keywords": [
     "postgres",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "hl-pg-client": "^0.0.2",
     "mocha": "5.0.4",
-    "hl-pg-client": "0.0.1",
     "standard": "11.0.1"
   },
   "scripts": {

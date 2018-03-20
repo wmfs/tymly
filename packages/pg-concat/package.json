@@ -1,7 +1,7 @@
 {
   "name": "pg-concat",
   "description": "Takes an object with parts from table and outputs sql statement.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": [
     "pg",
     "postgresql"

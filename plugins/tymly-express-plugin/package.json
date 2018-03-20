@@ -1,7 +1,7 @@
 {
   "name": "tymly-express-plugin",
   "description": "Exposes the Tymly framework via an Express.js web app.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Tim Needham",
   "main": "./lib/index.js",
   "dependencies": {
@@ -12,21 +12,21 @@
     "dottie": "2.0.0",
     "express": "4.16.2",
     "express-jwt": "5.3.1",
-    "jsonwebtoken": "8.2.0",
     "helmet": "3.12.0",
+    "jsonwebtoken": "8.2.0",
     "lodash": "4.17.5",
-    "sprintf": "0.1.5",
     "request": "2.85.0",
-    "request-promise-native": "1.0.5"
+    "request-promise-native": "1.0.5",
+    "sprintf": "0.1.5"
   },
   "devDependencies": {
     "chai": "4.1.2",
     "mocha": "5.0.4",
     "safe-buffer": "5.1.1",
     "standard": "11.0.1",
-    "tymly": "0.0.15",
-    "tymly-users-plugin": "0.0.1",
-    "tymly-solr-plugin": "0.0.4"
+    "tymly": "^0.0.16",
+    "tymly-solr-plugin": "^0.0.5",
+    "tymly-users-plugin": "^0.0.2"
   },
   "scripts": {
     "lint": "standard",

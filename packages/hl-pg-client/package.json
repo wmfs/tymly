@@ -1,7 +1,7 @@
 {
   "name": "hl-pg-client",
   "description": "Provides a slightly higher level PostgreSQL client, that builds on pg-pool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Jez Higgins",
   "keywords": [
     "postgresql"
