@@ -9,7 +9,7 @@
   "hoist": true,
   "commands":{
     "publish": {
-      "ignore": ["*-blueprint"]
+      "ignore": ["*-blueprint", "address-matcher"]
     }
   },
   "command": {
