@@ -15,6 +15,14 @@
       "ResourceConfig": {
         "stateMachine": "ordnanceSurvey_extractAddressbasePremiumStreetsToCsv_1_0"
       },
+      "Next": "ProcessStreetsCsvFiles"
+    },
+    "ProcessStreetsCsvFiles": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_processStreetsCsv_1_0"
+      },
       "End": true
     }
   },

@@ -1,0 +1,86 @@
+{
+  "Comment": "Process streets.csv ",
+  "version": "1.0",
+  "StartAt": "ProcessStreetsCsvFiles",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ProcessStreetsCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.streets",
+      "Resource": "module:processingCsvFiles",
+      "ResourceConfig": {
+        "parser": {
+          "quote": "\"",
+          "delimiter": ",",
+          "newline": "\n",
+          "skipFirstLine": true,
+          "trimWhitespace": true
+        },
+        "dirSplits": [
+          {
+            "columnIndex": 1,
+            "valueToDirMap": {
+              "U": "upserts",
+              "D": "deletes",
+              "I": "upserts"
+            }
+          }
+        ],
+        "fileSplits": {
+          "columnIndex": 1,
+          "valueToFileMap": {
+            "U&I": {
+              "filename": "addressbase_premium_streets_holding",
+              "outputColumns": [
+                { "name": "usrn", "columnIndex": 0 },
+                { "name": "hash_sum", "type": "hash" },
+                { "name": "state", "columnIndex": 2 },
+                { "name": "state_date", "columnIndex": 3 },
+                { "name": "description", "columnIndex": 4 },
+                { "name": "locality", "columnIndex": 5 },
+                { "name": "town_name", "columnIndex": 6 },
+                { "name": "administrative_area", "columnIndex": 7 },
+                { "name": "surface", "columnIndex": 8 },
+                { "name": "classification", "columnIndex": 9 },
+                { "name": "start_x", "columnIndex": 10 },
+                { "name": "start_y", "columnIndex": 11 },
+                { "name": "end_x", "columnIndex": 12 },
+                { "name": "end_y", "columnIndex": 13 },
+                { "name": "start_longitude", "columnIndex": 14 },
+                { "name": "start_latitude", "columnIndex": 15 },
+                { "name": "end_longitude", "columnIndex": 16 },
+                { "name": "end_latitude", "columnIndex": 17 },
+                { "name": "start_date", "columnIndex": 18 },
+                { "name": "last_update_date", "columnIndex": 19 },
+                { "name": "entry_date", "columnIndex": 20 }
+              ]
+            },
+            "D": {
+              "filename": "addressbase_premium_streets_holding",
+              "outputColumns": [
+                {
+                  "name": "usrn",
+                  "columnIndex": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

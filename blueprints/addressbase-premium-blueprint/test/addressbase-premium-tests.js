@@ -20,19 +20,20 @@ describe('process addressbase-premium', function () {
 
   const inputDir = path.resolve(fixture, 'input')
   const outputDir = path.resolve(fixture, 'output')
-  const flattenedDir = path.resolve(outputDir, 'flattened')
+  const streetsOutputDir = path.resolve(outputDir, 'streets')
+  const propertyOutputDir = path.resolve(outputDir, 'property')
 
   const expectedDir = path.resolve(fixture, 'expected')
 
   const sourceFile = path.resolve(inputDir, 'exeter-extract.xml')
 
   const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
-  const streetsFlattenedFile = path.resolve(flattenedDir, 'streets.csv')
-  const streetsUpsertsFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_streets_holding.csv')
+  const streetsFlattenedFile = path.resolve(streetsOutputDir, 'flattened', 'streets.csv')
+  const streetsUpsertsFile = path.resolve(streetsOutputDir, 'upserts', 'addressbase_premium_streets_holding.csv')
 
   const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
-  const propertyFlattenedFile = path.resolve(flattenedDir, 'property.csv')
-  const propertiesUpsertsFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_property_holding.csv')
+  const propertyFlattenedFile = path.resolve(propertyOutputDir, 'flattened', 'property.csv')
+  const propertiesUpsertsFile = path.resolve(propertyOutputDir, 'upserts', 'addressbase_premium_property_holding.csv')
 
   before(async () => {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -79,14 +80,17 @@ describe('process addressbase-premium', function () {
         {
           streets: {
             xmlPath: sourceFile,
-            csvPath: streetsFlattenedFile
+            csvPath: streetsFlattenedFile,
+            sourceFilePaths: [ streetsFlattenedFile ],
+            outputDirRootPath: streetsOutputDir,
+            outputDir: streetsOutputDir
           },
           property: {
             xmlPath: sourceFile,
             csvPath: propertyFlattenedFile,
             sourceFilePaths: [ propertyFlattenedFile ],
-            outputDirRootPath: outputDir,
-            outputDir: outputDir
+            outputDirRootPath: propertyOutputDir,
+            outputDir: propertyOutputDir
           }
         }, // input
         STATE_MACHINE_NAME, // state machine name
@@ -133,10 +137,10 @@ describe('process addressbase-premium', function () {
       expect(streets).to.eql(streetsExpected)
     })
 
-    xit('streets - verify the smithereens output', () => {
+    it('streets - verify the smithereens output', () => {
       const streets = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
         .map(line => line.replace(/"/g, '')) // strip quote marks
-        .map(line => stripColumn(line, 4)) // strip changeState marker
+        .map(line => stripColumn(line, 1)) // strip changeState marker
 
       const upsert = fs.readFileSync(streetsUpsertsFile, {encoding: 'utf8'}).split('\r\n')
         .map(line => stripColumn(line, 1)) // strip hashsum
