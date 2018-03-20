@@ -148,15 +148,15 @@ describe('process addressbase-premium', function () {
       expect(upsert).to.eql(streets)
     })
 
-    xit('streets - verify the database import', async () => {
+    it('streets - verify the database import', async () => {
       const streetsUsrns = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
         .map(line => line.split(',')[0]) // extract USRN
         .slice(1, -1) // drop header line, and empty last line
         .map(line => line.replace(/"/g, '')) // strip quote marks
         .sort()
 
-      const importUsrns = (await client.query('SELECT lpi_key FROM ordnance_survey.addressbase_premium_property_holding ORDER BY lpi_key ASC;'))
-        .rows.map(row => row.lpi_key)
+      const importUsrns = (await client.query('SELECT usrn FROM ordnance_survey.addressbase_premium_streets_holding ORDER BY usrn ASC;'))
+        .rows.map(row => row.usrn.toString())
 
       expect(importUsrns).to.eql(streetsUsrns)
     })

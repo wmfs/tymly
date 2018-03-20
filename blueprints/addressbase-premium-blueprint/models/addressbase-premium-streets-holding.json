@@ -9,10 +9,30 @@
       "maxLength": 8,
       "description": "Unique Street Reference Number. Source: Contributing Local Authority"
     },
-    "streetDescription": {
+    "hashSum": {
+      "type": "string",
+      "description": "Hash representing column data"
+    },
+    "state": {
+      "type": "string",
+      "maxLength": 1,
+      "description": "A code identifying the current state of the street, eg 'open'"
+    },
+    "stateDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date on which the property achieved its current state in the real world. Source: Contributing Local Authority",
+      "condition": "State Date must be present if State is present"
+    },
+    "description": {
       "type": "string",
       "maxLength": 100,
       "description": "Name taken from the Local Land and Property Gazetteer (LLPG) street name"
+    },
+    "locality": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "Locality areas define an area within a post town. These are only necessary for postal purposes and are used to aid differentiation where there are thoroughfares of the same name in the same locality. For example, HIGH STREET in SHIRLEY and SWAYTHLING in this situation: HIGH STREET, SHIRLEY, SOUTHAMPTON and HIGH STREET, SWAYTHLING, SOUTHAMPTON. Source: Royal Mail"
     },
     "townName": {
       "type": "string",
@@ -23,8 +43,81 @@
       "type": "string",
       "maxLength": 30,
       "description": "Local Highway Authority Name. Source: Contributing Local Authority"
+    },
+    "surface": {
+      "type": "integer",
+      "maxLength": 1,
+      "description": "Code to indicate the surface finish of the street"
+    },
+    "classification": {
+      "type": "integer",
+      "maxLength": 1,
+      "description": "Code for the primary street classification, eg denoting it to be 'open to all vehicles'"
+    },
+    "startX": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the eastings location of the start of the street in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "startY": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the northings location of the start of the street in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "endX": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the eastings location of the start of the street in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "endY": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.01,
+      "description": "A value in metres defining the northings location of the start of the street in accordance to the British National Grid. Source: Ordnance Survey"
+    },
+    "startLongitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Longitude location of the start of the street in accordance with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "startLatitude": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Latitude in accordance of the start of the street with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "endLongitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Longitude location of the start of the street in accordance with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "endLatitude": {
+      "type": "number",
+      "maxLength": 9,
+      "multipleOf": 0.00000001,
+      "description": "A value defining the Latitude in accordance of the start of the street with the ETRS89 coordinate reference system. Source: Ordnance Survey"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which the address record was inserted into the database. Source: Contributing Local Authority"
+    },
+    "lastUpdateDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which any of the attributes on this record was last changed"
+    },
+    "entryDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date on which this record was inserted into the Local Authority database"
     }
   },
-  "required": ["usrn", "streetDescription", "townName", "administrativeArea"]
+  "required": ["usrn", "description", "townName", "administrativeArea"]
 }
 

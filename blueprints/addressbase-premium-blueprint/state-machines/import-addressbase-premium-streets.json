@@ -23,6 +23,14 @@
       "ResourceConfig": {
         "stateMachine": "ordnanceSurvey_processStreetsCsv_1_0"
       },
+      "Next": "ImportStreetsCsvFiles"
+    },
+    "ImportStreetsCsvFiles": {
+      "Type": "Task",
+      "Resource": "module:runStateMachine",
+      "ResourceConfig": {
+        "stateMachine": "ordnanceSurvey_importStreetsCsv_1_0"
+      },
       "End": true
     }
   },

@@ -1,0 +1,36 @@
+{
+  "Comment": "import streets csv into the database",
+  "version": "1.0",
+  "StartAt": "ImportStreetsCsvFiles",
+  "categories": [
+    "gazetteer"
+  ],
+  "instigators": [
+    "user"
+  ],
+  "States": {
+    "ImportStreetsCsvFiles": {
+      "Type": "Task",
+      "InputPath": "$.streets.outputDir",
+      "Resource": "module:importingCsvFiles",
+      "ResourceConfig": {
+        "headerColumnNamePkPrefix": ".",
+        "topDownTableOrder": [
+          "addressbase_premium_streets_holding"
+        ],
+        "truncateTables": true
+      },
+      "End": true
+    }
+
+
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
