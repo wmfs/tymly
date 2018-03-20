@@ -41,11 +41,10 @@ class Model {
       props[p] = c
       return props
     }, {})
-
-    this.columnToPropertyType = {}
-    this.columnNames.map(col => {
-      this.columnToPropertyType[col] = table.columns[col].dataType
-    })
+    this.columnToPropertyType = this.columnNames.reduce((cols, col) => {
+      cols[col] = table.columns[col].dataType
+      return cols
+    }, {})
 
     this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
     this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
