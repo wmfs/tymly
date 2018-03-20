@@ -16,7 +16,7 @@
       "ResourceConfig": {
         "headerColumnNamePkPrefix": ".",
         "topDownTableOrder": [
-          "addressbase_premium_holding"
+          "addressbase_premium_property_holding"
         ],
         "truncateTables": true
       },

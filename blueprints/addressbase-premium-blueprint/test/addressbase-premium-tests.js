@@ -25,13 +25,16 @@ describe('process addressbase-premium', function () {
   const expectedDir = path.resolve(fixture, 'expected')
 
   const sourceFile = path.resolve(inputDir, 'exeter-extract.xml')
-  const streetsFile = path.resolve(flattenedDir, 'streets.csv')
-  const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
-  const propertyFile = path.resolve(flattenedDir, 'property.csv')
-  const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
-  const upsertsExpectedFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_holding.csv')
 
-  before(function () {
+  const streetsExpectedFile = path.resolve(expectedDir, 'streets.csv')
+  const streetsFlattenedFile = path.resolve(flattenedDir, 'streets.csv')
+  const streetsUpsertsFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_streets_holding.csv')
+
+  const propertyExpectedFile = path.resolve(expectedDir, 'property.csv')
+  const propertyFlattenedFile = path.resolve(flattenedDir, 'property.csv')
+  const propertiesUpsertsFile = path.resolve(outputDir, 'upserts', 'addressbase_premium_property_holding.csv')
+
+  before(async () => {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
       console.log(`Skipping tests due to unsafe PG_CONNECTION_STRING value (${process.env.PG_CONNECTION_STRING})`)
       this.skip()
@@ -70,16 +73,18 @@ describe('process addressbase-premium', function () {
     })
 
     it('run the execution to process the XML file', async () => {
+      await client.query('DELETE FROM ordnance_survey.addressbase_premium_property_holding;')
+
       const executionDescription = await statebox.startExecution(
         {
           streets: {
             xmlPath: sourceFile,
-            csvPath: streetsFile
+            csvPath: streetsFlattenedFile
           },
           property: {
             xmlPath: sourceFile,
-            csvPath: propertyFile,
-            sourceFilePaths: [ propertyFile ],
+            csvPath: propertyFlattenedFile,
+            sourceFilePaths: [ propertyFlattenedFile ],
             outputDirRootPath: outputDir,
             outputDir: outputDir
           }
@@ -92,38 +97,64 @@ describe('process addressbase-premium', function () {
       expect(executionDescription.status).to.eql('SUCCEEDED')
     })
 
-    it('verify the flattened csv outout', () => {
-      const streets = fs.readFileSync(streetsFile, {encoding: 'utf8'}).split('\n')
-      const streetsExpected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
-      expect(streetsExpected).to.eql(streets)
-
-      const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+    it('properties - verify the flattened csv outout', () => {
+      const property = fs.readFileSync(propertyFlattenedFile, {encoding: 'utf8'}).split('\n')
       const propertyExpected = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
-      expect(propertyExpected).to.eql(property)
+      expect(property).to.eql(propertyExpected)
     })
 
-    it('verify the smithereens output', () => {
-      const property = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+    it('properties - verify the smithereens output', () => {
+      const property = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
         .map(line => line.replace(/"/g, '')) // strip quote marks
         .map(line => stripColumn(line, 4)) // strip changeState marker
 
-      const upsertExpected = fs.readFileSync(upsertsExpectedFile, {encoding: 'utf8'}).split('\r\n')
+      const upsert = fs.readFileSync(propertiesUpsertsFile, {encoding: 'utf8'}).split('\r\n')
         .map(line => stripColumn(line, 1)) // strip hashsum
 
-      expect(upsertExpected).to.eql(property)
+      expect(property).to.eql(upsert)
     })
 
-    it('verify the database import', async () => {
-      const propertyLpis = fs.readFileSync(propertyFile, {encoding: 'utf8'}).split('\n')
+    it('properties - verify the database import', async () => {
+      const propertyLpis = fs.readFileSync(propertyExpectedFile, {encoding: 'utf8'}).split('\n')
         .map(line => line.split(',')[0]) // extract LPI
         .slice(1, -1) // drop header line, and empty last line
         .map(line => line.replace(/"/g, '')) // strip quote marks
         .sort()
 
-      const importLpis = (await client.query('SELECT lpi_key FROM ordnance_survey.addressbase_premium_holding ORDER BY lpi_key ASC;'))
+      const importLpis = (await client.query('SELECT lpi_key FROM ordnance_survey.addressbase_premium_property_holding ORDER BY lpi_key ASC;'))
         .rows.map(row => row.lpi_key)
 
       expect(importLpis).to.eql(propertyLpis)
+    })
+
+    it('streets - verify the flattened csv outout', () => {
+      const streets = fs.readFileSync(streetsFlattenedFile, {encoding: 'utf8'}).split('\n')
+      const streetsExpected = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
+      expect(streets).to.eql(streetsExpected)
+    })
+
+    xit('streets - verify the smithereens output', () => {
+      const streets = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
+        .map(line => line.replace(/"/g, '')) // strip quote marks
+        .map(line => stripColumn(line, 4)) // strip changeState marker
+
+      const upsert = fs.readFileSync(streetsUpsertsFile, {encoding: 'utf8'}).split('\r\n')
+        .map(line => stripColumn(line, 1)) // strip hashsum
+
+      expect(upsert).to.eql(streets)
+    })
+
+    xit('streets - verify the database import', async () => {
+      const streetsUsrns = fs.readFileSync(streetsExpectedFile, {encoding: 'utf8'}).split('\n')
+        .map(line => line.split(',')[0]) // extract USRN
+        .slice(1, -1) // drop header line, and empty last line
+        .map(line => line.replace(/"/g, '')) // strip quote marks
+        .sort()
+
+      const importUsrns = (await client.query('SELECT lpi_key FROM ordnance_survey.addressbase_premium_property_holding ORDER BY lpi_key ASC;'))
+        .rows.map(row => row.lpi_key)
+
+      expect(importUsrns).to.eql(streetsUsrns)
     })
 
     it('shutdown Tymly', () => {

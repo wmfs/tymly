@@ -35,7 +35,7 @@
           "columnIndex": 4,
           "valueToFileMap": {
             "U&I": {
-              "filename": "addressbase_premium_holding",
+              "filename": "addressbase_premium_property_holding",
               "outputColumns": [
                 { "name": "lpi_key", "columnIndex": 0 },
                 { "name": "hash_sum", "type": "hash" },
@@ -114,7 +114,7 @@
               ]
             },
             "D": {
-              "filename": "addressbase_premium_holding",
+              "filename": "addressbase_premium_property_holding",
               "outputColumns": [
                 {
                   "name": "lpi_key",

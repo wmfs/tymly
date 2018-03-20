@@ -14,16 +14,18 @@
       "InputPath": "$.streets",
       "Resource": "module:flattenXmlFiles",
       "ResourceConfig": {
-        "rootXMLElement": "streetMember",
+        "rootXMLElement": "Street",
         "pivotPath": "$..StreetDescriptiveIdentifier",
         "headerMap": [
-          ["$.Street.changeType", "changeType", "string"],
-          ["$.Street.usrn", "usrn", "number"],
+          ["$.usrn", "usrn", "number"],
+          ["$.changeType", "changeType", "string"],
+          ["$.state", "state", "number"],
+          ["$.stateDate", "state_date", "date"],
           ["@.streetDescription", "description", "string"],
           ["@.townName", "townName", "string"],
           ["@.administrativeArea", "administrativeArea","string"],
-          ["$.Street.streetSurface", "surface", "number"],
-          ["$.Street.streetClassification", "classification", "number"]
+          ["$.streetSurface", "surface", "number"],
+          ["$.streetClassification", "classification", "number"]
         ],
         "namespace": "strip"
       },
