@@ -299,7 +299,7 @@ describe('Tests the Ranking Service', function () {
         expect(result[0].median).to.eql('52.00')
         expect(result[0].variance).to.eql('132.56')
         expect(result[0].stdev).to.eql('11.51')
-        expect(JSON.parse(result[0].ranges)).to.eql({
+        expect(result[0].ranges).to.eql({
           veryLow: {lowerBound: 0, upperBound: '40.15', exponent: '-0.00088'},
           veryHigh: {lowerBound: '63.19', upperBound: 66, exponent: '-0.0075'},
           medium: {lowerBound: '40.16', upperBound: '63.18', exponent: '-0.0004'}

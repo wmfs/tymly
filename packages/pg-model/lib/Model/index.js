@@ -236,7 +236,7 @@ class Model {
     _.forOwn(doc, (value, id) => {
       if (this.attributeIds.indexOf(id) !== -1) {
         if (this.columnToPropertyType[this.columnToPropertyId[id]] === 'jsonb') {
-          value = JSON.stringify(value)
+          if (_.isArray(value)) value = JSON.stringify(value)
         }
         parsed.attributeProperties[id] = value
         parsed.keyAndAttributeProperties[id] = value
