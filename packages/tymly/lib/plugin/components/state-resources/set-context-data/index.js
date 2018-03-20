@@ -34,7 +34,7 @@ module.exports = class SetContextData {
         }
       }
 
-      if (this.resourceConfig[key].substring(0, 2) === '$.') {
+      if (_.isString(this.resourceConfig[key]) && this.resourceConfig[key].substring(0, 2) === '$.') {
         this.resourceConfig[key] = jp.value(event, this.resourceConfig[key])
       } else if (this.resourceConfig[key] === '$NOW') {
         this.resourceConfig[key] = new Date().toISOString()
@@ -62,8 +62,6 @@ module.exports = class SetContextData {
     })
 
     Promise.all(setters)
-      .then(() => {
-        context.sendTaskSuccess(data)
-      })
+      .then(() => context.sendTaskSuccess(data))
   }
 }
