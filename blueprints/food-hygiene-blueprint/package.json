@@ -9,9 +9,9 @@
     "mocha": "5.0.4",
     "rimraf": "2.6.2",
     "standard": "11.0.1",
-    "tymly": "0.0.15",
-    "tymly-etl-plugin": "0.0.6",
-    "tymly-pg-plugin": "0.0.6"
+    "tymly": "^0.0.17",
+    "tymly-etl-plugin": "^0.0.8",
+    "tymly-pg-plugin": "^0.0.8"
   },
   "scripts": {
     "lint": "standard",
