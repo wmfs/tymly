@@ -29,7 +29,11 @@
           [{"select": "$.streetStart.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "start_x", "number"],
           [{"select": "$.streetStart.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "start_y", "number"],
           [{"select": "$.streetEnd.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "end_x", "number"],
-          [{"select": "$.streetEnd.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_y", "number"]
+          [{"select": "$.streetEnd.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_y", "number"],
+          [{"select": "$.streetStartLatLong.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "start_longitude", "number"],
+          [{"select": "$.streetStartLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "start_latitude", "number"],
+          [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "end_longitude", "number"],
+          [{"select": "$.streetEndLatLong.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "end_latitude", "number"]
         ],
         "namespace": "strip"
       },
