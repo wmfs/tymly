@@ -9,6 +9,11 @@ class RunStateMachine {
   } // init
 
   async run (event, context, done) {
+    const exists = this.statebox.findStateMachineByName(this.stateMachine)
+    if (!exists) {
+      return context.sendTaskFailure(new Error(`Reference state machine ${this.stateMachine}`))
+    }
+
     const responseName = desiredResponse(context)
     const execDesc = await this.statebox.startExecution(
       event,

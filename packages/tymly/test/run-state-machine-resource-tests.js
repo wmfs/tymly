@@ -97,4 +97,59 @@ describe('run-state-machine state resource test', function () {
       await tymlyService.shutdown()
     })
   })
+
+  describe('negative test - wrapped state machine doesn\'t exist', () => {
+    let tymlyService
+    let statebox
+    let rupert
+
+    it('boot tymly', function (done) {
+      tymly.boot(
+        {
+          blueprintPaths: [
+            path.resolve(__dirname, './fixtures/blueprints/cats-wrapper-blueprint')
+          ]
+        },
+        function (err, tymlyServices) {
+          expect(err).to.eql(null)
+          tymlyService = tymlyServices.tymly
+          statebox = tymlyServices.statebox
+          done()
+        }
+      )
+    })
+
+    it('find cat wrapper state machine', () => {
+      const catWrapper = statebox.findStateMachineByName(DAY_IN_THE_LIFE)
+      expect(catWrapper.name).to.eql(DAY_IN_THE_LIFE)
+    })
+
+    it('try to execute cat state machine', async () => {
+      const result = await statebox.startExecution(
+        {
+          petName: 'Rupert',
+          gender: 'male',
+          hoursSinceLastMotion: 11,
+          hoursSinceLastMeal: 5,
+          petDiary: []
+        }, // input
+        DAY_IN_THE_LIFE, // state machine name
+        {}
+      )
+
+      rupert = result.executionName
+    })
+
+    it('Rupert, he no exist', async () => {
+      const executionDescription = await statebox.waitUntilStoppedRunning(rupert)
+
+      expect(executionDescription.status).to.eql('FAILED')
+      expect(executionDescription.stateMachineName).to.eql(DAY_IN_THE_LIFE)
+      expect(executionDescription.currentStateName).to.eql('Start')
+    })
+
+    it('shutdown Tymly', async () => {
+      await tymlyService.shutdown()
+    })
+  })
 })
