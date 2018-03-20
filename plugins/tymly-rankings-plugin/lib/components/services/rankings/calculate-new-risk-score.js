@@ -1,6 +1,8 @@
 'use strict'
+const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = function calculateNewRiskScore (range, riskScore, growthCurve, mean, stdev) {
+  debug(`Calculating new risk score based on growth curve and range`)
   let value
   switch (range) {
     case 'veryHigh':
