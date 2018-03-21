@@ -57,6 +57,8 @@ module.exports = class SetContextData {
         } else {
           config[key] = ''
         }
+      } else {
+        config[key] = this.resourceConfig[key]
       }
 
       dottie.set(data, theKey, config[key])
