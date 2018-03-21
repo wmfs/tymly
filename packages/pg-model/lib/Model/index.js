@@ -41,8 +41,8 @@ class Model {
       props[p] = c
       return props
     }, {})
-    this.columnToPropertyType = this.columnNames.reduce((cols, col) => {
-      cols[col] = table.columns[col].dataType
+    this.propertyToType = this.columnNames.reduce((cols, col) => {
+      cols[this.columnToPropertyId[col]] = table.columns[col].dataType
       return cols
     }, {})
 
@@ -234,7 +234,7 @@ class Model {
 
     _.forOwn(doc, (value, id) => {
       if (this.attributeIds.indexOf(id) !== -1) {
-        if (this.columnToPropertyType[this.columnToPropertyId[id]] === 'jsonb') {
+        if (this.propertyToType[id] === 'jsonb') {
           if (_.isArray(value)) value = JSON.stringify(value)
         }
         parsed.attributeProperties[id] = value
