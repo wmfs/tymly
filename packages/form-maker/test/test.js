@@ -36,6 +36,7 @@ describe('Run the form-maker tests', function () {
       expect(result.form.jsonSchema.schema.properties.general.required).to.eql(['firstName', 'lastName'])
       expect(result.form.jsonSchema.conditionalSchema.general_firstName.expression).to.eql('(general_firstName)')
       expect(result.form.jsonSchema.conditionalSchema.general_firstName.dependents).to.eql(['general_lastName'])
+      expect(result.form.jsonSchema.uiSchema.general.avatar['ui:section:field']).to.eql('Avatar')
 
       expect(result.stateMachine.Comment).to.eql('A bunch of people.')
       expect(result.stateMachine.categories).to.eql(['people'])

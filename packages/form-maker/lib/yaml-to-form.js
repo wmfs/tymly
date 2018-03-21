@@ -1,6 +1,7 @@
 'use strict'
 
 const yamlToJs = require('./utils/yaml-to-js')
+const _ = require('lodash')
 
 class YamlToForm {
   generateForm (options, callback) {
@@ -27,7 +28,7 @@ class YamlToForm {
       Object.keys(s.properties).map(prop => {
         const p = s.properties[prop]
         uiSchema[section][prop] = {
-          'ui:section:field': p.title,
+          'ui:section:field': p.title || _.startCase(prop),
           'ui:widget': this.schemaTypeToWidgetAndField(p)[0],
           'ui:field': this.schemaTypeToWidgetAndField(p)[1]
         }

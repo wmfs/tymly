@@ -30,14 +30,17 @@ sections:
       - title: dateOfBirth
         type: string
         format: date-time
+        description: 'Date of Birth.'
       - title: homeAddress
         type: string
         format: address
+        description: 'Home Address.'
       - title: avatar
         type: array
         format: file
       - title: favouriteColour
         type: string
+        description: 'Favourite Colour.'
         enums:
         - BLUE|Blue
         - RED|Red
