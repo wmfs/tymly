@@ -12,11 +12,11 @@ class GetBoardData {
 
   run (event, context) {
     if (!event.boardKeys) return context.sendTaskSuccess({data: {}, boardKeys: {}})
-    const where = {}
 
-    Object.keys(event.boardKeys).map(k => {
-      where[k] = {equals: event.boardKeys[k]}
-    })
+    const where = Object.keys(event.boardKeys).reduce((keys, k) => {
+      keys[k] = {equals: event.boardKeys[k]}
+      return keys
+    }, {})
 
     if (_.isArray(this.modelName)) {
       const models = this.modelName.map(m => this.models[`${context.stateMachineMeta.namespace}_${m}`])

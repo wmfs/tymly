@@ -19,6 +19,8 @@ class AwaitingHumanInput {
     if (this.dataPath) data = jp.value(event, this.dataPath)
     if (this.defaults) data = _.defaults(data, this.defaults)
 
+    Object.keys(data).forEach(key => (data[key] === null) && delete data[key])
+
     const requiredHumanInput = {
       uiType: this.uiType,
       uiName: this.uiName,
