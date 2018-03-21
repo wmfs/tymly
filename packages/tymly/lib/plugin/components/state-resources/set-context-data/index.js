@@ -13,6 +13,7 @@ module.exports = class SetContextData {
 
   run (event, context) {
     const FORM_DATA_STRING_LENGTH = 8
+    const config = {}
     const data = {}
 
     const setters = Object.keys(this.resourceConfig).map(key => {
@@ -35,30 +36,30 @@ module.exports = class SetContextData {
       }
 
       if (_.isString(this.resourceConfig[key]) && this.resourceConfig[key].substring(0, 2) === '$.') {
-        this.resourceConfig[key] = jp.value(event, this.resourceConfig[key])
+        config[key] = jp.value(event, this.resourceConfig[key])
       } else if (this.resourceConfig[key] === '$NOW') {
-        this.resourceConfig[key] = new Date().toISOString()
+        config[key] = new Date().toISOString()
       } else if (this.resourceConfig[key] === '$USERID') {
-        this.resourceConfig[key] = context.userId
+        config[key] = context.userId
       } else if (this.resourceConfig[key] === '$EMAIL') {
         if (this.auth0Service) {
           return new Promise((resolve, reject) => {
             this.auth0Service.getEmailFromUserId(context.userId, (err, email) => {
               if (err) {
-                this.resourceConfig[key] = ''
+                config[key] = ''
               } else {
-                this.resourceConfig[key] = email
+                config[key] = email
               }
-              dottie.set(data, theKey, this.resourceConfig[key])
+              dottie.set(data, theKey, config[key])
               resolve()
             })
           })
         } else {
-          this.resourceConfig[key] = ''
+          config[key] = ''
         }
       }
 
-      dottie.set(data, theKey, this.resourceConfig[key])
+      dottie.set(data, theKey, config[key])
     })
 
     Promise.all(setters)
