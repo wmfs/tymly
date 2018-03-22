@@ -21,165 +21,12 @@
   </gml:boundedBy>
   <abpr:queryTime>2016-02-10T16:25:58.000</abpr:queryTime>
   <abpr:streetMember>
-    <abpr:Street gml:id="uk.addressbase.usrn.14202557">
+    <abpr:Street gml:id="uk.addressbase.usrn.14200505">
       <abpr:changeType>I</abpr:changeType>
       <abpr:startDate>2007-10-24</abpr:startDate>
       <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
-      <abpr:entryDate>2004-12-03</abpr:entryDate>
-      <abpr:usrn>14202557</abpr:usrn>
-      <abpr:recordType>2</abpr:recordType>
-      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
-      <abpr:state>2</abpr:state>
-      <abpr:stateDate>1990-01-01</abpr:stateDate>
-      <abpr:streetSurface>1</abpr:streetSurface>
-      <abpr:streetClassification>8</abpr:streetClassification>
-      <abpr:version>0</abpr:version>
-      <abpr:streetStart>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.start.14202557">
-          <gml:pos>294125.00 092992.00</gml:pos>
-        </gml:Point>
-      </abpr:streetStart>
-      <abpr:streetStartLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.start.l.14202557">
-          <gml:pos>50.7268596 -3.5014236</gml:pos>
-        </gml:Point>
-      </abpr:streetStartLatLong>
-      <abpr:streetEnd>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.end.l.14202557">
-          <gml:pos>294189.00 093061.00</gml:pos>
-        </gml:Point>
-      </abpr:streetEnd>
-      <abpr:streetEndLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.end.14202557">
-          <gml:pos>50.7274915 -3.500537</gml:pos>
-        </gml:Point>
-      </abpr:streetEndLatLong>
-      <abpr:streetTolerance>10</abpr:streetTolerance>
-      <abpr:streetDescriptiveIdentifierMember>
-        <abpr:StreetDescriptiveIdentifier>
-          <abpr:startDate>2007-10-24</abpr:startDate>
-          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
-          <abpr:entryDate>2004-12-03</abpr:entryDate>
-          <abpr:streetDescription xml:lang="en">FOOTPATH TO 3 SWEETBRIER LANE</abpr:streetDescription>
-          <abpr:townName xml:lang="en">EXETER</abpr:townName>
-          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
-        </abpr:StreetDescriptiveIdentifier>
-      </abpr:streetDescriptiveIdentifierMember>
-    </abpr:Street>
-  </abpr:streetMember>
-  <abpr:streetMember>
-    <abpr:Street gml:id="uk.addressbase.usrn.14202563">
-      <abpr:changeType>I</abpr:changeType>
-      <abpr:startDate>2007-10-24</abpr:startDate>
-      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
-      <abpr:entryDate>2004-12-06</abpr:entryDate>
-      <abpr:usrn>14202563</abpr:usrn>
-      <abpr:recordType>2</abpr:recordType>
-      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
-      <abpr:state>2</abpr:state>
-      <abpr:stateDate>1990-01-01</abpr:stateDate>
-      <abpr:streetSurface>1</abpr:streetSurface>
-      <abpr:streetClassification>8</abpr:streetClassification>
-      <abpr:version>0</abpr:version>
-      <abpr:streetStart>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.start.14202563">
-          <gml:pos>293746.00 092589.00</gml:pos>
-        </gml:Point>
-      </abpr:streetStart>
-      <abpr:streetStartLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.start.l.14202563">
-          <gml:pos>50.7231674 -3.5066751</gml:pos>
-        </gml:Point>
-      </abpr:streetStartLatLong>
-      <abpr:streetEnd>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.end.l.14202563">
-          <gml:pos>293758.00 092521.00</gml:pos>
-        </gml:Point>
-      </abpr:streetEnd>
-      <abpr:streetEndLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.end.14202563">
-          <gml:pos>50.7225583 -3.5064856</gml:pos>
-        </gml:Point>
-      </abpr:streetEndLatLong>
-      <abpr:streetTolerance>10</abpr:streetTolerance>
-      <abpr:streetDescriptiveIdentifierMember>
-        <abpr:StreetDescriptiveIdentifier>
-          <abpr:startDate>2007-10-24</abpr:startDate>
-          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
-          <abpr:entryDate>2004-12-06</abpr:entryDate>
-          <abpr:streetDescription xml:lang="en">ROAD FROM 1 SHELTON PLACE TO 18 SHELTON PLACE1</abpr:streetDescription>
-          <abpr:townName xml:lang="en">EXETER</abpr:townName>
-          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
-        </abpr:StreetDescriptiveIdentifier>
-      </abpr:streetDescriptiveIdentifierMember>
-    </abpr:Street>
-  </abpr:streetMember>
-  <abpr:streetMember>
-    <abpr:Street gml:id="uk.addressbase.usrn.14202567">
-      <abpr:changeType>I</abpr:changeType>
-      <abpr:startDate>2007-10-24</abpr:startDate>
-      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
-      <abpr:entryDate>2004-12-06</abpr:entryDate>
-      <abpr:usrn>14202567</abpr:usrn>
-      <abpr:recordType>2</abpr:recordType>
-      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
-      <abpr:state>2</abpr:state>
-      <abpr:stateDate>1990-01-01</abpr:stateDate>
-      <abpr:streetSurface>1</abpr:streetSurface>
-      <abpr:streetClassification>8</abpr:streetClassification>
-      <abpr:version>0</abpr:version>
-      <abpr:streetStart>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.start.14202567">
-          <gml:pos>290594.00 091481.00</gml:pos>
-        </gml:Point>
-      </abpr:streetStart>
-      <abpr:streetStartLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.start.l.14202567">
-          <gml:pos>50.7126215 -3.5509839</gml:pos>
-        </gml:Point>
-      </abpr:streetStartLatLong>
-      <abpr:streetEnd>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.end.l.14202567">
-          <gml:pos>290594.00 091534.00</gml:pos>
-        </gml:Point>
-      </abpr:streetEnd>
-      <abpr:streetEndLatLong>
-        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.end.14202567">
-          <gml:pos>50.713098 -3.5509996</gml:pos>
-        </gml:Point>
-      </abpr:streetEndLatLong>
-      <abpr:streetTolerance>10</abpr:streetTolerance>
-      <abpr:streetDescriptiveIdentifierMember>
-        <abpr:StreetDescriptiveIdentifier>
-          <abpr:startDate>2007-10-24</abpr:startDate>
-          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
-          <abpr:entryDate>2004-12-06</abpr:entryDate>
-          <abpr:streetDescription xml:lang="en">FOOTPATH FROM DUNSFORD ROAD TO LITTLEWAY</abpr:streetDescription>
-          <abpr:townName xml:lang="en">EXETER</abpr:townName>
-          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
-        </abpr:StreetDescriptiveIdentifier>
-      </abpr:streetDescriptiveIdentifierMember>
-    </abpr:Street>
-  </abpr:streetMember>
-  <abpr:streetMember>
-    <abpr:Street gml:id="uk.addressbase.usrn.14200885">
-      <abpr:changeType>I</abpr:changeType>
-      <abpr:startDate>2007-10-24</abpr:startDate>
-      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
-      <abpr:entryDate>2004-12-06</abpr:entryDate>
-      <abpr:usrn>14200885</abpr:usrn>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200505</abpr:usrn>
       <abpr:recordType>1</abpr:recordType>
       <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
       <abpr:state>2</abpr:state>
@@ -189,26 +36,26 @@
       <abpr:version>0</abpr:version>
       <abpr:streetStart>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.start.14200885">
-          <gml:pos>290382.00 091358.00</gml:pos>
+                   gml:id="uk.addressbase.usrn.start.14200505">
+          <gml:pos>292955.00 093586.00</gml:pos>
         </gml:Point>
       </abpr:streetStart>
       <abpr:streetStartLatLong>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.start.l.14200885">
-          <gml:pos>50.7114758 -3.5539489</gml:pos>
+                   gml:id="uk.addressbase.usrn.start.l.14200505">
+          <gml:pos>50.7319849 -3.5181669</gml:pos>
         </gml:Point>
       </abpr:streetStartLatLong>
       <abpr:streetEnd>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.end.l.14200885">
-          <gml:pos>290368.00 091254.00</gml:pos>
+                   gml:id="uk.addressbase.usrn.end.l.14200505">
+          <gml:pos>293037.00 093495.00</gml:pos>
         </gml:Point>
       </abpr:streetEnd>
       <abpr:streetEndLatLong>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.end.14200885">
-          <gml:pos>50.7105383 -3.5541162</gml:pos>
+                   gml:id="uk.addressbase.usrn.end.14200505">
+          <gml:pos>50.7311819 -3.516979</gml:pos>
         </gml:Point>
       </abpr:streetEndLatLong>
       <abpr:streetTolerance>10</abpr:streetTolerance>
@@ -216,8 +63,8 @@
         <abpr:StreetDescriptiveIdentifier>
           <abpr:startDate>2007-10-24</abpr:startDate>
           <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
-          <abpr:entryDate>2004-12-06</abpr:entryDate>
-          <abpr:streetDescription xml:lang="en">VUEFIELD HILL</abpr:streetDescription>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">LUCAS AVENUE</abpr:streetDescription>
           <abpr:townName xml:lang="en">EXETER</abpr:townName>
           <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
         </abpr:StreetDescriptiveIdentifier>
@@ -225,13 +72,13 @@
     </abpr:Street>
   </abpr:streetMember>
   <abpr:streetMember>
-    <abpr:Street gml:id="uk.addressbase.usrn.14202571">
+    <abpr:Street gml:id="uk.addressbase.usrn.14200287">
       <abpr:changeType>I</abpr:changeType>
       <abpr:startDate>2007-10-24</abpr:startDate>
       <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
-      <abpr:entryDate>2004-12-06</abpr:entryDate>
-      <abpr:usrn>14202571</abpr:usrn>
-      <abpr:recordType>2</abpr:recordType>
+      <abpr:entryDate>2004-04-20</abpr:entryDate>
+      <abpr:usrn>14200287</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
       <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
       <abpr:state>2</abpr:state>
       <abpr:stateDate>1990-01-01</abpr:stateDate>
@@ -240,26 +87,26 @@
       <abpr:version>0</abpr:version>
       <abpr:streetStart>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.start.14202571">
-          <gml:pos>290417.00 091762.00</gml:pos>
+                   gml:id="uk.addressbase.usrn.start.14200287">
+          <gml:pos>290265.00 093429.00</gml:pos>
         </gml:Point>
       </abpr:streetStart>
       <abpr:streetStartLatLong>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.start.l.14202571">
-          <gml:pos>50.7151142 -3.5535734</gml:pos>
+                   gml:id="uk.addressbase.usrn.start.l.14200287">
+          <gml:pos>50.7300711 -3.5562221</gml:pos>
         </gml:Point>
       </abpr:streetStartLatLong>
       <abpr:streetEnd>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
-                   gml:id="uk.addressbase.usrn.end.l.14202571">
-          <gml:pos>290437.00 091792.00</gml:pos>
+                   gml:id="uk.addressbase.usrn.end.l.14200287">
+          <gml:pos>290802.00 093682.00</gml:pos>
         </gml:Point>
       </abpr:streetEnd>
       <abpr:streetEndLatLong>
         <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
-                   gml:id="uk.addressbase.usrn.end.14202571">
-          <gml:pos>50.7153877 -3.5532992</gml:pos>
+                   gml:id="uk.addressbase.usrn.end.14200287">
+          <gml:pos>50.7324468 -3.5486912</gml:pos>
         </gml:Point>
       </abpr:streetEndLatLong>
       <abpr:streetTolerance>10</abpr:streetTolerance>
@@ -267,8 +114,824 @@
         <abpr:StreetDescriptiveIdentifier>
           <abpr:startDate>2007-10-24</abpr:startDate>
           <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
-          <abpr:entryDate>2004-12-06</abpr:entryDate>
-          <abpr:streetDescription xml:lang="en">FOOTPATH FROM BOWHAY LANE TO WENTWORTH GARDENS</abpr:streetDescription>
+          <abpr:entryDate>2004-04-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">EXWICK HILL</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200487">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2002-04-09</abpr:entryDate>
+      <abpr:usrn>14200487</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200487">
+          <gml:pos>290194.87 090847.79</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200487">
+          <gml:pos>50.7068539 -3.5564463</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200487">
+          <gml:pos>290176.97 091367.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200487">
+          <gml:pos>50.711518 -3.5568544</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2002-04-09</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">LITTLE JOHNS CROSS HILL</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200227">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2004-10-13</abpr:entryDate>
+      <abpr:usrn>14200227</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200227">
+          <gml:pos>292439.00 094538.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200227">
+          <gml:pos>50.7404477 -3.5257539</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200227">
+          <gml:pos>292525.00 094495.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200227">
+          <gml:pos>50.7400771 -3.524523</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2004-10-13</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">CURLEW WAY</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200867">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200867</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200867">
+          <gml:pos>291608.00 092230.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200867">
+          <gml:pos>50.7195449 -3.5368474</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200867">
+          <gml:pos>291468.00 092343.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200867">
+          <gml:pos>50.7205345 -3.5388632</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">TUDOR STREET</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200485">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-06-20</abpr:entryDate>
+      <abpr:usrn>14200485</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200485">
+          <gml:pos>292926.00 094995.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200485">
+          <gml:pos>50.7446461 -3.5189876</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200485">
+          <gml:pos>292809.00 094892.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200485">
+          <gml:pos>50.7436985 -3.5206152</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">LINNET CLOSE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200337">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200337</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200337">
+          <gml:pos>294046.00 094742.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200337">
+          <gml:pos>50.7425772 -3.5030461</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200337">
+          <gml:pos>294060.00 094709.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200337">
+          <gml:pos>50.7422831 -3.5028383</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">GLASTONBURY CLOSE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200343">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200343</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200343">
+          <gml:pos>292283.00 092188.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200343">
+          <gml:pos>50.7192929 -3.5272767</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200343">
+          <gml:pos>292243.00 092215.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200343">
+          <gml:pos>50.7195282 -3.527851</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">GOOD SHEPHERD DRIVE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200548">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-07-03</abpr:entryDate>
+      <abpr:usrn>14200548</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200548">
+          <gml:pos>290548.00 091705.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200548">
+          <gml:pos>50.7146265 -3.5517017</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200548">
+          <gml:pos>290702.00 092157.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200548">
+          <gml:pos>50.7187188 -3.5496552</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-07-03</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">MERRIVALE ROAD</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200121">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200121</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200121">
+          <gml:pos>293620.00 090941.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200121">
+          <gml:pos>50.7083293 -3.5079838</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200121">
+          <gml:pos>294341.00 091619.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200121">
+          <gml:pos>50.714556 -3.4979706</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">BURNTHOUSE LANE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200158">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-11-19</abpr:entryDate>
+      <abpr:usrn>14200158</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200158">
+          <gml:pos>293858.00 090800.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200158">
+          <gml:pos>50.7071054 -3.5045737</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200158">
+          <gml:pos>294022.00 091429.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200158">
+          <gml:pos>50.7127898 -3.5024328</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-11-19</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">CHESTNUT AVENUE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200433">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2004-10-27</abpr:entryDate>
+      <abpr:usrn>14200433</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200433">
+          <gml:pos>290963.00 092317.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200433">
+          <gml:pos>50.7202062 -3.5460067</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200433">
+          <gml:pos>290903.00 092524.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200433">
+          <gml:pos>50.7220558 -3.5469176</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2004-10-27</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">JOHN LEVERS WAY</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200461">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200461</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200461">
+          <gml:pos>293579.00 093255.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200461">
+          <gml:pos>50.729124 -3.5092326</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200461">
+          <gml:pos>293698.00 092820.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200461">
+          <gml:pos>50.7252353 -3.5074216</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">LADYSMITH ROAD</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14201812">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2004-12-07</abpr:entryDate>
+      <abpr:usrn>14201812</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14201812">
+          <gml:pos>294478.00 094112.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14201812">
+          <gml:pos>50.7369924 -3.496745</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14201812">
+          <gml:pos>294585.00 094017.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14201812">
+          <gml:pos>50.7361578 -3.495202</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2004-12-07</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">ROUNDTABLE MEET</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200167">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-06-20</abpr:entryDate>
+      <abpr:usrn>14200167</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200167">
+          <gml:pos>293558.00 092435.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200167">
+          <gml:pos>50.7217486 -3.5092931</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200167">
+          <gml:pos>293574.00 092248.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200167">
+          <gml:pos>50.7200704 -3.5090125</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">CHURCH TERRACE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200281">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-06-20</abpr:entryDate>
+      <abpr:usrn>14200281</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200281">
+          <gml:pos>294568.00 092686.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200281">
+          <gml:pos>50.7241894 -3.4950617</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200281">
+          <gml:pos>294691.00 092790.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200281">
+          <gml:pos>50.7251467 -3.4933495</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">ENDFIELD CLOSE</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200901">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200901</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200901">
+          <gml:pos>292533.00 093190.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200901">
+          <gml:pos>50.7283469 -3.5240288</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200901">
+          <gml:pos>292669.00 093583.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200901">
+          <gml:pos>50.7319051 -3.5222171</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">WELL STREET</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200902">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2003-07-03</abpr:entryDate>
+      <abpr:usrn>14200902</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.start.14200902">
+          <gml:pos>291454.00 091216.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.start.l.14200902">
+          <gml:pos>50.7104006 -3.5387295</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700"
+                   gml:id="uk.addressbase.usrn.end.l.14200902">
+          <gml:pos>291258.00 090990.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258"
+                   gml:id="uk.addressbase.usrn.end.14200902">
+          <gml:pos>50.7083323 -3.5414378</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2003-07-03</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">WELLINGTON ROAD</abpr:streetDescription>
           <abpr:townName xml:lang="en">EXETER</abpr:townName>
           <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
         </abpr:StreetDescriptiveIdentifier>

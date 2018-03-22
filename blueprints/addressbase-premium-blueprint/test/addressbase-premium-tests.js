@@ -75,6 +75,7 @@ describe('process addressbase-premium', function () {
 
     it('run the execution to process the XML file', async () => {
       await client.query('DELETE FROM ordnance_survey.addressbase_premium_property_holding;')
+      await client.query('DELETE FROM ordnance_survey.addressbase_premium_streets_holding;')
 
       const executionDescription = await statebox.startExecution(
         {
