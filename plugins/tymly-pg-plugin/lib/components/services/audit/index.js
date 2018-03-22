@@ -9,25 +9,20 @@ const pgInfo = require('pg-info')
 
 class AuditService {
   boot (options, callback) {
-    this.pgScripts = options.blueprintComponents.pgScripts || {}
     this.models = options.blueprintComponents.models || {}
     this.client = options.bootedServices.storage.client
     this.schemaNames = options.bootedServices.storage.schemaNames
 
-    this.auditFunctions = []
-
-    const functionInstallers = Object.keys(this.pgScripts).map(script => {
-      debug(`Found script: ${script}`)
-      const filename = path.parse(this.pgScripts[script].filename).name
-      if (filename.split('-')[0] === 'audit') {
+    const pgScripts = options.blueprintComponents.pgScripts || {}
+    this.auditFunctions = Object.keys(pgScripts)
+      .map(script => path.parse(pgScripts[script].filename).name)
+      .filter(filename => filename.split('-')[0] === 'audit')
+      .map(filename => {
         debug(`Found audit function: ${filename.substring(filename.indexOf('-') + 1)}`)
-        this.auditFunctions.push(filename.substring(filename.indexOf('-') + 1))
-        return this.client.runFile(this.pgScripts[script].filePath)
-      }
-    })
+        return filename.substring(filename.indexOf('-') + 1)
+      })
 
-    Promise.all(functionInstallers)
-      .then(() => this.updateTriggers())
+    this.updateTriggers()
       .then(() => callback(null))
       .catch(err => callback(err))
   } // boot

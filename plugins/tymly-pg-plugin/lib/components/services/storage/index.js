@@ -37,6 +37,7 @@ class PostgresqlStorageService {
     this._installExtension()
       .then(() => this._createModels(options.messages))
       .then(() => this._insertMultipleSeedData(seedData, options.messages))
+      .then(() => this._runScripts(options.blueprintComponents.pgScripts, options.messages))
       .then(() => callback())
       .catch(err => callback(err))
   } // boot
@@ -122,7 +123,7 @@ class PostgresqlStorageService {
         } // if ...
       } // for ...
     } // for ...
-  } // _boot
+  } // _createModels
 
   async addModel (name, definition, messages) {
     if (!name || !definition) {
@@ -154,7 +155,6 @@ class PostgresqlStorageService {
   _doInsertMultipleSeedData (seedDataArray, messages, callback) {
     const _this = this
     if (seedDataArray) {
-      callback(null)
       infoMessage(messages, 'Loading seed data:')
       async.eachSeries(
         seedDataArray,
@@ -205,7 +205,19 @@ class PostgresqlStorageService {
       infoMessage(messages, 'No seed data to insert')
       callback(null)
     }
-  } // insertMultipleSeedData
+  } // _doInsertMultipleSeedData
+
+  _runScripts (scripts, messages) {
+    infoMessage(messages, 'Scripts:')
+    if (!scripts) return detailMessage(messages, 'No scripts found')
+
+    const scriptInstallers = Object.keys(scripts).map(script => {
+      detailMessage(messages, script)
+      return this.client.runFile(scripts[script].filePath)
+    })
+
+    return Promise.all(scriptInstallers)
+  } // _runScripts
 } // PostgresqlStorageService
 
 function detailMessage (messages, msg) {
