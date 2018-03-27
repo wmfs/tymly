@@ -82,6 +82,6 @@ CREATE OR REPLACE VIEW ordnance_survey.addressbase_premium_holding AS
         concat(property.hash_sum, '-', street.hash_sum) AS hash_sum
 
 FROM ordnance_survey.addressbase_premium_property_holding property
-    LEFT OUTER JOIN ordnance_survey.addressbase_premium_streets_holding street
+    JOIN ordnance_survey.addressbase_premium_streets_holding street
     ON (property.usrn = street.usrn)
 WHERE (property.lpi_status = 1);
