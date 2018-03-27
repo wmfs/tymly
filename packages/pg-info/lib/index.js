@@ -79,34 +79,32 @@ async function pgInfo (options) {
         .filter(index => index.table_name === requestedSchemaName + '.' + candidatePgTable.table_name)
         .filter(index => !index.is_primary)
         .reduce((indexes, index) => {
-            indexes[index.index_name] = {
-              columns: [
-                index.index_keys
-              ],
-              unique: index.is_unique,
-              method: index.method
-            }
-            return indexes
-          },
-          {}
-          )
-
-      const triggers = {}
-      const tableTriggers = _.filter(pgTriggers, {
-        trigger_schema: requestedSchemaName,
-        event_object_table: candidatePgTable.table_name
-      })
-      tableTriggers.forEach(
-        function (tableTrigger) {
-          triggers[tableTrigger.trigger_name] = {
-            eventManipulation: tableTrigger.event_manipulation,
-            actionCondition: tableTrigger.action_condition,
-            actionStatement: tableTrigger.action_statement,
-            actionOrientation: tableTrigger.action_orientation,
-            actionTiming: tableTrigger.action_timing
+          indexes[index.index_name] = {
+            columns: [
+              index.index_keys
+            ],
+            unique: index.is_unique,
+            method: index.method
           }
-        }
-      )
+          return indexes
+        },
+        {}
+        )
+
+      const triggers = pgTriggers
+        .filter(t => t.trigger_schema === requestedSchemaName && t.event_object_table === candidatePgTable.table_name)
+        .reduce((triggers, trigger) => {
+          triggers[trigger.trigger_name] = {
+            eventManipulation: trigger.event_manipulation,
+            actionCondition: trigger.action_condition,
+            actionStatement: trigger.action_statement,
+            actionOrientation: trigger.action_orientation,
+            actionTiming: trigger.action_timing
+          }
+          return triggers
+        },
+        {}
+        )
 
       const functions = {}
       const tableFunctions = _.filter(pgFunctions, {specific_schema: requestedSchemaName})
