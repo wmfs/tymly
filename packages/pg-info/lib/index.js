@@ -36,7 +36,7 @@ async function pgInfo (options) {
       info.schemas[requestedSchemaName] = {
         schemaExistsInDatabase: false
       }
-      continue;
+      continue
     }
 
     // Database has this schema name
@@ -46,19 +46,15 @@ async function pgInfo (options) {
       tables: {}
     }
 
-
     const schemaTables = pgTables.filter(table => table.table_schema === requestedSchemaName)
     for (const candidatePgTable of schemaTables) {
-      const matchSchemaAndTable = o => o.table_schema === requestedSchemaName && o.table_name === candidatePgTable.table_name
-
       const pkColumnNames = pgPkColumns
-        .filter(matchSchemaAndTable)
+        .filter(o => o.table_schema === requestedSchemaName && o.table_name === candidatePgTable.table_name)
         .map(col => col.pk_column_name)
 
-      const columns = {}
-      pgColumns
-        .filter(matchSchemaAndTable)
-        .forEach(col => {
+      const columns = pgColumns
+        .filter(o => o.table_schema === requestedSchemaName && o.table_name === candidatePgTable.table_name)
+        .reduce((columns, col) => {
           const columnInfo = {
             columnDefault: col.column_default,
             isNullable: col.is_nullable,
@@ -74,24 +70,26 @@ async function pgInfo (options) {
             columnInfo.array = false
           }
           columns[col.column_name] = columnInfo
-        }
-      )
+          return columns
+        },
+        {}
+        )
 
-      const indexes = {}
-      const tableIndexes = _.filter(pgIndexes, {table_name: requestedSchemaName + '.' + candidatePgTable.table_name})
-      tableIndexes.forEach(
-        function (tableIndex) {
-          if (!tableIndex.is_primary) {
-            indexes[tableIndex.index_name] = {
+      const indexes = pgIndexes
+        .filter(index => index.table_name === requestedSchemaName + '.' + candidatePgTable.table_name)
+        .filter(index => !index.is_primary)
+        .reduce((indexes, index) => {
+            indexes[index.index_name] = {
               columns: [
-                tableIndex.index_keys
+                index.index_keys
               ],
-              unique: tableIndex.is_unique,
-              method: tableIndex.method
+              unique: index.is_unique,
+              method: index.method
             }
-          }
-        }
-      )
+            return indexes
+          },
+          {}
+          )
 
       const triggers = {}
       const tableTriggers = _.filter(pgTriggers, {
