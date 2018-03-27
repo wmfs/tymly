@@ -80,7 +80,7 @@ module.exports = function queries () {
     'WHERE specific_schema = ANY($1)',
 
     // List of views
-    'select table_schema, table_name, view_definition ' +
+    'select table_schema as view_schema, table_name as view_name, view_definition ' +
     'from information_schema.views ' +
     'where table_schema = ANY($1)'
   ]

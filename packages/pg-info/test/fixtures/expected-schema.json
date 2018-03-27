@@ -79,6 +79,31 @@
         "triggers": {},
         "fkConstraints": {}
       }
+    },
+    "views": {
+      "peeps": {
+        "columns": {
+          "name": {
+            "array": false,
+            "columnDefault": null,
+            "isNullable": "YES",
+            "dataType": "text",
+            "characterMaximumLength": null,
+            "numericScale": null,
+            "comment": null
+          },
+          "person_no": {
+            "array": false,
+            "columnDefault": null,
+            "isNullable": "YES",
+            "dataType": "text",
+            "characterMaximumLength": null,
+            "numericScale": null,
+            "comment": null
+          }
+        },
+        "sql": "SELECT people.person_no, concat(people.first_name, ' ', people.last_name) AS name FROM pginfo_people_test.people;"
+      }
     }
   },
   "pginfo_planets_test": {

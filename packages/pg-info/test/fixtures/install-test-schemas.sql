@@ -13,6 +13,10 @@ CREATE TABLE pginfo_people_test.people (
   CONSTRAINT person_pkey PRIMARY KEY (person_no)
 );
 
+CREATE OR REPLACE VIEW pginfo_people_test.peeps AS
+  SELECT person_no, CONCAT(first_name, ' ', last_name) AS name
+  FROM pginfo_people_test.people;
+
 COMMENT ON TABLE pginfo_people_test.people IS 'Isn''t this just a list of people?';
 COMMENT ON COLUMN pginfo_people_test.people.first_name IS 'Person''s first name';
 COMMENT ON COLUMN pginfo_people_test.people.age IS 'Age in years';

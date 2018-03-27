@@ -127,7 +127,7 @@ async function pgInfo (options) {
   const pgFkConstraints = queryResults[5]
   const pgTriggers = queryResults[6]
   const pgFunctions = queryResults[7]
-  // const pgViews = queryResults[8]
+  const pgViews = queryResults[8]
 
   // Loop over each requested schema namen
   for (const schemaName of schemas) {
@@ -145,7 +145,8 @@ async function pgInfo (options) {
     info.schemas[schemaName] = {
       schemaExistsInDatabase: true,
       comment: schema.schema_comment,
-      tables: {}
+      tables: {},
+      views: {}
     }
 
     const schemaTables = pgTables.filter(table => table.table_schema === schemaName)
@@ -162,10 +163,20 @@ async function pgInfo (options) {
         fkConstraints: findConstraints(pgFkConstraints, schemaName, tableName)
       }
     } // tables ...
-  }
+
+    const schemaViews = pgViews.filter(view => view.view_schema === schemaName)
+    for (const view of schemaViews) {
+      const viewName = view.view_name
+
+      info.schemas[schemaName].views[viewName] = {
+        columns: findColumns(pgColumns, schemaName, viewName),
+        sql: view.view_definition.trim().replace(/\s+/g, ' ')
+      }
+    }
+  } // for each schema
 
   return info
-}
+} // pgInfo
 
 const NotSet = 'NotSet'
 
@@ -176,7 +187,7 @@ module.exports = (options, callback = NotSet) => {
 
   pgInfo(options)
     .then(info => {
-      try { callback(null, info) } catch (err) { callback(null) }
+      try { callback(null, info) } catch (err) { callback(err) }
     })
     .catch(err => callback(err))
 }
