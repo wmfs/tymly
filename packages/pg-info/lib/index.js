@@ -1,8 +1,110 @@
-const _ = require('lodash')
 
 const FK_ACTION_CODES = require('./fk-action-codes.json')
 const FK_MATCH_TYPES = require('./fk-match-types.json')
 const QUERIES = require('./queries')
+
+function findPrimaryKeyColumns (pgPkColumns, schemaName, tableName) {
+  return pgPkColumns
+    .filter(o => o.table_schema === schemaName && o.table_name === tableName)
+    .map(col => col.pk_column_name)
+} // primaryKeyColumns
+
+function findColumns (pgColumns, schemaName, tableName) {
+  return pgColumns
+    .filter(o => o.table_schema === schemaName && o.table_name === tableName)
+    .reduce((columns, col) => {
+      const columnInfo = {
+        columnDefault: col.column_default,
+        isNullable: col.is_nullable,
+        dataType: col.data_type,
+        characterMaximumLength: col.character_maximum_length,
+        numericScale: col.numeric_scale,
+        comment: col.column_comment
+      }
+      if (columnInfo.dataType === 'ARRAY') {
+        columnInfo.array = true
+        columnInfo.dataType = col.array_element_type.slice(1)
+      } else {
+        columnInfo.array = false
+      }
+      columns[col.column_name] = columnInfo
+      return columns
+    },
+    {}
+    )
+} // findColumns
+
+function findIndexes (pgIndexes, schemaName, tableName) {
+  return pgIndexes
+    .filter(index => index.table_name === `${schemaName}.${tableName}`)
+    .filter(index => !index.is_primary)
+    .reduce((indexes, index) => {
+      indexes[index.index_name] = {
+        columns: [
+          index.index_keys
+        ],
+        unique: index.is_unique,
+        method: index.method
+      }
+      return indexes
+    },
+    {}
+    )
+} // findIndexes
+
+function findTriggers (pgTriggers, schemaName, tableName) {
+  return pgTriggers
+    .filter(t => t.trigger_schema === schemaName && t.event_object_table === tableName)
+    .reduce((triggers, trigger) => {
+      triggers[trigger.trigger_name] = {
+        eventManipulation: trigger.event_manipulation,
+        actionCondition: trigger.action_condition,
+        actionStatement: trigger.action_statement,
+        actionOrientation: trigger.action_orientation,
+        actionTiming: trigger.action_timing
+      }
+      return triggers
+    },
+    {}
+    )
+} // findTriggers
+
+function findFunctions (pgFunctions, schemaName, tableName) {
+  return pgFunctions
+    .filter(f => f.specific_schema === schemaName)
+    .reduce((functions, func) => {
+      functions[func.routine_name] = {
+        dataType: func.data_type
+      }
+      return functions
+    },
+    {}
+    )
+} // findFunctions
+
+function findConstraints (pgFkConstraints, schemaName, tableName) {
+  return pgFkConstraints
+    .filter(fk => fk.source_table === `${schemaName}.${tableName}`)
+    .reduce((fkConstraints, constraint) => {
+      const fkName = constraint.constraint_name
+      if (!fkConstraints.hasOwnProperty(fkName)) {
+        fkConstraints[fkName] = {
+          targetTable: constraint.target_table,
+          sourceColumns: [constraint.source_column],
+          targetColumns: [constraint.target_column],
+          updateAction: FK_ACTION_CODES[constraint.update_action],
+          deleteAction: FK_ACTION_CODES[constraint.delete_action],
+          matchType: FK_MATCH_TYPES[constraint.match_type]
+        }
+      } else {
+        fkConstraints[fkName].sourceColumns.push(constraint.source_column)
+        fkConstraints[fkName].targetColumns.push(constraint.target_column)
+      }
+      return fkConstraints
+    },
+    {}
+    )
+} // findConstraints
 
 async function pgInfo (options) {
   // //////////////
@@ -28,127 +130,38 @@ async function pgInfo (options) {
   // const pgViews = queryResults[8]
 
   // Loop over each requested schema namen
-  for (const requestedSchemaName of schemas) {
-    const candidatePgSchema = pgSchemas.find(s => s.schema_name === requestedSchemaName)
+  for (const schemaName of schemas) {
+    const schema = pgSchemas.find(s => s.schema_name === schemaName)
 
-    if (!candidatePgSchema) {
+    if (!schema) {
       // Database doesn't have this schema name
-      info.schemas[requestedSchemaName] = {
+      info.schemas[schemaName] = {
         schemaExistsInDatabase: false
       }
       continue
     }
 
     // Database has this schema name
-    info.schemas[requestedSchemaName] = {
+    info.schemas[schemaName] = {
       schemaExistsInDatabase: true,
-      comment: candidatePgSchema.schema_comment,
+      comment: schema.schema_comment,
       tables: {}
     }
 
-    const schemaTables = pgTables.filter(table => table.table_schema === requestedSchemaName)
-    for (const candidatePgTable of schemaTables) {
-      const pkColumnNames = pgPkColumns
-        .filter(o => o.table_schema === requestedSchemaName && o.table_name === candidatePgTable.table_name)
-        .map(col => col.pk_column_name)
+    const schemaTables = pgTables.filter(table => table.table_schema === schemaName)
+    for (const table of schemaTables) {
+      const tableName = table.table_name
 
-      const columns = pgColumns
-        .filter(o => o.table_schema === requestedSchemaName && o.table_name === candidatePgTable.table_name)
-        .reduce((columns, col) => {
-          const columnInfo = {
-            columnDefault: col.column_default,
-            isNullable: col.is_nullable,
-            dataType: col.data_type,
-            characterMaximumLength: col.character_maximum_length,
-            numericScale: col.numeric_scale,
-            comment: col.column_comment
-          }
-          if (columnInfo.dataType === 'ARRAY') {
-            columnInfo.array = true
-            columnInfo.dataType = col.array_element_type.slice(1)
-          } else {
-            columnInfo.array = false
-          }
-          columns[col.column_name] = columnInfo
-          return columns
-        },
-        {}
-        )
-
-      const indexes = pgIndexes
-        .filter(index => index.table_name === requestedSchemaName + '.' + candidatePgTable.table_name)
-        .filter(index => !index.is_primary)
-        .reduce((indexes, index) => {
-          indexes[index.index_name] = {
-            columns: [
-              index.index_keys
-            ],
-            unique: index.is_unique,
-            method: index.method
-          }
-          return indexes
-        },
-        {}
-        )
-
-      const triggers = pgTriggers
-        .filter(t => t.trigger_schema === requestedSchemaName && t.event_object_table === candidatePgTable.table_name)
-        .reduce((triggers, trigger) => {
-          triggers[trigger.trigger_name] = {
-            eventManipulation: trigger.event_manipulation,
-            actionCondition: trigger.action_condition,
-            actionStatement: trigger.action_statement,
-            actionOrientation: trigger.action_orientation,
-            actionTiming: trigger.action_timing
-          }
-          return triggers
-        },
-        {}
-        )
-
-      const functions = {}
-      const tableFunctions = _.filter(pgFunctions, {specific_schema: requestedSchemaName})
-      tableFunctions.forEach(
-        function (tableFunction) {
-          functions[tableFunction.routine_name] = {
-            dataType: tableFunction.data_type
-          }
-        }
-      )
-
-      const fkConstraints = {}
-      const tableFkConstraints = _.filter(pgFkConstraints, {source_table: requestedSchemaName + '.' + candidatePgTable.table_name})
-      tableFkConstraints.forEach(
-        function (fkConstraint) {
-          const fkName = fkConstraint.constraint_name
-          if (!fkConstraints.hasOwnProperty(fkName)) {
-            fkConstraints[fkName] = {
-              targetTable: fkConstraint.target_table,
-              sourceColumns: [fkConstraint.source_column],
-              targetColumns: [fkConstraint.target_column],
-              updateAction: FK_ACTION_CODES[fkConstraint.update_action],
-              deleteAction: FK_ACTION_CODES[fkConstraint.delete_action],
-              matchType: FK_MATCH_TYPES[fkConstraint.match_type]
-            }
-          } else {
-            fkConstraints[fkName].sourceColumns.push(fkConstraint.source_column)
-            fkConstraints[fkName].targetColumns.push(fkConstraint.target_column)
-          }
-        }
-      )
-
-      // This table is this schema
-      const tables = info.schemas[requestedSchemaName].tables
-      tables[candidatePgTable.table_name] = {
-        comment: candidatePgTable.table_comment,
-        pkColumnNames: pkColumnNames,
-        columns: columns,
-        indexes: indexes,
-        triggers: triggers,
-        functions: functions,
-        fkConstraints: fkConstraints
+      info.schemas[schemaName].tables[tableName] = {
+        comment: table.table_comment,
+        pkColumnNames: findPrimaryKeyColumns(pgPkColumns, schemaName, tableName),
+        columns: findColumns(pgColumns, schemaName, tableName),
+        indexes: findIndexes(pgIndexes, schemaName, tableName),
+        triggers: findTriggers(pgTriggers, schemaName, tableName),
+        functions: findFunctions(pgFunctions, schemaName, tableName),
+        fkConstraints: findConstraints(pgFkConstraints, schemaName, tableName)
       }
-    }
+    } // tables ...
   }
 
   return info
