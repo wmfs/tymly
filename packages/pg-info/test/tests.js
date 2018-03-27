@@ -15,7 +15,8 @@ describe('Run the basic-usage example', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   const schemaNames = ['pginfo_people_test', 'pginfo_planets_test', 'pginfo_not_exists']
-  const expectedSchemas = require(path.resolve(__dirname, 'fixtures', 'expected-schema.json'))
+  const fixtureDir = path.resolve(__dirname, 'fixtures')
+  const expectedSchemas = require(path.resolve(fixtureDir, 'expected-schema.json'))
   let client
 
   before(function () {
@@ -25,54 +26,55 @@ describe('Run the basic-usage example', function () {
     }
   })
 
-  it('Should create a new pg client', () => {
-    const pgConnectionString = process.env.PG_CONNECTION_STRING
-    client = new HlPgClient(pgConnectionString)
-  })
+  describe('setup', () => {
+    it('Should create a new pg client', () => {
+      const pgConnectionString = process.env.PG_CONNECTION_STRING
+      client = new HlPgClient(pgConnectionString)
+    })
 
-  it('Should install test schemas', () => {
-    return client.runFile(path.resolve(__dirname, 'fixtures', 'install-test-schemas.sql'))
-  })
+    it('Should install test schemas', () => {
+      return client.runFile(path.resolve(fixtureDir, 'install-test-schemas.sql'))
+    })
+  }) // setup
 
-  it('Should get some database info (callback)', function (done) {
-    pgInfo(
-      {
-        client: client,
-        schemas: schemaNames
-      },
-      function (err, info) {
-        expect(err).to.equal(null)
-        expect(info).to.containSubset(
-          {
-            schemas: expectedSchemas
-          }
-        )
-        done()
-      }
-    )
-  })
+  describe('interrogate db', () => {
+    it('get database info (callback)', function (done) {
+      pgInfo(
+        {
+          client: client,
+          schemas: schemaNames
+        },
+        function (err, info) {
+          expect(err).to.equal(null)
+          expect(info).to.containSubset(
+            {
+              schemas: expectedSchemas
+            }
+          )
+          done()
+        }
+      )
+    })
 
-  it('Should get some database info (promise)', function () {
-    pgInfo(
-      {
+    it('get database info (promise)', async () => {
+      const info = await pgInfo({
         client: client,
         schemas: schemaNames
       })
-      .then(info =>
-        expect(info).to.containSubset(
-          {
-            schemas: expectedSchemas
-          }
-        )
-      ) // pgInfo
+
+      expect(info).to.containSubset({
+        schemas: expectedSchemas
+      })
+    })
   })
 
-  it('Should uninstall test schemas', () => {
-    return client.runFile(path.resolve(__dirname, 'fixtures', 'uninstall-test-schemas.sql'))
-  })
+  describe('cleanup', () => {
+    it('uninstall test schemas', () => {
+      return client.runFile(path.resolve(fixtureDir, 'uninstall-test-schemas.sql'))
+    })
 
-  it('Should close database connections', function (done) {
-    client.end()
-    done()
+    it('close database connections', () => {
+      client.end()
+    })
   })
 })
