@@ -10,7 +10,8 @@ module.exports = function queries () {
     // List of tables
     'select table_schema, table_name, obj_description((table_schema||\'.\'||table_name)::regclass, \'pg_class\') table_comment ' +
     'from information_schema.tables ' +
-    'where table_schema = ANY($1)',
+    'where table_schema = ANY($1)' +
+    'and table_type = \'BASE TABLE\'',
 
     // List of columns
     'select table_schema, table_name, column_name, column_default, is_nullable, data_type, character_maximum_length, numeric_scale, ' +
@@ -76,6 +77,11 @@ module.exports = function queries () {
     // List of functions
     'SELECT * ' +
     'FROM information_schema.routines ' +
-    'WHERE specific_schema = ANY($1)'
+    'WHERE specific_schema = ANY($1)',
+
+    // List of views
+    'select table_schema, table_name, view_definition ' +
+    'from information_schema.views ' +
+    'where table_schema = ANY($1)'
   ]
 }

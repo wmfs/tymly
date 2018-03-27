@@ -11,6 +11,11 @@ const chaiSubset = require('chai-subset')
 chai.use(chaiSubset)
 const expect = chai.expect
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 describe('Run the basic-usage example', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
@@ -45,26 +50,36 @@ describe('Run the basic-usage example', function () {
           schemas: schemaNames
         },
         function (err, info) {
-          expect(err).to.equal(null)
-          expect(info).to.containSubset(
-            {
-              schemas: expectedSchemas
-            }
-          )
+          if (err) return done(err)
+          expect(info).to.containSubset({ schemas: expectedSchemas })
           done()
         }
       )
     })
 
-    it('get database info (promise)', async () => {
+    it('get database info (promise)', (done) => {
+      pgInfo({
+        client: client,
+        schemas: schemaNames
+      })
+        .then(info => {
+          try {
+            expect(info).to.containSubset({schemas: expectedSchemas})
+            done()
+          } catch (err) {
+            done(err)
+          }
+        })
+        .catch(err => done(err))
+    })
+
+    it('get database info (await)', async () => {
       const info = await pgInfo({
         client: client,
         schemas: schemaNames
       })
 
-      expect(info).to.containSubset({
-        schemas: expectedSchemas
-      })
+      expect(info).to.containSubset({ schemas: expectedSchemas })
     })
   })
 
