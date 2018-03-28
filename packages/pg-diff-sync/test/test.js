@@ -166,7 +166,6 @@ describe('diff-sync', () => {
       )
     })
 
-
     it('build replacement view', () => {
       const statements = pgDiffSync(peoplePlusView, peopleWithExtendedView)
       expect(statements).to.eql(
