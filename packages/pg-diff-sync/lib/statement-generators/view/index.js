@@ -1,6 +1,6 @@
-function viewStatementGenerator(viewId, view, statements) {
-  if (_.isUndefined(view.base)) {
-    statements.push(`CREATE OR REPLACE VIEW ${viewId} AS ${view.sql};`)
+function viewStatementGenerator (viewId, view, statements) {
+  if (!view.base) {
+    statements.push(`CREATE OR REPLACE VIEW ${viewId} AS ${view.target.sql}`)
   }
 }
 

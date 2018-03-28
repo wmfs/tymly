@@ -1,17 +1,16 @@
 /* eslint-env mocha */
 
-'use strict'
-
 const empty = require('./fixtures/empty.json')
 const people = require('./fixtures/people.json')
 const peoplePlusManagerColumn = require('./fixtures/people-plus-manager-column.json')
+const peoplePlusView = require('./fixtures/people-with-view.json')
 const planets = require('./fixtures/planets.json')
 
 const pgDiffSync = require('./../lib')
 const expect = require('chai').expect
 
-describe('Run some basic tests', function () {
-  it('should build everything for a simple table in a blank database', function () {
+describe('diff-sync', () => {
+  it('build everything for a simple table in a blank database', () => {
     const statements = pgDiffSync(empty, people)
     expect(statements).to.eql(
       [
@@ -37,18 +36,16 @@ describe('Run some basic tests', function () {
         'CREATE UNIQUE INDEX people_first_name_last_name_idx ON pg_diff_sync_test.people USING btree (first_name,last_name);'
       ]
     )
-  }
-  )
+  })
 
-  it('should build nothing when both structures are the same', function () {
+  it('build nothing when both structures are the same', () => {
     const statements = pgDiffSync(people, people)
     expect(statements).to.eql(
       []
     )
-  }
-  )
+  })
 
-  it('should build add a new manager_no column', function () {
+  it('build add a new manager_no column', () => {
     const statements = pgDiffSync(people, peoplePlusManagerColumn)
     expect(statements).to.eql(
       [
@@ -56,10 +53,9 @@ describe('Run some basic tests', function () {
         "COMMENT ON COLUMN pg_diff_sync_test.people.manager_no IS 'The employee_no of this person''''s manager - if there is one';"
       ]
     )
-  }
-  )
+  })
 
-  it('should build nested tables', function () {
+  it('build nested tables', () => {
     const statements = pgDiffSync(empty, planets)
     expect(statements).to.eql(
       [
@@ -155,6 +151,14 @@ describe('Run some basic tests', function () {
         'ALTER TABLE pg_diff_sync_test.moons ADD CONSTRAINT moons_to_planets_fk FOREIGN KEY (planets_name) REFERENCES pg_diff_sync_test.planets (name) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE;'
       ]
     )
-  }
-  )
+  })
+
+  it('build additional view', () => {
+    const statements = pgDiffSync(people, peoplePlusView)
+    expect(statements).to.eql(
+      [
+        'CREATE OR REPLACE VIEW pg_diff_sync_test.peeps AS SELECT pg_diff_sync_test.person_no, concat(pg_diff_sync_test.first_name, \' \', pg_diff_sync_test.last_name) AS name FROM pg_diff_sync_test.people;'
+      ]
+    )
+  })
 })
