@@ -15,7 +15,7 @@ function promised (obj, fn, ...args) {
 } // promised
 
 class View {
-  constructor(components, options) {
+  constructor (components, options) {
     this.client = options.client
     const view = components.view
     this.namespace = components.namespace
@@ -44,7 +44,7 @@ class View {
 
     this.promised = (...args) => promised(this, ...args)
   } // constructor
-
+  /*
   find (options, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.find, options)
@@ -83,7 +83,7 @@ class View {
       }
     )
   }
-
+*/
   /// ////////////////////////
   create (jsonData, options = {}, callback = NotSet) {
     if (callback === NotSet) return this.promised(this.create, jsonData, options)

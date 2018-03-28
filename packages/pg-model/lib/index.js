@@ -15,7 +15,7 @@ function createModel (schemaName, schema, tableName, table, options) {
   return new Model(
     {
       namespace: _.camelCase(schemaName),
-      modelId:_.camelCase(tableName),
+      modelId: _.camelCase(tableName),
       schemaName: schemaName,
       schema: schema,
       tableName: tableName,
@@ -29,7 +29,7 @@ function createView (schemaName, schema, viewName, view, options) {
   return new View(
     {
       namespace: _.camelCase(schemaName),
-      modelId:_.camelCase(viewName),
+      modelId: _.camelCase(viewName),
       schemaName: schemaName,
       schema: schema,
       viewName: viewName,
@@ -52,7 +52,7 @@ function createModels (options) {
       dottie.set(models, path, model)
     } // for ...
 
-    for (const [viewName, view] of Object.entries(schema.views)) {
+    for (const [viewName, view] of Object.entries(schema.views || {})) {
       const model = createView(schemaName, schema, viewName, view, options)
 
       const path = `${model.namespace}.${model.modelId}`
@@ -65,7 +65,7 @@ function createModels (options) {
   return models
 } // createModels
 
-function hookupSubModels(models) {
+function hookupSubModels (models) {
   // hook up sub-models
   for (const namespace of Object.values(models)) {
     for (const [modelId, model] of Object.entries(namespace)) {
