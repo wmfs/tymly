@@ -387,7 +387,25 @@
             }
           }
         }
+      },
+      "views": {
+        "peeps": {
+          "columns": {
+            "name": {
+              "array": false,
+              "isNullable": "YES",
+              "dataType": "text"
+            },
+            "person_no": {
+              "array": false,
+              "isNullable": "YES",
+              "dataType": "text"
+            }
+          },
+          "sql": "SELECT person.employee_no, concat(person.first_name, ' ', person.last_name) AS name FROM pgmodel_test.person;"
+        }
       }
+
     }
   }
 }

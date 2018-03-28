@@ -1,14 +1,11 @@
 /* eslint-env mocha */
 
-'use strict'
-
 const process = require('process')
 const pgModel = require('./../lib')
 const HlPgClient = require('hl-pg-client')
 const empty = require('./fixtures/empty.json')
-const planets = require('./fixtures/planets.json')
+const planets = require('./fixtures/people-and-planets.json')
 const pgDiffSync = require('pg-diff-sync')
-const async = require('async')
 const chai = require('chai')
 const path = require('path')
 const chaiSubset = require('chai-subset')
@@ -46,30 +43,11 @@ describe('Promise API', function () {
       }
     })
 
-    it('install test database objects', function (done) {
-      async.eachSeries(
-        pgDiffSync(
-          empty,
-          planets
-        ),
-        function (statement, cb) {
-          client.query(
-            statement,
-            function (e) {
-              if (e) {
-                console.error(statement)
-                cb(e)
-              } else {
-                cb()
-              }
-            }
-          )
-        },
-        function (err) {
-          expect(err).to.equal(null)
-          done()
-        }
-      )
+    it('install test database objects', async () => {
+      const statements = pgDiffSync(empty, planets)
+      for (const s of statements) {
+        await client.query(s)
+      }
     })
 
     it('get some model instances', () => {
@@ -84,8 +62,8 @@ describe('Promise API', function () {
 
   describe('simple object', () => {
     describe('creation', () => {
-      it('create a new person', () => {
-        return models.pgmodelTest.person.create(
+      it('create a new person', async () => {
+        const idProperties = await models.pgmodelTest.person.create(
           {
             employeeNo: 1,
             firstName: 'Homer',
@@ -93,20 +71,17 @@ describe('Promise API', function () {
             age: 39
           },
           {}
-        ).then(idProperties =>
-          expect(idProperties).to.eql(
-            {
-              idProperties:
-                {
-                  employeeNo: '1'
-                }
-            }
-          )
         )
+
+        expect(idProperties).to.eql({
+          idProperties: {
+            employeeNo: '1'
+          }
+        })
       })
 
-      it('create multiple new people', () => {
-        return models.pgmodelTest.person.create(
+      it('create multiple new people', async () => {
+        await models.pgmodelTest.person.create(
           [
             {
               employeeNo: 2,
@@ -135,63 +110,86 @@ describe('Promise API', function () {
         )
       })
 
-      it('fail creating a new person with an already-used primary key', () => {
-        return models.pgmodelTest.person.create(
-          {
+      it('fail creating a new person with an already-used primary key', async () => {
+        try {
+          await models.pgmodelTest.person.create({
             employeeNo: 1,
             firstName: 'Ned',
             lastName: 'Flanders',
             age: 60
           },
           {}
-        )
-          .then(() => assert(false))
-          .catch(err => {
-            expect(err).to.containSubset({
-              'code': '23505',
-              'constraint': 'person_pkey',
-              'detail': 'Key (employee_no)=(1) already exists.',
-              'name': 'error',
-              'schema': 'pgmodel_test',
-              'severity': 'ERROR',
-              'table': 'person'
-            })
-          }
           )
+        } catch (err) {
+          expect(err).to.containSubset({
+            'code': '23505',
+            'constraint': 'person_pkey',
+            'detail': 'Key (employee_no)=(1) already exists.',
+            'name': 'error',
+            'schema': 'pgmodel_test',
+            'severity': 'ERROR',
+            'table': 'person'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
       })
 
-      it('fail creating new people with an already-used primary key', () => {
-        return models.pgmodelTest.person.create(
-          [
-            {
-              employeeNo: 6,
-              firstName: 'Ned',
-              lastName: 'Flanders',
-              age: 60
-            },
-            {
-              employeeNo: 2,
-              firstName: 'Maude',
-              lastName: 'Flanders'
-            }
-          ],
-          {}
-        )
-          .then(() => assert(false))
-          .catch(err => {
-            expect(err).to.containSubset(
+      it('fail creating new people with an already-used primary key', async () => {
+        try {
+          await models.pgmodelTest.person.create(
+            [
               {
-                'code': '23505',
-                'constraint': 'person_pkey',
-                'detail': 'Key (employee_no)=(2) already exists.',
-                'name': 'error',
-                'schema': 'pgmodel_test',
-                'severity': 'ERROR',
-                'table': 'person'
+                employeeNo: 6,
+                firstName: 'Ned',
+                lastName: 'Flanders',
+                age: 60
+              },
+              {
+                employeeNo: 2,
+                firstName: 'Maude',
+                lastName: 'Flanders'
               }
-            )
-          }
+            ],
+            {}
           )
+        } catch (err) {
+          expect(err).to.containSubset({
+            'code': '23505',
+            'constraint': 'person_pkey',
+            'detail': 'Key (employee_no)=(2) already exists.',
+            'name': 'error',
+            'schema': 'pgmodel_test',
+            'severity': 'ERROR',
+            'table': 'person'
+          })
+          return
+        } // catch
+
+        // didn't throw!
+        assert(false)
+      })
+
+      it('fail creating new peep - views are read-only', async () => {
+        try {
+          await models.pgmodelTest.peeps.create({
+            employeeNo: 1,
+            name: 'Ned Flanders'
+          },
+          {}
+          )
+        } catch (err) {
+          expect(err).to.containSubset({
+            'schema': 'pgmodel_test',
+            'view': 'peeps'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
       })
     })
 
@@ -208,6 +206,21 @@ describe('Promise API', function () {
               }
             )
           )
+      })
+
+      it('can\'t find a peep via primary key', async () => {
+        try {
+          await models.pgmodelTest.peeps.findById(3)
+        } catch (err) {
+          expect(err).to.containSubset({
+            'schema': 'pgmodel_test',
+            'view': 'peeps'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
       })
 
       it("fail finding a person that's not there", () => {
@@ -284,8 +297,8 @@ describe('Promise API', function () {
       })
     })
 
-    describe('find with ordering', () => {
-      it('find Bart by name', async () => {
+    describe('more complex finds', () => {
+      it('find Bart by first name & last name', async () => {
         const doc = await models.pgmodelTest.person.find(
           {
             where: {
@@ -303,6 +316,26 @@ describe('Promise API', function () {
               'employeeNo': '5',
               'firstName': 'Bart',
               'lastName': 'Simpson'
+            }
+          ]
+        )
+      })
+
+      it('find Bart by name', async () => {
+        const doc = await models.pgmodelTest.peeps.find(
+          {
+            where: {
+              name: {equals: 'Bart Simpson'}
+            }
+          }
+        )
+
+        expect(doc).to.have.length(1)
+        expect(doc).to.containSubset(
+          [
+            {
+              'employeeNo': '5',
+              'name': 'Bart Simpson'
             }
           ]
         )
@@ -360,7 +393,7 @@ describe('Promise API', function () {
         )
       })
 
-      it('get one Homer by name', () => {
+      it('get one Homer by first name and last name', () => {
         return models.pgmodelTest.person.findOne(
           {
             where: {
@@ -380,12 +413,38 @@ describe('Promise API', function () {
         )
       })
 
+      it('get one Homer by name', async () => {
+        const doc = await models.pgmodelTest.peeps.findOne(
+          {
+            where: {
+              name: {equals: 'Homer Simpson'}
+            }
+          }
+        )
+        expect(doc).to.containSubset({
+          'employeeNo': '1',
+          'name': 'Homer Simpson'
+        })
+      })
+
       it("shouldn't get one missing person", async () => {
         const doc = await models.pgmodelTest.person.findOne(
           {
             where: {
               firstName: {equals: 'Ned'},
               lastName: {equals: 'Flanders'}
+            }
+          }
+        )
+
+        expect(doc).to.equal(undefined)
+      })
+
+      it("shouldn't get one missing peep", async () => {
+        const doc = await models.pgmodelTest.peep.findOne(
+          {
+            where: {
+              name: {equals: 'Ned Flanders'}
             }
           }
         )
@@ -463,6 +522,26 @@ describe('Promise API', function () {
           'age': null
         })
       })
+
+      it('fail to update Maggie through view', async () => {
+        try {
+          await models.pgmodelTest.peeps.update({
+            employeeNo: 2,
+            name: 'Magritte Simpson'
+          },
+          {}
+          )
+        } catch (err) {
+          expect(err).to.containSubset({
+            'schema': 'pgmodel_test',
+            'view': 'peeps'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
+      })
     })
 
     describe('destroy', () => {
@@ -474,6 +553,21 @@ describe('Promise API', function () {
         const doc = await models.pgmodelTest.person.findById(2)
 
         expect(doc).to.equal(undefined)
+      })
+
+      it('fail to delete Bart through view', async () => {
+        try {
+          await models.pgmodelTest.peeps.destroyById(3)
+        } catch (err) {
+          expect(err).to.containSubset({
+            'schema': 'pgmodel_test',
+            'view': 'peeps'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
       })
     })
 
@@ -572,6 +666,26 @@ describe('Promise API', function () {
           'lastName': 'Simpson',
           'age': null
         })
+      })
+
+      it('fail to upsert Maggie through view', async () => {
+        try {
+          await models.pgmodelTest.peeps.upsert({
+            employeeNo: 2,
+            name: 'Magritte Simpson'
+          },
+          {}
+          )
+        } catch (err) {
+          expect(err).to.containSubset({
+            'schema': 'pgmodel_test',
+            'view': 'peeps'
+          })
+          return
+        }
+
+        // didn't throw :o
+        assert(false)
       })
     })
   })
