@@ -86,9 +86,14 @@
               "array": false,
               "isNullable": "YES",
               "dataType": "text"
+            },
+            "manager_no": {
+              "array": false,
+              "dataType": "text",
+              "isNullable": "YES"
             }
           },
-          "sql": "SELECT people.person_no, concat(people.first_name, ' ', people.last_name) AS name FROM pg_diff_sync_test.people;"
+          "sql": "SELECT people.person_no, concat(people.first_name, ' ', people.last_name) AS name, people.manager_no FROM pg_diff_sync_test.people;"
         }
       }
     }
