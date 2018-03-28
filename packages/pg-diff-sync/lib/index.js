@@ -13,7 +13,8 @@ const TYPES = [
   'columnComment',
   'pkColumnNames',
   'index',
-  'fkConstraint'
+  'fkConstraint',
+  'view'
 ]
 
 const processStructures = require('./process-structures')
@@ -22,20 +23,15 @@ module.exports = function newDiff (baseDbStructure, targetDbStructure) {
   const processed = processStructures(baseDbStructure, targetDbStructure)
 
   const statements = []
-  let component
 
-  TYPES.forEach(
-    function (typeName) {
-      if (processed.hasOwnProperty(typeName)) {
-        for (let componentId in processed[typeName]) {
-          if (processed[typeName].hasOwnProperty(componentId)) {
-            component = processed[typeName][componentId]
-            statementGenerators[typeName](componentId, component, statements)
-          }
-        }
-      }
-    }
-  )
+  TYPES.forEach(typeName => {
+    for (const componentId in processed[typeName]) {
+      const component = processed[typeName][componentId]
+      if (component) {
+        statementGenerators[typeName](componentId, component, statements)
+      } // if ...
+    } // for ...
+  })
 
   return statements
 }

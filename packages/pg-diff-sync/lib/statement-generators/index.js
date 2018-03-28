@@ -7,5 +7,6 @@ module.exports = {
   table: require('./table/index'),
   index: require('./index-gen/index'),
   tableComment: require('./table-comment/index'),
-  fkConstraint: require('./fk-constraint/index')
+  fkConstraint: require('./fk-constraint/index'),
+  view: require('./view/index')
 }
