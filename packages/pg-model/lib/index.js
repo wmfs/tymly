@@ -1,101 +1,105 @@
-/* eslint-env mocha */
-
-// https://www.npmjs.com/package/mem-fs-editor
-
-'use strict'
-
 const _ = require('lodash')
 const dottie = require('dottie')
 const Model = require('./Model')
+const View = require('./View')
 
-module.exports = function pgModel (options) {
+function debugDump (models) {
+  for (const namespace of Object.values(models)) {
+    for (const model of Object.values(namespace)) {
+      model.debug()
+    }
+  }
+} // debugDump
+
+function createModel (schemaName, schema, tableName, table, options) {
+  return new Model(
+    {
+      namespace: _.camelCase(schemaName),
+      modelId:_.camelCase(tableName),
+      schemaName: schemaName,
+      schema: schema,
+      tableName: tableName,
+      table: table
+    },
+    options
+  )
+} // createModel
+
+function createView (schemaName, schema, viewName, view, options) {
+  return new View(
+    {
+      namespace: _.camelCase(schemaName),
+      modelId:_.camelCase(viewName),
+      schemaName: schemaName,
+      schema: schema,
+      viewName: viewName,
+      view: view
+    },
+    options
+  )
+} // createView
+
+function createModels (options) {
   const schemas = options.dbStructure.schemas
 
   const models = {}
 
-  _.forOwn(
-    schemas,
-    function (schema, schemaName) {
-      _.forOwn(
-        schema.tables,
-        function (table, tableName) {
-          const namespace = _.camelCase(schemaName)
-          const modelId = _.camelCase(tableName)
-          const path = namespace + '.' + modelId
+  for (const [schemaName, schema] of Object.entries(schemas)) {
+    for (const [tableName, table] of Object.entries(schema.tables)) {
+      const model = createModel(schemaName, schema, tableName, table, options)
 
-          const model = new Model(
-            {
-              namespace: namespace,
-              modelId: modelId,
-              schemaName: schemaName,
-              schema: schema,
-              tableName: tableName,
-              table: table
-            },
-            options
-          )
+      const path = `${model.namespace}.${model.modelId}`
+      dottie.set(models, path, model)
+    } // for ...
 
-          dottie.set(
-            models,
-            path,
-            model
-          )
+    for (const [viewName, view] of Object.entries(schema.views)) {
+      const model = createView(schemaName, schema, viewName, view, options)
+
+      const path = `${model.namespace}.${model.modelId}`
+      dottie.set(models, path, model)
+    } // for ...
+  } // for ...
+
+  hookupSubModels(models)
+
+  return models
+} // createModels
+
+function hookupSubModels(models) {
+  // hook up sub-models
+  for (const namespace of Object.values(models)) {
+    for (const [modelId, model] of Object.entries(namespace)) {
+      for (const fkConstraint of Object.values(model.fkConstraints || {})) {
+        const [parentSchemaName, parentTableName] = fkConstraint.targetTable.split('.')
+        const parentNamespaceId = _.camelCase(parentSchemaName)
+        const parentPropertyId = _.camelCase(parentTableName)
+        const parentModel = models[parentNamespaceId][parentPropertyId]
+        const parentColumns = fkConstraint.sourceColumns
+        const childColumns = fkConstraint.targetColumns
+
+        const columnJoin = {}
+        for (const i in parentColumns) {
+          columnJoin[parentColumns[i]] = childColumns[i]
         }
-      )
-    }
-  )
 
-  // Add sub-state-machines
-  _.forOwn(
-    models,
-    function (namespace, namespaceId) {
-      _.forOwn(
-        namespace,
-        function (model, modelId) {
-          _.forOwn(
-            model.fkConstraints,
-            function (fkConstraint, fkConstraintName) {
-              const parts = fkConstraint.targetTable.split('.')
-              const parentSchemaName = parts[0]
-              const parentTableName = parts[1]
-              const parentNamespaceId = _.camelCase(parentSchemaName)
-              const parentPropertyId = _.camelCase(parentTableName)
-              const parentModel = models[parentNamespaceId][parentPropertyId]
-              const parentColumns = fkConstraint.sourceColumns
-              const childColumns = fkConstraint.targetColumns
-
-              const columnJoin = {}
-              for (let i = 0; i < parentColumns.length; i++) {
-                columnJoin[parentColumns[i]] = childColumns[i]
-              }
-
-              parentModel.subModels[modelId] = {
-                model: model,
-                columnJoin: columnJoin,
-                sourceProperties: _.map(fkConstraint.sourceColumns, function (columnName) { return _.camelCase(columnName) }),
-                targetProperties: _.map(fkConstraint.targetColumns, function (columnName) { return _.camelCase(columnName) })
-              }
-
-              parentModel.subDocIds.push(modelId)
-            }
-          )
+        parentModel.subModels[modelId] = {
+          model: model,
+          columnJoin: columnJoin,
+          sourceProperties: fkConstraint.sourceColumns.map(_.camelCase),
+          targetProperties: fkConstraint.targetColumns.map(_.camelCase)
         }
-      )
+
+        parentModel.subDocIds.push(modelId)
+      }
     }
-  )
+  }
+} // hookupSubModels
+
+module.exports = function pgModel (options) {
+  const models = createModels(options)
 
   if (options.debug) {
-    _.forOwn(
-      models,
-      function (namespace, namespaceId) {
-        _.forOwn(
-          namespace,
-          function (model, modelId) {
-            model.debug()
-          }
-        )
-      }
-    )
+    debugDump(models)
   }
 
   return models
