@@ -317,26 +317,16 @@ class Model {
     console.log('------------------- ' + this.fullModelId + '-------------------')
     console.log('  primaryKey: ' + JSON.stringify(this.pkPropertyIds))
     console.log('  propertyIds')
-    this.propertyIds.forEach(
-      function (propertyId) {
-        console.log('    + ' + propertyId)
-      }
-    )
+    this.propertyIds.forEach(propertyId => console.log('    + ' + propertyId))
 
     console.log('  Table')
     console.log('    fullTableName: ' + this.fullTableName)
     console.log('    primaryKey: ' + JSON.stringify(this.pkColumnNames))
 
     if (this.subDocIds.length > 0) {
-      console.log('  SubDocs')
-      _.forOwn(
-        this.subDocs,
-        function (subDoc, subDocPropertyId) {
-          subDoc.debug()
-        }
-      )
+      console.log('  SubDocs: ' + Object.keys(this.subModels).join())
     }
-  }
+  } // debug
 }
 
 module.exports = Model
