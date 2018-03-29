@@ -1,0 +1,8 @@
+{
+  "label": "Gazetteer",
+  "description": "Things to do with buildings",
+  "styling": {
+    "icon": "home",
+    "backgroundColor": "#00GG00"
+  }
+}
