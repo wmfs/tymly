@@ -1,6 +1,4 @@
-'use strict'
 
-const dottie = require('dottie')
 const _ = require('lodash')
 
 class GetUserRemit {
@@ -67,22 +65,24 @@ class GetUserRemit {
   } // findComponents
 
   processComponents (userRemit, componentType, components, alreadyInClientManifest) {
-    Object.keys(components).map(componentName => {
+    userRemit.add[componentType] = {}
+
+    Object.keys(components).forEach(componentName => {
       if (componentType === 'forms') {
         const formShasum = this.forms.forms[componentName].shasum
         const clientShasum = alreadyInClientManifest[componentName]
         if (formShasum !== clientShasum) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, this.forms.forms[componentName])
+          userRemit.add[componentType][componentName] = this.forms.forms[componentName]
         }
       } else if (componentType === 'boards') {
         const boardShasum = this.boards.boards[componentName].shasum
         const clientShasum = alreadyInClientManifest[componentName]
         if (boardShasum !== clientShasum) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, this.boards.boards[componentName])
+          userRemit.add[componentType][componentName] = this.boards.boards[componentName]
         }
       } else {
         if (alreadyInClientManifest.indexOf(componentName) === -1) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
+          userRemit.add[componentType][componentName] = components[componentName]
         }
       }
     })

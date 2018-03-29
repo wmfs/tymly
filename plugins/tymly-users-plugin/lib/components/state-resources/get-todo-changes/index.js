@@ -1,6 +1,3 @@
-'use strict'
-
-const dottie = require('dottie')
 const _ = require('lodash')
 
 class GetTodoChanges {
@@ -28,14 +25,13 @@ class GetTodoChanges {
   }
 
   processComponents (userRemit, componentType, components, alreadyInClientManifest) {
-    _.forEach(
-      Object.keys(components),
-      function (componentName) {
-        if (alreadyInClientManifest.indexOf(componentName) === -1) {
-          dottie.set(userRemit, `add.${componentType}.${componentName}`, components[componentName])
-        }
+    userRemit.add[componentType] = {}
+
+    Object.keys(components).forEach(componentName => {
+      if (alreadyInClientManifest.indexOf(componentName) === -1) {
+        userRemit.add[componentType][componentName] = components[componentName]
       }
-    )
+    })
 
     const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
     if (namesToRemove.length > 0) {
