@@ -405,7 +405,7 @@ describe('user-remit tymly-users-plugin tests', function () {
     return sqlScriptRunner('./db-scripts/todos/setup2.sql', client)
   })
 
-  it('should start the state machine to get user remit, should get whole remit because client doesn\'t contain anything', function (done) {
+  it('expect empty todo object in remit', function (done) {
     statebox.startExecution(
       {
         clientManifest: {
