@@ -401,6 +401,47 @@ describe('user-remit tymly-users-plugin tests', function () {
     )
   })
 
+  it('should remove all the todos in the database', function () {
+    return sqlScriptRunner('./db-scripts/todos/setup2.sql', client)
+  })
+
+  it('should start the state machine to get user remit, should get whole remit because client doesn\'t contain anything', function (done) {
+    statebox.startExecution(
+      {
+        clientManifest: {
+          boardNames: {},
+          categoryNames: [],
+          teams: [],
+          todos: [],
+          formNames: {},
+          startable: []
+        }
+      },
+      GET_USER_REMIT_STATE_MACHINE,
+      {
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
+      },
+      function (err, executionDescription) {
+        try {
+          expect(err).to.eql(null)
+          // console.log(JSON.stringify(executionDescription, null, 2))
+          expect(executionDescription.currentStateName).to.eql('GetUserRemit')
+          expect(executionDescription.currentResource).to.eql('module:getUserRemit')
+          expect(executionDescription.stateMachineName).to.eql(GET_USER_REMIT_STATE_MACHINE)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+
+          expect(Object.keys(executionDescription.ctx.userRemit.add.todos).length).to.eql(0)
+
+          expect(executionDescription.ctx.userRemit.remove).to.eql({})
+          done()
+        } catch (err) {
+          done(err)
+        }
+      }
+    )
+  })
+
   it('should tear down the test resources', function () {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
