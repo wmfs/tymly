@@ -55,7 +55,9 @@ describe('Blueprint Tests', function () {
         config: {}
       },
       function (err, tymlyServices) {
-        expect(err).to.eql(null)
+        if (err) {
+          done(err)
+        }
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
