@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const optionParser = require('./../utils/option-parser')
 
-const NotSet = 'NetSet'
+const NotSet = 'NotSet'
 
 function promised (obj, fn, ...args) {
   return new Promise((resolve, reject) => {
@@ -48,33 +48,24 @@ class View {
   } // constructor
 
   find (options, callback = NotSet) {
-    if (callback === NotSet) {
-      return this.promised(this.find, options)
-    } // if ...
-
-    this.doFind(options)
-      .then(results => callback(null, results))
-      .catch(err => callback(err))
+    return this.doFind(options, x => x, callback)
   } // find ...
 
   findOne (options, callback = NotSet) {
-    if (callback === NotSet) {
-      return this.promised(this.findOne, options)
-    } // if ...
-
-    options.length = 1
-    this.doFind(options, rows => Array.isArray(rows) ? rows[0] : undefined)
-      .then(results => callback(null, results))
-      .catch(err => callback(err))
+    options.limit = 1
+    return this.doFind(options, rows => Array.isArray(rows) ? rows[0] : undefined, callback)
   } // findOne
 
-  doFind (options, transform = x => x) {
+  doFind (options, transform = x => x, callback = NotSet) {
+    if (callback === NotSet) return this.promised(this.doFind, options, transform)
+
     const parsedOptions = optionParser(this.sql, this.propertyIdToColumn, options)
-    return this.client.query(
+    this.client.query(
       parsedOptions.sql,
       parsedOptions.values
     )
-      .then(results => transform(results.rows))
+      .then(results => callback(null, transform(results.rows)))
+      .catch(err => callback(err))
   } // doFind
 
   /// ////////////////////////
