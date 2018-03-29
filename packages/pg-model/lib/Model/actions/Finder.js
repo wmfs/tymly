@@ -3,7 +3,7 @@
 const _ = require('lodash')
 const async = require('async')
 
-const optionParser = require('./../utils/option-parser')
+const optionParser = require('./../../utils/option-parser')
 
 class Finder {
   constructor (model) {

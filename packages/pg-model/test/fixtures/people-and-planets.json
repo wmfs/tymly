@@ -396,7 +396,7 @@
               "isNullable": "YES",
               "dataType": "text"
             },
-            "person_no": {
+            "employee_no": {
               "array": false,
               "isNullable": "YES",
               "dataType": "text"

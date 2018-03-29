@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const optionParser = require('./../utils/option-parser')
 
 const NotSet = 'NetSet'
 
@@ -41,29 +42,25 @@ class View {
 
     this.columnNamesWithPropertyAliases = Object.entries(this.columnToPropertyId).map(([col, prop]) => `${col} AS "${prop}"`)
     this.propertyIds = Object.entries(this.columnToPropertyId).filter(([col]) => col[0] !== '_').map(([col, prop]) => prop)
+    this.sql = `SELECT ${this.columnNamesWithPropertyAliases} FROM ${this.fullViewName}`
 
     this.promised = (...args) => promised(this, ...args)
   } // constructor
-  /*
+
   find (options, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.find, options)
     } // if ...
 
-    const doc = {}
-    this.finder.find(
-      doc,
-      options,
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, Finder.removeTopLevelDoc(doc))
-        }
-      }
+    const parsedOptions = optionParser(this.sql, this.propertyIdToColumn, options)
+    this.client.query(
+      parsedOptions.sql,
+      parsedOptions.values
     )
-  }
-
+      .then(results => callback(null, results.rows))
+      .catch(err => callback(err))
+  } // find ...
+  /*
   findOne (options, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.findOne, options)

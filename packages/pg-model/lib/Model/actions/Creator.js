@@ -1,8 +1,15 @@
 'use strict'
 
 const _ = require('lodash')
-const generateValuePlaceholders = require('./../utils/generate-value-placeholders')
 const getPreStatementHookFunction = require('./get-pre-statement-hook-function')
+
+function generateValuePlaceholders (l) {
+  const parts = []
+  for (let i = 1; i <= l; i++) {
+    parts.push('$' + i)
+  }
+  return parts.join(',')
+}
 
 class Creator {
   constructor (model) {

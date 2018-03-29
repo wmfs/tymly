@@ -321,7 +321,7 @@ describe('Promise API', function () {
         )
       })
 
-      xit('find Bart by name', async () => {
+      it('find Bart by name', async () => {
         const doc = await models.pgmodelTest.peeps.find(
           {
             where: {
@@ -370,6 +370,20 @@ describe('Promise API', function () {
             }
           ]
         )
+      })
+
+      it('find peeps', async () => {
+        const doc = await models.pgmodelTest.peeps.find({ orderBy: ['employeeNo'] })
+
+        expect(doc).to.have.length(5)
+        expect(doc[0]).to.eql({
+          'employeeNo': '1',
+          'name': 'Homer Simpson'
+        })
+        expect(doc[4]).to.eql({
+          'employeeNo': '5',
+          'name': 'Bart Simpson'
+        })
       })
     })
 
