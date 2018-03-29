@@ -427,7 +427,7 @@ describe('Promise API', function () {
         )
       })
 
-      xit('get one Homer by name', async () => {
+      it('get one Homer by name', async () => {
         const doc = await models.pgmodelTest.peeps.findOne(
           {
             where: {
@@ -454,8 +454,8 @@ describe('Promise API', function () {
         expect(doc).to.equal(undefined)
       })
 
-      xit("shouldn't get one missing peep", async () => {
-        const doc = await models.pgmodelTest.peep.findOne(
+      it("shouldn't get one missing peep", async () => {
+        const doc = await models.pgmodelTest.peeps.findOne(
           {
             where: {
               name: {equals: 'Ned Flanders'}

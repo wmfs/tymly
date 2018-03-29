@@ -52,35 +52,31 @@ class View {
       return this.promised(this.find, options)
     } // if ...
 
-    const parsedOptions = optionParser(this.sql, this.propertyIdToColumn, options)
-    this.client.query(
-      parsedOptions.sql,
-      parsedOptions.values
-    )
-      .then(results => callback(null, results.rows))
+    this.doFind(options)
+      .then(results => callback(null, results))
       .catch(err => callback(err))
   } // find ...
-  /*
+
   findOne (options, callback = NotSet) {
     if (callback === NotSet) {
       return this.promised(this.findOne, options)
     } // if ...
 
-    options.limit = 1
-    const doc = {}
-    this.finder.find(
-      doc,
-      options,
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, Finder.removeTopLevelDocAndFlatten(doc))
-        }
-      }
+    options.length = 1
+    this.doFind(options, rows => Array.isArray(rows) ? rows[0] : undefined)
+      .then(results => callback(null, results))
+      .catch(err => callback(err))
+  } // findOne
+
+  doFind (options, transform = x => x) {
+    const parsedOptions = optionParser(this.sql, this.propertyIdToColumn, options)
+    return this.client.query(
+      parsedOptions.sql,
+      parsedOptions.values
     )
-  }
-*/
+      .then(results => transform(results.rows))
+  } // doFind
+
   /// ////////////////////////
   create (jsonData, options = {}, callback = NotSet) {
     if (callback === NotSet) return this.promised(this.create, jsonData, options)
