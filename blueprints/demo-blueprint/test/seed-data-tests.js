@@ -58,7 +58,6 @@ describe('Demo tests', function () {
     expect(categories.defectiveHydrants.label).to.eql('Defective hydrants')
     expect(categories.fires.label).to.eql('Fire')
     expect(categories.hr.label).to.eql('Human Resources')
-    expect(categories.incidents.label).to.eql('Incidents')
     expect(categories.rtcs.label).to.eql('RTC')
     expect(categories.water.label).to.eql('Water')
     expect(categories.workingHydrants.label).to.eql('Working hydrants')
