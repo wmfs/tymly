@@ -1,5 +1,6 @@
 
 const _ = require('lodash')
+const debug = require('debug')('tymly-users-plugin')
 
 class GetUserRemit {
   init (resourceConfig, env, callback) {
@@ -60,6 +61,7 @@ class GetUserRemit {
       .then(results => {
         const resultsObj = {}
         results.map(r => { resultsObj[r[titleCol]] = r })
+        debug(componentType + ': ' + JSON.stringify(resultsObj, null, 2))
         this.processComponents(userRemit, componentType, resultsObj, alreadyInClientManifest)
       })
   } // findComponents
