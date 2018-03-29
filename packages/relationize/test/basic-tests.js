@@ -13,29 +13,29 @@ const schemaDir = path.resolve(__dirname, 'fixtures', 'schema')
 const expectedDir = path.resolve(__dirname, 'fixtures', 'expected')
 
 describe('Run some basic tests', function () {
-  it('should get required database structure for a simple schema', done => {
-    const personSchema = require(path.resolve(schemaDir, 'people/people.json'))
+  it('database structure for a simple schema', done => {
+    const peopleSchema = require(path.resolve(schemaDir, 'people/people.json'))
 
     relationize({
-        source: {
-          schemas: [{
-            namespace: 'relationizeTest',
-            schema: personSchema
-          }]
-        }
-      },
-      (err, dbStructure) => {
-        if (err) return done(err)
-
-        const expected = require(path.resolve(expectedDir, 'people-structure.json'))
-        expect(dbStructure).to.containSubset(expected)
-
-        done()
+      source: {
+        schemas: [{
+          namespace: 'relationizeTest',
+          schema: peopleSchema
+        }]
       }
+    },
+    (err, dbStructure) => {
+      if (err) return done(err)
+
+      const expected = require(path.resolve(expectedDir, 'people-structure.json'))
+      expect(dbStructure).to.containSubset(expected)
+
+      done()
+    }
     )
   })
 
-  it('should get required database structure for a nested schema', async () => {
+  it('database structure for a nested schema', async () => {
     const dbStructure = await relationize({
       source: {
         paths: [{
@@ -46,6 +46,22 @@ describe('Run some basic tests', function () {
     })
 
     const expected = require(path.resolve(expectedDir, 'planet-structure.json'))
+    expect(dbStructure).to.containSubset(expected)
+  })
+
+  xit('database structure for a table and a view', async () => {
+    const peopleSchema = require(path.resolve(schemaDir, 'people/people.json'))
+
+    const dbStructure = await relationize({
+      source: {
+        schemas: [{
+          namespace: 'relationizeTest',
+          schema: peopleSchema
+        }]
+      }
+    })
+
+    const expected = require(path.resolve(expectedDir, 'people-with-view-structure.json'))
     expect(dbStructure).to.containSubset(expected)
   })
 })
