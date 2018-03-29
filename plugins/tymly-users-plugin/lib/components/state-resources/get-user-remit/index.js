@@ -15,8 +15,8 @@ class GetUserRemit {
     callback(null)
   }
 
-  run (event, context) {
-    // const userId = context.userId
+  async run (event, context) {
+    const userId = context.userId
     this.clientManifest = event.clientManifest
     const settings = {categoryRelevance: event.userSettings.categoryRelevance}
     let favourites = []
@@ -30,9 +30,17 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todos']),
       this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teams'])
     ]
+
+    const todos = await this.todos.find({where: {userId: {equals: userId}}})
+    if (todos.length > 0) {
+      const formattedTodos = {}
+      todos.map(t => {
+        formattedTodos[t.id] = t
+      })
+      promises.push(this.processComponents(userRemit, 'todos', formattedTodos, this.clientManifest['todos']))
+    }
 
     if (this.categories) {
       promises.push(this.processComponents(userRemit, 'categories', this.categories.categories, this.clientManifest['categoryNames']))
