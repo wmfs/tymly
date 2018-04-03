@@ -45,6 +45,9 @@
             <Person>
                 <Name>Ned Flanders</Name>
                 <Age>60</Age>
+                <Siblings>
+                    <Sister>Nediana</Sister>
+                </Siblings>
             </Person>
         </People>
     </Episode>

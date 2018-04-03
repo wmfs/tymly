@@ -50,7 +50,9 @@ describe('xmlFlatten2csv', () => {
         ['$.Title', 'title', 'string'],
         ['@.Name', 'name', 'string'],
         [{test: '@.Age<=16', value: 'yes'}, 'child', 'string'],
-        [{test: '@.Age>16', select: '@.Age'}, 'age', 'integer']
+        [{test: '@.Age>16', select: '@.Age'}, 'age', 'integer'],
+        ['@.Siblings[?(@.Sister === "Nediana")].Sister', 'okely-dokely', 'string'],
+        ['@.Siblings[?(@.Brother === "Bart")].Brother', 'eat-my-shorts', 'string']
       ]
     })
 

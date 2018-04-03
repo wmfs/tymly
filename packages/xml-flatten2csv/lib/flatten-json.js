@@ -43,8 +43,27 @@ function jsonQueryOp (path) {
 } // jsonQuery
 
 function evalJsonQuery (json, path) {
-  return jp.query(json, path)
+  const result = jp.query(json, path)
+  if (result.length === 0 && hasSubSelect(path))
+    return evalJsonQueryWithSubSelect(json, path)
+  return result
 } // evalJsonQuery
+
+function evalJsonQueryWithSubSelect (json, path) {
+  const pathToElements = path.substr(0, path.indexOf('[?'))
+  const elements = jp.query(json, pathToElements)
+  if (elements.length !== 1)
+    return [] // we already had the right result
+  const original = jp.value(json, pathToElements, elements)
+  const result = jp.query(json, path)
+  jp.value(json, pathToElements, original)
+  return result
+} // evalJsonQueryWithSubSelect
+
+function hasSubSelect (path) {
+  return (path.indexOf('[?') !== -1) &&
+    (path.indexOf('$.wrap') === -1)
+} // hasSubSelect
 
 const identityFn = v => v
 
