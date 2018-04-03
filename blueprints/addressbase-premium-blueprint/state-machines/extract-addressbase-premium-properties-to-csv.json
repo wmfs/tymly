@@ -24,7 +24,7 @@
           ["$.changeType", "changeType", "string"],
           ["$.blpuState", "state", "number"],
           ["$.blpuStateDate", "state_date", "date"],
-          ["$..classificationCode", "class", "string"],
+          ["$.classificationMember[?(@.Classification.classScheme=='AddressBase Premium Classification Scheme')]..classificationCode", "class", "string"],
           ["$.parentUPRN", "parent_uprn", "number"],
           [{"select": "$.position.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "x", "number"],
           [{"select": "$.position.Point.pos", "transform":"ordnanceSurvey_yCoord"}, "y", "number"],
@@ -88,8 +88,8 @@
           ["$.applicationCrossReferenceMember[?(@.ApplicationCrossReference.source=='7666OP')]..crossReference", "parish_code", "string", "comment - 7666OP = ONS Parish Code."],
           ["$..DeliveryPointAddress.entryDate", "rm_start_date", "date"],
           ["$.multiOccCount", "multi_occ_count", "number"],
-          ["$.todo", "voa_ndrp_desc_code", "string"],
-          ["$.todo", "voa_ndr_scat_code", "string"],
+          ["$.classificationMember[?(@.Classification.classScheme=='VOA Primary Description')]..classificationCode", "voa_ndrp_desc_code", "string"],
+          ["$.classificationMember[?(@.Classification.classScheme=='VOA Special Category')]..classificationCode", "voa_ndr_scat_code", "string"],
           ["$.todo", "alt_language", "string"]
         ],
         "namespace": "strip"

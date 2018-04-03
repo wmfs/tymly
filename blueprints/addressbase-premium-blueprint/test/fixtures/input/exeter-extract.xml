@@ -938,6 +938,53 @@
       </abpr:streetDescriptiveIdentifierMember>
     </abpr:Street>
   </abpr:streetMember>
+  <abpr:streetMember>
+    <abpr:Street gml:id="uk.addressbase.usrn.14200910">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>1995-06-20</abpr:entryDate>
+      <abpr:usrn>14200910</abpr:usrn>
+      <abpr:recordType>1</abpr:recordType>
+      <abpr:swaOrgRefNaming>1110</abpr:swaOrgRefNaming>
+      <abpr:state>2</abpr:state>
+      <abpr:stateDate>1990-01-01</abpr:stateDate>
+      <abpr:streetSurface>1</abpr:streetSurface>
+      <abpr:streetClassification>8</abpr:streetClassification>
+      <abpr:version>0</abpr:version>
+      <abpr:streetStart>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700" gml:id="uk.addressbase.usrn.start.14200910">
+          <gml:pos>291693.00 092294.00</gml:pos>
+        </gml:Point>
+      </abpr:streetStart>
+      <abpr:streetStartLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258" gml:id="uk.addressbase.usrn.start.l.14200910">
+          <gml:pos>50.7201361 -3.5356626</gml:pos>
+        </gml:Point>
+      </abpr:streetStartLatLong>
+      <abpr:streetEnd >
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700" gml:id="uk.addressbase.usrn.end.l.14200910">
+          <gml:pos>291803.00 092229.00</gml:pos>
+        </gml:Point>
+      </abpr:streetEnd>
+      <abpr:streetEndLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258" gml:id="uk.addressbase.usrn.end.14200910">
+          <gml:pos>50.7195722 -3.5340858</gml:pos>
+        </gml:Point>
+      </abpr:streetEndLatLong>
+      <abpr:streetTolerance>10</abpr:streetTolerance>
+      <abpr:streetDescriptiveIdentifierMember>
+        <abpr:StreetDescriptiveIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>1995-06-20</abpr:entryDate>
+          <abpr:streetDescription xml:lang="en">WEST STREET</abpr:streetDescription>
+          <abpr:townName xml:lang="en">EXETER</abpr:townName>
+          <abpr:administrativeArea xml:lang="en">DEVON</abpr:administrativeArea>
+        </abpr:StreetDescriptiveIdentifier>
+      </abpr:streetDescriptiveIdentifierMember>
+    </abpr:Street>
+  </abpr:streetMember>
 
   <abpr:basicLandPropertyUnitMember>
     <abpr:BasicLandPropertyUnit gml:id="uk.addressbase.uprn.100040239485">
@@ -3398,4 +3445,145 @@
     </abpr:BasicLandPropertyUnit>
   </abpr:basicLandPropertyUnitMember>
 
+  <abpr:basicLandPropertyUnitMember>
+    <abpr:BasicLandPropertyUnit gml:id="uk.addressbase.uprn.100040240015">
+      <abpr:changeType>I</abpr:changeType>
+      <abpr:startDate>2007-10-24</abpr:startDate>
+      <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+      <abpr:entryDate>2001-04-04</abpr:entryDate>
+      <abpr:uprn>100040240015</abpr:uprn>
+      <abpr:logicalStatus>1</abpr:logicalStatus>
+      <abpr:position>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::27700" gml:id="uk.addressbase.uprn.p.100040240015">
+          <gml:pos>291716.00 092270.00</gml:pos>
+        </gml:Point>
+      </abpr:position>
+      <abpr:positionLatLong>
+        <gml:Point srsName="urn:ogc:def:crs:EPSG::4258" gml:id="uk.addressbase.uprn.pl.100040240015">
+          <gml:pos>50.7199246 -3.5353298</gml:pos>
+        </gml:Point>
+      </abpr:positionLatLong>
+      <abpr:rpc>1</abpr:rpc>
+      <abpr:localCustodianCode>1110</abpr:localCustodianCode>
+      <abpr:country>E</abpr:country>
+      <abpr:addressbasePostal>D</abpr:addressbasePostal>
+      <abpr:postcodeLocator>EX1 1BA</abpr:postcodeLocator>
+      <abpr:multiOccCount>2</abpr:multiOccCount>
+      <abpr:deliveryPointAddressMember>
+        <abpr:DeliveryPointAddress>
+          <abpr:startDate>2012-04-23</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2012-03-19</abpr:entryDate>
+          <abpr:udprn>8742128</abpr:udprn>
+          <abpr:organisationName xml:lang="en">CREATIVE CUTS</abpr:organisationName>
+          <abpr:buildingNumber>18</abpr:buildingNumber>
+          <abpr:thoroughfare xml:lang="en">WEST STREET</abpr:thoroughfare>
+          <abpr:postTown xml:lang="en">EXETER</abpr:postTown>
+          <abpr:postcode>EX1 1BA</abpr:postcode>
+          <abpr:postcodeType>S</abpr:postcodeType>
+          <abpr:deliveryPointSuffix>1E</abpr:deliveryPointSuffix>
+          <abpr:processDate>2016-01-18</abpr:processDate>
+        </abpr:DeliveryPointAddress>
+      </abpr:deliveryPointAddressMember>
+      <abpr:landPropertyIdentifierMember>
+        <abpr:LandPropertyIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2005-06-26</abpr:entryDate>
+          <abpr:lpiKey>1110L000124653</abpr:lpiKey>
+          <abpr:logicalStatus>1</abpr:logicalStatus>
+          <abpr:paoStartNumber>18</abpr:paoStartNumber>
+          <abpr:usrn>14200910</abpr:usrn>
+          <abpr:usrnMatchIndicator>1</abpr:usrnMatchIndicator>
+          <abpr:officialFlag>N</abpr:officialFlag>
+        </abpr:LandPropertyIdentifier>
+      </abpr:landPropertyIdentifierMember>
+      <abpr:applicationCrossReferenceMember>
+        <abpr:ApplicationCrossReference>
+          <abpr:startDate>2016-02-07</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2009-11-28</abpr:entryDate>
+          <abpr:xRefKey>1110X600039440</abpr:xRefKey>
+          <abpr:crossReference>osgb4000000025458614</abpr:crossReference>
+          <abpr:version>2</abpr:version>
+          <abpr:source>7666MI</abpr:source>
+        </abpr:ApplicationCrossReference>
+      </abpr:applicationCrossReferenceMember>
+      <abpr:applicationCrossReferenceMember>
+        <abpr:ApplicationCrossReference>
+          <abpr:startDate>2016-02-07</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2007-01-01</abpr:entryDate>
+          <abpr:xRefKey>1110X900039440</abpr:xRefKey>
+          <abpr:crossReference>osgb1000002274453987</abpr:crossReference>
+          <abpr:version>15</abpr:version>
+          <abpr:source>7666MA</abpr:source>
+        </abpr:ApplicationCrossReference>
+      </abpr:applicationCrossReferenceMember>
+      <abpr:applicationCrossReferenceMember>
+        <abpr:ApplicationCrossReference>
+          <abpr:startDate>2016-02-07</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-07</abpr:lastUpdateDate>
+          <abpr:entryDate>2016-02-07</abpr:entryDate>
+          <abpr:xRefKey>1110X122241666</abpr:xRefKey>
+          <abpr:crossReference>E05003502</abpr:crossReference>
+          <abpr:source>7666OW</abpr:source>
+        </abpr:ApplicationCrossReference>
+      </abpr:applicationCrossReferenceMember>
+      <abpr:applicationCrossReferenceMember>
+        <abpr:ApplicationCrossReference>
+          <abpr:startDate>2016-02-07</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2008-02-01</abpr:entryDate>
+          <abpr:xRefKey>1110X700039440</abpr:xRefKey>
+          <abpr:crossReference>osgb1000012291723</abpr:crossReference>
+          <abpr:version>5</abpr:version>
+          <abpr:source>7666MT</abpr:source>
+        </abpr:ApplicationCrossReference>
+      </abpr:applicationCrossReferenceMember>
+      <abpr:applicationCrossReferenceMember>
+        <abpr:ApplicationCrossReference>
+          <abpr:startDate>2012-06-12</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2012-12-13</abpr:entryDate>
+          <abpr:xRefKey>1110X014136116</abpr:xRefKey>
+          <abpr:crossReference>39428182</abpr:crossReference>
+          <abpr:source>7666VN</abpr:source>
+        </abpr:ApplicationCrossReference>
+      </abpr:applicationCrossReferenceMember>
+      <abpr:classificationMember>
+        <abpr:Classification>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2001-04-04</abpr:entryDate>
+          <abpr:classKey>1110C000039440</abpr:classKey>
+          <abpr:classificationCode>CI</abpr:classificationCode>
+          <abpr:classScheme>AddressBase Premium Classification Scheme</abpr:classScheme>
+          <abpr:schemeVersion>1.0</abpr:schemeVersion>
+        </abpr:Classification>
+      </abpr:classificationMember>
+      <abpr:classificationMember>
+        <abpr:Classification>
+          <abpr:startDate>2012-06-12</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2012-12-13</abpr:entryDate>
+          <abpr:classKey>1110C800034025</abpr:classKey>
+          <abpr:classificationCode>417</abpr:classificationCode>
+          <abpr:classScheme>VOA Special Category</abpr:classScheme>
+          <abpr:schemeVersion>1.0</abpr:schemeVersion>
+        </abpr:Classification>
+      </abpr:classificationMember>
+      <abpr:classificationMember>
+        <abpr:Classification>
+          <abpr:startDate>2012-06-12</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-06</abpr:lastUpdateDate>
+          <abpr:entryDate>2012-12-13</abpr:entryDate>
+          <abpr:classKey>1110C803021426</abpr:classKey>
+          <abpr:classificationCode>CS3</abpr:classificationCode>
+          <abpr:classScheme>VOA Primary Description</abpr:classScheme>
+          <abpr:schemeVersion>1.0</abpr:schemeVersion>
+        </abpr:Classification>
+      </abpr:classificationMember>
+    </abpr:BasicLandPropertyUnit>
+  </abpr:basicLandPropertyUnitMember>
 </abpr:AddressBaseSupplySet>
