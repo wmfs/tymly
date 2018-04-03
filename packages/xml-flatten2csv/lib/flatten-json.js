@@ -44,19 +44,22 @@ function jsonQueryOp (path) {
 
 function evalJsonQuery (json, path) {
   const result = jp.query(json, path)
-  if (result.length === 0 && hasSubSelect(path))
-    return evalJsonQueryWithSubSelect(json, path)
+  if (result.length === 0 && hasSubSelect(path)) { return evalJsonQueryWithSubSelect(json, path) }
   return result
 } // evalJsonQuery
 
 function evalJsonQueryWithSubSelect (json, path) {
+  // flatten converts Arrays of length 1 into objects
+  // however, jsonpath subselects using [?(...)] only work on
+  // arrays
+  // So, fidget the object back into an array if need be,
+  // rerun the query, then revert
   const pathToElements = path.substr(0, path.indexOf('[?'))
   const elements = jp.query(json, pathToElements)
-  if (elements.length !== 1)
-    return [] // we already had the right result
+  if (elements.length !== 1) { return [] } // we already had the right result
   const original = jp.value(json, pathToElements, elements)
   const result = jp.query(json, path)
-  jp.value(json, pathToElements, original)
+  jp.value(json, pathToElements, original[0])
   return result
 } // evalJsonQueryWithSubSelect
 
