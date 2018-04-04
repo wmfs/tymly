@@ -14,7 +14,10 @@ module.exports = function generateDelta (options, callback) {
     Object.keys(options.csvExtracts),
     (model, cb) => {
       const modified = options.modifiedColumnName || '_modified'
-      const sql = `select * from ${options.namespace}.${model} where ${modified} >= $1`
+
+      const table = tableName(options.namespace, model)
+
+      const sql = `select * from ${table} where ${modified} >= $1`
       const csvTransform = (sql, values, client) => {
         const dbStream = client.query(new QueryStream(sql, values))
         dbStream.on('end', () => cb(null))
@@ -34,3 +37,9 @@ module.exports = function generateDelta (options, callback) {
     }
   )
 }
+
+function tableName (namespace, model) {
+  const separator = model.indexOf('.')
+
+  return (separator === -1) ? `${namespace}.${model}` : model
+} // tableName
