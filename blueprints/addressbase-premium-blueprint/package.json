@@ -17,7 +17,8 @@
   "dependencies": {
     "jsonpath": "1.0.0",
     "sax": "1.2.4",
-    "tymly": "^0.0.17"
+    "tymly": "^0.0.17",
+    "tymly-etl-plugin": "0.0.8"
   },
   "devDependencies": {
     "chai": "4.1.2",
