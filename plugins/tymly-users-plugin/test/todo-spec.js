@@ -178,10 +178,10 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getTodoChanges')
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges).length).to.eql(2)
-        expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)
+        expect(Object.keys(executionDescription.ctx.todoChanges.add).length).to.eql(2)
+        expect(Object.keys(executionDescription.ctx.todoChanges.add)
           .includes('5200987c-bb03-11e7-abc4-cec278b6b50a')).to.eql(true)
-        expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)
+        expect(Object.keys(executionDescription.ctx.todoChanges.add)
           .includes('0d625558-ce99-11e7-b7e3-c38932399c15')).to.eql(true)
         expect(executionDescription.ctx.todoChanges.remove).to.eql([])
         done()
@@ -211,17 +211,17 @@ describe('todo changes tymly-users-plugin tests', function () {
         expect(executionDescription.currentResource).to.eql('module:getTodoChanges')
         expect(executionDescription.stateMachineName).to.eql(GET_TODO_CHANGES_STATE_MACHINE)
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(Object.keys(executionDescription.ctx.todoChanges.add.todoChanges)).to.eql([
+        expect(Object.keys(executionDescription.ctx.todoChanges.add)).to.eql([
           '0d625558-ce99-11e7-b7e3-c38932399c15'
         ])
-        expect(executionDescription.ctx.todoChanges.remove.todoChanges.length).to.eql(4)
-        expect(executionDescription.ctx.todoChanges.remove.todoChanges
+        expect(executionDescription.ctx.todoChanges.remove.length).to.eql(4)
+        expect(executionDescription.ctx.todoChanges.remove
           .includes('52009d36-bb03-11e7-abc4-cec278b6b50a')).to.eql(true)
-        expect(executionDescription.ctx.todoChanges.remove.todoChanges
+        expect(executionDescription.ctx.todoChanges.remove
           .includes('52009e4e-bb03-11e7-abc4-cec278b6b50a')).to.eql(true)
-        expect(executionDescription.ctx.todoChanges.remove.todoChanges
+        expect(executionDescription.ctx.todoChanges.remove
           .includes('52009f20-bb03-11e7-abc4-cec278b6b50a')).to.eql(true)
-        expect(executionDescription.ctx.todoChanges.remove.todoChanges
+        expect(executionDescription.ctx.todoChanges.remove
           .includes('52009ff2-bb03-11e7-abc4-cec278b6b50a')).to.eql(true)
         done()
       }

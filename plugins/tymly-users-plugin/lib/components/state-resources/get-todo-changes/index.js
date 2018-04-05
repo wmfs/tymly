@@ -18,24 +18,23 @@ class GetTodoChanges {
           remove: []
         }
         results.map(r => { resultsObj[r['id']] = r })
-        this.processComponents(todoChanges, 'todoChanges', resultsObj, clientTodos)
+        this.processComponents(todoChanges, resultsObj, clientTodos)
         context.sendTaskSuccess({todoChanges})
       })
       .catch(err => context.sendTaskFailure({error: 'getTodoChangesFail', cause: err}))
   }
 
-  processComponents (userRemit, componentType, components, alreadyInClientManifest) {
-    userRemit.add[componentType] = {}
-
-    Object.keys(components).forEach(componentName => {
-      if (alreadyInClientManifest.indexOf(componentName) === -1) {
-        userRemit.add[componentType][componentName] = components[componentName]
+  processComponents (userRemit, components, alreadyInClientManifest) {
+    console.log(alreadyInClientManifest)
+    Object.keys(components).forEach(componentId => {
+      if (!alreadyInClientManifest.includes(componentId)) {
+        userRemit.add[componentId] = components[componentId]
       }
     })
 
     const namesToRemove = _.difference(alreadyInClientManifest, Object.keys(components))
     if (namesToRemove.length > 0) {
-      userRemit.remove[componentType] = namesToRemove
+      userRemit.remove = namesToRemove
     }
 
     return userRemit
