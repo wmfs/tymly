@@ -1,4 +1,4 @@
-'use strict'
+
 const _ = require('lodash')
 module.exports = function (csvParts) {
   let quoted = []

@@ -1,5 +1,3 @@
-'use strict'
-
 const Transform = require('stream').Transform
 const _ = require('lodash')
 const csvEncoder = require('./simple-csv-encoder')
