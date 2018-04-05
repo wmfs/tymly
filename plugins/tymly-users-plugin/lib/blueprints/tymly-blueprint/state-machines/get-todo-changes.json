@@ -15,13 +15,6 @@
       "Resource": "module:getFavouriteStartableNames",
       "InputPath": "$",
       "ResultPath" : "$.favourites",
-      "Next": "GetUserRemit"
-    },
-    "GetUserRemit": {
-      "Type": "Task",
-      "Resource": "module:getUserRemit",
-      "InputPath": "$",
-      "ResultPath": "$.userRemit",
       "Next": "GetTodoChanges"
     },
     "GetTodoChanges": {

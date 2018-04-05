@@ -165,14 +165,6 @@ describe('todo changes tymly-users-plugin tests', function () {
   it('should start the state machine to get todo changes with no client to do\'s', function (done) {
     statebox.startExecution(
       {
-        clientManifest: {
-          boardNames: [],
-          categoryNames: [],
-          teams: [],
-          todos: [],
-          formNames: [],
-          startable: []
-        }, // for getUserRemit
         clientTodos: [] // for getTodos
       },
       GET_TODO_CHANGES_STATE_MACHINE,
@@ -200,14 +192,6 @@ describe('todo changes tymly-users-plugin tests', function () {
   it('should start the state machine to get todo changes', function (done) {
     statebox.startExecution(
       {
-        clientManifest: {
-          boardNames: [],
-          categoryNames: [],
-          teams: [],
-          todos: [],
-          formNames: [],
-          startable: []
-        }, // for getUserRemit
         clientTodos: [
           '5200987c-bb03-11e7-abc4-cec278b6b50a',
           '52009d36-bb03-11e7-abc4-cec278b6b50a',
