@@ -25,7 +25,6 @@ class GetTodoChanges {
   }
 
   processComponents (userRemit, components, alreadyInClientManifest) {
-    console.log(alreadyInClientManifest)
     Object.keys(components).forEach(componentId => {
       if (!alreadyInClientManifest.includes(componentId)) {
         userRemit.add[componentId] = components[componentId]
