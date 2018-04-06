@@ -7,7 +7,6 @@ const getFunction = require('tymly/lib/getFunction.js')
 
 class SynchronizingTable {
   init (resourceConfig, env, callback) {
-    console.log('Init Synchronizing table')
     this.client = env.bootedServices.storage.client
     this.source = resourceConfig.source
     this.target = resourceConfig.target
@@ -20,7 +19,6 @@ class SynchronizingTable {
   }
 
   run (event, context) {
-    console.log('Enter Synchronizing table')
     startTelepods(
       {
         client: this.client,
