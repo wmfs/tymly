@@ -8,12 +8,14 @@ class WatchBoard {
 
   run (event, context) {
     let feedName = [event.stateMachineName]
-    if (event.key) Object.keys(event.key).sort().map(k => feedName.push(event.key[k]))
+    if (event.boardKeys) Object.keys(event.boardKeys).sort().map(k => feedName.push(event.boardKeys[k]))
     feedName = feedName.join('|')
 
     const launches = [{
       stateMachineName: event.stateMachineName,
-      input: event.key
+      input: {
+        boardKeys: event.boardKeys
+      }
     }]
 
     const startedWatching = new Date().toLocaleString()

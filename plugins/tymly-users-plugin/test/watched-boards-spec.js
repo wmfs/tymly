@@ -50,7 +50,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         category: 'incidents',
         categoryLabel: 'Incident Summary',
         description: 'Fire with 0 casualties and 0 fatalities',
-        key: {
+        boardKeys: {
           'incidentNumber': 1,
           'incidentYear': 1999
         }
@@ -106,7 +106,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         category: 'incidents',
         categoryLabel: 'Incident Summary',
         description: 'Fire with 0 casualties and 0 fatalities',
-        key: {
+        boardKeys: {
           'incidentNumber': 12,
           'incidentYear': 2015
         }
@@ -139,7 +139,7 @@ describe('watched-boards tymly-users-plugin tests', function () {
         category: 'gazetteer',
         categoryLabel: 'Property Viewer',
         description: 'Tymly Kebabs, Streetly, B74 3RU',
-        key: {
+        boardKeys: {
           'urn': 4
         }
       },

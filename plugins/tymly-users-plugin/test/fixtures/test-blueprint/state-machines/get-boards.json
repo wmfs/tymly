@@ -9,7 +9,7 @@
       "Resource": "module:awaitingHumanInput",
       "ResourceConfig": {
         "uiType": "board",
-        "uiName": "wmfs_incidentSummary_1_0",
+        "uiName": "wmfs_incidentSummary",
         "dataPath": "$"
       },
       "InputPath": "$",

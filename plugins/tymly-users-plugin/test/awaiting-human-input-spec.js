@@ -91,10 +91,10 @@ describe('awaitingUserInput state tests', function () {
   it('should watch a board for this user', function (done) {
     statebox.startExecution(
       {
-        stateMachineName: 'wmfs_incidentSummary_1_0',
+        stateMachineName: 'test_getBoards_1_0',
         title: 'Incident 1/1999',
         description: 'Fire with 0 casualties and 0 fatalities',
-        key: {
+        boardKeys: {
           'incidentNumber': 1,
           'incidentYear': 1999
         }
@@ -106,7 +106,7 @@ describe('awaitingUserInput state tests', function () {
       },
       (err, executionDescription) => {
         expect(err).to.eql(null)
-        expect(executionDescription.ctx.feedName).to.eql('wmfs_incidentSummary_1_0|1|1999')
+        expect(executionDescription.ctx.feedName).to.eql('test_getBoards_1_0|1|1999')
         done(err)
       }
     )
@@ -130,7 +130,7 @@ describe('awaitingUserInput state tests', function () {
         expect(Object.keys(executionDescription.ctx.requiredHumanInput)
           .includes('watchBoardSubscriptionId'))
         expect(executionDescription.ctx.requiredHumanInput.feedName)
-          .to.eql('wmfs_incidentSummary_1_0|1|1999')
+          .to.eql('test_getBoards_1_0|1|1999')
         done(err)
       }
     )
