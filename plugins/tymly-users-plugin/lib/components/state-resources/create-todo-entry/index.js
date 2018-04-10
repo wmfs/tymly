@@ -17,7 +17,7 @@ class CreateTodoEntry {
     }
 
     const todoTitle = [event.todoTitle]
-    if (event.key) Object.keys(event.key).sort().map(k => todoTitle.push(event.key[k]))
+    if (event.boardKeys) Object.keys(event.boardKeys).sort().map(k => todoTitle.push(event.boardKeys[k]))
     upsert.todoTitle = todoTitle.join('|')
 
     if (event.id) upsert.id = event.id
