@@ -72,11 +72,11 @@
                   "columnIndex": 8
                 },
                 {
-                  "name": "longitude",
+                  "name": "latitude",
                   "columnIndex": 9
                 },
                 {
-                  "name": "latitude",
+                  "name": "longitude",
                   "columnIndex": 10
                 },
                 {
