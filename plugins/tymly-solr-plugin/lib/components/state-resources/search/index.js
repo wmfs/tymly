@@ -106,7 +106,10 @@ class Search {
     }
 
     this.constructSearchResults(searchResults, filters, matchingDocs)
-    return context.sendTaskSuccess({searchResults})
+    this.updateSearchHistory(searchResults.results, context.userId, err => {
+      if (err) return context.sendTaskFailure({error: 'searchFail', cause: err})
+      else return context.sendTaskSucess({searchResults})
+    })
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
