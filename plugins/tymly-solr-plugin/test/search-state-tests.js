@@ -104,6 +104,9 @@ describe('tymly-solr-plugin search state resource tests', function () {
         expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.searchResults.totalHits).to.eql(19)
+        expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('RUBEUS HAGRID')
+        expect(executionDescription.ctx.searchResults.results[1].character_name).to.eql('SEVERUS SNAPE')
+        expect(executionDescription.ctx.searchResults.results[2].character_name).to.eql('GEORGE WEASLEY')
         done()
       }
     )

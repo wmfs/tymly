@@ -67,7 +67,8 @@ class Search {
   } // run
 
   runSolrSearch (event, context, filters, userRoles) {
-    const searchTerm = event.query ? `(${event.query.trim().replace(/ /g, '%20')})` : ''
+    const searchTerm = event.query ? `(${event.query.trim().split(' ').join(' AND ').replace(/ /g, '%20')})` : ''
+
     const filterQuery = []
     this.searchFields.forEach(s => {
       if (s !== 'modified' && s !== 'created' && s !== 'event_timestamp' && s !== 'point' && s !== 'active_event') filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
