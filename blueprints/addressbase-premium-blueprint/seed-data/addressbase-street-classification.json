@@ -7,7 +7,7 @@
     ["4", "Pedestrian way or footpath"],
     ["6", "Cycletrack or cycleway"],
     ["8", "All vehicles"],
-    ["9", "Restrcited byway"],
+    ["9", "Restricted byway"],
     ["10", "Bridleway"]
   ]
 }
