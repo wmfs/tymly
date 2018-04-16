@@ -17,7 +17,7 @@
     "pg-model": "^0.0.10",
     "pg-telepods": "^0.0.7",
     "relationize": "^0.0.20",
-    "supercopy": "^0.0.7",
+    "supercopy": "^0.0.6",
     "tymly": "^0.0.17"
   },
   "devDependencies": {
