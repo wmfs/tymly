@@ -12,9 +12,9 @@ module.exports = class SetContextData {
   }
 
   async run (event, context) {
-    this.email = this.auth0Service ? await new Promise((resolve, reject) => this.auth0Service.getEmailFromUserId(context.userId, (err, roles) => {
+    this.email = this.auth0Service ? await new Promise((resolve, reject) => this.auth0Service.getEmailFromUserId(context.userId, (err, email) => {
       if (err) reject(err)
-      else resolve(roles)
+      else resolve(email)
     })) : ''
 
     const FORM_DATA_STRING_LENGTH = 8
