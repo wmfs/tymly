@@ -26,7 +26,7 @@ module.exports = class Upserting {
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
 
     this.model.upsert(docToPersist, {setMissingPropertiesToNull: this.setMissingPropertiesToNull})
-      .then(() => context.sendTaskSuccess())
+      .then(docId => context.sendTaskSuccess(docId))
       .catch(err => failed(context, 'FAILED_TO_UPSERT', JSON.stringify(err)))
   } // run
 }
