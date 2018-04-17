@@ -23,7 +23,7 @@ class CreateTodoEntry {
     if (event.id) upsert.id = event.id
 
     this.todos.upsert(upsert, {})
-      .then(() => context.sendTaskSuccess())
+      .then(doc => context.sendTaskSuccess(doc))
       .catch(err => context.sendTaskFailure(err))
   }
 }

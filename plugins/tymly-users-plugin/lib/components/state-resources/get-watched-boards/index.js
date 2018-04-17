@@ -14,12 +14,12 @@ class GetWatchedBoards {
         }
 
         const categories = new Set()
-        results.map(r => categories.add(r.category))
+        results.forEach(r => categories.add(r.category))
         categories.forEach(c => {
           ctx.watchCategories[c] = {}
         })
 
-        results.map(r => {
+        results.forEach(r => {
           if (!Object.keys(ctx.watchCategories[r.category]).includes(r.categoryLabel)) {
             ctx.watchCategories[r.category][r.categoryLabel] = {
               total: 0,
