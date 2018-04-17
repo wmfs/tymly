@@ -21,10 +21,10 @@
           ["$.changeType", "changeType", "string"],
           ["$.state", "state", "number"],
           ["$.stateDate", "state_date", "date"],
-          ["@.streetDescription", "description", "string"],
-          ["@.locality", "locality","string"],
-          ["@.townName", "town_name", "string"],
-          ["@.administrativeArea", "administrative_area","string"],
+          ["@.streetDescription.en", "description", "string"],
+          ["@.locality.en", "locality","string"],
+          ["@.townName.en", "town_name", "string"],
+          ["@.administrativeArea.en", "administrative_area","string"],
           ["$.streetSurface", "surface", "number"],
           ["$.streetClassification", "classification", "number"],
           [{"select": "$.streetStart.Point.pos", "transform":"ordnanceSurvey_xCoord"}, "start_x", "number"],
@@ -40,7 +40,8 @@
           ["$.entryDate", "entry_date", "date"]
 
         ],
-        "namespace": "strip"
+        "namespace": "strip",
+        "xmllang": "wrap"
       },
       "End": true
     }
