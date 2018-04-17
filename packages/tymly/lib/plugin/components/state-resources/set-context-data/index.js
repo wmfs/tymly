@@ -11,7 +11,12 @@ module.exports = class SetContextData {
     callback(null)
   }
 
-  run (event, context) {
+  async run (event, context) {
+    this.email = this.auth0Service ? await new Promise((resolve, reject) => this.auth0Service.getEmailFromUserId(context.userId, (err, roles) => {
+      if (err) reject(err)
+      else resolve(roles)
+    })) : ''
+
     const FORM_DATA_STRING_LENGTH = 8
     const config = {}
     const data = {}
@@ -35,35 +40,36 @@ module.exports = class SetContextData {
         }
       }
 
-      if (_.isString(this.resourceConfig[key]) && this.resourceConfig[key].substring(0, 2) === '$.') {
-        config[key] = jp.value(event, this.resourceConfig[key])
-      } else if (this.resourceConfig[key] === '$NOW') {
-        config[key] = new Date().toISOString()
-      } else if (this.resourceConfig[key] === '$USERID') {
-        config[key] = context.userId
-      } else if (this.resourceConfig[key] === '$EMAIL') {
-        if (this.auth0Service) {
-          return new Promise((resolve, reject) => {
-            this.auth0Service.getEmailFromUserId(context.userId, (err, email) => {
-              if (err) {
-                config[key] = ''
-              } else {
-                config[key] = email
-              }
-              dottie.set(data, theKey, config[key])
-              resolve()
-            })
-          })
-        } else {
-          config[key] = ''
-        }
-      } else {
-        config[key] = this.resourceConfig[key]
-      }
+      config[key] = this.getValue(event, context, key, this.resourceConfig[key])
       dottie.set(data, theKey, config[key])
     })
 
     Promise.all(setters)
       .then(() => context.sendTaskSuccess(data))
+  }
+
+  getValue (event, context, key, config, val) {
+    let value = val || config
+
+    if (_.isString(config) && config.substring(0, 2) === '$.') {
+      value = jp.value(event, config)
+    } else if (config === '$NOW') {
+      value = new Date().toISOString()
+    } else if (config === '$USERID') {
+      value = context.userId
+    } else if (config === '$EMAIL') {
+      value = this.email
+    } else if (_.isArray(config)) {
+      value = config.map(c => {
+        return this.getValue(event, context, key, c, value)
+      })
+    } else if (_.isPlainObject(config)) {
+      value = {}
+      Object.keys(config).forEach(c => {
+        value[c] = this.getValue(event, context, key, config[c])
+      })
+    }
+
+    return value
   }
 }
