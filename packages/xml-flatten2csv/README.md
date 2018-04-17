@@ -119,7 +119,7 @@ The additional options are a set of key-value pairs -
 | Option                | Notes  |
 | ------                | -----  |
 | `namespace`           | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else
-| `xmllang`             | If set to 'wrap', when an element has an xml:lang attribute, create an intermediate wrapper element of named for the attribute value.  Eg `<description xml:lang='en'>Sunny</description>` would effectively become `<en><description>Sunny</description></en>`, and can be addressed as `$.en.description` in the header map.
+| `xmllang`             | If set to 'wrap', when an element has an xml:lang attribute, create an intermediate wrapper element of named for the attribute value.  Eg `<description xml:lang='en'>Sunny</description>` would effectively become `<description><en>Sunny</en></description>`, and can be addressed as `$.description.en` in the header map.
 
 ## <a name="test"></a>Testing
 

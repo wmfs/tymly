@@ -46,6 +46,43 @@ const linearWithWrapperXmlSource = `<items>
 <price>500</price>
 </items>`
 
+const langTaggedXmlSource = `<items>
+<item><title xml:lang="en">A painting</title><title xml:lang="fr">Une peinture</title><description xml:lang="en">Picasso!</description></item>
+<item><title xml:lang="en">Some lovely fruit</title><description xml:lang="en">Pomelo</description></item>
+<item><title xml:lang="en">A pair of trousers</title><description xml:lang="en">Old man corduroys</description></item>
+<price>500</price>
+</items>`
+
+const sourceMapping = [
+  '@.title',
+  '$.missing',
+  '@.description',
+  '$.price'
+]
+
+const conditionalSourceMapping = [
+  '@.title',
+  '$.missing',
+  '@.description',
+  {test: '@.description=="Pomelo"', value: 'LOVE IT'},
+  '$.price'
+]
+
+const langSourceMapping = [
+  '@.title..en',
+  '$.missing',
+  '@.description..en',
+  '$.price'
+]
+
+const conditionalLangSourceMapping = [
+  '@.title..en',
+  '$.missing',
+  '@.description..en',
+  {test: '@.description.en=="Pomelo"', value: 'LOVE IT'},
+  '$.price'
+]
+
 function stream (text) {
   const s = new Readable()
   s.push(text)
@@ -54,10 +91,11 @@ function stream (text) {
 } // stream
 
 describe('xml-transform-to-csv', () => {
-  for (const [title, source] of [
-    ['linear', linearXmlSource],
-    ['stepped', steppedXmlSource],
-    ['linear with wrapper', linearWithWrapperXmlSource]
+  for (const [title, source, mapping, conditionalMapping] of [
+    ['linear', linearXmlSource, sourceMapping, conditionalSourceMapping],
+    ['stepped', steppedXmlSource, sourceMapping, conditionalSourceMapping],
+    ['linear with wrapper', linearWithWrapperXmlSource, sourceMapping, conditionalSourceMapping],
+    ['xml:lang tagged', langTaggedXmlSource, langSourceMapping, conditionalLangSourceMapping]
   ]) {
     describe(title, () => {
       it('flatten xml', async () => {
@@ -67,12 +105,8 @@ describe('xml-transform-to-csv', () => {
           stream(source),
           'items',
           '$..item',
-          [
-            '@.title',
-            '$.missing',
-            '@.description',
-            '$.price'
-          ]
+          mapping,
+          { xmllang: 'wrap' }
         ).each(fields => results.push(fields.join()))
 
         expect(results).to.eql([
@@ -123,13 +157,8 @@ describe('xml-transform-to-csv', () => {
           stream(source),
           'items',
           '$..item',
-          [
-            '@.title',
-            '$.missing',
-            '@.description',
-            {test: '@.description=="Pomelo"', value: 'LOVE IT'},
-            '$.price'
-          ]
+          conditionalMapping,
+          { xmllang: 'wrap' }
         ).each(fields => results.push(fields.join()))
 
         expect(results).to.eql([

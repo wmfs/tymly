@@ -29,18 +29,15 @@ class SubTreeCapture {
     if (this.capturing || this.shouldCapture(name)) {
       this.pushTree()
     }
+    this.lang = null
   } // startElement
 
   attribute (name, value) {
-    if (!this.capturing) {
-      return
-    }
     if (name !== 'xml:lang') {
       return
     }
 
-    this.pushTree()
-    this.tree[LANG] = value
+    this.lang = value
   }
 
   endElement (nsname) {
@@ -79,19 +76,26 @@ class SubTreeCapture {
   } // capturing
 
   get isLastTree () {
-    return this.subTrees.length === 1
+    return (this.subTrees.length === 1) ||
+      (this.subTrees.length === 2 && this.subTrees[1][LANG])
   } // isLastTree
-
-  get parentTree () {
-    return this.subTrees[this.subTrees.length - 2]
-  } // parentTree
 
   // ////////////////////////////
   pushTree () {
     this.subTrees.push({})
+    if (this.lang) {
+      this.subTrees.push({ [LANG]: this.lang })
+      this.lang = null
+    }
   } // pushTree
 
   popTree () {
+    if (this.tree[LANG]) {
+      const lang = this.tree[LANG]
+      delete this.tree[LANG]
+      this.hoist(lang)
+    }
+
     return this.subTrees.pop()
   } // popTree
 
@@ -100,16 +104,12 @@ class SubTreeCapture {
   } // emitTree
 
   hoist (name) {
-    const parent = this.parentTree
-    const children = parent[name] ? parent[name] : []
-    children.push(this.popTree())
-    parent[name] = children
+    const current = this.popTree()
 
-    if (parent[LANG]) {
-      const lang = parent[LANG]
-      delete parent[LANG]
-      this.hoist(lang)
-    }
+    const parent = this.tree
+    const children = parent[name] ? parent[name] : []
+    children.push(current)
+    parent[name] = children
   } // hoist
 
   shouldCapture (name) {

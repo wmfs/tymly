@@ -14,7 +14,7 @@
         "pivotPath": "$.People.Person",
         "xmllang": "wrap",
         "headerMap": [
-          ["$.en.Title", "title", "string"],
+          ["$.Title.en", "title", "string"],
           ["@.Name", "name", "string"],
           [{"test": "@.Age<=16", "value": "yes"}, "child", "string"],
           [{"test": "@.Age>16", "select": "@.Age"}, "age", "integer"]
