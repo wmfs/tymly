@@ -2,7 +2,7 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/xml2csv/LICENSE)
 
 > Takes an XML file and transforms it into a CSV file, based on a mapping you provide.  
-> One XML element and its contents can be transformed into multiple CSV output lines.  
+> One XML element and its contents can be transformed into multiple CSV output lines.
 
 ## <a name="install"></a>Install
 ```bash
@@ -31,7 +31,7 @@ xmlFlatten2csv(
 .then(() => console.log("Done!"))
 .catch(err => console.error(err))
 ```
-Input: 
+Input:
 ```xml
 <Simpsons>
     <Episode>
@@ -89,10 +89,10 @@ Output:
 | --------              | ----      | -----  |
 | `xmlPath`             | `string`  | A path to the xml input file.
 | `csvPath`             | `string`  | The path and filename of the generated CSV output file (note that any intermediate folders will be created).
-| `rootXMLElement`      | `string`  | The XML root tag for each subtree to process, 
+| `rootXMLElement`      | `string`  | The XML root tag for each subtree to process,
 | `pivotPath`           | `string`  | The jsonpath of the elements to split records on
 | `headerMap`           | `[array]` | See the [Header Map](#headerMap) section for more details.
-| `namespace`           | `string`  | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else 
+| `options`             | `object`  | See [Additional options](#additional)
 
 ### <a name="headerMap"></a>options.headerMap
 
@@ -105,12 +105,21 @@ options.headerMap has the structure:
     ...
 ]
 ```
-* _selector_ is either a jsonpath into the subtree, or a condition consisting of a jsonpath test and either 
-a value or a jsonpath into the subtree 
+* _selector_ is either a jsonpath into the subtree, or a condition consisting of a jsonpath test and either
+a value or a jsonpath into the subtree
 * _type_ must be integer, date or string
 
-For straightforward linear transformations, where one XML subtree maps to one line of CSV output, consider 
+For straightforward linear transformations, where one XML subtree maps to one line of CSV output, consider
 __xml2csv__ instead.
+
+### <a name="additional"></a>Additional Options
+
+The additional options are a set of key-value pairs -
+
+| Option                | Notes  |
+| ------                | -----  |
+| `namespace`           | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else
+| `xmllang`             | If set to 'wrap', when an element has an xml:lang attribute, create an intermediate wrapper element of named for the attribute value.  Eg `<description xml:lang='en'>Sunny</description>` would effectively become `<en><description>Sunny</description></en>`, and can be addressed as `$.en.description` in the header map.
 
 ## <a name="test"></a>Testing
 

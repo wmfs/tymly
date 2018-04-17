@@ -1,6 +1,6 @@
 <Simpsons>
     <Episode>
-        <Title>Cape Feare</Title>
+        <Title xml:lang="en">Cape Feare</Title>
         <People>
             <Person>
                 <Name>Maggie</Name>
@@ -36,7 +36,7 @@
         </People>
     </Episode>
     <Episode>
-        <Title>Homer Loves Flanders</Title>
+        <Title xml:lang="en">Homer Loves Flanders</Title>
         <People>
             <Person>
                 <Name>Homer</Name>

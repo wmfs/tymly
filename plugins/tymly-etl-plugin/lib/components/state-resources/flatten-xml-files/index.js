@@ -8,6 +8,7 @@ class FlattenXmlFiles {
     this.pivotPath = resourceConfig.pivotPath
     this.headerMap = this.preProcessHeaderMap(env, resourceConfig.headerMap)
     this.namespace = resourceConfig.namespace
+    this.xmllang = resourceConfig.xmllang
     callback(null)
   }
 
@@ -19,7 +20,8 @@ class FlattenXmlFiles {
         rootXMLElement: this.rootXMLElement,
         pivotPath: this.pivotPath,
         headerMap: this.headerMap,
-        namespace: this.namespace
+        namespace: this.namespace,
+        xmllang: this.xmllang
       }
     )
       .then(() => context.sendTaskSuccess())

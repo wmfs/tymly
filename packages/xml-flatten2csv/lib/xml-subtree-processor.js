@@ -2,7 +2,10 @@ const sax = require('sax')
 const EachPromise = require('./each-promise')
 
 const TEXT = '#text'
+const LANG = '#lang'
+
 const STRIP = 'strip'
+const WRAP = 'wrap'
 
 function namespaceProcessor (option) {
   if (!option) return n => n // do nothing
@@ -16,6 +19,7 @@ class SubTreeCapture {
     this.callback = subTreeCallback
 
     this.namespaceHandler = namespaceProcessor(options.namespace)
+    this.langWrap = (options.xmllang === WRAP)
 
     this.subTrees = []
   } // constructor
@@ -26,6 +30,18 @@ class SubTreeCapture {
       this.pushTree()
     }
   } // startElement
+
+  attribute (name, value) {
+    if (!this.capturing) {
+      return
+    }
+    if (name !== 'xml:lang') {
+      return
+    }
+
+    this.pushTree()
+    this.tree[LANG] = value
+  }
 
   endElement (nsname) {
     if (!this.capturing) {
@@ -88,6 +104,12 @@ class SubTreeCapture {
     const children = parent[name] ? parent[name] : []
     children.push(this.popTree())
     parent[name] = children
+
+    if (parent[LANG]) {
+      const lang = parent[LANG]
+      delete parent[LANG]
+      this.hoist(lang)
+    }
   } // hoist
 
   shouldCapture (name) {
@@ -102,6 +124,9 @@ function xmlSubtreeProcessor (inputStream, elementName, options = { }) {
     const capture = new SubTreeCapture(elementName, options, each)
 
     parser.on('opentag', node => capture.startElement(node.name))
+    if (capture.langWrap) {
+      parser.on('attribute', attr => capture.attribute(attr.name, attr.value))
+    }
     parser.on('closetag', name => capture.endElement(name))
     parser.on('text', text => capture.text(text))
 

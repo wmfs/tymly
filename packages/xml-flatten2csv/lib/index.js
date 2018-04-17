@@ -110,7 +110,10 @@ async function xmlFlatten2Csv (options) {
       options.rootXMLElement,
       options.pivotPath,
       selectors,
-      { namespace: options.namespace }
+      {
+        namespace: options.namespace,
+        xmllang: options.xmllang
+      }
     )
       .each(fields => writeLine(outputStream, fields, types))
   } finally {
