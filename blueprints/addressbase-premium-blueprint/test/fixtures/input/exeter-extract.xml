@@ -2396,6 +2396,20 @@
           <abpr:officialFlag>N</abpr:officialFlag>
         </abpr:LandPropertyIdentifier>
       </abpr:landPropertyIdentifierMember>
+      <abpr:landPropertyIdentifierMember>
+        <abpr:LandPropertyIdentifier>
+          <abpr:startDate>2007-10-24</abpr:startDate>
+          <abpr:lastUpdateDate>2016-02-10</abpr:lastUpdateDate>
+          <abpr:entryDate>2005-06-26</abpr:entryDate>
+          <abpr:lpiKey>1110L000141308</abpr:lpiKey>
+          <abpr:logicalStatus>1</abpr:logicalStatus>
+          <abpr:saoText xml:lang="cy">FFLAT 5</abpr:saoText>
+          <abpr:paoText xml:lang="cy">TY ESGOB PASTERFIELD</abpr:paoText>
+          <abpr:usrn>14200343</abpr:usrn>
+          <abpr:usrnMatchIndicator>1</abpr:usrnMatchIndicator>
+          <abpr:officialFlag>N</abpr:officialFlag>
+        </abpr:LandPropertyIdentifier>
+      </abpr:landPropertyIdentifierMember>
       <abpr:applicationCrossReferenceMember>
         <abpr:ApplicationCrossReference>
           <abpr:startDate>2016-02-07</abpr:startDate>
