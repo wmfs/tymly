@@ -1,4 +1,3 @@
-
 const _ = require('lodash')
 const debug = require('debug')('tymly-users-plugin')
 
@@ -10,16 +9,22 @@ class GetUserRemit {
     this.forms = env.bootedServices.forms
     this.boards = env.bootedServices.boards
     this.statebox = env.bootedServices.statebox
-    // startables
+    this.services = env.bootedServices
     callback(null)
   }
 
   async run (event, context) {
+    const usersService = this.services.users
+    const rbacService = this.services.rbac
+
     const userId = context.userId
-    this.clientManifest = event.clientManifest
+    const userRoles = await new Promise((resolve, reject) => usersService.getUserRoles(userId, (err, roles) => {
+      if (err) reject(err)
+      else resolve(roles)
+    }))
+
     const settings = {categoryRelevance: event.userSettings.categoryRelevance}
-    let favourites = []
-    if (event.favourites.results.length > 0) favourites = event.favourites.results[0].stateMachineNames
+    const favourites = event.favourites.results.length > 0 ? event.favourites.results[0].stateMachineNames : []
 
     const userRemit = {
       add: {},
@@ -29,25 +34,37 @@ class GetUserRemit {
     }
 
     const promises = [
-      this.findComponents(userRemit, this.todos, 'todos', 'id', this.clientManifest['todos'], userId),
-      this.findComponents(userRemit, this.teams, 'teams', 'title', this.clientManifest['teams'])
+      this.findComponents(userRemit, this.todos, 'todos', 'id', event.clientManifest['todos'], userId),
+      this.findComponents(userRemit, this.teams, 'teams', 'title', event.clientManifest['teams'])
     ]
 
     if (this.categories) {
-      promises.push(this.processComponents(userRemit, 'categories', this.categories.categories, this.clientManifest['categoryNames']))
+      promises.push(this.processComponents(userRemit, 'categories', this.categories.categories, event.clientManifest['categoryNames']))
     }
 
     if (this.forms) {
-      promises.push(this.processComponents(userRemit, 'forms', this.forms.forms, this.clientManifest['formNames']))
+      promises.push(this.processComponents(userRemit, 'forms', this.forms.forms, event.clientManifest['formNames']))
     }
 
     if (this.boards) {
-      promises.push(this.processComponents(userRemit, 'boards', this.boards.boards, this.clientManifest['boardNames']))
+      promises.push(this.processComponents(userRemit, 'boards', this.boards.boards, event.clientManifest['boardNames']))
     }
 
     if (this.statebox) {
       const startable = this.findStartableMachines(this.statebox.listStateMachines(), this.categories.names)
-      promises.push(this.processComponents(userRemit, 'startable', startable, this.clientManifest['startable']))
+      const allowedStartable = Object.keys(startable).reduce((keys, resourceName) => {
+        const isAuth = rbacService.checkRoleAuthorization(
+          userId,
+          context,
+          userRoles,
+          'stateMachine',
+          resourceName,
+          'create'
+        )
+        if (isAuth) keys[resourceName] = startable[resourceName]
+        return keys
+      }, {})
+      promises.push(this.processComponents(userRemit, 'startable', allowedStartable, event.clientManifest['startable']))
     }
 
     Promise.all(promises)

@@ -1,0 +1,21 @@
+{
+  "Comment": "Just a State Machine",
+  "name": "Just a State Machine",
+  "version": "1.0",
+  "StartAt": "JustAState",
+  "categories": ["fire"],
+  "States": {
+    "JustAState": {
+      "Type": "Pass",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
