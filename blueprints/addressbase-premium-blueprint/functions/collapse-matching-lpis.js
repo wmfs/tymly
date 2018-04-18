@@ -31,11 +31,11 @@ function collapseMatchingLpis (uprnNode) {
   return uprnNode
 } // collapseMatchingLpis
 
-function lpiKeyValue(lpiM) {
+function lpiKeyValue (lpiM) {
   return lpiM.LandPropertyIdentifier[0].lpiKey[0]['#text']
 } // lpiKeyValue
 
-function findLpi(uprnNode, lpiKey, langLabel) {
+function findLpi (uprnNode, lpiKey, langLabel) {
   const lpiMs = uprnNode.landPropertyIdentifierMember
   for (let i = 0; i !== lpiMs.length; ++i) {
     const lpiM = lpiMs[i]
@@ -52,7 +52,7 @@ function findLpi(uprnNode, lpiKey, langLabel) {
   throw new Error(`Could not find LPI with key ${lpiKey} and language ${langLabel}`)
 } // findLpi
 
-function hasLanguage(lpiM, langLabel) {
+function hasLanguage (lpiM, langLabel) {
   const lpi = lpiM.LandPropertyIdentifier[0]
   for (const va of Object.values(lpi)) {
     // all the values are arrays of length 1
@@ -64,15 +64,15 @@ function hasLanguage(lpiM, langLabel) {
   return false
 } // hasLanguage
 
-function findEnglish(uprnNode, lpiKey) {
+function findEnglish (uprnNode, lpiKey) {
   return findLpi(uprnNode, lpiKey, 'en')
 } // findEnglish
 
-function findWelsh(uprnNode, lpiKey) {
+function findWelsh (uprnNode, lpiKey) {
   return findLpi(uprnNode, lpiKey, 'cy')
 } // findWelsh
 
-function duplicateKeys(uprnNode) {
+function duplicateKeys (uprnNode) {
   const lpiKeys = uprnNode.landPropertyIdentifierMember.map(lpiM => lpiKeyValue(lpiM)).sort()
   const dupes = lpiKeys.reduce((dupes, key) => {
     if (dupes[dupes.length - 1] !== key) dupes.pop()
