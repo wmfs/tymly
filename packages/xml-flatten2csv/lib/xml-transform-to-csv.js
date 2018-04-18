@@ -49,6 +49,8 @@ function * processSubtree (
   }
 } // processSubtree
 
+function identityFn (x) { return x }
+
 function xmlTransformToCsv (
   inputStream,
   elementName,
@@ -56,10 +58,13 @@ function xmlTransformToCsv (
   selectPaths,
   options
 ) {
+  const treeTransform = (options && options.transform) || identityFn
+
   return new EachPromise((each, resolve, reject) => {
     xmlSubtreeProcessor(inputStream, elementName, options)
       .each(subTree => {
-        for (const line of processSubtree(subTree, pivotPath, selectPaths)) {
+        const transformedSubTree = treeTransform(subTree)
+        for (const line of processSubtree(transformedSubTree, pivotPath, selectPaths)) {
           each(line)
         }
       })

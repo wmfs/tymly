@@ -116,10 +116,11 @@ __xml2csv__ instead.
 
 The additional options are a set of key-value pairs -
 
-| Option                | Notes  |
-| ------                | -----  |
-| `namespace`           | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else
-| `xmllang`             | If set to 'wrap', when an element has an xml:lang attribute, create an intermediate wrapper element of named for the attribute value.  Eg `<description xml:lang='en'>Sunny</description>` would effectively become `<description><en>Sunny</en></description>`, and can be addressed as `$.description.en` in the header map.
+| Option       | Notes  |
+| ------       | -----  |
+| `namespace`  | How to handle namespace prefixes - omit to do nothing, 'strip' to remove prefixes, or any other string to replace the ':' with something else
+| `xmllang`    | If set to 'wrap', when an element has an xml:lang attribute, create an intermediate wrapper element of named for the attribute value.  Eg `<description xml:lang='en'>Sunny</description>` would effectively become `<description><en>Sunny</en></description>`, and can be addressed as `$.description.en` in the header map.
+| `transform`  | A transformation function applied to the selected JSON objects before running the header map queries. The modified JSON should be the return value of the function, even if it's changed in-place.
 
 ## <a name="test"></a>Testing
 
