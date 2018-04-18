@@ -89,8 +89,7 @@
           ["$..DeliveryPointAddress.entryDate", "rm_start_date", "date"],
           ["$.multiOccCount", "multi_occ_count", "number"],
           ["$.classificationMember[?(@.Classification.classScheme=='VOA Primary Description')]..classificationCode", "voa_ndrp_desc_code", "string"],
-          ["$.classificationMember[?(@.Classification.classScheme=='VOA Special Category')]..classificationCode", "voa_ndr_scat_code", "string"],
-          ["$.todo", "alt_language", "string"]
+          ["$.classificationMember[?(@.Classification.classScheme=='VOA Special Category')]..classificationCode", "voa_ndr_scat_code", "string"]
         ],
         "namespace": "strip",
         "xmllang": "wrap",

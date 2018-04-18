@@ -109,8 +109,7 @@
                 { "name": "rm_start_date", "columnIndex": 69 },
                 { "name": "multi_occ_count", "columnIndex": 70 },
                 { "name": "voa_ndrp_desc_code", "columnIndex": 71 },
-                { "name": "voa_ndr_scat_code", "columnIndex": 72 },
-                { "name": "alt_language", "columnIndex": 73 }
+                { "name": "voa_ndr_scat_code", "columnIndex": 72 }
               ]
             },
             "D": {
