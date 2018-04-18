@@ -50,7 +50,7 @@ module.exports = class DeletingById {
           if (err) {
             context.sendTaskFailure(
               {
-                error: 'FAILED_TO_FIND_BY_ID',
+                error: 'FAILED_TO_DESTORY_BY_ID',
                 cause: JSON.stringify(err)
               }
             )
