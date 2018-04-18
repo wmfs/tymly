@@ -47,14 +47,14 @@
           ["@.saoStartSuffix", "sao_start_suffix", "string"],
           ["@.saoEndNumber", "sao_end_number", "string"],
           ["@.saoEndSuffix", "sao_end_suffix", "string"],
-          ["@.saoText.en", "sao_text", "string"],
-          ["$.todo", "alt_language_sao_text", "string"],
+          ["@.saoText..en", "sao_text", "string"],
+          ["@.saoText..cy", "alt_language_sao_text", "string"],
           ["@.paoStartNumber", "pao_start_number", "string"],
           ["@.paoStartSuffix", "pao_start_suffix", "string"],
           ["@.paoEndNumber", "pao_end_number", "string"],
           ["@.paoEndSuffix", "pao_end_suffix", "string"],
-          ["@.paoText.en", "pao_text", "string"],
-          ["$.todo", "alt_language_pao_text", "string"],
+          ["@.paoText..en", "pao_text", "string"],
+          ["@.paoText..cy", "alt_language_pao_text", "string"],
           ["@.usrn", "usrn", "number"],
           ["@.usrnMatchIndicator", "usrn_match_indicator", "number"],
           ["@.areaName", "area_name", "string"],
@@ -93,7 +93,8 @@
           ["$.todo", "alt_language", "string"]
         ],
         "namespace": "strip",
-        "xmllang": "wrap"
+        "xmllang": "wrap",
+        "transform": "ordnanceSurvey_collapseMatchingLpis"
       },
       "End": true
     }

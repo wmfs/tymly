@@ -15,6 +15,7 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
+    "deepmerge": "^2.1.0",
     "jsonpath": "1.0.0",
     "sax": "1.2.4",
     "tymly": "^0.0.17",
