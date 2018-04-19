@@ -7,7 +7,7 @@ const expect = require('chai').expect
 describe('Test the get available times state resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, statebox, bookingModel
+  let tymlyService, statebox // , bookingModel
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -30,7 +30,7 @@ describe('Test the get available times state resource', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
-        bookingModel = tymlyServices.storage.models['test_doctorBookings']
+        // bookingModel = tymlyServices.storage.models['test_doctorBookings']
         done()
       }
     )
