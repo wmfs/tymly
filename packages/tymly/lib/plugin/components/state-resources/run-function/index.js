@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 module.exports = class RunFunction {
   init (resourceConfig, env, callback) {
     this.env = env
@@ -46,6 +48,10 @@ module.exports = class RunFunction {
       result = await func.func(...args)
     }
 
-    context.sendTaskSuccess({result})
+    if (_.isString(result)) {
+      context.sendTaskSuccess({result})
+    } else {
+      context.sendTaskSuccess(result)
+    }
   }
 }
