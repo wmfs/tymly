@@ -1,5 +1,6 @@
 module.exports = class RunFunction {
   init (resourceConfig, env, callback) {
+    this.env = env
     this.functions = env.bootedServices.functions
     this.functionName = resourceConfig.functionName
     callback(null)
@@ -19,29 +20,30 @@ module.exports = class RunFunction {
 
     const isCallback = func.args.includes('callback')
 
-    const args = {}
-    func.args.forEach(arg => {
+    const args = func.args.map(arg => {
       if (arg !== 'callback') {
         if (arg === 'event') {
-          args.event = event
+          return event
         } else if (arg === 'context') {
-          args.context = context
+          return context
+        } else if (arg === 'env') {
+          return this.env
         } else {
-          args[arg] = event[arg]
+          return event[arg]
         }
       }
-    })
+    }).filter(arg => arg)
 
     let result
     if (isCallback) {
       result = await new Promise((resolve, reject) => {
-        func.func({...args}, (err, data) => {
+        func.func(...args, (err, data) => {
           if (err) reject(err)
           else resolve(data)
         })
       })
     } else {
-      result = func.func({...args})
+      result = func.func(...args)
     }
 
     context.sendTaskSuccess({result})
