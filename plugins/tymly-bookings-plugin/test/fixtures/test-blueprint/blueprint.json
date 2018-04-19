@@ -1,0 +1,11 @@
+{
+  "namespace": "test",
+  "name": "test-blueprint",
+  "version": "1.0",
+  "label": "test-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to make bookings.",
+  "categories": []
+}

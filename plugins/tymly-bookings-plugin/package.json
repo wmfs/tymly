@@ -1,0 +1,32 @@
+{
+  "name": "tymly-bookings-plugin",
+  "description": "Plugin to handle bookings and appointment kind of things",
+  "version": "0.0.1",
+  "author": "WMFS",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "boom": "7.2.0",
+    "debug": "3.1.0",
+    "lodash": "4.17.5",
+    "moment": "2.22.1"
+  },
+  "devDependencies": {
+    "chai": "4.1.2",
+    "hl-pg-client": "^0.0.2",
+    "mocha": "5.1.0",
+    "standard": "11.0.1",
+    "tymly": "^0.0.17"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "standard && mocha"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmfs/tymly"
+  },
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  }
+}

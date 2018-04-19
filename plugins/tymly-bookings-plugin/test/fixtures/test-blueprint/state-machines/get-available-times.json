@@ -1,0 +1,24 @@
+{
+  "Comment": "State machine to get available times based on a date.",
+  "version": "1.0",
+  "StartAt": "GetAvailableTimes",
+  "States": {
+    "GetAvailableTimes": {
+      "Type": "Task",
+      "Resource": "module:getAvailableTimes",
+      "ResourceConfig": {
+        "namespace": "test",
+        "model": "doctorBookings"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

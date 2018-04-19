@@ -1,0 +1,11 @@
+{
+  "title": "Bookings",
+  "description": "Holds some bookings",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
