@@ -43,7 +43,7 @@ module.exports = class RunFunction {
         })
       })
     } else {
-      result = func.func(...args)
+      result = await func.func(...args)
     }
 
     context.sendTaskSuccess({result})
