@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 module.exports = class GetAvailableDiarySlots {
   init (resourceConfig, env, callback) {
     this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
