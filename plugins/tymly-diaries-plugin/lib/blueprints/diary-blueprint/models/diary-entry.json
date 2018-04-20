@@ -1,0 +1,30 @@
+{
+  "title": "Diary Entries",
+  "description": "Entries to a diary",
+  "type": "object",
+  "properties": {
+    "originId": {
+      "type": "string",
+      "description": "The ID of the origin of this entry"
+    },
+    "diaryId": {
+      "type": "string",
+      "description": "The ID of the diary this entry belongs to"
+    },
+    "startDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The start date-time of this entry"
+    },
+    "endDateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The end date-time of this entry"
+    },
+    "info": {
+      "type": "object",
+      "description": "Some information about this entry"
+    }
+  },
+  "audit": false
+}

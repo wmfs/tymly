@@ -1,0 +1,11 @@
+{
+  "namespace": "wmfs",
+  "name": "diary-blueprint",
+  "version": "1.0",
+  "label": "diary-blueprint",
+  "author": "WMFS",
+
+  "organisation": "West Midlands Fire Service",
+  "description": "Tymly blueprint to hold diary entries.",
+  "categories": []
+}
