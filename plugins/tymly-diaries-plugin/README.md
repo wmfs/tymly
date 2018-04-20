@@ -7,7 +7,7 @@ Description coming soon...
 
 ## <a name="install"></a>Install
 ```bash
-$ npm install tymly-bookings-plugin --save
+$ npm install tymly-diaries-plugin --save
 ```
 
 ## <a name="test"></a>Testing
