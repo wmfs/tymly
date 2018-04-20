@@ -7,8 +7,7 @@
       "Type": "Task",
       "Resource": "module:getAvailableDiarySlots",
       "ResourceConfig": {
-        "namespace": "test",
-        "model": "doctorBookings"
+        "diaryId": "doctors"
       },
       "End": true
     }
