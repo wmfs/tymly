@@ -43,7 +43,7 @@ module.exports = async function generateStats (options, callback) {
 
           options.rankingModel.upsert({
             [options.pk]: r[_.snakeCase(options.pk)],
-            rankingName: options.category,
+            rankingName: _.kebabCase(options.category),
             range: _.kebabCase(range),
             distribution: distribution,
             growthCurve: growthCurve,
