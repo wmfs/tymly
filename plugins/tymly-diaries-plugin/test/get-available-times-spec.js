@@ -50,7 +50,7 @@ describe('Test the get available times state resource', function () {
         console.log(JSON.stringify(executionDescription, null, 2))
         console.log('Output:', executionDescription.ctx.availableTimes)
         expect(executionDescription.currentStateName).to.eql('GetAvailableTimes')
-        expect(executionDescription.currentResource).to.eql('module:getAvailableTimes')
+        expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }

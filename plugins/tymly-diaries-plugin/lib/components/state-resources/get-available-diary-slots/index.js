@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-module.exports = class GetAvailableTimes {
+module.exports = class GetAvailableDiarySlots {
   init (resourceConfig, env, callback) {
     this.namespace = _.snakeCase(resourceConfig.namspace)
     this.modelId = _.snakeCase(resourceConfig.model)
