@@ -4,19 +4,27 @@ const _ = require('lodash')
 
 module.exports = class GetAvailableDiarySlots {
   init (resourceConfig, env, callback) {
-    this.diaryId = _.snakeCase(resourceConfig.diaryId)
+    this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
+    this.diaryId = resourceConfig.diaryId
+    this.services = env.bootedServices
     callback(null)
   }
 
-  run (event, context) {
-    console.log('Diary:', this.diaryId, 'Date given:', event.date)
-    // TODO: Look up model to find available times
+  async run (event, context) {
+    const namespace = context.stateMachineMeta.namespace
+    const diaryService = this.services.diaries
+    const diary = diaryService.diaries[namespace + '_' + this.diaryId]
+    const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
+
+    // Use entries and diary (rules) to find out available times
+    console.log('Diary:', diary)
+    console.log('Entries:', entries)
+
     const availableTimes = [
       new Date('2018-04-17T10:00:00.000Z'),
       new Date('2018-04-17T12:00:00.000Z'),
       new Date('2018-04-17T15:00:00.000Z')
     ]
-    console.log('>', availableTimes)
     context.sendTaskSuccess({availableTimes})
   }
 }
