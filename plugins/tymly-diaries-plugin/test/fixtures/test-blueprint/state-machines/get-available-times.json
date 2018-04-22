@@ -5,10 +5,9 @@
   "States": {
     "GetAvailableTimes": {
       "Type": "Task",
-      "Resource": "module:getAvailableTimes",
+      "Resource": "module:getAvailableDiarySlots",
       "ResourceConfig": {
-        "namespace": "test",
-        "model": "doctorBookings"
+        "diaryId": "doctors"
       },
       "End": true
     }
