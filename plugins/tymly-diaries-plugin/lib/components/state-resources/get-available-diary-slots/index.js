@@ -9,8 +9,8 @@ module.exports = class GetAvailableDiarySlots {
   }
 
   async run (event, context) {
-    const namespace = context.stateMachineMeta.namespace
-    const diaryService = this.services.diaries
+    // const namespace = context.stateMachineMeta.namespace
+    // const diaryService = this.services.diaries
     // const diary = diaryService.diaries[namespace + '_' + this.diaryId]
     // const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
 
