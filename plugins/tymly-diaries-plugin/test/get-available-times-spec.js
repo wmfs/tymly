@@ -7,6 +7,7 @@ const moment = require('moment')
 
 const GET_TIMES_STATE_MACHINE_NAME = 'test_getAvailableTimes'
 const CREATE_ENTRY_STATE_MACHINE_NAME = 'test_createDiaryEntry'
+const CANCEL_ENTRY_STATE_MACHINE_NAME = 'test_cancelDiaryEntry'
 
 const DATE = '2018-04-23T07:11:04.915Z'
 const DURATION = 60
@@ -93,6 +94,32 @@ describe('Test the get available times state resource', function () {
     expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
     expect(doc.startDateTime).to.eql(DATE)
     expect(doc.endDateTime).to.eql(moment(doc.startDateTime).add(DURATION, 'minutes').format())
+  })
+
+  it('should start the cancel-diary-entry state machine', done => {
+    statebox.startExecution(
+      {
+        id: entryId
+      },
+      CANCEL_ENTRY_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        console.log(JSON.stringify(executionDescription, null, 2))
+        expect(executionDescription.currentStateName).to.eql('CancelEntry')
+        expect(executionDescription.currentResource).to.eql('module:cancelDiaryEntry')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        done()
+      }
+    )
+  })
+
+  it('should fail to find deleted record', async () => {
+    const doc = await entryModel.findById(entryId)
+    expect(doc).to.eql(undefined)
+    // expect(doc.endDateTime).to.eql()
   })
 
   it('should shutdown Tymly', async () => {
