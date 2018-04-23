@@ -114,6 +114,14 @@ describe('Tests the state resource which handle diary entries', function () {
     )
   })
 
+  it('should check the upserted record', async () => {
+    const doc = await entryModel.findById(entryId)
+    expect(doc.diaryId).to.eql('doctors')
+    expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
+    expect(doc.startDateTime).to.eql(DATE_TIME)
+    expect(doc.endDateTime).to.eql(EXPECTED_END_DATE_TIME)
+  })
+
   it('should start the create diary state machine with a date time that does not fall within the start/end rules', done => {
     statebox.startExecution(
       {
@@ -177,14 +185,6 @@ describe('Tests the state resource which handle diary entries', function () {
     )
   })
 
-  it('should check the upserted record', async () => {
-    const doc = await entryModel.findById(entryId)
-    expect(doc.diaryId).to.eql('doctors')
-    expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
-    expect(doc.startDateTime).to.eql(DATE_TIME)
-    expect(doc.endDateTime).to.eql(EXPECTED_END_DATE_TIME)
-  })
-
   it('should start the cancel-diary-entry state machine', done => {
     statebox.startExecution(
       {
@@ -207,6 +207,11 @@ describe('Tests the state resource which handle diary entries', function () {
   it('should fail to find deleted record', async () => {
     const doc = await entryModel.findById(entryId)
     expect(doc).to.eql(undefined)
+  })
+
+  it('should check the amount of entries remain as they were at the start', async () => {
+    const doc = await entryModel.find({})
+    expect(doc.length).to.eql(TEST_RECORDS.length)
   })
 
   it('should shutdown Tymly', async () => {

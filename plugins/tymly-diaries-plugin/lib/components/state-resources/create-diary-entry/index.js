@@ -54,6 +54,7 @@ module.exports = class CreateDiaryEntry {
     }
 
     if (diary.restrictions) {
+      let error = false
       Object.keys(diary.restrictions).forEach(restriction => {
         const timesAffected = diary.restrictions[restriction].timesAffected
         const changes = diary.restrictions[restriction].changes
@@ -65,16 +66,17 @@ module.exports = class CreateDiaryEntry {
           isWithinDateTimeRange(startRule, endRule, event.startDateTime) ||
           isWithinDateTimeRange(startRule, endRule, endDateTime)
         ) {
-          // It is within the affected times
           if (entriesAtDateTime.length >= changes.maxConcurrency) {
-            // It has already met maxConcurrency for these affected times
-            return context.sendTaskFailure({
-              cause: 'createDiaryEntryFail',
-              error: 'Max. appointments already made at this time.'
-            })
+            error = true
           }
         }
       })
+      if (error) {
+        return context.sendTaskFailure({
+          cause: 'createDiaryEntryFail',
+          error: 'Max. appointments already made at this time.'
+        })
+      }
     }
 
     this.entryModel.upsert({
