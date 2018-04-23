@@ -5,7 +5,7 @@
   "properties": {
     "originId": {
       "type": "string",
-      "description": "The ID of the origin of this entry"
+      "description": "The ID of the origin of this entry (i.e. the state machine name)"
     },
     "diaryId": {
       "type": "string",

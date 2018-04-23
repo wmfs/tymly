@@ -70,8 +70,7 @@ describe('Test the get available times state resource', function () {
   it('should start the get available times state machine', done => {
     statebox.startExecution(
       {
-        startDateTime: DATE,
-        originId: 'doctors' // or should it be something else?
+        startDateTime: DATE
       },
       CREATE_ENTRY_STATE_MACHINE_NAME,
       {
@@ -93,7 +92,7 @@ describe('Test the get available times state resource', function () {
   it('should check the upserted record', async () => {
     const doc = await entryModel.findById(entryId)
     expect(doc.diaryId).to.eql('doctors')
-    expect(doc.originId).to.eql('doctors') // or should it be something else?
+    expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
     expect(doc.startDateTime).to.eql(DATE)
     // expect(doc.endDateTime).to.eql()
   })

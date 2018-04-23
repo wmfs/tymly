@@ -20,7 +20,7 @@ module.exports = class CreateDiaryEntry {
 
     this.entryModel.upsert({
       startDateTime: event.startDateTime,
-      originId: event.originId,
+      originId: context.stateMachineMeta.name,
       diaryId: this.diaryId,
       endDateTime: endDateTime
     }, {}, (err, doc) => {
