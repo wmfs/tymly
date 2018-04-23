@@ -138,7 +138,7 @@ class MemoryModel {
             options.where,
             function (condition, propertyId) {
               const conditionType = _.keys(condition)[0]
-              let expression = _.values(condition)[0]
+              const expression = _.values(condition)[0]
 
               switch (conditionType) {
                 case 'equals':
