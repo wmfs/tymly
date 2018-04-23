@@ -62,8 +62,8 @@ module.exports = class CreateDiaryEntry {
         const endRule = moment(date + 'T' + timesAffected[1])
 
         if (
-          (startRule <= moment(event.startDateTime) && moment(event.startDateTime) >= endRule) ||
-          (startRule <= endDateTime && endDateTime >= endRule)
+          isWithinDateTimeRange(startRule, endRule, event.startDateTime) ||
+          isWithinDateTimeRange(startRule, endRule, endDateTime)
         ) {
           // It is within the affected times
           if (entriesAtDateTime.length >= changes.maxConcurrency) {
@@ -87,4 +87,8 @@ module.exports = class CreateDiaryEntry {
       context.sendTaskSuccess(doc)
     })
   }
+}
+
+function isWithinDateTimeRange (start, end, dateTime) {
+  return (start <= moment(dateTime) && moment(dateTime) >= end)
 }
