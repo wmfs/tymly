@@ -20,6 +20,10 @@ const expressionTypeFormatters = {
   lessThanEquals: function (columnName, value, values) {
     values.push(value)
     return columnName + ' <= $' + values.length
+  },
+  like: function (columnName, value, values) {
+    values.push(`%${value}%`)
+    return columnName + ' LIKE $' + values.length
   }
 }
 

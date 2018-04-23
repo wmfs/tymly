@@ -19,7 +19,6 @@ module.exports = class CreateDiaryEntry {
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
     const endDateTime = moment(event.startDateTime).add(diary.duration, 'minutes')
 
-    // todo: check maxCapacity
     const entriesAtDateTime = await this.entryModel.find({
       where: {
         diaryId: {
@@ -30,6 +29,24 @@ module.exports = class CreateDiaryEntry {
         }
       }
     })
+
+    const entriesAtDate = await this.entryModel.find({
+      where: {
+        diaryId: {
+          equals: this.diaryId
+        },
+        startDateTime: {
+          like: date
+        }
+      }
+    })
+
+    if (entriesAtDate.length >= diary.maxCapacity) {
+      return context.sendTaskFailure({
+        cause: 'createDiaryEntryFail',
+        error: 'Max. appointments already made at this date.'
+      })
+    }
 
     if (entriesAtDateTime.length >= diary.maxConcurrency) {
       return context.sendTaskFailure({
@@ -63,12 +80,11 @@ module.exports = class CreateDiaryEntry {
         const endRule = moment(date + 'T' + timesAffected[1])
 
         if (
-          isWithinDateTimeRange(startRule, endRule, event.startDateTime) ||
-          isWithinDateTimeRange(startRule, endRule, endDateTime)
+          (isWithinDateTimeRange(startRule, endRule, event.startDateTime) ||
+            isWithinDateTimeRange(startRule, endRule, endDateTime)) &&
+          entriesAtDateTime.length >= changes.maxConcurrency
         ) {
-          if (entriesAtDateTime.length >= changes.maxConcurrency) {
-            error = true
-          }
+          error = true
         }
       })
       if (error) {

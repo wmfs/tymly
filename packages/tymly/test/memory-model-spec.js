@@ -53,9 +53,9 @@ describe('Memory Model tests', function () {
         expect(idProperties).to.eql(
           {
             idProperties:
-            {
-              employeeNo: 1
-            }
+              {
+                employeeNo: 1
+              }
           }
         )
         done()
@@ -158,7 +158,7 @@ describe('Memory Model tests', function () {
     )
   })
 
-  it("should fail finding a person that's not there", function (done) {
+  it('should fail finding a person that\'s not there', function (done) {
     personModel.findById(
       6,
       function (err, doc) {
@@ -171,7 +171,7 @@ describe('Memory Model tests', function () {
 
   it('should find 5 people', function (done) {
     personModel.find(
-      { },
+      {},
       function (err, doc) {
         expect(err).to.equal(null)
 
@@ -240,6 +240,32 @@ describe('Memory Model tests', function () {
     )
   })
 
+  it('should find Bart by part of his name', function (done) {
+    personModel.find(
+      {
+        where: {
+          firstName: {like: 'art'}
+        }
+      },
+      function (err, doc) {
+        expect(err).to.equal(null)
+        expect(doc).to.have.length(1)
+        expect(doc).to.containSubset(
+          [
+            {
+              'age': 10,
+              'employeeNo': 5,
+              'firstName': 'Bart',
+              'lastName': 'Simpson'
+            }
+          ]
+        )
+
+        done()
+      }
+    )
+  })
+
   it('should get one Homer by name', function (done) {
     personModel.findOne(
       {
@@ -264,7 +290,7 @@ describe('Memory Model tests', function () {
     )
   })
 
-  it("shouldn't get one missing person", function (done) {
+  it('shouldn\'t get one missing person', function (done) {
     personModel.findOne(
       {
         where: {
@@ -280,7 +306,7 @@ describe('Memory Model tests', function () {
     )
   })
 
-  it("should update Maggie's age to 1", (done) => {
+  it('should update Maggie\'s age to 1', (done) => {
     personModel.update(
       {
         employeeNo: 2,
@@ -329,7 +355,7 @@ describe('Memory Model tests', function () {
     )
   })
 
-  it("should find Maggie's age has gone again", function (done) {
+  it('should find Maggie\'s age has gone again', function (done) {
     personModel.findById(
       2,
       function (err, doc) {
