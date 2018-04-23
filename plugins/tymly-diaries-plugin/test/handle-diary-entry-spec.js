@@ -129,13 +129,13 @@ describe('Tests the state resource which handle diary entries', function () {
         expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
         expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.errorMessage).to.eql('createDiaryEntryFail')
-        expect(executionDescription.errorCode).to.eql('The appointment must be between 08:30:00 and 22:30:00.')
+        expect(executionDescription.errorCode).to.eql('The appointment must be between 08:30 and 22:30.')
         done()
       }
     )
   })
 
-  it('should start the create diary state machine with a start date time that collides with lunch time', done => {
+  it('should start the create diary state machine with a start date time that collides with lunch time\'s maximum concurrency', done => {
     statebox.startExecution(
       {
         startDateTime: BAD_DATE_TIME_1
@@ -150,7 +150,7 @@ describe('Tests the state resource which handle diary entries', function () {
         expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
         expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.errorMessage).to.eql('createDiaryEntryFail')
-        expect(executionDescription.errorCode).to.eql('The date of this appointment falls within the restriction: lunchTime.')
+        expect(executionDescription.errorCode).to.eql('Max. appointments already made at this time.')
         done()
       }
     )

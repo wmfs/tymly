@@ -48,7 +48,7 @@ module.exports = class CreateDiaryEntry {
       if (min !== startRule || max !== endRule) {
         return context.sendTaskFailure({
           cause: 'createDiaryEntryFail',
-          error: `The appointment must be between ${startRule.format('HH:mm:ss')} and ${endRule.format('HH:mm:ss')}.`
+          error: `The appointment must be between ${startRule.format('HH:mm')} and ${endRule.format('HH:mm')}.`
         })
       }
     }
@@ -58,13 +58,6 @@ module.exports = class CreateDiaryEntry {
         const timesAffected = diary.restrictions[restriction].timesAffected
         const changes = diary.restrictions[restriction].changes
 
-        if (changes.maxConcurrency && entriesAtDateTime.length >= changes.maxConcurrency) {
-          return context.sendTaskFailure({
-            cause: 'createDiaryEntryFail',
-            error: 'Max. appointments already made at this time.'
-          })
-        }
-
         const startRule = moment(date + 'T' + timesAffected[0])
         const endRule = moment(date + 'T' + timesAffected[1])
 
@@ -72,10 +65,14 @@ module.exports = class CreateDiaryEntry {
           (startRule <= moment(event.startDateTime) && moment(event.startDateTime) >= endRule) ||
           (startRule <= endDateTime && endDateTime >= endRule)
         ) {
-          return context.sendTaskFailure({
-            cause: 'createDiaryEntryFail',
-            error: `The date of this appointment falls within the restriction: ${restriction}.`
-          })
+          // It is within the affected times
+          if (entriesAtDateTime.length >= changes.maxConcurrency) {
+            // It has already met maxConcurrency for these affected times
+            return context.sendTaskFailure({
+              cause: 'createDiaryEntryFail',
+              error: 'Max. appointments already made at this time.'
+            })
+          }
         }
       })
     }
