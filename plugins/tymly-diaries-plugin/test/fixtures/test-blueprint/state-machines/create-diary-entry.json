@@ -1,10 +1,10 @@
 {
-  "Comment": "State machine to get available times based on a date.",
-  "StartAt": "GetAvailableTimes",
+  "Comment": "State machine to create a diary entry.",
+  "StartAt": "CreateEntry",
   "States": {
-    "GetAvailableTimes": {
+    "CreateEntry": {
       "Type": "Task",
-      "Resource": "module:getAvailableDiarySlots",
+      "Resource": "module:createDiaryEntry",
       "ResourceConfig": {
         "diaryId": "doctors"
       },

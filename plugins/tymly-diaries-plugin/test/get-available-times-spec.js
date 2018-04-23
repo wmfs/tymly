@@ -4,10 +4,15 @@ const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
 
+const GET_TIMES_STATE_MACHINE_NAME = 'test_getAvailableTimes'
+const CREATE_ENTRY_STATE_MACHINE_NAME = 'test_createDiaryEntry'
+
+const DATE = '2018-04-23T07:11:04.915Z'
+
 describe('Test the get available times state resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, statebox, diaryService
+  let tymlyService, statebox, diaryService, entryId, entryModel
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -31,6 +36,7 @@ describe('Test the get available times state resource', function () {
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         diaryService = tymlyServices.diaries
+        entryModel = tymlyServices.storage.models['tymly_diaryEntry']
         done()
       }
     )
@@ -43,9 +49,9 @@ describe('Test the get available times state resource', function () {
   it('should start the get available times state machine', done => {
     statebox.startExecution(
       {
-        date: new Date()
+        date: DATE
       },
-      'test_getAvailableTimes_1_0',
+      GET_TIMES_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
@@ -59,6 +65,37 @@ describe('Test the get available times state resource', function () {
         done()
       }
     )
+  })
+
+  it('should start the get available times state machine', done => {
+    statebox.startExecution(
+      {
+        startDateTime: DATE,
+        originId: 'doctors' // or should it be something else?
+      },
+      CREATE_ENTRY_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        // console.log(JSON.stringify(executionDescription, null, 2))
+        // console.log('Output:', executionDescription.ctx.availableTimes)
+        expect(executionDescription.currentStateName).to.eql('CreateEntry')
+        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
+        expect(executionDescription.status).to.eql('SUCCEEDED')
+        entryId = executionDescription.ctx.idProperties.id
+        done()
+      }
+    )
+  })
+
+  it('should check the upserted record', async () => {
+    const doc = await entryModel.findById(entryId)
+    expect(doc.diaryId).to.eql('doctors')
+    expect(doc.originId).to.eql('doctors') // or should it be something else?
+    expect(doc.startDateTime).to.eql(DATE)
+    // expect(doc.endDateTime).to.eql()
   })
 
   it('should shutdown Tymly', async () => {
