@@ -2,6 +2,8 @@
 
 const moment = require('moment')
 
+// todo: handle timezones?
+
 module.exports = class CreateDiaryEntry {
   init (resourceConfig, env, callback) {
     this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
@@ -10,16 +12,31 @@ module.exports = class CreateDiaryEntry {
     callback(null)
   }
 
-  run (event, context) {
-    const errors = []
+  async run (event, context) {
     const date = moment(event.startDateTime).format('YYYY-MM-DD')
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-
     const endDateTime = moment(event.startDateTime).add(diary.duration, 'minutes')
 
-    // todo: check against maxConcurrency & maxCapacity
+    // todo: check maxCapacity
+    const entriesAtDateTime = await this.entryModel.find({
+      where: {
+        diaryId: {
+          equals: this.diaryId
+        },
+        startDateTime: {
+          equals: event.startDateTime
+        }
+      }
+    })
+
+    if (entriesAtDateTime.length >= diary.maxConcurrency) {
+      return context.sendTaskFailure({
+        cause: 'createDiaryEntryFail',
+        error: 'Max. appointments already made at this time.'
+      })
+    }
 
     if (diary.endTime && diary.startTime) {
       const startRule = moment(date + 'T' + diary.startTime)
@@ -28,14 +45,25 @@ module.exports = class CreateDiaryEntry {
       const min = moment.min(moment(event.startDateTime), startRule)
       const max = moment.max(endDateTime, endRule)
 
-      if (min !== startRule) errors.push(`The appointment must be after ${startRule.format('HH:mm:ss')}.`)
-      if (max !== endRule) errors.push(`The appointment must be before ${endRule.format('HH:mm:ss')}.`)
+      if (min !== startRule || max !== endRule) {
+        return context.sendTaskFailure({
+          cause: 'createDiaryEntryFail',
+          error: `The appointment must be between ${startRule.format('HH:mm:ss')} and ${endRule.format('HH:mm:ss')}.`
+        })
+      }
     }
 
     if (diary.restrictions) {
       Object.keys(diary.restrictions).forEach(restriction => {
         const timesAffected = diary.restrictions[restriction].timesAffected
-        // const changes = diary.restrictions[restriction].changes
+        const changes = diary.restrictions[restriction].changes
+
+        if (changes.maxConcurrency && entriesAtDateTime.length >= changes.maxConcurrency) {
+          return context.sendTaskFailure({
+            cause: 'createDiaryEntryFail',
+            error: 'Max. appointments already made at this time.'
+          })
+        }
 
         const startRule = moment(date + 'T' + timesAffected[0])
         const endRule = moment(date + 'T' + timesAffected[1])
@@ -44,24 +72,22 @@ module.exports = class CreateDiaryEntry {
           (startRule <= moment(event.startDateTime) && moment(event.startDateTime) >= endRule) ||
           (startRule <= endDateTime && endDateTime >= endRule)
         ) {
-          // todo: check the changed concurrency
-          errors.push(`The start date of this appointment falls within the restriction: ${restriction}.`)
+          return context.sendTaskFailure({
+            cause: 'createDiaryEntryFail',
+            error: `The date of this appointment falls within the restriction: ${restriction}.`
+          })
         }
       })
     }
 
-    if (errors.length > 0) {
-      return context.sendTaskFailure({error: 'invalid entry time', cause: errors.join(' ')})
-    } else {
-      this.entryModel.upsert({
-        startDateTime: event.startDateTime,
-        originId: context.stateMachineMeta.name,
-        diaryId: this.diaryId,
-        endDateTime: endDateTime.format()
-      }, {}, (err, doc) => {
-        if (err) return context.sendTaskFailure({error: 'createDiaryEntryFail', cause: err})
-        context.sendTaskSuccess(doc)
-      })
-    }
+    this.entryModel.upsert({
+      startDateTime: event.startDateTime,
+      originId: context.stateMachineMeta.name,
+      diaryId: this.diaryId,
+      endDateTime: endDateTime.format()
+    }, {}, (err, doc) => {
+      if (err) return context.sendTaskFailure({error: 'createDiaryEntryFail', cause: err})
+      context.sendTaskSuccess(doc)
+    })
   }
 }

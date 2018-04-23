@@ -14,9 +14,7 @@ module.exports = class GetAvailableDiarySlots {
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
     const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
 
-    // Use entries and diary (rules) to find out available times
-    console.log('Diary:', diary)
-    console.log('Entries:', entries)
+    // todo: use entries and diary (rules) to find out available times
 
     const availableTimes = [
       new Date('2018-04-17T10:00:00.000Z'),

@@ -9,10 +9,49 @@ const CREATE_ENTRY_STATE_MACHINE_NAME = 'test_createDiaryEntry'
 const CANCEL_ENTRY_STATE_MACHINE_NAME = 'test_cancelDiaryEntry'
 
 const DURATION = 60
-const DATE_TIME = '2018-04-23T09:11:04.915Z'
+const DATE_TIME = '2018-04-23T09:30:00'
 const EXPECTED_END_DATE_TIME = moment(DATE_TIME).add(DURATION, 'minutes').format()
-const BAD_DATE_TIME = '2018-04-23T07:11:04.915Z'
-const BAD_DATE_TIME_1 = '2018-04-23T12:11:04.915Z'
+const BAD_DATE_TIME = '2018-04-23T06:30:00'
+const BAD_DATE_TIME_1 = '2018-04-23T12:30:00'
+const BAD_DATE_TIME_2 = '2018-04-23T15:30:00'
+
+const TEST_RECORDS = [
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-23T09:30:00',
+    endDateTime: '2018-04-23T10:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-23T12:30:00',
+    endDateTime: '2018-04-23T13:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-22T11:30:00',
+    endDateTime: '2018-04-22T12:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-23T15:30:00',
+    endDateTime: '2018-04-23T16:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-23T15:30:00',
+    endDateTime: '2018-04-23T16:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-23T15:30:00',
+    endDateTime: '2018-04-23T16:30:00'
+  },
+  {
+    diaryId: 'doctors',
+    startDateTime: '2018-04-22T15:30:00',
+    endDateTime: '2018-04-22T16:30:00'
+  }
+]
 
 describe('Tests the state resource which handle diary entries', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -51,6 +90,10 @@ describe('Tests the state resource which handle diary entries', function () {
     expect(Object.keys(diaryService.diaries).includes('test_doctors')).to.eql(true)
   })
 
+  it('should create some records', async () => {
+    for (let rec of TEST_RECORDS) { await entryModel.upsert(rec, {}) }
+  })
+
   it('should start the create diary state machine with a valid date time', done => {
     statebox.startExecution(
       {
@@ -71,26 +114,6 @@ describe('Tests the state resource which handle diary entries', function () {
     )
   })
 
-  it('should start the create diary state machine with a start date time that collides with lunch time', done => {
-    statebox.startExecution(
-      {
-        startDateTime: BAD_DATE_TIME_1
-      },
-      CREATE_ENTRY_STATE_MACHINE_NAME,
-      {
-        sendResponse: 'COMPLETE'
-      },
-      (err, executionDescription) => {
-        if (err) return done(err)
-        expect(executionDescription.currentStateName).to.eql('CreateEntry')
-        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
-        expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.errorMessage).to.eql('The start date of this appointment falls within the restriction: lunchTime.')
-        done()
-      }
-    )
-  })
-
   it('should start the create diary state machine with a date time that does not fall within the start/end rules', done => {
     statebox.startExecution(
       {
@@ -105,7 +128,50 @@ describe('Tests the state resource which handle diary entries', function () {
         expect(executionDescription.currentStateName).to.eql('CreateEntry')
         expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
         expect(executionDescription.status).to.eql('FAILED')
-        expect(executionDescription.errorMessage).to.eql('The appointment must be after 08:30:00.')
+        expect(executionDescription.errorMessage).to.eql('createDiaryEntryFail')
+        expect(executionDescription.errorCode).to.eql('The appointment must be between 08:30:00 and 22:30:00.')
+        done()
+      }
+    )
+  })
+
+  it('should start the create diary state machine with a start date time that collides with lunch time', done => {
+    statebox.startExecution(
+      {
+        startDateTime: BAD_DATE_TIME_1
+      },
+      CREATE_ENTRY_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.currentStateName).to.eql('CreateEntry')
+        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.errorMessage).to.eql('createDiaryEntryFail')
+        expect(executionDescription.errorCode).to.eql('The date of this appointment falls within the restriction: lunchTime.')
+        done()
+      }
+    )
+  })
+
+  it('should start the create diary state machine with a start date time where max concurrency has already been met', done => {
+    statebox.startExecution(
+      {
+        startDateTime: BAD_DATE_TIME_2
+      },
+      CREATE_ENTRY_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.currentStateName).to.eql('CreateEntry')
+        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.errorCode).to.eql('Max. appointments already made at this time.')
+        expect(executionDescription.errorMessage).to.eql('createDiaryEntryFail')
         done()
       }
     )
