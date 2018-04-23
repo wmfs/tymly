@@ -132,20 +132,20 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.availableTimes).to.eql(
-          [['08:30:00', 1],
-            ['09:30:00', 1],
-            ['10:30:00', 0],
-            ['11:30:00', 0],
-            ['12:30:00', 0],
-            ['13:30:00', 0],
-            ['14:30:00', 1],
-            ['15:30:00', 0],
-            ['16:30:00', 0],
-            ['17:30:00', 0],
-            ['18:30:00', 0],
-            ['19:30:00', 0],
-            ['20:30:00', 0],
-            ['21:30:00', 0]]
+          ['08:30:00',
+            '09:30:00',
+            '10:30:00',
+            '11:30:00',
+            '12:30:00',
+            '13:30:00',
+            '14:30:00',
+            '15:30:00',
+            '16:30:00',
+            '17:30:00',
+            '18:30:00',
+            '19:30:00',
+            '20:30:00',
+            '21:30:00']
         )
         done()
       }
@@ -177,19 +177,19 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.availableTimes).to.eql(
-          [['09:30:00', 1],
-            ['10:30:00', 1],
-            ['11:30:00', 0],
-            ['12:30:00', 0],
-            ['13:30:00', 0],
-            ['14:30:00', 1],
-            ['15:30:00', 0],
-            ['16:30:00', 0],
-            ['17:30:00', 0],
-            ['18:30:00', 0],
-            ['19:30:00', 0],
-            ['20:30:00', 1],
-            ['21:30:00', 0]]
+          ['09:30:00',
+            '10:30:00',
+            '11:30:00',
+            '12:30:00',
+            '13:30:00',
+            '14:30:00',
+            '15:30:00',
+            '16:30:00',
+            '17:30:00',
+            '18:30:00',
+            '19:30:00',
+            '20:30:00',
+            '21:30:00']
         )
         done()
       }
