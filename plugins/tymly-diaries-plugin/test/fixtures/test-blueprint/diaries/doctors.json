@@ -4,17 +4,24 @@
   "maxCapacity": 50,
   "startTime": "08:30:00",
   "endTime": "22:30:00",
-  "restrictions": [
-    {
-      "lunchTime": {
-        "timesAffected": [
-          "12:00:00",
-          "13:30:00"
-        ],
-        "changes": {
-          "maxConcurrency": 2
-        }
+  "restrictions": {
+    "lunchTime": {
+      "timesAffected": [
+        "12:00:00",
+        "13:30:00"
+      ],
+      "changes": {
+        "maxConcurrency": 0
+      }
+    },
+    "changeOfShift": {
+      "timesAffected": [
+        "18:00:00",
+        "18:15:00"
+      ],
+      "changes": {
+        "maxConcurrency": 3
       }
     }
-  ]
+  }
 }

@@ -19,15 +19,35 @@ module.exports = class CreateDiaryEntry {
 
     const endDateTime = moment(event.startDateTime).add(diary.duration, 'minutes')
 
-    if (diary.endTime && diary.startTime) {
-      const endRule = moment(date + 'T' + diary.endTime)
-      const startRule = moment(date + 'T' + diary.startTime)
+    // todo: check against maxConcurrency & maxCapacity
 
-      const max = moment.max(endDateTime, endRule)
+    if (diary.endTime && diary.startTime) {
+      const startRule = moment(date + 'T' + diary.startTime)
+      const endRule = moment(date + 'T' + diary.endTime)
+
       const min = moment.min(moment(event.startDateTime), startRule)
+      const max = moment.max(endDateTime, endRule)
 
       if (min !== startRule) errors.push(`The appointment must be after ${startRule.format('HH:mm:ss')}.`)
       if (max !== endRule) errors.push(`The appointment must be before ${endRule.format('HH:mm:ss')}.`)
+    }
+
+    if (diary.restrictions) {
+      Object.keys(diary.restrictions).forEach(restriction => {
+        const timesAffected = diary.restrictions[restriction].timesAffected
+        // const changes = diary.restrictions[restriction].changes
+
+        const startRule = moment(date + 'T' + timesAffected[0])
+        const endRule = moment(date + 'T' + timesAffected[1])
+
+        if (
+          (startRule <= moment(event.startDateTime) && moment(event.startDateTime) >= endRule) ||
+          (startRule <= endDateTime && endDateTime >= endRule)
+        ) {
+          // todo: check the changed concurrency
+          errors.push(`The start date of this appointment falls within the restriction: ${restriction}.`)
+        }
+      })
     }
 
     if (errors.length > 0) {

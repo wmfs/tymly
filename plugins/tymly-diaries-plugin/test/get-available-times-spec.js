@@ -13,6 +13,7 @@ const DURATION = 60
 const DATE_TIME = '2018-04-23T09:11:04.915Z'
 const EXPECTED_END_DATE_TIME = moment(DATE_TIME).add(DURATION, 'minutes').format()
 const BAD_DATE_TIME = '2018-04-23T07:11:04.915Z'
+const BAD_DATE_TIME_1 = '2018-04-23T12:11:04.915Z'
 
 describe('Test the get available times state resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -90,7 +91,27 @@ describe('Test the get available times state resource', function () {
     )
   })
 
-  it('should start the create diary state machine with a date time that does not fall within the rules', done => {
+  it('should start the create diary state machine with a start date time that collides with lunch time', done => {
+    statebox.startExecution(
+      {
+        startDateTime: BAD_DATE_TIME_1
+      },
+      CREATE_ENTRY_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.currentStateName).to.eql('CreateEntry')
+        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
+        expect(executionDescription.status).to.eql('FAILED')
+        expect(executionDescription.errorMessage).to.eql('The start date of this appointment falls within the restriction: lunchTime.')
+        done()
+      }
+    )
+  })
+
+  it('should start the create diary state machine with a date time that does not fall within the start/end rules', done => {
     statebox.startExecution(
       {
         startDateTime: BAD_DATE_TIME
