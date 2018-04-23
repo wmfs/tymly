@@ -9,7 +9,7 @@ module.exports = class CancelDiaryEntry {
   }
 
   run (event, context) {
-    console.log('event: ', event)
+    // console.log('event: ', event)
     // console.log('context: ', context)
     const id = event
     this.entryModel.destroyById(id, err => {
