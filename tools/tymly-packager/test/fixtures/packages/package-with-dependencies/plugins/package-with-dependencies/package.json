@@ -12,7 +12,7 @@
     "url": "fakey://fakey"
   },
   "devDependencies": {
-    "mocha": "5.1.0"
+    "mocha": "5.1.1"
   },
   "dependencies": {
     "rillet": "^1.11.0"

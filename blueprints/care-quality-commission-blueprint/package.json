@@ -5,7 +5,7 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "4.1.2",
-    "mocha": "5.1.0",
+    "mocha": "5.1.1",
     "standard": "11.0.1",
     "debug": "3.1.0",
     "tymly": "^0.0.17",
