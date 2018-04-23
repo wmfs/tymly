@@ -1,5 +1,8 @@
 'use strict'
 
+const getAvailableDiarySlots = require('./helpers/generate-time-slots')
+const moment = require('moment')
+
 module.exports = class GetAvailableDiarySlots {
   init (resourceConfig, env, callback) {
     this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
@@ -9,18 +12,22 @@ module.exports = class GetAvailableDiarySlots {
   }
 
   async run (event, context) {
-    // const namespace = context.stateMachineMeta.namespace
-    // const diaryService = this.services.diaries
-    // const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-    // const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
+    const namespace = context.stateMachineMeta.namespace
+    const diaryService = this.services.diaries
+    const diary = diaryService.diaries[namespace + '_' + this.diaryId]
+    const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
 
-    // todo: use entries and diary (rules) to find out available times
+    const availableTimes = getAvailableDiarySlots(diary, event.date)
 
-    const availableTimes = [
-      new Date('2018-04-17T10:00:00.000Z'),
-      new Date('2018-04-17T12:00:00.000Z'),
-      new Date('2018-04-17T15:00:00.000Z')
-    ]
+    Object.values(availableTimes).forEach((timeSlot, index) => {
+      Object.values(entries).forEach(booking => {
+        if (timeSlot[0] === moment(booking.startDateTime).format('HH:mm:ss')) {
+          timeSlot[1]++
+          if (timeSlot[1] >= diary.maxConcurrency) availableTimes.splice(index, 1)
+        }
+      })
+    })
+
     context.sendTaskSuccess({availableTimes})
   }
 }
