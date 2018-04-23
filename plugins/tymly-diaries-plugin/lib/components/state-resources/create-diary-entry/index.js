@@ -1,5 +1,7 @@
 'use strict'
 
+const moment = require('moment')
+
 module.exports = class CreateDiaryEntry {
   init (resourceConfig, env, callback) {
     this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
@@ -9,14 +11,14 @@ module.exports = class CreateDiaryEntry {
   }
 
   run (event, context) {
-    /*
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-    */
 
-    // todo: calculate the end time using the start time and the rules
-    const endDateTime = null
+    // todo: check if end datetime doesn't fall after diary.endTime rule or diary.restrictions
+    const endDateTime = moment(event.startDateTime)
+      .add(diary.duration, 'minutes')
+      .format()
 
     this.entryModel.upsert({
       startDateTime: event.startDateTime,

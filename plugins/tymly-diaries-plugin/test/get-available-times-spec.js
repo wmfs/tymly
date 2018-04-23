@@ -3,11 +3,13 @@
 const tymly = require('tymly')
 const path = require('path')
 const expect = require('chai').expect
+const moment = require('moment')
 
 const GET_TIMES_STATE_MACHINE_NAME = 'test_getAvailableTimes'
 const CREATE_ENTRY_STATE_MACHINE_NAME = 'test_createDiaryEntry'
 
 const DATE = '2018-04-23T07:11:04.915Z'
+const DURATION = 60
 
 describe('Test the get available times state resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
@@ -57,8 +59,6 @@ describe('Test the get available times state resource', function () {
       },
       (err, executionDescription) => {
         if (err) return done(err)
-        // console.log(JSON.stringify(executionDescription, null, 2))
-        // console.log('Output:', executionDescription.ctx.availableTimes)
         expect(executionDescription.currentStateName).to.eql('GetAvailableTimes')
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -78,8 +78,6 @@ describe('Test the get available times state resource', function () {
       },
       (err, executionDescription) => {
         if (err) return done(err)
-        // console.log(JSON.stringify(executionDescription, null, 2))
-        // console.log('Output:', executionDescription.ctx.availableTimes)
         expect(executionDescription.currentStateName).to.eql('CreateEntry')
         expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
         expect(executionDescription.status).to.eql('SUCCEEDED')
@@ -94,7 +92,7 @@ describe('Test the get available times state resource', function () {
     expect(doc.diaryId).to.eql('doctors')
     expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
     expect(doc.startDateTime).to.eql(DATE)
-    // expect(doc.endDateTime).to.eql()
+    expect(doc.endDateTime).to.eql(moment(doc.startDateTime).add(DURATION, 'minutes').format())
   })
 
   it('should shutdown Tymly', async () => {
