@@ -28,6 +28,10 @@ module.exports = class GetAvailableDiarySlots {
       })
     })
 
+    Object.values(availableTimes).map((timeSlot, index) => {
+      availableTimes[index] = timeSlot[0]
+    })
+
     context.sendTaskSuccess({availableTimes})
   }
 }
