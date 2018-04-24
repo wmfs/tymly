@@ -23,7 +23,7 @@ const expressionTypeFormatters = {
   },
   like: function (columnName, value, values) {
     values.push(`%${value}%`)
-    return columnName + ' LIKE $' + values.length
+    return columnName + '::text LIKE $' + values.length
   }
 }
 
