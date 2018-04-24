@@ -256,6 +256,21 @@ describe('Callback API', function () {
           }
         )
       })
+
+      it('find who\'s name contains \'Mar\'', function (done) {
+        models.pgmodelTest.person.find(
+          {
+            where: {
+              firstName: {like: 'Mar'}
+            }
+          },
+          function (err, doc) {
+            expect(doc.length).to.eql(1)
+            expect(doc[0].firstName).to.eql('Marge')
+            done(err)
+          }
+        )
+      })
     })
 
     describe('find by id', () => {

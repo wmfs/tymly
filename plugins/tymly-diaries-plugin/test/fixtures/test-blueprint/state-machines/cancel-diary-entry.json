@@ -1,0 +1,20 @@
+{
+  "Comment": "State machine to cancel a diary entry.",
+  "StartAt": "CancelEntry",
+  "States": {
+    "CancelEntry": {
+      "Type": "Task",
+      "Resource": "module:cancelDiaryEntry",
+      "InputPath": "$.id",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

@@ -166,6 +166,11 @@ class MemoryModel {
                     matches = false
                   }
                   break
+                case 'like':
+                  if (!(row[propertyId].includes(expression))) {
+                    matches = false
+                  }
+                  break
               }
             }
           )
