@@ -131,22 +131,9 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentStateName).to.eql('GetAvailableTimes')
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.availableTimes).to.eql(
-          ['08:30:00',
-            '09:30:00',
-            '10:30:00',
-            '11:30:00',
-            '12:30:00',
-            '13:30:00',
-            '14:30:00',
-            '15:30:00',
-            '16:30:00',
-            '17:30:00',
-            '18:30:00',
-            '19:30:00',
-            '20:30:00',
-            '21:30:00']
-        )
+        expect(executionDescription.ctx.availableTimes[0].label).to.be.a('string')
+        expect(executionDescription.ctx.availableTimes[0].label).to.eql('08:30:00')
+        expect(executionDescription.ctx.availableTimes[0].value).to.be.a('Date')
         done()
       }
     )
@@ -176,21 +163,9 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentStateName).to.eql('GetAvailableTimes')
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.availableTimes).to.eql(
-          ['09:30:00',
-            '10:30:00',
-            '11:30:00',
-            '12:30:00',
-            '13:30:00',
-            '14:30:00',
-            '15:30:00',
-            '16:30:00',
-            '17:30:00',
-            '18:30:00',
-            '19:30:00',
-            '20:30:00',
-            '21:30:00']
-        )
+        expect(executionDescription.ctx.availableTimes[0].label).to.be.a('string')
+        expect(executionDescription.ctx.availableTimes[0].label).to.eql('09:30:00')
+        expect(executionDescription.ctx.availableTimes[0].value).to.be.a('Date')
         done()
       }
     )

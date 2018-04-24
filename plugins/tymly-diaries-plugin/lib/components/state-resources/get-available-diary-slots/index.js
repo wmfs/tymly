@@ -15,7 +15,7 @@ module.exports = class GetAvailableDiarySlots {
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-    const entries = await this.entryModel.find({where: {diaryId: {equals: this.diaryId}}})
+    const entries = await this.entryModel.find({where: {'diaryId': {equals: this.diaryId}}})
 
     const availableTimes = getAvailableDiarySlots(diary, event.date)
 
@@ -28,10 +28,13 @@ module.exports = class GetAvailableDiarySlots {
       })
     })
 
-    Object.values(availableTimes).map((timeSlot, index) => {
-      availableTimes[index] = timeSlot[0]
+    const times = Object.values(availableTimes).map((timeSlot) => {
+      return {
+        label: timeSlot[0],
+        value: new Date(event.date.split('T')[0] + 'T' + timeSlot[0])
+      }
     })
 
-    context.sendTaskSuccess({availableTimes})
+    context.sendTaskSuccess({availableTimes: times})
   }
 }
