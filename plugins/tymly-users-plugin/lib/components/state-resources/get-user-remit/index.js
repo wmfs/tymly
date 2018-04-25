@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const debug = require('debug')('tymly-users-plugin')
+const shasum = require('shasum')
 
 class GetUserRemit {
   init (resourceConfig, env, callback) {
@@ -61,7 +62,10 @@ class GetUserRemit {
           resourceName,
           'create'
         )
-        if (isAuth) keys[resourceName] = startable[resourceName]
+        if (isAuth) {
+          keys[resourceName] = startable[resourceName]
+          keys[resourceName].shasum = shasum(startable[resourceName])
+        }
         return keys
       }, {})
       promises.push(this.processComponents(userRemit, 'startable', allowedStartable, event.clientManifest['startable']))
@@ -90,7 +94,8 @@ class GetUserRemit {
       switch (componentType) {
         case 'forms':
         case 'boards':
-          this.checkShasum(userRemit, alreadyInClientManifest, componentType, componentName)
+        case 'startable':
+          this.checkShasum(userRemit, alreadyInClientManifest, components[componentName], componentType, componentName)
           break
         default:
           if (alreadyInClientManifest.indexOf(componentName) === -1) {
@@ -112,11 +117,11 @@ class GetUserRemit {
     return userRemit
   } // processComponents
 
-  checkShasum (userRemit, alreadyInClientManifest, componentType, componentName) {
-    const componentShasum = this[componentType][componentType][componentName].shasum
-    const clientShasum = alreadyInClientManifest[componentName]
+  checkShasum (userRemit, alreadyInClientManifest, component, type, name) {
+    const componentShasum = component.shasum
+    const clientShasum = alreadyInClientManifest[name]
     if (componentShasum !== clientShasum) {
-      userRemit.add[componentType][componentName] = this[componentType][componentType][componentName]
+      userRemit.add[type][name] = component
     }
   }
 
