@@ -100,7 +100,6 @@ describe('todo changes tymly-users-plugin tests', function () {
       },
       function (err, executionDescription) {
         try {
-          console.log('£££', executionDescription)
           expect(err).to.eql(null)
           expect(executionDescription.currentStateName).to.eql('CreateTodoEntry')
           expect(executionDescription.currentResource).to.eql('module:createTodoEntry')
@@ -277,7 +276,6 @@ describe('todo changes tymly-users-plugin tests', function () {
         sendResponse: 'COMPLETE'
       },
       function (err, executionDescription) {
-        console.log(executionDescription)
         expect(err).to.eql(null)
         expect(executionDescription.status).to.eql('FAILED')
         expect(executionDescription.errorCode).to.eql('removeTodoFail')

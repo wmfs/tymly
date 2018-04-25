@@ -87,22 +87,16 @@ class GetUserRemit {
     userRemit.add[componentType] = {}
 
     Object.keys(components).forEach(componentName => {
-      if (componentType === 'forms') {
-        const formShasum = this.forms.forms[componentName].shasum
-        const clientShasum = alreadyInClientManifest[componentName]
-        if (formShasum !== clientShasum) {
-          userRemit.add[componentType][componentName] = this.forms.forms[componentName]
-        }
-      } else if (componentType === 'boards') {
-        const boardShasum = this.boards.boards[componentName].shasum
-        const clientShasum = alreadyInClientManifest[componentName]
-        if (boardShasum !== clientShasum) {
-          userRemit.add[componentType][componentName] = this.boards.boards[componentName]
-        }
-      } else {
-        if (alreadyInClientManifest.indexOf(componentName) === -1) {
-          userRemit.add[componentType][componentName] = components[componentName]
-        }
+      switch (componentType) {
+        case 'forms':
+        case 'boards':
+          this.checkShasum(userRemit, alreadyInClientManifest, componentType, componentName)
+          break
+        default:
+          if (alreadyInClientManifest.indexOf(componentName) === -1) {
+            userRemit.add[componentType][componentName] = components[componentName]
+          }
+          break
       }
     })
 
@@ -117,6 +111,14 @@ class GetUserRemit {
     }
     return userRemit
   } // processComponents
+
+  checkShasum (userRemit, alreadyInClientManifest, componentType, componentName) {
+    const componentShasum = this[componentType][componentType][componentName].shasum
+    const clientShasum = alreadyInClientManifest[componentName]
+    if (componentShasum !== clientShasum) {
+      userRemit.add[componentType][componentName] = this[componentType][componentType][componentName]
+    }
+  }
 
   findStartableMachines (machines, categories) {
     const startable = {}
