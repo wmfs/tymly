@@ -1,0 +1,32 @@
+{
+  "Comment": "Find a cat.",
+  "StartAt": "Finding",
+  "version": "1.0",
+  "States": {
+    "Finding": {
+      "Type": "Task",
+      "InputPath": "$.catDoc",
+      "Resource": "module:finding",
+      "ResourceConfig": {
+        "modelId": "cat",
+        "filter": {
+          "where": {
+            "name": {
+              "equals": "Rupert"
+            }
+          }
+        }
+      },
+      "ResultPath": "$.catDocFromStorage",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
