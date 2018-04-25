@@ -1,6 +1,8 @@
 'use strict'
+
 const boom = require('boom')
 const debug = require('debug')('findingOne')
+
 module.exports = class Finding {
   init (resourceConfig, env, callback) {
     this.modelId = resourceConfig.modelId

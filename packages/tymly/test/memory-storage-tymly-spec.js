@@ -73,24 +73,15 @@ describe('Memory tymly-storage tests', function () {
     statebox.startExecution(
       {}, // input
       STATE_MACHINE_NAME2, // state machine name
-      {}, // options
+      {
+        sendResponse: 'COMPLETE'
+      }, // options
       function (err, result) {
         expect(err).to.eql(null)
-        executionName = result.executionName
-        done()
-      }
-    )
-  })
-
-  it('should successfully complete findACatWhere execution', function (done) {
-    statebox.waitUntilStoppedRunning(
-      executionName,
-      function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME2)
-        expect(executionDescription.currentStateName).to.eql('Finding')
-        expect(executionDescription.ctx.catDocFromStorage.name).to.eql('Rupert')
+        expect(result.status).to.eql('SUCCEEDED')
+        expect(result.stateMachineName).to.eql(STATE_MACHINE_NAME2)
+        expect(result.currentStateName).to.eql('Finding')
+        expect(result.ctx.catDocFromStorage[0].name).to.eql('Rupert')
         done()
       }
     )
