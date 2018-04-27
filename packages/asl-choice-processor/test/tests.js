@@ -57,4 +57,27 @@ describe('Choice tests', function () {
     expect(calculateNextState({foo: 2})).to.equal('SecondMatchState')
     expect(calculateNextState({foo: 3})).to.equal('DefaultMatchState')
   })
+
+  it('Should pick a simple state using Includes', function () {
+    const calculateNextState = choiceProcessor(
+      {
+        Choices: [
+          {
+            Variable: '$.foo',
+            Includes: 'A',
+            Next: 'FirstMatchState'
+          },
+          {
+            Variable: '$.foo',
+            Includes: 'B',
+            Next: 'SecondMatchState'
+          }
+        ],
+        Default: 'DefaultMatchState'
+      }
+    )
+    expect(calculateNextState({foo: ['A', 'G']})).to.equal('FirstMatchState')
+    expect(calculateNextState({foo: ['B', 'C']})).to.equal('SecondMatchState')
+    expect(calculateNextState({foo: ['E', 'F']})).to.equal('DefaultMatchState')
+  })
 })

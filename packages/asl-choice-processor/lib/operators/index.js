@@ -1,6 +1,7 @@
 module.exports = {
   And: require('./and'),
   BooleanEquals: require('./boolean-equals'),
+  Includes: require('./includes'),
   Not: require('./not'),
   NumericEquals: require('./numeric-equals'),
   NumericGreaterThan: require('./numeric-greater-than'),
