@@ -13,12 +13,9 @@ class CreateTodoEntry {
       stateMachineCategory: event.stateMachineCategory,
       requiredHumanInput: event.requiredHumanInput,
       description: event.description,
-      launches: event.launches
+      launches: event.launches,
+      todoTitle: event.todoTitle
     }
-
-    const todoTitle = [event.todoTitle]
-    if (event.boardKeys) Object.keys(event.boardKeys).sort().map(k => todoTitle.push(event.boardKeys[k]))
-    upsert.todoTitle = todoTitle.join('|')
 
     if (event.id) upsert.id = event.id
 
