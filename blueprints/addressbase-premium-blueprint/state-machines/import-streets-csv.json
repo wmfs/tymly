@@ -18,7 +18,7 @@
         "topDownTableOrder": [
           "addressbase_premium_streets_holding"
         ],
-        "truncateTables": true
+        "truncateTables": false
       },
       "End": true
     }
