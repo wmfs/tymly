@@ -16,7 +16,7 @@ class AwaitingHumanInput {
 
   run (event, context, done) {
     let data = {}
-    if (this.dataPath) data = jp.value(event, this.dataPath)
+    if (this.dataPath) data = jp.value(event, this.dataPath) || {}
     if (this.defaults) data = _.defaults(data, this.defaults)
 
     Object.keys(data).forEach(key => (data[key] === null) && delete data[key])
