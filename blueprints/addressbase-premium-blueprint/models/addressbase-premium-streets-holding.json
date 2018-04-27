@@ -118,6 +118,6 @@
       "description": "The date on which this record was inserted into the Local Authority database"
     }
   },
-  "required": ["usrn", "description", "townName", "administrativeArea"]
+  "required": ["usrn", "description", "administrativeArea"]
 }
 
