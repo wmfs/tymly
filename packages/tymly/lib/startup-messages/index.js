@@ -1,9 +1,25 @@
-'use strict'
 const util = require('util')
 
 class StartupMessages {
   constructor () {
     this.reset()
+
+    this.log = console.log
+    this.err = console.error
+  }
+
+  setLog (newLog) {
+    return this._setOutput('log', newLog)
+  } // setLog
+
+  setErr (newErr) {
+    return this._setOutput('err', newErr)
+  }
+
+  _setOutput (name, newStr) {
+    const old = this[name]
+    this[name] = newStr
+    return old
   }
 
   reset () {
@@ -13,28 +29,28 @@ class StartupMessages {
     this.warnings = []
   }
 
-  title (text) {
-    console.log('')
-    console.log('Starting Tymly')
-    console.log('---------------')
+  title (text = 'Tymly') {
+    this.log('')
+    this.log(`Starting ${text}`)
+    this.log('---------------')
   }
 
   heading (text) {
-    console.log('')
-    console.log('  ' + text + ':')
-    console.log('')
+    this.log('')
+    this.log('  ' + text + ':')
+    this.log('')
   }
 
   subHeading (text) {
-    console.log('  > ' + text)
+    this.log('  > ' + text)
   }
 
   info (text) {
-    console.log('    - ' + text)
+    this.log('    - ' + text)
   }
 
   detail (text) {
-    console.log('      . ' + text)
+    this.log('      . ' + text)
   }
 
   error (err) {
@@ -50,27 +66,27 @@ class StartupMessages {
   showAnyWarnings (phaseLabel) {
     const l = this.warnings.length
     if (l > 0) {
-      console.log()
-      console.log('WARNINGS')
-      console.log('--------')
-      console.log()
+      this.log()
+      this.log('WARNINGS')
+      this.log('--------')
+      this.log()
       let title = 'Tymly encountered ' + l + ' warning'
       if (l !== 1) {
         title += 's'
       }
       title += ' while ' + phaseLabel + ':'
-      console.log(title)
-      console.log()
+      this.log(title)
+      this.log()
       for (let i = 0; i < l; i++) {
-        console.log('[' + (i + 1) + '] ' + this.warnings[i])
+        this.log('[' + (i + 1) + '] ' + this.warnings[i])
       }
     }
   }
 
   showErrors (phaseLabel) {
-    console.error()
-    console.error('ERRORS')
-    console.error('------')
+    this.err()
+    this.err('ERRORS')
+    this.err('------')
     const l = this.errors.length
     let title = 'Tymly encountered ' + l + ' error'
     if (l !== 1) {
@@ -81,16 +97,16 @@ class StartupMessages {
     let error
     for (let i = 0; i < l; i++) {
       error = this.errors[i]
-      console.error('')
-      console.error('[' + (i + 1) + '] ' + error.name)
-      console.error('  - ' + error.message)
+      this.err('')
+      this.err('[' + (i + 1) + '] ' + error.name)
+      this.err('  - ' + error.message)
       if (error.hasOwnProperty('body')) {
-        console.error(error.body)
+        this.err(error.body)
       }
     }
 
-    console.error('')
-    console.error(title)
+    this.err('')
+    this.err(title)
   }
 
   makeErrorsForCallback (eventLabel) {
@@ -108,4 +124,4 @@ class StartupMessages {
   }
 }
 
-module.exports = new StartupMessages()
+module.exports = () => new StartupMessages()

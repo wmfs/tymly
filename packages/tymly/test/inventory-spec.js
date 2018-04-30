@@ -34,7 +34,7 @@ describe('Simple Inventory tests', function () {
       {
         blueprintPaths: blueprintPaths,
         pluginPaths: pluginPaths,
-        messages: startupMessages
+        messages: startupMessages()
       },
       function (err, inventory) {
         expect(err).to.eql(null)

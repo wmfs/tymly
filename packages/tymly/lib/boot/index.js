@@ -5,8 +5,8 @@ const booter = require('./boot')
 const startupMessages = require('./../startup-messages')
 
 module.exports = function bootTymlyServices (options, callback) {
-  const messages = options.messages || startupMessages
-  options.messages = startupMessages
+  const messages = options.messages || startupMessages()
+  options.messages = messages
 
   messages.reset()
   messages.title()
