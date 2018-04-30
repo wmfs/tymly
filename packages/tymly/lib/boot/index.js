@@ -1,12 +1,13 @@
-'use strict'
-
 const loader = require('./load')
 const serviceParser = require('./parse')
 const booter = require('./boot')
 
-const messages = require('./../startup-messages')
+const startupMessages = require('./../startup-messages')
 
 module.exports = function bootTymlyServices (options, callback) {
+  const messages = options.messages || startupMessages
+  options.messages = startupMessages
+
   messages.reset()
   messages.title()
 
@@ -15,7 +16,8 @@ module.exports = function bootTymlyServices (options, callback) {
   if (messages.noErrors) {
     const parsedServices = serviceParser(
       loadedComponents.blueprintComponents,
-      loadedComponents.pluginComponents
+      loadedComponents.pluginComponents,
+      messages
     )
 
     if (parsedServices) {
@@ -26,7 +28,8 @@ module.exports = function bootTymlyServices (options, callback) {
           blueprintComponents: loadedComponents.blueprintComponents,
           pluginPaths: loadedComponents.pluginPaths,
           blueprintPaths: loadedComponents.blueprintPaths,
-          config: options.config
+          config: options.config,
+          messages: options.messages
         },
         callback
       )

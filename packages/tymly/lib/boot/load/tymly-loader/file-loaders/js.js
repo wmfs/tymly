@@ -1,8 +1,5 @@
-'use strict'
 
-const messages = require('./../../../../startup-messages')
-
-module.exports = function jsFileLoader (blueprintMeta, originalKey, jsFilePath) {
+module.exports = function jsFileLoader (blueprintMeta, originalKey, jsFilePath, messages) {
   let loaded
 
   try {

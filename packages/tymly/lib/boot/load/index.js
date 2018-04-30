@@ -1,6 +1,3 @@
-'use strict'
-
-const messages = require('./../../startup-messages')
 const path = require('path')
 const _ = require('lodash')
 const discoverBlueprintDirs = require('./discover-blueprint-dirs')
@@ -9,7 +6,7 @@ const extractRefProperties = require('./extract-ref-properties')
 const tymlyLoader = require('./tymly-loader')
 
 module.exports = function load (options) {
-  messages.heading('Loading')
+  options.messages.heading('Loading')
 
   let pluginPaths = [
     path.resolve(__dirname, './../../plugin')
@@ -24,14 +21,14 @@ module.exports = function load (options) {
     {
       sourcePaths: pluginPaths,
       processRefProperties: false,
-      messages: messages,
+      messages: options.messages,
       suffix: 'components',
       sourceLabel: 'plugins',
       expectModule: true
     }
   )
 
-  let blueprintPaths = discoverBlueprintDirs(pluginPaths)
+  let blueprintPaths = discoverBlueprintDirs(pluginPaths, options.messages)
 
   if (_.isString(options.blueprintPaths)) {
     blueprintPaths.push(options.blueprintPaths)
@@ -42,7 +39,7 @@ module.exports = function load (options) {
   const blueprintComponents = tymlyLoader(
     {
       sourcePaths: blueprintPaths,
-      messages: messages,
+      messages: options.messages,
       expectModule: false,
       sourceLabel: 'blueprints',
       expectedMetaFilename: 'blueprint.json',

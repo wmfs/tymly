@@ -1,5 +1,4 @@
-'use strict'
-const messages = require('./../../startup-messages/index')
+
 const async = require('async')
 
 module.exports = function serviceBoot (options, callback) {
@@ -8,6 +7,8 @@ module.exports = function serviceBoot (options, callback) {
   //  pluginComponents
   //  blueprintComponents
   //  config,
+
+  const messages = options.messages
 
   messages.heading('Booting')
 

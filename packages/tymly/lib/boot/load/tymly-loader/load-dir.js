@@ -1,8 +1,6 @@
-'use strict'
 
 const fs = require('fs')
 const path = require('path')
-const messages = require('./../../../startup-messages')
 const _ = require('lodash')
 const parseMetaJson = require('./parse-meta-json')
 const loadComponentDir = require('./load-component-dir')
@@ -14,14 +12,14 @@ module.exports = function loadDir (rootDir, allComponents, options) {
   const includeDocumentation = options.includeDocumentation || false
 
   if (!quiet) {
-    messages.info(rootDir)
+    options.messages.info(rootDir)
   }
 
   let continueLoading = true
 
   let parsedMetaJson
   if (options.hasOwnProperty('expectedMetaFilename')) {
-    parsedMetaJson = parseMetaJson(rootDir, options.expectedMetaFilename, options.mandatoryMetaKeys)
+    parsedMetaJson = parseMetaJson(rootDir, options.expectedMetaFilename, options.mandatoryMetaKeys, options.messages)
     if (!parsedMetaJson) {
       continueLoading = false
     }
@@ -57,9 +55,9 @@ module.exports = function loadDir (rootDir, allComponents, options) {
                 if (!fileLoaders.hasOwnProperty(ext)) {
                   ext = 'DEFAULT'
                 }
-                loaded = fileLoaders[ext](parsedMetaJson, key, path.join(componentDir, filename))
+                loaded = fileLoaders[ext](parsedMetaJson, key, path.join(componentDir, filename), options.messages)
               } else {
-                loaded = loadComponentDir(parsedMetaJson, key, path.join(componentDir, filename))
+                loaded = loadComponentDir(parsedMetaJson, key, path.join(componentDir, filename), options.messages)
 
                 if (includeDocumentation) {
                   loaded.content.doc = require(path.join(loaded.content.rootDirPath, 'doc'))

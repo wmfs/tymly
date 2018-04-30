@@ -1,9 +1,7 @@
-'use strict'
+
 const _ = require('lodash')
 
-const messages = require('./../../../../startup-messages')
-
-module.exports = function jsonFileLoader (blueprintMeta, originalKey, jsonFilePath) {
+module.exports = function jsonFileLoader (blueprintMeta, originalKey, jsonFilePath, messages) {
   let loaded
 
   try {

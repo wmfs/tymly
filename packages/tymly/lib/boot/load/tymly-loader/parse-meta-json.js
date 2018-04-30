@@ -1,9 +1,8 @@
 'use strict'
 
 const path = require('path')
-const messages = require('./../../../startup-messages')
 
-module.exports = function parseBlueprintJson (rootDir, expectedMetaFilename, mandatoryMetaKeys) {
+module.exports = function parseMetaJson (rootDir, expectedMetaFilename, mandatoryMetaKeys, messages) {
   let parsed
 
   // TODO: If dir has blueprint.json on the end then don't bother appending.

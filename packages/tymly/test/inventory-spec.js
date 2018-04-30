@@ -2,6 +2,7 @@
 
 const path = require('path')
 const expect = require('chai').expect
+const startupMessages = require('../lib/startup-messages')
 
 describe('Simple Inventory tests', function () {
   const tymly = require('../lib')
@@ -32,7 +33,8 @@ describe('Simple Inventory tests', function () {
     inventoryService.collateEverything(
       {
         blueprintPaths: blueprintPaths,
-        pluginPaths: pluginPaths
+        pluginPaths: pluginPaths,
+        messages: startupMessages
       },
       function (err, inventory) {
         expect(err).to.eql(null)

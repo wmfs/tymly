@@ -1,9 +1,7 @@
-'use strict'
 
-const messages = require('./../../../startup-messages')
 const _ = require('lodash')
 
-module.exports = function loadComponentDir (blueprintMeta, originalKey, rootDirPath) {
+module.exports = function loadComponentDir (blueprintMeta, originalKey, rootDirPath, messages) {
   let loaded
 
   try {

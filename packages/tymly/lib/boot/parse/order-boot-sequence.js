@@ -1,10 +1,8 @@
-'use strict'
 
 const debug = require('debug')('tymly')
-const messages = require('./../../startup-messages')
 const _ = require('lodash')
 
-module.exports = function bootSequenceOrder (serviceComponents) {
+module.exports = function bootSequenceOrder (serviceComponents, messages) {
   let orderedServiceNames = []
   let orderedServiceComponents
   let depthLimit = _.keys(serviceComponents).length

@@ -1,9 +1,7 @@
-'use strict'
 
-const messages = require('./../../../startup-messages')
 const _ = require('lodash')
 
-module.exports = function (blueprintComponents, refProperties, pluginComponents, parsedMetaJson) {
+module.exports = function (blueprintComponents, refProperties, messages) {
   function getFullReference (componentType, refName) {
     let matchedValue
     if (blueprintComponents[componentType]) {

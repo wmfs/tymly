@@ -4,9 +4,8 @@ const path = require('path')
 const _ = require('lodash')
 const fs = require('fs')
 const pathExploder = require('./tymly-loader/path-exploder')
-const messages = require('./../../startup-messages')
 
-module.exports = function discoverBlueprintDirs (rawPaths) {
+module.exports = function discoverBlueprintDirs (rawPaths, messages) {
   const pluginPaths = pathExploder(rawPaths, {expectModule: true, messages: messages})
 
   const pluginBlueprintDirs = []

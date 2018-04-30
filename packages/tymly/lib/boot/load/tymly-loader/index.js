@@ -1,7 +1,5 @@
-'use strict'
 
 const loadDir = require('./load-dir')
-const messages = require('./../../../startup-messages')
 const pathExploder = require('./path-exploder')
 const processRefProperties = require('./process-ref-properties')
 
@@ -9,6 +7,7 @@ const processRefProperties = require('./process-ref-properties')
 //   sourceLabel
 
 module.exports = function tymlyLoader (options) {
+  const messages = options.messages
   const components = {}
 
   messages.subHeading('Loading ' + options.sourceLabel)
@@ -26,7 +25,7 @@ module.exports = function tymlyLoader (options) {
   })
 
   if (options['refProperties']) {
-    processRefProperties(components, options.refProperties, options.pluginComponent)
+    processRefProperties(components, options.refProperties, options.messages)
   }
 
   return components

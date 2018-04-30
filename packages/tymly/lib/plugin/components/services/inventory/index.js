@@ -79,7 +79,8 @@ class InventoryService {
           pluginInfo.components,
           {
             includeDocumentation: true,
-            quiet: false
+            quiet: false,
+            messages: options.messages
           }
         )
         inventory.plugins[pluginPath] = pluginInfo
