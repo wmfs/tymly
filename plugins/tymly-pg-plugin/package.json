@@ -10,7 +10,7 @@
     "debug": "3.1.0",
     "dottie": "2.0.0",
     "hl-pg-client": "^0.0.2",
-    "lodash": "4.17.5",
+    "lodash": "4.17.10",
     "pg-delta-file": "^0.0.6",
     "pg-diff-sync": "^0.0.12",
     "pg-info": "^0.0.16",
