@@ -9,8 +9,20 @@ const schema = require('./schema.json')
 // 3] Else use the system temp dir
 
 const os = require('os')
+const { promisify } = require('util')
 const mkdirp = require('mkdirp')
 const path = require('path')
+
+function makeTempDir (tempDir, subDirPath, callback) {
+  const fullPath = path.join(tempDir, 'tymly', subDirPath)
+
+  mkdirp(
+    fullPath,
+    (err) => err ? callback(err) : callback(null, fullPath)
+  )
+} // makeTempDir
+
+const makeTempDirP = promisify(makeTempDir)
 
 class TempService {
   boot (options, callback) {
@@ -52,19 +64,13 @@ class TempService {
    * )
    */
   makeTempDir (subDirPath, callback) {
-    const fullPath = path.join(this.tempDir, 'tymly', subDirPath)
-    mkdirp(
-      fullPath,
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, fullPath)
-        }
-      }
-    )
-  }
-}
+    if (!callback) {
+      return makeTempDirP(this.tempDir, subDirPath)
+    }
+
+    makeTempDir(this.tempDir, subDirPath, callback)
+  } // makeTempDir
+} // class TempService
 
 module.exports = {
   schema: schema,
