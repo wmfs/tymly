@@ -9,7 +9,7 @@
     "hl-pg-client": "0.0.2",
     "jsonwebtoken": "7.4.1",
     "mocha": "5.1.1",
-    "safe-buffer": "5.1.1",
+    "safe-buffer": "5.1.2",
     "standard": "11.0.1",
     "tymly": "^0.0.17",
     "tymly-pg-plugin": "^0.0.8",
