@@ -132,7 +132,7 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.availableTimes[0].label).to.be.a('string')
-        expect(executionDescription.ctx.availableTimes[0].label).to.eql('08:30:00')
+        expect(executionDescription.ctx.availableTimes[0].label).to.eql('08:30')
         expect(executionDescription.ctx.availableTimes[0].value.includes('2018-04-23T08:30:00')).to.eql(true)
         done()
       }
@@ -164,7 +164,7 @@ describe('Test the get available times state resource', function () {
         expect(executionDescription.currentResource).to.eql('module:getAvailableDiarySlots')
         expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.ctx.availableTimes[0].label).to.be.a('string')
-        expect(executionDescription.ctx.availableTimes[0].label).to.eql('09:30:00')
+        expect(executionDescription.ctx.availableTimes[0].label).to.eql('09:30')
         expect(executionDescription.ctx.availableTimes[0].value.includes('2018-04-23T09:30:00')).to.eql(true)
         done()
       }
