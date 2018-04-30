@@ -1,0 +1,40 @@
+{
+  "Comment": "Testing the generate uuid state resource",
+  "StartAt": "GenerateShort",
+  "States": {
+    "GenerateShort": {
+      "Type": "Task",
+      "Resource": "module:generateUuid",
+      "ResourceConfig": {
+        "length": 8,
+        "short": true
+      },
+      "ResultPath": "$.shortId",
+      "Next": "GenerateShorter"
+    },
+    "GenerateShorter": {
+      "Type": "Task",
+      "Resource": "module:generateUuid",
+      "ResourceConfig": {
+        "length": 5,
+        "short": true
+      },
+      "ResultPath": "$.shorterId",
+      "Next": "GenerateLonger"
+    },
+    "GenerateLonger": {
+      "Type": "Task",
+      "Resource": "module:generateUuid",
+      "ResultPath": "$.longerId",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
