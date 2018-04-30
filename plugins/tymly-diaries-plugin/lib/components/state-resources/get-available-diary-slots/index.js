@@ -31,7 +31,7 @@ module.exports = class GetAvailableDiarySlots {
     const times = Object.values(availableTimes).map((timeSlot) => {
       const t = moment(event.date.split('T')[0] + 'T' + timeSlot[0])
       return {
-        label: t.format('HH:mm:ss'),
+        label: t.format('HH:mm'),
         value: t.format()
       }
     })
