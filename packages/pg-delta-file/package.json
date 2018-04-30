@@ -10,7 +10,7 @@
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
-    "lodash": "4.17.5",
+    "lodash": "4.17.10",
     "make-dir": "1.2.0",
     "pg": "7.4.1",
     "pg-query-stream": "1.1.1"
