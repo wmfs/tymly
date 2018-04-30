@@ -32,7 +32,7 @@ class StartupMessages {
   title (text = 'Tymly') {
     this.log('')
     this.log(`Starting ${text}`)
-    this.log('---------------')
+    this.log('-'.repeat(9 + text.length))
   }
 
   heading (text) {
