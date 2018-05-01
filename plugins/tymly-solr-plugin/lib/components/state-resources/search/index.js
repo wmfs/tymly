@@ -82,11 +82,11 @@ class Search {
         filterQuery.push(`${_.camelCase(s)}:${searchTerm}`)
       }
     })
+    const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})` : ''
     const categoryQuery = event.categoryRestriction && event.categoryRestriction.length > 0 ? `%20AND%20category:(${event.categoryRestriction.join('%20OR%20')})` : ''
-    const fq = searchTerm ? `&fq=(${filterQuery.join('%20OR%20')})${categoryQuery}` : ''
     const userRolesQuery = `%20AND%20roles:(${userRoles.map(r => r).join('%20OR%20')})`
     const activeEvent = filters.showActiveEventsOnly ? `%20AND%20activeEvent:true` : ``
-    const query = `q=*:*${userRolesQuery}${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
+    const query = `q=*:*${userRolesQuery}${categoryQuery}${activeEvent}${fq}&sort=created%20desc&start=${event.offset}&rows=${event.limit}`
     console.log(`Solr Query = ${query}`)
 
     this.solrClient.search(query, (err, result) => {
