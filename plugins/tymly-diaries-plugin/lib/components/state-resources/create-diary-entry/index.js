@@ -17,7 +17,7 @@ module.exports = class CreateDiaryEntry {
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-    const endDateTime = moment(event.startDateTime).add(diary.slots.duration, 'minutes')
+    const endDateTime = moment(event.startDateTime).add(diary.slots.durationMinutes, 'minutes')
 
     const entriesAtDateTime = await this.entryModel.find({
       where: {

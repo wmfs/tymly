@@ -1,6 +1,6 @@
 {
   "slots": {
-    "duration": 60,
+    "durationMinutes": 60,
     "maxConcurrency": 3,
     "maxCapacity": 50,
     "startTime": "08:30:00",

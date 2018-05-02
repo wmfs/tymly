@@ -11,7 +11,7 @@ module.exports = function generateTimeSlots (diary, inputDate) {
 
   while (startTime.isBefore(endTime)) {
     slots.push([startTime.format('HH:mm:ss'), 0])
-    startTime.add(diary.slots.duration, 'm')
+    startTime.add(diary.slots.durationMinutes, 'm')
   }
 
   return slots
