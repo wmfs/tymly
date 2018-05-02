@@ -31,11 +31,7 @@ module.exports = class CreateDiaryEntry {
       }
     })
 
-    const entriesAtDateTime = entriesAtDate.map(entry => {
-      if (event.startDateTime === entry.startDateTime) {
-        return entry
-      }
-    }).filter(entry => entry)
+    const entriesAtDateTime = entriesAtDate.filter(entry => event.startDateTime === entry.startDateTime)
 
     if (entriesAtDate.length >= diary.slots.maxCapacity) {
       return context.sendTaskFailure({
