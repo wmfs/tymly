@@ -13,7 +13,7 @@ module.exports = function generateViewStatement (options) {
   let postStatement = `WHERE rank.ranking_name = '${_.kebabCase(options.category)}'::text ) scores`
 
   outerSelect.push(`scores.${options.source['property']}`)
-  innerSelect.push(`g.${options.source['property']}`)
+  innerSelect.push(`DISTINCT g.${options.source['property']}`)
 
   options.source['otherProperties'].map(i => {
     outerSelect.push(`scores.${i}`)
