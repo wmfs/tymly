@@ -20,17 +20,6 @@ module.exports = class CreateDiaryEntry {
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
     const endDateTime = moment(event.startDateTime).add(diary.slots.durationMinutes, 'minutes')
 
-    const entriesAtDateTime = await this.entryModel.find({
-      where: {
-        diaryId: {
-          equals: this.diaryId
-        },
-        startDateTime: {
-          equals: event.startDateTime
-        }
-      }
-    })
-
     const entriesAtDate = await this.entryModel.find({
       where: {
         diaryId: {
@@ -41,6 +30,12 @@ module.exports = class CreateDiaryEntry {
         }
       }
     })
+
+    const entriesAtDateTime = entriesAtDate.map(entry => {
+      if (event.startDateTime === entry.startDateTime) {
+        return entry
+      }
+    }).filter(entry => entry)
 
     if (entriesAtDate.length >= diary.slots.maxCapacity) {
       return context.sendTaskFailure({
