@@ -2,7 +2,7 @@
 
 const uuid = require('uuid/v1')
 const nanoid = require('nanoid/generate')
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+const ALPHABET = 'abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTVWXYZ1234567890'
 
 module.exports = class GenerateUuid {
   init (resourceConfig, env, callback) {
