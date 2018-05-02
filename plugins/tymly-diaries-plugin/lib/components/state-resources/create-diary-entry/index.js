@@ -7,6 +7,7 @@ const moment = require('moment')
 module.exports = class CreateDiaryEntry {
   init (resourceConfig, env, callback) {
     this.entryModel = env.bootedServices.storage.models['tymly_diaryEntry']
+    this.resourceConfig = resourceConfig
     this.diaryId = resourceConfig.diaryId
     this.services = env.bootedServices
     callback(null)
@@ -97,7 +98,7 @@ module.exports = class CreateDiaryEntry {
 
     this.entryModel.upsert({
       startDateTime: event.startDateTime,
-      originId: context.stateMachineMeta.name,
+      originId: this.resourceConfig.originId || context.stateMachineMeta.name,
       diaryId: this.diaryId,
       endDateTime: endDateTime.format()
     }, {}, (err, doc) => {
