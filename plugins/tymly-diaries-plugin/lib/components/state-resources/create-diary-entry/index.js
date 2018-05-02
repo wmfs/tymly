@@ -17,7 +17,7 @@ module.exports = class CreateDiaryEntry {
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries
     const diary = diaryService.diaries[namespace + '_' + this.diaryId]
-    const endDateTime = moment(event.startDateTime).add(diary.duration, 'minutes')
+    const endDateTime = moment(event.startDateTime).add(diary.slots.duration, 'minutes')
 
     const entriesAtDateTime = await this.entryModel.find({
       where: {
@@ -41,23 +41,23 @@ module.exports = class CreateDiaryEntry {
       }
     })
 
-    if (entriesAtDate.length >= diary.maxCapacity) {
+    if (entriesAtDate.length >= diary.slots.maxCapacity) {
       return context.sendTaskFailure({
         cause: 'createDiaryEntryFail',
         error: 'Max. appointments already made at this date.'
       })
     }
 
-    if (entriesAtDateTime.length >= diary.maxConcurrency) {
+    if (entriesAtDateTime.length >= diary.slots.maxConcurrency) {
       return context.sendTaskFailure({
         cause: 'createDiaryEntryFail',
         error: 'Max. appointments already made at this time.'
       })
     }
 
-    if (diary.endTime && diary.startTime) {
-      const startRule = moment(date + 'T' + diary.startTime)
-      const endRule = moment(date + 'T' + diary.endTime)
+    if (diary.slots.endTime && diary.slots.startTime) {
+      const startRule = moment(date + 'T' + diary.slots.startTime)
+      const endRule = moment(date + 'T' + diary.slots.endTime)
 
       const min = moment.min(moment(event.startDateTime), startRule)
       const max = moment.max(endDateTime, endRule)
@@ -70,11 +70,11 @@ module.exports = class CreateDiaryEntry {
       }
     }
 
-    if (diary.restrictions) {
+    if (diary.slots.restrictions) {
       let error = false
-      Object.keys(diary.restrictions).forEach(restriction => {
-        const timesAffected = diary.restrictions[restriction].timesAffected
-        const changes = diary.restrictions[restriction].changes
+      Object.keys(diary.slots.restrictions).forEach(restriction => {
+        const timesAffected = diary.slots.restrictions[restriction].timesAffected
+        const changes = diary.slots.restrictions[restriction].changes
 
         const startRule = moment(date + 'T' + timesAffected[0])
         const endRule = moment(date + 'T' + timesAffected[1])

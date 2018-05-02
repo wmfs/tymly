@@ -23,7 +23,7 @@ module.exports = class GetAvailableDiarySlots {
       Object.values(entries).forEach(booking => {
         if (timeSlot[0] === moment(booking.startDateTime).format('HH:mm:ss')) {
           timeSlot[1]++
-          if (timeSlot[1] >= diary.maxConcurrency) availableTimes.splice(index, 1)
+          if (timeSlot[1] >= diary.slots.maxConcurrency) availableTimes.splice(index, 1)
         }
       })
     })
