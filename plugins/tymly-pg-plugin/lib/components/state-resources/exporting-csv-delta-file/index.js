@@ -7,7 +7,6 @@ const generateDelta = require('pg-delta-file')
 class ExportingCsvDeltaFile {
   init (resourceConfig, env, callback) {
     this.client = env.bootedServices.storage.client
-    this.since = resourceConfig.since
     this.actionAliases = resourceConfig.actionAliases
     this.createdColumnName = resourceConfig.createdColumnName || '_created'
     this.modifiedColumnName = resourceConfig.modifiedColumnName || '_modified'
@@ -16,12 +15,13 @@ class ExportingCsvDeltaFile {
   }
 
   run (event, context) {
+    console.log(`\n\nevent => ${event}\n\n`)
     generateDelta(
       {
         namespace: context.stateMachineMeta.namespace,
         client: this.client,
-        since: this.since,
-        outputFilepath: event,
+        since: event.lastExportDate,
+        outputFilepath: event.outputFilepath,
         actionAliases: this.actionAliases,
         createdColumnName: this.createdColumnName,
         modifiedColumnName: this.modifiedColumnName,
