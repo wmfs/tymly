@@ -55,14 +55,13 @@ describe('Run the basic usage example', function () {
         }
       },
       function (err) {
-        expect(err).to.eql(null)
-        done()
+        done(err)
       }
     )
   })
 
-  it('should generate delta file for both tables', function (done) {
-    generateDelta(
+  it('should generate delta file for both tables', async () => {
+    const info = await generateDelta(
       {
         namespace: 'springfield', // to be inferred
         client: client,
@@ -89,12 +88,9 @@ describe('Run the basic usage example', function () {
             '@age'
           ]
         }
-      },
-      function (err) {
-        expect(err).to.eql(null)
-        done()
       }
     )
+    expect(info.totalCount).to.eql(6)
   })
 
   it('Should uninstall test schemas', () => {

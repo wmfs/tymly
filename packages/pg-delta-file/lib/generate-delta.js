@@ -2,7 +2,7 @@ const fs = require('fs')
 const QueryStream = require('pg-query-stream')
 const Transformer = require('./Transformer')
 
-module.exports = async function generateDelta (options, callback) {
+module.exports = async function generateDelta (options) {
   const deltaFileWriteStream = fs.createWriteStream(options.outputFilepath, {defaultEncoding: 'utf8'})
   const info = {
     totalCount: 0
