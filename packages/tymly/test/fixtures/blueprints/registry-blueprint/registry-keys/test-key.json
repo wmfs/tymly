@@ -1,0 +1,12 @@
+{
+  "label": "Test registry key",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "number",
+        "default": 15
+      }
+    },
+    "required": ["value"]
+  }
+}

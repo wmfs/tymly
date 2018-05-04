@@ -1,0 +1,21 @@
+{
+  "Comment": "Test blueprint to get reg keys",
+  "version": "1.0",
+  "StartAt": "GetRegistryKey",
+  "States": {
+    "GetRegistryKey": {
+      "Type": "Task",
+      "Resource": "module:getRegistryKey",
+      "InputPath": "$",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
