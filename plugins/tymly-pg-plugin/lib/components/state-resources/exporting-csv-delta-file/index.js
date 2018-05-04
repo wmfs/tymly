@@ -26,21 +26,18 @@ class ExportingCsvDeltaFile {
         createdColumnName: this.createdColumnName,
         modifiedColumnName: this.modifiedColumnName,
         csvExtracts: this.csvExtracts
-      },
-      function (err) {
-        if (err) {
-          context.sendTaskFailure(
-            {
-              error: 'generateDeltaFail',
-              cause: err
-            }
-          )
-        } else {
-          context.sendTaskSuccess()
-        }
       }
     )
-  }
+      .then(info => {
+        context.sendTaskSuccess({ outputRowCount: info.totalCount })
+      })
+      .catch(err => {
+        context.sendTaskFailure({
+          error: 'generateDeltaFail',
+          cause: err
+        })
+      })
+  } // run
 }
 
 module.exports = ExportingCsvDeltaFile

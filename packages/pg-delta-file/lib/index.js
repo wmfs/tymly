@@ -6,7 +6,7 @@ module.exports = function setup (options, callback) {
   const outputDirPath = getDirName(options.outputFilepath)
 
   const theExport = makeDir(outputDirPath)
-                      .then(() => generateDelta(options))
+    .then(() => generateDelta(options))
 
   if (!callback) return theExport
 
