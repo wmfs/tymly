@@ -31,6 +31,7 @@ describe('Shutdown services tests', function () {
         'testService3',
         'caches',
         'storage',
+        'timestamp',
         'functions',
         'blueprintDocs',
         'registry',

@@ -1,0 +1,20 @@
+{
+  "Comment": "Blueprint to get timestamp",
+  "version": "1.0",
+  "StartAt": "Timestamp",
+  "States": {
+    "Timestamp": {
+      "Type": "Task",
+      "Resource": "module:timestamp",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
