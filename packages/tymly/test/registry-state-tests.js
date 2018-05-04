@@ -1,20 +1,20 @@
 /* eslint-env mocha */
 
-'use strict'
-
 const path = require('path')
 const expect = require('chai').expect
 const tymly = require('../lib')
+
+const REG_KEY_NAME = 'tymlyTest_mealThreshold'
 const STATE_MACHINE_NAME = 'tymlyTest_setRegistryKey_1_0'
 
-describe('It should test the state resource for setting reg keys', function () {
+describe('setRegistryKey state resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService
   let statebox
   let registry
 
-  it('Should run Tymly Service', function (done) {
+  it('boot Tymly', function (done) {
     tymly.boot(
       {
         blueprintPaths: [
@@ -36,38 +36,28 @@ describe('It should test the state resource for setting reg keys', function () {
     )
   })
 
-  it('should get the value from registry using key', function (done) {
-    let key = 'tymlyTest_mealThreshold'
-    let value = registry.get(key)
-    expect(value).to.eql(3)
-    done()
+  it('check the value in the registry', () => {
+    expect(registry.get(REG_KEY_NAME)).to.eql(3)
   })
 
-  it('Should test the state resource execution', function (done) {
-    statebox.startExecution(
+  it('run setRegistryKey state machine', async () => {
+    await statebox.startExecution(
       {
-        key: 'tymlyTest_mealThreshold',
+        key: REG_KEY_NAME,
         value: 2
       },
       STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
-      },
-      function (err) {
-        expect(err).to.equal(null)
-        done()
       }
     )
   })
 
-  it('should get the value from registry using key after calling set', function (done) {
-    let key = 'tymlyTest_mealThreshold'
-    let value = registry.get(key)
-    expect(value).to.eql(2)
-    done()
+  it('verify the registry value has changed', () => {
+    expect(registry.get(REG_KEY_NAME)).to.eql(2)
   })
 
-  it('should shutdown Tymly', async () => {
+  it('shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
 })
