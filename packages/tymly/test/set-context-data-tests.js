@@ -27,7 +27,7 @@ describe('Context tests', function () {
     tymly.boot(
       {
         blueprintPaths: [
-          path.resolve(__dirname, './fixtures/blueprints/animal-blueprint')
+          path.resolve(__dirname, './fixtures/blueprints/context-blueprint')
         ],
         pluginPaths: [
           path.resolve(__dirname, '../../../plugins/tymly-auth-auth0-plugin')
