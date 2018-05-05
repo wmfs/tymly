@@ -7,7 +7,6 @@
     "chai-subset": "1.6.0",
     "debug": "3.1.0",
     "hl-pg-client": "0.0.2",
-    "jsonwebtoken": "7.4.1",
     "mocha": "5.1.1",
     "safe-buffer": "5.1.2",
     "standard": "11.0.1",
@@ -18,7 +17,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "test": "standard && \"./node_modules/.bin/_mocha\" -R spec"
+    "test": "standard && mocha"
   },
   "license": "MIT",
   "repository": {
