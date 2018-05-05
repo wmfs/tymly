@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  description: 'Sets a registry key value'
+  description: 'Sets an arbitrary registry key value'
 }

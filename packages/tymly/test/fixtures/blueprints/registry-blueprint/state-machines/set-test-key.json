@@ -1,0 +1,24 @@
+{
+  "Comment": "Test blueprint to set reg keys",
+  "version": "1.0",
+  "StartAt": "SetRegistryKey",
+  "States": {
+    "SetRegistryKey": {
+      "Type": "Task",
+      "Resource": "module:setConfiguredRegistryKey",
+      "InputPath": "$.value",
+      "ResourceConfig": {
+        "key": "tymlyTest_anotherTestKey"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
