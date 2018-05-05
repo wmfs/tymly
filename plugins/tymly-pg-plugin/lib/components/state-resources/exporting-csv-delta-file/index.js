@@ -15,7 +15,6 @@ class ExportingCsvDeltaFile {
   }
 
   run (event, context) {
-    console.log(`\n\nevent => ${event}\n\n`)
     generateDelta(
       {
         namespace: context.stateMachineMeta.namespace,
