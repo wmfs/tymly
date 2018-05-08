@@ -7,6 +7,6 @@ module.exports = class Timestamp {
   }
 
   run (event, context) {
-    context.sendTaskSuccess({ timestamp: this.timestamp.now() })
+    context.sendTaskSuccess(this.timestamp.now())
   } // run
 } // GetRegistryKey
