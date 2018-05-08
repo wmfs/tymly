@@ -4,7 +4,7 @@ const fs = require('fs')
 const mkdirp = require('mkdirp')
 const promisify = require('util').promisify
 
-const eol = require('os').EOL
+const eol = '\n'
 
 const pexists = path =>
   new Promise(resolve => fs.access(path, err => resolve(!err)))
