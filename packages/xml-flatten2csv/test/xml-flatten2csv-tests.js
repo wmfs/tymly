@@ -105,28 +105,30 @@ describe('xmlFlatten2csv', () => {
       assert.fail('Did not throw')
     })
 
-    it('bad output file', async () => {
-      try {
-        await xmlFlatten2csv({
-          xmlPath: sourceFile,
-          csvPath: '/root/can#t"be/created',
-          rootXMLElement: 'Episode',
-          pivotPath: '$.Person',
-          headerMap: [
-            ['$.Title', 'title', 'string'],
-            ['@.Name', 'name', 'string'],
-            ['@.Age', 'age', 'integer'],
-            ['@.Siblings.Brother', 'brother', 'string'],
-            ['@.Siblings.Sister', 'sister', 'string']
-          ]
-        })
-      } catch (err) {
-        expect(err.code).to.equal('EACCES')
-        return
-      }
+    if (process.platform !== 'win32') {
+      it('bad output file', async () => {
+        try {
+          await xmlFlatten2csv({
+            xmlPath: sourceFile,
+            csvPath: '/root/can#t"be/created',
+            rootXMLElement: 'Episode',
+            pivotPath: '$.Person',
+            headerMap: [
+              ['$.Title', 'title', 'string'],
+              ['@.Name', 'name', 'string'],
+              ['@.Age', 'age', 'integer'],
+              ['@.Siblings.Brother', 'brother', 'string'],
+              ['@.Siblings.Sister', 'sister', 'string']
+            ]
+          })
+        } catch (err) {
+          expect(err.code).to.equal('EACCES')
+          return
+        }
 
-      assert.fail('Did not throw')
-    })
+        assert.fail('Did not throw')
+      })
+    }
 
     it('empty header map', async () => {
       try {
