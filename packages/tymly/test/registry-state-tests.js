@@ -57,7 +57,7 @@ describe('registry key state resources', function () {
         getTestKey,
         { sendResponse: 'COMPLETE' }
       )
-      expect(execDesc.ctx.registryValue).to.eql(expectedRegValue)
+      expect(execDesc.ctx.result).to.eql(expectedRegValue)
     })
 
     it('update using the setTestKey state machine', async () => {
@@ -78,7 +78,7 @@ describe('registry key state resources', function () {
         getTestKey,
         { sendResponse: 'COMPLETE' }
       )
-      expect(execDesc.ctx.registryValue).to.eql(newValue)
+      expect(execDesc.ctx.result).to.eql(newValue)
     })
   })
 

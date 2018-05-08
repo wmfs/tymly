@@ -10,7 +10,7 @@ module.exports = class GetRegistryKey {
     try {
       const value = this.registry.get(this.key) || event.defaultValue
 
-      context.sendTaskSuccess({ registryValue: value })
+      context.sendTaskSuccess(value)
     } catch (err) {
       if (event.defaultValue) {
         return context.sendTaskSuccess({ registryValue: event.defaultValue })

@@ -9,6 +9,7 @@
       "ResourceConfig": {
         "key": "tymlyTest_anotherTestKey"
       },
+      "ResultPath": "$.result",
       "End": true
     }
   },
