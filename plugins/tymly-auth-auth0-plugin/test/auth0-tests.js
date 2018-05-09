@@ -31,10 +31,8 @@ describe('tymly-auth-auth0-plugin tests', function () {
         pluginPaths: [
           path.resolve(__dirname, './../lib')
         ],
-        blueprintPaths: [
-        ],
-        config: {
-        }
+        blueprintPaths: [],
+        config: {}
       },
       function (err, tymlyServices) {
         expect(err).to.eql(null)
@@ -58,7 +56,6 @@ describe('tymly-auth-auth0-plugin tests', function () {
 
   it('attempt to convert a non existent user id (\'auth0|ffffffffffffffffffffffff\') into an email (which should return a 404)', function (done) {
     authService.getEmailFromUserId('auth0|ffffffffffffffffffffffff', function (err, email) {
-      console.log(err)
       expect(err.statusCode).to.equal(404)
       done()
     })
@@ -77,9 +74,15 @@ describe('tymly-auth-auth0-plugin tests', function () {
 
   it('attempt to convert a non existent email (\'doesNotExist@xyz.com\') into a user id (which should return a 404)', function (done) {
     authService.getUserIdFromEmail('doesNotExist@xyz.com', function (err, userId) {
-      console.log(err)
       expect(err.output.statusCode).to.equal(404)
       done()
+    })
+  })
+
+  it('should get user groups via user ID (should return empty array due to no groups)', function (done) {
+    authService.getGroupsFromUserId('auth0|5a157ade1932044615a1c502', function (err, groups) {
+      expect(groups).to.eql([])
+      done(err)
     })
   })
 

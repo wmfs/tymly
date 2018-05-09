@@ -227,9 +227,8 @@ class Auth0Service {
               } else if (body.statusCode && body.error && body.message && body.errorCode) {
                 callback(body)
               } else if (body) {
-                callback(boom.boomify(new Error(`Invalid response from ${url}`), {
-                  message: JSON.stringify(body)
-                }))
+                this._addToCache(userId, null, [])
+                callback(null, [])
               } else {
                 debug(`auth0 response status code from ${url}:`, response && response.statusCode)
                 callback(boom.boomify(new Error(`No response from ${url}`)))
