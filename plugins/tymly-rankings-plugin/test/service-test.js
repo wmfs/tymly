@@ -59,7 +59,7 @@ describe('Tests the Ranking Service', function () {
   })
 
   it('should generate an SQL case for a numeric range', function (done) {
-    let statement = optionCase(
+    const statement = optionCase(
       'foodStandards',
       {
         'type': 'options',
@@ -88,13 +88,13 @@ describe('Tests the Ranking Service', function () {
       'food',
       'rating'
     )
-    let expected = 'CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score'
+    const expected = 'CASE WHEN food.rating BETWEEN 0 AND 2 THEN 8 WHEN food.rating BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score'
     expect(statement.trim()).to.eql(expected)
     done()
   })
 
   it('should generate an SQL statement to check if a value exists', function (done) {
-    let statement = existsCase(
+    const statement = existsCase(
       'heritage',
       {
         'type': 'exists',
@@ -105,13 +105,13 @@ describe('Tests the Ranking Service', function () {
       'heritage',
       'uprn'
     )
-    let expected = 'CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score'
+    const expected = 'CASE WHEN (SELECT COUNT(*) FROM test.heritage where uprn = g.uprn) > 0 THEN 2 ELSE 0 END AS heritage_score'
     expect(statement.trim()).to.eql(expected)
     done()
   })
 
   it('should generate an SQL case for text options', function (done) {
-    let statement = optionCase(
+    const statement = optionCase(
       'ofsted',
       {
         'type': 'options',
@@ -138,13 +138,13 @@ describe('Tests the Ranking Service', function () {
       'ofsted',
       'uprn'
     )
-    let expected = 'CASE WHEN upper(ofsted.uprn) = upper(\'good\') THEN 0 WHEN upper(ofsted.uprn) = upper(\'average\') THEN 5 WHEN upper(ofsted.uprn) = upper(\'bad\') THEN 8 ELSE 0 END AS ofsted_score'
+    const expected = 'CASE WHEN upper(ofsted.uprn) = upper(\'good\') THEN 0 WHEN upper(ofsted.uprn) = upper(\'average\') THEN 5 WHEN upper(ofsted.uprn) = upper(\'bad\') THEN 8 ELSE 0 END AS ofsted_score'
     expect(statement.trim()).to.eql(expected)
     done()
   })
 
   it('should generate an SQL statement for a constant value', function (done) {
-    let statement = constantCase(
+    const statement = constantCase(
       'usage',
       {
         'type': 'constant',
@@ -154,13 +154,13 @@ describe('Tests the Ranking Service', function () {
       'usage',
       'uprn'
     )
-    let expected = '8 as usage_score'
+    const expected = '8 as usage_score'
     expect(statement.trim()).to.eql(expected)
     done()
   })
 
   it('should generate an SQL view statement for manually entered options', function (done) {
-    let statement = generateView({
+    const statement = generateView({
       'category': 'factory',
       'schema': 'test',
       'source': {
@@ -208,7 +208,15 @@ describe('Tests the Ranking Service', function () {
         }
       }
     })
-    let expected = 'CREATE OR REPLACE VIEW test.factory_scores AS SELECT scores.uprn,scores.address_label,scores.usage_score,scores.food_standards_score,scores.usage_score+scores.food_standards_score as risk_score FROM (SELECT DISTINCT g.uprn,g.address_label as address_label,10 as usage_score,CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = \'factory\'::text ) scores'
+    const expected = 'CREATE OR REPLACE VIEW test.factory_scores AS ' +
+      'SELECT DISTINCT scores.uprn, scores.address_label, scores.usage_score, scores.food_standards_score, scores.usage_score + scores.food_standards_score as risk_score ' +
+      'FROM (' +
+      'SELECT g.uprn, g.address_label as address_label, 10 as usage_score, ' +
+      'CASE WHEN food_table.rating BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating = 5 THEN 2 ELSE 0 END AS food_standards_score ' +
+      'FROM test.gazetteer g  ' +
+      'LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  ' +
+      'JOIN test.ranking_uprns rank ON rank.uprn = g.uprn ' +
+      'WHERE rank.ranking_name = \'factory\'::text ) scores'
     expect(statement.trim()).to.eql(expected)
     done()
   })

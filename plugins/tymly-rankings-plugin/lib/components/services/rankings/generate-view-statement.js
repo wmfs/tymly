@@ -12,8 +12,8 @@ module.exports = function generateViewStatement (options) {
   let joinParts = new Set()
   let postStatement = `WHERE rank.ranking_name = '${_.kebabCase(options.category)}'::text ) scores`
 
-  outerSelect.push(`scores.${options.source['property']}`)
-  innerSelect.push(`DISTINCT g.${options.source['property']}`)
+  outerSelect.push(`DISTINCT scores.${options.source['property']}`)
+  innerSelect.push(`g.${options.source['property']}`)
 
   options.source['otherProperties'].map(i => {
     outerSelect.push(`scores.${i}`)
@@ -48,7 +48,7 @@ module.exports = function generateViewStatement (options) {
   })
 
   // TODO: 'risk' in risk_score should be inferred
-  outerSelect.push(`${totalScore.join('+')} as risk_score`)
+  outerSelect.push(`${totalScore.join(' + ')} as risk_score`)
   joinParts.add(`JOIN ${options.schema}.ranking_${_.snakeCase(options.source['property'])}s rank ON ` +
     `rank.${_.snakeCase(options.source['property'])} = g.${_.snakeCase(options.source['property'])}`)
 
@@ -58,10 +58,10 @@ module.exports = function generateViewStatement (options) {
   let viewStatement =
     preStatement +
     `SELECT ` +
-    outerSelect.join(',') +
+    outerSelect.join(', ') +
     ` FROM ` +
     `(SELECT ` +
-    innerSelect.join(',') +
+    innerSelect.join(', ') +
     ` FROM ${options.schema}.${options.source['model']} g `
 
   for (const i of joinParts) {
