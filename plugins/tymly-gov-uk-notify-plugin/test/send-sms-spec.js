@@ -54,6 +54,31 @@ describe('Send SMS tests', function () {
     )
   })
 
+  it('start state machine to send SMS with an invalid phone number', done => {
+    statebox.startExecution(
+      {
+        phoneNumber: '077009'
+      },
+      SEND_SMS_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (process.env.GOV_UK_NOTIFY_API_KEY) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.errorMessage.statusCode).to.eql(400)
+          expect(executionDescription.errorMessage.error.errors[0].error).to.eql('ValidationError')
+          expect(executionDescription.errorMessage.error.errors[0].message).to.eql('phone_number Not enough digits')
+        } else {
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.errorCode).to.eql('Missing ENV: GOV_UK_NOTIFY_API_KEY')
+        }
+        done()
+      }
+    )
+  })
+
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
