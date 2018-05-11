@@ -1,0 +1,22 @@
+{
+  "Comment": "State machine to test sending Mail.",
+  "StartAt": "SendingMailViaService",
+  "States": {
+    "SendingMailViaService": {
+      "Type": "Task",
+      "Resource": "module:sendingMailViaService",
+      "ResourceConfig": {
+        "templateId": "49bd6ec4-cd8c-4859-b817-80b2385d071e"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
