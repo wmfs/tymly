@@ -44,7 +44,7 @@ module.exports = class SendingMessageViaService {
         {}
       )
       .then(response => {
-        if (response.statusCode === 201) context.sendTaskSuccess({sentMessage: response.body})
+        if (response.statusCode === 201) context.sendTaskSuccess({sentSms: response.body})
         else context.sendTaskFailure({cause: new Error('created sms fail'), error: 'CREATE_SMS_FAIL'})
       })
       .catch(err => context.sendTaskFailure({cause: err, error: 'SEND_SMS_FAIL'}))
@@ -58,7 +58,7 @@ module.exports = class SendingMessageViaService {
         {}
       )
       .then(response => {
-        if (response.statusCode === 201) context.sendTaskSuccess({sentMessage: response.body})
+        if (response.statusCode === 201) context.sendTaskSuccess({sentMail: response.body})
         else context.sendTaskFailure({cause: new Error('created mail fail'), error: 'CREATE_MAIL_FAIL'})
       })
       .catch(err => context.sendTaskFailure({cause: err, error: 'SEND_MAIL_FAIL'}))
