@@ -5,7 +5,9 @@
     "SendingSmsViaService": {
       "Type": "Task",
       "Resource": "module:sendingSmsViaService",
-      "ResourceConfig": {},
+      "ResourceConfig": {
+        "templateId": "32338921-d7e3-43a4-ac71-9fdccc987619"
+      },
       "End": true
     }
   },

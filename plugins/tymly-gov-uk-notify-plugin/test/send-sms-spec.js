@@ -5,12 +5,14 @@ const tymly = require('tymly')
 const path = require('path')
 const process = require('process')
 
-describe('Simple email tests', function () {
+const SEND_SMS_STATE_MACHINE_NAME = 'test_sendWelcomeSms'
+
+describe('Send SMS tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService
+  let tymlyService, statebox
 
-  it('should create some basic tymly services to test sending emails', done => {
+  it('boot tymly', done => {
     tymly.boot(
       {
         pluginPaths: [
@@ -24,6 +26,29 @@ describe('Simple email tests', function () {
       (err, tymlyServices) => {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
+        statebox = tymlyServices.statebox
+        done()
+      }
+    )
+  })
+
+  it('start state machine to send SMS with a phone number expected to succeed', done => {
+    statebox.startExecution(
+      {
+        phoneNumber: '07700900111'
+      },
+      SEND_SMS_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (process.env.GOV_UK_NOTIFY_API_KEY) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+        } else {
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.errorCode).to.eql('Missing ENV: GOV_UK_NOTIFY_API_KEY')
+        }
         done()
       }
     )

@@ -4,7 +4,9 @@
   "version": "0.0.1",
   "author": "WMFS",
   "main": "./lib/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "notifications-node-client": "4.1.0"
+  },
   "devDependencies": {
     "chai": "4.1.2",
     "mocha": "5.1.1",
