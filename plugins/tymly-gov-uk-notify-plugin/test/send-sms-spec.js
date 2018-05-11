@@ -16,7 +16,9 @@ describe('Simple email tests', function () {
         pluginPaths: [
           path.resolve(__dirname, './../lib')
         ],
-        blueprintPaths: [],
+        blueprintPaths: [
+          path.resolve(__dirname, './fixtures/blueprints/welcome-blueprint')
+        ],
         config: {}
       },
       (err, tymlyServices) => {
