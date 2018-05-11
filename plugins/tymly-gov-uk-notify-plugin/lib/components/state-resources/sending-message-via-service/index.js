@@ -5,7 +5,7 @@ const NotifyClient = require('notifications-node-client').NotifyClient
 module.exports = class SendingMessageViaService {
   init (stateConfig, options, callback) {
     this.notifyClient = process.env.GOV_UK_NOTIFY_API_KEY && new NotifyClient(process.env.GOV_UK_NOTIFY_API_KEY)
-    if (process.env.PROXY_URL) this.notifyClient.setProxy(process.env.PROXY_URL)
+    if (this.notifyClient && process.env.PROXY_URL) this.notifyClient.setProxy(process.env.PROXY_URL)
     this.templateId = stateConfig.templateId
     this.messageType = stateConfig.messageType
     callback(null)
