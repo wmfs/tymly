@@ -70,8 +70,8 @@ describe('xmlFlatten2csv', () => {
           transform: transformFn
         })
 
-        const output = fs.readFileSync(outputFile, {encoding: 'utf8'}).split('\n')
-        const expected = fs.readFileSync(expectedFile, {encoding: 'utf8'}).split('\n')
+        const output = fs.readFileSync(outputFile, {encoding: 'utf8'}).split('\n').map(s => s.trim())
+        const expected = fs.readFileSync(expectedFile, {encoding: 'utf8'}).split('\n').map(s => s.trim())
 
         expect(output).to.eql(expected)
       })
