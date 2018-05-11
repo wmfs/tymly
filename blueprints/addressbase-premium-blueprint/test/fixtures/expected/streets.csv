@@ -1,4 +1,4 @@
-"usrn","changeType","state","state_date","description","locality","town_name","administrative_area","surface","classification","start_x","start_y","end_x","end_y","start_longitude","start_latitude","end_longitude","end_latitude","start_date","last_update_date","entry_date"
+"usrn","changeType","state","state_date","description","locality","town_name","administrative_area","surface","classification","start_x","start_y","end_x","end_y","start_latitude","start_longitude","end_latitude","end_longitude","start_date","last_update_date","entry_date"
 14200505,"I",2,1990-01-01,"LUCAS AVENUE",,"EXETER","DEVON",1,8,292955.00,093586.00,293037.00,093495.00,50.7319849,-3.5181669,50.7311819,-3.516979,2007-10-24,2016-02-10,1995-06-20
 14200287,"I",2,1990-01-01,"EXWICK HILL",,"EXETER","DEVON",1,8,290265.00,093429.00,290802.00,093682.00,50.7300711,-3.5562221,50.7324468,-3.5486912,2007-10-24,2016-02-10,2004-04-20
 14200487,"I",2,1990-01-01,"LITTLE JOHNS CROSS HILL",,"EXETER","DEVON",1,8,290194.87,090847.79,290176.97,091367.00,50.7068539,-3.5564463,50.711518,-3.5568544,2007-10-24,2016-02-10,2002-04-09
