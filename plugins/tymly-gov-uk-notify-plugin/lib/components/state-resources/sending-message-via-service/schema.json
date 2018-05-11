@@ -1,7 +1,16 @@
 {
   "type": "object",
-  "properties": {},
-  "required": []
+  "properties": {
+    "templateId": {
+      "type": "string",
+      "description": "The ID of the template for the message"
+    },
+    "messageType": {
+      "type": "string",
+      "description": "The type of message to be sent (sms or mail)"
+    }
+  },
+  "required": ["messageType", "templateId"]
 }
 
 

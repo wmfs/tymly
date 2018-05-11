@@ -12,7 +12,8 @@ const GET_MESSAGE_STATUS_STATE_MACHINE_NAME = 'test_getMessageStatus'
 describe('Send SMS tests', function () {
   this.timeout(process.env.TIMEOUT || 15000)
 
-  let tymlyService, statebox, notificationId, messageStatus = 'created'
+  let tymlyService, statebox, notificationId
+  let messageStatus = 'created'
 
   it('boot tymly', done => {
     tymly.boot(

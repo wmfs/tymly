@@ -1,3 +1,10 @@
 {
-  "sendingMessageViaService": {}
+  "SendingMailViaService": {
+    "Type": "Task",
+    "Resource": "module:sendingMessageViaService",
+    "ResourceConfig": {
+      "templateId": "49bd6ec4-cd8c-4859-b817-80b2385d071e",
+      "messageType": "mail"
+    }
+  }
 }
