@@ -1,0 +1,19 @@
+{
+  "Comment": "State machine to test sending SMS.",
+  "StartAt": "GetMessageStatus",
+  "States": {
+    "GetMessageStatus": {
+      "Type": "Task",
+      "Resource": "module:getMessageStatusViaService",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}
