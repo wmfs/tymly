@@ -13,18 +13,25 @@ module.exports = class SendingMessageViaService {
 
   run (event, context) {
     if (this.notifyClient) {
-      switch (this.messageType) {
-        case 'mail':
-          this.sendMail(event, context)
-          break
-        case 'sms':
-          this.sendSms(event, context)
-          break
+      if (this.messageType === 'mail' && event.emailAddress) {
+        this.sendMail(event, context)
+      } else if (this.messageType === 'sms' && event.phoneNumber) {
+        this.sendSms(event, context)
+      } else if (!['sms', 'mail'].includes(this.messageType)) {
+        context.sendTaskFailure({
+          error: 'INVALID_MESSAGE_TYPE',
+          cause: new Error('message type must be sms or mail')
+        })
+      } else {
+        context.sendTaskFailure({
+          error: 'NO_EMAIL_OR_PHONE_NUMBER',
+          cause: new Error('no phone number or email address provided')
+        })
       }
     } else {
       context.sendTaskFailure({
         cause: new Error('missing env variable'),
-        error: 'Missing ENV: GOV_UK_NOTIFY_API_KEY'
+        error: 'MISSING_GOV_UK_NOTIFY_API_KEY'
       })
     }
   }
@@ -38,9 +45,9 @@ module.exports = class SendingMessageViaService {
       )
       .then(response => {
         if (response.statusCode === 201) context.sendTaskSuccess({sentMessage: response.body})
-        else context.sendTaskFailure({cause: new Error('created sms fail'), error: 'Failed to Create SMS'})
+        else context.sendTaskFailure({cause: new Error('created sms fail'), error: 'CREATE_SMS_FAIL'})
       })
-      .catch(err => context.sendTaskFailure({cause: err, error: 'Send SMS Fail'}))
+      .catch(err => context.sendTaskFailure({cause: err, error: 'SEND_SMS_FAIL'}))
   }
 
   sendMail (event, context) {
@@ -52,8 +59,8 @@ module.exports = class SendingMessageViaService {
       )
       .then(response => {
         if (response.statusCode === 201) context.sendTaskSuccess({sentMessage: response.body})
-        else context.sendTaskFailure({cause: new Error('created mail fail'), error: 'Failed to Create Mail'})
+        else context.sendTaskFailure({cause: new Error('created mail fail'), error: 'CREATE_MAIL_FAIL'})
       })
-      .catch(err => context.sendTaskFailure({cause: err, error: 'Send Mail Fail'}))
+      .catch(err => context.sendTaskFailure({cause: err, error: 'SEND_MAIL_FAIL'}))
   }
 }

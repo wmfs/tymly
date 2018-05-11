@@ -1,0 +1,23 @@
+{
+  "Comment": "State machine to test sending SMS.",
+  "StartAt": "SendingSmsViaService",
+  "States": {
+    "SendingSmsViaService": {
+      "Type": "Task",
+      "Resource": "module:sendingMessageViaService",
+      "ResourceConfig": {
+        "templateId": "32338921-d7e3-43a4-ac71-9fdccc987619",
+        "messageType": "text"
+      },
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$authenticated",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

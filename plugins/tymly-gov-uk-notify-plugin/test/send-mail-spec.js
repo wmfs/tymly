@@ -47,7 +47,28 @@ describe('Send Mail tests', function () {
           expect(executionDescription.status).to.eql('SUCCEEDED')
         } else {
           expect(executionDescription.status).to.eql('FAILED')
-          expect(executionDescription.errorCode).to.eql('Missing ENV: GOV_UK_NOTIFY_API_KEY')
+          expect(executionDescription.errorCode).to.eql('MISSING_GOV_UK_NOTIFY_API_KEY')
+        }
+        done()
+      }
+    )
+  })
+
+  it('start state machine to send mail without an email', done => {
+    statebox.startExecution(
+      {},
+      SEND_MAIL_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (process.env.GOV_UK_NOTIFY_API_KEY) {
+          expect(err).to.eql(null)
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.errorCode).to.eql('NO_EMAIL_OR_PHONE_NUMBER')
+        } else {
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.errorCode).to.eql('MISSING_GOV_UK_NOTIFY_API_KEY')
         }
         done()
       }
