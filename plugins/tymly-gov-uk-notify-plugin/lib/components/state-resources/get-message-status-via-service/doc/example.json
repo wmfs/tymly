@@ -1,3 +1,6 @@
 {
-  "getMessageStatusViaService": {}
+  "GetMessageStatus": {
+    "Type": "Task",
+    "Resource": "module:getMessageStatusViaService"
+  }
 }
