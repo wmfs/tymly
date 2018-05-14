@@ -95,6 +95,42 @@
             "type": "exists",
             "default": 0,
             "score": 2
+          },
+          "imd": {
+            "type": "options",
+            "default": 0,
+            "options": [
+              {
+                "type": "numeric-range",
+                "minimum": 1,
+                "maximum": 2,
+                "score": 25
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 3,
+                "maximum": 4,
+                "score": 20
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 5,
+                "maximum": 6,
+                "score": 15
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 7,
+                "maximum": 8,
+                "score": 10
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 9,
+                "maximum": 10,
+                "score": 5
+              }
+            ]
           }
         }
       }
