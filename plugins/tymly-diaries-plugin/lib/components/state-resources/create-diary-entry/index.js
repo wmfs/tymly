@@ -87,12 +87,16 @@ module.exports = class CreateDiaryEntry {
       }
     }
 
-    this.entryModel.upsert({
+    const options = {
       startDateTime: event.startDateTime,
       originId: this.resourceConfig.originId || context.stateMachineMeta.name,
       diaryId: this.diaryId,
       endDateTime: endDateTime.format()
-    }, {}, (err, doc) => {
+    }
+
+    if (event.information) options.info = event.information
+
+    this.entryModel.upsert(options, {}, (err, doc) => {
       if (err) return context.sendTaskFailure({error: 'createDiaryEntryFail', cause: err})
       context.sendTaskSuccess(doc)
     })
