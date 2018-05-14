@@ -30,11 +30,19 @@ class RankingService {
       const rankingModel = options.bootedServices.storage.models[`${_.camelCase(value.namespace)}_${value.rankingModel}`]
       const statsModel = options.bootedServices.storage.models[`${_.camelCase(value.namespace)}_${value.statsModel}`]
 
+      const factors =
+        Object.keys(value.factors)
+          .filter(factor => Object.keys(options.bootedServices.registry.registry[key].value).includes(factor))
+          .reduce((obj, key) => {
+            obj[key] = value.factors[key]
+            return obj
+          }, {})
+
       this.viewSQL[key] = generateViewStatement({
         category: _.snakeCase(value.name),
         schema: _.snakeCase(value.namespace),
         source: value.source,
-        ranking: value.factors,
+        ranking: factors,
         registry: options.bootedServices.registry.registry[key]
       })
 

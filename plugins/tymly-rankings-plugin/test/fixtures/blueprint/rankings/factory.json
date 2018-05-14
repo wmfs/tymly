@@ -29,6 +29,11 @@
       "namespace": "test",
       "model": "heritage",
       "property": "uprn"
+    },
+    "sprinklerCoverage": {
+      "namespace": "wmfs",
+      "model": "building",
+      "property": "sprinklerCoverage"
     }
   }
 }
