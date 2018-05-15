@@ -1,4 +1,5 @@
 const DateTime = require('luxon').DateTime
+const schema = require('./schema.json')
 
 class TimestampService {
   static get defaultProvider () {
@@ -21,5 +22,6 @@ class TimestampService {
 
 module.exports = {
   serviceClass: TimestampService,
+  schema: schema,
   bootBefore: ['statebox']
 }
