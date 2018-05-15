@@ -17,11 +17,19 @@ class RefreshRanking {
     const category = event.category
     const key = schema + '_' + category
 
+    const factors =
+      Object.keys(this.rankings[key].factors)
+        .filter(factor => Object.keys(this.registry.get(key)).includes(factor))
+        .reduce((obj, k) => {
+          obj[k] = this.rankings[key].factors[k]
+          return obj
+        }, {})
+
     const statement = generateView({
       category: category,
       schema: schema,
       source: this.rankings[key].source,
-      ranking: this.rankings[key].factors,
+      ranking: factors,
       registry: {
         value: this.registry.get(key)
       }
