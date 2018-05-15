@@ -91,18 +91,7 @@ class GetUserRemit {
     userRemit.add[componentType] = {}
 
     Object.keys(components).forEach(componentName => {
-      switch (componentType) {
-        case 'forms':
-        case 'boards':
-        case 'startable':
-          this.checkShasum(userRemit, alreadyInClientManifest, components[componentName], componentType, componentName)
-          break
-        default:
-          if (alreadyInClientManifest.indexOf(componentName) === -1) {
-            userRemit.add[componentType][componentName] = components[componentName]
-          }
-          break
-      }
+      this.checkShasum(userRemit, alreadyInClientManifest, components[componentName], componentType, componentName)
     })
 
     let namesToRemove
@@ -118,10 +107,16 @@ class GetUserRemit {
   } // processComponents
 
   checkShasum (userRemit, alreadyInClientManifest, component, type, name) {
-    const componentShasum = component.shasum
-    const clientShasum = alreadyInClientManifest[name]
-    if (componentShasum !== clientShasum) {
-      userRemit.add[type][name] = component
+    if (component.shasum) {
+      const componentShasum = component.shasum
+      const clientShasum = alreadyInClientManifest[name]
+      if (componentShasum !== clientShasum) {
+        userRemit.add[type][name] = component
+      }
+    } else {
+      if (!alreadyInClientManifest.includes(name)) {
+        userRemit.add[type][name] = component
+      }
     }
   }
 
