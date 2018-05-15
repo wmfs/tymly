@@ -23,7 +23,8 @@ class RunStateMachine {
       event,
       this.stateMachine,
       {
-        sendResponse: responseName
+        sendResponse: responseName,
+        userId: context.userId
       }
     )
 
