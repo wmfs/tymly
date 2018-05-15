@@ -7,6 +7,7 @@ module.exports = class Upserting {
     this.setMissingPropertiesToNull = resourceConfig.setMissingPropertiesToNull || false
     this.modelId = resourceConfig.modelId
     const models = env.bootedServices.storage.models
+    if (env.bootedServices.auth0) this.auth0 = env.bootedServices.auth0
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
       callback(null)
@@ -15,7 +16,7 @@ module.exports = class Upserting {
     }
   } // init
 
-  run (doc, context) {
+  async run (doc, context) {
     if (!doc) {
       failed(context, 'NO_DOC_TO_UPSERT', 'Unable to save document - no document supplied')
     }
@@ -24,6 +25,15 @@ module.exports = class Upserting {
 
     docToPersist._executionName = context.executionName
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
+
+    if (this.auth0) {
+      const userEmail = await new Promise((resolve, reject) => this.auth0.getEmailFromUserId(context.userId, (err, email) => {
+        if (err) reject(err)
+        else resolve(email)
+      }))
+      // set modified by to userEmail - only set created by if it's a new record
+      console.log('email:', userEmail)
+    }
 
     this.model.upsert(docToPersist, {setMissingPropertiesToNull: this.setMissingPropertiesToNull})
       .then(docId => context.sendTaskSuccess(docId))
