@@ -19,6 +19,7 @@ class DocGenerator {
     // ---------------------------------------------
     let tymlyDir = require.resolve('tymly')
     tymlyDir = path.dirname(tymlyDir)
+    this.messages = require(path.resolve(tymlyDir, 'startup-messages'))()
     tymlyDir = path.resolve(tymlyDir, './plugin')
     this.options.pluginPaths.unshift(tymlyDir)
 
@@ -30,41 +31,37 @@ class DocGenerator {
   }
 
   addDynamicContent (callback) {
-    const _this = this
-    tymly.boot(
-      {},
-      function (err, tymlyServices) {
-        if (err) {
-          callback(err)
-        } else {
-          tymlyServices.inventory.collateEverything(
-            {
-              pluginPaths: _this.options.pluginPaths,
-              blueprintPaths: _this.options.blueprintPaths
-            },
-            function (err, inventory) {
-              if (err) {
-                callback(err)
-              } else {
-                writeConfig(_this.options.destination, inventory)
-                writePlugins(_this.options.destination, inventory)
-                writeKeyConcepts(_this.options.destination, inventory)
-                writeReference(_this.options.destination,
-                  inventory,
-                  function (err) {
-                    if (err) {
-                      console.error(err)
-                    } else {
-                      writeGettingStarted(_this.options.destination, inventory, callback)
-                    }
+    tymly.boot({}, (err, tymlyServices) => {
+      if (err) {
+        callback(err)
+      } else {
+        tymlyServices.inventory.collateEverything(
+          {
+            pluginPaths: this.options.pluginPaths,
+            blueprintPaths: this.options.blueprintPaths,
+            messages: this.messages
+          }, (err, inventory) => {
+            if (err) {
+              callback(err)
+            } else {
+              writeConfig(this.options.destination, inventory)
+              writePlugins(this.options.destination, inventory)
+              writeKeyConcepts(this.options.destination, inventory)
+              writeReference(this.options.destination,
+                inventory,
+                (err) => {
+                  if (err) {
+                    console.error(err)
+                  } else {
+                    writeGettingStarted(this.options.destination, inventory, callback)
                   }
-                )
-              }
+                }
+              )
             }
-          )
-        }
+          }
+        )
       }
-    )
+    })
   }
 
   runHugo (callback) {
