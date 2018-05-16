@@ -9,9 +9,7 @@ const STATE_MACHINE_NAME2 = 'tymlyTest_findACatWhere_1_0'
 describe('Memory tymly-storage tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService
-  let statebox
-  let executionName
+  let tymlyService, statebox, executionName, catModel
 
   it('should create some out-the-box tymly services to test memory storage', function (done) {
     tymly.boot(
@@ -24,6 +22,7 @@ describe('Memory tymly-storage tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
+        catModel = tymlyServices.storage.models['tymlyTest_cat_1_0']
         done()
       }
     )
@@ -69,9 +68,15 @@ describe('Memory tymly-storage tests', function () {
     )
   })
 
+  it('should upsert a new cat', async () => {
+    await catModel.upsert({name: 'Wilfred'}, {})
+  })
+
   it('should start a simple-storage Tymly with correct name', function (done) {
     statebox.startExecution(
-      {}, // input
+      {
+        catName: 'Wilfred'
+      }, // input
       STATE_MACHINE_NAME2, // state machine name
       {
         sendResponse: 'COMPLETE'
@@ -80,8 +85,9 @@ describe('Memory tymly-storage tests', function () {
         expect(err).to.eql(null)
         expect(result.status).to.eql('SUCCEEDED')
         expect(result.stateMachineName).to.eql(STATE_MACHINE_NAME2)
-        expect(result.currentStateName).to.eql('Finding')
+        expect(result.currentStateName).to.eql('FindingWilfred')
         expect(result.ctx.catDocFromStorage[0].name).to.eql('Rupert')
+        expect(result.ctx.anotherCatDocFromStorage[0].name).to.eql('Wilfred')
         done()
       }
     )
