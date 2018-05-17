@@ -25,7 +25,7 @@ class GetUserRemit {
     }))
 
     const settings = {categoryRelevance: event.userSettings.categoryRelevance}
-    const favourites = event.favourites.results.length > 0 ? event.favourites.results[0].stateMachineNames : []
+    const favourites = event.favourites.results.length > 0 ? event.favourites.results : []
 
     const userRemit = {
       add: {},
