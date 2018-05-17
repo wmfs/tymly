@@ -8,7 +8,7 @@ const _ = require('lodash')
 module.exports = class Finding {
   init (resourceConfig, env, callback) {
     this.modelId = resourceConfig.modelId
-    this.filterTemplate = resourceConfig.filter
+    this.filterTemplate = resourceConfig.filter || {}
     const models = env.bootedServices.storage.models
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
@@ -19,8 +19,7 @@ module.exports = class Finding {
   }
 
   run (event, context) {
-    const filter = processFilter(this.filterTemplate, event)
-
+    const filter = context.resolveInputPaths(event, this.filterTemplate)
     debug(`Filtering model '${this.modelId}' ${JSON.stringify(filter)} - (executionName='${context.executionName}')`)
     this.model.find(
       filter,
@@ -38,25 +37,4 @@ module.exports = class Finding {
       }
     )
   }
-}
-
-function processFilter (template, event) {
-  const filter = {}
-  if (template.where) {
-    filter.where = {}
-    Object.keys(template.where).forEach(property => {
-      filter.where[property] = {}
-      Object.keys(template.where[property]).forEach(key => {
-        const value = template.where[property][key]
-        if (_.isString(value)) {
-          if (value.substring(0, 2) === '$.') {
-            filter.where[property][key] = jp.value(event, value)
-          } else {
-            filter.where[property][key] = value
-          }
-        }
-      })
-    })
-  }
-  return filter
 }
