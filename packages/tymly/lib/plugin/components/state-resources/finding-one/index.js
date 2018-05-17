@@ -4,9 +4,7 @@ const debug = require('debug')('findingOne')
 module.exports = class FindingOne {
   init (resourceConfig, env, callback) {
     this.modelId = resourceConfig.modelId
-    this.filterTemplate = {
-      filter: resourceConfig.filter || {}
-    }
+    this.filterTemplate = resourceConfig.filter || {}
     const models = env.bootedServices.storage.models
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
