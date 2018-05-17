@@ -7,10 +7,9 @@ class GetFavouriteStartableNames {
   }
 
   run (event, context) {
-    this.favouringStartableStateMachines.find({
-      where: {userId: {equals: context.userId}}
-    })
-      .then(results => context.sendTaskSuccess({results}))
+    this.favouringStartableStateMachines
+      .findOne({where: {userId: {equals: context.userId}}})
+      .then(result => context.sendTaskSuccess({results: result.stateMachineNames}))
       .catch(err => context.sendTaskFailure({error: 'getFavouriteStartableNamesFail', cause: err}))
   }
 }
