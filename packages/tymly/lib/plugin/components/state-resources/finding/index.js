@@ -2,8 +2,6 @@
 
 const boom = require('boom')
 const debug = require('debug')('findingOne')
-const jp = require('jsonpath')
-const _ = require('lodash')
 
 module.exports = class Finding {
   init (resourceConfig, env, callback) {
