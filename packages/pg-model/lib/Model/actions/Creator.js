@@ -79,7 +79,7 @@ class Creator {
         }
         let conflictClause
         if (updateColumns.length > 0 && whereParts.length > 0) {
-          conflictClause = ` ON CONFLICT (${_this.primaryKeyColumns.join(', ')}) DO UPDATE SET (${updateColumns.join(',')})=(${updatePlaceholders.join(',')}) WHERE ${whereParts.join(',')}`
+          conflictClause = ` ON CONFLICT (${_this.primaryKeyColumns.join(', ')}) DO UPDATE SET (${updateColumns.join(',')})=(${updatePlaceholders.join(',')}) WHERE ${whereParts.join(' AND ')}`
         } else {
           conflictClause = ' ON CONFLICT DO NOTHING'
         }

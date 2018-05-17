@@ -6,7 +6,7 @@ const debug = require('debug')('findingOne')
 module.exports = class Finding {
   init (resourceConfig, env, callback) {
     this.modelId = resourceConfig.modelId
-    this.filter = resourceConfig.filter
+    this.filterTemplate = resourceConfig.filter || {}
     const models = env.bootedServices.storage.models
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
@@ -17,9 +17,10 @@ module.exports = class Finding {
   }
 
   run (event, context) {
-    debug(`Filtering model '${this.modelId}' ${JSON.stringify(this.filter)} - (executionName='${context.executionName}')`)
+    const filter = context.resolveInputPaths(event, this.filterTemplate)
+    debug(`Filtering model '${this.modelId}' ${JSON.stringify(filter)} - (executionName='${context.executionName}')`)
     this.model.find(
-      this.filter,
+      filter,
       function (err, doc) {
         if (err) {
           context.sendTaskFailure(

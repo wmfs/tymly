@@ -1,11 +1,10 @@
 {
   "Comment": "Find a cat.",
-  "StartAt": "Finding",
+  "StartAt": "FindingRupert",
   "version": "1.0",
   "States": {
-    "Finding": {
+    "FindingRupert": {
       "Type": "Task",
-      "InputPath": "$.catDoc",
       "Resource": "module:finding",
       "ResourceConfig": {
         "modelId": "cat",
@@ -18,6 +17,22 @@
         }
       },
       "ResultPath": "$.catDocFromStorage",
+      "Next": "FindingWilfred"
+    },
+    "FindingWilfred": {
+      "Type": "Task",
+      "Resource": "module:finding",
+      "ResourceConfig": {
+        "modelId": "cat",
+        "filter": {
+          "where": {
+            "name": {
+              "equals": "$.catName"
+            }
+          }
+        }
+      },
+      "ResultPath": "$.anotherCatDocFromStorage",
       "End": true
     }
   },
