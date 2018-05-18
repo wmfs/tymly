@@ -1,4 +1,3 @@
-'use strict'
 const async = require('async')
 
 module.exports = function applyBlueprintDocs (options, callback) {
