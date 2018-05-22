@@ -2,9 +2,6 @@
   "Comment": "state-machine to get CQC data for hospital RIDGE model",
   "version": "1.0",
   "StartAt": "ImportingCsvFiles",
-  "instigators": [
-    "user"
-  ],
   "States": {
     "ImportingCsvFiles": {
       "Type": "Task",
