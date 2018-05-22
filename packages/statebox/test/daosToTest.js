@@ -2,7 +2,7 @@ const StorageDao = require('../lib/dao/StorageService-dao')
 
 let messages = null
 try {
-  messages = require('../../tymly/lib/startup-messages/index')
+  messages = require('../../tymly/lib/startup-messages/index')()
 } catch (err) {
   console.log('Startup messages not available', err)
 }
