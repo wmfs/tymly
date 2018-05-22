@@ -1,8 +1,4 @@
-'use strict'
-
-const routes = require('./routes/index')
-
-class UserApiService {
+class TestApiEndPoint {
   boot (options, callback) {
     const express = options.bootedServices.server.express
     const app = options.bootedServices.server.app
@@ -22,11 +18,20 @@ function addExpressApi (express, app, jwtCheck) {
   // Remit routes
   // ------------
   const router = express.Router()
-  router.get('/', jwtCheck, routes.getUserRemit)
-  app.use('/remit', router)
+  router.get('/', jwtCheck, getTestResponse)
+  app.use('/test-endpoint', router)
+}
+
+function getTestResponse (req, res) {
+  const testResponse = {
+    'stateMachinesUserCanStart': [],
+    'forms': {}
+  }
+
+  res.status(200).send(testResponse)
 }
 
 module.exports = {
-  serviceClass: UserApiService,
-  bootAfter: ['auth', 'rbac']
+  serviceClass: TestApiEndPoint,
+  bootAfter: ['auth', 'server']
 }

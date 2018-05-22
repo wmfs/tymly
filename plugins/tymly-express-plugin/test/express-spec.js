@@ -28,11 +28,11 @@ function sendToken (adminToken) {
 describe('Simple Express tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, server, adminToken, irrelevantToken, rupert, alan, statebox
+  let tymlyService, server, adminToken, rupert, alan, statebox
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
   const executionsUrl = `http://localhost:${PORT}/executions/`
-  const remitUrl = `http://localhost:${PORT}/remit/`
+  const testEndpointUrl = `http://localhost:${PORT}/test-endpoint/`
   const GET_FROM_API_STATE_MACHINE = 'tymlyTest_getFromApi_1_0'
 
   it('should create a usable admin token for Dave', () => {
@@ -46,19 +46,8 @@ describe('Simple Express tests', function () {
     )
   })
 
-  it('should create a usable token for Steve', () => {
-    irrelevantToken = jwt.sign(
-      {},
-      new Buffer(secret, 'base64'),
-      {
-        subject: 'Steve',
-        audience: audience
-      }
-    )
-  })
-
   it('should create some basic tymly services to run a simple cat blueprint', (done) => {
-    process.env.TEST_API_URL = remitUrl
+    process.env.TEST_API_URL = testEndpointUrl
     process.env.TEST_TOKEN = 'Bearer ' + adminToken
 
     tymly.boot(
@@ -67,6 +56,7 @@ describe('Simple Express tests', function () {
         pluginPaths: [
           path.resolve(__dirname, './../lib'),
           path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
+          path.resolve(__dirname, './fixtures/plugins/endpoint-plugin'),
           require.resolve('tymly-solr-plugin'),
           require.resolve('tymly-users-plugin')
         ],
@@ -156,19 +146,6 @@ describe('Simple Express tests', function () {
     request(
       {
         url: executionsUrl + rupert,
-        method: 'GET'
-      },
-      (err, res, body) => {
-        expect(res.statusCode).to.equal(401)
-        done(err)
-      }
-    )
-  })
-
-  it('should fail getting the user\'s remit without a JWT', (done) => {
-    request(
-      {
-        url: remitUrl,
         method: 'GET'
       },
       (err, res, body) => {
@@ -430,36 +407,6 @@ describe('Simple Express tests', function () {
         expect(body.status).to.equal('STOPPED')
         expect(body.errorCode).to.equal('STOPPED')
         expect(body.errorCause).to.equal('Execution stopped externally')
-        done(err)
-      }
-    )
-  })
-
-  it('should get an admin\'s remit', (done) => {
-    request(
-      {
-        url: remitUrl,
-        method: 'GET',
-        headers: sendToken(adminToken),
-        json: true
-      },
-      (err, res, body) => {
-        expect(res.statusCode).to.equal(200)
-        done(err)
-      }
-    )
-  })
-
-  it('should get a normal user\'s remit', (done) => {
-    request(
-      {
-        url: remitUrl,
-        method: 'GET',
-        headers: sendToken(irrelevantToken),
-        json: true
-      },
-      (err, res, body) => {
-        expect(res.statusCode).to.equal(200)
         done(err)
       }
     )
