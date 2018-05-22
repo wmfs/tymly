@@ -49,51 +49,31 @@ describe('User-role tests', function () {
     )
   })
 
-  it('should ensure Mommy is the boss', function (done) {
-    expect(
-      users.ensureUserRoles(
-        'mommy',
-        ['tymlyTest_boss'],
-        function (err) {
-          expect(err).to.eql(null)
-          done()
-        })
+  it('should ensure Mommy is the boss', () => {
+    return users.ensureUserRoles(
+      'mommy',
+      ['tymlyTest_boss']
     )
   })
 
-  it('should ensure Daddy is an admin', function (done) {
-    expect(
-      users.ensureUserRoles(
-        'daddy',
-        ['tymlyTest_tymlyTestAdmin'],
-        function (err) {
-          expect(err).to.eql(null)
-          done()
-        })
+  it('should ensure Daddy is an admin', () => {
+    return users.ensureUserRoles(
+      'daddy',
+      ['tymlyTest_tymlyTestAdmin']
     )
   })
 
-  it('should ensure Lucy is a Team Leader', function (done) {
-    expect(
-      users.ensureUserRoles(
-        'lucy',
-        ['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader'],
-        function (err) {
-          expect(err).to.eql(null)
-          done()
-        })
+  it('should ensure Lucy is a Team Leader', () => {
+    return users.ensureUserRoles(
+      'lucy',
+      ['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader']
     )
   })
 
-  it('should ensure Molly is a developer', function (done) {
-    expect(
-      users.ensureUserRoles(
-        'molly',
-        ['tymlyTest_developer'],
-        function (err) {
-          expect(err).to.eql(null)
-          done()
-        })
+  it('should ensure Molly is a developer', () => {
+    return users.ensureUserRoles(
+      'molly',
+      ['tymlyTest_developer']
     )
   })
 

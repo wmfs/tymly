@@ -1,13 +1,9 @@
-'use strict'
-
 const _ = require('lodash')
-const async = require('async')
 const schema = require('./schema.json')
 const debug = require('debug')('users')
 
 class UsersService {
-  boot (options, callback) {
-    const _this = this
+  async boot (options, callback) {
     this.messages = options.messages
 
     this.rbac = options.bootedServices.rbac
@@ -17,66 +13,47 @@ class UsersService {
     caches.defaultIfNotInConfig('userMemberships', 500)
     this.userMembershipsCache = caches.userMemberships
 
-    if (options.config.hasOwnProperty('defaultUsers')) {
-      async.forEachOf(
-        options.config.defaultUsers,
+    if (!options.config.hasOwnProperty('defaultUsers')) {
+      return callback(null)
+    } // if ...
 
-        function (roles, userId, cb) {
-          _this.ensureUserRoles(
-            userId,
-            roles,
-            cb
-          )
-        },
+    const roleUpdates =
+      Object.entries(options.config.defaultUsers)
+        .map(([userId, roles]) => this.ensureUserRoles(userId, roles))
 
-        callback
-      )
-    } else {
-      callback(null)
-    }
+    Promise.all(roleUpdates)
+      .then(() => callback(null))
+      .catch(err => callback(err))
   }
 
   /**
    * Ensures that the specified user has been assigned the specified roles
    * @param {string} userId A userId for which the provided roles will be assigned to
    * @param {Array<string>} roleIds An array of roleIds that should be assigned to the user
-   * @param {Function} callback Called with a standard error
-   * @returns {undefined}
+   * @returns {Promise}
    * @example
-   * users.ensureUserRoles(
+   * await users.ensureUserRoles(
    *   'Dave',
-   *   ['tymlyTest_tymlyTestAdmin'],
-   *   function (err) {
-   *     // Expect err to be null
-   *   }
+   *   ['tymlyTest_tymlyTestAdmin']
    * )
    */
-  ensureUserRoles (userId, roleIds, callback) {
-    const _this = this
-
-    if (_.isArray(roleIds)) {
-      async.forEach(
-        roleIds,
-
-        function (roleId, cb) {
-          debug(`Adding user '${userId}' into role '${roleId}'`)
-          _this.roleMembershipModel.upsert(
-            {
-              roleId: roleId,
-              memberType: 'user',
-              memberId: userId
-            },
-            {},
-            cb
-          )
-        },
-
-        callback
-      )
-    } else {
-      callback(null)
+  ensureUserRoles (userId, roleIds) {
+    if (!Array.isArray(roleIds)) {
+      return
     }
-  }
+
+    const roleUpserts = roleIds.map(roleId => {
+      debug(`Adding user '${userId}' into role '${roleId}'`)
+      return this.roleMembershipModel.upsert({
+        roleId: roleId,
+        memberType: 'user',
+        memberId: userId
+      },
+      {}
+      )
+    })
+    return Promise.all(roleUpserts)
+  } // ensureUserRoles
 
   /**
    * Returns with all the roles currently assigned to the specified userId
@@ -94,7 +71,7 @@ class UsersService {
   getUserRoles (userId, callback) {
     let cachedRoles = this.userMembershipsCache.get(userId)
 
-    if (_.isArray(cachedRoles)) {
+    if (Array.isArray(cachedRoles)) {
       callback(null, cachedRoles)
     } else {
       this.roleMembershipModel.find(

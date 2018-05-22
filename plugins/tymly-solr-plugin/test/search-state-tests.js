@@ -9,6 +9,11 @@ const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const STATE_MACHINE_NAME = 'tymlyTest_search_1_0'
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 describe('tymly-solr-plugin search state resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
@@ -66,25 +71,17 @@ describe('tymly-solr-plugin search state resource tests', function () {
     )
   })
 
-  it('should ensure John Smith is the boss and a minor', (done) => {
-    expect(users.ensureUserRoles(
+  it('should ensure John Smith is the boss and a minor', () => {
+    return users.ensureUserRoles(
       'john.smith',
-      ['tymlyTest_boss', 'tymlyTest_minor'],
-      (err) => {
-        expect(err).to.eql(null)
-        done(err)
-      })
+      ['tymlyTest_boss', 'tymlyTest_minor']
     )
   })
 
-  it('should ensure Jane Smith is a minor', (done) => {
-    expect(users.ensureUserRoles(
+  it('should ensure Jane Smith is a minor', () => {
+    return users.ensureUserRoles(
       'jane.smith',
-      ['tymlyTest_minor'],
-      (err) => {
-        expect(err).to.eql(null)
-        done(err)
-      })
+      ['tymlyTest_minor']
     )
   })
 
