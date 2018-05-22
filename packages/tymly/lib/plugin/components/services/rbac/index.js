@@ -10,26 +10,14 @@ const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
 
 class RbacService {
   boot (options, callback) {
-    const _this = this
-
     this.messages = options.messages
     this.roleModel = options.bootedServices.storage.models.tymly_role
     this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
     this.permissionModel = options.bootedServices.storage.models.tymly_permission
 
-    applyDefaultBlueprintDocs(
-      options,
-
-      function (err) {
-        if (err) {
-          callback(err)
-        } else {
-          // Refresh RBAC index
-          // ------------------
-          _this.refreshIndex(callback)
-        }
-      }
-    )
+    applyDefaultBlueprintDocs(options)
+      .then(() => this.refreshIndex(callback))
+      .catch(err => callback(err))
   }
 
   /**

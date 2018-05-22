@@ -1,6 +1,3 @@
-'use strict'
-
-const _ = require('lodash')
 
 class BlueprintDocsService {
   boot (options, callback) {
@@ -26,22 +23,14 @@ class BlueprintDocsService {
    *   }
    * )
    */
-  isKnownDocument (domain, docId, callback) {
-    this.blueprintDocDao.findOne(
-      {
-        where: {
-          domain: {equals: domain},
-          docId: {equals: docId}
-        }
-      },
-      function (err, doc) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, !(doc === null))
-        }
+  isKnownDocument (domain, docId) {
+    return this.blueprintDocDao.findOne({
+      where: {
+        domain: {equals: domain},
+        docId: {equals: docId}
       }
-    )
+    })
+      .then(doc => !(doc === null))
   }
 
   /**
@@ -49,44 +38,29 @@ class BlueprintDocsService {
    * @param {string} domain For grouping documents that have been created, often relate to a model name
    * @param {string} docId An id for the document that's being registered (should be unique within its domain)
    * @param {Function} callback Called with the registered document (e.g. a doc stored via the `tymly.blueprintDocs` model, pretty useless)
-   * @returns {undefined}
+   * @returns {Promise}
    * @example
    * blueprintDocs.registerDocument(
    *   'templateRole',
-   *   'tymlyTest_tymlyTestAdmin',
-   *   function (err, blueprintsDocInfo) {
-   *     // The returned value here is the doc as now stored
-   *     // in the tymly.blueprintDocs model... not that
-   *     // much use, just deal with errors?
-   *   }
+   *   'tymlyTest_tymlyTestAdmin'
    * )
    */
-  registerDocument (domain, docId, callback) {
-    this.blueprintDocDao.create(
-      {
-        domain: domain,
-        docId: docId
-      },
-      {},
-      callback
+  registerDocument (domain, docId) {
+    return this.blueprintDocDao.create({
+      domain: domain,
+      docId: docId
+    },
+    {}
     )
-  }
+  } // registerDocument
 
-  getDomainDocIds (domain, callback) {
-    this.blueprintDocDao.find(
-      {
-        where: {
-          domain: {equals: domain}
-        }
-      },
-      function (err, docs) {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, _.map(docs, 'docId'))
-        }
+  getDomainDocIds (domain) {
+    return this.blueprintDocDao.find({
+      where: {
+        domain: {equals: domain}
       }
-    )
+    })
+      .then(docs => docs.map(d => d.docId))
   }
 }
 
