@@ -6,16 +6,10 @@ module.exports = function describeExecution (req, res) {
   const authService = services.auth
   const statebox = services.statebox
 
-  // {
-  //   userId: authService.extractUserIdFromRequest(req),
-  //     onAuthorizationHook: tymlyServices.users.onAuthorizationHook.bind(tymlyServices.users),
-  //   action: 'describeExecution'
-  // },
-
-  const options = {}
-  options.executionName = req.params.executionName
-  options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
-  options.action = 'describeExecution'
+  const options = {
+    executionName: req.params.executionName,
+    action: 'describeExecution'
+  }
 
   const userId = authService.extractUserIdFromRequest(req)
   if (userId) {

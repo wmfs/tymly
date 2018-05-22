@@ -13,11 +13,6 @@ module.exports = function (req, res) {
     userId: authService.extractUserIdFromRequest(req)
   }
 
-  // options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
-  // if (userId) {
-  //   options.userId = userId
-  // }
-
   if (actions.hasOwnProperty(env.body.action)) {
     actions[env.body.action](
       services.statebox,

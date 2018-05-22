@@ -13,7 +13,6 @@ module.exports = function startExecution (req, res) {
 
   const input = cloneOrDefault(req.body.input)
   const options = cloneOrDefault(req.body.options)
-  // options.onAuthorizationHook = services.users.onAuthorizationHook.bind(services.users)
   options.action = 'startExecution'
   options.stateMachineName = stateMachineName
 
