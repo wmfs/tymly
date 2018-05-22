@@ -17,7 +17,7 @@ process.on('unhandledRejection', (reason, p) => {
 describe('tymly-solr-plugin search state resource tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, statebox, client, users
+  let tymlyService, statebox, client, rbac
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -49,7 +49,7 @@ describe('tymly-solr-plugin search state resource tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
-        users = tymlyServices.users
+        rbac = tymlyServices.rbac
         client = tymlyServices.storage.client
         done()
       }
@@ -72,14 +72,14 @@ describe('tymly-solr-plugin search state resource tests', function () {
   })
 
   it('should ensure John Smith is the boss and a minor', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'john.smith',
       ['tymlyTest_boss', 'tymlyTest_minor']
     )
   })
 
   it('should ensure Jane Smith is a minor', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'jane.smith',
       ['tymlyTest_minor']
     )

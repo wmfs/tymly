@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const schema = require('./schema.json')
-const debug = require('debug')('users')
 
 class UsersService {
   async boot (options, callback) {
@@ -13,47 +12,8 @@ class UsersService {
     caches.defaultIfNotInConfig('userMemberships', 500)
     this.userMembershipsCache = caches.userMemberships
 
-    if (!options.config.hasOwnProperty('defaultUsers')) {
-      return callback(null)
-    } // if ...
-
-    const roleUpdates =
-      Object.entries(options.config.defaultUsers)
-        .map(([userId, roles]) => this.ensureUserRoles(userId, roles))
-
-    Promise.all(roleUpdates)
-      .then(() => callback(null))
-      .catch(err => callback(err))
+    callback(null)
   }
-
-  /**
-   * Ensures that the specified user has been assigned the specified roles
-   * @param {string} userId A userId for which the provided roles will be assigned to
-   * @param {Array<string>} roleIds An array of roleIds that should be assigned to the user
-   * @returns {Promise}
-   * @example
-   * await users.ensureUserRoles(
-   *   'Dave',
-   *   ['tymlyTest_tymlyTestAdmin']
-   * )
-   */
-  ensureUserRoles (userId, roleIds) {
-    if (!Array.isArray(roleIds)) {
-      return
-    }
-
-    const roleUpserts = roleIds.map(roleId => {
-      debug(`Adding user '${userId}' into role '${roleId}'`)
-      return this.roleMembershipModel.upsert({
-        roleId: roleId,
-        memberType: 'user',
-        memberId: userId
-      },
-      {}
-      )
-    })
-    return Promise.all(roleUpserts)
-  } // ensureUserRoles
 
   /**
    * Returns with all the roles currently assigned to the specified userId

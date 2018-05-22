@@ -11,7 +11,7 @@ describe('User-role tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, users
+  let tymlyService, users, rbac
 
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
@@ -44,34 +44,35 @@ describe('User-role tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         users = tymlyServices.users
+        rbac = tymlyServices.rbac
         done()
       }
     )
   })
 
   it('should ensure Mommy is the boss', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'mommy',
       ['tymlyTest_boss']
     )
   })
 
   it('should ensure Daddy is an admin', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'daddy',
       ['tymlyTest_tymlyTestAdmin']
     )
   })
 
   it('should ensure Lucy is a Team Leader', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'lucy',
       ['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader']
     )
   })
 
   it('should ensure Molly is a developer', () => {
-    return users.ensureUserRoles(
+    return rbac.ensureUserRoles(
       'molly',
       ['tymlyTest_developer']
     )

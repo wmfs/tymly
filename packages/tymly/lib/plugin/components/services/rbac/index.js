@@ -6,19 +6,30 @@ const debug = require('debug')('rbac')
 
 const refreshIndexModule = require('./refresh-index/index')
 
+const { applyDefaultRoles, ensureUserRoles } = require('./apply-default-roles')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
 
 class RbacService {
-  boot (options, callback) {
-    this.messages = options.messages
-    this.roleModel = options.bootedServices.storage.models.tymly_role
-    this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
-    this.permissionModel = options.bootedServices.storage.models.tymly_permission
+  async boot (options, callback) {
+    try {
+      this.messages = options.messages
+      this.roleModel = options.bootedServices.storage.models.tymly_role
+      this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
+      this.permissionModel = options.bootedServices.storage.models.tymly_permission
 
-    applyDefaultBlueprintDocs(options)
-      .then(() => this.refreshIndex(callback))
-      .catch(err => callback(err))
+      await applyDefaultRoles(options.config.defaultUsers, this.roleMembershipModel)
+
+      await applyDefaultBlueprintDocs(options)
+    } catch (err) {
+      return callback(err)
+    }
+
+    this.refreshIndex(callback)
   }
+
+  ensureUserRoles (userId, roleIds) {
+    return ensureUserRoles(userId, roleIds, this.roleMembershipModel)
+  } // ensureUserRoles
 
   /**
    * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `tymly_permission_1_0`, `tymly_role_1_0` and `tymly_membership_1_0`)
