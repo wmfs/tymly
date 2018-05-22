@@ -11,7 +11,7 @@
   "main": "./lib/index.js",
   "dependencies": {
     "lodash": "4.17.10",
-    "make-dir": "1.2.0",
+    "make-dir": "1.3.0",
     "pg": "7.4.1",
     "pg-query-stream": "1.1.1"
   },
