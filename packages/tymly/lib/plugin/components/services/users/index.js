@@ -3,7 +3,6 @@
 const _ = require('lodash')
 const async = require('async')
 const schema = require('./schema.json')
-const boom = require('boom')
 const debug = require('debug')('users')
 
 class UsersService {
@@ -12,13 +11,6 @@ class UsersService {
     this.messages = options.messages
 
     this.rbac = options.bootedServices.rbac
-    this.statebox = options.bootedServices.statebox
-    this.stateMachines = this.statebox.stateMachines
-
-    if (options.bootedServices.hasOwnProperty('forms')) {
-      // TODO: This is grim. Should be a hook?
-      this.forms = options.bootedServices.forms.forms
-    }
 
     this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
     const caches = options.bootedServices.caches
@@ -146,50 +138,10 @@ class UsersService {
   resetCache () {
     this.userMembershipsCache.reset()
   }
-
-  onAuthorizationHook (executionDescription, options, callback) {
-    const _this = this
-    const userId = options.userId
-
-    this.getUserRoles(
-      userId,
-      function (err, roles) {
-        if (err) {
-          callback(err)
-        } else {
-          const action = options.action
-
-          let stateMachineName
-          if (executionDescription) {
-            stateMachineName = executionDescription.stateMachineName
-          } else {
-            stateMachineName = executionDescription.stateMachineName
-          }
-
-          const authorized = _this.rbac.checkRoleAuthorization(
-            userId,
-            executionDescription,
-            roles,
-            'flow',
-            stateMachineName,
-            action)
-
-          if (authorized) {
-            callback(null)
-          } else {
-            callback(boom.forbidden('No roles permit this action', {
-              userId: userId,
-              stateMachineName: stateMachineName
-            }))
-          }
-        }
-      }
-    )
-  }
 }
 
 module.exports = {
   schema: schema,
   serviceClass: UsersService,
-  bootAfter: ['caches', 'statebox', 'rbac']
+  bootAfter: ['caches', 'rbac']
 }
