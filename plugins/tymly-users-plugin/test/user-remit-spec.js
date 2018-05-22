@@ -118,6 +118,8 @@ describe('user-remit tymly-users-plugin tests', function () {
           expect(Object.keys(executionDescription.ctx.userRemit.add.startable).includes('test_justAStateMachine_1_0')).to.eql(true)
           // State machine with role: 'topSecretRole' should NOT appear in startable
           expect(Object.keys(executionDescription.ctx.userRemit.add.startable).includes('test_topSecretStateMachine_1_0')).to.eql(false)
+          // Sate machine without 'user' as instigator should NOT appear in startable
+          expect(Object.keys(executionDescription.ctx.userRemit.add.startable).includes('test_shouldNotBeOnRemit_1_0')).to.eql(false)
 
           expect(executionDescription.ctx.userRemit.remove).to.eql({})
           done()

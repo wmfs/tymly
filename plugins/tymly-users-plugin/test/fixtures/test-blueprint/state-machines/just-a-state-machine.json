@@ -4,6 +4,7 @@
   "version": "1.0",
   "StartAt": "JustAState",
   "categories": ["fire"],
+  "instigators": ["user"],
   "States": {
     "JustAState": {
       "Type": "Pass",

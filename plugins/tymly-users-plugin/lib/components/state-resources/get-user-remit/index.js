@@ -53,21 +53,22 @@ class GetUserRemit {
 
     if (this.statebox) {
       const startable = this.findStartableMachines(this.statebox.listStateMachines(), this.categories.names)
-      const allowedStartable = Object.keys(startable).reduce((keys, resourceName) => {
-        const isAuth = rbacService.checkRoleAuthorization(
-          userId,
-          context,
-          userRoles,
-          'stateMachine',
-          resourceName,
-          'create'
-        )
-        if (isAuth) {
-          keys[resourceName] = startable[resourceName]
-          keys[resourceName].shasum = shasum(startable[resourceName])
-        }
-        return keys
-      }, {})
+      const allowedStartable = Object.keys(startable)
+        .reduce((keys, resourceName) => {
+          const isAuth = rbacService.checkRoleAuthorization(
+            userId,
+            context,
+            userRoles,
+            'stateMachine',
+            resourceName,
+            'create'
+          )
+          if (isAuth && (startable[resourceName].instigators && startable[resourceName].instigators.includes('user'))) {
+            keys[resourceName] = startable[resourceName]
+            keys[resourceName].shasum = shasum(startable[resourceName])
+          }
+          return keys
+        }, {})
       promises.push(this.processComponents(userRemit, 'startable', allowedStartable, event.clientManifest['startable']))
     }
 
@@ -137,7 +138,8 @@ class GetUserRemit {
         name: machine.name,
         title: machine.definition.name,
         description: machine.definition.description,
-        category: category
+        category: category,
+        instigators: machine.definition.instigators
       }
     } // for ...
 
