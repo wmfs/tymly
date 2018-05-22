@@ -5,9 +5,6 @@
   "categories": [
     "expenses"
   ],
-  "instigators": [
-    "user"
-  ],
   "StartAt": "AwaitingHumanInput",
   "States": {
     "AwaitingHumanInput": {
