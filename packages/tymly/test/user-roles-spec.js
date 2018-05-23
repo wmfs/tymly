@@ -78,64 +78,29 @@ describe('User-role tests', function () {
     )
   })
 
-  it('should get Lucy\'s roles via storage', function (done) {
-    expect(
-      users.getUserRoles(
-        'lucy',
-        function (err, roles) {
-          expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
-          done()
-        })
-    )
+  it('should get Lucy\'s roles via storage', async () => {
+    const roles = await users.getUserRoles('lucy')
+    expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
   })
 
-  it('should get Lucy\'s roles via cache', function (done) {
-    expect(
-      users.getUserRoles(
-        'lucy',
-        function (err, roles) {
-          expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
-          done()
-        })
-    )
+  it('should get Lucy\'s roles via cache', async () => {
+    const roles = await users.getUserRoles('lucy')
+    expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
   })
 
-  it('should get Mommy\'s roles via storage', function (done) {
-    expect(
-      users.getUserRoles(
-        'mommy',
-        function (err, roles) {
-          expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_boss', '$everyone', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
-          done()
-        })
-    )
+  it('should get Mommy\'s roles via storage', async () => {
+    const roles = await users.getUserRoles('mommy')
+    expect(roles).to.eql(['tymlyTest_boss', '$everyone', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
   })
 
-  it('should get Molly\'s roles via storage', function (done) {
-    expect(
-      users.getUserRoles(
-        'molly',
-        function (err, roles) {
-          expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_developer', '$everyone'])
-          done()
-        })
-    )
+  it('should get Molly\'s roles via storage', async () => {
+    const roles = await users.getUserRoles('molly')
+    expect(roles).to.eql(['tymlyTest_developer', '$everyone'])
   })
 
-  it('should get Daddy\'s roles via storage', function (done) {
-    expect(
-      users.getUserRoles(
-        'daddy',
-        function (err, roles) {
-          expect(err).to.eql(null)
-          expect(roles).to.eql(['tymlyTest_tymlyTestAdmin', '$everyone'])
-          done()
-        })
-    )
+  it('should get Daddy\'s roles via storage', async () => {
+    const roles = await users.getUserRoles('daddy')
+    expect(roles).to.eql(['tymlyTest_tymlyTestAdmin', '$everyone'])
   })
 
   it('should reset cache', function () {

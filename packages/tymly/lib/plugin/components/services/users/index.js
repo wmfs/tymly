@@ -28,7 +28,14 @@ class UsersService {
    *   }
    * )
    */
-  getUserRoles (userId, callback) {
+  getUserRoles (userId) {
+    return new Promise((resolve, reject) => this._getUserRoles(userId, (err, roles) => {
+      if (err) reject(err)
+      else resolve(roles)
+    }))
+  }
+
+  _getUserRoles (userId, callback) {
     let cachedRoles = this.userMembershipsCache.get(userId)
 
     if (Array.isArray(cachedRoles)) {

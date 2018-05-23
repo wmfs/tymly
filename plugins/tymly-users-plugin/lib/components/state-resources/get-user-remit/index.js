@@ -19,10 +19,7 @@ class GetUserRemit {
     const rbacService = this.services.rbac
 
     const userId = context.userId
-    const userRoles = await new Promise((resolve, reject) => usersService.getUserRoles(userId, (err, roles) => {
-      if (err) reject(err)
-      else resolve(roles)
-    }))
+    const userRoles = await usersService.getUserRoles(userId)
 
     const settings = {categoryRelevance: event.userSettings.categoryRelevance}
     const favourites = event.favourites.results.length > 0 ? event.favourites.results : []

@@ -29,40 +29,43 @@ class Search {
     return this.solrClient_
   } // solrClient
 
-  run (event, context) {
+  async run (event, context) {
     const usersService = this.services.users
     const solrService = this.services.solr
 
-    if (context.userId) {
-      usersService.getUserRoles(context.userId, (err, userRoles) => {
-        if (err) return context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
-        if (!userRoles.includes('$authenticated')) userRoles.push('$authenticated')
-
-        if (solrService.searchDocs) {
-          const searchDocs = this.services.solr.searchDocs
-          this.searchFields = new Set()
-          Object.keys(searchDocs).map(s => {
-            Object.keys(searchDocs[s].attributeMapping).map(a => {
-              this.searchFields.add(_.snakeCase(a))
-            })
-          })
-        } else {
-          this.searchFields = defaultSolrSchemaFields
-        }
-
-        const filters = this.processFilters(event)
-
-        if (solrService.solrUrl) {
-          this.runSolrSearch(event, context, filters, userRoles)
-        } else {
-          this.runStorageSearch(context, filters, userRoles)
-        }
-      })
-    } else {
-      context.sendTaskFailure({
+    if (!context.userId) {
+      return context.sendTaskFailure({
         error: 'noUserIdSearchFail',
         cause: 'No user ID found when trying to search.'
       })
+    } // if ...
+
+    try {
+      const userRoles = await usersService.getUserRoles(context.userId)
+
+      if (!userRoles.includes('$authenticated')) userRoles.push('$authenticated')
+
+      if (solrService.searchDocs) {
+        const searchDocs = this.services.solr.searchDocs
+        this.searchFields = new Set()
+        Object.keys(searchDocs).map(s => {
+          Object.keys(searchDocs[s].attributeMapping).map(a => {
+            this.searchFields.add(_.snakeCase(a))
+          })
+        })
+      } else {
+        this.searchFields = defaultSolrSchemaFields
+      }
+
+      const filters = this.processFilters(event)
+
+      if (solrService.solrUrl) {
+        this.runSolrSearch(event, context, filters, userRoles)
+      } else {
+        this.runStorageSearch(context, filters, userRoles)
+      }
+    } catch (err) {
+      context.sendTaskFailure({error: 'searchGettingUserRolesFail', cause: err})
     }
   } // run
 
