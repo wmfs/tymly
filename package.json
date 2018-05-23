@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "author": "Tim Needham",
   "devDependencies": {
+    "cz-lerna-changelog": "^1.2.1",
     "lerna": "^2.6.0"
   },
   "scripts": {
@@ -21,5 +22,10 @@
   },
   "bugs": {
     "url": "https://github.com/wmfs/tymly/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
+    }
   }
 }
