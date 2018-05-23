@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 
-'use strict'
-
 const expect = require('chai').expect
 const tymly = require('./../lib')
 const path = require('path')
@@ -12,7 +10,6 @@ describe('RBAC tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService
-  let users
   let rbac
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
@@ -43,7 +40,6 @@ describe('RBAC tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         rbac = tymlyServices.rbac
-        users = tymlyServices.users
         rbac.rbac.debug()
         done()
       }
@@ -183,7 +179,7 @@ describe('RBAC tests', function () {
   })
 
   it('should reset cache', function () {
-    users.resetCache()
+    rbac.resetCache()
   })
 
   it('should shutdown Tymly', async () => {

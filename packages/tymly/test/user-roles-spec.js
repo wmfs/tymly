@@ -11,7 +11,7 @@ describe('User-role tests', function () {
 
   this.timeout(process.env.TIMEOUT || 5000)
 
-  let tymlyService, users, rbac
+  let tymlyService, rbac
 
   const secret = 'Shhh!'
   const audience = 'IAmTheAudience!'
@@ -43,7 +43,6 @@ describe('User-role tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        users = tymlyServices.users
         rbac = tymlyServices.rbac
         done()
       }
@@ -79,32 +78,32 @@ describe('User-role tests', function () {
   })
 
   it('should get Lucy\'s roles via storage', async () => {
-    const roles = await users.getUserRoles('lucy')
+    const roles = await rbac.getUserRoles('lucy')
     expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
   })
 
   it('should get Lucy\'s roles via cache', async () => {
-    const roles = await users.getUserRoles('lucy')
+    const roles = await rbac.getUserRoles('lucy')
     expect(roles).to.eql(['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer'])
   })
 
   it('should get Mommy\'s roles via storage', async () => {
-    const roles = await users.getUserRoles('mommy')
+    const roles = await rbac.getUserRoles('mommy')
     expect(roles).to.eql(['tymlyTest_boss', '$everyone', 'tymlyTest_developer', 'tymlyTest_teamLeader'])
   })
 
   it('should get Molly\'s roles via storage', async () => {
-    const roles = await users.getUserRoles('molly')
+    const roles = await rbac.getUserRoles('molly')
     expect(roles).to.eql(['tymlyTest_developer', '$everyone'])
   })
 
   it('should get Daddy\'s roles via storage', async () => {
-    const roles = await users.getUserRoles('daddy')
+    const roles = await rbac.getUserRoles('daddy')
     expect(roles).to.eql(['tymlyTest_tymlyTestAdmin', '$everyone'])
   })
 
   it('should reset cache', function () {
-    users.resetCache()
+    rbac.resetCache()
   })
 
   it('should shutdown Tymly', async () => {

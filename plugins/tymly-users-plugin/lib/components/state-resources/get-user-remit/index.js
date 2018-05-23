@@ -15,11 +15,10 @@ class GetUserRemit {
   }
 
   async run (event, context) {
-    const usersService = this.services.users
     const rbacService = this.services.rbac
 
     const userId = context.userId
-    const userRoles = await usersService.getUserRoles(userId)
+    const userRoles = await rbacService.getUserRoles(userId)
 
     const settings = {categoryRelevance: event.userSettings.categoryRelevance}
     const favourites = event.favourites.results.length > 0 ? event.favourites.results : []

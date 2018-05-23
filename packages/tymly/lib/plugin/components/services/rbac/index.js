@@ -1,5 +1,3 @@
-'use strict'
-
 const _ = require('lodash')
 const dottie = require('dottie')
 const debug = require('debug')('rbac')
@@ -17,9 +15,24 @@ class RbacService {
       this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
       this.permissionModel = options.bootedServices.storage.models.tymly_permission
 
-      await applyDefaultRoles(options.config.defaultUsers, this.roleMembershipModel)
+      const caches = options.bootedServices.caches
+      caches.defaultIfNotInConfig('userMemberships', 500)
+      this.userMembershipsCache = caches.userMemberships
 
-      await applyDefaultBlueprintDocs(options)
+      options.messages.info('Applying default roles')
+      await applyDefaultRoles(
+        options.config.defaultUsers,
+        this.roleMembershipModel
+      )
+
+      options.messages.info('Applying unknown Blueprint documents')
+      await applyDefaultBlueprintDocs(
+        options.bootedServices.blueprintDocs,
+        options.blueprintComponents,
+        this.roleModel,
+        this.roleMembershipModel,
+        this.permissionModel
+      )
     } catch (err) {
       return callback(err)
     }
@@ -30,6 +43,47 @@ class RbacService {
   ensureUserRoles (userId, roleIds) {
     return ensureUserRoles(userId, roleIds, this.roleMembershipModel)
   } // ensureUserRoles
+
+  /**
+   * Returns with all the roles currently assigned to the specified userId
+   * @param {string} userId Specifies which useId to return a list of roles for
+   * @param {Function} callback Called with an array of roleId strings that are assigned to the specified userId
+   * @returns {Promise<array of roles>}
+   * @example
+   * users.getUserRoles('Dave').then(roles => {
+   *     // roles === ['tymlyTest_tymlyTestAdmin']
+   *   }
+   * )
+   */
+  async getUserRoles (userId) {
+    const cachedRoles = this.userMembershipsCache.get(userId)
+    if (Array.isArray(cachedRoles)) return cachedRoles
+
+    return this.findAndCacheRoles(userId)
+  } // getUserRoles
+
+  async findAndCacheRoles (userId) {
+    let roles = await this.roleMembershipModel.find({
+      where: {
+        memberType: {equals: 'user'},
+        memberId: {equals: userId}
+      }
+    })
+
+    roles = _.uniq(roles.map(r => r.roleId))
+    const inheritedRoles = ['$everyone']
+
+    roles.map(roleId => {
+      Object.keys(this.rbac.inherits).map(inheritedBy => {
+        if (this.rbac.inherits[inheritedBy].includes(roleId)) {
+          inheritedRoles.push(inheritedBy)
+        }
+      })
+    })
+    roles = _.uniq(roles.concat(inheritedRoles))
+    this.userMembershipsCache.set(userId, roles)
+    return roles
+  } // getUserRoles
 
   /**
    * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `tymly_permission_1_0`, `tymly_role_1_0` and `tymly_membership_1_0`)
@@ -177,9 +231,13 @@ class RbacService {
 
     return _.uniq(allRoles)
   }
+
+  resetCache () {
+    this.userMembershipsCache.reset()
+  }
 }
 
 module.exports = {
   serviceClass: RbacService,
-  bootAfter: ['statebox', 'storage']
+  bootAfter: ['statebox', 'caches', 'storage']
 }

@@ -30,7 +30,7 @@ class Search {
   } // solrClient
 
   async run (event, context) {
-    const usersService = this.services.users
+    const rbacService = this.services.rbac
     const solrService = this.services.solr
 
     if (!context.userId) {
@@ -41,7 +41,7 @@ class Search {
     } // if ...
 
     try {
-      const userRoles = await usersService.getUserRoles(context.userId)
+      const userRoles = await rbacService.getUserRoles(context.userId)
 
       if (!userRoles.includes('$authenticated')) userRoles.push('$authenticated')
 

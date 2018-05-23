@@ -27,20 +27,20 @@ describe('Shutdown services tests', function () {
 
   it('should show the boot order was correct', () => {
     expect(tymlyService.orderedServiceNames).to.eql(
-      ['inventory',
-        'testService3',
+      [
+        'tymly',
+        'timestamp',
+        'temp',
+        'inventory',
         'caches',
         'storage',
-        'timestamp',
         'functions',
         'blueprintDocs',
         'registry',
         'categories',
-        'temp',
         'statebox',
+        'testService3',
         'rbac',
-        'users',
-        'tymly',
         'testService1',
         'testService2'
       ]
@@ -58,9 +58,8 @@ describe('Shutdown services tests', function () {
     tymly.boot(
       {},
       (err, tymlyServices) => {
-        expect(err.length).to.eql(2)
+        expect(err.length).to.eql(1)
         expect(err[0].name).to.eql('unknownService')
-        expect(err[1].name).to.eql('unknownService')
         done()
       }
     )

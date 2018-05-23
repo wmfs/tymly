@@ -129,23 +129,21 @@ async function collectKnownDocs (blueprintDocs) {
   return knownDocs
 } // collectKnownDocs
 
-module.exports = async function applyBlueprintDocs (options) {
-  const blueprintDocs = options.bootedServices.blueprintDocs
-  const roleModel = options.bootedServices.storage.models.tymly_role
-  const roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
-  const permissionModel = options.bootedServices.storage.models.tymly_permission
-
-  options.messages.info('Applying unknown Blueprint documents')
-
+module.exports = async function applyBlueprintDocs (
+  blueprintDocs,
+  blueprintComponents,
+  roleModel,
+  roleMembershipModel,
+  permissionModel) {
   const roleTemplateTasks = gatherRoleTemplates(
-    options.blueprintComponents.templateRoles,
+    blueprintComponents.templateRoles,
     roleModel,
     roleMembershipModel,
     permissionModel
   )
 
   const restrictionTasks = gatherStateMachineRestrictions(
-    options.blueprintComponents.stateMachines,
+    blueprintComponents.stateMachines,
     permissionModel
   )
 
