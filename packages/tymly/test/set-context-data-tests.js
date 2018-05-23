@@ -4,33 +4,20 @@ const path = require('path')
 const expect = require('chai').expect
 const moment = require('moment')
 
-xdescribe('Context tests', function () {
+describe('Context tests', function () {
   const tymly = require('./../lib')
   let tymlyService
   let statebox
   this.timeout(process.env.TIMEOUT || 5000)
 
-  const envVars = [
-    'TYMLY_NIC_AUTH0_CLIENT_ID',
-    'TYMLY_NIC_AUTH0_CLIENT_SECRET',
-    'TYMLY_NIC_AUTH0_DOMAIN'
-  ]
-
-  const err = envVars.map(v => { return !process.env[v] ? v : null }).filter(v => !!v)
-  const varsFound = err.length === 0
-  if (!varsFound) {
-    xit('Skipping set-context-data-tests because AUTH0 env vars not set')
-    return
-  }
-
-  it('should load the animal blueprint (which makes use of the set-context-data state resource)', function (done) {
+  it('load the animal blueprint (which uses of the set-context-data state resource)', function (done) {
     tymly.boot(
       {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/context-blueprint')
         ],
         pluginPaths: [
-          path.resolve(__dirname, '../../../plugins/tymly-auth-auth0-plugin')
+          path.resolve(__dirname, './fixtures/plugins/dummy-auth-plugin')
         ]
       },
       function (err, tymlyServices) {
