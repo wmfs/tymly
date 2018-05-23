@@ -4,7 +4,7 @@ const path = require('path')
 const expect = require('chai').expect
 const moment = require('moment')
 
-describe('Context tests', function () {
+xdescribe('Context tests', function () {
   const tymly = require('./../lib')
   let tymlyService
   let statebox
