@@ -6,6 +6,7 @@ const refreshIndexModule = require('./refresh-index/index')
 
 const { applyDefaultRoles, ensureUserRoles } = require('./apply-default-roles')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
+const findUserRoles = require('./find-user-roles')
 
 class RbacService {
   async boot (options, callback) {
@@ -59,28 +60,7 @@ class RbacService {
     const cachedRoles = this.userMembershipsCache.get(userId)
     if (Array.isArray(cachedRoles)) return cachedRoles
 
-    return this.findAndCacheRoles(userId)
-  } // getUserRoles
-
-  async findAndCacheRoles (userId) {
-    let roles = await this.roleMembershipModel.find({
-      where: {
-        memberType: {equals: 'user'},
-        memberId: {equals: userId}
-      }
-    })
-
-    roles = _.uniq(roles.map(r => r.roleId))
-    const inheritedRoles = ['$everyone']
-
-    roles.map(roleId => {
-      Object.keys(this.rbac.inherits).map(inheritedBy => {
-        if (this.rbac.inherits[inheritedBy].includes(roleId)) {
-          inheritedRoles.push(inheritedBy)
-        }
-      })
-    })
-    roles = _.uniq(roles.concat(inheritedRoles))
+    const roles = await findUserRoles(userId, this.roleMembershipModel, this.rbac)
     this.userMembershipsCache.set(userId, roles)
     return roles
   } // getUserRoles
