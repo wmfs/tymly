@@ -6,7 +6,7 @@ const debug = require('debug')('statebox')
 
 module.exports = function startExecution (req, res) {
   const services = req.app.get('services')
-  const authService = services.auth
+  const jwtAuthService = services.jwtAuth
   const statebox = services.statebox
   const rbac = services.rbac
   const stateMachineName = req.body.stateMachineName
@@ -16,7 +16,7 @@ module.exports = function startExecution (req, res) {
   options.action = 'startExecution'
   options.stateMachineName = stateMachineName
 
-  const userId = authService.extractUserIdFromRequest(req)
+  const userId = jwtAuthService.extractUserIdFromRequest(req)
   if (userId) {
     options.userId = userId
   }

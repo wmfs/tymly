@@ -3,11 +3,11 @@ const respond = require('../../../../util/respond')
 
 module.exports = function cancelTymlyRoute (req, res) {
   const services = req.app.get('services')
-  const authService = services.auth
+  const jwtAuthService = services.jwtAuth
   const statebox = services.statebox
 
   const options = {
-    userId: authService.extractUserIdFromRequest(req),
+    userId: jwtAuthService.extractUserIdFromRequest(req),
     action: 'stopExecution',
     stateMachineName: req.params.executionName
   }

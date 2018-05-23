@@ -2,7 +2,7 @@ class TestApiEndPoint {
   boot (options, callback) {
     const express = options.bootedServices.server.express
     const app = options.bootedServices.server.app
-    const jwtCheck = options.bootedServices.auth.jwtCheck
+    const jwtCheck = options.bootedServices.jwtAuth.jwtCheck
 
     addExpressApi(
       express,
@@ -33,5 +33,5 @@ function getTestResponse (req, res) {
 
 module.exports = {
   serviceClass: TestApiEndPoint,
-  bootAfter: ['auth', 'server']
+  bootAfter: ['jwtAuth', 'server']
 }

@@ -7,7 +7,7 @@ class StateboxApiService {
   boot (options, callback) {
     const express = options.bootedServices.server.express
     const app = options.bootedServices.server.app
-    const jwtCheck = options.bootedServices.auth.jwtCheck
+    const jwtCheck = options.bootedServices.jwtAuth.jwtCheck
 
     addExpressApi(
       express,
@@ -31,5 +31,5 @@ function addExpressApi (express, app, jwtCheck) {
 
 module.exports = {
   serviceClass: StateboxApiService,
-  bootAfter: ['auth', 'rbac', 'statebox']
+  bootAfter: ['jwtAuth', 'rbac', 'statebox']
 }

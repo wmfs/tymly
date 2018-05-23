@@ -50,11 +50,11 @@ function startServer (services) {
   }
 
   const server = services.server
-  const auth = services.auth
+  const jwtAuth = services.jwtAuth
   server.listen(config.config.serverPort, function () {
     console.log('\n')
 
-    const adminToken = auth.generateToken(adminUserId)
+    const adminToken = jwtAuth.generateToken(adminUserId)
 
     console.log(`Server listening on port ${config.config.serverPort}!\n`)
     services.rbac.rbac.debug()

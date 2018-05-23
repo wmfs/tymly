@@ -4,13 +4,13 @@ const actions = require('./actions/index')
 
 module.exports = function (req, res) {
   const services = req.app.get('services')
-  const authService = services.auth
+  const jwtAuthService = services.jwtAuth
   const body = _.cloneDeep(req.body)
   const env = {
     services: services,
-    authService: authService,
+    authService: jwtAuthService,
     body: body,
-    userId: authService.extractUserIdFromRequest(req)
+    userId: jwtAuthService.extractUserIdFromRequest(req)
   }
 
   if (actions.hasOwnProperty(env.body.action)) {

@@ -3,7 +3,7 @@ const respond = require('../../../../util/respond')
 
 module.exports = function describeExecution (req, res) {
   const services = req.app.get('services')
-  const authService = services.auth
+  const jwtAuthService = services.jwtAuth
   const statebox = services.statebox
 
   const options = {
@@ -11,7 +11,7 @@ module.exports = function describeExecution (req, res) {
     action: 'describeExecution'
   }
 
-  const userId = authService.extractUserIdFromRequest(req)
+  const userId = jwtAuthService.extractUserIdFromRequest(req)
   if (userId) {
     options.userId = userId
   }
