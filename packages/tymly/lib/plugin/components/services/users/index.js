@@ -28,45 +28,35 @@ class UsersService {
    *   }
    * )
    */
-  getUserRoles (userId) {
-    return new Promise((resolve, reject) => this._getUserRoles(userId, (err, roles) => {
-      if (err) reject(err)
-      else resolve(roles)
-    }))
-  }
+  async getUserRoles (userId) {
+    const cachedRoles = this.userMembershipsCache.get(userId)
+    if (Array.isArray(cachedRoles)) return cachedRoles
 
-  _getUserRoles (userId, callback) {
-    let cachedRoles = this.userMembershipsCache.get(userId)
+    return this.findAndCacheRoles(userId)
+  } // getUserRoles
 
-    if (Array.isArray(cachedRoles)) {
-      callback(null, cachedRoles)
-    } else {
-      this.roleMembershipModel.find(
-        {
-          where: {
-            memberType: {equals: 'user'},
-            memberId: {equals: userId}
-          }
-        },
-        (err, roles) => {
-          if (err) return callback(err)
-          cachedRoles = _.uniq(_.map(roles, 'roleId'))
+  async findAndCacheRoles (userId) {
+    let roles = await this.roleMembershipModel.find({
+      where: {
+        memberType: {equals: 'user'},
+        memberId: {equals: userId}
+      }
+    })
 
-          const inhertiedRoles = ['$everyone']
-          cachedRoles.map(roleId => {
-            Object.keys(this.rbac.rbac.inherits).map(inheritedBy => {
-              if (this.rbac.rbac.inherits[inheritedBy].includes(roleId)) {
-                inhertiedRoles.push(inheritedBy)
-              }
-            })
-          })
-          cachedRoles = _.uniq(cachedRoles.concat(inhertiedRoles))
-          this.userMembershipsCache.set(userId, cachedRoles)
-          callback(null, cachedRoles)
+    roles = _.uniq(_.map(roles, 'roleId'))
+    const inhertiedRoles = ['$everyone']
+
+    roles.map(roleId => {
+      Object.keys(this.rbac.rbac.inherits).map(inheritedBy => {
+        if (this.rbac.rbac.inherits[inheritedBy].includes(roleId)) {
+          inhertiedRoles.push(inheritedBy)
         }
-      )
-    }
-  }
+      })
+    })
+    roles = _.uniq(roles.concat(inhertiedRoles))
+    this.userMembershipsCache.set(userId, roles)
+    return roles
+  } // getUserRoles
 
   /**
    * Resets the internal cache of users and their roles. Needs calling if things change in the tymly_roleMembership_1_0 model and similar.
