@@ -3,20 +3,15 @@
 const loader = require('./loader')
 const Rbac = require('./Rbac')
 
-module.exports = function refreshRbacIndex (callback) {
-  this.messages.info('Refreshing RBAC index')
-
-  loader(
-    this.roleModel,
-    this.roleMembershipModel,
-    this.permissionModel,
-
-    function (err, data) {
-      if (err) {
-        callback(err)
-      } else {
-        callback(null, new Rbac(data))
-      }
-    }
+module.exports = async function refreshRbacIndex (
+  roleModel,
+  roleMembershipModel,
+  permissionModel) {
+  const data = await loader(
+    roleModel,
+    roleMembershipModel,
+    permissionModel
   )
+
+  return new Rbac(data)
 }

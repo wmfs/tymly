@@ -2,16 +2,14 @@ const _ = require('lodash')
 const dottie = require('dottie')
 const debug = require('debug')('rbac')
 
-const refreshIndexModule = require('./refresh-index/index')
-
 const { applyDefaultRoles, ensureUserRoles } = require('./apply-default-roles')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
+const refreshIndexModule = require('./refresh-index')
 const findUserRoles = require('./find-user-roles')
 
 class RbacService {
   async boot (options, callback) {
     try {
-      this.messages = options.messages
       this.roleModel = options.bootedServices.storage.models.tymly_role
       this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
       this.permissionModel = options.bootedServices.storage.models.tymly_permission
@@ -34,12 +32,15 @@ class RbacService {
         this.roleMembershipModel,
         this.permissionModel
       )
+
+      options.messages.info('Refreshing RBAC index')
+      await this.refreshIndex()
+
+      callback(null)
     } catch (err) {
       return callback(err)
     }
-
-    this.refreshIndex(callback)
-  }
+  } // boot
 
   ensureUserRoles (userId, roleIds) {
     return ensureUserRoles(userId, roleIds, this.roleMembershipModel)
@@ -76,21 +77,16 @@ class RbacService {
    *   }
    * )
    */
-  refreshIndex (callback) {
-    const _this = this
-    const f = refreshIndexModule.bind(this)
-    f(
-      function (err, rbac) {
-        if (err) {
-          callback(err)
-        } else {
-          _this.rbac = rbac
-          _this.index = _this.rbac.index
-          callback(null)
-        }
-      }
+  async refreshIndex () {
+    const rbac = await refreshIndexModule(
+      this.roleModel,
+      this.roleMembershipModel,
+      this.permissionModel
     )
-  }
+
+    this.rbac = rbac
+    this.index = this.rbac.index
+  } // refreshIndex
 
   static getUserIdFromContext (ctx) {
     let userId
