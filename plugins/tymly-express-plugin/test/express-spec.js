@@ -88,7 +88,7 @@ describe('Simple Express tests', function () {
         tymlyService = tymlyServices.tymly
         server = tymlyServices.server
         statebox = tymlyServices.statebox
-        tymlyServices.rbac.rbac.debug()
+        tymlyServices.rbac.debug()
         done()
       }
     )

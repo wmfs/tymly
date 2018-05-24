@@ -193,7 +193,24 @@ class RbacService {
   resetCache () {
     this.userMembershipsCache.reset()
   }
-}
+
+  debug () {
+    console.log('')
+    console.log('RBAC Index')
+    console.log('----------')
+
+    for (const [domainName, domain] of Object.entries(this.rbac.index)) {
+      for (const [stateMachineName, stateMachine] of Object.entries(domain)) {
+        for (const [actionName, action] of Object.entries(stateMachine)) {
+          const path = [domainName, stateMachineName, actionName, JSON.stringify(action)].join(' -> ')
+          console.log('  ', path)
+        }
+      }
+    }
+
+    console.log('')
+  } // debug
+} // RbacService
 
 module.exports = {
   serviceClass: RbacService,

@@ -1,21 +1,13 @@
-'use strict'
-
-const _ = require('lodash')
 const dottie = require('dottie')
 
 class Rbac {
   constructor (data) {
-    const _this = this
-
     this.index = {}
 
-    const roleNames = _.map(data.roles, 'roleId')
+    const roleIds = data.roles.map(r => r.roleId)
 
-    const memberships = _.filter(
-      data.roleMemberships,
-      function (roleMember) {
-        return roleNames.indexOf(roleMember.roleId) !== -1 && roleNames.indexOf(roleMember.memberId) !== -1
-      }
+    const memberships = data.roleMemberships.filter(
+      roleMember => roleIds.indexOf(roleMember.roleId) !== -1 && roleIds.indexOf(roleMember.memberId) !== -1
     )
 
     this.inherits = {
@@ -24,84 +16,40 @@ class Rbac {
       '$authenticated': ['$authenticated']
     }
 
-    let roleList
-    data.roles.forEach(
-      function (role) {
-        roleList = [role.roleId]
-        _this.addSuperRoles(role.roleId, roleList, memberships)
-        _this.inherits[role.roleId] = roleList
-      }
-    )
+    roleIds.forEach(roleId => {
+      const roleList = [roleId]
+      addSuperRoles(roleId, roleList, memberships)
+      this.inherits[roleId] = roleList
+    })
 
-    let key
-    let inheritList
-    data.permissions.forEach(
-      function (permission) {
-        permission.allows.forEach(
+    data.permissions.forEach(permission => {
+      permission.allows.forEach(allow => {
+        const key = [
+          'stateMachine',
+          permission.stateMachineName,
+          allow
+        ].join('.')
 
-          function (allow) {
-            key = [
-              'stateMachine',
-              permission.stateMachineName,
-              allow
-            ].join('.')
+        const roleList = dottie.get(this.index, key) || []
+        const inheritList = this.inherits[permission.roleId] || []
 
-            roleList = dottie.get(_this.index, key)
+        roleList.push(...inheritList)
 
-            if (!roleList) {
-              roleList = []
-            }
+        dottie.set(this.index, key, roleList)
+      })
+    })
+  } // constructor
+}
 
-            inheritList = _this.inherits[permission.roleId]
-
-            if (inheritList) {
-              roleList = _.union(roleList, inheritList)
-            }
-
-            dottie.set(_this.index, key, roleList)
-          }
-
-        )
-      }
-    )
-  }
-
-  addSuperRoles (rootRoleId, list, memberships) {
-    const _this = this
-    memberships.forEach(
-      function (membership) {
-        if (membership.memberId === rootRoleId) {
-          if (list.indexOf(membership.roleId) === -1) {
-            list.push(membership.roleId)
-            _this.addSuperRoles(membership.roleId, list, memberships)
-          }
-        }
-      }
-    )
-  }
-
-  debug () {
-    console.log('')
-    console.log('RBAC Index')
-    console.log('----------')
-
-    for (const domainName in this.index) {
-      const domain = this.index[domainName]
-
-      for (const stateMachineName in domain) {
-        const stateMachine = domain[stateMachineName]
-
-        for (const actionName in stateMachine) {
-          const action = stateMachine[actionName]
-
-          const path = [domainName, stateMachineName, actionName, JSON.stringify(action)].join(' -> ')
-          console.log('  ', path)
-        }
+function addSuperRoles (rootRoleId, list, memberships) {
+  memberships.forEach(membership => {
+    if (membership.memberId === rootRoleId) {
+      if (list.indexOf(membership.roleId) === -1) {
+        list.push(membership.roleId)
+        addSuperRoles(membership.roleId, list, memberships)
       }
     }
-
-    console.log('')
-  }
-}
+  })
+} // addSuperRoles
 
 module.exports = Rbac

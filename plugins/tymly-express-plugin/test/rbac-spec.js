@@ -42,7 +42,7 @@ describe('RBAC tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         rbac = tymlyServices.rbac
-        rbac.rbac.debug()
+        rbac.debug()
         done()
       }
     )

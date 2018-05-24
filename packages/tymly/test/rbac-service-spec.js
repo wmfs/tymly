@@ -4,7 +4,7 @@ const expect = require('chai').expect
 const tymly = require('./../lib')
 const path = require('path')
 
-describe('RBAC tests', function () {
+describe('RBAC service tests', function () {
   // TODO: MORE! MORE! MORE!
 
   this.timeout(process.env.TIMEOUT || 5000)
@@ -40,7 +40,7 @@ describe('RBAC tests', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         rbac = tymlyServices.rbac
-        rbac.rbac.debug()
+        rbac.debug()
         done()
       }
     )

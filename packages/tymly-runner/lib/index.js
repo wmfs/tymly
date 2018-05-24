@@ -57,7 +57,7 @@ function startServer (services) {
     const adminToken = jwtAuth.generateToken(adminUserId)
 
     console.log(`Server listening on port ${config.config.serverPort}!\n`)
-    services.rbac.rbac.debug()
+    services.rbac.debug()
     console.log(`Admin token: ${adminToken}`)
   })
 } // startServer
