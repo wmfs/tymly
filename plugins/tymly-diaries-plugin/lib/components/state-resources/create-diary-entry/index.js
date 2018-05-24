@@ -14,6 +14,8 @@ module.exports = class CreateDiaryEntry {
   }
 
   async run (event, context) {
+    event.startDateTime = moment(event.startDateTime).format('YYYY-MM-DD HH:mm:ss')
+
     const date = moment(event.startDateTime).format('YYYY-MM-DD')
     const namespace = context.stateMachineMeta.namespace
     const diaryService = this.services.diaries

@@ -9,7 +9,7 @@ const CREATE_ENTRY_STATE_MACHINE_NAME = 'test_createDiaryEntry'
 const CANCEL_ENTRY_STATE_MACHINE_NAME = 'test_cancelDiaryEntry'
 
 const DURATION = 60
-const DATE_TIME = '2018-04-23T09:30:00'
+const DATE_TIME = '2018-04-23T09:30:00+01:00'
 const EXPECTED_END_DATE_TIME = moment(DATE_TIME).add(DURATION, 'minutes').format()
 const BAD_DATE_TIME = '2018-04-23T06:30:00'
 const BAD_DATE_TIME_1 = '2018-04-23T12:30:00'
@@ -118,7 +118,7 @@ describe('Tests the state resource which handle diary entries', function () {
     const doc = await entryModel.findById(entryId)
     expect(doc.diaryId).to.eql('doctors')
     expect(doc.originId).to.eql(CREATE_ENTRY_STATE_MACHINE_NAME)
-    expect(doc.startDateTime).to.eql(DATE_TIME)
+    expect(doc.startDateTime).to.eql('2018-04-23 09:30:00')
     expect(doc.endDateTime).to.eql(EXPECTED_END_DATE_TIME)
   })
 
