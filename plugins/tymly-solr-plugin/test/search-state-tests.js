@@ -85,32 +85,29 @@ describe('tymly-solr-plugin search state resource tests', function () {
     )
   })
 
-  it('should search with no input (everything) as a user with the highest roles', function (done) {
-    statebox.startExecution(
+  it('should search with no input (everything) as a user with the highest roles', async () => {
+    const executionDescription = await statebox.startExecution(
       {}, // input
       STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE',
         userId: 'john.smith'
-      }, // options
-      function (err, executionDescription) {
-        expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
-        expect(executionDescription.currentStateName).to.eql('Search')
-        expect(executionDescription.currentResource).to.eql('module:search')
-        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.searchResults.totalHits).to.eql(19)
-        expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('RUBEUS HAGRID')
-        expect(executionDescription.ctx.searchResults.results[1].character_name).to.eql('SEVERUS SNAPE')
-        expect(executionDescription.ctx.searchResults.results[2].character_name).to.eql('GEORGE WEASLEY')
-        done()
-      }
+      } // options
     )
+
+    console.log(JSON.stringify(executionDescription, null, 2))
+    expect(executionDescription.currentStateName).to.eql('Search')
+    expect(executionDescription.currentResource).to.eql('module:search')
+    expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
+    expect(executionDescription.status).to.eql('SUCCEEDED')
+    expect(executionDescription.ctx.searchResults.totalHits).to.eql(19)
+    expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('RUBEUS HAGRID')
+    expect(executionDescription.ctx.searchResults.results[1].character_name).to.eql('SEVERUS SNAPE')
+    expect(executionDescription.ctx.searchResults.results[2].character_name).to.eql('GEORGE WEASLEY')
   })
 
-  it('should search with a query input as a user with the highest roles', function (done) {
-    statebox.startExecution(
+  it('should search with a query input as a user with the highest roles', async () => {
+    const executionDescription = await statebox.startExecution(
       {
         query: 'Hermione'
       }, // input
@@ -118,19 +115,16 @@ describe('tymly-solr-plugin search state resource tests', function () {
       {
         sendResponse: 'COMPLETE',
         userId: 'john.smith'
-      }, // options
-      function (err, executionDescription) {
-        expect(err).to.eql(null)
-        console.log(JSON.stringify(executionDescription, null, 2))
-        expect(executionDescription.currentStateName).to.eql('Search')
-        expect(executionDescription.currentResource).to.eql('module:search')
-        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.ctx.searchResults.totalHits).to.eql(1)
-        expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('HERMIONE GRANGER')
-        done()
-      }
+      } // options
     )
+
+    console.log(JSON.stringify(executionDescription, null, 2))
+    expect(executionDescription.currentStateName).to.eql('Search')
+    expect(executionDescription.currentResource).to.eql('module:search')
+    expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
+    expect(executionDescription.status).to.eql('SUCCEEDED')
+    expect(executionDescription.ctx.searchResults.totalHits).to.eql(1)
+    expect(executionDescription.ctx.searchResults.results[0].character_name).to.eql('HERMIONE GRANGER')
   })
 
   it('should search with a query input as a user without any roles', function (done) {

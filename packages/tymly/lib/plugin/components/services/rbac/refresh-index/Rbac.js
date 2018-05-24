@@ -2,25 +2,24 @@ const dottie = require('dottie')
 
 class Rbac {
   constructor (data) {
-    this.index = {}
-
     const roleIds = data.roles.map(r => r.roleId)
-
     const memberships = data.roleMemberships.filter(
       roleMember => roleIds.indexOf(roleMember.roleId) !== -1 && roleIds.indexOf(roleMember.memberId) !== -1
     )
 
-    this.inheritedBy = {
+    this.index = {}
+    this.inherits = { }
+
+    const inheritedBy = {
       '$owner': ['$owner'],
       '$everyone': ['$everyone'],
       '$authenticated': ['$authenticated']
     }
 
-    roleIds.forEach(roleId => {
-      const roleList = [roleId]
-      addSuperRoles(roleId, roleList, memberships)
-      this.inheritedBy[roleId] = roleList
-    })
+    for (const roleId of roleIds) {
+      this.inherits[roleId] = inheritedRoles(roleId, memberships)
+      inheritedBy[roleId] = superRoles(roleId, memberships)
+    }
 
     for (const permission of data.permissions) {
       for (const allow of permission.allows) {
@@ -31,7 +30,7 @@ class Rbac {
         ].join('.')
 
         const roleList = dottie.get(this.index, key) || []
-        const inheritList = this.inheritedBy[permission.roleId] || []
+        const inheritList = inheritedBy[permission.roleId] || []
 
         roleList.push(...inheritList)
 
@@ -41,15 +40,40 @@ class Rbac {
   } // constructor
 }
 
-function addSuperRoles (rootRoleId, list, memberships) {
-  memberships.forEach(membership => {
-    if (membership.memberId === rootRoleId) {
-      if (list.indexOf(membership.roleId) === -1) {
-        list.push(membership.roleId)
-        addSuperRoles(membership.roleId, list, memberships)
-      }
-    }
-  })
-} // addSuperRoles
+function superRoles (rootRoleId, memberships) {
+  const inherits = findSuperRoles(rootRoleId, memberships)
+  const uniqueInherits = [rootRoleId, ...new Set(inherits)]
+  return uniqueInherits
+} // superRoles
+
+function findSuperRoles (rootRoleId, memberships) {
+  const inherits = []
+  const applicableMemberships = memberships.filter(m => m.memberId === rootRoleId)
+  for (const membership of applicableMemberships) {
+    inherits.push(
+      membership.roleId,
+      ...findSuperRoles(membership.roleId, memberships)
+    )
+  }
+  return inherits
+} // findSuperRoles
+
+function inheritedRoles (rootRoleId, memberships) {
+  const inherited = findInheritedRoles(rootRoleId, memberships)
+  const uniqueInherited = [rootRoleId, ...new Set(inherited), '$everyone']
+  return uniqueInherited
+} // inheritedRoles
+
+function findInheritedRoles (rootRoleId, memberships) {
+  const inherited = []
+  const applicableMemberships = memberships.filter(m => m.roleId === rootRoleId)
+  for (const membership of applicableMemberships) {
+    inherited.push(
+      membership.memberId,
+      ...findInheritedRoles(membership.memberId, memberships)
+    )
+  }
+  return inherited
+} // findInheritedRoles
 
 module.exports = Rbac

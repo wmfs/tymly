@@ -86,12 +86,9 @@ describe('RBAC service tests', function () {
           }
         }
       )
-      expect(rbac.inheritedBy).to.be.eql(
+      expect(rbac.inherits).to.be.eql(
         {
-          '$owner': [ '$owner' ],
-          '$everyone': [ '$everyone' ],
-          '$authenticated': [ '$authenticated' ],
-          'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin' ]
+          'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin', '$everyone' ]
         }
       )
     })
@@ -192,15 +189,12 @@ describe('RBAC service tests', function () {
           }
         }
       })
-      expect(rbac.inheritedBy).to.be.eql({
-        '$owner': [ '$owner' ],
-        '$everyone': [ '$everyone' ],
-        '$authenticated': [ '$authenticated' ],
-        'tymlyTest_boss': [ 'tymlyTest_boss' ],
-        'tymlyTest_developer': [ 'tymlyTest_developer', 'tymlyTest_teamLeader', 'tymlyTest_boss' ],
-        'tymlyTest_teamLeader': [ 'tymlyTest_teamLeader', 'tymlyTest_boss' ],
-        'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin' ],
-        'tymlyTest_tymlyTestReadOnly': [ 'tymlyTest_tymlyTestReadOnly' ]
+      expect(rbac.inherits).to.be.eql({
+        'tymlyTest_boss': [ 'tymlyTest_boss', 'tymlyTest_teamLeader', 'tymlyTest_developer', '$everyone' ],
+        'tymlyTest_developer': [ 'tymlyTest_developer', '$everyone' ],
+        'tymlyTest_teamLeader': [ 'tymlyTest_teamLeader', 'tymlyTest_developer', '$everyone' ],
+        'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin', '$everyone' ],
+        'tymlyTest_tymlyTestReadOnly': [ 'tymlyTest_tymlyTestReadOnly', '$everyone' ]
       })
     })
   })
@@ -370,7 +364,7 @@ describe('RBAC service tests', function () {
       [
         'mommy',
         ['tymlyTest_boss'],
-        ['tymlyTest_boss', '$everyone', 'tymlyTest_developer', 'tymlyTest_teamLeader']
+        ['tymlyTest_boss', 'tymlyTest_teamLeader', 'tymlyTest_developer', '$everyone']
       ],
       [
         'daddy',
@@ -380,7 +374,7 @@ describe('RBAC service tests', function () {
       [
         'lucy',
         ['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader'],
-        ['tymlyTest_tymlyTestReadOnly', 'tymlyTest_teamLeader', '$everyone', 'tymlyTest_developer']
+        ['tymlyTest_tymlyTestReadOnly', '$everyone', 'tymlyTest_teamLeader', 'tymlyTest_developer']
       ],
       [
         'molly',

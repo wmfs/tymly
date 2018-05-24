@@ -33,52 +33,36 @@ function gatherRoleTemplates (templateRoles, roleModel, roleMembershipModel, per
   }
 
   for (const [templateRoleId, templateRole] of Object.entries(templateRoles)) {
-    docTasks.push(
-      {
-        domain: 'templateRole',
-        docId: templateRoleId,
-        docSource: templateRole,
-        dao: roleModel,
-        docMaker: makeTemplateRoleDoc
+    docTasks.push({
+      domain: 'templateRole',
+      docId: templateRoleId,
+      docSource: templateRole,
+      dao: roleModel,
+      docMaker: makeTemplateRoleDoc
+    })
 
-      }
-    )
-
-    if (templateRole.hasOwnProperty('grants')) {
-      templateRole.grants.forEach(
-        function (grant) {
-          const source = grant
-          source.roleId = templateRoleId
-          docTasks.push(
-            {
-              domain: 'roleGrant',
-              docId: templateRoleId + '_' + grant.stateMachineName,
-              docSource: source,
-              dao: permissionModel,
-              docMaker: makePermissionDoc
-            }
-          )
-        }
-      )
+    for (const grant of (templateRole.grants || [])) {
+      grant.roleId = templateRoleId
+      docTasks.push({
+        domain: 'roleGrant',
+        docId: templateRoleId + '_' + grant.stateMachineName,
+        docSource: grant,
+        dao: permissionModel,
+        docMaker: makePermissionDoc
+      })
     }
 
-    if (templateRole.hasOwnProperty('roleMemberships')) {
-      templateRole.roleMemberships.forEach(
-        function (roleMemberId) {
-          docTasks.push(
-            {
-              domain: 'roleMembership',
-              docId: templateRoleId + '_' + roleMemberId,
-              docSource: {
-                templateRoleId: templateRoleId,
-                roleMemberId: templateRole.namespace + '_' + roleMemberId
-              },
-              dao: roleMembershipModel,
-              docMaker: makeRoleMembershipDoc
-            }
-          )
-        }
-      )
+    for (const roleMemberId of (templateRole.roleMemberships || [])) {
+      docTasks.push({
+        domain: 'roleMembership',
+        docId: templateRoleId + '_' + roleMemberId,
+        docSource: {
+          templateRoleId: templateRoleId,
+          roleMemberId: templateRole.namespace + '_' + roleMemberId
+        },
+        dao: roleMembershipModel,
+        docMaker: makeRoleMembershipDoc
+      })
     }
   }
 
@@ -96,23 +80,15 @@ function gatherStateMachineRestrictions (stateMachines, permissionModel) {
   }
 
   for (const [name, stateMachine] of Object.entries(stateMachines)) {
-    if (stateMachine.hasOwnProperty('restrictions')) {
-      stateMachine.restrictions.forEach(
-        function (restriction) {
-          const source = restriction
-          source.stateMachineName = name
-
-          docTasks.push(
-            {
-              domain: 'stateMachineRestriction',
-              docId: name + '_' + restriction.roleId,
-              docSource: source,
-              dao: permissionModel,
-              docMaker: makePermissionDoc
-            }
-          )
-        }
-      )
+    for (const restriction of (stateMachine.restrictions || [])) {
+      restriction.stateMachineName = name
+      docTasks.push({
+        domain: 'stateMachineRestriction',
+        docId: name + '_' + restriction.roleId,
+        docSource: restriction,
+        dao: permissionModel,
+        docMaker: makePermissionDoc
+      })
     }
   }
 
