@@ -46,7 +46,7 @@ class RbacService {
     }
   } // boot
 
-  ensureUserRoles (userId, roleIds) {
+  async ensureUserRoles (userId, roleIds) {
     return ensureUserRoles(userId, roleIds, this.roleMembershipModel)
   } // ensureUserRoles
 
@@ -175,19 +175,6 @@ class RbacService {
     const result = checker(requiredRoleList)
     addDebug(requiredRoleList, result)
     return result
-  }
-
-  allRoles (roles) {
-    const _this = this
-    let allRoles = []
-
-    roles.forEach(
-      function (roleId) {
-        allRoles = allRoles.concat(_this.rbac.inherits[roleId])
-      }
-    )
-
-    return _.uniq(allRoles)
   }
 
   resetCache () {
