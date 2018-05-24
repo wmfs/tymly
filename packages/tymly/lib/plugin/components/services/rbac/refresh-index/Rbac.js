@@ -10,7 +10,7 @@ class Rbac {
       roleMember => roleIds.indexOf(roleMember.roleId) !== -1 && roleIds.indexOf(roleMember.memberId) !== -1
     )
 
-    this.inherits = {
+    this.inheritedBy = {
       '$owner': ['$owner'],
       '$everyone': ['$everyone'],
       '$authenticated': ['$authenticated']
@@ -19,11 +19,11 @@ class Rbac {
     roleIds.forEach(roleId => {
       const roleList = [roleId]
       addSuperRoles(roleId, roleList, memberships)
-      this.inherits[roleId] = roleList
+      this.inheritedBy[roleId] = roleList
     })
 
-    data.permissions.forEach(permission => {
-      permission.allows.forEach(allow => {
+    for (const permission of data.permissions) {
+      for (const allow of permission.allows) {
         const key = [
           'stateMachine',
           permission.stateMachineName,
@@ -31,13 +31,13 @@ class Rbac {
         ].join('.')
 
         const roleList = dottie.get(this.index, key) || []
-        const inheritList = this.inherits[permission.roleId] || []
+        const inheritList = this.inheritedBy[permission.roleId] || []
 
         roleList.push(...inheritList)
 
         dottie.set(this.index, key, roleList)
-      })
-    })
+      }
+    }
   } // constructor
 }
 

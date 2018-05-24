@@ -14,7 +14,7 @@ describe('RBAC service tests', function () {
   let rbac
 
   describe('rbac index', () => {
-    it('verify index', () => {
+    it('verify simple index', () => {
       const rbac = new RbacIndex(
         {
           'roleMemberships': [],
@@ -22,37 +22,27 @@ describe('RBAC service tests', function () {
             {
               'stateMachineName': '*',
               'roleId': 'tymlyTest_tymlyTestAdmin',
-              'allows': [
-                '*'
-              ]
+              'allows': [ '*' ]
             },
             {
               'stateMachineName': 'tymlyTest_aDayInTheLife',
               'roleId': '$authenticated',
-              'allows': [
-                '*'
-              ]
+              'allows': [ '*' ]
             },
             {
               'stateMachineName': 'tymlyTest_generateUuid',
               'roleId': '$authenticated',
-              'allows': [
-                '*'
-              ]
+              'allows': [ '*' ]
             },
             {
               'stateMachineName': 'tymlyTest_runCallbackFunction',
               'roleId': '$authenticated',
-              'allows': [
-                '*'
-              ]
+              'allows': [ '*' ]
             },
             {
               'stateMachineName': 'tymlyTest_runFunction',
               'roleId': '$authenticated',
-              'allows': [
-                '*'
-              ]
+              'allows': [ '*' ]
             },
             {
               'stateMachineName': 'tymlyTest_runUnknownFunction',
@@ -76,61 +66,146 @@ describe('RBAC service tests', function () {
         {
           'stateMachine': {
             '*': {
-              '*': [
-                'tymlyTest_tymlyTestAdmin'
-              ]
+              '*': [ 'tymlyTest_tymlyTestAdmin' ]
             },
             'tymlyTest_aDayInTheLife': {
-              '*': [
-                '$authenticated'
-              ]
+              '*': [ '$authenticated' ]
             },
             'tymlyTest_generateUuid': {
-              '*': [
-                '$authenticated'
-              ]
+              '*': [ '$authenticated' ]
             },
             'tymlyTest_runCallbackFunction': {
-              '*': [
-                '$authenticated'
-              ]
+              '*': [ '$authenticated' ]
             },
             'tymlyTest_runFunction': {
-              '*': [
-                '$authenticated'
-              ]
+              '*': [ '$authenticated' ]
             },
             'tymlyTest_runUnknownFunction': {
-              '*': [
-                '$authenticated'
-              ]
+              '*': [ '$authenticated' ]
             }
           }
         }
       )
-      expect(rbac.inherits).to.be.eql(
+      expect(rbac.inheritedBy).to.be.eql(
         {
-          '$owner': [
-            '$owner'
+          '$owner': [ '$owner' ],
+          '$everyone': [ '$everyone' ],
+          '$authenticated': [ '$authenticated' ],
+          'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin' ]
+        }
+      )
+    })
+    it('verify index', () => {
+      const rbac = new RbacIndex(
+        {
+          'roleMemberships': [
+            {
+              'roleId': 'tymlyTest_boss',
+              'memberType': 'role',
+              'memberId': 'tymlyTest_teamLeader'
+            },
+            {
+              'roleId': 'tymlyTest_teamLeader',
+              'memberType': 'role',
+              'memberId': 'tymlyTest_developer'
+            }
           ],
-          '$everyone': [
-            '$everyone'
+          'permissions': [
+            {
+              'stateMachineName': 'tymlyTest_purgeSite_1_0',
+              'roleId': 'tymlyTest_boss',
+              'allows': [ 'create' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_deletePost_1_0',
+              'roleId': 'tymlyTest_boss',
+              'allows': [ 'cancel' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_createPost_1_0',
+              'roleId': 'tymlyTest_developer',
+              'allows': [ 'cancel' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_deletePost_1_0',
+              'roleId': 'tymlyTest_teamLeader',
+              'allows': [ 'create' ]
+            },
+            {
+              'stateMachineName': '*',
+              'roleId': 'tymlyTest_tymlyTestAdmin',
+              'allows': [ '*' ]
+            },
+            {
+              'stateMachineName': '*',
+              'roleId': 'tymlyTest_tymlyTestReadOnly',
+              'allows': [ 'get' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_createPost_1_0',
+              'roleId': '$authenticated',
+              'allows': [ 'create' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_readPost_1_0',
+              'roleId': '$everyone',
+              'allows': [ 'create' ]
+            },
+            {
+              'stateMachineName': 'tymlyTest_updatePost_1_0',
+              'roleId': '$owner',
+              'allows': [ 'create' ]
+            }
           ],
-          '$authenticated': [
-            '$authenticated'
-          ],
-          'tymlyTest_tymlyTestAdmin': [
-            'tymlyTest_tymlyTestAdmin'
+          'roles': [
+            { 'roleId': 'tymlyTest_boss' },
+            { 'roleId': 'tymlyTest_developer' },
+            { 'roleId': 'tymlyTest_teamLeader' },
+            { 'roleId': 'tymlyTest_tymlyTestAdmin' },
+            { 'roleId': 'tymlyTest_tymlyTestReadOnly' }
           ]
         }
       )
+
+      expect(rbac.index).to.be.eql({
+        'stateMachine': {
+          '*': {
+            '*': [ 'tymlyTest_tymlyTestAdmin' ],
+            'get': [ 'tymlyTest_tymlyTestReadOnly' ]
+          },
+          'tymlyTest_createPost_1_0': {
+            'cancel': [ 'tymlyTest_developer', 'tymlyTest_teamLeader', 'tymlyTest_boss' ],
+            'create': [ '$authenticated' ]
+          },
+          'tymlyTest_deletePost_1_0': {
+            'cancel': [ 'tymlyTest_boss' ],
+            'create': [ 'tymlyTest_teamLeader', 'tymlyTest_boss' ]
+          },
+          'tymlyTest_purgeSite_1_0': {
+            'create': [ 'tymlyTest_boss' ]
+          },
+          'tymlyTest_readPost_1_0': {
+            'create': [ '$everyone' ]
+          },
+          'tymlyTest_updatePost_1_0': {
+            'create': [ '$owner' ]
+          }
+        }
+      })
+      expect(rbac.inheritedBy).to.be.eql({
+        '$owner': [ '$owner' ],
+        '$everyone': [ '$everyone' ],
+        '$authenticated': [ '$authenticated' ],
+        'tymlyTest_boss': [ 'tymlyTest_boss' ],
+        'tymlyTest_developer': [ 'tymlyTest_developer', 'tymlyTest_teamLeader', 'tymlyTest_boss' ],
+        'tymlyTest_teamLeader': [ 'tymlyTest_teamLeader', 'tymlyTest_boss' ],
+        'tymlyTest_tymlyTestAdmin': [ 'tymlyTest_tymlyTestAdmin' ],
+        'tymlyTest_tymlyTestReadOnly': [ 'tymlyTest_tymlyTestReadOnly' ]
+      })
     })
   })
 
   describe('setup', () => {
-    const secret = 'Shhh!'
-    const audience = 'IAmTheAudience!'
-
     it('should get the ACL service for testing purposes', function (done) {
       tymly.boot(
         {
@@ -140,18 +215,10 @@ describe('RBAC service tests', function () {
           ],
 
           config: {
-            staticRootDir: path.resolve(__dirname, './output'),
-
-            auth: {
-              secret: secret,
-              audience: audience
-            },
-
             caches: {
               userMemberships: {max: 500}
             }
           }
-
         },
         function (err, tymlyServices) {
           expect(err).to.eql(null)

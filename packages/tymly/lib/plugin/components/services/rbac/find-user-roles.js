@@ -12,8 +12,8 @@ async function findUserRoles (userId, roleMembershipModel, rbac) {
   const inheritedRoles = ['$everyone']
 
   roles.map(roleId => {
-    Object.keys(rbac.inherits).map(inheritedBy => {
-      if (rbac.inherits[inheritedBy].includes(roleId)) {
+    Object.keys(rbac.inheritedBy).map(inheritedBy => {
+      if (rbac.inheritedBy[inheritedBy].includes(roleId)) {
         inheritedRoles.push(inheritedBy)
       }
     })

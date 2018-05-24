@@ -70,14 +70,6 @@ class RbacService {
     return roles
   } // getUserRoles
 
-  static getUserIdFromContext (ctx) {
-    let userId
-    if (ctx && ctx.hasOwnProperty('userId')) {
-      userId = ctx.userId
-    }
-    return userId
-  }
-
   /**
    * Checks the supplied credentials against the internal RBAC index
    * @param {string} userId A userId to check (used for dynamic checks such as _'allow update as long as userId matches with the author of target document'_)
@@ -175,6 +167,14 @@ class RbacService {
     const result = checker(requiredRoleList)
     addDebug(requiredRoleList, result)
     return result
+  }
+
+  static getUserIdFromContext (ctx) {
+    let userId
+    if (ctx && ctx.hasOwnProperty('userId')) {
+      userId = ctx.userId
+    }
+    return userId
   }
 
   resetCache () {
