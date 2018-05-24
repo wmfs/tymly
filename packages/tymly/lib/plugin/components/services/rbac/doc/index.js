@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  description: 'Provides JWT-based authentication capabilities'
+  description: 'Provides Rbac-based authentication capabilities'
 }

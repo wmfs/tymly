@@ -1,11 +1,8 @@
-const _ = require('lodash')
-const dottie = require('dottie')
-const debug = require('debug')('rbac')
-
 const { applyDefaultRoles, ensureUserRoles } = require('./apply-default-roles')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
 const loadRbacIndex = require('./refresh-index')
 const findUserRoles = require('./find-user-roles')
+const checkRoleAuthorization = require('./check-role-authorization')
 
 class RbacService {
   async boot (options, callback) {
@@ -90,92 +87,9 @@ class RbacService {
    * ) // Returns true/false
    */
   checkRoleAuthorization (userId, ctx, roles, resourceType, resourceName, action) {
-    const _this = this
-
-    function getRequiredRoleList () {
-      // What roles will allow this?
-
-      const key = [
-        resourceType,
-        resourceName,
-        action
-      ].join('.')
-
-      const unrestricted = dottie.get(_this.rbac.index, '*.*.*') || []
-      const unrestrictedInADomain = dottie.get(_this.rbac.index, resourceType + '.*.*') || []
-      const anyActionOnASpecificResource = dottie.get(_this.rbac.index, resourceType + '.' + resourceName + '.*') || []
-      const anyDomainResourceForASpecificAction = dottie.get(_this.rbac.index, resourceType + '.*.' + action) || []
-      const specific = dottie.get(_this.rbac.index, key) || []
-
-      return _.uniq(
-        unrestricted.concat(
-          unrestrictedInADomain,
-          anyActionOnASpecificResource,
-          anyDomainResourceForASpecificAction,
-          specific
-        )
-      )
-    }
-
-    function addDebug (requiredRoleList, result) {
-      let text = `User '${userId}' is attempting to '${action}' on ${resourceType} '${resourceName}'... ` +
-        `which requires one of these roles: ${JSON.stringify(requiredRoleList)}, and user has these roles: ${JSON.stringify(roles)}. `
-      if (result) {
-        text += 'Access permitted!'
-      } else {
-        text += 'Access denied!'
-      }
-      debug(text)
-    }
-
-    function checker (requiredRoleList) {
-      if (requiredRoleList.length > 0) {
-        if (requiredRoleList.indexOf('$everyone') !== -1) {
-          return true
-        } else {
-          if (_.isString(userId) && requiredRoleList.indexOf('$authenticated') !== -1) {
-            return true
-          } else {
-            let roleMatch = false
-
-            for (let i = 0; i < roles.length; i++) {
-              if (requiredRoleList.indexOf(roles[i]) !== -1) {
-                roleMatch = true
-                break
-              }
-            }
-
-            if (roleMatch) {
-              return true
-            } else {
-              // TODO: $owner is actually a finer-grained restriction over usual roles. Not this.
-              const contextOwner = RbacService.getUserIdFromContext(ctx)
-              if (requiredRoleList.indexOf('$owner') !== -1 && _.isString(contextOwner) && _.isString(userId) && (contextOwner === userId)) {
-                return true
-              } else {
-                return false
-              }
-            }
-          }
-        }
-      } else {
-        return false
-      }
-    }
-
-    const requiredRoleList = getRequiredRoleList()
-    const result = checker(requiredRoleList)
-    addDebug(requiredRoleList, result)
-    return result
-  }
-
-  static getUserIdFromContext (ctx) {
-    let userId
-    if (ctx && ctx.hasOwnProperty('userId')) {
-      userId = ctx.userId
-    }
-    return userId
-  }
+    const uid = (typeof userId === 'string') ? userId : null
+    return checkRoleAuthorization(uid, ctx, roles, resourceType, resourceName, action, this.rbac)
+  } // checkRoleAuthorization
 
   resetCache () {
     this.userMembershipsCache.reset()
