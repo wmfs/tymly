@@ -85,22 +85,16 @@ class Rbac {
     console.log('RBAC Index')
     console.log('----------')
 
-    let path
-    let stateMachineName
-    let domain
-    let stateMachine
-    let actionName
-    let action
-    for (let domainName in this.index) {
-      domain = this.index[domainName]
+    for (const domainName in this.index) {
+      const domain = this.index[domainName]
 
-      for (stateMachineName in domain) {
-        stateMachine = domain[stateMachineName]
+      for (const stateMachineName in domain) {
+        const stateMachine = domain[stateMachineName]
 
-        for (actionName in stateMachine) {
-          action = stateMachine[actionName]
+        for (const actionName in stateMachine) {
+          const action = stateMachine[actionName]
 
-          path = [domainName, stateMachineName, actionName, JSON.stringify(action)].join(' -> ')
+          const path = [domainName, stateMachineName, actionName, JSON.stringify(action)].join(' -> ')
           console.log('  ', path)
         }
       }

@@ -4,7 +4,7 @@ const debug = require('debug')('rbac')
 
 const { applyDefaultRoles, ensureUserRoles } = require('./apply-default-roles')
 const applyDefaultBlueprintDocs = require('./apply-default-blueprint-docs')
-const refreshIndexModule = require('./refresh-index')
+const loadRbacIndex = require('./refresh-index')
 const findUserRoles = require('./find-user-roles')
 
 class RbacService {
@@ -34,7 +34,11 @@ class RbacService {
       )
 
       options.messages.info('Refreshing RBAC index')
-      await this.refreshIndex()
+      this.rbac = await loadRbacIndex(
+        this.roleModel,
+        this.roleMembershipModel,
+        this.permissionModel
+      )
 
       callback(null)
     } catch (err) {
@@ -65,28 +69,6 @@ class RbacService {
     this.userMembershipsCache.set(userId, roles)
     return roles
   } // getUserRoles
-
-  /**
-   * Regenerates the internal RBAC index. Needs to be done to reflect any changes made to the underlying state-machines (e.g. `tymly_permission_1_0`, `tymly_role_1_0` and `tymly_membership_1_0`)
-   * @param {Function} callback Called with a standard error
-   * @returns {undefined}
-   * @example
-   * rbac.refreshIndex(
-   *   function (err) {
-   *     // Would expect err to be null
-   *   }
-   * )
-   */
-  async refreshIndex () {
-    const rbac = await refreshIndexModule(
-      this.roleModel,
-      this.roleMembershipModel,
-      this.permissionModel
-    )
-
-    this.rbac = rbac
-    this.index = this.rbac.index
-  } // refreshIndex
 
   static getUserIdFromContext (ctx) {
     let userId
@@ -127,11 +109,11 @@ class RbacService {
         action
       ].join('.')
 
-      const unrestricted = dottie.get(_this.index, '*.*.*') || []
-      const unrestrictedInADomain = dottie.get(_this.index, resourceType + '.*.*') || []
-      const anyActionOnASpecificResource = dottie.get(_this.index, resourceType + '.' + resourceName + '.*') || []
-      const anyDomainResourceForASpecificAction = dottie.get(_this.index, resourceType + '.*.' + action) || []
-      const specific = dottie.get(_this.index, key) || []
+      const unrestricted = dottie.get(_this.rbac.index, '*.*.*') || []
+      const unrestrictedInADomain = dottie.get(_this.rbac.index, resourceType + '.*.*') || []
+      const anyActionOnASpecificResource = dottie.get(_this.rbac.index, resourceType + '.' + resourceName + '.*') || []
+      const anyDomainResourceForASpecificAction = dottie.get(_this.rbac.index, resourceType + '.*.' + action) || []
+      const specific = dottie.get(_this.rbac.index, key) || []
 
       return _.uniq(
         unrestricted.concat(
