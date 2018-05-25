@@ -12,10 +12,7 @@ module.exports = class SetContextData {
   }
 
   async run (event, context) {
-    this.email = this.userInfoService ? await new Promise((resolve, reject) => this.userInfoService.getEmailFromUserId(context.userId, (err, email) => {
-      if (err) reject(err)
-      else resolve(email)
-    })) : ''
+    this.email = this.userInfoService ? await this.userInfoService.getEmailFromUserId(context.userId) : ''
 
     const FORM_DATA_STRING_LENGTH = 8
     const config = {}

@@ -7,7 +7,7 @@ module.exports = class Upserting {
     this.setMissingPropertiesToNull = resourceConfig.setMissingPropertiesToNull || false
     this.modelId = resourceConfig.modelId
     const models = env.bootedServices.storage.models
-    if (env.bootedServices.auth0) this.auth0 = env.bootedServices.auth0
+    if (env.bootedServices.userInfo) this.userInfo = env.bootedServices.userInfo
     if (models.hasOwnProperty(this.modelId)) {
       this.model = models[this.modelId]
       callback(null)
@@ -26,11 +26,8 @@ module.exports = class Upserting {
     docToPersist._executionName = context.executionName
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
 
-    if (this.auth0) {
-      const userEmail = await new Promise((resolve, reject) => this.auth0.getEmailFromUserId(context.userId, (err, email) => {
-        if (err) reject(err)
-        else resolve(email)
-      }))
+    if (this.userInfo) {
+      const userEmail = await this.userInfo.getEmailFromUserId(context.userId)
       // set modified by to userEmail - only set created by if it's a new record
       console.log('email:', userEmail)
     }

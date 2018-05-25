@@ -15,7 +15,7 @@ class DummyUserInfoService {
       'auth0|5a157ade1932044615a1c502': 'tymly@xyz.com'
     }
 
-    callback(null, emails[userId])
+    return Promise.resolve(emails[userId])
   }
 }
 
