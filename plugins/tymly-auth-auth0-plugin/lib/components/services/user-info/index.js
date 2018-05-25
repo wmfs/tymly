@@ -11,6 +11,8 @@ const THIRTY_MINUTES_IN_MILLISECONDS = 1800000
 
 class Auth0Service {
   boot (options, callback) {
+    options.messages.info('Auth0 User Information')
+
     if (process.env.TYMLY_NIC_AUTH0_DOMAIN) {
       this.auth0GetManagementAPIAccessTokenUrl = `https://${process.env.TYMLY_NIC_AUTH0_DOMAIN}/oauth/token`
       this.auth0Audience = `https://${process.env.TYMLY_NIC_AUTH0_DOMAIN}/api/v2/`

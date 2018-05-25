@@ -7,12 +7,12 @@ const jp = require('jsonpath')
 module.exports = class SetContextData {
   init (resourceConfig, env, callback) {
     this.resourceConfig = resourceConfig
-    this.auth0Service = env.bootedServices.auth0
+    this.userInfoService = env.bootedServices.userInfo
     callback(null)
   }
 
   async run (event, context) {
-    this.email = this.auth0Service ? await new Promise((resolve, reject) => this.auth0Service.getEmailFromUserId(context.userId, (err, email) => {
+    this.email = this.userInfoService ? await new Promise((resolve, reject) => this.userInfoService.getEmailFromUserId(context.userId, (err, email) => {
       if (err) reject(err)
       else resolve(email)
     })) : ''

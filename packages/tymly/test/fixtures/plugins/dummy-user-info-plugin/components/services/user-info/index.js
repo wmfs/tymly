@@ -1,11 +1,11 @@
-class DummyAuthService {
+class DummyUserInfoService {
   boot (options, callback) {
-    options.messages.info('Dummy Auth Service')
+    options.messages.info('Dummy User Info Service')
     callback(null)
   }
 
   /**
-   * Converts a provider user id into an email address, via an auth0 web api
+   * Converts a provider user id into an email address, by some means
    * @param {string} userId a provider use id
    * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the email address returned by the auth0 web api
    * @returns {undefined}
@@ -20,6 +20,6 @@ class DummyAuthService {
 }
 
 module.exports = {
-  serviceClass: DummyAuthService,
+  serviceClass: DummyUserInfoService,
   bootBefore: ['statebox']
 }

@@ -17,7 +17,7 @@ describe('Context tests', function () {
           path.resolve(__dirname, './fixtures/blueprints/context-blueprint')
         ],
         pluginPaths: [
-          path.resolve(__dirname, './fixtures/plugins/dummy-auth-plugin')
+          path.resolve(__dirname, './fixtures/plugins/dummy-user-info-plugin')
         ]
       },
       function (err, tymlyServices) {

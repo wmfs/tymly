@@ -1,6 +1,6 @@
-'use strict'
+
 module.exports = {
-  label: 'Dummy Auth',
+  label: 'Dummy User Info',
   author: 'Jez Higgins',
   version: '1.0',
 

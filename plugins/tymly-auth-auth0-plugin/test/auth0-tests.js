@@ -10,7 +10,7 @@ describe('tymly-auth-auth0-plugin tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService
-  let authService
+  let userInfoService
 
   const envVars = [
     'TYMLY_NIC_AUTH0_CLIENT_ID',
@@ -37,14 +37,14 @@ describe('tymly-auth-auth0-plugin tests', function () {
       function (err, tymlyServices) {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
-        authService = tymlyServices.auth0
+        userInfoService = tymlyServices.userInfo
         done()
       }
     )
   })
 
   it('should convert a user id into an email address (and cache the relationship between the user id and the auth0 returned email address)', function (done) {
-    authService.getEmailFromUserId('auth0|5a157ade1932044615a1c502', function (err, email) {
+    userInfoService.getEmailFromUserId('auth0|5a157ade1932044615a1c502', function (err, email) {
       if (err) {
         done(err)
       } else {
@@ -55,14 +55,14 @@ describe('tymly-auth-auth0-plugin tests', function () {
   })
 
   it('attempt to convert a non existent user id (\'auth0|ffffffffffffffffffffffff\') into an email (which should return a 404)', function (done) {
-    authService.getEmailFromUserId('auth0|ffffffffffffffffffffffff', function (err, email) {
+    userInfoService.getEmailFromUserId('auth0|ffffffffffffffffffffffff', function (err, email) {
       expect(err.statusCode).to.equal(404)
       done()
     })
   })
 
   it('should convert an email address into a user id (which should return instantly via the cache)', function (done) {
-    authService.getUserIdFromEmail('tymly@xyz.com', function (err, email) {
+    userInfoService.getUserIdFromEmail('tymly@xyz.com', function (err, email) {
       if (err) {
         done(err)
       } else {
@@ -73,14 +73,14 @@ describe('tymly-auth-auth0-plugin tests', function () {
   })
 
   it('attempt to convert a non existent email (\'doesNotExist@xyz.com\') into a user id (which should return a 404)', function (done) {
-    authService.getUserIdFromEmail('doesNotExist@xyz.com', function (err, userId) {
+    userInfoService.getUserIdFromEmail('doesNotExist@xyz.com', function (err, userId) {
       expect(err.output.statusCode).to.equal(404)
       done()
     })
   })
 
   it('should get user groups via user ID (should return empty array due to no groups)', function (done) {
-    authService.getGroupsFromUserId('auth0|5a157ade1932044615a1c502', function (err, groups) {
+    userInfoService.getGroupsFromUserId('auth0|5a157ade1932044615a1c502', function (err, groups) {
       expect(groups).to.eql([])
       done(err)
     })
