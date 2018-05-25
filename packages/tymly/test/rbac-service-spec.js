@@ -380,6 +380,11 @@ describe('RBAC service tests', function () {
         'molly',
         ['tymlyTest_developer'],
         ['tymlyTest_developer', '$everyone']
+      ],
+      [
+        'just-some-dude',
+        null,
+        ['$everyone']
       ]
     ]
 

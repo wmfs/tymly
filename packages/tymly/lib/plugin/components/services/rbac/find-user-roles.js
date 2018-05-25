@@ -3,10 +3,11 @@ async function findUserRoles (userId, roleMembershipModel, rbac) {
 
   const applicableRoles = []
   for (const roleId of roleIds) {
-    const roles = rbac.inherits[roleId] || [roleId, '$everyone']
+    const roles = rbac.inherits[roleId] || [roleId]
 
     applicableRoles.push(...roles)
   }
+  applicableRoles.push('$everyone')
 
   return [...new Set(applicableRoles)] // uniqify
 } // findUserRoles
