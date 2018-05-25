@@ -44,33 +44,33 @@ describe('tymly-auth-auth0-plugin tests', function () {
   })
 
   it('should convert a user id into an email address (and cache the relationship between the user id and the auth0 returned email address)', async () => {
-    const email = await userInfoService.getEmailFromUserId('auth0|5a157ade1932044615a1c502')
+    const email = await userInfoService.emailFromUserId('auth0|5a157ade1932044615a1c502')
     expect(email).to.eql('tymly@xyz.com')
   })
 
   it('attempt to convert a non existent user id (\'auth0|ffffffffffffffffffffffff\') into an email (which should return a 404)', async () => {
     try {
-      await userInfoService.getEmailFromUserId('auth0|ffffffffffffffffffffffff')
+      await userInfoService.emailFromUserId('auth0|ffffffffffffffffffffffff')
     } catch (err) {
       expect(err.statusCode).to.equal(404)
     }
   })
 
   it('should convert an email address into a user id (which should return instantly via the cache)', async () => {
-    const userId = await userInfoService.getUserIdFromEmail('tymly@xyz.com')
+    const userId = await userInfoService.userIdFromEmail('tymly@xyz.com')
     expect(userId).to.eql('auth0|5a157ade1932044615a1c502')
   })
 
   it('attempt to convert a non existent email (\'doesNotExist@xyz.com\') into a user id (which should return a 404)', async () => {
     try {
-      await userInfoService.getUserIdFromEmail('doesNotExist@xyz.com')
+      await userInfoService.userIdFromEmail('doesNotExist@xyz.com')
     } catch (err) {
       expect(err.output.statusCode).to.equal(404)
     }
   })
 
   it('should get user groups via user ID (should return empty array due to no groups)', async () => {
-    const groups = await userInfoService.getGroupsFromUserId('auth0|5a157ade1932044615a1c502')
+    const groups = await userInfoService.groupsFromUserId('auth0|5a157ade1932044615a1c502')
     expect(groups).to.eql([])
   })
 

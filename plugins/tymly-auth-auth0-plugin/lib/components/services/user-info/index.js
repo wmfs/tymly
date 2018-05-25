@@ -49,6 +49,143 @@ class Auth0Service {
     callback(null)
   }
 
+  /**
+   * Converts a provider user id into an email address, via an auth0 web api
+   * @param {string} userId a provider use id
+   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the email address returned by the auth0 web api
+   * @returns {undefined}
+   */
+  async emailFromUserId (userId) {
+    const email = this.cacheService.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
+    if (email) {
+      return email
+    }
+
+    const url = `${this.auth0GetUsersByIdUrlPrefix}/${userId}`
+    const jwt = await this._managementAPIAccessToken()
+
+    const [response, body] = await this._makeRequest({
+      method: 'GET',
+      url: url,
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${jwt.access_token}`
+      },
+      json: true,
+      timeout: this.webAPITimeoutInMilliseconds
+    })
+
+    if (body.email) {
+      this._addToCache(userId, body.email)
+      return body.email
+    }
+
+    if (body.statusCode && body.error && body.message && body.errorCode) {
+      throw body
+    }
+
+    if (body) {
+      throw boom.boomify(new Error(`Invalid response from ${url}`), {
+        message: JSON.stringify(body)
+      })
+    }
+
+    debug(`auth0 response status code from ${url}:`, response && response.statusCode)
+    throw boom.boomify(new Error(`No response from ${url}`))
+  } // emailFromUserId
+
+  /**
+   * Converts an email address into a provider user id, via an auth0 web api
+   * @param {string} email a users email address
+   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the user id returned by the auth0 web api
+   * @returns {undefined}
+   */
+  async userIdFromEmail (email) {
+    const userId = this.cacheService.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
+    if (userId) {
+      return userId
+    }
+
+    const url = this.auth0GetUsersByEmailUrl
+    const jwt = await this._managementAPIAccessToken()
+
+    const [response, body] = await this._makeRequest({
+      method: 'GET',
+      url: url,
+      qs: {
+        email: email
+      },
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${jwt.access_token}`
+      },
+      json: true,
+      timeout: this.webAPITimeoutInMilliseconds
+    })
+
+    if (body && body.length === 1 && body[0].user_id) {
+      this._addToCache(body[0].user_id, email)
+      return body[0].user_id
+    }
+
+    if (body && body.length === 0) {
+      throw boom.notFound('The user does not exist.')
+    }
+
+    if (body) {
+      throw boom.boomify(new Error(`Invalid response from ${this.auth0GetUsersByEmailUrl}`), {
+        message: JSON.stringify(body)
+      })
+    }
+
+    debug(`auth0 response status code from ${this.auth0GetUsersByEmailUrl}:`, response && response.statusCode)
+    throw boom.boomify(new Error(`No response from ${this.auth0GetUsersByEmailUrl}`))
+  } // userIdFromEmail
+
+  async groupsFromUserId (userId) {
+    const groups = this.cacheService.get(USER_ID_TO_GROUPS_CACHE_NAME, userId)
+    if (groups) {
+      return groups
+    }
+
+    const url = `${this.auth0GetUsersByIdUrlPrefix}/${userId}`
+    const jwt = await this._managementAPIAccessToken()
+
+    const [response, body] = await this._makeRequest({
+      method: 'GET',
+      url: url,
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${jwt.access_token}`
+      },
+      json: true,
+      timeout: this.webAPITimeoutInMilliseconds
+    })
+
+    if (body.groups) {
+      this._addToCache(userId, null, body.groups)
+      return body.groups
+    }
+
+    if (body.statusCode && body.error && body.message && body.errorCode) {
+      throw body
+    }
+
+    if (body) {
+      this._addToCache(userId, null, [])
+      return []
+    }
+
+    debug(`auth0 response status code from ${url}:`, response && response.statusCode)
+    throw boom.boomify(new Error(`No response from ${url}`))
+  } // groupsFromUserId
+
+  _addToCache (userId, email, groups) {
+    this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, email, userId)
+    this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, email)
+    this.cacheService.set(USER_ID_TO_GROUPS_CACHE_NAME, userId, groups)
+  } // _addToCache
+
   _makeRequest (options) {
     return new Promise((resolve, reject) => {
       this.request(
@@ -61,7 +198,7 @@ class Auth0Service {
     })
   } // _makeRequest
 
-  async _getManagementAPIAccessToken () {
+  async _managementAPIAccessToken () {
     if (!this.auth0Audience) {
       throw boom.unauthorized('auth0 domain has not been configured (the TYMLY_NIC_AUTH0_DOMAIN environment variable is not set)')
     } else if (!this.auth0ClientId) {
@@ -101,145 +238,8 @@ class Auth0Service {
 
     debug(`auth0 response status code from ${this.auth0GetManagementAPIAccessTokenUrl}:`, response && response.statusCode)
     throw boom.boomify(new Error('No response from auth0'))
-  } // _getManagementAPIAccessToken
-
-  /**
-   * Converts a provider user id into an email address, via an auth0 web api
-   * @param {string} userId a provider use id
-   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the email address returned by the auth0 web api
-   * @returns {undefined}
-   */
-  async getEmailFromUserId (userId) {
-    const email = this.cacheService.get(USER_ID_TO_EMAIL_CACHE_NAME, userId)
-    if (email) {
-      return email
-    }
-
-    const url = `${this.auth0GetUsersByIdUrlPrefix}/${userId}`
-    const jwt = await this._getManagementAPIAccessToken()
-
-    const [response, body] = await this._makeRequest({
-      method: 'GET',
-      url: url,
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${jwt.access_token}`
-      },
-      json: true,
-      timeout: this.webAPITimeoutInMilliseconds
-    })
-
-    if (body.email) {
-      this._addToCache(userId, body.email)
-      return body.email
-    }
-
-    if (body.statusCode && body.error && body.message && body.errorCode) {
-      throw body
-    }
-
-    if (body) {
-      throw boom.boomify(new Error(`Invalid response from ${url}`), {
-        message: JSON.stringify(body)
-      })
-    }
-
-    debug(`auth0 response status code from ${url}:`, response && response.statusCode)
-    throw boom.boomify(new Error(`No response from ${url}`))
-  } // _getEmailFromUserId
-
-  /**
-   * Converts an email address into a provider user id, via an auth0 web api
-   * @param {string} email a users email address
-   * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the user id returned by the auth0 web api
-   * @returns {undefined}
-   */
-  async getUserIdFromEmail (email) {
-    const userId = this.cacheService.get(EMAIL_TO_USER_ID_CACHE_NAME, email)
-    if (userId) {
-      return userId
-    }
-
-    const url = this.auth0GetUsersByEmailUrl
-    const jwt = await this._getManagementAPIAccessToken()
-
-    const [response, body] = await this._makeRequest({
-      method: 'GET',
-      url: url,
-      qs: {
-        email: email
-      },
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${jwt.access_token}`
-      },
-      json: true,
-      timeout: this.webAPITimeoutInMilliseconds
-    })
-
-    if (body && body.length === 1 && body[0].user_id) {
-      this._addToCache(body[0].user_id, email)
-      return body[0].user_id
-    }
-
-    if (body && body.length === 0) {
-      throw boom.notFound('The user does not exist.')
-    }
-
-    if (body) {
-      throw boom.boomify(new Error(`Invalid response from ${this.auth0GetUsersByEmailUrl}`), {
-        message: JSON.stringify(body)
-      })
-    }
-
-    debug(`auth0 response status code from ${this.auth0GetUsersByEmailUrl}:`, response && response.statusCode)
-    throw boom.boomify(new Error(`No response from ${this.auth0GetUsersByEmailUrl}`))
-  } // getUserIdFromEmail
-
-  async getGroupsFromUserId (userId) {
-    const groups = this.cacheService.get(USER_ID_TO_GROUPS_CACHE_NAME, userId)
-    if (groups) {
-      return groups
-    }
-
-    const url = `${this.auth0GetUsersByIdUrlPrefix}/${userId}`
-    const jwt = await this._getManagementAPIAccessToken()
-
-    const [response, body] = await this._makeRequest({
-      method: 'GET',
-      url: url,
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${jwt.access_token}`
-      },
-      json: true,
-      timeout: this.webAPITimeoutInMilliseconds
-    })
-
-    if (body.groups) {
-      this._addToCache(userId, null, body.groups)
-      return body.groups
-    }
-
-    if (body.statusCode && body.error && body.message && body.errorCode) {
-      throw body
-    }
-
-    if (body) {
-      this._addToCache(userId, null, [])
-      return []
-    }
-
-    debug(`auth0 response status code from ${url}:`, response && response.statusCode)
-    throw boom.boomify(new Error(`No response from ${url}`))
-  } // getGroupsFromUserId
-
-  _addToCache (userId, email, groups) {
-    this.cacheService.set(EMAIL_TO_USER_ID_CACHE_NAME, email, userId)
-    this.cacheService.set(USER_ID_TO_EMAIL_CACHE_NAME, userId, email)
-    this.cacheService.set(USER_ID_TO_GROUPS_CACHE_NAME, userId, groups)
-  }
-}
+  } // _managementAPIAccessToken
+} // class Auth0Service
 
 module.exports = {
   serviceClass: Auth0Service,

@@ -12,7 +12,7 @@ module.exports = class SetContextData {
   }
 
   async run (event, context) {
-    this.email = this.userInfoService ? await this.userInfoService.getEmailFromUserId(context.userId) : ''
+    this.email = this.userInfoService ? await this.userInfoService.emailFromUserId(context.userId) : ''
 
     const FORM_DATA_STRING_LENGTH = 8
     const config = {}

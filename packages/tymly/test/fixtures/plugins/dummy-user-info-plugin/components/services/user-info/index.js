@@ -10,7 +10,7 @@ class DummyUserInfoService {
    * @param callback callback function, whose first parameter holds error details or {undefined}, and whose second parameter holds the email address returned by the auth0 web api
    * @returns {undefined}
    */
-  getEmailFromUserId (userId, callback) {
+  emailFromUserId (userId) {
     const emails = {
       'auth0|5a157ade1932044615a1c502': 'tymly@xyz.com'
     }
