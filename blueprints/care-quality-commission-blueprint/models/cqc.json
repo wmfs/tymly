@@ -32,7 +32,7 @@
     "locationCity": {
       "type": "string"
     },
-    "locationPostCode": {
+    "locationPostalCode": {
       "type": "string"
     },
     "locationLocalAuthority": {
@@ -81,6 +81,16 @@
     },
     "careHomeBeds": {
       "type": "integer"
+    },
+    "locationLatitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001
+    },
+    "locationLongitude": {
+      "type": "number",
+      "maxLength": 8,
+      "multipleOf": 0.00000001
     }
   }
 }
