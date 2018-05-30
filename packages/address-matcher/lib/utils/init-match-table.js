@@ -1,13 +1,15 @@
 'use strict'
 
-function initMatchTable (options, client, callback) {
-  client.query(
-    generateStatement(options) + generateCertaintyReferenceTable(options),
-    function (err) {
-      if (err) console.error(err)
-      callback(err)
-    }
-  )
+function initMatchTable (options, client) {
+  return new Promise((resolve, reject) => {
+    client.query(
+      generateStatement(options) + generateCertaintyReferenceTable(options),
+      err => {
+        if (err) reject(err)
+        else resolve(err)
+      }
+    )
+  })
 }
 
 function generateStatement (options) {

@@ -2,13 +2,16 @@
 
 const _ = require('lodash')
 
-function matchPostcodeAndName (options, client, callback) {
-  client.query(
-    match(options, 'exact', 2) + match(options, 'fuzzy', 3),
-    (err) => {
-      callback(err)
-    }
-  )
+function matchPostcodeAndName (options, client) {
+  return new Promise((resolve, reject) => {
+    client.query(
+      match(options, 'exact', 2) + match(options, 'fuzzy', 3),
+      (err) => {
+        if (err) reject(err)
+        else resolve(err)
+      }
+    )
+  })
 }
 
 function match (options, type, certainty) {

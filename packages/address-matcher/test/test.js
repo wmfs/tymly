@@ -157,14 +157,8 @@ describe('Run some tests', function () {
     done()
   })
 
-  it('Should match the tables', (done) => {
-    matchTables(
-      options,
-      client,
-      (err) => {
-        done(err)
-      }
-    )
+  it('Should match the tables', async () => {
+    await matchTables(options, client)
   })
 
   it('Should check the results', (done) => {

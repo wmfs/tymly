@@ -1,13 +1,15 @@
 'use strict'
 
-module.exports = function insertUnmatchedRecords (options, client, callback) {
-  client.query(
-    generateStatement(options),
-    function (err) {
-      if (err) console.error(err)
-      callback(err)
-    }
-  )
+module.exports = function insertUnmatchedRecords (options, client) {
+  return new Promise((resolve, reject) => {
+    client.query(
+      generateStatement(options),
+      err => {
+        if (err) reject(err)
+        else resolve(err)
+      }
+    )
+  })
 }
 
 function generateStatement (options) {
