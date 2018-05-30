@@ -6,7 +6,7 @@ module.exports = function insertUnmatchedRecords (options, client) {
       generateStatement(options),
       err => {
         if (err) reject(err)
-        else resolve(err)
+        else resolve()
       }
     )
   })

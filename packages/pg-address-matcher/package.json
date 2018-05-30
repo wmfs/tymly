@@ -1,5 +1,5 @@
 {
-  "name": "address-matcher",
+  "name": "pg-address-matcher",
   "version": "0.0.3",
   "description": "A package to link two database tables by addresses",
   "main": "index.js",

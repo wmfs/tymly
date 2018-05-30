@@ -1,4 +1,4 @@
-# address-matcher
+# pg-address-matcher
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/pg-delta-file/LICENSE)
 
 
@@ -9,7 +9,7 @@
 ## Usage
 
 ```
-const addressMatch = require('address-matcher')
+const addressMatch = require('pg-address-matcher')
 
 addressMatch(
     {
@@ -53,7 +53,7 @@ The package currently matches on postcode and business name where the column nam
 
 ## <a name="install"></a>Install
 ```bash
-$ npm install address-matcher --save
+$ npm install pg-address-matcher --save
 ```
 This package requires the database to have the "fuzzystrmatch" extension for Postgres which is achieved by:
 ```

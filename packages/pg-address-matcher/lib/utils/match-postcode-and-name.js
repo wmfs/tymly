@@ -8,7 +8,7 @@ function matchPostcodeAndName (options, client) {
       match(options, 'exact', 2) + match(options, 'fuzzy', 3),
       (err) => {
         if (err) reject(err)
-        else resolve(err)
+        else resolve()
       }
     )
   })
@@ -29,6 +29,8 @@ function match (options, type, certainty) {
       break
   }
   statement += `ON CONFLICT (${options.source.id}) do nothing; `
+
+  console.log(statement)
   return statement
 }
 
@@ -39,15 +41,15 @@ function processWhere (type, source, target) {
   const parts = []
   switch (type) {
     case 'exact':
-      source.map(s => {
-        target.map(t => {
+      source.forEach(s => {
+        target.forEach(t => {
           parts.push(`upper(${s}) = upper(${t})`)
         })
       })
       break
     case 'fuzzy':
-      source.map(s => {
-        target.map(t => {
+      source.forEach(s => {
+        target.forEach(t => {
           parts.push(`difference(${s}, ${t}) = 4`)
         })
       })

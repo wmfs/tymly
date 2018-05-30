@@ -6,7 +6,7 @@ function initMatchTable (options, client) {
       generateStatement(options) + generateCertaintyReferenceTable(options),
       err => {
         if (err) reject(err)
-        else resolve(err)
+        else resolve()
       }
     )
   })
