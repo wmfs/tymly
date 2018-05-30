@@ -161,35 +161,25 @@ describe('Run some tests', function () {
     await matchTables(options, client)
   })
 
-  it('Should check the results', (done) => {
-    client.query(
-      `select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty != 0`,
-      (err, results) => {
-        expect(results.rows).to.eql([
-          {food_id: '111111', address_id: '111'},
-          {food_id: '987654', address_id: '987'},
-          {food_id: '444444', address_id: '444'},
-          {food_id: '555555', address_id: '555'},
-          {food_id: '666666', address_id: '666'},
-          {food_id: '777777', address_id: '777'},
-          {food_id: '888888', address_id: '888'}
-        ])
-        done(err)
-      }
-    )
+  it('Should check the results', async () => {
+    const results = await client.query(`select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty != 0`)
+    expect(results.rows).to.eql([
+      {food_id: '111111', address_id: '111'},
+      {food_id: '987654', address_id: '987'},
+      {food_id: '444444', address_id: '444'},
+      {food_id: '555555', address_id: '555'},
+      {food_id: '666666', address_id: '666'},
+      {food_id: '777777', address_id: '777'},
+      {food_id: '888888', address_id: '888'}
+    ])
   })
 
-  it('Should check the results', (done) => {
-    client.query(
-      `select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty = 0`,
-      (err, results) => {
-        expect(results.rows).to.eql([
-          {food_id: '222222', address_id: null},
-          {food_id: '333333', address_id: null}
-        ])
-        done(err)
-      }
-    )
+  it('Should check the results', async () => {
+    const results = await client.query(`select food_id, address_id from ${options.match.schema}.${options.match.table} where match_certainty = 0`)
+    expect(results.rows).to.eql([
+      {food_id: '222222', address_id: null},
+      {food_id: '333333', address_id: null}
+    ])
   })
 
   it('Should uninstall test schemas', () => {
