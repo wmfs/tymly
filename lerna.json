@@ -9,7 +9,7 @@
   "hoist": true,
   "commands":{
     "publish": {
-      "ignore": ["address-matcher"]
+      "ignore": ["pg-address-matcher"]
     }
   },
   "command": {
