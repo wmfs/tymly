@@ -6,77 +6,77 @@
   ],
   "type": "object",
   "properties": {
-    "location_id": {
+    "locationId": {
       "type": "string",
       "maxLength": 12
     },
-    "location_name": {
+    "locationName": {
       "type": "string"
     },
-    "care_home": {
+    "careHome": {
       "type": "string",
       "maxLength": 1
     },
-    "location_type": {
+    "locationType": {
       "type": "string"
     },
-    "location_primary_inspection_category": {
+    "locationPrimaryInspectionCategory": {
       "type": "string"
     },
-    "location_street_address": {
+    "locationStreetAddress": {
       "type": "string"
     },
-    "location_address_line_2": {
+    "locationAddressLine2": {
       "type": "string"
     },
-    "location_city": {
+    "locationCity": {
       "type": "string"
     },
-    "location_post_code": {
+    "locationPostCode": {
       "type": "string"
     },
-    "location_local_authority": {
+    "locationLocalAuthority": {
       "type": "string"
     },
-    "location_region": {
+    "locationRegion": {
       "type": "string"
     },
-    "location_ccg_code": {
+    "locationCcgCode": {
       "type": "string",
       "maxLength": 9
     },
-    "location_ccg": {
+    "locationCcg": {
       "type": "string"
     },
     "service": {
       "type": "string"
     },
-    "key_question": {
+    "keyQuestion": {
       "type": "string"
     },
-    "latest_rating": {
+    "latestRating": {
       "type": "string"
     },
-    "publication_date": {
+    "publicationDate": {
       "type": "string"
     },
-    "report_type": {
+    "reportType": {
       "type": "string"
     },
     "url": {
       "type": "string"
     },
-    "provider_id": {
+    "providerId": {
       "type": "string"
     },
-    "provider_name": {
+    "providerName": {
       "type": "string"
     },
-    "brand_id": {
+    "brandId": {
       "type": "string",
       "maxLength": 5
     },
-    "brand_name": {
+    "brandName": {
       "type": "string"
     }
   }
