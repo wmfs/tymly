@@ -30,7 +30,6 @@ function match (options, type, certainty) {
   }
   statement += `ON CONFLICT (${options.source.id}) do nothing; `
 
-  console.log(statement)
   return statement
 }
 
