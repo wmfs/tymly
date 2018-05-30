@@ -79,7 +79,7 @@
     "brandName": {
       "type": "string"
     },
-    "careHomeBeds": {
+    "careHomesBeds": {
       "type": "integer"
     },
     "locationLatitude": {

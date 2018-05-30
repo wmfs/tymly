@@ -7,15 +7,14 @@ const expect = chai.expect
 const path = require('path')
 const tymly = require('tymly')
 const process = require('process')
+const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('CQC tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   const STATE_MACHINE_NAME = 'cqc_refreshFromCsvFile_1_0'
 
-  let tymlyService
-  let statebox
-  let client
+  let tymlyService, statebox, client, cqcModel
 
   before(function () {
     if (process.env.PG_CONNECTION_STRING && !/^postgres:\/\/[^:]+:[^@]+@(?:localhost|127\.0\.0\.1).*$/.test(process.env.PG_CONNECTION_STRING)) {
@@ -40,6 +39,7 @@ describe('CQC tests', function () {
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
         client = tymlyServices.storage.client
+        cqcModel = tymlyServices.storage.models['cqc_cqc']
         done()
       }
     )
@@ -63,101 +63,13 @@ describe('CQC tests', function () {
     )
   })
 
-  it('should be the correct data in the database', function (done) {
-    client.query(
-      'select location_id, location_name, latest_rating ' +
-      'from cqc.cqc ' +
-      'order by location_id',
-      function (err, result) {
-        if (err) {
-          done(err)
-        } else {
-          expect(result.rows).to.eql(
-            [
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567890',
-                'location_name': 'Meadow Rose Nursing Home'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '12345678909',
-                'location_name': 'Beverley Mews'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567891',
-                'location_name': 'MBI Home Care Ltd'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567892',
-                'location_name': 'Balm Care Services Limited'
-              },
-              {
-                'latest_rating': 'Requires improvement',
-                'location_id': '1234567893',
-                'location_name': 'Care for You (UK) Limited'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567894',
-                'location_name': 'Bluebell Centre'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567895',
-                'location_name': 'Cygnet House'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567896',
-                'location_name': 'Ambleside'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567897',
-                'location_name': 'Ashley House'
-              },
-              {
-                'latest_rating': 'Good',
-                'location_id': '1234567898',
-                'location_name': 'Ross Court Care Home'
-              }
-            ]
-          )
-          done()
-        }
-      }
-    )
+  it('should check the rows have been inserted', async () => {
+    const res = await cqcModel.find({})
+    expect(res.length).to.eql(5)
   })
 
-  it('Should be clean up the database', function (done) {
-    client.query(
-      `DELETE FROM cqc.cqc WHERE location_id::text LIKE '123456789%';`,
-      function (err, result) {
-        if (err) {
-          done(err)
-        } else {
-          expect(result.rowCount).to.eql(10)
-          done()
-        }
-      }
-    )
-  })
-
-  it('Should find a now empty database', function (done) {
-    client.query(
-      'select * from cqc.cqc;',
-      function (err, result) {
-        if (err) {
-          done(err)
-        } else {
-          expect(result.rows).to.eql([])
-          done()
-        }
-      }
-    )
+  it('should clean up the tables', () => {
+    return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
 
   it('should shutdown Tymly', async () => {
