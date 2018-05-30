@@ -78,6 +78,9 @@
     },
     "brandName": {
       "type": "string"
+    },
+    "careHomeBeds": {
+      "type": "integer"
     }
   }
 }
