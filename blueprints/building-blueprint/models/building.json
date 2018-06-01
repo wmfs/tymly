@@ -158,10 +158,10 @@
       "type": "boolean"
     },
     "ofstedScore": {
-      "type": "text"
+      "type": "string"
     },
     "qaaScore": {
-      "type": "text"
+      "type": "string"
     },
     "commentsIgnored": {
       "type": "boolean"
