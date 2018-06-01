@@ -142,6 +142,68 @@
     "knownBuildingDate": {
       "type": "number",
       "description": "Known build date of any building, if known"
+    },
+    "cqcScore": {
+      "type": "string",
+      "description": "Score imported from CQC data"
+    },
+    "fsaScore": {
+      "type": "string",
+      "description": "Score imported from FSA data"
+    },
+    "shouldBeLicensed": {
+      "type": "boolean"
+    },
+    "lhaOrder": {
+      "type": "boolean"
+    },
+    "ofstedScore": {
+      "type": "text"
+    },
+    "qaaScore": {
+      "type": "text"
+    },
+    "commentsIgnored": {
+      "type": "boolean"
+    },
+    "heritage": {
+      "type": "boolean"
+    },
+    "comah": {
+      "type": "boolean"
+    },
+    "connectedToCommerical": {
+      "type": "boolean"
+    },
+    "isOpenDay": {
+      "type": "boolean"
+    },
+    "isBelowDomestic": {
+      "type": "boolean"
+    },
+    "anyFinancialDifficulties": {
+      "type": "boolean"
+    },
+    "hasFireAlarm": {
+      "type": "boolean"
+    },
+    "hasMezzanine": {
+      "type": "boolean"
+    },
+    "hasBuildingRegConsent": {
+      "type": "boolean"
+    },
+    "hasOccupiedBasement": {
+      "type": "boolean"
+    },
+    "isOpenAtNight": {
+      "type": "boolean"
+    },
+    "hasSleepingRisk": {
+      "type": "boolean"
+    },
+    "isStaffedAtNight": {
+      "type": "boolean"
     }
   }
 }
