@@ -23,7 +23,7 @@ module.exports = function options (factorName, factorObj, schema, table, column)
         statement += `WHEN ${table}.${column}${cast} < ${i.numericValue} THEN ${i.score} `
       }
     } else if (i.type === 'boolean-equals') {
-      cast = `::BOOLEAN`
+      cast = `::boolean`
       statement += `WHEN ${table}.${column}${cast} = ${i.booleanValue} THEN ${i.score} `
     }
   })
