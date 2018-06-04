@@ -2,6 +2,7 @@
 
 const generateView = require('./../../services/rankings/generate-view-statement.js')
 const generateStats = require('./../../services/rankings/generate-stats.js')
+const _ = require('lodash')
 
 class RefreshRanking {
   init (resourceConfig, env, callback) {
@@ -14,7 +15,7 @@ class RefreshRanking {
 
   async run (event, context) {
     const schema = event.schema
-    const category = event.category
+    const category = _.camelCase(event.category)
     const key = schema + '_' + category
 
     const factors =
