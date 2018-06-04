@@ -23,7 +23,6 @@ module.exports = function generateCaseStatement (options) {
     return constant(options.factorName, options.factorObj)
   } else if (options.factorObj.type === 'options') {
     checkOptions(options)
-    console.log('!!!', option(options.factorName, options.factorObj, options.schema, options.table, options.column))
     return option(options.factorName, options.factorObj, options.schema, options.table, options.column)
   } else if (options.factorObj.type === 'exists') {
     checkOptions(options)
