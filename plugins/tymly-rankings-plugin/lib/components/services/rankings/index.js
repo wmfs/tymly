@@ -4,6 +4,7 @@ const _ = require('lodash')
 const async = require('async')
 const generateViewStatement = require('./generate-view-statement')
 const generateStats = require('./generate-stats')
+const debug = require('debug')('tymly-rankings-plugin')
 
 class RankingService {
   boot (options, callback) {
@@ -45,6 +46,9 @@ class RankingService {
         ranking: factors,
         registry: options.bootedServices.registry.registry[key]
       })
+
+      debug(key + ' SQL:')
+      debug(this.viewSQL[key])
 
       client.query(
         this.viewSQL[key],
