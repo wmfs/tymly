@@ -1,0 +1,21 @@
+{
+  "Comment": "Blueprint to do a thing",
+  "version": "1.0",
+  "StartAt": "Success",
+  "States": {
+    "Success": {
+      "Type": "Task",
+      "Resource": "module:success",
+      "ResultPath": "$.success",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$everyone",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

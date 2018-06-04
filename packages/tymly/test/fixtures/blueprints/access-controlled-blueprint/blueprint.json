@@ -1,0 +1,14 @@
+{
+
+  "namespace": "tymlyTest",
+  "name": "acccess controlled",
+  "version": "1.0",
+
+  "label": "Cats",
+  "author": "Tim Needham",
+
+  "organisation": "Tymly",
+  "description": "An example Tymly Blueprint to help model cat behaviour...",
+  "categories": ["cats"]
+
+}

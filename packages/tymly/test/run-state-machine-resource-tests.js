@@ -28,7 +28,8 @@ describe('run-state-machine state resource test', function () {
 
           pluginPaths: [
             path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
-            path.resolve(__dirname, './fixtures/plugins/heartbeat-plugin')
+            path.resolve(__dirname, './fixtures/plugins/heartbeat-plugin'),
+            path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
           ]
         },
         function (err, tymlyServices) {
@@ -110,6 +111,9 @@ describe('run-state-machine state resource test', function () {
         {
           blueprintPaths: [
             path.resolve(__dirname, './fixtures/blueprints/cats-wrapper-blueprint')
+          ],
+          pluginPaths: [
+            path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
           ]
         },
         function (err, tymlyServices) {
@@ -168,7 +172,8 @@ describe('run-state-machine state resource test', function () {
             path.resolve(__dirname, './fixtures/blueprints/failing-blueprint')
           ],
           pluginPaths: [
-            path.resolve(__dirname, './fixtures/plugins/justfail-plugin')
+            path.resolve(__dirname, './fixtures/plugins/justfail-plugin'),
+            path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
           ]
         },
         function (err, tymlyServices) {

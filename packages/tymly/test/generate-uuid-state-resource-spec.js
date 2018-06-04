@@ -17,7 +17,8 @@ describe('Generate uuid state resource', function () {
           path.resolve(__dirname, './fixtures/blueprints/cats-blueprint')
         ],
         pluginPaths: [
-          path.resolve(__dirname, './fixtures/plugins/cats-plugin')
+          path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
+          path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
         ]
       },
       (err, tymlyServices) => {

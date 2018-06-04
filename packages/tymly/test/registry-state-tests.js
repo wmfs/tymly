@@ -23,6 +23,9 @@ describe('registry key state resources', function () {
           blueprintPaths: [
             path.resolve(__dirname, './fixtures/blueprints/registry-blueprint')
           ],
+          pluginPaths: [
+            path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
+          ],
           config: {
             caches: {
               registryKeys: {}

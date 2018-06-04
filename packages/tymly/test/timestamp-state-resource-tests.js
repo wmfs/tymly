@@ -21,6 +21,9 @@ describe('timestamp state resources', function () {
       {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/timestamp-blueprint')
+        ],
+        pluginPaths: [
+          path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
         ]
       },
       function (err, tymlyServices) {

@@ -16,6 +16,9 @@ describe('Memory tymly-storage tests', function () {
       {
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/blueprints/storage-blueprint')
+        ],
+        pluginPaths: [
+          path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
         ]
       },
       function (err, tymlyServices) {

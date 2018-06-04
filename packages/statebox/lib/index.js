@@ -14,6 +14,7 @@ const StorageDao = require('./dao/StorageService-dao')
 const Status = require('./Status')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
 const CallbackManager = require('./Callback-manager')
+const boom = require('boom')
 const debug = require('debug')('statebox')
 
 class Statebox {
@@ -140,6 +141,29 @@ class Statebox {
     })
   } // promised
 
+  async _authorisationCheck(stateMachineName, executionOptions, action) {
+    const rbac = this.options.bootedServices.rbac
+    const userId = executionOptions.userId
+
+    const roles = await rbac.getUserRoles(userId)
+    const authorised = rbac.checkRoleAuthorization(
+      userId,
+      executionOptions,
+      roles,
+      'stateMachine',
+      stateMachineName,
+      action
+    )
+
+    if (!authorised) {
+      throw boom.unauthorized(
+        `'${userId}' can not perform '${action}' on '${stateMachineName}'`,
+        stateMachineName
+      )
+    }
+
+  }
+
   startExecution (input, stateMachineName, executionOptions, callback) {
     return this.ready.then(() =>
       this._execute(input, stateMachineName, executionOptions, callback)
@@ -155,7 +179,9 @@ class Statebox {
   _execute (input, stateMachineName, executionOptions, callback) {
     if (!callback) return this._promised(this._execute, input, stateMachineName, executionOptions)
 
-    executioner(input, stateMachineName, executionOptions, this.options, callback)
+    this._authorisationCheck(stateMachineName, executionOptions, 'create')
+      .then(() => executioner(input, stateMachineName, executionOptions, this.options, callback))
+      .catch(err => callback(err, null))
   } // _execute
 
   _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
@@ -216,7 +242,6 @@ class Statebox {
   } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
-    console.log('sending failure')
     this.ready.then(() => {
       this._sendTaskFailure(executionName, options, executionOptions, callback)
     })
