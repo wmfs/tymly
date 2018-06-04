@@ -88,7 +88,7 @@ describe('Tests the Ranking Service', function () {
       'food',
       'rating'
     )
-    const expected = 'CASE WHEN food.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food.rating = 5 THEN 2 ELSE 0 END AS food_standards_score'
+    const expected = 'CASE WHEN food.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food.rating::int = 5 THEN 2 ELSE 0 END AS food_standards_score'
     expect(statement.trim()).to.eql(expected)
     done()
   })
@@ -208,7 +208,7 @@ describe('Tests the Ranking Service', function () {
         }
       }
     })
-    const expected = "CREATE OR REPLACE VIEW test.factory_scores AS SELECT DISTINCT scores.uprn, scores.address_label, scores.usage_score, scores.food_standards_score, scores.usage_score + scores.food_standards_score as risk_score FROM (SELECT g.uprn, g.address_label as address_label, 10 as usage_score, CASE WHEN food_table.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating::int = 5 THEN 2 ELSE 0 END AS food_standards_score FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = 'factory'::text ) scores'"
+    const expected = "CREATE OR REPLACE VIEW test.factory_scores AS SELECT DISTINCT scores.uprn, scores.address_label, scores.usage_score, scores.food_standards_score, scores.usage_score + scores.food_standards_score as risk_score FROM (SELECT g.uprn, g.address_label as address_label, 10 as usage_score, CASE WHEN food_table.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating::int = 5 THEN 2 ELSE 0 END AS food_standards_score FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = 'factory'::text ) scores"
     expect(statement.trim()).to.eql(expected)
     done()
   })
