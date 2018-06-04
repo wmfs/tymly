@@ -83,4 +83,11 @@ INSERT INTO test.heritage (uprn) VALUES (1);
 INSERT INTO test.heritage (uprn) VALUES (2);
 INSERT INTO test.heritage (uprn) VALUES (4);
 
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (1, TRUE);
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (2, FALSE);
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (3, FALSE);
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (4, FALSE);
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (5, TRUE);
+INSERT INTO wmfs.building (uprn, should_be_licensed) VALUES (6, FALSE);
+
 COMMIT;

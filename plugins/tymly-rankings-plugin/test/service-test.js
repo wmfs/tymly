@@ -240,7 +240,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 66
+            risk_score: 74,
+            should_be_licensed_score: 8
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
@@ -250,7 +251,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 34,
+            should_be_licensed_score: 0
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
@@ -260,7 +262,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 48
+            risk_score: 48,
+            should_be_licensed_score: 0
           })
           expect(result.rows[3]).to.eql({
             uprn: '4',
@@ -270,7 +273,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 2,
-            risk_score: 56
+            risk_score: 56,
+            should_be_licensed_score: 0
           })
           expect(result.rows[4]).to.eql({
             uprn: '5',
@@ -280,7 +284,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 0,
-            risk_score: 64
+            risk_score: 72,
+            should_be_licensed_score: 8
           })
           expect(result.rows[5]).to.eql({
             uprn: '6',
@@ -290,7 +295,8 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 0,
             heritage_score: 0,
-            risk_score: 42
+            risk_score: 42,
+            should_be_licensed_score: 0
           })
           done()
         }
@@ -303,14 +309,14 @@ describe('Tests the Ranking Service', function () {
       .then(result => {
         expect(result[0].category).to.eql('factory')
         expect(result[0].count).to.eql(6)
-        expect(result[0].mean).to.eql('51.67')
+        expect(result[0].mean).to.eql('54.33')
         expect(result[0].median).to.eql('52.00')
-        expect(result[0].variance).to.eql('132.56')
-        expect(result[0].stdev).to.eql('11.51')
+        expect(result[0].variance).to.eql('217.89')
+        expect(result[0].stdev).to.eql('14.76')
         expect(result[0].ranges).to.eql({
-          veryLow: {lowerBound: 0, upperBound: '40.15', exponent: '-0.00088'},
-          veryHigh: {lowerBound: '63.19', upperBound: 66, exponent: '-0.0075'},
-          medium: {lowerBound: '40.16', upperBound: '63.18', exponent: '-0.0004'}
+          veryLow: {lowerBound: 0, upperBound: '39.57', exponent: '-0.00088'},
+          veryHigh: {lowerBound: '69.10', upperBound: 74, exponent: '-0.0075'},
+          medium: {lowerBound: '39.58', upperBound: '69.09', exponent: '-0.0004'}
         })
         done()
       })
@@ -324,37 +330,37 @@ describe('Tests the Ranking Service', function () {
 
         expect(result[0].uprn).to.eql('1')
         expect(result[0].range).to.eql('very-high')
-        expect(result[0].distribution).to.eql('0.0160')
+        expect(result[0].distribution).to.eql('0.0111')
         expect(result[0].growthCurve).to.not.eql(null)
         expect(result[0].updatedRiskScore).to.not.eql(null)
 
         expect(result[1].uprn).to.eql('2')
         expect(result[1].range).to.eql('very-low')
-        expect(result[1].distribution).to.eql('0.0107')
+        expect(result[1].distribution).to.eql('0.0105')
         expect(result[1].growthCurve).to.not.eql(null)
         expect(result[1].updatedRiskScore).to.not.eql(null)
 
         expect(result[2].uprn).to.eql('3')
         expect(result[2].range).to.eql('medium')
-        expect(result[2].distribution).to.eql('0.0329')
+        expect(result[2].distribution).to.eql('0.0247')
         expect(result[2].growthCurve).to.not.eql(null)
         expect(result[2].updatedRiskScore).to.not.eql(null)
 
         expect(result[3].uprn).to.eql('4')
         expect(result[3].range).to.eql('medium')
-        expect(result[3].distribution).to.eql('0.0323')
+        expect(result[3].distribution).to.eql('0.0269')
         expect(result[3].growthCurve).to.not.eql(null)
         expect(result[3].updatedRiskScore).to.not.eql(null)
 
         expect(result[4].uprn).to.eql('5')
         expect(result[4].range).to.eql('very-high')
-        expect(result[4].distribution).to.eql('0.0195')
+        expect(result[4].distribution).to.eql('0.0132')
         expect(result[4].growthCurve).to.not.eql(null)
         expect(result[4].updatedRiskScore).to.not.eql(null)
 
         expect(result[5].uprn).to.eql('6')
         expect(result[5].range).to.eql('medium')
-        expect(result[5].distribution).to.eql('0.0244')
+        expect(result[5].distribution).to.eql('0.0191')
         expect(result[5].growthCurve).to.eql(null)
         expect(result[5].updatedRiskScore).to.eql(null)
         done()
@@ -397,8 +403,8 @@ describe('Tests the Ranking Service', function () {
   it('should check the growth curve has changed', (done) => {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
-      expect(+doc.growthCurve).to.eql(0.78049)
-      expect(+doc.updatedRiskScore).to.eql(32.37)
+      expect(+doc.growthCurve).to.eql(0.87805)
+      expect(+doc.updatedRiskScore).to.eql(35.43)
       done(err)
     })
   })
@@ -437,8 +443,8 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed again', (done) => {
     rankingModel.findById(5, (err, doc) => {
-      expect(+doc.growthCurve).to.eql(0.90501)
-      expect(+doc.updatedRiskScore).to.eql(32.49)
+      expect(+doc.growthCurve).to.eql(1.01814)
+      expect(+doc.updatedRiskScore).to.eql(35.57)
       done(err)
     })
   })

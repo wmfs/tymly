@@ -19,6 +19,8 @@ module.exports = function options (factorName, factorObj, schema, table, column)
       } else if (i.operator === 'lessThan') {
         statement += `WHEN ${table}.${column}${cast} < ${i.numericValue} THEN ${i.score} `
       }
+    } else if (i.type === 'boolean-equals') {
+      statement += `WHEN ${table}.${column} = ${i.booleanValue} THEN ${i.score} `
     }
   })
   statement += `ELSE ${factorObj.default} END AS ${_.snakeCase(factorName)}_score`

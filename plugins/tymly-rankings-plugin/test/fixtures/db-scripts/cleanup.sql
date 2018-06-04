@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS test.heritage;
 DROP TABLE IF EXISTS test.gazetteer;
 DROP TABLE IF EXISTS test.ranking_uprns;
 DROP TABLE IF EXISTS test.model_stats;
+DELETE FROM wmfs.building WHERE uprn in (1,2,3,4,5,6);
 
 DROP SCHEMA IF EXISTS test;
 DROP SCHEMA IF EXISTS tymly CASCADE;

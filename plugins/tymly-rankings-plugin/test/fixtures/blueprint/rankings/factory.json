@@ -15,6 +15,11 @@
       "model": "food",
       "property": "rating"
     },
+    "shouldBeLicensed": {
+      "namespace": "wmfs",
+      "model": "building",
+      "property": "shouldBeLicensed"
+    },
     "fsManagement": {
       "namespace": "test",
       "model": "fsman",

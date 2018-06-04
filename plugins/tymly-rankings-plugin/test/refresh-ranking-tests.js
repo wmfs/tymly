@@ -90,7 +90,8 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 66
+            risk_score: 74,
+            should_be_licensed_score: 8
           })
           expect(result.rows[1]).to.eql({
             uprn: '2',
@@ -100,7 +101,8 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 34
+            risk_score: 34,
+            should_be_licensed_score: 0
           })
           expect(result.rows[2]).to.eql({
             uprn: '3',
@@ -110,7 +112,8 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 48
+            risk_score: 48,
+            should_be_licensed_score: 0
           })
           done()
         }
@@ -155,6 +158,22 @@ describe('Tests the Ranking State Resource', function () {
                   'score': 2
                 }
               ]
+            },
+            'shouldBeLicensed': {
+              'type': 'options',
+              'options': [
+                {
+                  'type': 'boolean-equals',
+                  'booleanValue': true,
+                  'score': 8
+                },
+                {
+                  'type': 'boolean-equals',
+                  'booleanValue': false,
+                  'score': 0
+                }
+              ],
+              'default': 0
             },
             'fsManagement': {
               'type': 'options',

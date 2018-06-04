@@ -49,6 +49,7 @@ class RefreshRanking {
       registry: this.registry.registry[key]
     }, async (err) => {
       if (err) return context.sendTaskFailure({error: 'generateStatsFail', cause: err})
+      console.log('^^^', statement)
       await this.client.query(statement)
         .then(() => context.sendTaskSuccess())
         .catch(err => context.sendTaskFailure({error: 'generateViewFail', cause: err}))

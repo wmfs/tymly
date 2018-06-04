@@ -96,6 +96,22 @@
             "default": 0,
             "score": 2
           },
+          "shouldBeLicensed": {
+            "type": "options",
+            "options": [
+              {
+                "type": "boolean-equals",
+                "booleanValue": true,
+                "score": 8
+              },
+              {
+                "type": "boolean-equals",
+                "booleanValue": false,
+                "score": 0
+              }
+            ],
+            "default": 0
+          },
           "imd": {
             "type": "options",
             "default": 0,
