@@ -26,11 +26,11 @@ module.exports = class Upserting {
     docToPersist._executionName = context.executionName
     // docToPersist.createdBy = tymly.createdBy // TODO: Possibly not the current userId though?
 
-    if (this.userInfo) {
-      const userEmail = await this.userInfo.getEmailFromUserId(context.userId)
-      // set modified by to userEmail - only set created by if it's a new record
-      console.log('email:', userEmail)
-    }
+    // if (this.userInfo) {
+    //   const userEmail = await this.userInfo.getEmailFromUserId(context.userId)
+    //   // set modified by to userEmail - only set created by if it's a new record
+    //   console.log('email:', userEmail)
+    // }
 
     this.model.upsert(docToPersist, {setMissingPropertiesToNull: this.setMissingPropertiesToNull})
       .then(docId => context.sendTaskSuccess(docId))
