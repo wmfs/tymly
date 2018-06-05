@@ -1,7 +1,6 @@
 'use strict'
 
 const _ = require('lodash')
-const async = require('async')
 const stats = require('stats-lite')
 const dist = require('distributions')
 const moment = require('moment')
@@ -31,39 +30,31 @@ module.exports = async function generateStats (options, callback) {
 
     const res = await options.client.query(getViewRowsSQL(options))
 
-    async.eachSeries(res.rows, (r, cb) => {
+    for (let r of res.rows) {
       const range = findRange(ranges, r.risk_score)
       const normal = dist.Normal(mean, stdev)
       const distribution = normal.pdf(r.risk_score).toFixed(4)
 
-      options.rankingModel.findById(r.uprn)
-        .then(row => {
-          const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
-          const updatedRiskScore = growthCurve ? calculateNewRiskScore(range, r.risk_score, growthCurve, mean, stdev) : null
+      const row = await options.rankingModel.findById(r.uprn)
+      const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
+      const updatedRiskScore = growthCurve ? calculateNewRiskScore(range, r.risk_score, growthCurve, mean, stdev) : null
 
-          options.rankingModel.upsert({
-            [options.pk]: r[_.snakeCase(options.pk)],
-            rankingName: _.kebabCase(options.category),
-            range: _.kebabCase(range),
-            distribution: distribution,
-            growthCurve: growthCurve,
-            updatedRiskScore: updatedRiskScore
-          }, {
-            setMissingPropertiesToNull: false
-          })
-            .then(() => cb(null))
-            .catch(err => cb(err))
-        })
-        .catch(err => cb(err))
-    }, (err) => {
-      if (err) callback(err)
-      debug(options.category + ' - Finished generating statistics')
-      callback(null)
-    })
+      await options.rankingModel.upsert({
+        [options.pk]: r[_.snakeCase(options.pk)],
+        rankingName: _.kebabCase(options.category),
+        range: _.kebabCase(range),
+        distribution: distribution,
+        growthCurve: growthCurve,
+        updatedRiskScore: updatedRiskScore
+      }, {
+        setMissingPropertiesToNull: false
+      })
+    }
   } else {
     debug(options.category + ' - No scores found')
-    callback(null)
   }
+
+  callback(null)
 }
 
 function calculateGrowthCurve (exp, date, riskScore) {
