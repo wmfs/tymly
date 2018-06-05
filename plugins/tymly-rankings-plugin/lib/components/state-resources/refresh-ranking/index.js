@@ -18,6 +18,11 @@ class RefreshRanking {
     const category = _.camelCase(event.category)
     const key = schema + '_' + category
 
+    if (!schema && !category) {
+      console.log('No schema or category on input')
+      return context.sendTaskSuccess()
+    }
+
     const factors =
       Object.keys(this.rankings[key].factors)
         .filter(factor => Object.keys(this.registry.get(key)).includes(factor))

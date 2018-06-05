@@ -1,4 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS test;
+CREATE SCHEMA IF NOT EXISTS wmfs;
 
 DROP VIEW IF EXISTS test.factory_scores;
 
@@ -42,6 +43,11 @@ CREATE TABLE test.incidents (
 
 CREATE TABLE test.heritage (
  uprn bigint not null primary key
+);
+
+CREATE TABLE IF NOT EXISTS wmfs.building (
+ uprn bigint not null primary key,
+ should_be_licensed boolean
 );
 
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (1, '1 abc lane');
