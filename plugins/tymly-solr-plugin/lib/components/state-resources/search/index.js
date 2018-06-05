@@ -70,7 +70,7 @@ class Search {
   } // run
 
   runSolrSearch (event, context, filters, userRoles) {
-    const searchTerm = event.query ? `(${event.query.trim().split(' ').join(' AND ').replace(/ /g, '%20')})` : ''
+    const searchTerm = event.query ? `(${event.query.trim().replace(/,/g, '').split(' ').join(' AND ').replace(/ /g, '%20')})` : ''
 
     const filterQuery = []
     this.searchFields.forEach(s => {
