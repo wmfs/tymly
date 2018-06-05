@@ -208,7 +208,17 @@ describe('Tests the Ranking Service', function () {
         }
       }
     })
-    const expected = "CREATE OR REPLACE VIEW test.factory_scores AS SELECT DISTINCT scores.uprn, scores.address_label, scores.usage_score, scores.food_standards_score, scores.usage_score + scores.food_standards_score as risk_score FROM (SELECT g.uprn, g.address_label as address_label, 10 as usage_score, CASE WHEN food_table.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating::int = 5 THEN 2 ELSE 0 END AS food_standards_score FROM test.gazetteer g  LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  JOIN test.ranking_uprns rank ON rank.uprn = g.uprn WHERE rank.ranking_name = 'factory'::text ) scores"
+    const expected = 'CREATE OR REPLACE VIEW test.factory_scores AS ' +
+      'SELECT DISTINCT scores.uprn, scores.address_label, scores.usage_score, scores.food_standards_score, ' +
+      'CASE WHEN scores.risk_score IS NOT NULL THEN scores.risk_score ELSE scores.usage_score + scores.food_standards_score END AS risk_score ' +
+      'FROM (SELECT g.uprn, g.address_label as address_label, ' +
+      '10 as usage_score, ' +
+      'CASE WHEN food_table.rating::int BETWEEN 0 AND 2 THEN 8 WHEN food_table.rating::int BETWEEN 3 AND 4 THEN 6 WHEN food_table.rating::int = 5 THEN 2 ELSE 0 END AS food_standards_score, ' +
+      'rank.updated_risk_score AS risk_score ' +
+      'FROM test.gazetteer g  ' +
+      'LEFT JOIN test.food_table food_table ON food_table.uprn = g.uprn  ' +
+      'JOIN test.ranking_uprns rank ON rank.uprn = g.uprn ' +
+      'WHERE rank.ranking_name = \'factory\'::text ) scores'
     expect(statement.trim()).to.eql(expected)
     done()
   })
@@ -232,7 +242,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 74,
+            risk_score: '36.38',
             should_be_licensed_score: 8
           })
           expect(result.rows[1]).to.eql({
@@ -243,7 +253,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 34,
+            risk_score: '17.46',
             should_be_licensed_score: 0
           })
           expect(result.rows[2]).to.eql({
@@ -254,7 +264,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 48,
+            risk_score: '24.62',
             should_be_licensed_score: 0
           })
           expect(result.rows[3]).to.eql({
@@ -265,7 +275,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 2,
-            risk_score: 56,
+            risk_score: '28.71',
             should_be_licensed_score: 0
           })
           expect(result.rows[4]).to.eql({
@@ -276,7 +286,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 0,
-            risk_score: 72,
+            risk_score: '38.38',
             should_be_licensed_score: 8
           })
           expect(result.rows[5]).to.eql({
@@ -287,7 +297,7 @@ describe('Tests the Ranking Service', function () {
             fs_management_score: 32,
             incidents_score: 0,
             heritage_score: 0,
-            risk_score: 42,
+            risk_score: '42',
             should_be_licensed_score: 0
           })
           done()
@@ -395,8 +405,8 @@ describe('Tests the Ranking Service', function () {
   it('should check the growth curve has changed', (done) => {
     rankingModel.findById(5, (err, doc) => {
       expect(+doc.growthCurve).to.not.eql(+growthCurveBefore)
-      expect(+doc.growthCurve).to.eql(0.87805)
-      expect(+doc.updatedRiskScore).to.eql(35.43)
+      expect(+doc.growthCurve).to.eql(0.46805)
+      expect(+doc.updatedRiskScore).to.eql(19.66)
       done(err)
     })
   })
@@ -435,8 +445,8 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed again', (done) => {
     rankingModel.findById(5, (err, doc) => {
-      expect(+doc.growthCurve).to.eql(1.01814)
-      expect(+doc.updatedRiskScore).to.eql(35.57)
+      expect(+doc.growthCurve).to.eql(0.24396)
+      expect(+doc.updatedRiskScore).to.eql(10.07)
       done(err)
     })
   })

@@ -47,8 +47,9 @@ module.exports = function generateViewStatement (options) {
     totalScore.push(`scores.${_.snakeCase(key)}_score`)
   })
 
-  // TODO: 'risk' in risk_score should be inferred
-  outerSelect.push(`${totalScore.join(' + ')} as risk_score`)
+  outerSelect.push(`CASE WHEN scores.risk_score IS NOT NULL THEN scores.risk_score ELSE ${totalScore.join(' + ')} END AS risk_score`)
+  innerSelect.push(`rank.updated_risk_score AS risk_score`)
+
   joinParts.add(`JOIN ${options.schema}.ranking_${_.snakeCase(options.source['property'])}s rank ON ` +
     `rank.${_.snakeCase(options.source['property'])} = g.${_.snakeCase(options.source['property'])}`)
 

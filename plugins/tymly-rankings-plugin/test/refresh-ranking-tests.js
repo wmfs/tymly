@@ -90,7 +90,7 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 32,
             incidents_score: 16,
             heritage_score: 2,
-            risk_score: 74,
+            risk_score: '18.65',
             should_be_licensed_score: 8
           })
           expect(result.rows[1]).to.eql({
@@ -101,7 +101,7 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 16,
             incidents_score: 0,
             heritage_score: 2,
-            risk_score: 34,
+            risk_score: '8.97',
             should_be_licensed_score: 0
           })
           expect(result.rows[2]).to.eql({
@@ -112,7 +112,7 @@ describe('Tests the Ranking State Resource', function () {
             fs_management_score: 32,
             incidents_score: 6,
             heritage_score: 0,
-            risk_score: 48,
+            risk_score: '12.63',
             should_be_licensed_score: 0
           })
           done()
