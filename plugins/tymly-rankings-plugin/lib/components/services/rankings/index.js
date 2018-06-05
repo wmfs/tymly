@@ -47,8 +47,7 @@ class RankingService {
         registry: options.bootedServices.registry.registry[key]
       })
 
-      debug(key + ' SQL:')
-      debug(this.viewSQL[key])
+      debug(`${key} SQL: ${this.viewSQL[key]}`)
 
       client.query(
         this.viewSQL[key],
