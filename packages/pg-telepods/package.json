@@ -10,7 +10,7 @@
   "author": "Jasvinder Bahra",
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "2.6.0",
+    "async": "2.6.1",
     "boom": "7.2.0",
     "camelcase-keys": "4.2.0",
     "csv-string": "3.1.3",
