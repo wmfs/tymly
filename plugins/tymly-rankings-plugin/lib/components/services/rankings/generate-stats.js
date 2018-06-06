@@ -10,7 +10,7 @@ const debug = require('debug')('tymly-rankings-plugin')
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
-  const result = await options.client.query(getScoresSQL(options))
+  const result = await options.client.query(getViewRowsSQL(options))
   const scores = result.rows.map(row => row.risk_score)
 
   if (scores.length > 0) {
@@ -28,9 +28,7 @@ module.exports = async function generateStats (options, callback) {
       ranges: JSON.stringify(ranges)
     }, {})
 
-    const res = await options.client.query(getViewRowsSQL(options))
-
-    for (let r of res.rows) {
+    for (let r of result.rows) {
       const range = findRange(ranges, r.risk_score)
       const normal = dist.Normal(mean, stdev)
       const distribution = normal.pdf(r.risk_score).toFixed(4)
@@ -123,10 +121,6 @@ function findRange (ranges, score) {
       return k
     }
   }
-}
-
-function getScoresSQL (options) {
-  return `SELECT risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
 }
 
 function getViewRowsSQL (options) {
