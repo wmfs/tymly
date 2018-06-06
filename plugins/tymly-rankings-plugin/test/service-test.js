@@ -17,7 +17,7 @@ const calculateNewRiskScore = require('./../lib/components/services/rankings/cal
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let tymlyService, statebox, rankingModel, statsModel, viewSQL, growthCurveBefore
+  let tymlyService, statebox, rankingModel, statsModel, viewSQL
   let viewData, statsData, rankingData
 
   before(function () {
