@@ -57,11 +57,11 @@ INSERT INTO test.gazetteer (uprn, address_label) VALUES (4, '4 abc lane');
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (5, '5 abc lane');
 INSERT INTO test.gazetteer (uprn, address_label) VALUES (6, '6 abc lane');
 
-INSERT INTO test.ranking_uprns (uprn, ranking_name, last_audit_date) VALUES (1, 'factory', '2018-03-01 09:52:31.62943+01');
-INSERT INTO test.ranking_uprns (uprn, ranking_name, last_audit_date) VALUES (2, 'factory', '2018-02-01 09:52:31.62943+01');
-INSERT INTO test.ranking_uprns (uprn, ranking_name, last_audit_date) VALUES (3, 'factory', '2018-01-02 09:52:31.62943+01');
-INSERT INTO test.ranking_uprns (uprn, ranking_name, last_audit_date) VALUES (4, 'factory', '2018-03-02 09:52:31.62943+01');
-INSERT INTO test.ranking_uprns (uprn, ranking_name, last_audit_date) VALUES (5, 'factory', '2017-11-15 09:52:31.62943+01');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (1, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (2, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (3, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (4, 'factory');
+INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (5, 'factory');
 INSERT INTO test.ranking_uprns (uprn, ranking_name) VALUES (6, 'factory');
 
 INSERT INTO test.food (uprn, rating) VALUES (1, '2');

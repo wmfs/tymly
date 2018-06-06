@@ -44,7 +44,7 @@ class RankingService {
         registry: options.bootedServices.registry.registry[key]
       })
 
-      debug(`${key} SQL: ${this.viewSQL[key]}`)
+      debug(`${key} SQL: \n${this.viewSQL[key]}`)
 
       await client.query(this.viewSQL[key])
       await new Promise((resolve, reject) => {

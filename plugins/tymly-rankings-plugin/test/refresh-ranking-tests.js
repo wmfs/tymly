@@ -29,7 +29,7 @@ describe('Tests the Ranking State Resource', function () {
     return sqlScriptRunner('./db-scripts/setup.sql', client)
   })
 
-  it('should run the tymly service', function (done) {
+  it('should run the tymly service', done => {
     tymly.boot(
       {
         pluginPaths: [
@@ -42,7 +42,7 @@ describe('Tests the Ranking State Resource', function () {
         ],
         config: {}
       },
-      function (err, tymlyServices) {
+      (err, tymlyServices) => {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
@@ -56,11 +56,11 @@ describe('Tests the Ranking State Resource', function () {
       {
         schema: 'test',
         category: 'factory'
-      }, // input
-      'test_refreshRanking_1_0', // state machine name
+      },
+      'test_refreshRanking_1_0',
       {
         sendResponse: 'COMPLETE'
-      }, // options
+      },
       function (err, executionDescription) {
         if (err) {
           return done(err)
@@ -75,50 +75,38 @@ describe('Tests the Ranking State Resource', function () {
     )
   })
 
-  it('should ensure the scores have been calculated accordingly to the initial state-machine\'s registry', function (done) {
-    client.query(
-      'select * from test.factory_scores',
-      function (err, result) {
-        if (err) {
-          done(err)
-        } else {
-          expect(result.rows[0]).to.eql({
-            uprn: '1',
-            address_label: '1 abc lane',
-            usage_score: 8,
-            food_standards_score: 8,
-            fs_management_score: 32,
-            incidents_score: 16,
-            heritage_score: 2,
-            risk_score: '18.65',
-            should_be_licensed_score: 8
-          })
-          expect(result.rows[1]).to.eql({
-            uprn: '2',
-            address_label: '2 abc lane',
-            usage_score: 8,
-            food_standards_score: 8,
-            fs_management_score: 16,
-            incidents_score: 0,
-            heritage_score: 2,
-            risk_score: '8.97',
-            should_be_licensed_score: 0
-          })
-          expect(result.rows[2]).to.eql({
-            uprn: '3',
-            address_label: '3 abc lane',
-            usage_score: 8,
-            food_standards_score: 2,
-            fs_management_score: 32,
-            incidents_score: 6,
-            heritage_score: 0,
-            risk_score: '12.63',
-            should_be_licensed_score: 0
-          })
-          done()
-        }
-      }
-    )
+  it('should ensure the scores have been calculated accordingly to the initial state-machine\'s registry', async () => {
+    const result = await client.query('select uprn, address_label, usage_score, food_standards_score, fs_management_score, incidents_score, heritage_score, should_be_licensed_score from test.factory_scores')
+    expect(result.rows[0]).to.eql({
+      uprn: '1',
+      address_label: '1 abc lane',
+      usage_score: 8,
+      food_standards_score: 8,
+      fs_management_score: 32,
+      incidents_score: 16,
+      heritage_score: 2,
+      should_be_licensed_score: 8
+    })
+    expect(result.rows[1]).to.eql({
+      uprn: '2',
+      address_label: '2 abc lane',
+      usage_score: 8,
+      food_standards_score: 8,
+      fs_management_score: 16,
+      incidents_score: 0,
+      heritage_score: 2,
+      should_be_licensed_score: 0
+    })
+    expect(result.rows[2]).to.eql({
+      uprn: '3',
+      address_label: '3 abc lane',
+      usage_score: 8,
+      food_standards_score: 2,
+      fs_management_score: 32,
+      incidents_score: 6,
+      heritage_score: 0,
+      should_be_licensed_score: 0
+    })
   })
 
   it('should start the state resource execution to update the weights and refresh the view - the usage score has changed from 8 to 12', function (done) {
