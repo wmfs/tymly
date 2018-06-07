@@ -1,8 +1,11 @@
 'use strict'
 
 const supercopy = require('supercopy')
+const promisify = require('util').promisify
 
-module.exports = function processCopy (options, callback) {
+module.exports = promisify(processCopy)
+
+function processCopy (options, callback) {
   const tableNameParts = options.target.tableName.split('.')
   supercopy(
     {

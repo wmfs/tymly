@@ -5,8 +5,11 @@ const UpsertTransformer = require('./Upsert-transformer')
 const fs = require('fs')
 const path = require('path')
 const getFilename = require('./get-filename')
+const promisify = require('util').promisify
 
-module.exports = function processUpserts (options, callback) {
+module.exports = promisify(processUpserts)
+
+function processUpserts (options, callback) {
   const upsertsFilePath = path.join(options.upsertsDir, getFilename(options.target.tableName))
 
   const sourceHashColumnName = options.source.hashSumColumnName

@@ -3,8 +3,11 @@ const path = require('path')
 const getFilename = require('./get-filename')
 const pgcopy = require('pg-copy-streams').to
 const fs = require('fs')
+const promisify = require('util').promisify
 
-module.exports = function processDeletes (options, callback) {
+module.exports = promisify(processDeletes)
+
+function processDeletes (options, callback) {
   // Query delete and write to a file
   const deleteFilepath = path.join(options.deletesDir, getFilename(options.target.tableName))
 
