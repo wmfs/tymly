@@ -12,9 +12,12 @@ module.exports = function processDeletes (options, callback) {
   const targetPk = _.values(options.join).join(', ')
 
   const sql = `copy (` +
-    `select ${targetPk} from ${options.target.tableName} ` +
-    `where (${targetPk}) not in (select ${sourcePk} from ${options.source.tableName})) ` +
+    `  select ${targetPk} from ${options.target.tableName} ` +
+    `  except ` +
+    `  select ${sourcePk} from ${options.source.tableName} ` +
+    `) ` +
     `to stdout with csv delimiter ',' header encoding 'UTF8';`
+
   const output = fs.createWriteStream(deleteFilepath)
   const pipeToOutput = (sql, params, client) => {
     const outstream = client.query(pgcopy(sql))
