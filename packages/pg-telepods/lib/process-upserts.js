@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('telepods')
 const QueryStream = require('pg-query-stream')
 const UpsertTransformer = require('./Upsert-transformer')
 const fs = require('fs')
@@ -22,16 +23,21 @@ function processUpserts (options, callback) {
     `where target.${targetHashColumnName} is null ` +
     `or (target.${targetHashColumnName} is not null and source.${sourceHashColumnName} != target.${targetHashColumnName});`
 
-  const upsertWriteFileStream = fs.createWriteStream(upsertsFilePath)
-  const upsertTransform = (sql, params, client) => {
-    const stream = client.query(new QueryStream(sql))
+  debug(sql)
 
-    stream.on('end', function () {
-      upsertWriteFileStream.end()
-      callback(null)
-    })
+  const output = fs.createWriteStream(upsertsFilePath)
+  const upsertTransform = (sql, params, client) => {
+    output.on('error', callback)
+
+    const queryStream = client.query(new QueryStream(sql))
     const upsertTransformer = new UpsertTransformer(options)
-    stream.pipe(upsertTransformer).pipe(upsertWriteFileStream)
+
+    queryStream
+      .pipe(upsertTransformer)
+      .pipe(output)
+
+    queryStream.on('end', callback)
+    queryStream.on('error', callback)
   } // upsertTransform
 
   options.client.run([

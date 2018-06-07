@@ -1,4 +1,5 @@
 'use strict'
+const debug = require('debug')('telepods')
 const path = require('path')
 const getFilename = require('./get-filename')
 const pgcopy = require('pg-copy-streams').to
@@ -14,21 +15,25 @@ function processDeletes (options, callback) {
   const sourcePk = Object.keys(options.join).join(', ')
   const targetPk = Object.values(options.join).join(', ')
 
-  const sql = `copy (` +
-    `  select ${targetPk} from ${options.target.tableName} ` +
+  const deleteSql = `select ${targetPk} from ${options.target.tableName} ` +
     `  except ` +
-    `  select ${sourcePk} from ${options.source.tableName} ` +
-    `) ` +
+    `  select ${sourcePk} from ${options.source.tableName} `
+
+  debug(deleteSql)
+
+  const sql = `copy (${deleteSql}) ` +
     `to stdout with csv delimiter ',' header encoding 'UTF8';`
 
   const output = fs.createWriteStream(deleteFilepath)
   const pipeToOutput = (sql, params, client) => {
-    const outstream = client.query(pgcopy(sql))
-
     output.on('error', callback)
-    outstream.pipe(output)
-    outstream.on('end', callback)
-    outstream.on('error', callback)
+
+    const queryStream = client.query(pgcopy(sql))
+
+    queryStream.pipe(output)
+
+    queryStream.on('end', callback)
+    queryStream.on('error', callback)
   }
 
   options.client.run([
