@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('telepods')
 const makeDir = require('make-dir')
 const path = require('path')
 const processUpserts = require('./process-upserts')
@@ -10,13 +11,23 @@ const NotSet = 'NotSet'
 
 function pgTelepods (options, callback = NotSet) {
   if (callback === NotSet) {
-    return telepods(options)
+    return tryTelepods(options)
   } // if
 
   telepods(options)
     .then(() => callback(null))
     .catch(err => callback(err))
 } // pgTelepods
+
+function tryTelepods (options) {
+  try {
+    return telepods (options)
+  } catch (err) {
+    debug (`Failed ${err.message}`)
+    debug (err)
+    throw err
+  } // catch
+} // tryTelepods
 
 async function telepods (options) {
   options.deletesDir = path.join(options.outputDir, 'deletes')
@@ -27,13 +38,27 @@ async function telepods (options) {
     await makeDir(dir)
   }
 
-  // Now run some tasks
-  // 1: Create a new upserts file by streaming new/changed source rows
+  dbgOptions(options)
+
+  debug('Finding upserts ...')
   await processUpserts(options)
-  // 2: Create a new deletes file by using PostgreSQL's copy command
+
+  debug('Finding deletes ...')
   await processDeletes(options)
-  // 3: Run
+
+  debug('Applying changes ...')
   await processCopy(options)
+  debug('Complete')
 } // pgTelepods
+
+function dbgOptions (options) {
+  debug({
+    source: options.source,
+    target: options.target,
+    join: options.join,
+    deletesDir: options.deletesDir,
+    upsertsDir: options.upsertsDir,
+  })
+} // dbgOptions
 
 module.exports = pgTelepods
