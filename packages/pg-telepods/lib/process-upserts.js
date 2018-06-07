@@ -8,7 +8,7 @@ const path = require('path')
 const getFilename = require('./get-filename')
 
 module.exports = function processUpserts (options, callback) {
-  const upsertsDir = options.upsertsDir
+  const upsertsFilePath = path.join(options.upsertsDir, getFilename(options.target.tableName))
   const sourceHashColumnName = options.source.hashSumColumnName
   const targetHashColumnName = options.target.hashSumColumnName
   let joinCondition = []
@@ -20,12 +20,10 @@ module.exports = function processUpserts (options, callback) {
     `where target.${targetHashColumnName} is null ` +
     `or (target.${targetHashColumnName} is not null and source.${sourceHashColumnName} != target.${targetHashColumnName});`
 
-  const upsertWriteFileStream = fs.createWriteStream(
-    path.join(upsertsDir, getFilename(options.target.tableName)),
-    {defaultEncoding: 'utf8'})
-
+  const upsertWriteFileStream = fs.createWriteStream(upsertsFilePath)
   const upsertTransform = (sql, params, client) => {
     const stream = client.query(new QueryStream(sql))
+
     stream.on('end', function () {
       upsertWriteFileStream.end()
       callback(null)
@@ -34,5 +32,7 @@ module.exports = function processUpserts (options, callback) {
     stream.pipe(upsertTransformer).pipe(upsertWriteFileStream)
   } // upsertTransform
 
-  options.client.run([{ sql: sql, action: upsertTransform }])
+  options.client.run([
+    { sql: sql, action: upsertTransform }
+  ])
 }
