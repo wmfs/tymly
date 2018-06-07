@@ -14,8 +14,8 @@ function processUpserts (options, callback) {
 
   const sourceHashColumnName = options.source.hashSumColumnName
   const targetHashColumnName = options.target.hashSumColumnName
-  const joinCondition = Object.entries(options.join).
-    map(([targetColumnName, sourceColumnName]) => `source.${sourceColumnName} = target.${targetColumnName}`)
+  const joinCondition = Object.entries(options.join)
+    .map(([targetColumnName, sourceColumnName]) => `source.${sourceColumnName} = target.${targetColumnName}`)
 
   const sql = `select source.*, target.${targetHashColumnName} _target_hash_sum from ${options.source.tableName} source ` +
     `left outer join ${options.target.tableName} target on (${joinCondition.join(' AND ')}) ` +

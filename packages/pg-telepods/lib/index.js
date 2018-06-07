@@ -21,10 +21,10 @@ function pgTelepods (options, callback = NotSet) {
 
 function tryTelepods (options) {
   try {
-    return telepods (options)
+    return telepods(options)
   } catch (err) {
-    debug (`Failed ${err.message}`)
-    debug (err)
+    debug(`Failed ${err.message}`)
+    debug(err)
     throw err
   } // catch
 } // tryTelepods
@@ -57,7 +57,7 @@ function dbgOptions (options) {
     target: options.target,
     join: options.join,
     deletesDir: options.deletesDir,
-    upsertsDir: options.upsertsDir,
+    upsertsDir: options.upsertsDir
   })
 } // dbgOptions
 
