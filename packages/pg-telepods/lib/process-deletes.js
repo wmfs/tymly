@@ -27,12 +27,12 @@ function processDeletes (options, callback) {
   const output = fs.createWriteStream(deleteFilepath)
   const pipeToOutput = (sql, params, client) => {
     output.on('error', callback)
+    output.on('close', callback)
 
     const queryStream = client.query(pgcopy(sql))
 
     queryStream.pipe(output)
 
-    queryStream.on('end', callback)
     queryStream.on('error', callback)
   }
 

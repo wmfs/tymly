@@ -28,6 +28,7 @@ function processUpserts (options, callback) {
   const output = fs.createWriteStream(upsertsFilePath)
   const upsertTransform = (sql, params, client) => {
     output.on('error', callback)
+    output.on('close', callback)
 
     const queryStream = client.query(new QueryStream(sql))
     const upsertTransformer = new UpsertTransformer(options)
@@ -36,7 +37,6 @@ function processUpserts (options, callback) {
       .pipe(upsertTransformer)
       .pipe(output)
 
-    queryStream.on('end', callback)
     queryStream.on('error', callback)
   } // upsertTransform
 
