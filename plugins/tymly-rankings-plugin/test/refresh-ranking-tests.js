@@ -11,7 +11,11 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
 describe('Tests the Ranking State Resource', function () {
   this.timeout(process.env.TIMEOUT || 5000)
-  let statebox, tymlyService
+
+  const REFRESH_STATE_MACHINE_NAME = 'test_refreshRanking_1_0'
+  const SET_REFRESH_STATE_MACHINE_NAME = 'wmfs_setAndRefresh_1_0'
+
+  let statebox, tymlyService, rankingModel, statsModel, ranges
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -46,67 +50,40 @@ describe('Tests the Ranking State Resource', function () {
         expect(err).to.eql(null)
         tymlyService = tymlyServices.tymly
         statebox = tymlyServices.statebox
+        rankingModel = tymlyServices.storage.models['test_rankingUprns']
+        statsModel = tymlyServices.storage.models['test_modelStats']
         done()
       }
     )
   })
 
-  it('should start the state resource execution to generate view with initial weights', function (done) {
-    statebox.startExecution(
-      {
-        schema: 'test',
-        category: 'factory'
-      },
-      'test_refreshRanking_1_0',
-      {
-        sendResponse: 'COMPLETE'
-      },
-      function (err, executionDescription) {
-        if (err) {
-          return done(err)
-        }
-        console.log(JSON.stringify(executionDescription, null, 2))
-        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
-        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
-        expect(executionDescription.stateMachineName).to.eql('test_refreshRanking_1_0')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        done()
-      }
-    )
+  it('should check the original view and models', async () => {
+    const viewData = await client.query(`select * from test.factory_scores;`)
+    expect(viewData.rows[0].risk_score).to.eql('74')
+    expect(viewData.rows[3].risk_score).to.eql('24')
+    expect(viewData.rows[10].risk_score).to.eql('0')
+
+    const rankingData = await rankingModel.find({})
+    expect(rankingData[0].range).to.eql('very-high')
+    expect(rankingData[3].range).to.eql('medium')
+    expect(rankingData[10].range).to.eql('very-low')
+
+    const statsData = await statsModel.findById('factory')
+    ranges = statsData.ranges
+
+    expect(+viewData.rows[0].risk_score >= +ranges.veryHigh.lowerBound).to.eql(true)
+    expect(+viewData.rows[0].risk_score <= +ranges.veryHigh.upperBound).to.eql(true)
+
+    expect(+viewData.rows[3].risk_score >= +ranges.medium.lowerBound).to.eql(true)
+    expect(+viewData.rows[3].risk_score <= +ranges.medium.upperBound).to.eql(true)
+
+    expect(+viewData.rows[10].risk_score >= +ranges.veryLow.lowerBound).to.eql(true)
+    expect(+viewData.rows[10].risk_score <= +ranges.veryLow.upperBound).to.eql(true)
   })
 
-  it('should ensure the scores have been calculated accordingly to the initial state-machine\'s registry', async () => {
-    const result = await client.query('select uprn, address_label, usage_score, food_standards_score, fs_management_score, incidents_score, heritage_score, should_be_licensed_score from test.factory_scores')
-    expect(result.rows[0]).to.eql({
-      uprn: '1',
-      address_label: '1 abc lane',
-      usage_score: 8,
-      food_standards_score: 8,
-      fs_management_score: 32,
-      incidents_score: 16,
-      heritage_score: 2,
-      should_be_licensed_score: 8
-    })
-    expect(result.rows[1]).to.eql({
-      uprn: '2',
-      address_label: '2 abc lane',
-      usage_score: 8,
-      food_standards_score: 8,
-      fs_management_score: 16,
-      incidents_score: 0,
-      heritage_score: 2,
-      should_be_licensed_score: 0
-    })
-    expect(result.rows[2]).to.eql({
-      uprn: '3',
-      address_label: '3 abc lane',
-      usage_score: 8,
-      food_standards_score: 2,
-      fs_management_score: 32,
-      incidents_score: 6,
-      heritage_score: 0,
-      should_be_licensed_score: 0
-    })
+  it('should change some scores to affect the results', async () => {
+    await client.query(`insert into test.fsman (uprn, rating) values (1, 'very-high') on conflict (uprn) do update set rating = 'very-high';`)
+    await client.query(`insert into test.food (uprn, rating) values (4, 4) on conflict (uprn) do update set rating = 4;`)
   })
 
   it('should start the state resource execution to update the weights and refresh the view - the usage score has changed from 8 to 12', function (done) {
@@ -170,6 +147,11 @@ describe('Tests the Ranking State Resource', function () {
                 {
                   'type': 'text-constant',
                   'textualValue': 'Very Low',
+                  'score': 64
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'Low',
                   'score': 32
                 },
                 {
@@ -179,8 +161,13 @@ describe('Tests the Ranking State Resource', function () {
                 },
                 {
                   'type': 'text-constant',
-                  'textualValue': 'Average',
-                  'score': 0
+                  'textualValue': 'High',
+                  'score': -8
+                },
+                {
+                  'type': 'text-constant',
+                  'textualValue': 'High',
+                  'score': -16
                 }
               ]
             },
@@ -218,7 +205,7 @@ describe('Tests the Ranking State Resource', function () {
           category: 'factory'
         }
       }, // input
-      'wmfs_setAndRefresh_1_0', // state machine name
+      SET_REFRESH_STATE_MACHINE_NAME, // state machine name
       {
         sendResponse: 'COMPLETE'
       }, // options
@@ -226,34 +213,92 @@ describe('Tests the Ranking State Resource', function () {
         if (err) {
           return done(err)
         }
-        console.log(JSON.stringify(executionDescription, null, 2))
         expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         expect(executionDescription.currentResource).to.eql('module:refreshRanking')
-        expect(executionDescription.stateMachineName).to.eql('wmfs_setAndRefresh_1_0')
+        expect(executionDescription.stateMachineName).to.eql(SET_REFRESH_STATE_MACHINE_NAME)
         expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
   })
 
-  it('should ensure the scores have been adjusted accordingly to the new weights - the usage score has changed from 8 to 12', function (done) {
-    client.query('select * from test.factory_scores', function (err, result) {
-      if (err) {
-        done(err)
-      } else {
-        expect(result.rows[0]['usage_score']).to.equal(12)
-        expect(result.rows[1]['usage_score']).to.equal(12)
-        expect(result.rows[2]['usage_score']).to.equal(12)
+  it('should check the ranking model against the ranges', async () => {
+    const viewData = await client.query(`select * from test.factory_scores;`)
+    const rankingData = await rankingModel.find({})
+    const statsData = await statsModel.findById('factory')
+    ranges = statsData.ranges
+
+    expect(rankingData[0].range).to.eql('medium')
+    expect(rankingData[3].range).to.eql('medium')
+    expect(rankingData[10].range).to.eql('very-low')
+
+    expect(+viewData.rows[0].risk_score >= +ranges.medium.lowerBound).to.eql(true)
+    expect(+viewData.rows[0].risk_score <= +ranges.medium.upperBound).to.eql(true)
+
+    expect(+viewData.rows[3].risk_score >= +ranges.medium.lowerBound).to.eql(true)
+    expect(+viewData.rows[3].risk_score <= +ranges.medium.upperBound).to.eql(true)
+
+    expect(+viewData.rows[10].risk_score >= +ranges.veryLow.lowerBound).to.eql(true)
+    expect(+viewData.rows[10].risk_score <= +ranges.veryLow.upperBound).to.eql(true)
+
+    expect(viewData.rows[0]['usage_score']).to.equal(12)
+    expect(+viewData.rows[0].risk_score).to.eql(46)
+
+    expect(viewData.rows[3]['usage_score']).to.equal(12)
+    expect(+viewData.rows[3].risk_score).to.eql(26)
+
+    expect(viewData.rows[10]['usage_score']).to.equal(12)
+    expect(+viewData.rows[10].risk_score).to.eql(20)
+  })
+
+  it('should ensure the scores have been adjusted accordingly to the new weights - the usage score has changed from 8 to 12', async () => {
+    const result = await client.query('select * from test.factory_scores')
+    expect(result.rows[0]['usage_score']).to.equal(12)
+    expect(+result.rows[0].risk_score).to.eql(46)
+
+    expect(result.rows[3]['usage_score']).to.equal(12)
+    expect(+result.rows[3].risk_score).to.eql(26)
+
+    expect(result.rows[10]['usage_score']).to.equal(12)
+    expect(+result.rows[10].risk_score).to.eql(20)
+  })
+
+  it('should refresh ranking', function (done) {
+    statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory'
+      },
+      REFRESH_STATE_MACHINE_NAME,
+      {
+        sendResponse: 'COMPLETE'
+      },
+      (err, executionDescription) => {
+        if (err) return done(err)
+        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
+        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+        expect(executionDescription.stateMachineName).to.eql(REFRESH_STATE_MACHINE_NAME)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
-    })
+    )
   })
+
+  it('should check the ranking model again', async () => {
+    const result = await rankingModel.find({})
+    console.log(result[0].range)
+    console.log(result[3].range)
+    console.log(result[10].range)
+  })
+
   it('should clean up the test resources', () => {
     return sqlScriptRunner('./db-scripts/cleanup.sql', client)
   })
+
   it('should shutdown Tymly', async () => {
     await tymlyService.shutdown()
   })
+
   it('Should close database connections', function (done) {
     client.end()
     done()
