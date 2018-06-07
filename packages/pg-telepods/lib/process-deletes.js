@@ -1,6 +1,5 @@
 'use strict'
 const path = require('path')
-const _ = require('lodash')
 const getFilename = require('./get-filename')
 const pgcopy = require('pg-copy-streams').to
 const fs = require('fs')
@@ -8,8 +7,9 @@ const fs = require('fs')
 module.exports = function processDeletes (options, callback) {
   // Query delete and write to a file
   const deleteFilepath = path.join(options.deletesDir, getFilename(options.target.tableName))
-  const sourcePk = _.keys(options.join).join(', ')
-  const targetPk = _.values(options.join).join(', ')
+
+  const sourcePk = Object.keys(options.join).join(', ')
+  const targetPk = Object.values(options.join).join(', ')
 
   const sql = `copy (` +
     `  select ${targetPk} from ${options.target.tableName} ` +

@@ -1,6 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
 const QueryStream = require('pg-query-stream')
 const UpsertTransformer = require('./Upsert-transformer')
 const fs = require('fs')
@@ -9,12 +8,12 @@ const getFilename = require('./get-filename')
 
 module.exports = function processUpserts (options, callback) {
   const upsertsFilePath = path.join(options.upsertsDir, getFilename(options.target.tableName))
+
   const sourceHashColumnName = options.source.hashSumColumnName
   const targetHashColumnName = options.target.hashSumColumnName
-  let joinCondition = []
-  _.forEach(options.join, function (targetColumnName, sourceColumnName) {
-    joinCondition.push(`source.${sourceColumnName} = target.${targetColumnName}`)
-  })
+  const joinCondition = Object.entries(options.join).
+    map(([targetColumnName, sourceColumnName]) => `source.${sourceColumnName} = target.${targetColumnName}`)
+
   const sql = `select source.*, target.${targetHashColumnName} _target_hash_sum from ${options.source.tableName} source ` +
     `left outer join ${options.target.tableName} target on (${joinCondition.join(' AND ')}) ` +
     `where target.${targetHashColumnName} is null ` +
