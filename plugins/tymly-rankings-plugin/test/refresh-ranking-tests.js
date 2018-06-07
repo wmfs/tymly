@@ -168,7 +168,7 @@ describe('Tests the Ranking State Resource', function () {
               'default': 0,
               'options': [
                 {
-                  'type': 'numeric-rangetext-constant',
+                  'type': 'text-constant',
                   'textualValue': 'Very Low',
                   'score': 32
                 },
