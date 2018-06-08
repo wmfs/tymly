@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 const solr = require('solr-client')
-const async = require('async')
 const defaultSolrSchemaFields = require('./solr-schema-fields.json')
 
 class Search {
@@ -113,17 +112,16 @@ class Search {
     })
   } // runStorageSearch
 
-  processResults (context, matchingDocs, filters, totalHits) {
+  async processResults (context, matchingDocs, filters, totalHits) {
     const searchResults = {
       input: filters,
       totalHits: totalHits
     }
 
     this.constructSearchResults(searchResults, filters, matchingDocs)
-    this.updateSearchHistory(searchResults.results, context.userId, err => {
-      if (err) return context.sendTaskFailure({error: 'searchFail', cause: err})
-      else return context.sendTaskSuccess({searchResults})
-    })
+    await this.updateSearchHistory(searchResults.results, context.userId)
+
+    context.sendTaskSuccess({searchResults})
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
@@ -150,26 +148,14 @@ class Search {
     return withJson
   } // jsonifyLaunches
 
-  updateSearchHistory (docs, userId, callback) {
-    async.eachSeries(
-      docs,
-      (r, cb) => {
-        this.searchHistory.upsert(
-          {
-            userId: userId || 'n/a',
-            docId: r.doc_id,
-            category: r.category
-          },
-          {},
-          (err) => {
-            cb(err)
-          }
-        )
-      },
-      (err) => {
-        callback(err)
-      }
-    )
+  async updateSearchHistory (docs, userId) {
+    for (const doc of docs) {
+      await this.searchHistory.upsert({
+        userId: userId || 'N/A',
+        docId: doc.doc_id,
+        category: doc.category
+      }, {})
+    }
   }
 
   countCategories (docs) {
