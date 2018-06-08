@@ -5,7 +5,6 @@
   "author": "Martina Henry",
   "main": "./lib/index.js",
   "dependencies": {
-    "async": "2.6.1",
     "dottie": "2.0.0",
     "file-extension": "4.0.5",
     "file-system": "2.2.2",
