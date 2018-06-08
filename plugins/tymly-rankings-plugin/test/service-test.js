@@ -19,7 +19,6 @@ describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   const REFRESH_RANKING_STATE_MACHINE_NAME = 'test_refreshRanking_1_0'
-  const SET_REFRESH_STATE_MACHINE_NAME = 'wmfs_setAndRefresh_1_0'
 
   let tymlyService, statebox, rankingModel, statsModel, viewSQL
   let viewData, statsData, rankingData
