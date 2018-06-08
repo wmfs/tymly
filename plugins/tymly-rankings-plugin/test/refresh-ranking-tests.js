@@ -284,11 +284,22 @@ describe('Tests the Ranking State Resource', function () {
     )
   })
 
-  it('should check the ranking model again', async () => {
-    const result = await rankingModel.find({})
-    console.log(result[0].range)
-    console.log(result[3].range)
-    console.log(result[10].range)
+  it('should check the data, when sorted is in order from very-low to very-high (to check the low and high risk scores get the right range)', async () => {
+    const viewData = await client.query(`select * from test.factory_scores`)
+    const rankingData = await rankingModel.find({})
+    const mergedData = rankingData
+      .map((r, i) => {
+        return {
+          uprn: r.uprn,
+          score: viewData.rows[i].risk_score,
+          range: r.range
+        }
+      })
+      .sort((b, c) => {
+        return b.score - c.score
+      })
+    expect(mergedData[0].range).to.eql('very-low')
+    expect(mergedData[mergedData.length - 1].range).to.eql('very-high')
   })
 
   it('should clean up the test resources', () => {
