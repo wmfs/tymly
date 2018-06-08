@@ -59,7 +59,7 @@ describe('Tests the Ranking State Resource', function () {
 
   it('should check the original view and models', async () => {
     const viewData = await client.query(`select * from test.factory_scores;`)
-    expect(viewData.rows[0].risk_score).to.eql('74')
+    expect(viewData.rows[0].risk_score).to.eql('135')
     expect(viewData.rows[3].risk_score).to.eql('24')
     expect(viewData.rows[10].risk_score).to.eql('0')
 
@@ -228,7 +228,7 @@ describe('Tests the Ranking State Resource', function () {
     const statsData = await statsModel.findById('factory')
     ranges = statsData.ranges
 
-    expect(rankingData[0].range).to.eql('medium')
+    expect(rankingData[0].range).to.eql('very-high')
     expect(rankingData[3].range).to.eql('medium')
     expect(rankingData[10].range).to.eql('very-low')
 

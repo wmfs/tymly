@@ -106,7 +106,7 @@ INSERT INTO test.fsman (uprn, rating) VALUES (11, 'Very high');
 INSERT INTO test.fsman (uprn, rating) VALUES (12, 'Very low');
 INSERT INTO test.fsman (uprn, rating) VALUES (13, 'Very low');
 
-INSERT INTO test.incidents (uprn, amount) VALUES (1, '5');
+INSERT INTO test.incidents (uprn, amount) VALUES (1, '77');
 INSERT INTO test.incidents (uprn, amount) VALUES (2, '0');
 INSERT INTO test.incidents (uprn, amount) VALUES (3, '1');
 INSERT INTO test.incidents (uprn, amount) VALUES (4, '1');

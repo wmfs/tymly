@@ -239,9 +239,9 @@ describe('Tests the Ranking Service', function () {
       usage_score: 8,
       food_standards_score: 8,
       fs_management_score: 32,
-      incidents_score: 16,
+      incidents_score: 77,
       heritage_score: 2,
-      risk_score: '74',
+      risk_score: '135',
       should_be_licensed_score: 8
     })
     expect(viewData.rows[1]).to.eql({
@@ -313,14 +313,14 @@ describe('Tests the Ranking Service', function () {
     statsData = await statsModel.findById('factory')
     expect(statsData.category).to.eql('factory')
     expect(statsData.count).to.eql(13)
-    expect(statsData.mean).to.eql('45.38')
+    expect(statsData.mean).to.eql('50.08')
     expect(statsData.median).to.eql('48.00')
-    expect(statsData.variance).to.eql('568.85')
-    expect(statsData.stdev).to.eql('23.85')
+    expect(statsData.stdev).to.eql('33.19')
+    expect(statsData.variance).to.eql('1101.61')
     expect(statsData.ranges).to.eql({
-      veryLow: {lowerBound: 0, upperBound: '21.53', exponent: '-0.00088'},
-      veryHigh: {lowerBound: '69.25', upperBound: 74, exponent: '-0.0075'},
-      medium: {lowerBound: '21.54', upperBound: '69.24', exponent: '-0.0004'}
+      veryLow: {lowerBound: 0, upperBound: '16.89', exponent: '-0.00088'},
+      veryHigh: {lowerBound: '83.28', upperBound: 135, exponent: '-0.0075'},
+      medium: {lowerBound: '16.90', upperBound: '83.27', exponent: '-0.0004'}
     })
   })
 
@@ -391,7 +391,7 @@ describe('Tests the Ranking Service', function () {
     const doc = await rankingModel.findById(5)
     expect(+doc.growthCurve).to.not.eql(null)
     expect(+doc.growthCurve).to.eql(0.87805)
-    expect(+doc.updatedRiskScore).to.eql(35.5)
+    expect(+doc.updatedRiskScore).to.eql(36.88)
   })
 
   it('should change the date for one of the factory properties to be 20 days ago', async () => {
@@ -426,8 +426,8 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed again', async () => {
     const doc = await rankingModel.findById(5)
-    expect(+doc.growthCurve).to.eql(0.43636)
-    expect(+doc.updatedRiskScore).to.eql(18.19)
+    expect(+doc.growthCurve).to.eql(0.45332)
+    expect(+doc.updatedRiskScore).to.eql(18.89)
   })
 
   it('should calculate new risk score', () => {
