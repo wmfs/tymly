@@ -59,7 +59,7 @@ describe('Tests the Ranking State Resource', function () {
 
   it('should check the original view and models', async () => {
     const viewData = await client.query(`select * from test.factory_scores;`)
-    expect(viewData.rows[0].risk_score).to.eql('74')
+    expect(viewData.rows[0].risk_score).to.eql('135')
     expect(viewData.rows[3].risk_score).to.eql('24')
     expect(viewData.rows[10].risk_score).to.eql('0')
 
@@ -228,18 +228,18 @@ describe('Tests the Ranking State Resource', function () {
     const statsData = await statsModel.findById('factory')
     ranges = statsData.ranges
 
-    expect(rankingData[0].range).to.eql('medium')
+    expect(rankingData[0].range).to.eql('very-high')
     expect(rankingData[3].range).to.eql('medium')
     expect(rankingData[10].range).to.eql('very-low')
 
-    expect(+viewData.rows[0].risk_score >= +ranges.medium.lowerBound).to.eql(true)
-    expect(+viewData.rows[0].risk_score <= +ranges.medium.upperBound).to.eql(true)
+    expect(+viewData.rows[0].risk_score >= ranges.medium.lowerBound).to.eql(true)
+    expect(+viewData.rows[0].risk_score <= ranges.medium.upperBound).to.eql(true)
 
-    expect(+viewData.rows[3].risk_score >= +ranges.medium.lowerBound).to.eql(true)
-    expect(+viewData.rows[3].risk_score <= +ranges.medium.upperBound).to.eql(true)
+    expect(+viewData.rows[3].risk_score >= ranges.medium.lowerBound).to.eql(true)
+    expect(+viewData.rows[3].risk_score <= ranges.medium.upperBound).to.eql(true)
 
-    expect(+viewData.rows[10].risk_score >= +ranges.veryLow.lowerBound).to.eql(true)
-    expect(+viewData.rows[10].risk_score <= +ranges.veryLow.upperBound).to.eql(true)
+    expect(+viewData.rows[10].risk_score >= ranges.veryLow.lowerBound).to.eql(true)
+    expect(+viewData.rows[10].risk_score <= ranges.veryLow.upperBound).to.eql(false)
 
     expect(viewData.rows[0]['usage_score']).to.equal(12)
     expect(+viewData.rows[0].risk_score).to.eql(46)
@@ -284,11 +284,22 @@ describe('Tests the Ranking State Resource', function () {
     )
   })
 
-  it('should check the ranking model again', async () => {
-    const result = await rankingModel.find({})
-    console.log(result[0].range)
-    console.log(result[3].range)
-    console.log(result[10].range)
+  it('should check the data, when sorted is in order from very-low to very-high (to check the low and high risk scores get the right range)', async () => {
+    const viewData = await client.query(`select * from test.factory_scores`)
+    const rankingData = await rankingModel.find({})
+    const mergedData = rankingData
+      .map((r, i) => {
+        return {
+          uprn: r.uprn,
+          score: viewData.rows[i].risk_score,
+          range: r.range
+        }
+      })
+      .sort((b, c) => {
+        return b.score - c.score
+      })
+    expect(mergedData[0].range).to.eql('very-low')
+    expect(mergedData[mergedData.length - 1].range).to.eql('very-high')
   })
 
   it('should clean up the test resources', () => {

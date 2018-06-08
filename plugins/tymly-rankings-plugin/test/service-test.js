@@ -17,6 +17,9 @@ const calculateNewRiskScore = require('./../lib/components/services/rankings/cal
 
 describe('Tests the Ranking Service', function () {
   this.timeout(process.env.TIMEOUT || 5000)
+
+  const REFRESH_RANKING_STATE_MACHINE_NAME = 'test_refreshRanking_1_0'
+
   let tymlyService, statebox, rankingModel, statsModel, viewSQL
   let viewData, statsData, rankingData
 
@@ -236,9 +239,9 @@ describe('Tests the Ranking Service', function () {
       usage_score: 8,
       food_standards_score: 8,
       fs_management_score: 32,
-      incidents_score: 16,
+      incidents_score: 77,
       heritage_score: 2,
-      risk_score: '74',
+      risk_score: '135',
       should_be_licensed_score: 8
     })
     expect(viewData.rows[1]).to.eql({
@@ -310,14 +313,14 @@ describe('Tests the Ranking Service', function () {
     statsData = await statsModel.findById('factory')
     expect(statsData.category).to.eql('factory')
     expect(statsData.count).to.eql(13)
-    expect(statsData.mean).to.eql('45.38')
+    expect(statsData.mean).to.eql('50.08')
     expect(statsData.median).to.eql('48.00')
-    expect(statsData.variance).to.eql('568.85')
-    expect(statsData.stdev).to.eql('23.85')
+    expect(statsData.stdev).to.eql('33.19')
+    expect(statsData.variance).to.eql('1101.61')
     expect(statsData.ranges).to.eql({
-      veryLow: {lowerBound: 0, upperBound: '21.53', exponent: '-0.00088'},
-      veryHigh: {lowerBound: '69.25', upperBound: 74, exponent: '-0.0075'},
-      medium: {lowerBound: '21.54', upperBound: '69.24', exponent: '-0.0004'}
+      veryLow: {lowerBound: 0, upperBound: 16.89, exponent: -0.00088},
+      veryHigh: {lowerBound: 83.28, upperBound: 135, exponent: -0.0075},
+      medium: {lowerBound: 16.90, upperBound: 83.27, exponent: -0.0004}
     })
   })
 
@@ -331,27 +334,27 @@ describe('Tests the Ranking Service', function () {
 
     expect(rankingData[0].uprn).to.eql('1')
     expect(rankingData[0].range).to.eql('very-high')
-    expect(rankingData[0].distribution).to.eql('0.0081')
+    expect(rankingData[0].distribution).to.eql('0.0005')
 
     expect(rankingData[1].uprn).to.eql('2')
     expect(rankingData[1].range).to.eql('medium')
-    expect(rankingData[1].distribution).to.eql('0.0149')
+    expect(rankingData[1].distribution).to.eql('0.0107')
 
     expect(rankingData[2].uprn).to.eql('3')
     expect(rankingData[2].range).to.eql('medium')
-    expect(rankingData[2].distribution).to.eql('0.0166')
+    expect(rankingData[2].distribution).to.eql('0.0120')
 
     expect(rankingData[3].uprn).to.eql('4')
     expect(rankingData[3].range).to.eql('medium')
-    expect(rankingData[3].distribution).to.eql('0.0112')
+    expect(rankingData[3].distribution).to.eql('0.0088')
 
     expect(rankingData[4].uprn).to.eql('5')
-    expect(rankingData[4].range).to.eql('very-high')
-    expect(rankingData[4].distribution).to.eql('0.0090')
+    expect(rankingData[4].range).to.eql('medium')
+    expect(rankingData[4].distribution).to.eql('0.0097')
 
     expect(rankingData[5].uprn).to.eql('6')
     expect(rankingData[5].range).to.eql('medium')
-    expect(rankingData[5].distribution).to.eql('0.0167')
+    expect(rankingData[5].distribution).to.eql('0.0118')
   })
 
   it('should change the date for one of the factory properties to be today\'s date', async () => {
@@ -370,7 +373,7 @@ describe('Tests the Ranking Service', function () {
         schema: 'test',
         category: 'factory'
       },
-      'test_refreshRanking_1_0',
+      REFRESH_RANKING_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
@@ -388,7 +391,7 @@ describe('Tests the Ranking Service', function () {
     const doc = await rankingModel.findById(5)
     expect(+doc.growthCurve).to.not.eql(null)
     expect(+doc.growthCurve).to.eql(0.87805)
-    expect(+doc.updatedRiskScore).to.eql(35.5)
+    expect(+doc.updatedRiskScore).to.eql(36.88)
   })
 
   it('should change the date for one of the factory properties to be 20 days ago', async () => {
@@ -407,7 +410,7 @@ describe('Tests the Ranking Service', function () {
         schema: 'test',
         category: 'factory'
       },
-      'test_refreshRanking_1_0',
+      REFRESH_RANKING_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
       },
@@ -423,8 +426,8 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed again', async () => {
     const doc = await rankingModel.findById(5)
-    expect(+doc.growthCurve).to.eql(0.43636)
-    expect(+doc.updatedRiskScore).to.eql(18.19)
+    expect(+doc.growthCurve).to.eql(0.45332)
+    expect(+doc.updatedRiskScore).to.eql(18.89)
   })
 
   it('should calculate new risk score', () => {
