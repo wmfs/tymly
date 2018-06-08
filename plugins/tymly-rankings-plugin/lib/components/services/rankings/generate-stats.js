@@ -12,21 +12,13 @@ module.exports = async function generateStats (options, callback) {
 
   const result = await options.client.query(getViewRowsSQL(options))
   const scores = result.rows.map(row => row.risk_score)
+  const updatedScores = []
 
   if (scores.length > 0) {
+    // Generate stats based on original scores
     const mean = stats.mean(scores)
     const stdev = stats.stdev(scores)
     const ranges = generateRanges(scores, mean, stdev, options.registry.value.exponent)
-
-    await options.statsModel.upsert({
-      category: _.kebabCase(options.category),
-      count: scores.length,
-      mean: mean.toFixed(2),
-      median: stats.median(scores).toFixed(2),
-      variance: stats.variance(scores).toFixed(2),
-      stdev: stdev.toFixed(2),
-      ranges: JSON.stringify(ranges)
-    }, {})
 
     for (let r of result.rows) {
       const range = findRange(ranges, r.risk_score)
@@ -36,6 +28,8 @@ module.exports = async function generateStats (options, callback) {
       const row = await options.rankingModel.findById(r.uprn)
       const growthCurve = row.lastAuditDate ? calculateGrowthCurve(ranges[range].exponent, row.lastAuditDate, r.risk_score).toFixed(5) : null
       const updatedRiskScore = growthCurve ? calculateNewRiskScore(range, r.risk_score, growthCurve, mean, stdev) : null
+
+      updatedScores.push(updatedRiskScore || r.risk_score)
 
       await options.rankingModel.upsert({
         [options.pk]: r[_.snakeCase(options.pk)],
@@ -48,6 +42,23 @@ module.exports = async function generateStats (options, callback) {
         setMissingPropertiesToNull: false
       })
     }
+
+    // should we find new range for each row based on updated stats?
+
+    // Recalculate stats based on updated scores
+    const updatedMean = stats.mean(updatedScores)
+    const updatedStdev = stats.stdev(updatedScores)
+    const updatedRanges = generateRanges(updatedScores, updatedMean, updatedStdev, options.registry.value.exponent)
+
+    await options.statsModel.upsert({
+      category: _.kebabCase(options.category),
+      count: updatedScores.length,
+      mean: updatedMean.toFixed(2),
+      median: stats.median(updatedScores).toFixed(2),
+      variance: stats.variance(updatedScores).toFixed(2),
+      stdev: updatedStdev.toFixed(2),
+      ranges: JSON.stringify(updatedRanges)
+    }, {})
   } else {
     debug(options.category + ' - No scores found')
   }
@@ -117,7 +128,7 @@ function generateRanges (scores, mean, stdev, exponents) {
 
 function findRange (ranges, score) {
   for (const k of Object.keys(ranges)) {
-    if (score >= ranges[k].lowerBound && score <= ranges[k].upperBound) {
+    if (+score >= +ranges[k].lowerBound && +score <= +ranges[k].upperBound) {
       return k
     }
   }
