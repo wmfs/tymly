@@ -81,46 +81,46 @@ function generateRanges (scores, mean, stdev, exponents) {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - (2 * +stdev)).toFixed(2),
-        exponent: exponents.veryLow
+        upperBound: +(mean - (2 * stdev)).toFixed(2),
+        exponent: +exponents.veryLow
       },
       low: {
-        lowerBound: (+mean - (2 * +stdev) + +0.01).toFixed(2),
-        upperBound: (+mean - +stdev).toFixed(2),
-        exponent: exponents.low
+        lowerBound: +(mean - (2 * stdev) + 0.01).toFixed(2),
+        upperBound: +(mean - stdev).toFixed(2),
+        exponent: +exponents.low
       },
       medium: {
-        lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2),
-        exponent: exponents.medium
+        lowerBound: +(mean - stdev + 0.01).toFixed(2),
+        upperBound: +(mean + stdev).toFixed(2),
+        exponent: +exponents.medium
       },
       high: {
-        lowerBound: (+mean + +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + (2 * +stdev)).toFixed(2),
-        exponent: exponents.high
+        lowerBound: +(mean + stdev + 0.01).toFixed(2),
+        upperBound: +(mean + (2 * stdev)).toFixed(2),
+        exponent: +exponents.high
       },
       veryHigh: {
-        lowerBound: (+mean + (2 * +stdev) + +0.01).toFixed(2),
+        lowerBound: +(mean + (2 * stdev) + 0.01).toFixed(2),
         upperBound: Math.max(...scores),
-        exponent: exponents.veryHigh
+        exponent: +exponents.veryHigh
       }
     }
   } else {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: (+mean - +stdev).toFixed(2),
-        exponent: exponents.veryLow
+        upperBound: +(mean - stdev).toFixed(2),
+        exponent: +exponents.veryLow
       },
       medium: {
-        lowerBound: (+mean - +stdev + +0.01).toFixed(2),
-        upperBound: (+mean + +stdev).toFixed(2),
-        exponent: exponents.medium
+        lowerBound: +(mean - stdev + 0.01).toFixed(2),
+        upperBound: +(mean + stdev).toFixed(2),
+        exponent: +exponents.medium
       },
       veryHigh: {
-        lowerBound: (+mean + +stdev + +0.01).toFixed(2),
+        lowerBound: +(mean + stdev + 0.01).toFixed(2),
         upperBound: Math.max(...scores),
-        exponent: exponents.veryHigh
+        exponent: +exponents.veryHigh
       }
     }
   }
@@ -135,5 +135,5 @@ function findRange (ranges, score) {
 }
 
 function getViewRowsSQL (options) {
-  return `SELECT ${_.snakeCase(options.pk)}, risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
+  return `SELECT ${_.snakeCase(options.pk)}, risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`
 }

@@ -84,6 +84,11 @@
                 "score": 6
               },
               {
+                "type": "numeric-constant",
+                "numericValue": 77,
+                "score": 77
+              },
+              {
                 "type": "numeric-boundary",
                 "operator": "greaterThan",
                 "numericValue": 1,
