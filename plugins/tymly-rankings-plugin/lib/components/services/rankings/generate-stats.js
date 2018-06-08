@@ -128,7 +128,7 @@ function generateRanges (scores, mean, stdev, exponents) {
 
 function findRange (ranges, score) {
   for (const k of Object.keys(ranges)) {
-    if (score >= ranges[k].lowerBound && score <= ranges[k].upperBound) {
+    if (+score >= +ranges[k].lowerBound && +score <= +ranges[k].upperBound) {
       return k
     }
   }
