@@ -268,10 +268,10 @@ describe('Tests the Ranking Service', function () {
       address_label: '4 abc lane',
       usage_score: 8,
       food_standards_score: 8,
-      fs_management_score: 32,
+      fs_management_score: 0,
       incidents_score: 6,
       heritage_score: 2,
-      risk_score: '56',
+      risk_score: '24',
       should_be_licensed_score: 0
     })
     expect(viewData.rows[4]).to.eql({
@@ -292,65 +292,66 @@ describe('Tests the Ranking Service', function () {
       food_standards_score: 2,
       fs_management_score: 32,
       incidents_score: 0,
-      heritage_score: 0,
-      risk_score: '42',
+      heritage_score: 2,
+      risk_score: '44',
       should_be_licensed_score: 0
     })
+
+    expect(viewData.rows[6].risk_score).to.eql('16')
+    expect(viewData.rows[7].risk_score).to.eql('64')
+    expect(viewData.rows[8].risk_score).to.eql('20')
+    expect(viewData.rows[9].risk_score).to.eql('70')
+    expect(viewData.rows[10].risk_score).to.eql('0')
+    expect(viewData.rows[11].risk_score).to.eql('52')
+    expect(viewData.rows[12].risk_score).to.eql('72')
   })
 
   it('should check the data in the statistics model', async () => {
-    statsData = await statsModel.find({})
-    expect(statsData[0].category).to.eql('factory')
-    expect(statsData[0].count).to.eql(6)
-    expect(statsData[0].mean).to.eql('54.33')
-    expect(statsData[0].median).to.eql('52.00')
-    expect(statsData[0].variance).to.eql('217.89')
-    expect(statsData[0].stdev).to.eql('14.76')
-    expect(statsData[0].ranges).to.eql({
-      veryLow: {lowerBound: 0, upperBound: '39.57', exponent: '-0.00088'},
-      veryHigh: {lowerBound: '69.10', upperBound: 74, exponent: '-0.0075'},
-      medium: {lowerBound: '39.58', upperBound: '69.09', exponent: '-0.0004'}
+    statsData = await statsModel.findById('factory')
+    expect(statsData.category).to.eql('factory')
+    expect(statsData.count).to.eql(13)
+    expect(statsData.mean).to.eql('45.38')
+    expect(statsData.median).to.eql('48.00')
+    expect(statsData.variance).to.eql('568.85')
+    expect(statsData.stdev).to.eql('23.85')
+    expect(statsData.ranges).to.eql({
+      veryLow: {lowerBound: 0, upperBound: '21.53', exponent: '-0.00088'},
+      veryHigh: {lowerBound: '69.25', upperBound: 74, exponent: '-0.0075'},
+      medium: {lowerBound: '21.54', upperBound: '69.24', exponent: '-0.0004'}
     })
   })
 
   it('should check the data in ranking model', async () => {
     rankingData = await rankingModel.find({})
 
+    for (let r of rankingData) {
+      expect(r.growthCurve).to.eql(null)
+      expect(r.updatedRiskScore).to.eql(null)
+    }
+
     expect(rankingData[0].uprn).to.eql('1')
     expect(rankingData[0].range).to.eql('very-high')
-    expect(rankingData[0].distribution).to.eql('0.0111')
-    expect(rankingData[0].growthCurve).to.eql(null)
-    expect(rankingData[0].updatedRiskScore).to.eql(null)
+    expect(rankingData[0].distribution).to.eql('0.0081')
 
     expect(rankingData[1].uprn).to.eql('2')
-    expect(rankingData[1].range).to.eql('very-low')
-    expect(rankingData[1].distribution).to.eql('0.0105')
-    expect(rankingData[1].growthCurve).to.eql(null)
-    expect(rankingData[1].updatedRiskScore).to.eql(null)
+    expect(rankingData[1].range).to.eql('medium')
+    expect(rankingData[1].distribution).to.eql('0.0149')
 
     expect(rankingData[2].uprn).to.eql('3')
     expect(rankingData[2].range).to.eql('medium')
-    expect(rankingData[2].distribution).to.eql('0.0247')
-    expect(rankingData[2].growthCurve).to.eql(null)
-    expect(rankingData[2].updatedRiskScore).to.eql(null)
+    expect(rankingData[2].distribution).to.eql('0.0166')
 
     expect(rankingData[3].uprn).to.eql('4')
     expect(rankingData[3].range).to.eql('medium')
-    expect(rankingData[3].distribution).to.eql('0.0269')
-    expect(rankingData[3].growthCurve).to.eql(null)
-    expect(rankingData[3].updatedRiskScore).to.eql(null)
+    expect(rankingData[3].distribution).to.eql('0.0112')
 
     expect(rankingData[4].uprn).to.eql('5')
     expect(rankingData[4].range).to.eql('very-high')
-    expect(rankingData[4].distribution).to.eql('0.0132')
-    expect(rankingData[4].growthCurve).to.eql(null)
-    expect(rankingData[4].updatedRiskScore).to.eql(null)
+    expect(rankingData[4].distribution).to.eql('0.0090')
 
     expect(rankingData[5].uprn).to.eql('6')
     expect(rankingData[5].range).to.eql('medium')
-    expect(rankingData[5].distribution).to.eql('0.0191')
-    expect(rankingData[5].growthCurve).to.eql(null)
-    expect(rankingData[5].updatedRiskScore).to.eql(null)
+    expect(rankingData[5].distribution).to.eql('0.0167')
   })
 
   it('should change the date for one of the factory properties to be today\'s date', async () => {
@@ -387,7 +388,7 @@ describe('Tests the Ranking Service', function () {
     const doc = await rankingModel.findById(5)
     expect(+doc.growthCurve).to.not.eql(null)
     expect(+doc.growthCurve).to.eql(0.87805)
-    expect(+doc.updatedRiskScore).to.eql(35.43)
+    expect(+doc.updatedRiskScore).to.eql(35.5)
   })
 
   it('should change the date for one of the factory properties to be 20 days ago', async () => {
@@ -422,8 +423,8 @@ describe('Tests the Ranking Service', function () {
 
   it('should check the growth curve has changed again', async () => {
     const doc = await rankingModel.findById(5)
-    expect(+doc.growthCurve).to.eql(0.4355)
-    expect(+doc.updatedRiskScore).to.eql(18.15)
+    expect(+doc.growthCurve).to.eql(0.43636)
+    expect(+doc.updatedRiskScore).to.eql(18.19)
   })
 
   it('should calculate new risk score', () => {
@@ -439,6 +440,24 @@ describe('Tests the Ranking Service', function () {
 
     expect(+calculateNewRiskScore('veryHigh', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(highExpected)
     expect(+calculateNewRiskScore('veryLow', options.riskScore, options.growthCurve, options.mean, options.stdev)).to.eql(lowExpected)
+  })
+
+  it('should check the data, when sorted is in order from very-low to very-high (to check the low and high risk scores get the right range)', async () => {
+    const viewData = await client.query(`select * from test.factory_scores`)
+    const rankingData = await rankingModel.find({})
+    const mergedData = rankingData
+      .map((r, i) => {
+        return {
+          uprn: r.uprn,
+          score: viewData.rows[i].risk_score,
+          range: r.range
+        }
+      })
+      .sort((b, c) => {
+        return b.score - c.score
+      })
+    expect(mergedData[0].range).to.eql('very-low')
+    expect(mergedData[mergedData.length - 1].range).to.eql('very-high')
   })
 
   it('should clean up the test resources', () => {
