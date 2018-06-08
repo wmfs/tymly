@@ -119,9 +119,12 @@ class Search {
     }
 
     this.constructSearchResults(searchResults, filters, matchingDocs)
-    await this.updateSearchHistory(searchResults.results, context.userId)
-
-    context.sendTaskSuccess({searchResults})
+    try {
+      await this.updateSearchHistory(searchResults.results, context.userId)
+      context.sendTaskSuccess({searchResults})
+    } catch (err) {
+      context.sendTaskFailure({error: 'searchFail', cause: err})
+    }
   } // searchResults
 
   constructSearchResults (searchResults, filters, results) {
