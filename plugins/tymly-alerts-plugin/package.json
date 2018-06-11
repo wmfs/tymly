@@ -7,7 +7,7 @@
   "dependencies": {
     "boom": "7.2.0",
     "debug": "3.1.0",
-    "nodemailer": "4.6.5"
+    "nodemailer": "4.6.6"
   },
   "devDependencies": {
     "chai": "4.1.2",
