@@ -43,15 +43,18 @@ describe('statebox service RBAC authorisation tests', function () {
   })
 
   it('anonymous can\'t run \'authenticated\'', async () => {
-    try {
-      await statebox.startExecution(
-        {},
-        'tymlyTest_authenticated_1_0',
-        {sendResponse: 'COMPLETE'}
-      )
-    } catch (err) {
-      expect(err.output.statusCode).to.eql(401)
-    }
+    const execDesc = await statebox.startExecution(
+      { },
+      'tymlyTest_authenticated_1_0',
+      {
+        sendResponse: 'COMPLETE'
+      }
+    )
+
+    expect(execDesc.status).to.eql('FAILED')
+    expect(execDesc.stateMachineName).to.eql('tymlyTest_authenticated_1_0')
+    expect(execDesc.errorCode).to.eql('401')
+    expect(execDesc.errorMessage).to.eql('\'null\' can not perform \'create\' on \'tymlyTest_authenticated_1_0\'')
   })
 
   it('\'jim.smith\' can run \'everyone\'', async () => {

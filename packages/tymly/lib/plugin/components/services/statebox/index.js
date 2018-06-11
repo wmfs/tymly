@@ -5,6 +5,8 @@ const _ = require('lodash')
 
 class StateboxService {
   async boot (options, callback) {
+    this.services = options.bootedServices
+
     this.statebox = new Statebox(options)
     await this.statebox.ready
 
@@ -59,9 +61,18 @@ class StateboxService {
     return this.statebox.listStateMachines()
   }
 
-  startExecution (input, stateMachineName, executionOptions, callback) {
-    return this.statebox.startExecution(input, stateMachineName, executionOptions, callback)
-  }
+  async startExecution (input, stateMachineName, executionOptions, callback) {
+    if (callback) {
+      this.startExecution(input, stateMachineName, executionOptions)
+        .then(executionDescription => callback(null, executionDescription))
+        .catch(err => callback(err))
+    } // if ...
+
+    const [authOk, errExecDesc] = await this.authorisationCheck(stateMachineName, executionOptions, 'create')
+    return authOk ?
+      this.statebox.startExecution(input, stateMachineName, executionOptions) :
+      errExecDesc
+  } // startExecution
 
   stopExecution (cause, error, executionName, executionOptions, callback) {
     return this.statebox.stopExecution(cause, error, executionName, executionOptions, callback)
@@ -90,6 +101,34 @@ class StateboxService {
   waitUntilStoppedRunning (executionName, callback) {
     return this.statebox.waitUntilStoppedRunning(executionName, callback)
   }
+
+  async authorisationCheck (stateMachineName, executionOptions, action) {
+    const rbac = this.services.rbac
+    const userId = executionOptions.userId
+
+    const roles = await rbac.getUserRoles(userId)
+    const authorised = rbac.checkRoleAuthorization(
+      userId,
+      executionOptions,
+      roles,
+      'stateMachine',
+      stateMachineName,
+      action
+    )
+
+    if (authorised)
+      return [true]
+
+    return [
+      false,
+      {
+        status: 'FAILED',
+        stateMachineName: stateMachineName,
+        errorCode: '401',
+        errorMessage: `'${(typeof userId === 'string') ? userId : null}' can not perform '${action}' on '${stateMachineName}'`
+      }
+    ]
+  } // authorisationCheck
 } // class StateboxService
 
 function addResources (statebox, options) {
