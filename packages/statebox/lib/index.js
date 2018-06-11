@@ -14,13 +14,12 @@ const StorageDao = require('./dao/StorageService-dao')
 const Status = require('./Status')
 const ParallelBranchTracker = require('./Parallel-branch-tracker')
 const CallbackManager = require('./Callback-manager')
-const boom = require('boom')
 const debug = require('debug')('statebox')
 
 class Statebox {
   constructor (options) {
     this.options = options || {}
-    this.ready = this._findDao(options)
+    this.ready_ = this._findDao(options)
       .then(dao => {
         info(options.messages, 'Statebox is ready')
         this.options.dao = dao
@@ -29,6 +28,10 @@ class Statebox {
         this.options.parallelBranchTracker = new ParallelBranchTracker()
       })
   }
+
+  get ready () {
+    return this.ready_
+  } // ready
 
   async _findDao (options) {
     if (options.dao) {
@@ -84,25 +87,21 @@ class Statebox {
   }
 
   createStateMachine (stateMachineName, stateMachineDefinition, stateMachineMeta, env, callback) {
-    this.ready.then(() =>
-      stateMachines.createStateMachine(
-        stateMachineName,
-        stateMachineDefinition,
-        stateMachineMeta,
-        env,
-        this.options,
-        callback)
-    )
+    stateMachines.createStateMachine(
+      stateMachineName,
+      stateMachineDefinition,
+      stateMachineMeta,
+      env,
+      this.options,
+      callback)
   } // createStateMachine
 
   createStateMachines (stateMachineDefinitions, env, callback) {
-    this.ready.then(() =>
-      stateMachines.createStateMachines(
-        stateMachineDefinitions,
-        env,
-        this.options,
-        callback)
-    )
+    stateMachines.createStateMachines(
+      stateMachineDefinitions,
+      env,
+      this.options,
+      callback)
   } // createStateMachines
 
   deleteStateMachine (name) {
@@ -141,47 +140,18 @@ class Statebox {
     })
   } // promised
 
-  async _authorisationCheck(stateMachineName, executionOptions, action) {
-    const rbac = this.options.bootedServices.rbac
-    const userId = executionOptions.userId
-
-    const roles = await rbac.getUserRoles(userId)
-    const authorised = rbac.checkRoleAuthorization(
-      userId,
-      executionOptions,
-      roles,
-      'stateMachine',
-      stateMachineName,
-      action
-    )
-
-    if (!authorised) {
-      throw boom.unauthorized(
-        `'${userId}' can not perform '${action}' on '${stateMachineName}'`,
-        stateMachineName
-      )
-    }
-
-  }
-
   startExecution (input, stateMachineName, executionOptions, callback) {
-    return this.ready.then(() =>
-      this._execute(input, stateMachineName, executionOptions, callback)
-    )
+    return this._execute(input, stateMachineName, executionOptions, callback)
   } // startExecution
 
   stopExecution (cause, errorCode, executionName, executionOptions, callback) {
-    return this.ready.then(() =>
-      this._stopExecution(cause, errorCode, executionName, executionOptions, callback)
-    )
+    return this._stopExecution(cause, errorCode, executionName, executionOptions, callback)
   } // stopExecution
 
   _execute (input, stateMachineName, executionOptions, callback) {
     if (!callback) return this._promised(this._execute, input, stateMachineName, executionOptions)
 
-    this._authorisationCheck(stateMachineName, executionOptions, 'create')
-      .then(() => executioner(input, stateMachineName, executionOptions, this.options, callback))
-      .catch(err => callback(err, null))
+    executioner(input, stateMachineName, executionOptions, this.options, callback)
   } // _execute
 
   _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
@@ -209,16 +179,13 @@ class Statebox {
   }
 
   describeExecution (executionName, executionOptions, callback) {
-    this.ready.then(() => {
-      this.options.dao.findExecutionByName(executionName, callback)
-    })
+    this.options.dao.findExecutionByName(executionName, callback)
   } // describeExecution
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
-    this.ready.then(() => {
-      this._sendTaskSuccess(executionName, output, executionOptions, callback)
-    })
+    this._sendTaskSuccess(executionName, output, executionOptions, callback)
   } // sendTaskSuccess
+
   _sendTaskSuccess (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
@@ -242,9 +209,7 @@ class Statebox {
   } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
-    this.ready.then(() => {
-      this._sendTaskFailure(executionName, options, executionOptions, callback)
-    })
+    this._sendTaskFailure(executionName, options, executionOptions, callback)
   } // sendTaskFailure
   _sendTaskFailure (executionName, options, executionOptions, callback) {
     this.options.dao.findExecutionByName(
@@ -268,9 +233,7 @@ class Statebox {
   }
 
   sendTaskHeartbeat (executionName, options, executionOptions, callback) {
-    this.ready.then(() => {
-      this._sendTaskHeartbeat(executionName, options, executionOptions, callback)
-    })
+    this._sendTaskHeartbeat(executionName, options, executionOptions, callback)
   } // sendTaskHeartbeat
   _sendTaskHeartbeat (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
@@ -294,9 +257,7 @@ class Statebox {
   } // _sendTaskHeartbeat
 
   waitUntilStoppedRunning (executionName, callback) {
-    return this.ready.then(() =>
-      this._waitUntilStoppedRunning(executionName, callback)
-    )
+    return this._waitUntilStoppedRunning(executionName, callback)
   } // waitUntilStoppedRunning
   async _waitUntilStoppedRunning (executionName, callback) {
     if (callback) {

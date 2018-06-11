@@ -4,8 +4,9 @@ const Statebox = require('statebox')
 const _ = require('lodash')
 
 class StateboxService {
-  boot (options, callback) {
+  async boot (options, callback) {
     this.statebox = new Statebox(options)
+    await this.statebox.ready
 
     addResources(this.statebox, options)
 
