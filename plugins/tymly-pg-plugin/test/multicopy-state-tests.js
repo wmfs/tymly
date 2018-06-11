@@ -47,70 +47,48 @@ describe('Testing functionality as a state-resource', function () {
     )
   })
 
-  it('should start a multicopy execution', function (done) {
-    statebox.startExecution(
+  it('should start a multicopy execution', async () => {
+    const executionDescription = await statebox.startExecution(
       {
         sourceDir: path.resolve(__dirname, 'fixtures', 'food-data')
       }, // input
       STATE_MACHINE_NAME, // state machine name
-      {}, // options
-      function (err, result) {
-        expect(err).to.eql(null)
-        executionName = result.executionName
-        done()
-      }
+      {}
     )
+
+    executionName = executionDescription.executionName
   })
 
-  it('should successfully complete a multicopy execution', function (done) {
-    statebox.waitUntilStoppedRunning(
-      executionName,
-      function (err, executionDescription) {
-        expect(err).to.eql(null)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
-        expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
-        done()
-      }
-    )
+  it('should successfully complete a multicopy execution', async () => {
+    const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+    expect(executionDescription.status).to.eql('SUCCEEDED')
+    expect(executionDescription.stateMachineName).to.eql(STATE_MACHINE_NAME)
+    expect(executionDescription.currentStateName).to.eql('ImportingCsvFiles')
   })
 
-  it('should find the correct data in the correct database tables (meat)', function (done) {
-    client.query(
-      'select * from food_test.meat',
-      function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows[0].food_name).to.eql('steak')
-        expect(result.rows[1].food_name).to.eql('kebab')
-        expect(result.rows[2].food_name).to.eql('chicken')
+  it('should find the correct data in the correct database tables (meat)', async () => {
+    const result = await client.query('select * from food_test.meat')
 
-        expect(result.rows[0].food_group).to.eql('red meat')
-        expect(result.rows[1].food_group).to.eql('red meat')
-        expect(result.rows[2].food_group).to.eql('white meat')
-        done()
-      }
-    )
+    expect(result.rows[0].food_name).to.eql('steak')
+    expect(result.rows[1].food_name).to.eql('kebab')
+    expect(result.rows[2].food_name).to.eql('chicken')
+
+    expect(result.rows[0].food_group).to.eql('red meat')
+    expect(result.rows[1].food_group).to.eql('red meat')
+    expect(result.rows[2].food_group).to.eql('white meat')
   })
 
-  it('should find the correct data in the correct database tables (veg)', function (done) {
-    client.query(
-      'select * from food_test.veg',
-      function (err, result) {
-        if (err) {
-          return done(err)
-        }
-        expect(result.rows[0].food_name).to.eql('peas')
-        expect(result.rows[1].food_name).to.eql('carrot')
-        expect(result.rows[2].food_name).to.eql('potato')
+  it('should find the correct data in the correct database tables (veg)', async () => {
+    const result = await client.query('select * from food_test.veg')
 
-        expect(result.rows[0].food_group).to.eql('legumes')
-        expect(result.rows[1].food_group).to.eql('root')
-        expect(result.rows[2].food_group).to.eql('root')
-        done()
-      }
-    )
+    expect(result.rows[0].food_name).to.eql('peas')
+    expect(result.rows[1].food_name).to.eql('carrot')
+    expect(result.rows[2].food_name).to.eql('potato')
+
+    expect(result.rows[0].food_group).to.eql('legumes')
+    expect(result.rows[1].food_group).to.eql('root')
+    expect(result.rows[2].food_group).to.eql('root')
   })
 
   it('should clean up DB env', async () => {
