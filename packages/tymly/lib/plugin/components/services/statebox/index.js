@@ -103,6 +103,10 @@ class StateboxService {
   }
 
   async authorisationCheck (stateMachineName, executionOptions, action) {
+    return [true] // STUB!
+  }
+/*
+  async authorisationCheck (stateMachineName, executionOptions, action) {
     const rbac = this.services.rbac
     const userId = executionOptions.userId
 
@@ -130,6 +134,7 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
+*/
 } // class StateboxService
 
 function addResources (statebox, options) {
