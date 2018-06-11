@@ -63,7 +63,7 @@ class StateboxService {
 
   async startExecution (input, stateMachineName, executionOptions, callback) {
     if (callback) {
-      this.startExecution(input, stateMachineName, executionOptions)
+      return this.startExecution(input, stateMachineName, executionOptions)
         .then(executionDescription => callback(null, executionDescription))
         .catch(err => callback(err))
     } // if ...
