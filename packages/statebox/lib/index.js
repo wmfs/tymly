@@ -141,21 +141,13 @@ class Statebox {
   } // promised
 
   startExecution (input, stateMachineName, executionOptions, callback) {
-    return this._execute(input, stateMachineName, executionOptions, callback)
+    if (!callback) return this._promised(this.startExecution, input, stateMachineName, executionOptions)
+
+    executioner(input, stateMachineName, executionOptions, this.options, callback)
   } // startExecution
 
   stopExecution (cause, errorCode, executionName, executionOptions, callback) {
-    return this._stopExecution(cause, errorCode, executionName, executionOptions, callback)
-  } // stopExecution
-
-  _execute (input, stateMachineName, executionOptions, callback) {
-    if (!callback) return this._promised(this._execute, input, stateMachineName, executionOptions)
-
-    executioner(input, stateMachineName, executionOptions, this.options, callback)
-  } // _execute
-
-  _stopExecution (cause, errorCode, executionName, executionOptions, callback) {
-    if (!callback) return this._promised(this._stopExecution, cause, errorCode, executionName, executionOptions)
+    if (!callback) return this._promised(this.stopExecution, cause, errorCode, executionName, executionOptions)
 
     this.options.dao.findExecutionByName(executionName)
       .then(executionDescription => {
@@ -183,10 +175,6 @@ class Statebox {
   } // describeExecution
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
-    this._sendTaskSuccess(executionName, output, executionOptions, callback)
-  } // sendTaskSuccess
-
-  _sendTaskSuccess (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -209,9 +197,6 @@ class Statebox {
   } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
-    this._sendTaskFailure(executionName, options, executionOptions, callback)
-  } // sendTaskFailure
-  _sendTaskFailure (executionName, options, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -233,9 +218,6 @@ class Statebox {
   }
 
   sendTaskHeartbeat (executionName, options, executionOptions, callback) {
-    this._sendTaskHeartbeat(executionName, options, executionOptions, callback)
-  } // sendTaskHeartbeat
-  _sendTaskHeartbeat (executionName, output, executionOptions, callback) {
     this.options.dao.findExecutionByName(
       executionName,
       function (err, executionDescription) {
@@ -245,7 +227,7 @@ class Statebox {
           if (executionDescription && executionDescription.status === Status.RUNNING) {
             const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
             const stateToRun = stateMachine.states[executionDescription.currentStateName]
-            stateToRun.runTaskHeartbeat(executionDescription, output, callback)
+            stateToRun.runTaskHeartbeat(executionDescription, options, callback)
           } else {
             callback(
               new Error(`Heartbeat has been rejected because execution is not running (executionName='${executionName}')`)
@@ -256,12 +238,9 @@ class Statebox {
     )
   } // _sendTaskHeartbeat
 
-  waitUntilStoppedRunning (executionName, callback) {
-    return this._waitUntilStoppedRunning(executionName, callback)
-  } // waitUntilStoppedRunning
-  async _waitUntilStoppedRunning (executionName, callback) {
+  async waitUntilStoppedRunning (executionName, callback) {
     if (callback) {
-      this._waitUntilStoppedRunning(executionName)
+      this.waitUntilStoppedRunning(executionName)
         .then(executionDescription => callback(null, executionDescription))
         .catch(err => callback(err))
     } // if ...
@@ -296,7 +275,7 @@ function info (messages, msg) {
   } else {
     console.log(msg)
   }
-}
+} // info
 function warning (messages, msg) {
   if (messages) {
     info(messages, msg)
@@ -304,6 +283,6 @@ function warning (messages, msg) {
   } else {
     console.log(msg)
   }
-}
+} // warning
 
 module.exports = Statebox
