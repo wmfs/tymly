@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
-    "csvtojson": "2.0.0",
+    "csvtojson": "2.0.3",
     "mocha": "5.2.0",
     "standard": "11.0.1"
   },
