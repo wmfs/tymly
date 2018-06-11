@@ -42,7 +42,8 @@ describe('Expenses state machine', function () {
         pluginPaths: [
           require.resolve('tymly-pg-plugin'),
           require.resolve('tymly-solr-plugin'),
-          require.resolve('tymly-users-plugin')
+          require.resolve('tymly-users-plugin'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')

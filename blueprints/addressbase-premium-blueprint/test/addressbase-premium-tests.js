@@ -56,7 +56,8 @@ describe('process addressbase-premium', function () {
         tymly.boot(
           {
             pluginPaths: [
-              path.resolve(__dirname, './../../../plugins/tymly-etl-plugin'),
+              path.resolve(__dirname, '../node_modules/tymly-etl-plugin'),
+              path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin'),
               path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
             ],
             blueprintPaths: [

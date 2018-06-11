@@ -69,9 +69,9 @@ class StateboxService {
     } // if ...
 
     const [authOk, errExecDesc] = await this.authorisationCheck(stateMachineName, executionOptions, 'create')
-    return authOk ?
-      this.statebox.startExecution(input, stateMachineName, executionOptions) :
-      errExecDesc
+    return authOk
+      ? this.statebox.startExecution(input, stateMachineName, executionOptions)
+      : errExecDesc
   } // startExecution
 
   stopExecution (cause, error, executionName, executionOptions, callback) {
@@ -116,8 +116,9 @@ class StateboxService {
       action
     )
 
-    if (authorised)
+    if (authorised) {
       return [true]
+    } // if good ...
 
     return [
       false,

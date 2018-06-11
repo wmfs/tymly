@@ -11,7 +11,8 @@
     "standard": "11.0.1",
     "tymly": "^0.0.17",
     "tymly-etl-plugin": "^0.0.8",
-    "tymly-pg-plugin": "^0.0.8"
+    "tymly-pg-plugin": "^0.0.8",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "lint": "standard",

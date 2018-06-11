@@ -13,7 +13,8 @@
     "tymly": "^0.0.17",
     "tymly-pg-plugin": "^0.0.8",
     "tymly-solr-plugin": "^0.0.6",
-    "tymly-users-plugin": "^0.0.3"
+    "tymly-users-plugin": "^0.0.3",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "lint": "standard",

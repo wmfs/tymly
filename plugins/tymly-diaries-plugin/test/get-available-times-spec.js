@@ -86,7 +86,8 @@ describe('Test the get available times state resource', function () {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './..')
+          path.resolve(__dirname, './..'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/test-blueprint')

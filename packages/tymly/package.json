@@ -32,7 +32,8 @@
     "chai-subset": "1.6.0",
     "mocha": "5.2.0",
     "moment": "2.22.2",
-    "standard": "11.0.1"
+    "standard": "11.0.1",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "lint": "standard",

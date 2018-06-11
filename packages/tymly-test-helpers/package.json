@@ -1,0 +1,23 @@
+{
+  "name": "tymly-test-helpers",
+  "version": "0.0.1",
+  "description": "Small plugins to help when running Tymly in tests ",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wmfs/tymly.git"
+  },
+  "keywords": [
+    "tymly",
+    "test"
+  ],
+  "author": "Jez Higgins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wmfs/tymly/issues"
+  },
+  "homepage": "https://github.com/wmfs/tymly#readme"
+}

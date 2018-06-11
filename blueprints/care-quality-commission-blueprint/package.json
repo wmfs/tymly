@@ -10,7 +10,8 @@
     "debug": "3.1.0",
     "tymly": "^0.0.17",
     "tymly-pg-plugin": "^0.0.8",
-    "tymly-etl-plugin": "^0.0.8"
+    "tymly-etl-plugin": "^0.0.8",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "lint": "standard",

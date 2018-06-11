@@ -20,7 +20,7 @@ describe('Simple Tymly test', function () {
 
         pluginPaths: [
           path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
-          path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ]
       },
       function (err, tymlyServices) {

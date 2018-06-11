@@ -45,7 +45,8 @@ describe('Blueprint Tests', function () {
       {
         pluginPaths: [
           path.resolve(__dirname, './../../../plugins/tymly-etl-plugin'),
-          path.resolve(__dirname, './../../../plugins/tymly-pg-plugin')
+          path.resolve(__dirname, './../../../plugins/tymly-pg-plugin'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
 
         blueprintPaths: [

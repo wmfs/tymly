@@ -27,7 +27,8 @@ describe('data import', function () {
     tymly.boot(
       {
         pluginPaths: [
-          require.resolve('tymly-pg-plugin')
+          require.resolve('tymly-pg-plugin'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './../')

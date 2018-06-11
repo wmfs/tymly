@@ -69,7 +69,8 @@ describe('Tests the state resource which handle diary entries', function () {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './..')
+          path.resolve(__dirname, './..'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/test-blueprint')
@@ -92,9 +93,14 @@ describe('Tests the state resource which handle diary entries', function () {
 
   it('should create some records', async () => {
     for (let rec of TEST_RECORDS) { await entryModel.upsert(rec, {}) }
+
+
+    expect((await entryModel.find({})).length).to.eql(TEST_RECORDS.length)
   })
 
-  it('should start the create diary state machine with a valid date time', done => {
+  it('should start the create diary state machine with a valid date time', async (done) => {
+
+    expect((await entryModel.find({})).length).to.eql(TEST_RECORDS.length)
     statebox.startExecution(
       {
         startDateTime: DATE_TIME

@@ -24,7 +24,7 @@ describe('registry key state resources', function () {
             path.resolve(__dirname, './fixtures/blueprints/registry-blueprint')
           ],
           pluginPaths: [
-            path.resolve(__dirname, './fixtures/plugins/say-yes-rbac-plugin')
+            path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
           ],
           config: {
             caches: {

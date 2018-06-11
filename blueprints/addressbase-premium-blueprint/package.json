@@ -27,6 +27,7 @@
     "dirty-chai": "2.0.1",
     "mocha": "5.2.0",
     "rimraf": "2.6.2",
-    "standard": "11.0.1"
+    "standard": "11.0.1",
+    "tymly-test-helpers": "0.0.1"
   }
 }

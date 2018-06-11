@@ -9,7 +9,8 @@
     "standard": "11.0.1",
     "debug": "3.1.0",
     "tymly": "^0.0.17",
-    "tymly-pg-plugin": "^0.0.8"
+    "tymly-pg-plugin": "^0.0.8",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "start": "node ./lib/index.js",
