@@ -94,30 +94,28 @@ describe('Tests the state resource which handle diary entries', function () {
   it('should create some records', async () => {
     for (let rec of TEST_RECORDS) { await entryModel.upsert(rec, {}) }
 
-
     expect((await entryModel.find({})).length).to.eql(TEST_RECORDS.length)
   })
 
-  it('should start the create diary state machine with a valid date time', async (done) => {
-
+  it('should start the create diary state machine with a valid date time', async () => {
     expect((await entryModel.find({})).length).to.eql(TEST_RECORDS.length)
-    statebox.startExecution(
+
+    const executionDescription = await statebox.startExecution(
       {
         startDateTime: DATE_TIME
       },
       CREATE_ENTRY_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
-      },
-      (err, executionDescription) => {
-        if (err) return done(err)
-        expect(executionDescription.currentStateName).to.eql('CreateEntry')
-        expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        entryId = executionDescription.ctx.idProperties.id
-        done()
       }
     )
+
+    expect(executionDescription.currentStateName).to.eql('CreateEntry')
+    expect(executionDescription.currentResource).to.eql('module:createDiaryEntry')
+    expect(executionDescription.status).to.eql('SUCCEEDED')
+    entryId = executionDescription.ctx.idProperties.id
+
+    expect((await entryModel.find({})).length).to.eql(TEST_RECORDS.length + 1)
   })
 
   it('should check the upserted record', async () => {

@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "description": "Small plugins to help when running Tymly in tests ",
   "main": "index.js",
+  "devDependencies": {
+    "chai": "4.1.2",
+    "mocha": "5.2.0",
+    "standard": "11.0.1"
+  },
   "scripts": {
-    "test": "standard && mocha"
   },
   "repository": {
     "type": "git",
