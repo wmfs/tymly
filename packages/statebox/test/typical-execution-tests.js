@@ -56,18 +56,13 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStopped', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('helloWorld')
-              expect(executionDescription.currentStateName).to.eql('Hello World')
-              expect(executionDescription.currentResource).to.eql('module:helloWorld')
-              done()
-            }
-          )
+        it('waitUntilStopped', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('helloWorld')
+          expect(executionDescription.currentStateName).to.eql('Hello World')
+          expect(executionDescription.currentResource).to.eql('module:helloWorld')
         })
       })
 
@@ -86,18 +81,13 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('helloThenWorldThroughException')
-              expect(executionDescription.currentStateName).to.eql('World')
-              expect(executionDescription.currentResource).to.eql('module:world')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenWorldThroughException')
+          expect(executionDescription.currentStateName).to.eql('World')
+          expect(executionDescription.currentResource).to.eql('module:world')
         })
       })
 
@@ -115,18 +105,13 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
-              expect(executionDescription.currentStateName).to.eql('World')
-              expect(executionDescription.currentResource).to.eql('module:world')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenWorld')
+          expect(executionDescription.currentStateName).to.eql('World')
+          expect(executionDescription.currentResource).to.eql('module:world')
         })
       })
 
@@ -145,20 +130,15 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning reports failure', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('FAILED')
-              expect(executionDescription.stateMachineName).to.eql('helloThenFailure')
-              expect(executionDescription.currentStateName).to.eql('Failure')
-              expect(executionDescription.currentResource).to.eql('module:failure')
-              expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
-              expect(executionDescription.errorMessage).to.eql('But at least it was expected')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning reports failure', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenFailure')
+          expect(executionDescription.currentStateName).to.eql('Failure')
+          expect(executionDescription.currentResource).to.eql('module:failure')
+          expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
+          expect(executionDescription.errorMessage).to.eql('But at least it was expected')
         })
       })
 
@@ -177,20 +157,15 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning reports failure', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('FAILED')
-              expect(executionDescription.stateMachineName).to.eql('helloThenUncaughtFailure')
-              expect(executionDescription.currentStateName).to.eql('Failure')
-              expect(executionDescription.currentResource).to.eql('module:failure')
-              expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
-              expect(executionDescription.errorMessage).to.eql('But at least it was expected')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning reports failure', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('helloThenUncaughtFailure')
+          expect(executionDescription.currentStateName).to.eql('Failure')
+          expect(executionDescription.currentResource).to.eql('module:failure')
+          expect(executionDescription.errorCode).to.eql('SomethingBadHappened')
+          expect(executionDescription.errorMessage).to.eql('But at least it was expected')
         })
       })
 
@@ -212,19 +187,14 @@ describe('State machines', () => {
           )
         })
 
-        it('waitForStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('calculator')
-              expect(executionDescription.currentStateName).to.eql('Add')
-              expect(executionDescription.currentResource).to.eql('module:add')
-              expect(executionDescription.ctx.result).to.eql(5)
-              done()
-            }
-          )
+        it('waitForStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('calculator')
+          expect(executionDescription.currentStateName).to.eql('Add')
+          expect(executionDescription.currentResource).to.eql('module:add')
+          expect(executionDescription.ctx.result).to.eql(5)
         })
 
         it('startExecution subtract', function (done) {
@@ -244,19 +214,14 @@ describe('State machines', () => {
           )
         })
 
-        it('waitForStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('calculator')
-              expect(executionDescription.currentStateName).to.eql('Subtract')
-              expect(executionDescription.currentResource).to.eql('module:subtract')
-              expect(executionDescription.ctx.result).to.eql(1)
-              done()
-            }
-          )
+        it('waitForStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('calculator')
+          expect(executionDescription.currentStateName).to.eql('Subtract')
+          expect(executionDescription.currentResource).to.eql('module:subtract')
+          expect(executionDescription.ctx.result).to.eql(1)
         })
 
         it('startExecution, with input paths', function (done) {
@@ -278,19 +243,14 @@ describe('State machines', () => {
           )
         })
 
-        it('waitForStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
-              expect(executionDescription.currentStateName).to.eql('Subtract')
-              expect(executionDescription.currentResource).to.eql('module:subtract')
-              expect(executionDescription.ctx.result).to.eql(1)
-              done()
-            }
-          )
+        it('waitForStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
+          expect(executionDescription.currentStateName).to.eql('Subtract')
+          expect(executionDescription.currentResource).to.eql('module:subtract')
+          expect(executionDescription.ctx.result).to.eql(1)
         })
 
         it('describeExecution', function (done) {
@@ -326,25 +286,20 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('pass')
-              expect(executionDescription.currentStateName).to.eql('PassState')
-              expect(executionDescription.currentResource).to.eql(undefined)
-              expect(executionDescription.ctx).to.eql(
-                {
-                  georefOf: 'Home',
-                  coords: {
-                    'x-datum': 0,
-                    'y-datum': 600
-                  }
-                }
-              )
-              done()
+        it('waitUntilStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('pass')
+          expect(executionDescription.currentStateName).to.eql('PassState')
+          expect(executionDescription.currentResource).to.eql(undefined)
+          expect(executionDescription.ctx).to.eql(
+            {
+              georefOf: 'Home',
+              coords: {
+                'x-datum': 0,
+                'y-datum': 600
+              }
             }
           )
         })
@@ -364,20 +319,15 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning reports failure', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('FAILED')
-              expect(executionDescription.stateMachineName).to.eql('fail')
-              expect(executionDescription.currentStateName).to.eql('FailState')
-              expect(executionDescription.currentResource).to.eql(undefined)
-              expect(executionDescription.errorMessage).to.eql('Invalid response.')
-              expect(executionDescription.errorCode).to.eql('ErrorA')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning reports failure', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('fail')
+          expect(executionDescription.currentStateName).to.eql('FailState')
+          expect(executionDescription.currentResource).to.eql(undefined)
+          expect(executionDescription.errorMessage).to.eql('Invalid response.')
+          expect(executionDescription.errorCode).to.eql('ErrorA')
         })
       })
 
@@ -417,18 +367,13 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('parallel')
-              expect(executionDescription.currentStateName).to.eql('G')
-              expect(executionDescription.currentResource).to.eql('module:g')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('parallel')
+          expect(executionDescription.currentStateName).to.eql('G')
+          expect(executionDescription.currentResource).to.eql('module:g')
         })
       })
 
@@ -448,20 +393,15 @@ describe('State machines', () => {
           )
         })
 
-        it('waitUntilStoppedRunning reports failure', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('FAILED')
-              expect(executionDescription.stateMachineName).to.eql('parallelFail')
-              expect(executionDescription.currentStateName).to.eql('Parallel1')
-              expect(executionDescription.currentResource).to.eql(undefined)
-              expect(executionDescription.errorCause).to.eql('States.BranchFailed')
-              expect(executionDescription.errorCode).to.eql('Failed because a state in a parallel branch has failed')
-              done()
-            }
-          )
+        it('waitUntilStoppedRunning reports failure', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('parallelFail')
+          expect(executionDescription.currentStateName).to.eql('Parallel1')
+          expect(executionDescription.currentResource).to.eql(undefined)
+          expect(executionDescription.errorCause).to.eql('States.BranchFailed')
+          expect(executionDescription.errorCode).to.eql('Failed because a state in a parallel branch has failed')
         })
       })
 
@@ -482,17 +422,12 @@ describe('State machines', () => {
         }
         )
 
-        it('verify elapsed time', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              const diff = new Date().getTime() - new Date(executionDescription.startDate).getTime()
-              expect(diff).to.be.above(3000)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              done()
-            }
-          )
+        it('verify elapsed time', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          const diff = new Date().getTime() - new Date(executionDescription.startDate).getTime()
+          expect(diff).to.be.above(3000)
+          expect(executionDescription.status).to.eql('SUCCEEDED')
         })
       })
 
@@ -530,18 +465,10 @@ describe('State machines', () => {
       })
 
       describe('non-existant executions', () => {
-        it('waitUntilStoppedRunning fails', function (done) {
-          statebox.waitUntilStoppedRunning(
-            'monkey-trousers',
-            function (err, executionDescription) {
-              try {
-                expect(err).to.not.eql(null)
-                done()
-              } catch (oops) {
-                done(oops)
-              }
-            }
-          )
+        it('waitUntilStoppedRunning fails', (done) => {
+          statebox.waitUntilStoppedRunning('monkey-trousers')
+            .then(() => done('should have thrown'))
+            .catch(() => done())
         })
       })
     })

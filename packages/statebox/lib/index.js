@@ -240,13 +240,7 @@ class Statebox {
     )
   } // _sendTaskHeartbeat
 
-  async waitUntilStoppedRunning (executionName, callback) {
-    if (callback) {
-      this.waitUntilStoppedRunning(executionName)
-        .then(executionDescription => callback(null, executionDescription))
-        .catch(err => callback(err))
-    } // if ...
-
+  async waitUntilStoppedRunning (executionName) {
     let notFound = 0
 
     do {

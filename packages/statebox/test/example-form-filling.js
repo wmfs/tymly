@@ -121,25 +121,20 @@ describe('Form-filling', () => {
           )
         })
 
-        it('form-filling completed', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('formFilling')
-              expect(executionDescription.currentStateName).to.eql('World')
-              expect(executionDescription.currentResource).to.eql('module:world')
-              expect(executionDescription.ctx).to.eql(
-                {
-                  formData: {
-                    name: 'Rupert'
-                  },
-                  formId: 'fillThisFormInHuman!',
-                  some: 'payload'
-                }
-              )
-              done()
+        it('form-filling completed', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('formFilling')
+          expect(executionDescription.currentStateName).to.eql('World')
+          expect(executionDescription.currentResource).to.eql('module:world')
+          expect(executionDescription.ctx).to.eql(
+            {
+              formData: {
+                name: 'Rupert'
+              },
+              formId: 'fillThisFormInHuman!',
+              some: 'payload'
             }
           )
         })
@@ -192,19 +187,14 @@ describe('Form-filling', () => {
           )
         })
 
-        it('form-filling in failed state', function (done) {
-          statebox.waitUntilStoppedRunning(
-            executionName,
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('FAILED')
-              expect(executionDescription.stateMachineName).to.eql('formFilling')
-              expect(executionDescription.currentStateName).to.eql('FormFilling')
-              expect(executionDescription.currentResource).to.eql('module:formFilling')
-              expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
-              done()
-            }
-          )
+        it('form-filling in failed state', async () => {
+          const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
+
+          expect(executionDescription.status).to.eql('FAILED')
+          expect(executionDescription.stateMachineName).to.eql('formFilling')
+          expect(executionDescription.currentStateName).to.eql('FormFilling')
+          expect(executionDescription.currentResource).to.eql('module:formFilling')
+          expect(executionDescription.ctx).to.eql({formId: 'fillThisFormInHuman!'})
         })
       })
 
