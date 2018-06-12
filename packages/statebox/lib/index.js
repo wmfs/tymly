@@ -171,6 +171,8 @@ class Statebox {
   }
 
   describeExecution (executionName, executionOptions, callback) {
+    if (!callback) return this._promised(this.describeExecution, executionName, executionOptions)
+
     this.options.dao.findExecutionByName(executionName, callback)
   } // describeExecution
 
