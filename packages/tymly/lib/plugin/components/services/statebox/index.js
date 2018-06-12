@@ -119,8 +119,16 @@ class StateboxService {
   }
 
   waitUntilStoppedRunning (executionName, callback) {
-    return this.statebox.waitUntilStoppedRunning(executionName, callback)
-  }
+    const r = this.statebox.waitUntilStoppedRunning(executionName)
+
+    if (callback) {
+      r
+        .then(eD => callback(null, eD))
+        .catch(err => callback(err))
+    }
+
+    return r
+  } // waitUntilStoppedRunning
 
   async authorisationCheck (stateMachineName, executionOptions, action) {
     return [true] // STUB!
