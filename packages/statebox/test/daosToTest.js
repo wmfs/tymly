@@ -4,7 +4,7 @@ let messages = null
 try {
   messages = require('../../tymly/lib/startup-messages/index')()
 } catch (err) {
-  console.log('Startup messages not available', err)
+  console.log('Startup messages not available')
 }
 
 function DaosToTest () {
@@ -28,7 +28,7 @@ function DaosToTest () {
       'memory storage service', null, memoryStorageService
     ])
   } catch (err) {
-    console.log('MemoryStorageService not available', err)
+    console.log('MemoryStorageService not available')
   }
 
   return daos
