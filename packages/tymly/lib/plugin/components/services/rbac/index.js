@@ -7,6 +7,7 @@ const checkRoleAuthorization = require('./check-role-authorization')
 class RbacService {
   async boot (options, callback) {
     try {
+      this.messages = options.messages
       this.roleModel = options.bootedServices.storage.models.tymly_role
       this.roleMembershipModel = options.bootedServices.storage.models.tymly_roleMembership
       this.permissionModel = options.bootedServices.storage.models.tymly_permission
@@ -15,13 +16,13 @@ class RbacService {
       caches.defaultIfNotInConfig('userMemberships', 500)
       this.userMembershipsCache = caches.userMemberships
 
-      options.messages.info('Applying default roles')
+      this.messages.info('Applying default roles')
       await applyDefaultRoles(
         options.config.defaultUsers,
         this.roleMembershipModel
       )
 
-      options.messages.info('Applying unknown Blueprint documents')
+      this.messages.info('Applying unknown Blueprint documents')
       await applyDefaultBlueprintDocs(
         options.bootedServices.blueprintDocs,
         options.blueprintComponents,
@@ -30,12 +31,7 @@ class RbacService {
         this.permissionModel
       )
 
-      options.messages.info('Refreshing RBAC index')
-      this.rbac = await loadRbacIndex(
-        this.roleModel,
-        this.roleMembershipModel,
-        this.permissionModel
-      )
+      await this.refreshRbacIndex()
 
       callback(null)
     } catch (err) {
@@ -46,6 +42,15 @@ class RbacService {
   async ensureUserRoles (userId, roleIds) {
     return ensureUserRoles(userId, roleIds, this.roleMembershipModel)
   } // ensureUserRoles
+
+  async refreshRbacIndex () {
+    this.messages.info('Refreshing RBAC index')
+    this.rbac = await loadRbacIndex(
+      this.roleModel,
+      this.roleMembershipModel,
+      this.permissionModel
+    )
+  }
 
   /**
    * Returns with all the roles currently assigned to the specified userId

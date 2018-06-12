@@ -1,0 +1,20 @@
+{
+  "Comment": "State machine to test heartbeat functionality.",
+  "version": "1.0",
+  "StartAt": "Heartbeat",
+  "States": {
+    "Heartbeat": {
+      "Type": "Task",
+      "Resource": "module:heartBeat",
+      "End": true
+    }
+  },
+  "restrictions": [
+    {
+      "roleId": "$everyone",
+      "allows": [
+        "*"
+      ]
+    }
+  ]
+}

@@ -68,22 +68,42 @@ class StateboxService {
         .catch(err => callback(err))
     } // if ...
 
-    const [authOk, errExecDesc] = await this.authorisationCheck(stateMachineName, executionOptions, 'create')
+    const [authOk, errExecDesc] = await this.authorisationCheck(
+      executionOptions.userId,
+      stateMachineName,
+      executionOptions,
+      'create'
+    )
     return authOk
       ? this.statebox.startExecution(input, stateMachineName, executionOptions)
       : errExecDesc
   } // startExecution
 
-  stopExecution (cause, error, executionName, executionOptions, callback) {
-    return this.statebox.stopExecution(cause, error, executionName, executionOptions, callback)
-  }
+  async stopExecution (cause, error, executionName, executionOptions, callback) {
+    if (callback) {
+      return this.stopExecution(cause, error, executionName, executionOptions)
+        .then(executionDescription => callback(null, executionDescription))
+        .catch(err => callback(err))
+    }
+
+    const executionDescription = await this.statebox.describeExecution(executionName, executionOptions)
+    const [authOk, errExecDesc] = await this.authorisationCheck(
+      executionOptions.userId,
+      executionDescription.stateMachineName,
+      executionDescription.executionOptions,
+      'stop'
+    )
+    return authOk
+      ? this.statebox.stopExecution(cause, error, executionName, executionOptions)
+      : errExecDesc
+  } // stopExecution
 
   listExecutions (executionOptions, callback) {
     this.statebox.listExecutions(executionOptions, callback)
   }
 
   describeExecution (executionName, executionOptions, callback) {
-    this.statebox.describeExecution(executionName, executionOptions, callback)
+    return this.statebox.describeExecution(executionName, executionOptions, callback)
   }
 
   sendTaskSuccess (executionName, output, executionOptions, callback) {
@@ -102,13 +122,14 @@ class StateboxService {
     return this.statebox.waitUntilStoppedRunning(executionName, callback)
   }
 
-  async authorisationCheck (stateMachineName, executionOptions, action) {
-    return [true] // STUB!
-  }
-/*
-  async authorisationCheck (stateMachineName, executionOptions, action) {
+  /*
+    async authorisationCheck (stateMachineName, executionOptions, action) {
+      return [true] // STUB!
+    }
+  */
+
+  async authorisationCheck (userId, stateMachineName, executionOptions, action) {
     const rbac = this.services.rbac
-    const userId = executionOptions.userId
 
     const roles = await rbac.getUserRoles(userId)
     const authorised = rbac.checkRoleAuthorization(
@@ -134,7 +155,6 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
-*/
 } // class StateboxService
 
 function addResources (statebox, options) {
