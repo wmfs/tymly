@@ -82,7 +82,8 @@ describe('xmlFlatten State Resource', function () {
       tymly.boot(
         {
           pluginPaths: [
-            path.resolve(__dirname, './../lib')
+            path.resolve(__dirname, './../lib'),
+            path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
           ],
           blueprintPaths: [
             path.resolve(fixture, 'blueprints', 'xmlflatten-blueprint')

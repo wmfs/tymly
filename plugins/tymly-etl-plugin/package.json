@@ -17,7 +17,8 @@
     "chai": "4.1.2",
     "csvtojson": "2.0.3",
     "mocha": "5.2.0",
-    "standard": "11.0.1"
+    "standard": "11.0.1",
+    "tymly-test-helpers": "0.0.1"
   },
   "scripts": {
     "lint": "standard",

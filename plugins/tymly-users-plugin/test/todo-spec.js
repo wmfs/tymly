@@ -246,10 +246,12 @@ describe('todo changes tymly-users-plugin tests', function () {
       },
       REMOVE_TODO_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )
@@ -273,7 +275,8 @@ describe('todo changes tymly-users-plugin tests', function () {
       },
       REMOVE_TODO_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)

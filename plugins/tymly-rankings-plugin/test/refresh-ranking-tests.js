@@ -207,16 +207,17 @@ describe('Tests the Ranking State Resource', function () {
       }, // input
       SET_REFRESH_STATE_MACHINE_NAME, // state machine name
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       }, // options
       function (err, executionDescription) {
         if (err) {
           return done(err)
         }
+        expect(executionDescription.status).to.eql('SUCCEEDED')
         expect(executionDescription.currentStateName).to.eql('RefreshRanking')
         expect(executionDescription.currentResource).to.eql('module:refreshRanking')
         expect(executionDescription.stateMachineName).to.eql(SET_REFRESH_STATE_MACHINE_NAME)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
         done()
       }
     )

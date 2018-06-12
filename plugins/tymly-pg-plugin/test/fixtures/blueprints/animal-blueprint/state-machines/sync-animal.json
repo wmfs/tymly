@@ -29,7 +29,7 @@
   },
   "restrictions": [
     {
-      "roleId": "$authenticated",
+      "roleId": "$everyone",
       "allows": [
         "*"
       ]

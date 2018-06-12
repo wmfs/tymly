@@ -57,6 +57,7 @@ describe('Simple Express tests', function () {
           path.resolve(__dirname, './../lib'),
           path.resolve(__dirname, './fixtures/plugins/cats-plugin'),
           path.resolve(__dirname, './fixtures/plugins/endpoint-plugin'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin'),
           require.resolve('tymly-solr-plugin'),
           require.resolve('tymly-users-plugin')
         ],

@@ -8,7 +8,7 @@ const expect = require('chai').expect
 const process = require('process')
 const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 
-const HEARTBEAT_STATE_MACHINE = 'tymly_testHeartbeat_1_0'
+const HEARTBEAT_STATE_MACHINE = 'test_testHeartbeat_1_0'
 
 describe('awaitingUserInput state tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)

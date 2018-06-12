@@ -367,8 +367,8 @@ describe('Tests the Ranking Service', function () {
     })
   })
 
-  it('should refresh the rankings for factory via state machine since we\'ve changed the date', (done) => {
-    statebox.startExecution(
+  it('should refresh the rankings for factory via state machine since we\'ve changed the date', async () => {
+    const executionDescription = await statebox.startExecution(
       {
         schema: 'test',
         category: 'factory'
@@ -376,15 +376,12 @@ describe('Tests the Ranking Service', function () {
       REFRESH_RANKING_STATE_MACHINE_NAME,
       {
         sendResponse: 'COMPLETE'
-      },
-      (err, executionDescription) => {
-        if (err) return done(err)
-        expect(executionDescription.status).to.eql('SUCCEEDED')
-        expect(executionDescription.currentResource).to.eql('module:refreshRanking')
-        expect(executionDescription.currentStateName).to.eql('RefreshRanking')
-        done()
       }
     )
+
+    expect(executionDescription.status).to.eql('SUCCEEDED')
+    expect(executionDescription.currentResource).to.eql('module:refreshRanking')
+    expect(executionDescription.currentStateName).to.eql('RefreshRanking')
   })
 
   it('should check the growth curve has changed', async () => {

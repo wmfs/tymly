@@ -19,7 +19,8 @@ describe('CSV and tymly test', function () {
     tymly.boot(
       {
         pluginPaths: [
-          path.resolve(__dirname, './../lib')
+          path.resolve(__dirname, './../lib'),
+          path.resolve(__dirname, '../node_modules/tymly-test-helpers/plugins/allow-everything-rbac-plugin')
         ],
         blueprintPaths: [
           path.resolve(__dirname, './fixtures/people/blueprints/people-blueprint')

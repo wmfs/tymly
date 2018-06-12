@@ -192,7 +192,8 @@ describe('watched-boards tymly-users-plugin tests', function () {
       },
       UNWATCH_BOARD_STATE_MACHINE,
       {
-        sendResponse: 'COMPLETE'
+        sendResponse: 'COMPLETE',
+        userId: 'test-user'
       },
       function (err, executionDescription) {
         expect(err).to.eql(null)
