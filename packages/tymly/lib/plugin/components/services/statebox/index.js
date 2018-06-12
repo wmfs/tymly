@@ -3,6 +3,16 @@
 const Statebox = require('statebox')
 const _ = require('lodash')
 
+function promiseOrCallback (p, callback) {
+  if (callback) {
+    p
+      .then(r => callback(null, r))
+      .catch(err => callback(err))
+  } else {
+    return p
+  }
+} // promiseOrCallback
+
 class StateboxService {
   async boot (options, callback) {
     this.services = options.bootedServices
@@ -106,9 +116,26 @@ class StateboxService {
     return this.statebox.describeExecution(executionName, executionOptions, callback)
   }
 
-  sendTaskSuccess (executionName, output, executionOptions, callback) {
-    this.statebox.sendTaskSuccess(executionName, output, executionOptions, callback)
-  }
+  async sendTaskSuccess (executionName, output, executionOptions, callback) {
+    if (callback) {
+      return promiseOrCallback(this.statebox.sendTaskSuccess(executionName, output, executionOptions), callback)
+    }
+
+    const executionDescription = await this.statebox.describeExecution(executionName, executionOptions)
+    const [authOk, errExecDesc] = await this.authorisationCheck(
+      executionOptions.userId,
+      executionDescription.stateMachineName,
+      executionDescription.executionOptions,
+      'update'
+    )
+
+    // hmm, should we be returning the execution description here?
+    if (authOk) {
+      this.statebox.sendTaskSuccess(executionName, output, executionOptions)
+    } else {
+      throw new Error(errExecDesc.errorMessage)
+    }
+  } // sendTaskSuccess
 
   sendTaskHeartbeat (executionName, output, executionOptions, callback) {
     this.statebox.sendTaskHeartbeat(executionName, output, executionOptions, callback)
@@ -119,22 +146,17 @@ class StateboxService {
   }
 
   waitUntilStoppedRunning (executionName, callback) {
-    const r = this.statebox.waitUntilStoppedRunning(executionName)
+    const p = this.statebox.waitUntilStoppedRunning(executionName)
 
-    if (callback) {
-      r
-        .then(eD => callback(null, eD))
-        .catch(err => callback(err))
-    }
-
-    return r
+    return promiseOrCallback(p, callback)
   } // waitUntilStoppedRunning
 
-  async authorisationCheck (stateMachineName, executionOptions, action) {
+  /*
+  authorisationCheck (stateMachineName, executionOptions, action) {
     return [true] // STUB!
   }
+  */
 
-  /*
   async authorisationCheck (userId, stateMachineName, executionOptions, action) {
     const rbac = this.services.rbac
 
@@ -162,7 +184,6 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
-  */
 } // class StateboxService
 
 function addResources (statebox, options) {
