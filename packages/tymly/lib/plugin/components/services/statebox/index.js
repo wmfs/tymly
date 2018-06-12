@@ -122,12 +122,11 @@ class StateboxService {
     return this.statebox.waitUntilStoppedRunning(executionName, callback)
   }
 
-  /*
-    async authorisationCheck (stateMachineName, executionOptions, action) {
-      return [true] // STUB!
-    }
-  */
+  async authorisationCheck (stateMachineName, executionOptions, action) {
+    return [true] // STUB!
+  }
 
+  /*
   async authorisationCheck (userId, stateMachineName, executionOptions, action) {
     const rbac = this.services.rbac
 
@@ -155,6 +154,7 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
+  */
 } // class StateboxService
 
 function addResources (statebox, options) {
