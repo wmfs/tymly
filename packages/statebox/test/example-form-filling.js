@@ -105,19 +105,14 @@ describe('Form-filling', () => {
           )
         })
 
-        it('sendTaskSuccess (i.e. some completed form data)', function (done) {
-          statebox.sendTaskSuccess(
+        it('sendTaskSuccess (i.e. some completed form data)', async () => {
+          await statebox.sendTaskSuccess(
             executionName,
             {
               formData: {
                 name: 'Rupert'
               }
-            }, // output
-            {}, // executionOptions
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              done()
-            }
+            } // output
           )
         })
 
@@ -245,20 +240,17 @@ describe('Form-filling', () => {
           )
         })
 
-        it('reject sendTaskSuccess on a stopped state machine', function (done) {
+        it('reject sendTaskSuccess on a stopped state machine', (done) => {
           statebox.sendTaskSuccess(
             executionName,
             {
               formData: {
                 name: 'Rupert'
               }
-            }, // output
-            {}, // executionOptions
-            function (err) {
-              expect(err).to.be.an('error')
-              done()
-            }
+            } // output
           )
+            .then(() => done('Expected an exception'))
+            .catch(() => done())
         })
 
         it('sendTaskFailure on a stopped state machine', function (done) {

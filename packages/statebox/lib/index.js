@@ -176,26 +176,16 @@ class Statebox {
     this.options.dao.findExecutionByName(executionName, callback)
   } // describeExecution
 
-  sendTaskSuccess (executionName, output, executionOptions, callback) {
-    this.options.dao.findExecutionByName(
-      executionName,
-      function (err, executionDescription) {
-        if (err) {
-          callback(err)
-        } else {
-          if (executionDescription && executionDescription.status === Status.RUNNING) {
-            const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
-            const stateToRun = stateMachine.states[executionDescription.currentStateName]
-            stateToRun.runTaskSuccess(executionDescription, output)
-            callback(null)
-          } else {
-            callback(
-              new Error(`Success has been rejected because execution is not running (executionName='${executionName}')`)
-            )
-          }
-        }
-      }
-    )
+  async sendTaskSuccess (executionName, output) {
+    const executionDescription = await this.options.dao.findExecutionByName(executionName)
+
+    if (executionDescription && executionDescription.status === Status.RUNNING) {
+      const stateMachine = stateMachines.findStateMachineByName(executionDescription.stateMachineName)
+      const stateToRun = stateMachine.states[executionDescription.currentStateName]
+      stateToRun.runTaskSuccess(executionDescription, output)
+    } else {
+      throw new Error(`Success has been rejected because execution is not running (executionName='${executionName}')`)
+    }
   } // _sendTaskSuccess
 
   sendTaskFailure (executionName, options, executionOptions, callback) {
