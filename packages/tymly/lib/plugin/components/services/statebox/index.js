@@ -96,7 +96,7 @@ class StateboxService {
         .catch(err => callback(err))
     }
 
-    const executionDescription = await this.statebox.describeExecution(executionName, executionOptions)
+    const executionDescription = await this.statebox.describeExecution(executionName)
     const [authOk, errExecDesc] = await this.authorisationCheck(
       executionOptions.userId,
       executionDescription.stateMachineName,
@@ -113,12 +113,12 @@ class StateboxService {
   }
 
   describeExecution (executionName, executionOptions, callback) {
-    return this.statebox.describeExecution(executionName, executionOptions, callback)
-  }
+    return promiseOrCallback(this.statebox.describeExecution(executionName), callback)
+  } // describeExecution
 
   async sendTaskSuccess (executionName, output, executionOptions, callback) {
     if (callback) {
-      return promiseOrCallback(this.statebox.sendTaskSuccess(executionName, output, executionOptions), callback)
+      return promiseOrCallback(this.sendTaskSuccess(executionName, output, executionOptions), callback)
     }
 
     const executionDescription = await this.statebox.describeExecution(executionName, executionOptions)
@@ -131,7 +131,7 @@ class StateboxService {
 
     // hmm, should we be returning the execution description here?
     if (authOk) {
-      this.statebox.sendTaskSuccess(executionName, output, executionOptions)
+      return this.statebox.sendTaskSuccess(executionName, output)
     } else {
       throw new Error(errExecDesc.errorMessage)
     }
@@ -142,7 +142,7 @@ class StateboxService {
   }
 
   sendTaskFailure (executionName, output, executionOptions, callback) {
-    this.statebox.sendTaskFailure(executionName, output, executionOptions, callback)
+    return promiseOrCallback(this.statebox.sendTaskFailure(executionName, output), callback)
   }
 
   waitUntilStoppedRunning (executionName, callback) {

@@ -1,5 +1,14 @@
 # statebox
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/statebox/LICENSE)
+[![Tymly Package](https://img.shields.io/badge/tymly-package-blue.svg)](https://tymly.io/)
+[![npm (scoped)](https://img.shields.io/npm/v/@wmfs/statebox.svg)](https://www.npmjs.com/package/@wmfs/statebox)
+[![Build Status](https://travis-ci.org/wmfs/statebox.svg?branch=master)](https://travis-ci.org/wmfs/statebox)
+[![codecov](https://codecov.io/gh/wmfs/statebox/branch/master/graph/badge.svg)](https://codecov.io/gh/wmfs/statebox)
+[![CodeFactor](https://www.codefactor.io/repository/github/wmfs/statebox/badge)](https://www.codefactor.io/repository/github/wmfs/statebox)
+[![Dependabot badge](https://img.shields.io/badge/Dependabot-active-brightgreen.svg)](https://dependabot.com/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/pg-concat/LICENSE)
+
 
 > Orchestrate Node functions using [Amazon States Language](https://states-language.net/spec.html)
 
@@ -102,7 +111,7 @@ const info = statebox.createStateMachines(
 // Start a new execution on a state machine
 // ----------------------------------------
 
-statebox.startExecution(
+executionDescription = await statebox.startExecution(
   {
     numbers: {
       number1: 3,
@@ -111,52 +120,48 @@ statebox.startExecution(
     operator: '-'
   },  // input
   'calculator', // state machine name
-  {}, // options
-  function (err, result) {
-    // Result object
-    // -------------
-    //  {
-    //    executionName: '01e1e288-9533-11e7-8fec-54d168e2e610',
-    //    ctx: {
-    //      numbers: {
-    //        number1: 3,
-    //        number2: 2
-    //      },
-    //      operator: '-'
-    //    },
-    //    currentStateName: 'OperatorChoice',
-    //    stateMachineName: 'calculator',
-    //    status: 'RUNNING',
-    //    startDate: '2017-09-10T09:40:22.589Z'
-    //  }
-  }
+  {} // options
 )
+// Result object
+// -------------
+//  {
+//    executionName: '01e1e288-9533-11e7-8fec-54d168e2e610',
+//    ctx: {
+//      numbers: {
+//        number1: 3,
+//        number2: 2
+//      },
+//      operator: '-'
+//    },
+//    currentStateName: 'OperatorChoice',
+//    stateMachineName: 'calculator',
+//    status: 'RUNNING',
+//    startDate: '2017-09-10T09:40:22.589Z'
+//  }
 
 // STEP 4:
 // Look at the results...
 // ----------------------
-statebox.describeExecution(
-  '01e1e288-9533-11e7-8fec-54d168e2e610',
-  function (err, result) {
-    //  Result object
-    //  -------------
-    // {
-    //   executionName: '01e1e288-9533-11e7-8fec-54d168e2e610',
-    //   ctx: {
-    //     numbers': {
-    //       number1: 3,
-    //       number2: 2
-    //     },
-    //     operator: '-',
-    //     result: 1 <--- The important bit :-)
-    //   },
-    //   currentStateName: 'Subtract',
-    //   stateMachineName: 'calculator',
-    //   status: 'SUCCEEDED',
-    //   startDate: '2017-09-10T09:59:50.711Z'
-    // }
-  }
-)  
+executionDescription = await statebox.describeExecution(
+  '01e1e288-9533-11e7-8fec-54d168e2e610'
+)
+//  Result object
+//  -------------
+// {
+//   executionName: '01e1e288-9533-11e7-8fec-54d168e2e610',
+//   ctx: {
+//     numbers': {
+//       number1: 3,
+//       number2: 2
+//     },
+//     operator: '-',
+//     result: 1 <--- The important bit :-)
+//   },
+//   currentStateName: 'Subtract',
+//   stateMachineName: 'calculator',
+//   status: 'SUCCEEDED',
+//   startDate: '2017-09-10T09:59:50.711Z'
+// }
 ```
 
 ## <a name='test'></a>Testing

@@ -20,7 +20,7 @@ class Context {
 
   sendTaskSuccess (output) {
     debug(`sendTaskSuccess(${this.executionName})`)
-    this.task.processTaskSuccess(output, this.executionName)
+    this.task.processTaskSuccess(this.executionName, output)
   }
 
   sendTaskFailure (options) {
@@ -104,49 +104,63 @@ class Task extends BaseStateType {
     } else {
       throw (boom.badRequest(`Unable to create Task '${stateName}' in stateMachine '${this.stateMachineName}' - no 'Resource' property set?`))
     }
-  }
+  } // constructor
 
-  stateTypeInit (env, callback) {
-    const _this = this
+  stateTypeInit (env) {
     this.resource = new this.ResourceClass()
     this.resourceExpectsDoneCallback = this.resource.run.length === 3
 
-    if (_.isFunction(this.resource.init)) {
-      this.resource.init(_this.definition.ResourceConfig || {}, env, (err) => {
-        if (err) return callback(err)
-        if (_.get(this.resource, 'schema.required')) {
-          this.resource.schema.required.map(requiredProperty => {
-            if (this.ResourceConfig) {
-              if (!Object.keys(this.ResourceConfig).includes(requiredProperty)) {
-                callback(new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`))
-              } else {
-                switch (this.resource.schema.properties[requiredProperty].type) {
-                  case 'object':
-                    if (!_.isPlainObject(this.ResourceConfig[requiredProperty])) {
-                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be an object`))
-                    }
-                    break
-                  case 'string':
-                    if (!_.isString(this.ResourceConfig[requiredProperty])) {
-                      callback(new Error(`Resource config property '${requiredProperty}' in stateMachine '${this.stateMachineName}' should be a string`))
-                    }
-                    break
-                }
-              }
-            } else {
-              callback(new Error(`State machine '${this.stateMachineName}' is missing a ResourceConfig`))
-            }
-          })
+    return this.resourceInit(this.resource, env)
+  } // stateTypeInit
 
-          callback(null)
-        } else {
-          callback(null)
-        }
-      })
-    } else {
-      callback(null)
+  async resourceInit (resource, env) {
+    if (!_.isFunction(resource.init)) {
+      return
     }
-  }
+
+    await new Promise((resolve, reject) =>
+      resource.init(
+        this.definition.ResourceConfig || {},
+        env,
+        err => err ? reject(err) : resolve()
+      )
+    )
+
+    this.resourceConfigure(resource)
+  } // resourceInit
+
+  resourceConfigure (resource) {
+    const requiredConfig = _.get(resource, 'schema.required')
+
+    if (!requiredConfig) {
+      return // nothing more to do
+    }
+
+    if (!this.ResourceConfig) {
+      throw new Error(`State machine '${this.stateMachineName}' is missing a ResourceConfig`)
+    }
+
+    const configProperties = resource.schema.properties
+    const validators = {
+      'object': _.isPlainObject,
+      'string': _.isString
+    }
+    const allPropertyNames = Object.keys(this.ResourceConfig)
+
+    for (const propertyName of requiredConfig) {
+      if (!allPropertyNames.includes(propertyName)) {
+        throw new Error(`Resource Config missing required properties in stateMachine '${this.stateMachineName}'`)
+      }
+
+      const propertyValue = this.ResourceConfig[propertyName]
+      const type = configProperties[propertyName].type
+      const validator = validators[type]
+
+      if (validator && !validator(propertyValue)) {
+        throw new Error(`Resource config property '${propertyName}' in stateMachine '${this.stateMachineName}' should be of type ${type}`)
+      }
+    } // for ...
+  } // resourceInit
 
   process (executionDescription, optionalDoneCallback) {
     const _this = this

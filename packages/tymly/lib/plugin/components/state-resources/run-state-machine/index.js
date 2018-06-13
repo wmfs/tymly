@@ -46,7 +46,7 @@ class RunStateMachine {
 } // class RunStateMachine
 
 function desiredResponse (context) {
-  const callback = context.task.options.callbackManager.callbacks[context.executionName]
+  const callback = context.task.callbackManager.callbacks[context.executionName]
   return callback ? callback.eventName : COMPLETE
 } // desiredResponse
 

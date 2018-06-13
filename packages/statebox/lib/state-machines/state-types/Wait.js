@@ -15,7 +15,7 @@ class Context {
 
   sendTaskSuccess (output) {
     debug(`sendTaskSuccess(${this.executionName})`)
-    this.task.processTaskSuccess(output, this.executionName)
+    this.task.processTaskSuccess(this.executionName, output)
   }
 
   sendTaskFailure (options) {
@@ -37,7 +37,6 @@ class Wait extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
     super(stateName, stateMachine, stateDefinition, options)
     this.stateMachine = stateMachine
-    this.options = options
     this.inputPath = stateDefinition.InputPath || '$'
     this.resultPath = convertJsonpathToDottie(stateDefinition.ResultPath)
     this.timeout = stateDefinition.Seconds

@@ -42,18 +42,15 @@ describe('State machines', () => {
       })
 
       describe('helloWorld - state machine with a single state', () => {
-        it('start', function (done) {
-          statebox.startExecution(
+        it('start', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloWorld', // state machine name
-            {}, // options
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('RUNNING')
-              executionName = executionDescription.executionName
-              done()
-            }
+            {} // options
           )
+
+          expect(executionDescription.status).to.eql('RUNNING')
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStopped', async () => {
@@ -67,18 +64,15 @@ describe('State machines', () => {
       })
 
       describe('helloThenWorldThroughException, four-state machine which fails mid-way but recovers via catching exceptions', () => {
-        it('start', function (done) {
-          statebox.startExecution(
+        it('start', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloThenWorldThroughException', // state machine name
-            {}, // options
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('RUNNING')
-              executionName = executionDescription.executionName
-              done()
-            }
+            {} // options
           )
+
+          expect(executionDescription.status).to.eql('RUNNING')
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning', async () => {
@@ -92,17 +86,14 @@ describe('State machines', () => {
       })
 
       describe('helloThenWorld - state machine with two states', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloThenWorld', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning', async () => {
@@ -116,18 +107,14 @@ describe('State machines', () => {
       })
 
       describe('helloThenFailure, two state machine which fails in second state', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloThenFailure', // state machine name
-            {}, // options
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              executionName = executionDescription.executionName
-              expect(executionDescription.status).to.eql('RUNNING')
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning reports failure', async () => {
@@ -143,18 +130,15 @@ describe('State machines', () => {
       })
 
       describe('helloThenUncaughtFailure, a state machine that fails with an exception its error recovery does not catch', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloThenUncaughtFailure', // state machine name
-            {}, // options
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              executionName = executionDescription.executionName
-              expect(executionDescription.status).to.eql('RUNNING')
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
+          expect(executionDescription.status).to.eql('RUNNING')
         })
 
         it('waitUntilStoppedRunning reports failure', async () => {
@@ -170,21 +154,18 @@ describe('State machines', () => {
       })
 
       describe('calculator - a state machine with choice state', () => {
-        it('startExecution add', function (done) {
-          statebox.startExecution(
+        it('startExecution add', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               number1: 3,
               operator: '+',
               number2: 2
             }, // input
             'calculator', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitForStoppedRunning', async () => {
@@ -197,21 +178,18 @@ describe('State machines', () => {
           expect(executionDescription.ctx.result).to.eql(5)
         })
 
-        it('startExecution subtract', function (done) {
-          statebox.startExecution(
+        it('startExecution subtract', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               number1: 3,
               operator: '-',
               number2: 2
             }, // input
             'calculator', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitForStoppedRunning', async () => {
@@ -224,8 +202,8 @@ describe('State machines', () => {
           expect(executionDescription.ctx.result).to.eql(1)
         })
 
-        it('startExecution, with input paths', function (done) {
-          statebox.startExecution(
+        it('startExecution, with input paths', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               numbers: {
                 number1: 3,
@@ -234,13 +212,10 @@ describe('State machines', () => {
               operator: '-'
             }, // input
             'calculatorWithInputPaths', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitForStoppedRunning', async () => {
@@ -253,37 +228,28 @@ describe('State machines', () => {
           expect(executionDescription.ctx.result).to.eql(1)
         })
 
-        it('describeExecution', function (done) {
-          statebox.describeExecution(
-            executionName,
-            {},
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
-              expect(executionDescription.currentStateName).to.eql('Subtract')
-              expect(executionDescription.currentResource).to.eql('module:subtract')
-              expect(executionDescription.ctx.result).to.eql(1)
-              done()
-            }
-          )
+        it('describeExecution', async () => {
+          const executionDescription = await statebox.describeExecution(executionName)
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
+          expect(executionDescription.stateMachineName).to.eql('calculatorWithInputPaths')
+          expect(executionDescription.currentStateName).to.eql('Subtract')
+          expect(executionDescription.currentResource).to.eql('module:subtract')
+          expect(executionDescription.ctx.result).to.eql(1)
         })
       })
 
       describe('pass state', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               georefOf: 'Home'
             },
             'pass', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning', async () => {
@@ -306,17 +272,14 @@ describe('State machines', () => {
       })
 
       describe('fail state', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {},
             'fail', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning reports failure', async () => {
@@ -352,19 +315,16 @@ describe('State machines', () => {
         //                       |
         //                       G
         // Expected order [Parallel1, B, Parallel2, D, E, C, F, A, G ]
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               results: []
             },
             'parallel', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning', async () => {
@@ -378,19 +338,16 @@ describe('State machines', () => {
       })
 
       describe('parallel-failing - state machine with multiple parallel branches with a failing branch', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {
               results: []
             },
             'parallelFail', // state machine name
-            {}, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              done()
-            }
+            {} // options
           )
+
+          executionName = executionDescription.executionName
         })
 
         it('waitUntilStoppedRunning reports failure', async () => {
@@ -406,21 +363,17 @@ describe('State machines', () => {
       })
 
       describe('wait state', () => {
-        it('startExecution', function (done) {
-          statebox.startExecution(
+        it('startExecution', async () => {
+          const executionDescription = await statebox.startExecution(
             {},
             'waitState',
-            {},
-            (err, result) => {
-              expect(err).to.eql(null)
-              expect(result.stateMachineName).to.eql('waitState')
-              expect(result.status).to.eql('RUNNING')
-              executionName = result.executionName
-              console.log('execution name: ', executionName)
-              done()
-            })
-        }
-        )
+            {}
+          )
+
+          expect(executionDescription.stateMachineName).to.eql('waitState')
+          expect(executionDescription.status).to.eql('RUNNING')
+          executionName = executionDescription.executionName
+        })
 
         it('verify elapsed time', async () => {
           const executionDescription = await statebox.waitUntilStoppedRunning(executionName)
@@ -432,35 +385,29 @@ describe('State machines', () => {
       })
 
       describe('startExecution with sendResponse: COMPLETE', () => {
-        it('helloWorld succeeds', function (done) {
-          statebox.startExecution(
+        it('helloWorld succeeds', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloWorld', // state machine name
             {
               sendResponse: 'COMPLETE'
-            }, // options
-            function (err, executionDescription) {
-              expect(err).to.eql(null)
-              expect(executionDescription.status).to.eql('SUCCEEDED')
-              done()
-            }
+            } // options
           )
+
+          expect(executionDescription.status).to.eql('SUCCEEDED')
         })
 
-        it('helloThenFailure fails', function (done) {
-          statebox.startExecution(
+        it('helloThenFailure fails', async () => {
+          const executionDescription = await statebox.startExecution(
             {}, // input
             'helloThenFailure', // state machine name
             {
               sendResponse: 'COMPLETE'
-            }, // options
-            function (err, result) {
-              expect(err).to.eql(null)
-              executionName = result.executionName
-              expect(result.status).to.eql('FAILED')
-              done()
-            }
+            } // options
           )
+
+          executionName = executionDescription.executionName
+          expect(executionDescription.status).to.eql('FAILED')
         })
       })
 

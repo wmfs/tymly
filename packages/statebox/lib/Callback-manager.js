@@ -1,30 +1,53 @@
-'use strict'
 
-// This is to support the deferred calling of callbacks as set by the 'sendResponse' execution option.
+class Latch {
+  constructor () {
+    this.promise_ = new Promise(resolve => {
+      this.trigger_ = (result) => resolve(result)
+    })
+  }
+
+  promise () {
+    return this.promise_
+  }
+
+  fire (result) {
+    this.trigger_(result)
+  }
+} // class Latch
+
+function makeLatch () {
+  return new Latch()
+}
+
 class CallbackManager {
   constructor () {
     this.callbacks = {}
   }
 
-  addCallback (eventName, executionName, callback) {
+  addCallback (eventName, executionName) {
+    const latch = makeLatch()
     this.callbacks[executionName] = {
       eventName: eventName,
       timestamp: new Date(),
-      callback: callback
+      latch: latch
     }
-  }
+    return latch.promise()
+  } // addCallback
 
-  getAndRemoveCallback (eventName, executionName) {
-    if (this.hasEvent(eventName, executionName)) {
-      const callback = this.callbacks[executionName].callback
-      delete this.callbacks[executionName]
-      return callback
+  fireCallback (eventName, executionName, output) {
+    if (!this.hasEvent(eventName, executionName)) {
+      return
     }
-  }
+
+    const latch = this.callbacks[executionName].latch
+    delete this.callbacks[executionName]
+    latch.fire(output)
+  } // fireCallback
 
   hasEvent (eventName, executionName) {
-    return this.callbacks.hasOwnProperty(executionName) && this.callbacks[executionName].eventName === eventName
-  }
-}
+    return this.callbacks.hasOwnProperty(executionName) &&
+      this.callbacks[executionName].eventName === eventName
+  } // hasEvent
+} // CallbackManager
 
 module.exports = CallbackManager

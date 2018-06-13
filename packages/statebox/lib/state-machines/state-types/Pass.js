@@ -13,8 +13,8 @@ class Pass extends BaseStateType {
 
   process (executionDescription) {
     this.processTaskSuccess(
-      this.result,
-      executionDescription.executionName
+      executionDescription.executionName,
+      this.result
     )
   }
 }

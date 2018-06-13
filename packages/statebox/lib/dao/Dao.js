@@ -33,10 +33,14 @@ class Dao {
     )
   } // findExecutionByName
 
-  succeedExecution (executionName, ctx, callback = NotSet) {
-    return pOrC(
-      this._succeedExecution(executionName, ctx),
-      callback
+  succeedExecution (executionName, ctx) {
+    return this._updateExecution(
+      executionName,
+      execution => {
+        execution.status = Status.SUCCEEDED
+        execution.ctx = ctx
+      },
+      boom.badRequest(`Unable to succeed execution with name '${executionName}'`)
     )
   } // succeedExecution
 
@@ -54,10 +58,14 @@ class Dao {
     )
   } // setNextState
 
-  updateCurrentStateName (stateName, currentResource, executionName, callback = NotSet) {
-    return pOrC(
-      this._updateCurrentStateName(stateName, currentResource, executionName),
-      callback
+  updateCurrentStateName (stateName, currentResource, executionName) {
+    return this._updateExecution(
+      executionName,
+      execution => {
+        execution.currentStateName = stateName
+        execution.currentResource = currentResource
+      },
+      boom.badRequest(`Unable to update state name for execution with name '${executionName}'`)
     )
   } // updateCurrentStateName
 
@@ -90,17 +98,6 @@ class Dao {
       boom.badRequest(`Unable to stop execution with name '${executionName}'`)
     )
   } // _stopExecution
-
-  _succeedExecution (executionName, ctx) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.status = Status.SUCCEEDED
-        execution.ctx = ctx
-      },
-      boom.badRequest(`Unable to succeed execution with name '${executionName}'`)
-    )
-  } // _succeedExecution
 
   _failExecution (executionDescription, errorMessage, errorCode) {
     const executionName = executionDescription.executionName
@@ -145,17 +142,6 @@ class Dao {
       boom.badRequest(`Unable to set next state name for execution with name '${executionName}'`)
     )
   } // _setNextState
-
-  _updateCurrentStateName (stateName, currentResource, executionName) {
-    return this._updateExecution(
-      executionName,
-      execution => {
-        execution.currentStateName = stateName
-        execution.currentResource = currentResource
-      },
-      boom.badRequest(`Unable to update state name for execution with name '${executionName}'`)
-    )
-  } // _updateCurrentStateName
 
   /// ///////////
   /// subclass provides

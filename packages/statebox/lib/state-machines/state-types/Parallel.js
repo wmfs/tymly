@@ -1,62 +1,51 @@
 'use strict'
-const _ = require('lodash')
+const cloneDeep = require('lodash/cloneDeep')
 const BaseStateType = require('./Base-state')
-const async = require('async')
 
 class Parallel extends BaseStateType {
   constructor (stateName, stateMachine, stateDefinition, options) {
     super(stateName, stateMachine, stateDefinition, options)
-    const _this = this
-    this.parallelBranchTracker = options.parallelBranchTracker
+
+    this.options = options
+    this.executioner = options.executioner
     this.stateType = 'Parallel'
-    this.branches = []
-    stateDefinition.Branches.forEach(
-      function (branchDefinition) {
+    this.branches = stateDefinition.Branches
+      .map(branchDefinition => {
         const parts = stateMachine.name.split(':')
         const stateMachineName = parts[0] + ':' + branchDefinition.StartAt
-        _this.branches.push(stateMachineName)
-      }
-    )
+        return stateMachineName
+      })
+
     this.debug()
-  }
+  } // constructor
 
   process (executionDescription) {
-    const _this = this
     const parentExecutionName = executionDescription.executionName
     const rootExecutionName = executionDescription.executionOptions.rootExecutionName || executionDescription.executionName
     this.parallelBranchTracker.addParentExecutionName(parentExecutionName)
-    async.each(
-      this.branches,
-      function (stateMachineName, cb) {
-        _this.options.executioner(
-          _.cloneDeep(executionDescription.ctx),
+
+    const branchExecutions = this.branches
+      .map(stateMachineName => {
+        const branchContext = cloneDeep(executionDescription.ctx)
+        return this.executioner(
+          branchContext,
           stateMachineName,
           {
             parentExecutionName: parentExecutionName,
             rootExecutionName: rootExecutionName
           },
-          _this.options,
-          function (err, childExecutionDescription) {
-            if (err) {
-              cb(err)
-            } else {
-              _this.parallelBranchTracker.addChildExecutionName(
-                parentExecutionName,
-                childExecutionDescription.executionName
-              )
-              cb(null)
-            }
-          }
+          this.options
+        ).then(childExecutionDescription =>
+          this.parallelBranchTracker.addChildExecutionName(
+            parentExecutionName,
+            childExecutionDescription.executionName
+          )
         )
-      },
-      function (err) {
-        if (err) {
-          // TODO: Needs handling!
-          throw new Error(err)
-        }
-      }
-    )
-  }
-}
+      })
+
+    Promise.all(branchExecutions)
+      .catch(err => { throw new Error(err) }) // TODO: Needs proper handling
+  } // process
+} // class Parallel
 
 module.exports = Parallel

@@ -1,7 +1,7 @@
 const stateMachines = require('./state-machines')
 const boom = require('boom')
 
-function executioner (input, stateMachineName, executionOptions, options, callback) {
+async function executioner (input, stateMachineName, executionOptions, options) {
   // References
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html
   //   http://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
@@ -11,36 +11,31 @@ function executioner (input, stateMachineName, executionOptions, options, callba
   const stateMachineToExecute = stateMachines.findStateMachineByName(stateMachineName)
   if (!stateMachineToExecute) {
     // No stateMachine!
-    return callback(
-      boom.badRequest(
-        `Unknown stateMachine with name '${stateMachineName}'`,
-        stateMachineName
-      )
+    throw boom.badRequest(
+      `Unknown stateMachine with name '${stateMachineName}'`,
+      stateMachineName
     )
   } // if ...
 
   const currentResource = stateMachineToExecute.definition.States[stateMachineToExecute.startAt].Resource
-  options.dao.createNewExecution(
+  const executionDescription = await options.dao.createNewExecution(
     stateMachineToExecute.startAt,
     currentResource,
     input,
     stateMachineName,
     executionOptions
   )
-    .then(executionDescription => {
-      stateMachineToExecute.processState(executionDescription.executionName)
-      if (hasDelayedResponse(executionOptions)) {
-        return options.callbackManager.addCallback(
-          executionOptions.sendResponse,
-          executionDescription.executionName,
-          callback
-        )
-      } else {
-        callback(null, executionDescription)
-      } // if ...
-    })
-    .catch(err => callback(err))
-}
+
+  stateMachineToExecute.processState(executionDescription.executionName)
+  if (hasDelayedResponse(executionOptions)) {
+    return options.callbackManager.addCallback(
+      executionOptions.sendResponse,
+      executionDescription.executionName
+    )
+  }
+
+  return executionDescription
+} // executioner
 
 function hasDelayedResponse (executionOptions) {
   return executionOptions.sendResponse &&
