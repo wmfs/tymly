@@ -181,7 +181,6 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
-
 } // class StateboxService
 
 function addResources (statebox, options) {
