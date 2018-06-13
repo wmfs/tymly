@@ -5,6 +5,7 @@ const stats = require('stats-lite')
 const dist = require('distributions')
 const moment = require('moment')
 const calculateNewRiskScore = require('./calculate-new-risk-score')
+const calculateGrowthCurve = require('./calculate-growth-curve')
 const debug = require('debug')('tymly-rankings-plugin')
 
 module.exports = async function generateStats (options, callback) {
@@ -45,8 +46,12 @@ module.exports = async function generateStats (options, callback) {
 
       const row = await options.rankingModel.findById(s.uprn)
 
+      const daysSinceAudit = row.lastAuditDate
+        ? moment().diff(row.lastAuditDate, 'days')
+        : null
+
       const growthCurve = row.lastAuditDate && row.fsManagement
-        ? +calculateGrowthCurve(fsRanges[row.fsManagement], row.lastAuditDate, s.original).toFixed(5)
+        ? +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, s.original).toFixed(5)
         : null
 
       const updatedRiskScore = growthCurve
@@ -84,16 +89,6 @@ module.exports = async function generateStats (options, callback) {
   }
 
   callback(null)
-}
-
-function calculateGrowthCurve (exp, date, riskScore) {
-  const daysSince = moment().diff(date, 'days')
-  const expression = Math.exp(exp * daysSince)
-  const denominator = 1 + (81 * expression)
-
-  debug(`Calculating growth curve: ${riskScore} / ( 1 + ( 81 * ( e ^ ( ${daysSince} * ${exp} ) ) ) ) = ${riskScore / denominator}`)
-
-  return riskScore / denominator
 }
 
 function generateRanges (scores, mean, stdev) {
