@@ -46,7 +46,7 @@ const heartBeatTests = [
   }
 ]
 
-xdescribe('statebox service RBAC authorisation tests', function () {
+describe('statebox service RBAC authorisation tests', function () {
   this.timeout(process.env.TIMEOUT || 5000)
 
   let tymlyService
@@ -222,13 +222,14 @@ xdescribe('statebox service RBAC authorisation tests', function () {
               })
 
               it('sendTaskSuccess', async () => {
-                await statebox.sendTaskSuccess(
+                const execDesc = await statebox.sendTaskSuccess(
                   executionName,
                   {},
                   {
                     userId: allowed
                   }
                 )
+                expect(execDesc.status).to.eql('SUCCEEDED')
               })
             })
           } // for allowed ...
@@ -251,16 +252,16 @@ xdescribe('statebox service RBAC authorisation tests', function () {
                 executionName = execDesc.executionName
               })
 
-              it('sendTaskSuccess', (done) => {
-                statebox.sendTaskSuccess(
+              it('sendTaskSuccess', async () => {
+                const execDesc = await statebox.sendTaskSuccess(
                   executionName,
                   {},
                   {
                     userId: disallowed
                   }
                 )
-                  .then(() => done(new Error('Should have failed!')))
-                  .catch(() => done())
+
+                expect(execDesc.status).to.eql('FAILED')
               })
             })
           } // for allowed ...

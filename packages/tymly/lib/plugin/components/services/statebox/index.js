@@ -130,11 +130,9 @@ class StateboxService {
     )
 
     // hmm, should we be returning the execution description here?
-    if (authOk) {
-      return this.statebox.sendTaskSuccess(executionName, output)
-    } else {
-      throw new Error(errExecDesc.errorMessage)
-    }
+    return (authOk)
+      ? this.statebox.sendTaskSuccess(executionName, output)
+      : errExecDesc
   } // sendTaskSuccess
 
   sendTaskHeartbeat (executionName, output, executionOptions, callback) {
@@ -151,11 +149,11 @@ class StateboxService {
     return promiseOrCallback(p, callback)
   } // waitUntilStoppedRunning
 
+  /*
   authorisationCheck (stateMachineName, executionOptions, action) {
     return [true] // STUB!
   }
-
-  /*
+  */
   async authorisationCheck (userId, stateMachineName, executionOptions, action) {
     const rbac = this.services.rbac
 
@@ -183,7 +181,7 @@ class StateboxService {
       }
     ]
   } // authorisationCheck
-  */
+
 } // class StateboxService
 
 function addResources (statebox, options) {

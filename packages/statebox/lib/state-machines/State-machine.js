@@ -78,6 +78,7 @@ class StateMachine {
     const executionDescription = await this.options.dao.findExecutionByName(executionName)
     // TODO: Need to handle errors as per spec!
     this.runState(executionDescription)
+    return executionDescription
   } // processState
 } // class StateMachine
 

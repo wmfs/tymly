@@ -152,10 +152,10 @@ class BaseState {
 
     // END
     if (stateDefinition.End) {
-      this.runTaskEnd(executionName, executionDescription, ctx)
+      return this.runTaskEnd(executionName, executionDescription, ctx)
     } else {
       // NEXT
-      this.runTaskNextState(executionName, stateMachine, stateDefinition.Next, ctx)
+      return this.runTaskNextState(executionName, stateMachine, stateDefinition.Next, ctx)
     }
   } // runTaskSuccess
 
@@ -182,6 +182,8 @@ class BaseState {
         succeededExecutionDescription
       )
     }
+
+    return succeededExecutionDescription
   } // runTaskEnd
 
   async processTaskSuccess (executionName, output) {
@@ -199,7 +201,7 @@ class BaseState {
       ctx
     )
     // TODO: Error needs handling as per spec
-    stateMachine.processState(executionName)
+    return stateMachine.processState(executionName)
   } // runTaskNextState
 } // class BaseState
 
