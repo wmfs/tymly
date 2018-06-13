@@ -120,19 +120,19 @@ describe('score adjustment', () => {
     const {
       max_score: assessed_score,
       mean_risk: temporary_score,
-      high_risk_threshold,
+      high_risk_threshold: expected_score,
       exp,
       expected_days: elapsed_days
     } = curves
 
-    it(`${temporary_score} with exp = ${exp} after ${elapsed_days} days is ${high_risk_threshold}`, () => {
+    it(`${temporary_score} with exp = ${exp} after ${elapsed_days} days is ${expected_score}`, () => {
       const day_offset = day_on_curve(assessed_score, temporary_score, exp)
 
       const effective_days_elapsed = elapsed_days + day_offset
 
       const modified_score = calculateGrowthCurve(exp, effective_days_elapsed, assessed_score)
 
-      expect(Math.round(modified_score)).to.equal(high_risk_threshold)
+      expect(Math.round(modified_score)).to.equal(expected_score)
     })
   }
 })
