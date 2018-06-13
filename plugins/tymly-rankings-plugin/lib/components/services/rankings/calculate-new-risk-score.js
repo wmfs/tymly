@@ -7,11 +7,13 @@ module.exports = function calculateNewRiskScore (range, riskScore, growthCurve, 
   switch (range) {
     case 'veryHigh':
     case 'high':
+      debug(`((${mean} + ${stdev}) / 2) + ${growthCurve}`)
       value = ((+mean + +stdev) / 2) + +growthCurve
       break
     case 'medium':
     case 'low':
     case 'veryLow':
+      debug(`(${riskScore} / 2) + ${growthCurve}`)
       value = (+riskScore / 2) + +growthCurve
       break
   }

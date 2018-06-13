@@ -4,7 +4,6 @@ CREATE SCHEMA IF NOT EXISTS wmfs;
 DROP VIEW IF EXISTS test.factory_scores;
 
 DROP TABLE IF EXISTS test.food;
-DROP TABLE IF EXISTS test.fsman;
 DROP TABLE IF EXISTS test.incidents;
 DROP TABLE IF EXISTS test.heritage;
 DROP TABLE IF EXISTS test.gazetteer;
@@ -20,20 +19,15 @@ CREATE TABLE test.ranking_uprns (
  ranking_name text not null,
  range text,
  distribution numeric,
- last_audit text,
  last_audit_date timestamp with time zone,
  last_enforcement_action text,
+ fs_management text,
  growth_curve numeric
 );
 
 CREATE TABLE test.food (
  uprn bigint not null primary key,
  rating int
-);
-
-CREATE TABLE test.fsman (
- uprn bigint not null primary key,
- rating text
 );
 
 CREATE TABLE test.incidents (
@@ -91,20 +85,6 @@ INSERT INTO test.food (uprn, rating) VALUES (10, '3');
 INSERT INTO test.food (uprn, rating) VALUES (11, '2');
 INSERT INTO test.food (uprn, rating) VALUES (12, '4');
 INSERT INTO test.food (uprn, rating) VALUES (13, '1');
-
-INSERT INTO test.fsman (uprn, rating) VALUES (1, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (2, 'Low');
-INSERT INTO test.fsman (uprn, rating) VALUES (3, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (4, 'Average');
-INSERT INTO test.fsman (uprn, rating) VALUES (5, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (6, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (7, 'Very high');
-INSERT INTO test.fsman (uprn, rating) VALUES (8, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (9, 'Very high');
-INSERT INTO test.fsman (uprn, rating) VALUES (10, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (11, 'Very high');
-INSERT INTO test.fsman (uprn, rating) VALUES (12, 'Very low');
-INSERT INTO test.fsman (uprn, rating) VALUES (13, 'Very low');
 
 INSERT INTO test.incidents (uprn, amount) VALUES (1, '77');
 INSERT INTO test.incidents (uprn, amount) VALUES (2, '0');

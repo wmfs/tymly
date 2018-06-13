@@ -22,8 +22,8 @@
     },
     "fsManagement": {
       "namespace": "test",
-      "model": "fsman",
-      "property": "rating"
+      "model": "rankingUprns",
+      "property": "fsManagement"
     },
     "incidents": {
       "namespace": "test",
@@ -39,6 +39,11 @@
       "namespace": "wmfs",
       "model": "building",
       "property": "sprinklerCoverage"
+    },
+    "lastEnforcement": {
+      "namespace": "test",
+      "model": "rankingUprns",
+      "property": "lastEnforcementAction"
     }
   }
 }

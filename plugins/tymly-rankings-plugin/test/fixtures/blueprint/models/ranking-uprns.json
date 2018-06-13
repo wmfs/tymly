@@ -32,12 +32,20 @@
     "lastEnforcementAction": {
       "type": "string"
     },
+    "fsManagement": {
+      "type": "string",
+      "description": "Fire safety level"
+    },
     "growthCurve": {
       "type": "number"
     },
     "updatedRiskScore": {
       "type": "number",
       "description": "An updated risk score calculated using growth curve"
+    },
+    "originalRiskScore": {
+      "type": "number",
+      "description": "The original risk score calculated by the sum of the factors"
     }
   },
   "required": [

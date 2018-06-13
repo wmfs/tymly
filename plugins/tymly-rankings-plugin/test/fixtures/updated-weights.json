@@ -1,0 +1,192 @@
+{
+  "exponent": {
+    "veryLow": -0.004,
+    "low": -0.0028,
+    "medium": -0.0015,
+    "high": -0.001,
+    "veryHigh": -0.0009
+  },
+  "usage": {
+    "type": "constant",
+    "score": 8
+  },
+  "foodStandards": {
+    "type": "options",
+    "default": 0,
+    "options": [
+      {
+        "type": "numeric-range",
+        "minimum": 0,
+        "maximum": 2,
+        "score": 10
+      },
+      {
+        "type": "numeric-range",
+        "minimum": 3,
+        "maximum": 4,
+        "score": 8
+      },
+      {
+        "type": "numeric-constant",
+        "numericValue": 5,
+        "score": 4
+      }
+    ]
+  },
+  "fsManagement": {
+    "type": "options",
+    "default": 0,
+    "options": [
+      {
+        "type": "text-constant",
+        "textualValue": "veryLow",
+        "score": 60
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "low",
+        "score": 40
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "medium",
+        "score": 30
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "high",
+        "score": 20
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "veryHigh",
+        "score": 10
+      }
+    ]
+  },
+  "incidents": {
+    "type": "options",
+    "default": 0,
+    "options": [
+      {
+        "type": "numeric-constant",
+        "numericValue": 0,
+        "score": 5
+      },
+      {
+        "type": "numeric-constant",
+        "numericValue": 1,
+        "score": 10
+      },
+      {
+        "type": "numeric-constant",
+        "numericValue": 77,
+        "score": 80
+      },
+      {
+        "type": "numeric-boundary",
+        "operator": "greaterThan",
+        "numericValue": 1,
+        "score": 50
+      }
+    ]
+  },
+  "heritage": {
+    "type": "exists",
+    "default": 0,
+    "score": 8
+  },
+  "shouldBeLicensed": {
+    "type": "options",
+    "options": [
+      {
+        "type": "boolean-equals",
+        "booleanValue": true,
+        "score": 16
+      },
+      {
+        "type": "boolean-equals",
+        "booleanValue": false,
+        "score": 0
+      }
+    ],
+    "default": 0
+  },
+  "imd": {
+    "type": "options",
+    "default": 0,
+    "options": [
+      {
+        "type": "numeric-range",
+        "minimum": 1,
+        "maximum": 2,
+        "score": 25
+      },
+      {
+        "type": "numeric-range",
+        "minimum": 3,
+        "maximum": 4,
+        "score": 20
+      },
+      {
+        "type": "numeric-range",
+        "minimum": 5,
+        "maximum": 6,
+        "score": 15
+      },
+      {
+        "type": "numeric-range",
+        "minimum": 7,
+        "maximum": 8,
+        "score": 10
+      },
+      {
+        "type": "numeric-range",
+        "minimum": 9,
+        "maximum": 10,
+        "score": 5
+      }
+    ]
+  },
+  "lastEnforcement": {
+    "type": "options",
+    "default": 0,
+    "options": [
+      {
+        "type": "text-constant",
+        "textualValue": "SATISFACTORY",
+        "score": -8
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "NO_REVISIT",
+        "score": 8
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "REVISIT",
+        "score": 16
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "ALTERATIONS_NOTICE",
+        "score": 32
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "ENFORCEMENT",
+        "score": 64
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "PROHIBITION",
+        "score": 100
+      },
+      {
+        "type": "text-constant",
+        "textualValue": "NONE",
+        "score": 16
+      }
+    ]
+  }
+}

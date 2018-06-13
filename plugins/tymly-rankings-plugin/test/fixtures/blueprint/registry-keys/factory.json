@@ -7,9 +7,11 @@
         "type": "object",
         "default": {
           "exponent": {
-            "veryLow": "-0.00088",
-            "medium": "-0.0004",
-            "veryHigh": "-0.0075"
+            "veryLow": -0.004,
+            "low": -0.0028,
+            "medium": -0.0015,
+            "high": -0.001,
+            "veryHigh": -0.0009
           },
           "usage": {
             "type": "constant",
@@ -23,18 +25,18 @@
                 "type": "numeric-range",
                 "minimum": 0,
                 "maximum": 2,
-                "score": 8
+                "score": 10
               },
               {
                 "type": "numeric-range",
                 "minimum": 3,
                 "maximum": 4,
-                "score": 6
+                "score": 8
               },
               {
                 "type": "numeric-constant",
                 "numericValue": 5,
-                "score": 2
+                "score": 4
               }
             ]
           },
@@ -44,28 +46,28 @@
             "options": [
               {
                 "type": "text-constant",
-                "textualValue": "Very Low",
-                "score": 32
+                "textualValue": "veryLow",
+                "score": 60
               },
               {
                 "type": "text-constant",
-                "textualValue": "Low",
-                "score": 16
+                "textualValue": "low",
+                "score": 40
               },
               {
                 "type": "text-constant",
-                "textualValue": "Average",
-                "score": 0
+                "textualValue": "medium",
+                "score": 30
               },
               {
                 "type": "text-constant",
-                "textualValue": "High",
-                "score": -8
+                "textualValue": "high",
+                "score": 20
               },
               {
                 "type": "text-constant",
-                "textualValue": "Very High",
-                "score": -16
+                "textualValue": "veryHigh",
+                "score": 10
               }
             ]
           },
@@ -76,30 +78,30 @@
               {
                 "type": "numeric-constant",
                 "numericValue": 0,
-                "score": 0
+                "score": 5
               },
               {
                 "type": "numeric-constant",
                 "numericValue": 1,
-                "score": 6
+                "score": 10
               },
               {
                 "type": "numeric-constant",
                 "numericValue": 77,
-                "score": 77
+                "score": 80
               },
               {
                 "type": "numeric-boundary",
                 "operator": "greaterThan",
                 "numericValue": 1,
-                "score": 16
+                "score": 50
               }
             ]
           },
           "heritage": {
             "type": "exists",
             "default": 0,
-            "score": 2
+            "score": 8
           },
           "shouldBeLicensed": {
             "type": "options",
@@ -107,7 +109,7 @@
               {
                 "type": "boolean-equals",
                 "booleanValue": true,
-                "score": 8
+                "score": 16
               },
               {
                 "type": "boolean-equals",
@@ -150,6 +152,47 @@
                 "minimum": 9,
                 "maximum": 10,
                 "score": 5
+              }
+            ]
+          },
+          "lastEnforcement": {
+            "type": "options",
+            "default": 0,
+            "options": [
+              {
+                "type": "text-constant",
+                "textualValue": "SATISFACTORY",
+                "score": -16
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "NO_REVISIT",
+                "score": 8
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "REVISIT",
+                "score": 16
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "ALTERATIONS_NOTICE",
+                "score": 32
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "ENFORCEMENT",
+                "score": 64
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "PROHIBITION",
+                "score": 100
+              },
+              {
+                "type": "text-constant",
+                "textualValue": "NONE",
+                "score": 16
               }
             ]
           }
