@@ -61,25 +61,16 @@ describe('growth curve validation', () => {
   } // for ...
 })
 
-function* curve_generator(max_score, exp, start_days = 0) {
-  let now = calculateGrowthCurve(exp, start_days, max_score)
-  for (let days_elapsed = start_days; ++days_elapsed; ) {
-    let next = calculateGrowthCurve(exp, days_elapsed+1, max_score)
-    yield [
-      days_elapsed,
-      now,
-      next
-    ]
-    now = next
-  }
-} // curve_generator
+function day_on_curve(max_score, temp_score, exp) {
+  const score_ratio = max_score/temp_score
+  const adjusted_ratio = (score_ratio - 1)/81
 
-function count_days_to(curve, target_score) {
-  for (const [days, lower, upper] of curve) {
-    if ((lower <= target_score) && (upper > target_score))
-      return days
-  }
-} // count_days_to
+  const log_ratio = Math.log(adjusted_ratio)
+
+  const days = log_ratio / exp
+
+  return Math.floor(days)
+} // start_day_om_curve
 
 describe('score adjustment', () => {
   const regression_curves = [
@@ -116,12 +107,33 @@ describe('score adjustment', () => {
     } = curves
 
     it(`${mean_risk} to ${high_risk_threshold} with exp = ${exp} takes ${expected_days} days`, () => {
-      const baseline = count_days_to(curve_generator(max_score, exp), mean_risk)
-      const target = count_days_to(curve_generator(max_score, exp, baseline), high_risk_threshold)
+      const baseline = day_on_curve(max_score, mean_risk, exp)
+      const target = day_on_curve(max_score, high_risk_threshold, exp)
 
       const days_elapsed = target - baseline
 
       expect(days_elapsed).to.equal(expected_days)
     })
   }
+
+  for (const curves of regression_curves) {
+    const {
+      max_score: assessed_score,
+      mean_risk: temporary_score,
+      high_risk_threshold,
+      exp,
+      expected_days: elapsed_days
+    } = curves
+
+    it(`${temporary_score} with exp = ${exp} after ${elapsed_days} days is ${high_risk_threshold}`, () => {
+      const day_offset = day_on_curve(assessed_score, temporary_score, exp)
+
+      const effective_days_elapsed = elapsed_days + day_offset
+
+      const modified_score = calculateGrowthCurve(exp, effective_days_elapsed, assessed_score)
+
+      expect(Math.round(modified_score)).to.equal(high_risk_threshold)
+    })
+  }
 })
+
