@@ -5,7 +5,7 @@ const tymly = require('./../lib')
 const path = require('path')
 const RbacIndex = require('../lib/plugin/components/services/rbac/refresh-index/Rbac')
 
-xdescribe('RBAC service tests', function () {
+describe('RBAC service tests', function () {
   // TODO: MORE! MORE! MORE!
 
   this.timeout(process.env.TIMEOUT || 5000)
