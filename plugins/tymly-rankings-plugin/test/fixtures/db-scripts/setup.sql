@@ -11,7 +11,8 @@ DROP TABLE IF EXISTS test.ranking_uprns;
 
 CREATE TABLE test.gazetteer (
  uprn bigint not null primary key,
- address_label text not null
+ address_label text not null,
+ area_code integer
 );
 
 CREATE TABLE test.ranking_uprns (

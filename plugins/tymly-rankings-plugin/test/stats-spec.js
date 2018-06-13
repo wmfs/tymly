@@ -25,7 +25,7 @@ describe('Test the growth curve and updated risk score', function () {
     expect(+calculateGrowthCurve(EXP_1, 11117, RISK_SCORE).toFixed(5)).to.eql(145.33599)
     expect(+calculateGrowthCurve(EXP_2, 11117, RISK_SCORE).toFixed(5)).to.eql(74.91037)
 
-    expect(calculateNewRiskScore('veryLow', RISK_SCORE, 145.33599, 58.23, 31.45)).to.eql(146)
+    expect(calculateNewRiskScore('veryLow', RISK_SCORE, 145.33599, 58.23, 31.45)).to.eql(RISK_SCORE)
     expect(calculateNewRiskScore('veryHigh', RISK_SCORE, 74.91037, 58.23, 31.45)).to.eql(119.75)
   })
 
@@ -33,7 +33,7 @@ describe('Test the growth curve and updated risk score', function () {
     expect(+calculateGrowthCurve(EXP_1, 13576, RISK_SCORE).toFixed(5)).to.eql(145.92341)
     expect(+calculateGrowthCurve(EXP_2, 13576, RISK_SCORE).toFixed(5)).to.eql(107.75792)
 
-    expect(calculateNewRiskScore('veryLow', RISK_SCORE, 145.92341, 58.23, 31.45)).to.eql(146)
-    expect(calculateNewRiskScore('veryHigh', RISK_SCORE, 107.75792, 58.23, 31.45)).to.eql(146)
+    expect(calculateNewRiskScore('veryLow', RISK_SCORE, 145.92341, 58.23, 31.45)).to.eql(RISK_SCORE)
+    expect(calculateNewRiskScore('veryHigh', RISK_SCORE, 107.75792, 58.23, 31.45)).to.eql(RISK_SCORE)
   })
 })

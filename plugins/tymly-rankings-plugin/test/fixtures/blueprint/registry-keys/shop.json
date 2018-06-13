@@ -1,0 +1,70 @@
+{
+  "label": "Shop factors",
+  "description": "Holds the factors and weights to build a risk score for a Shop",
+  "schema": {
+    "properties": {
+      "value": {
+        "type": "object",
+        "default": {
+          "exponent": {
+            "veryLow": -0.004,
+            "low": -0.0028,
+            "medium": -0.0015,
+            "high": -0.001,
+            "veryHigh": -0.0009
+          },
+          "usage": {
+            "type": "constant",
+            "score": 8
+          },
+          "foodStandards": {
+            "type": "options",
+            "default": 0,
+            "options": [
+              {
+                "type": "numeric-range",
+                "minimum": 0,
+                "maximum": 2,
+                "score": 10
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 3,
+                "maximum": 4,
+                "score": 8
+              },
+              {
+                "type": "numeric-constant",
+                "numericValue": 5,
+                "score": 4
+              }
+            ]
+          },
+          "area": {
+            "type": "options",
+            "default": 0,
+            "options": [
+              {
+                "type": "numeric-range",
+                "minimum": 0,
+                "maximum": 2,
+                "score": 10
+              },
+              {
+                "type": "numeric-range",
+                "minimum": 3,
+                "maximum": 4,
+                "score": 8
+              },
+              {
+                "type": "numeric-constant",
+                "numericValue": 5,
+                "score": 4
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

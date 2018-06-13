@@ -30,7 +30,7 @@ class RefreshRiskScore {
 
     const updatedRiskScore = calculateNewRiskScore(
       rankingDoc.range,
-      riskScore.rows[0].risk_score,
+      riskScore.rows[0].original_risk_score,
       rankingDoc.growthCurve,
       statsDoc.mean,
       statsDoc.stdev
@@ -40,7 +40,7 @@ class RefreshRiskScore {
 }
 
 function getRiskScoreSQL (options) {
-  return `SELECT risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores WHERE uprn = ${options.uprn}`
+  return `SELECT original_risk_score FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores WHERE uprn = ${options.uprn}`
 }
 
 module.exports = RefreshRiskScore

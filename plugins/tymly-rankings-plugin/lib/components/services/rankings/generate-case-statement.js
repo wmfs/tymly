@@ -12,7 +12,7 @@ function checkFactorObj (options) {
 
 function checkOptions (options) {
   if (!options.schema || !options.table || !options.column) {
-    throw new Error(`Rankings misconfiguration for ${options.factorName} - schema/table/column missing, possible rankings and registry mismatch.  `)
+    throw new Error(`Rankings misconfiguration for ${options.factorName} - schema/table/column missing, possible rankings and registry mismatch.`)
   }
 }
 

@@ -76,8 +76,9 @@
             "default": 0,
             "options": [
               {
-                "type": "numeric-constant",
-                "numericValue": 0,
+                "type": "numeric-boundary",
+                "operator": "lessThan",
+                "numericValue": 1,
                 "score": 5
               },
               {

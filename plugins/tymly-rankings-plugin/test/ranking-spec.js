@@ -12,11 +12,11 @@ const moment = require('moment')
 const WEIGHTS_TO_UPDATE = require('./fixtures/updated-weights.json')
 
 describe('Tests the Ranking State Resource', function () {
-  this.timeout(process.env.TIMEOUT || 5000)
+  this.timeout(15000)
 
   const REFRESH_STATE_MACHINE_NAME = `test_refreshRanking_1_0`
   const SET_REFRESH_STATE_MACHINE_NAME = `wmfs_setAndRefresh_1_0`
-  // const REFRESH_RISK_STATE_MACHINE_NAME = `test_refreshRiskScore_1_0` // todo: test this state machine!
+  const REFRESH_RISK_STATE_MACHINE_NAME = `test_refreshRiskScore_1_0`
 
   const originalScores = []
 
@@ -242,6 +242,28 @@ describe('Tests the Ranking State Resource', function () {
     // Remains the same
     expect(b.rows[0].last_enforcement_score).to.eql(64)
     expect(b.rows[0].original_risk_score).to.eql(originalScores[1].score)
+  })
+
+  it('should run the state machine to refresh risk score', async () => {
+    const execDesc = await statebox.startExecution(
+      {
+        schema: 'test',
+        category: 'factory',
+        uprn: 1
+      },
+      REFRESH_RISK_STATE_MACHINE_NAME,
+      {sendResponse: 'COMPLETE'}
+    )
+    expect(execDesc.status).to.eql('SUCCEEDED')
+  })
+
+  it('should run the state machine to refresh ranking without passing in any schema/category', async () => {
+    const execDesc = await statebox.startExecution(
+      {},
+      REFRESH_STATE_MACHINE_NAME,
+      {sendResponse: 'COMPLETE'}
+    )
+    expect(execDesc.status).to.eql('SUCCEEDED')
   })
 
   it('should clean up the test resources', () => {

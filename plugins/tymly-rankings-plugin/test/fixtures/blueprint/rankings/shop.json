@@ -1,0 +1,25 @@
+{
+  "label": "Shop ranking",
+  "description": "Maps where to find the data and weightings for each factor",
+  "rankingModel": "rankingUprns",
+  "statsModel": "modelStats",
+  "source": {
+    "model": "gazetteer",
+    "property": "uprn",
+    "otherProperties": ["address_label"]
+  },
+  "factors": {
+    "usage": "constant",
+    "foodStandards": {
+      "namespace": "test",
+      "model": "food",
+      "property": "rating"
+    },
+    "area": {
+      "namespace": "test",
+      "model": "area",
+      "property": "areaRating",
+      "sourceProperty": "areaCode"
+    }
+  }
+}

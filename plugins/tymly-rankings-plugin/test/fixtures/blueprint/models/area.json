@@ -1,0 +1,20 @@
+{
+  "title": "Area",
+  "description": "Holds rating of an area",
+  "type": "object",
+  "properties": {
+    "areaCode": {
+      "type": "integer"
+    },
+    "areaRating": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "areaCode",
+    "areaRating"
+  ],
+  "primaryKey": [
+    "areaCode"
+  ]
+}
