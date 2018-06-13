@@ -14,8 +14,8 @@ module.exports = async function generateStats (options, callback) {
   const scores = result.rows.map(r => {
     return {
       uprn: r.uprn,
-      updated: r.updated_risk_score,
-      original: r.original_risk_score
+      updated: +r.updated_risk_score,
+      original: +r.original_risk_score
     }
   })
 
@@ -46,7 +46,7 @@ module.exports = async function generateStats (options, callback) {
       const row = await options.rankingModel.findById(s.uprn)
 
       const growthCurve = row.lastAuditDate && row.fsManagement
-        ? calculateGrowthCurve(fsRanges[row.fsManagement], row.lastAuditDate, s.original).toFixed(5)
+        ? +calculateGrowthCurve(fsRanges[row.fsManagement], row.lastAuditDate, s.original).toFixed(5)
         : null
 
       const updatedRiskScore = growthCurve
