@@ -93,7 +93,7 @@
     "comah": {
       "type": "boolean"
     },
-    "connectedToCommerical": {
+    "connectedToCommercial": {
       "type": "boolean"
     },
     "isOpenDay": {
