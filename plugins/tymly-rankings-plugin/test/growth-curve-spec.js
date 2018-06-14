@@ -3,6 +3,7 @@
 const chai = require('chai')
 const expect = chai.expect
 const calculateGrowthCurve = require('./../lib/components/services/rankings/calculate-growth-curve')
+const growthCurveIntersection = require('./../lib/components/services/rankings/growth-curve-intersection')
 
 function roundToSixDp (num) {
   return +(num.toFixed(7).slice(0, -1))
@@ -61,17 +62,6 @@ describe('growth curve validation', () => {
   } // for ...
 })
 
-function dayOnCurve (maxScore, tempScore, exp) {
-  const scoreRatio = maxScore / tempScore
-  const adjustedRatio = (scoreRatio - 1) / 81
-
-  const logRatio = Math.log(adjustedRatio)
-
-  const days = logRatio / exp
-
-  return Math.floor(days)
-} // dayOnCurve
-
 describe('score adjustment', () => {
   const regressionCurves = [
     {
@@ -107,8 +97,8 @@ describe('score adjustment', () => {
     } = curves
 
     it(`${meanRisk} to ${highRiskThreshold} with exp = ${exp} takes ${expectedDays} days`, () => {
-      const baseline = dayOnCurve(maxScore, meanRisk, exp)
-      const target = dayOnCurve(maxScore, highRiskThreshold, exp)
+      const baseline = growthCurveIntersection(maxScore, meanRisk, exp)
+      const target = growthCurveIntersection(maxScore, highRiskThreshold, exp)
 
       const daysElapsed = target - baseline
 
@@ -126,7 +116,7 @@ describe('score adjustment', () => {
     } = curves
 
     it(`${temporaryScore} with exp = ${exp} after ${elapsedDays} days is ${expectedScore}`, () => {
-      const dayOffset = dayOnCurve(assessedScore, temporaryScore, exp)
+      const dayOffset = growthCurveIntersection(assessedScore, temporaryScore, exp)
 
       const effectiveDaysElapsed = elapsedDays + dayOffset
 

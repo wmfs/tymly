@@ -1,11 +1,14 @@
-'use strict'
 const debug = require('debug')('tymly-rankings-plugin')
 
-module.exports = function calculateGrowthCurve (exp, daysSince, riskScore) {
-  const expression = Math.exp(exp * daysSince)
-  const denominator = 1 + (81 * expression)
+function calculateGrowthCurve (exp, daysElapsed, riskScore) {
+  const exponential = Math.exp(exp * daysElapsed)
+  const denominator = 1 + (81 * exponential)
+  const curveValue = riskScore / denominator
 
-  debug(`Calculating growth curve: ${riskScore} / ( 1 + ( 81 * ( e ^ ( ${daysSince} * ${exp} ) ) ) ) = ${riskScore / denominator}`)
+  debug(`Calculating growth curve: ${riskScore} / ( 1 + ( 81 * ( e ^ ( ${daysElapsed} * ${exp} ) ) ) ) = ${curveValue}`)
 
-  return riskScore / denominator
-}
+  return curveValue
+} // calculateGrowthCurve
+
+module.exports = calculateGrowthCurve
+
