@@ -22,7 +22,7 @@ module.exports = async function generateStats (options, callback) {
 
   // todo: should the stats be calculated on original scores or the most recent scores (updated > original)
   // todo: because it changes every iteration if we base it on most recent... invalid!!
-  const origScores = scores.map(s => s.original) // scores.map(s => s.updated || s.original)
+  const origScores = scores.map(s => s.original)
 
   if (scores.length > 0) {
     // Generate stats based on most recent scores
@@ -34,7 +34,7 @@ module.exports = async function generateStats (options, callback) {
 
     const fsRanges = options.registry.value.exponent
 
-    for (let s of scores) {
+    for (let [idx, s] of scores.entries()) {
       const mostRecent = s.updated || s.original
 
       // Generate stats for this property
@@ -55,7 +55,8 @@ module.exports = async function generateStats (options, callback) {
         ? calculateNewRiskScore(row.fsManagement, s.original, growthCurve, mean, stdev)
         : null
 
-      // Find this property's risk range
+      if (updatedRiskScore) scores[idx].updated = updatedRiskScore
+
       const range = updatedRiskScore
         ? findRange(ranges, updatedRiskScore)
         : findRange(ranges, mostRecent)
@@ -73,18 +74,20 @@ module.exports = async function generateStats (options, callback) {
       })
     }
 
-    const updatedMean = stats.mean(origScores)
-    const updatedStdev = stats.stdev(origScores)
-    const updatedRanges = generateRanges(origScores, updatedMean, updatedStdev)
+    const mostRecentScores = scores.map(s => s.updated || s.original)
+
+    const updatedMean = stats.mean(mostRecentScores)
+    const updatedStdev = stats.stdev(mostRecentScores)
+    const updatedRanges = generateRanges(mostRecentScores, updatedMean, updatedStdev)
 
     await options.statsModel.upsert({
       category: _.kebabCase(options.category),
-      count: origScores.length,
+      count: mostRecentScores.length,
       mean: updatedMean.toFixed(2),
-      median: stats.median(origScores).toFixed(2),
-      variance: stats.variance(origScores).toFixed(2),
+      median: stats.median(mostRecentScores).toFixed(2),
+      variance: stats.variance(mostRecentScores).toFixed(2),
       stdev: updatedStdev.toFixed(2),
-      ranges: JSON.stringify(updatedRanges)
+      ranges: updatedRanges
     }, {})
   } else {
     debug(options.category + ' - No scores found')
