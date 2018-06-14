@@ -37,9 +37,6 @@ module.exports = async function generateStats (options, callback) {
     for (let s of scores) {
       const mostRecent = s.updated || s.original
 
-      // Find this property's risk range
-      const range = findRange(ranges, mostRecent)
-
       // Generate stats for this property
       const normal = dist.Normal(mean, stdev)
       const distribution = normal.pdf(mostRecent).toFixed(4)
@@ -57,6 +54,11 @@ module.exports = async function generateStats (options, callback) {
       const updatedRiskScore = growthCurve
         ? calculateNewRiskScore(row.fsManagement, s.original, growthCurve, mean, stdev)
         : null
+
+      // Find this property's risk range
+      const range = updatedRiskScore
+        ? findRange(ranges, updatedRiskScore)
+        : findRange(ranges, mostRecent)
 
       await options.rankingModel.upsert({
         [options.pk]: s[_.snakeCase(options.pk)],
