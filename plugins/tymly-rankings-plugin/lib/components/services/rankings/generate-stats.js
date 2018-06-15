@@ -8,6 +8,10 @@ const calculateNewRiskScore = require('./calculate-new-risk-score')
 const calculateGrowthCurve = require('./calculate-growth-curve')
 const debug = require('debug')('tymly-rankings-plugin')
 
+function toTwoDp(num) {
+  return Math.round(num*100)/100
+} // toTwoDp
+
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
@@ -83,10 +87,10 @@ module.exports = async function generateStats (options, callback) {
     await options.statsModel.upsert({
       category: _.kebabCase(options.category),
       count: mostRecentScores.length,
-      mean: updatedMean.toFixed(2),
-      median: stats.median(mostRecentScores).toFixed(2),
-      variance: stats.variance(mostRecentScores).toFixed(2),
-      stdev: updatedStdev.toFixed(2),
+      mean: toTwoDp(updatedMean),
+      median: toTwoDp(stats.median(mostRecentScores)),
+      variance: toTwoDp(stats.variance(mostRecentScores)),
+      stdev: toTwoDp(updatedStdev),
       ranges: updatedRanges
     }, {})
   } else {
@@ -98,25 +102,27 @@ module.exports = async function generateStats (options, callback) {
 
 function generateRanges (scores, mean, stdev) {
   if (scores.length > 10000) {
+    const twoStdev = 2 * stdev
+
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: +(mean - (2 * stdev)).toFixed(2)
+        upperBound: toTwoDp(mean - twoStdev)
       },
       low: {
-        lowerBound: +(mean - (2 * stdev) + 0.01).toFixed(2),
-        upperBound: +(mean - stdev).toFixed(2)
+        lowerBound: toTwoDp(mean - twoStdev + 0.01),
+        upperBound: toTwoDp(mean - stdev)
       },
       medium: {
-        lowerBound: +(mean - stdev + 0.01).toFixed(2),
-        upperBound: +(mean + stdev).toFixed(2)
+        lowerBound: toTwoDp(mean - stdev + 0.01),
+        upperBound: toTwoDp(mean + stdev)
       },
       high: {
-        lowerBound: +(mean + stdev + 0.01).toFixed(2),
-        upperBound: +(mean + (2 * stdev)).toFixed(2)
+        lowerBound: toTwoDp(mean + stdev + 0.01),
+        upperBound: toTwoDp(mean + twoStdev)
       },
       veryHigh: {
-        lowerBound: +(mean + (2 * stdev) + 0.01).toFixed(2),
+        lowerBound: toTwoDp(mean + twoStdev + 0.01),
         upperBound: Math.max(...scores)
       }
     }
@@ -124,14 +130,14 @@ function generateRanges (scores, mean, stdev) {
     return {
       veryLow: {
         lowerBound: 0,
-        upperBound: +(mean - stdev).toFixed(2)
+        upperBound: toTwoDp(mean - stdev)
       },
       medium: {
-        lowerBound: +(mean - stdev + 0.01).toFixed(2),
-        upperBound: +(mean + stdev).toFixed(2)
+        lowerBound: toTwoDp(mean - stdev + 0.01),
+        upperBound: toTwoDp(mean + stdev)
       },
       veryHigh: {
-        lowerBound: +(mean + stdev + 0.01).toFixed(2),
+        lowerBound: (mean + stdev + 0.01),
         upperBound: Math.max(...scores)
       }
     }
@@ -140,7 +146,7 @@ function generateRanges (scores, mean, stdev) {
 
 function findRange (ranges, score) {
   for (const k of Object.keys(ranges)) {
-    if (+score >= +ranges[k].lowerBound && +score <= +ranges[k].upperBound) {
+    if (+score >= ranges[k].lowerBound && +score <= ranges[k].upperBound) {
       return k
     }
   }
