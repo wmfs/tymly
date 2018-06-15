@@ -4,13 +4,11 @@ const _ = require('lodash')
 const stats = require('stats-lite')
 const dist = require('distributions')
 const moment = require('moment')
+const buildRanges = require('./build-ranges')
 const calculateNewRiskScore = require('./calculate-new-risk-score')
 const calculateGrowthCurve = require('./calculate-growth-curve')
 const debug = require('debug')('tymly-rankings-plugin')
-
-function toTwoDp(num) {
-  return Math.round(num*100)/100
-} // toTwoDp
+const toTwoDp = require('./to-two-dp')
 
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
@@ -34,7 +32,7 @@ module.exports = async function generateStats (options, callback) {
     const stdev = stats.stdev(origScores)
 
     // Calculate the range boundaries
-    const ranges = generateRanges(origScores, mean, stdev)
+    const ranges = buildRanges(origScores, mean, stdev)
 
     const fsRanges = options.registry.value.exponent
 
@@ -62,8 +60,8 @@ module.exports = async function generateStats (options, callback) {
       if (updatedRiskScore) scores[idx].updated = updatedRiskScore
 
       const range = updatedRiskScore
-        ? findRange(ranges, updatedRiskScore)
-        : findRange(ranges, mostRecent)
+        ? ranges.find(updatedRiskScore)
+        : ranges.find(mostRecent)
 
       await options.rankingModel.upsert({
         [options.pk]: s[_.snakeCase(options.pk)],
@@ -82,7 +80,7 @@ module.exports = async function generateStats (options, callback) {
 
     const updatedMean = stats.mean(mostRecentScores)
     const updatedStdev = stats.stdev(mostRecentScores)
-    const updatedRanges = generateRanges(mostRecentScores, updatedMean, updatedStdev)
+    const updatedRanges = buildRanges(mostRecentScores, updatedMean, updatedStdev)
 
     await options.statsModel.upsert({
       category: _.kebabCase(options.category),
@@ -98,58 +96,6 @@ module.exports = async function generateStats (options, callback) {
   }
 
   callback(null)
-}
-
-function generateRanges (scores, mean, stdev) {
-  if (scores.length > 10000) {
-    const twoStdev = 2 * stdev
-
-    return {
-      veryLow: {
-        lowerBound: 0,
-        upperBound: toTwoDp(mean - twoStdev)
-      },
-      low: {
-        lowerBound: toTwoDp(mean - twoStdev + 0.01),
-        upperBound: toTwoDp(mean - stdev)
-      },
-      medium: {
-        lowerBound: toTwoDp(mean - stdev + 0.01),
-        upperBound: toTwoDp(mean + stdev)
-      },
-      high: {
-        lowerBound: toTwoDp(mean + stdev + 0.01),
-        upperBound: toTwoDp(mean + twoStdev)
-      },
-      veryHigh: {
-        lowerBound: toTwoDp(mean + twoStdev + 0.01),
-        upperBound: Math.max(...scores)
-      }
-    }
-  } else {
-    return {
-      veryLow: {
-        lowerBound: 0,
-        upperBound: toTwoDp(mean - stdev)
-      },
-      medium: {
-        lowerBound: toTwoDp(mean - stdev + 0.01),
-        upperBound: toTwoDp(mean + stdev)
-      },
-      veryHigh: {
-        lowerBound: (mean + stdev + 0.01),
-        upperBound: Math.max(...scores)
-      }
-    }
-  }
-}
-
-function findRange (ranges, score) {
-  for (const k of Object.keys(ranges)) {
-    if (+score >= ranges[k].lowerBound && +score <= ranges[k].upperBound) {
-      return k
-    }
-  }
 }
 
 function getScores (options) {
