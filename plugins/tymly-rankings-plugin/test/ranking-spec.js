@@ -11,6 +11,11 @@ const sqlScriptRunner = require('./fixtures/sql-script-runner.js')
 const moment = require('moment')
 const WEIGHTS_TO_UPDATE = require('./fixtures/updated-weights.json')
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 describe('Tests the Ranking State Resource', function () {
   this.timeout(15000)
 
