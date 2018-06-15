@@ -11,4 +11,3 @@ function calculateGrowthCurve (exp, daysElapsed, riskScore) {
 } // calculateGrowthCurve
 
 module.exports = calculateGrowthCurve
-

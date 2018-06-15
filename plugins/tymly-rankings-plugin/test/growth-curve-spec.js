@@ -3,7 +3,6 @@
 const chai = require('chai')
 const expect = chai.expect
 const calculateGrowthCurve = require('./../lib/components/services/rankings/calculate-growth-curve')
-const growthCurveIntersection = require('./../lib/components/services/rankings/growth-curve-intersection')
 
 function roundToSixDp (num) {
   return +(num.toFixed(7).slice(0, -1))

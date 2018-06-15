@@ -62,4 +62,4 @@ function findRange (ranges, score) {
   }
 }
 
-module.exports = generateRanges;
+module.exports = generateRanges
