@@ -13,27 +13,9 @@ const toTwoDp = require('./to-two-dp')
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
-  const result = await getScores(options)
-  const scores = result.rows.map(r => {
-    return {
-      uprn: r.uprn,
-      updated: +r.updated_risk_score,
-      original: +r.original_risk_score
-    }
-  })
-
-  // todo: should the stats be calculated on original scores or the most recent scores (updated > original)
-  // todo: because it changes every iteration if we base it on most recent... invalid!!
-  const origScores = scores.map(s => s.original)
+  const { scores, mean, stdev, ranges } = await loadRiskScores(options)
 
   if (scores.length > 0) {
-    // Generate stats based on most recent scores
-    const mean = stats.mean(origScores)
-    const stdev = stats.stdev(origScores)
-
-    // Calculate the range boundaries
-    const ranges = buildRanges(origScores, mean, stdev)
-
     const fsRanges = options.registry.value.exponent
 
     for (let [idx, s] of scores.entries()) {
@@ -97,6 +79,30 @@ module.exports = async function generateStats (options, callback) {
 
   callback(null)
 }
+
+async function loadRiskScores (options) {
+  const result = await getScores(options)
+  const scores = result.rows.map(r => {
+    return {
+      uprn: r.uprn,
+      updated: +r.updated_risk_score,
+      original: +r.original_risk_score
+    }
+  })
+
+  const origScores = scores.map(s => s.original)
+  // Generate stats based on most recent scores
+  const mean = stats.mean(origScores)
+  const stdev = stats.stdev(origScores)
+  const ranges = buildRanges(origScores, mean, stdev)
+
+  return {
+    scores,
+    mean,
+    stdev,
+    ranges
+  }
+} // loadScores
 
 function getScores (options) {
   return options.client.query(`SELECT ${_.snakeCase(options.pk)}, original_risk_score::float, updated_risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`)
