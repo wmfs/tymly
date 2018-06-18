@@ -13,12 +13,16 @@ const toTwoDp = require('./to-two-dp')
 module.exports = async function generateStats (options, callback) {
   debug(options.category + ' - Generating statistics')
 
-  const { scores, mean, stdev, ranges } = await loadRiskScores(options)
+  const scores = await loadRiskScores(options)
 
-  if (scores.length > 0) {
-    const fsRanges = options.registry.value.exponent
+  if (scores.length === 0) {
+    debug(options.category + ' - No scores found')
+  } // if ...
 
-    for (let [idx, s] of scores.entries()) {
+  const { mean, stdev, ranges } = await calculateDistribution(scores, options)
+  const fsRanges = options.registry.value.exponent
+
+  for (let [idx, s] of scores.entries()) {
       const mostRecent = s.updated || s.original
 
       // Generate stats for this property
@@ -58,27 +62,8 @@ module.exports = async function generateStats (options, callback) {
       })
     }
 
-    const mostRecentScores = scores.map(s => s.updated || s.original)
-
-    const updatedMean = stats.mean(mostRecentScores)
-    const updatedStdev = stats.stdev(mostRecentScores)
-    const updatedRanges = buildRanges(mostRecentScores, updatedMean, updatedStdev)
-
-    await options.statsModel.upsert({
-      category: _.kebabCase(options.category),
-      count: mostRecentScores.length,
-      mean: toTwoDp(updatedMean),
-      median: toTwoDp(stats.median(mostRecentScores)),
-      variance: toTwoDp(stats.variance(mostRecentScores)),
-      stdev: toTwoDp(updatedStdev),
-      ranges: updatedRanges
-    }, {})
-  } else {
-    debug(options.category + ' - No scores found')
-  }
-
   callback(null)
-}
+} // generateStats
 
 async function loadRiskScores (options) {
   const result = await getScores(options)
@@ -90,19 +75,37 @@ async function loadRiskScores (options) {
     }
   })
 
+  return scores;
+} // loadRiskScores
+
+async function calculateDistribution (scores, options) {
   const origScores = scores.map(s => s.original)
   // Generate stats based on most recent scores
   const mean = stats.mean(origScores)
   const stdev = stats.stdev(origScores)
   const ranges = buildRanges(origScores, mean, stdev)
 
+  await saveStats (scores, mean, stdev, ranges, options)
+
   return {
-    scores,
     mean,
     stdev,
     ranges
   }
-} // loadScores
+} // calculateDistribution
+
+async function saveStats (scores, mean, stdev, ranges, options) {
+  await options.statsModel.upsert({
+    category: _.kebabCase(options.category),
+    count: scores.length,
+    mean: toTwoDp(mean),
+    median: toTwoDp(stats.median(scores)),
+    variance: toTwoDp(stats.variance(scores)),
+    stdev: toTwoDp(stdev),
+    ranges: ranges
+  },
+  {})
+} // saveStats
 
 function getScores (options) {
   return options.client.query(`SELECT ${_.snakeCase(options.pk)}, original_risk_score::float, updated_risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`)
