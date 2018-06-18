@@ -3,9 +3,9 @@
 const path = require('path')
 const expect = require('chai').expect
 const tymly = require('../lib')
-const DateTime = require('luxon').DateTime
+const moment = require('moment')
 
-const TestTimestamp = DateTime.local(2000, 2, 28, 22, 35, 0)
+const TestTimestamp = moment([2000, 2, 28, 22, 35, 0]).local()
 const TestTimestampString = `${TestTimestamp}`
 
 const timestampStateMachine = 'tymlyTest_timestamp_1_0'

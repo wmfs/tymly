@@ -1,11 +1,14 @@
-const DateTime = require('luxon').DateTime
+const moment = require('moment')
 const schema = require('./schema.json')
 
 class TimestampService {
   static get defaultProvider () {
     return {
       now () {
-        return DateTime.local()
+        return moment()
+      },
+      today () {
+        return moment().hour(0).minute(0).second(0).millisecond(0)
       }
     }
   } // defaultProvider
@@ -17,6 +20,10 @@ class TimestampService {
 
   now () {
     return this.timeProvider.now()
+  }
+
+  today () {
+    return this.timeProvider.today()
   }
 } // class TimestampService
 
