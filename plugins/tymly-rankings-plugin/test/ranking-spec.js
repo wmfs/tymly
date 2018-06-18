@@ -26,7 +26,8 @@ describe('Tests the Ranking State Resource', function () {
   const originalScores = []
 
   let statebox, tymlyService, rankingModel, statsModel
-  let TestTimestamp = moment([2018, 5, 18])
+  const AuditDate = () => moment([2018, 5, 18])
+  let TestTimestamp
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -111,14 +112,14 @@ describe('Tests the Ranking State Resource', function () {
           uprn: originalScores[0].uprn,
           rankingName: 'factory',
           fsManagement: 'high',
-          lastAuditDate: TestTimestamp,
+          lastAuditDate: AuditDate(),
           lastEnforcementAction: 'SATISFACTORY'
         }, {})
         await rankingModel.upsert({
           uprn: originalScores[1].uprn,
           rankingName: 'factory',
           fsManagement: 'veryLow',
-          lastAuditDate: TestTimestamp,
+          lastAuditDate: AuditDate(),
           lastEnforcementAction: 'ENFORCEMENT'
         }, {})
 
@@ -140,98 +141,97 @@ describe('Tests the Ranking State Resource', function () {
         originalScores[0].score = a.rows[0].original_risk_score
         originalScores[1].score = b.rows[0].original_risk_score
       })
-
-      it('refresh ranking', async () => {
-        const execDesc = await statebox.startExecution(
-          {schema: 'test', category: 'factory'},
-          REFRESH_STATE_MACHINE_NAME,
-          {sendResponse: 'COMPLETE'}
-        )
-        expect(execDesc.status).to.eql('SUCCEEDED')
-      })
-
-      // a = high, exp = -0.001, score = 26
-      // b = veryLow, exp = -0.004, score = 246
-
-      // mean = 68.07692
-      // stdev = 57.18453
-
-      // ---- Day 0 ----
-      it('verify risk score on day 0', async () => {
-        const a = await rankingModel.findById(originalScores[0].uprn)
-        const b = await rankingModel.findById(originalScores[1].uprn)
-
-        expect(+a.updatedRiskScore).to.eql(13) // medium risk goes to half original score on day 0
-        expect(+b.updatedRiskScore).to.eql(62.62) // high risk goes to (mean + stddev) / 2 on day 0
-
-        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
-      })
     })
 
-    describe('audit was one year ago', () => {
-      it('advance 365 days into the future', async () => {
-        TestTimestamp = TestTimestamp.add(365, 'days')
+    const refreshTests = [
+      {
+        days: 0,
+        a_score: 13,
+        b_score: 62.62
+      },
+      {
+        days: 365,
+        a_score: 15.34,
+        b_score: 146.42
+      },
+      {
+        days: 730,
+        a_score: 17.54,
+        b_score: 212.45
+      },
+      {
+        days: 1460,
+        a_score: 21.10,
+        b_score: 243.92
+      }
+    ]
+
+    // a = high, exp = -0.001, score = 26
+    // b = veryLow, exp = -0.004, score = 246
+
+    // mean = 68.07692
+    // stdev = 57.18453
+
+    // ---- Day 0 ----
+    // medium risk goes to half original score on day 0
+    // high risk goes to (mean + stddev) / 2 on day 0
+    // Growth curve intersection
+    // a = 4394 days
+    // b = 830 days
+    // Expected score after 365
+    // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 15.34
+    // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 146.42
+    // Expected score after 730
+    // a = 26 / ( 1 + ( 81 * ( e ^ ( (730+4394) * -0.001 ) ) ) ) = 17.54
+    // b = 246 / ( 1 + ( 81 * ( e ^ ( (730+830) * -0.004 ) ) ) ) = 212.45
+    // Expected score after 1460
+    // a = 26 / ( 1 + ( 81 * ( e ^ ( (1460+4394) * -0.001 ) ) ) ) = 21.10
+    // b = 246 / ( 1 + ( 81 * ( e ^ ( (1460+830) * -0.004 ) ) ) ) = 243.92
+
+    for (const rt of refreshTests) {
+      describe(`audit was ${rt.days} ago`, () => {
+        it ('refresh ranking', async () => {
+          TestTimestamp = AuditDate().add(rt.days, 'days')
+
+          const execDesc = await statebox.startExecution(
+            {schema: 'test', category: 'factory'},
+            REFRESH_STATE_MACHINE_NAME,
+            {sendResponse: 'COMPLETE'}
+          )
+          expect(execDesc.status).to.eql('SUCCEEDED')
+        })
+        it(`verify calculated risk score on day ${rt.days}`, async () => {
+          const a = await rankingModel.findById(originalScores[0].uprn)
+          const b = await rankingModel.findById(originalScores[1].uprn)
+
+          expect(+a.updatedRiskScore).to.eql(rt.a_score)
+          expect(+b.updatedRiskScore).to.eql(rt.b_score)
+        })
+
+        it(`verify projected dates`, async () => {
+          const a = await rankingModel.findById(originalScores[0].uprn)
+          const b = await rankingModel.findById(originalScores[1].uprn)
+
+          // projected dates don't change
+          expect(a.projectedHighRiskCrossover).to.eql(null)
+          expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
+
+          expect(moment(b.projectedHighRiskCrossover).format('YYYY-MM-DD')).to.eql('2019-03-22')
+          expect(moment(b.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2022-12-17')
+        })
       })
+    }
+  })
 
-      it('refresh ranking again', async () => {
-        const execDesc = await statebox.startExecution(
-          {schema: 'test', category: 'factory'},
-          REFRESH_STATE_MACHINE_NAME,
-          {sendResponse: 'COMPLETE'}
-        )
-        expect(execDesc.status).to.eql('SUCCEEDED')
-      })
+  describe('stats table', () => {
+    it ('verify stats table', async() => {
+      const statsData = await statsModel.findById('factory')
 
-      // ---- Day 365 ----
-      // Growth curve intersection
-      // b = 830 days
-      // a = 4394 days
-
-      // Expected score
-      // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 146.42
-      // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 15.34
-      it('verify risk score on day 365', async () => {
-        const a = await rankingModel.findById(originalScores[0].uprn)
-        const b = await rankingModel.findById(originalScores[1].uprn)
-
-        expect(+a.updatedRiskScore).to.eql(15.34)
-        expect(+b.updatedRiskScore).to.eql(146.42)
-
-        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
-      })
-    })
-
-    describe('audit was two year ago', () => {
-      it('advance 365 days into the future', async () => {
-        TestTimestamp = TestTimestamp.add(365, 'days')
-      })
-
-      it('refresh ranking again', async () => {
-        const execDesc = await statebox.startExecution(
-          {schema: 'test', category: 'factory'},
-          REFRESH_STATE_MACHINE_NAME,
-          {sendResponse: 'COMPLETE'}
-        )
-        expect(execDesc.status).to.eql('SUCCEEDED')
-      })
-
-      // ---- Day 730 ----
-      // Growth curve intersection
-      // b = 830 days
-      // a = 4394 days
-
-      // Expected score
-      // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 212.45
-      // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 17.54
-      it('verify risk score on day 730', async () => {
-        const a = await rankingModel.findById(originalScores[0].uprn)
-        const b = await rankingModel.findById(originalScores[1].uprn)
-
-        expect(+a.updatedRiskScore).to.eql(17.54)
-        expect(+b.updatedRiskScore).to.eql(212.45)
-
-        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
-      })
+      expect(statsData.count).to.eql(13)
+      expect(+statsData.mean).to.eql(68.08)
+      expect(+statsData.stdev).to.eql(57.18)
+      expect(+statsData.variance).to.eql(3270.07)
+      expect(+statsData.median).to.eql(68)
     })
   })
 

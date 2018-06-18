@@ -44,7 +44,7 @@ async function calculateDistribution (scores, options) {
   const stdev = stats.stdev(origScores)
   const ranges = buildRanges(origScores, mean, stdev)
 
-  await saveStats(scores, mean, stdev, ranges, options)
+  await saveStats(origScores, mean, stdev, ranges, options)
 
   return {
     mean,
