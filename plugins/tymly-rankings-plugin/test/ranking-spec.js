@@ -150,12 +150,14 @@ describe('Tests the Ranking State Resource', function () {
       // stdev = 57.18453
 
       // ---- Day 0 ----
-      it('verify updated risk score', async () => {
+      it('verify risk score on day 365', async () => {
         const a = await rankingModel.findById(originalScores[0].uprn)
         const b = await rankingModel.findById(originalScores[1].uprn)
 
         expect(+a.updatedRiskScore).to.eql(13)      // medium risk goes to half original score on day 0
         expect(+b.updatedRiskScore).to.eql(62.62)   // high risk goes to (mean + stddev) / 2 on day 0
+
+        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
       })
     })
 
@@ -194,7 +196,7 @@ describe('Tests the Ranking State Resource', function () {
       // Expected score
       // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 146.42
       // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 15.34
-      it('verify updated risk score after 365 days', async () => {
+      it('verify risk score on day 365', async () => {
         const a = await rankingModel.findById(originalScores[0].uprn)
         const b = await rankingModel.findById(originalScores[1].uprn)
 

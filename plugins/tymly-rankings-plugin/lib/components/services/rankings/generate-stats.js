@@ -6,7 +6,7 @@ const dist = require('distributions')
 const moment = require('moment')
 const buildRanges = require('./build-ranges')
 const calculateNewRiskScore = require('./calculate-new-risk-score')
-const calculateGrowthCurve = require('./calculate-growth-curve')
+const projectedRecoveryDates = require('./projected-recovery-dates')
 const debug = require('debug')('tymly-rankings-plugin')
 const toTwoDp = require('./to-two-dp')
 
@@ -112,11 +112,23 @@ async function moveAlongGrowthCurve (score, row, mean, stdev, ranges, fsRanges, 
   const updatedRiskScore = toTwoDp(crs)
   const newRange = ranges.find(updatedRiskScore)
 
+  const { projectedHighRiskDate, projectedReturnDate } = projectedRecoveryDates(
+    score.original,
+    originalRange,
+    ranges,
+    daysSinceAudit,
+    mean,
+    stdev,
+    exp
+  )
+
   await options.rankingModel.upsert({
     [options.pk]: score[_.snakeCase(options.pk)],
     rankingName: _.kebabCase(options.category),
     range: _.kebabCase(newRange),
-    updatedRiskScore: updatedRiskScore
+    updatedRiskScore: updatedRiskScore,
+    projectedHighRiskCrossover: projectedHighRiskDate,
+    projectedReturnToOriginal: projectedReturnDate
   }, {
     setMissingPropertiesToNull: false
   })

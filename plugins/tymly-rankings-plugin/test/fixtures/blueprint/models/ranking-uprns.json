@@ -39,6 +39,14 @@
     "originalRiskScore": {
       "type": "number",
       "description": "The original risk score calculated by the sum of the factors"
+    },
+    "projectedHighRiskCrossover": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "projectedReturnToOriginal": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "required": [
