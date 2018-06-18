@@ -22,45 +22,7 @@ module.exports = async function generateStats (options, callback) {
   const { mean, stdev, ranges } = await calculateDistribution(scores, options)
   const fsRanges = options.registry.value.exponent
 
-  for (let [idx, s] of scores.entries()) {
-      const mostRecent = s.updated || s.original
-
-      // Generate stats for this property
-      const normal = dist.Normal(mean, stdev)
-      const distribution = normal.pdf(mostRecent).toFixed(4)
-
-      const row = await options.rankingModel.findById(s.uprn)
-
-      const daysSinceAudit = row.lastAuditDate
-        ? moment().diff(row.lastAuditDate, 'days')
-        : null
-
-      const growthCurve = row.lastAuditDate && row.fsManagement
-        ? +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, s.original).toFixed(5)
-        : null
-
-      const updatedRiskScore = growthCurve
-        ? calculateNewRiskScore(row.fsManagement, s.original, growthCurve, mean, stdev)
-        : null
-
-      if (updatedRiskScore) scores[idx].updated = updatedRiskScore
-
-      const range = updatedRiskScore
-        ? ranges.find(updatedRiskScore)
-        : ranges.find(mostRecent)
-
-      await options.rankingModel.upsert({
-        [options.pk]: s[_.snakeCase(options.pk)],
-        rankingName: _.kebabCase(options.category),
-        range: _.kebabCase(range),
-        distribution: distribution,
-        growthCurve: growthCurve,
-        updatedRiskScore: updatedRiskScore,
-        originalRiskScore: s.original
-      }, {
-        setMissingPropertiesToNull: false
-      })
-    }
+  await moveCalculatedRiskScoresAlongGrowthCurve(scores, mean, stdev, ranges, fsRanges, options)
 
   callback(null)
 } // generateStats
@@ -110,3 +72,47 @@ async function saveStats (scores, mean, stdev, ranges, options) {
 function getScores (options) {
   return options.client.query(`SELECT ${_.snakeCase(options.pk)}, original_risk_score::float, updated_risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`)
 }
+
+async function moveCalculatedRiskScoresAlongGrowthCurve (scores, mean, stdev, ranges, fsRanges, options) {
+  for (const [idx, s] of scores.entries()) {
+    const mostRecent = s.updated || s.original
+
+    // Generate stats for this property
+    const normal = dist.Normal(mean, stdev)
+    const distribution = normal.pdf(mostRecent).toFixed(4)
+
+    const row = await options.rankingModel.findById(s.uprn)
+
+    const daysSinceAudit = row.lastAuditDate
+      ? moment().diff(row.lastAuditDate, 'days')
+      : null
+
+    const growthCurve = row.lastAuditDate && row.fsManagement
+      ? +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, s.original).toFixed(5)
+      : null
+
+    const updatedRiskScore = growthCurve
+      ? calculateNewRiskScore(row.fsManagement, s.original, growthCurve, mean, stdev)
+      : null
+
+    if (updatedRiskScore) scores[idx].updated = updatedRiskScore
+
+    const range = updatedRiskScore
+      ? ranges.find(updatedRiskScore)
+      : ranges.find(mostRecent)
+
+    await options.rankingModel.upsert({
+      [options.pk]: s[_.snakeCase(options.pk)],
+      rankingName: _.kebabCase(options.category),
+      range: _.kebabCase(range),
+      distribution: distribution,
+      growthCurve: growthCurve,
+      updatedRiskScore: updatedRiskScore,
+      originalRiskScore: s.original
+    }, {
+      setMissingPropertiesToNull: false
+    })
+  }
+
+
+} // updateCalculatedGrowthCurves
