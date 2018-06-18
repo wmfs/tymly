@@ -32,8 +32,7 @@ async function loadRiskScores (options) {
   const scores = result.rows.map(r => {
     return {
       uprn: r.uprn,
-      updated: +r.updated_risk_score,
-      original: +r.original_risk_score
+      original: r.original_risk_score
     }
   })
 
@@ -70,49 +69,47 @@ async function saveStats (scores, mean, stdev, ranges, options) {
 } // saveStats
 
 function getScores (options) {
-  return options.client.query(`SELECT ${_.snakeCase(options.pk)}, original_risk_score::float, updated_risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`)
+  return options.client.query(`SELECT ${_.snakeCase(options.pk)}, original_risk_score::float FROM ${_.snakeCase(options.schema)}.${_.snakeCase(options.category)}_scores`)
 }
 
 async function moveCalculatedRiskScoresAlongGrowthCurve (scores, mean, stdev, ranges, fsRanges, options) {
-  for (const [idx, s] of scores.entries()) {
-    const mostRecent = s.updated || s.original
-
-    // Generate stats for this property
-    const normal = dist.Normal(mean, stdev)
-    const distribution = normal.pdf(mostRecent).toFixed(4)
-
+  for (const s of scores) {
     const row = await options.rankingModel.findById(s.uprn)
 
-    const daysSinceAudit = row.lastAuditDate
-      ? moment().diff(row.lastAuditDate, 'days')
-      : null
-
-    const growthCurve = row.lastAuditDate && row.fsManagement
-      ? +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, s.original).toFixed(5)
-      : null
-
-    const updatedRiskScore = growthCurve
-      ? calculateNewRiskScore(row.fsManagement, s.original, growthCurve, mean, stdev)
-      : null
-
-    if (updatedRiskScore) scores[idx].updated = updatedRiskScore
-
-    const range = updatedRiskScore
-      ? ranges.find(updatedRiskScore)
-      : ranges.find(mostRecent)
-
-    await options.rankingModel.upsert({
-      [options.pk]: s[_.snakeCase(options.pk)],
-      rankingName: _.kebabCase(options.category),
-      range: _.kebabCase(range),
-      distribution: distribution,
-      growthCurve: growthCurve,
-      updatedRiskScore: updatedRiskScore,
-      originalRiskScore: s.original
-    }, {
-      setMissingPropertiesToNull: false
-    })
+    if (!(row.lastAuditDate && row.fsManagement))
+      await setRankingFromOriginalScore(s, ranges, options)
+    else
+      await moveAlongGrowthCurve(s, row, mean, stdev, ranges, fsRanges, options)
   }
+} // moveCalculatedRiskScoresAlongGrowthCurve
 
+async function setRankingFromOriginalScore (score, ranges, options) {
+  const range = ranges.find(score.original)
 
-} // updateCalculatedGrowthCurves
+  await options.rankingModel.upsert({
+    [options.pk]: score[_.snakeCase(options.pk)],
+    rankingName: _.kebabCase(options.category),
+    range: _.kebabCase(range)
+  }, {
+    setMissingPropertiesToNull: false
+  })
+} // setRankingFromOriginalScore
+
+async function moveAlongGrowthCurve (score, row, mean, stdev, ranges, fsRanges, options) {
+  const daysSinceAudit = moment().diff(row.lastAuditDate, 'days')
+
+  const growthCurve = +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, score.original).toFixed(5)
+
+  const updatedRiskScore = calculateNewRiskScore(row.fsManagement, score.original, growthCurve, mean, stdev)
+
+  const range = ranges.find(updatedRiskScore)
+
+  await options.rankingModel.upsert({
+    [options.pk]: score[_.snakeCase(options.pk)],
+    rankingName: _.kebabCase(options.category),
+    range: _.kebabCase(range),
+    updatedRiskScore: updatedRiskScore
+  }, {
+    setMissingPropertiesToNull: false
+  })
+} // moveAlongGrowthCurve

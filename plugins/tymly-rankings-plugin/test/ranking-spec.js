@@ -161,9 +161,6 @@ describe('Tests the Ranking State Resource', function () {
     const a = await rankingModel.findById(originalScores[0].uprn)
     const b = await rankingModel.findById(originalScores[1].uprn)
 
-    expect(+a.growthCurve).to.eql(0.31707)
-    expect(+b.growthCurve).to.eql(3)
-
     expect(+a.updatedRiskScore).to.eql(26)
     expect(+b.updatedRiskScore).to.eql(126)
   })
@@ -209,9 +206,6 @@ describe('Tests the Ranking State Resource', function () {
   it('should check the updated risk score after 365 days', async () => {
     const a = await rankingModel.findById(originalScores[0].uprn)
     const b = await rankingModel.findById(originalScores[1].uprn)
-
-    expect(+a.growthCurve).to.eql(0.45431)
-    expect(+b.growthCurve).to.eql(12.41726)
 
     expect(+a.updatedRiskScore).to.eql(26)
     expect(+b.updatedRiskScore).to.eql(135.42)
