@@ -190,7 +190,7 @@ describe('Tests the Ranking State Resource', function () {
 
     for (const rt of refreshTests) {
       describe(`audit was ${rt.days} ago`, () => {
-        it ('refresh ranking', async () => {
+        it('refresh ranking', async () => {
           TestTimestamp = AuditDate().add(rt.days, 'days')
 
           const execDesc = await statebox.startExecution(
@@ -224,7 +224,7 @@ describe('Tests the Ranking State Resource', function () {
   })
 
   describe('stats table', () => {
-    it ('verify stats table', async() => {
+    it('verify stats table', async () => {
       const statsData = await statsModel.findById('factory')
 
       expect(statsData.count).to.eql(13)
