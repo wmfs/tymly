@@ -3,13 +3,13 @@ const moment = require('moment')
 const temporaryRiskScore = require('./temporary-risk-score')
 const growthCurveIntersection = require('./growth-curve-intersection')
 
-module.exports = function projectedRecoveryDates (riskScore, range, ranges, daysElapsed, mean, stdev, exp) {
+module.exports = function projectedRecoveryDates (riskScore, range, ranges, daysElapsed, mean, stdev, exp, referenceDate) {
   const tempScore = temporaryRiskScore(range, riskScore, mean, stdev)
   const offset = growthCurveIntersection(riskScore, tempScore, exp)
   const effectiveDays = daysElapsed + offset
 
-  const projectedHighRiskDate = effectiveDate(riskScore, ranges.veryHigh.lowerBound, exp, effectiveDays)
-  const projectedReturnDate = effectiveDate(riskScore, riskScore-1, exp, effectiveDays)
+  const projectedHighRiskDate = effectiveDate(riskScore, ranges.veryHigh.lowerBound, exp, effectiveDays, referenceDate)
+  const projectedReturnDate = effectiveDate(riskScore, riskScore - 1, exp, effectiveDays, referenceDate)
 
   return {
     projectedHighRiskDate,
@@ -17,7 +17,7 @@ module.exports = function projectedRecoveryDates (riskScore, range, ranges, days
   }
 } // projectedRecoveryDates
 
-function effectiveDate (riskScore, targetScore, exp, elapsedDays) {
+function effectiveDate (riskScore, targetScore, exp, elapsedDays, referenceDate) {
   if (targetScore > riskScore) {
     return null
   }
@@ -26,5 +26,5 @@ function effectiveDate (riskScore, targetScore, exp, elapsedDays) {
 
   const daysUntil = offset - elapsedDays
 
-  return moment().add(daysUntil, "days")
+  return moment(referenceDate).add(daysUntil, 'days')
 } // effectiveDate

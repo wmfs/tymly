@@ -2,8 +2,6 @@
 
 const _ = require('lodash')
 const stats = require('stats-lite')
-const dist = require('distributions')
-const moment = require('moment')
 const buildRanges = require('./build-ranges')
 const calculateNewRiskScore = require('./calculate-new-risk-score')
 const projectedRecoveryDates = require('./projected-recovery-dates')
@@ -36,7 +34,7 @@ async function loadRiskScores (options) {
     }
   })
 
-  return scores;
+  return scores
 } // loadRiskScores
 
 async function calculateDistribution (scores, options) {
@@ -46,7 +44,7 @@ async function calculateDistribution (scores, options) {
   const stdev = stats.stdev(origScores)
   const ranges = buildRanges(origScores, mean, stdev)
 
-  await saveStats (scores, mean, stdev, ranges, options)
+  await saveStats(scores, mean, stdev, ranges, options)
 
   return {
     mean,
@@ -76,10 +74,7 @@ async function moveCalculatedRiskScoresAlongGrowthCurve (scores, mean, stdev, ra
   for (const s of scores) {
     const row = await options.rankingModel.findById(s.uprn)
 
-    if (!(row.lastAuditDate && row.fsManagement))
-      await setRankingFromOriginalScore(s, ranges, options)
-    else
-      await moveAlongGrowthCurve(s, row, mean, stdev, ranges, fsRanges, options)
+    if (!(row.lastAuditDate && row.fsManagement)) { await setRankingFromOriginalScore(s, ranges, options) } else { await moveAlongGrowthCurve(s, row, mean, stdev, ranges, fsRanges, options) }
   }
 } // moveCalculatedRiskScoresAlongGrowthCurve
 
@@ -96,7 +91,7 @@ async function setRankingFromOriginalScore (score, ranges, options) {
 } // setRankingFromOriginalScore
 
 async function moveAlongGrowthCurve (score, row, mean, stdev, ranges, fsRanges, options) {
-  const daysSinceAudit = moment().diff(row.lastAuditDate, 'days')
+  const daysSinceAudit = options.timestamp.today().diff(row.lastAuditDate, 'days')
   const exp = fsRanges[row.fsManagement]
 
   const originalRange = ranges.find(score.original)
@@ -119,7 +114,8 @@ async function moveAlongGrowthCurve (score, row, mean, stdev, ranges, fsRanges, 
     daysSinceAudit,
     mean,
     stdev,
-    exp
+    exp,
+    options.timestamp.today()
   )
 
   await options.rankingModel.upsert({

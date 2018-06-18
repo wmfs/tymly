@@ -10,6 +10,7 @@ class RefreshRanking {
     this.client = env.bootedServices.storage.client
     this.registry = env.bootedServices.registry
     this.storage = env.bootedServices.storage
+    this.timestamp = env.bootedServices.timestamp
     callback(null)
   }
 
@@ -52,7 +53,8 @@ class RefreshRanking {
       name: schema,
       rankingModel: rankingModel,
       statsModel: statsModel,
-      registry: this.registry.registry[key]
+      registry: this.registry.registry[key],
+      timestamp: this.timestamp
     }, async (err) => {
       if (err) return context.sendTaskFailure({error: 'generateStatsFail', cause: err})
       await this.client.query(statement)

@@ -56,7 +56,8 @@ class RankingService {
           name: value.namespace,
           rankingModel: rankingModel,
           statsModel: statsModel,
-          registry: options.bootedServices.registry.registry[key]
+          registry: options.bootedServices.registry.registry[key],
+          timestamp: options.bootedServices.timestamp
         }, (err) => {
           if (err) reject(err)
           else resolve()

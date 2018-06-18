@@ -26,6 +26,7 @@ describe('Tests the Ranking State Resource', function () {
   const originalScores = []
 
   let statebox, tymlyService, rankingModel, statsModel
+  let TestTimestamp = moment([2018, 5, 18])
 
   // explicitly opening a db connection as seom setup needs to be carried
   // out before tymly can be started up
@@ -63,6 +64,12 @@ describe('Tests the Ranking State Resource', function () {
           statebox = tymlyServices.statebox
           rankingModel = tymlyServices.storage.models['test_rankingUprns']
           statsModel = tymlyServices.storage.models['test_modelStats']
+          tymlyServices.timestamp.timeProvider = {
+            today () {
+              return moment(TestTimestamp)
+            }
+          } // debug provider
+
           done()
         }
       )
@@ -104,14 +111,14 @@ describe('Tests the Ranking State Resource', function () {
           uprn: originalScores[0].uprn,
           rankingName: 'factory',
           fsManagement: 'high',
-          lastAuditDate: new Date(),
+          lastAuditDate: TestTimestamp,
           lastEnforcementAction: 'SATISFACTORY'
         }, {})
         await rankingModel.upsert({
           uprn: originalScores[1].uprn,
           rankingName: 'factory',
           fsManagement: 'veryLow',
-          lastAuditDate: new Date(),
+          lastAuditDate: TestTimestamp,
           lastEnforcementAction: 'ENFORCEMENT'
         }, {})
 
@@ -150,33 +157,20 @@ describe('Tests the Ranking State Resource', function () {
       // stdev = 57.18453
 
       // ---- Day 0 ----
-      it('verify risk score on day 365', async () => {
+      it('verify risk score on day 0', async () => {
         const a = await rankingModel.findById(originalScores[0].uprn)
         const b = await rankingModel.findById(originalScores[1].uprn)
 
-        expect(+a.updatedRiskScore).to.eql(13)      // medium risk goes to half original score on day 0
-        expect(+b.updatedRiskScore).to.eql(62.62)   // high risk goes to (mean + stddev) / 2 on day 0
+        expect(+a.updatedRiskScore).to.eql(13) // medium risk goes to half original score on day 0
+        expect(+b.updatedRiskScore).to.eql(62.62) // high risk goes to (mean + stddev) / 2 on day 0
 
         expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
       })
     })
 
     describe('audit was one year ago', () => {
-      it('move last audit dates to 365 days from now', async () => {
-        await rankingModel.upsert({
-          uprn: originalScores[0].uprn,
-          rankingName: 'factory',
-          lastAuditDate: moment().subtract(365, 'days')
-        }, {
-          setMissingPropertiesToNull: false
-        })
-        await rankingModel.upsert({
-          uprn: originalScores[1].uprn,
-          rankingName: 'factory',
-          lastAuditDate: moment().subtract(365, 'days')
-        }, {
-          setMissingPropertiesToNull: false
-        })
+      it('advance 365 days into the future', async () => {
+        TestTimestamp = TestTimestamp.add(365, 'days')
       })
 
       it('refresh ranking again', async () => {
@@ -202,6 +196,41 @@ describe('Tests the Ranking State Resource', function () {
 
         expect(+a.updatedRiskScore).to.eql(15.34)
         expect(+b.updatedRiskScore).to.eql(146.42)
+
+        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
+      })
+    })
+
+    describe('audit was two year ago', () => {
+      it('advance 365 days into the future', async () => {
+        TestTimestamp = TestTimestamp.add(365, 'days')
+      })
+
+      it('refresh ranking again', async () => {
+        const execDesc = await statebox.startExecution(
+          {schema: 'test', category: 'factory'},
+          REFRESH_STATE_MACHINE_NAME,
+          {sendResponse: 'COMPLETE'}
+        )
+        expect(execDesc.status).to.eql('SUCCEEDED')
+      })
+
+      // ---- Day 730 ----
+      // Growth curve intersection
+      // b = 830 days
+      // a = 4394 days
+
+      // Expected score
+      // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 212.45
+      // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 17.54
+      it('verify risk score on day 730', async () => {
+        const a = await rankingModel.findById(originalScores[0].uprn)
+        const b = await rankingModel.findById(originalScores[1].uprn)
+
+        expect(+a.updatedRiskScore).to.eql(17.54)
+        expect(+b.updatedRiskScore).to.eql(212.45)
+
+        expect(moment(a.projectedReturnToOriginal).format('YYYY-MM-DD')).to.eql('2027-04-11')
       })
     })
   })
@@ -240,7 +269,7 @@ describe('Tests the Ranking State Resource', function () {
     })
   })
 
-  describe ('refresh risk scores state machine', () => {
+  describe('refresh risk scores state machine', () => {
     it('refresh risk score', async () => {
       const execDesc = await statebox.startExecution(
         {
@@ -264,8 +293,7 @@ describe('Tests the Ranking State Resource', function () {
     })
   })
 
-
-  describe ('clean up', () => {
+  describe('clean up', () => {
     it('clean up test resources', () => {
       return sqlScriptRunner('./db-scripts/cleanup.sql', client)
     })
