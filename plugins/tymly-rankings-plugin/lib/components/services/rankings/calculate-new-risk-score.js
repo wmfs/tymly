@@ -1,23 +1,15 @@
 'use strict'
-const debug = require('debug')('tymly-rankings-plugin')
+const temporaryRiskScore = require('./temporary-risk-score')
+const growthCurveIntersection = require('./growth-curve-intersection')
+const calculateGrowthCurve = require('./calculate-growth-curve')
 
-module.exports = function calculateNewRiskScore (range, riskScore, growthCurve, mean, stdev) {
-  debug(`Calculating new risk score based on growth curve and range`)
-  let value
-  switch (range) {
-    case 'veryHigh':
-    case 'high':
-      debug(`((${mean} + ${stdev}) / 2) + ${growthCurve}`)
-      value = ((mean + stdev) / 2) + growthCurve
-      break
-    case 'medium':
-    case 'low':
-    case 'veryLow':
-      debug(`(${riskScore} / 2) + ${growthCurve}`)
-      value = (riskScore / 2) + growthCurve
-      break
-  }
+module.exports = function calculateNewRiskScore (riskScore, range, daysElapsed, mean, stdev, exp) {
+  const tempScore = temporaryRiskScore(range, riskScore, mean, stdev)
 
-  if (value < riskScore) return +value.toFixed(2)
-  else return riskScore
-}
+  const offset = growthCurveIntersection(riskScore, tempScore, exp)
+
+  const effectiveDays = daysElapsed + offset
+  const crs = calculateGrowthCurve(exp, effectiveDays, riskScore)
+
+  return crs
+} // calculateNewRiskScore

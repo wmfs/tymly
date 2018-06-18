@@ -161,8 +161,8 @@ describe('Tests the Ranking State Resource', function () {
     const a = await rankingModel.findById(originalScores[0].uprn)
     const b = await rankingModel.findById(originalScores[1].uprn)
 
-    expect(+a.updatedRiskScore).to.eql(26)
-    expect(+b.updatedRiskScore).to.eql(126)
+    expect(+a.updatedRiskScore).to.eql(13)    // medium risk goes to half original score on day 0
+    expect(+b.updatedRiskScore).to.eql(62.62)   // high risk goes to (mean + stddev) / 2 on day 0
   })
 
   it('should change the last audit dates to 365 days from now', async () => {
@@ -192,14 +192,13 @@ describe('Tests the Ranking State Resource', function () {
   })
 
   // ---- Day 365 ----
-
-  // Growth curve
-  // a = 26 / ( 1 + ( 81 * ( e ^ ( 365 * -0.001 ) ) ) ) = 0.45431
-  // b = 246 / ( 1 + ( 81 * ( e ^ ( 365 * -0.004 ) ) ) ) = 12.41726
+  // Growth curve intersection
+  // b = 830 days
+  // a = 4394 days
 
   // Expected score
-  // a = ( ( 68.07692 + 57.18453 ) / 2 ) + 0.45430 = 63.085025**
-  // b = ( 246 / 2 ) + 12.41725 = 135.41725
+  // b = 246 / ( 1 + ( 81 * ( e ^ ( (365+830) * -0.004 ) ) ) ) = 146.42
+  // a = 26 / ( 1 + ( 81 * ( e ^ ( (365+4394) * -0.001 ) ) ) ) = 15.34
 
   // ** More than risk score, so return risk score
 
@@ -207,8 +206,8 @@ describe('Tests the Ranking State Resource', function () {
     const a = await rankingModel.findById(originalScores[0].uprn)
     const b = await rankingModel.findById(originalScores[1].uprn)
 
-    expect(+a.updatedRiskScore).to.eql(26)
-    expect(+b.updatedRiskScore).to.eql(135.42)
+    expect(+a.updatedRiskScore).to.eql(15.34)
+    expect(+b.updatedRiskScore).to.eql(146.42)
   })
 
   it('should run the set and refresh state machine', async () => {

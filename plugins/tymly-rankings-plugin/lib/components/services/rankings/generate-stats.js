@@ -97,17 +97,25 @@ async function setRankingFromOriginalScore (score, ranges, options) {
 
 async function moveAlongGrowthCurve (score, row, mean, stdev, ranges, fsRanges, options) {
   const daysSinceAudit = moment().diff(row.lastAuditDate, 'days')
+  const exp = fsRanges[row.fsManagement]
 
-  const growthCurve = +calculateGrowthCurve(fsRanges[row.fsManagement], daysSinceAudit, score.original).toFixed(5)
+  const originalRange = ranges.find(score.original)
+  const crs = calculateNewRiskScore(
+    score.original,
+    originalRange,
+    daysSinceAudit,
+    mean,
+    stdev,
+    exp
+  ) // updatedRiskScore
 
-  const updatedRiskScore = calculateNewRiskScore(row.fsManagement, score.original, growthCurve, mean, stdev)
-
-  const range = ranges.find(updatedRiskScore)
+  const updatedRiskScore = toTwoDp(crs)
+  const newRange = ranges.find(updatedRiskScore)
 
   await options.rankingModel.upsert({
     [options.pk]: score[_.snakeCase(options.pk)],
     rankingName: _.kebabCase(options.category),
-    range: _.kebabCase(range),
+    range: _.kebabCase(newRange),
     updatedRiskScore: updatedRiskScore
   }, {
     setMissingPropertiesToNull: false

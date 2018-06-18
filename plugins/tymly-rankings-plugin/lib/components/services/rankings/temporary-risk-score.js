@@ -1,12 +1,12 @@
 
-function temporaryRiskScore (range, riskScore, mean, stddev) {
+function temporaryRiskScore (range, riskScore, mean, stdev) {
   switch (range) {
     case 'veryHigh':
     case 'high':
-      return mean + (stddev / 2)
+      return (mean + stdev) / 2
 
     default:
-      return riskScore
+      return riskScore / 2
   }
 } // temporaryRiskScore
 

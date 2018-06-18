@@ -7,7 +7,7 @@ function growthCurveIntersection (riskScore, tempScore, exp) {
 
   const days = logRatio / exp
 
-  return Math.floor(days)
+  return Math.floor(days) // bring down to whole days
 } // growthCurveIntersection
 
 module.exports = growthCurveIntersection
