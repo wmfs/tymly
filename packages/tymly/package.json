@@ -19,7 +19,7 @@
     "mkdirp": "0.5.1",
     "mongodb-extended-json": "1.10.0",
     "nanoid": "1.0.3",
-    "read-pkg-up": "3.0.0",
+    "read-pkg-up": "4.0.0",
     "split": "1.0.1",
     "sprintf-js": "1.1.1",
     "statebox": "^0.0.8",
