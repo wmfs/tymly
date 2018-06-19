@@ -13,7 +13,9 @@
     "ci_test": "./node_modules/.bin/lerna run test --concurrency 1 -- -- --reporter xunit --reporter-options output=./test/TEST-result.xml",
     "lint": "./node_modules/.bin/lerna run lint",
     "bundle": "./tools/tymly-packager/bin/bundleUp .",
-    "clean": "./node_modules/.bin/lerna clean --yes"
+    "clean": "./node_modules/.bin/lerna clean --yes",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "license": "MIT",
   "repository": {
@@ -27,5 +29,9 @@
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.83.0"
   }
 }
