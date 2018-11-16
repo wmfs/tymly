@@ -1,4 +1,4 @@
-# Tymly
+![Tymly Logo](https://github.com/wmfs/tymly/blob/master/assets/tymly_wordmark_and_logo_medium.svg)
 
 > A Tymly shaped shell used to mimic [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) behaviour.
 >
