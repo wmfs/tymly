@@ -1,0 +1,8 @@
+{
+  "api": {
+    "mount": "github-summary"
+  },
+  "server": {
+    "port": 3001
+  }
+}

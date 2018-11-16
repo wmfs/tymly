@@ -1,0 +1,171 @@
+buildscript {
+  repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.github.honourednihilist:gradle-postgresql-embedded:0.2.0"
+    classpath "gradle.plugin.com.github.jlouns:gradle-cross-platform-exec-plugin:0.5.0"
+  }
+}
+
+apply plugin: "com.github.honourednihilist.gradle-postgresql-embedded"
+apply plugin: "com.github.jlouns.cpe"
+
+import static groovy.io.FileType.DIRECTORIES
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
+def isWindows = isFamily(FAMILY_WINDOWS)
+def hasPostgres = (System.env.PG_CONNECTION_STRING != null)
+
+String pg_username = "postgres"
+String pg_password = "postgres"
+String pg_db_name = "test_db"
+int pg_port = 54321
+
+postgresEmbedded {
+	version = "V9_6_3"
+	host = "localhost"
+	port = pg_port
+	dbName = pg_db_name
+	username = pg_username
+	password = pg_password
+	artifactStorePath = "./.embedpostgresql" // where PostgreSQL distributions are stored after downloading, inside home directory by default
+	stopWhenBuildFinished = true
+	timeoutMillisBeforeStop = isWindows ? 15000 : 0
+}
+
+String pg_connection= hasPostgres ? System.env.PG_CONNECTION_STRING :
+    "postgres://${pg_username}:${pg_password}@localhost:${pg_port}/${pg_db_name}"
+String projectDir=project.projectDir.toString()
+String buildDir="${projectDir}/build"
+String testOutputDir="${buildDir}/test"
+
+int test_timeout = 15000
+
+////////////////////////////////////////////
+task npmBootstrap (type: CrossPlatformExec) {
+  commandLine 'npm', 'install'
+}
+
+task makeTestOutputDir {
+  mkdir testOutputDir
+}
+
+////////////////////////////////////////////
+def subDirectories = ['packages', 'plugins', 'blueprints']
+def packages = []
+subDirectories.each {
+  name ->
+  def dir = new File("./${name}")
+  if (!dir.exists())
+    return
+  dir.traverse(type: DIRECTORIES, maxDepth: 0) {
+    def pkg = new File(it, 'package.json')
+    if (pkg.exists())
+      packages << [it.name, it.toString(), name]
+  }
+}
+
+def categoryTestTasks = [:]
+subDirectories.each { categoryTestTasks[it] = [] }
+
+def allTestTasks = []
+def ci_allTestTasks = []
+def cleanTasks = []
+packages.each { p ->
+  def testDependencies = []
+  if (!hasPostgres)
+    testDependencies << 'startPostgres'
+
+  def name = p[0]
+  def dir = p[1]
+  def category = p[2]
+  def testTaskName = "test${name.capitalize()}"
+  def cleanTaskName = "clean${name.capitalize()}"
+
+  allTestTasks << testTaskName
+  categoryTestTasks[category] << testTaskName
+  ci_allTestTasks << "ci_${testTaskName}"
+  cleanTasks << cleanTaskName
+
+  task "${testTaskName}"(type: CrossPlatformExec,
+           dependsOn: testDependencies) {
+      group 'Test'
+      description "Runs ${name} test suite"
+
+      commandLine 'npm', 'run', 'test'
+      workingDir "${dir}"
+
+      environment PG_CONNECTION_STRING: pg_connection
+      environment TIMEOUT: test_timeout
+  }
+
+  testDependencies << 'cleanTestFiles'
+  testDependencies << 'makeTestOutputDir'
+
+  task "ci_${testTaskName}"(type: CrossPlatformExec,
+                        dependsOn: testDependencies) {
+    commandLine 'npm', 'run', 'test', '--', '--reporter', 'xunit', '--reporter-options', "output=${testOutputDir}/TEST-${name}-result.xml"
+    workingDir "${dir}"
+
+    environment PG_CONNECTION_STRING: pg_connection
+    environment TIMEOUT: test_timeout
+  }
+
+  task "${cleanTaskName}"(type: Delete) {
+    group 'Clean'
+    description 'Cleans ${name} node_modules'
+
+    delete "${dir}/node_modules"
+  }
+}
+
+subDirectories.each {
+  name ->
+    task "test_all${name.capitalize()}"(dependsOn: categoryTestTasks[name]) {
+      group 'Test'
+      description "Run all ${name} test suites"
+    }
+}
+
+/////////////////////////////////////
+task cleanNodeModules (dependsOn: cleanTasks) {
+  group 'Clean'
+  description 'Removes all packages, plugin, and blueprint node_modules'
+}
+
+task cleanBuild (type: Delete) {
+  group 'Clean'
+  description 'Removes build directory'
+
+  delete buildDir
+}
+
+task cleanTestFiles (type: Delete) {
+  group 'Clean'
+  description 'Cleans up TEST-*-results.xml files'
+
+  delete testOutputDir
+}
+task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
+  group 'Clean'
+  description 'Discards all node_modules directories, cleans up TEST-*.xml files, removes build directory'
+}
+
+task bootstrap (type: CrossPlatformExec,
+                dependsOn: [cleanNodeModules, npmBootstrap]) {
+  group 'Build'
+  description 'Installs the npm dependencies'
+
+  commandLine 'npm', 'run', 'bootstrap'
+}
+
+task test (dependsOn: allTestTasks) {
+  group 'Build'
+  description 'Runs whole test suite'
+}
+
+task ci_test (dependsOn: ci_allTestTasks) {
+  group 'Build'
+  description 'Runs whole test suite, generating JUnit style XML output'
+}
