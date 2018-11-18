@@ -78,7 +78,7 @@ Nearly there! To synchronize your empty Tymly [monorepo](https://medium.com/@mao
 __Which will:__
 
 * Connect to GitHub (using the username/token values defined in the environment variables)
-* Clone or pull repos in the `/blueprints`, `/packages` and `/plugins` directories.
+* Clone or pull Tymly repos into the `/blueprints`, `/packages` and `/plugins` directories.
 
 __And lead to output looking similar to:__
 
@@ -92,7 +92,7 @@ To ensure all the dependencies of all the repos that have just been updated are 
 
 __From the command line, inside the `tymly` directory:__
 
-`npm run bootstrap`
+### `npm run bootstrap`
 
 And after a while, you're good to go! :sweat_smile:
 
