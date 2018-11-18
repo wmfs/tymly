@@ -1,63 +1,103 @@
 ![Tymly Logo](https://github.com/wmfs/tymly/blob/master/assets/tymly_wordmark_and_logo_medium.svg)
 
-> A Tymly shaped shell used to mimic [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) behaviour.
->
-> You will note that the blueprints/packages/plugins folders are all empty.  In a normal monorepo these folders would hold
-> other projects.  Instead of this, we use various scripts to download the source code for these other projects into these folders.
+# What is this?
+
+Tymly is built from many inter-related packages.
+The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).
+
+However, for those wanting to develop the Tymly framework itself, it can be tricky to keep-track as new Tymly repos are added and existing Tymly repos evolve.
+It's also important to ensure all these repos are linked together for the best possible developer experience.
+
+_And that's what this repo can help with!_
+
+Here we have an ___empty___ [Lerna](https://github.com/lerna/lerna)-powered [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9).
+By following the instructions below, it's possible to automatically fill the empty `/blueprints`, `/packages` and `/plugins` directories with the freshest Tymly code from https://github.com/wmfs.
+
+* __Subsequent synchronization attempts will update the locally cloned repos as necessary, and clone anything new that's become available.__
 
 
-## Installing
+# Environment
 
-To setup tymly locally, you should first clone this repository.
+There are a couple of things you'll need installed for all this to work...
 
-Once you have done so, do an "npm install" to download the dependencies as normal...
+### Git
 
-``` bash
-$ npm install
+* https://git-scm.com/downloads
+
+### Node.js
+
+* https://nodejs.org
+
+# GitHub Access Token
+
+> Instead of using your GitHub password, we use a [Github Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+> This approach provides a few advantages - in particular finer access control and more specific monitoring. __Be sure to keep the value of your Access Token value secret!__
+
+Assuming you've already signed-up with GitHub, you'll need to create a new **Access Token** for all your Tymly-related interactions.
+
+* Generating a new token value is easy enough, first go here:
+  * https://github.com/settings/tokens
+* Then click the __"Generate new token"__ button.
+* Feel free to give your new token any name you like, but something like "Tymly Monorepo" will do nicely.
+* As for those __Scopes__, click this one:
+  * [x] __repo__ (Full control of private repositories)
+* Then hit __"Generate token"__
+* Copy the token value: we'll be setting an environment variable to it later.
+
+# Cloning
+
+Next you'll need to clone this repo. From the __Git__ shell:
+
+`git clone https://github.com/wmfs/tymly.git`
+
+Then, from the command prompt, install all the necessary __Node.js__ packages:
+
+```
+cd tymly
+npm install
 ```
 
-To populate the aforementioned empty folders, execute the sync script.  This will run a series of git clone commands to download the various blueprints/packages/plugins...
+# Environment Variables
 
-```bash
-$ npm run sync
-```
+For the synchronization process to work, you'll need to [define Environment Variables](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html).
 
-You'll need to login to npm to be able to pull in the private packages.
-```bash
-$ npm login
-```
+__We need to define two environment variables:__
 
-In the future, you can re-run this script to get any missing repos or pull the latest commits.
+| Environment Variable | Notes                                                                 |
+| -------------------- | --------------------------------------------------------------------- |
+| `TYMLY_GITHUB_USER`  | This is the __username__ you use to log into GitHub with.              |
+| `TYMLY_GITHUB_TOKEN` | And yes, this is the value of the __Access Token__ you generated earlier. |
 
-Finally, execute the bootstrap script to have lerna download/hoist all the dependencies...
+# Synchronizing
 
-```bash
-$ npm run bootstrap
-```
+Nearly there... to synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `tymly` directory:
 
+`npm run sync`
 
-## Running Locally in WebStorm
+__Which will:__
 
-To run tymly locally, create a new npm run configuration named "npm start".
+* Connect to GitHub (using the username/token values defined in the environment variables)
+* Clone or pull repos in the `/blueprints`, `/packages` and `/plugins` directories.
 
-Change the package.json drop-down so that the tymly-runner package.json is selected.
+__Just `npm run sync` anytime you want to ensure your local Tymly repos reflect those on GitHub.__
 
-Set the command drop-down to "start".
+# Bootstrapping
 
-Finally configure the various environment variables as specified in the README.md file for the tymly-runner repository.
+To ensure all the dependencies of all the repos that have just been updated are up-to-date we use the [Lerna](https://lernajs.io/) monorepo tool.
 
-Thereafter, you can start tymly using the run configuration.
+__From the command line, inside the `tymly` directory:__
 
+`npm run bootstrap`
 
-## Making Changes to Blueprints/Packages/Plugins
+And after a while, you're good to go! :sweat_smile:
 
-Be aware that the build system (wmfs-bot) is configured to automatically release new versions of blueprints/packages/plugins after changes to them have been committed and pushed.
+# Next steps...
 
-However, this will only occur if the commit messages are prefixed with certain tags.  Memorising those tags are unneccessary as you can
-use commitizen to [handle it](https://github.com/wmfs/tymly-monorepo/wiki/Using-Commitizen).
+With your Tymly repos cloned and packages installed, what next?
 
+1. Have a read of our contributor [Code of Conduct](https://github.com/wmfs/tymly/blob/master/CODE_OF_CONDUCT.md).
+2. Also, please read our notes about [contributing](https://github.com/wmfs/tymly/blob/master/CONTRIBUTING.md).
 
-## <a name="license"></a>License
+# License
 
 [MIT](https://github.com/wmfs/tymly/blob/master/LICENSE)
-
