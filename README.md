@@ -2,7 +2,7 @@
 
 # What is this?
 
-__Tymly is a product of many inter-related [Node.js](https://nodejs.org/en/) packages. The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).__
+__Tymly is the product of many inter-related [Node.js](https://nodejs.org/en/) packages. The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).__
 
 However, for those wanting to develop the Tymly framework itself, it can be tricky to keep-track as new Tymly repos are added and existing Tymly repos evolve.
 It's also important to ensure all these repos are linked together locally for the best possible developer experience.
@@ -88,7 +88,7 @@ __Just `npm run sync` anytime you want to ensure your local Tymly repos reflect 
 
 # Bootstrapping
 
-To ensure all the dependencies of all the repos that have just been updated are up-to-date we use the [Lerna](https://lernajs.io/) monorepo tool.
+To ensure the dependencies of all the Tymly repos are installed as things change, and that the Tymly repos are all linked together locally, we use the [Lerna](https://lernajs.io/) monorepo tool.
 
 __From the command line, inside the `tymly` directory:__
 
