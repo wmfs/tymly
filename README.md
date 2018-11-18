@@ -72,6 +72,10 @@ Nearly there! To synchronize your empty Tymly [monorepo](https://medium.com/@mao
 
 `npm run sync`
 
+
+![Sync screenshot](https://github.com/wmfs/tymly/blob/master/assets/sync-screenshot.png)
+
+
 __Which will:__
 
 * Connect to GitHub (using the username/token values defined in the environment variables)
