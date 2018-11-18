@@ -95,4 +95,5 @@ lerna-debug.log
 TEST-result.xml
 .gradle/
 .embedpostgresql/
-build/
+
+build
