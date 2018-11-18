@@ -80,7 +80,7 @@ __Which will:__
 * Connect to GitHub (using the username/token values defined in the environment variables)
 * Clone or pull Tymly repos into the `/blueprints`, `/packages` and `/plugins` directories.
 
-__And lead to output looking similar to:__
+__...which should lead to output looking similar to:__
 
 ![Sync screenshot](https://github.com/wmfs/tymly/blob/master/assets/sync-screenshot.png)
 
