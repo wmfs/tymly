@@ -21,9 +21,13 @@ There are a couple of things you'll need installed for all this to work...
 
 ### Git
 
+> Git is a version-control system for tracking changes in computer files and coordinating work on those files among multiple people.
+
 * https://git-scm.com/downloads
 
 ### Node.js
+
+> Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
 
 * https://nodejs.org
 
