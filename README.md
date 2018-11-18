@@ -66,7 +66,7 @@ __To integrate this repo with your GitHub account, two [environment variables](h
 
 | Environment Variable | Notes                                                                 |
 | -------------------- | --------------------------------------------------------------------- |
-| `TYMLY_GITHUB_USER`  | The value of this environment variable should be set to the __username__ that use to log into GitHub with (and the account you generated that access token with earlier).              |
+| `TYMLY_GITHUB_USER`  | The value of this environment variable should be set to the __username__ that you use to log into GitHub with (and the account you generated that access token with earlier).              |
 | `TYMLY_GITHUB_TOKEN` | And the value of this environment variable should be set to the personal __Access Token__ you previously generated. |
 
 # Synchronizing
