@@ -17,7 +17,7 @@ By following the instructions below, it's possible to automatically fill the emp
 
 # Environment
 
-There are a couple of things you'll need installed for all this to work...
+__There are a couple of things you'll need installed for all this to work...__
 
 ### Git
 
@@ -36,7 +36,7 @@ There are a couple of things you'll need installed for all this to work...
 > Instead of using your GitHub password, we use a [Personal Github Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
 > This approach provides a few advantages - in particular finer access control and more specific monitoring. __Be sure to keep the value of your Access Token value secret!__
 
-Assuming you've already signed-up with GitHub, you'll need to create a new **Access Token** for all your Tymly-related interactions.
+__Assuming you've already signed-up with GitHub, you'll need to create a new **Access Token** for all your Tymly-related interactions.__
 
 * Generating a new token value is easy enough, first go here:
   * https://github.com/settings/tokens
