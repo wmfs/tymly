@@ -68,10 +68,11 @@ __To integrate this repo with your GitHub account, two [environment variables](h
 
 # Synchronizing
 
-Nearly there! To synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `tymly` directory:
+Nearly there! To synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `/tymly` directory:
 
-`npm run sync`
+### `npm run sync`
 
+__Which should lead to output looking similar to:__
 
 ![Sync screenshot](https://github.com/wmfs/tymly/blob/master/assets/sync-screenshot.png)
 
