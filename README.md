@@ -2,8 +2,7 @@
 
 # What is this?
 
-Tymly is built from many inter-related packages.
-The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).
+__Tymly is built from many inter-related packages. The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).__
 
 However, for those wanting to develop the Tymly framework itself, it can be tricky to keep-track as new Tymly repos are added and existing Tymly repos evolve.
 It's also important to ensure all these repos are linked together locally for the best possible developer experience.
