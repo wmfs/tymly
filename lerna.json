@@ -7,7 +7,6 @@
   ],
   "version": "fixed",
   "hoist": true,
-  "commands":{},
   "command": {
     "init": {
       "exact": false
