@@ -98,6 +98,7 @@ packages.each { p ->
 
       environment PG_CONNECTION_STRING: pg_connection
       environment TIMEOUT: test_timeout
+      environment TYMLY_AUTH_AUDIENCE: 'fruity'
   }
 
   testDependencies << 'cleanTestFiles'
