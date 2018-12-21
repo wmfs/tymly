@@ -3,7 +3,8 @@
   "packages": [
     "packages/*",
     "plugins/*",
-    "blueprints/*"
+    "blueprints/*",
+    "cardscripts/cardscript/packages/*"
   ],
   "version": "fixed",
   "hoist": true,
