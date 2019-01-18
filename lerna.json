@@ -4,7 +4,7 @@
     "packages/*",
     "plugins/*",
     "blueprints/*",
-    "cardscripts/cardscript/packages/*"
+    "cardscript/*"
   ],
   "version": "fixed",
   "hoist": true,
