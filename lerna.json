@@ -1,5 +1,5 @@
 {
-  "lerna": "2.0.0",
+  "lerna": "3.10.7",
   "packages": [
     "packages/*",
     "plugins/*",
@@ -9,6 +9,9 @@
   ],
   "version": "fixed",
   "hoist": true,
+  "nohoist": [
+    "@wmfs/*"
+  ],
   "command": {
     "init": {
       "exact": false
