@@ -6,7 +6,7 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/wmfs/tymly/blob/master/packages/pg-concat/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwmfs%2Ftymly-core.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwmfs%2Ftymly-core?ref=badge_shield)
 
-# What is this?
+# Introduction
 
 __Tymly is the product of many inter-related [Node.js](https://nodejs.org/en/) packages. The source code for all these packages is maintained in separate GitHub repositories in the [WMFS organization](https://github.com/wmfs).__
 
@@ -18,7 +18,7 @@ _And that's what this repo can help with!_
 Here we have an ___empty___ [Lerna](https://github.com/lerna/lerna)-powered [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9).
 By following the instructions below, it's possible to automatically fill the empty `/blueprints`, `/packages` and `/plugins` directories with the freshest Tymly code from https://github.com/wmfs.
 
-* __Subsequent synchronization attempts will update the locally cloned repos as necessary, and clone anything new that's become available.__
+* __Subsequent synchronization attempts will update local repos as necessary, and clone anything new that's become available.__
 
 
 # Environment
@@ -36,6 +36,17 @@ __There are a couple of things you'll need installed for all this to work...__
 > Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
 
 * https://nodejs.org
+* Currently, Node `v10.14.2` and above is supported.
+
+### Lerna
+
+> We use the Lerna tool tool to link together all the various Tymly packages, and also "hoist" shared dependencies to help reduce space/memory overheads.
+
+With Node installed, install Lerna globally via this command:
+
+``` bash
+npm install lerna -g
+```
 
 # GitHub Access Token
 
@@ -47,7 +58,7 @@ __Assuming you've already signed-up with GitHub, you'll need to create a new **A
 * Generating a new token value is easy enough, first go here:
   * https://github.com/settings/tokens
 * Then click the __"Generate new token"__ button.
-* Feel free to give your new token any name you like, but something like "Tymly Monorepo" will do nicely.
+* Feel free to give your new token any name you like, but something like "*Tymly Monorepo*" will be fine.
 * As for those __Scopes__, click this one:
   * [x] __repo__ (Full control of private repositories)
 * Then hit __"Generate token"__.
@@ -77,7 +88,9 @@ __To integrate this repo with your GitHub account, two [environment variables](h
 
 # Synchronizing
 
-Nearly there! To synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `/tymly` directory:
+Nearly there! :smiley:
+
+To synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `/tymly` directory:
 
 ### `npm run sync`
 
@@ -88,26 +101,27 @@ __Which will:__
 
 __...which should lead to output looking similar to:__
 
-![Sync screenshot](https://github.com/wmfs/tymly/blob/master/assets/sync-screenshot.png)
-
 __Just `npm run sync` anytime you want to ensure your local Tymly repos reflect those on GitHub.__
 
 # Bootstrapping
 
-To ensure the dependencies of all the Tymly repos are installed as things change, and that the Tymly repos are all linked together locally, we use the [Lerna](https://lernajs.io/) monorepo tool.
+After synchronizing, a red message may appear:
 
-__From the command line, inside the `tymly` directory:__
+> Oh no! You need to 'lerna bootstrap'
+
+On these (hopefully quite rare) occasions, from within the `/tymly` directory, you'll need to:
 
 ### `npm run bootstrap`
 
 And after a while, you're good to go! :sweat_smile:
 
-# Next steps...
+# Next steps
 
 __With your Tymly repos cloned and packages installed, what next?__
 
-1. Have a read of our contributor [Code of Conduct](https://github.com/wmfs/tymly/blob/master/CODE_OF_CONDUCT.md).
-2. Also, please read our notes about [contributing](https://github.com/wmfs/tymly/blob/master/CONTRIBUTING.md).
+1. Check out our [Tymly docs](https://wmfs.github.io/tymly-website/) site.
+2. Have a read of our contributor [Code of Conduct](https://github.com/wmfs/tymly/blob/master/CODE_OF_CONDUCT.md).
+3. Also, please read our notes about [contributing](https://github.com/wmfs/tymly/blob/master/CONTRIBUTING.md).
 
 # License
 
