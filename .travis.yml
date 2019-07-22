@@ -1,9 +1,0 @@
-language: node_js
-notifications:
-  email: false
-node_js:
-  - lts/*
-install:
-  - travis_retry npm install
-test:
-  - npm test
