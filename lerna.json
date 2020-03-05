@@ -5,7 +5,8 @@
     "plugins/*",
     "blueprints/*",
     "cardscript/*",
-    "apps/*"
+    "apps/*",
+    "mods/*"
   ],
   "version": "fixed",
   "hoist": true,
