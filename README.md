@@ -126,7 +126,7 @@ And run:
 
 To get the front-end running, in another terminal, navigate to the `tymly-frontend-gds-theme` repository (make sure you have followed the steps in this readme too) and run:
 
-### `npm run start`
+### `npm run dev`
 
 You should now be able to a version of Tymly running locally.
 
