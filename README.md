@@ -115,6 +115,21 @@ On these (hopefully quite rare) occasions, from within the `/tymly` directory, y
 
 And after a while, you're good to go! :sweat_smile:
 
+# Running locally
+
+To run Tymly locally, you need both the front-end and back-end running. 
+
+To get the back-end running, change directory to `tymly/packages/tymly-runner` 
+
+And run:
+### `npm run start`
+
+To get the front-end running, in another terminal, navigate to the `tymly-frontend-gds-theme` repository (make sure you have followed the steps in this readme too) and run:
+
+### `npm run start`
+
+You should now be able to a version of Tymly running locally.
+
 # Next steps
 
 __With your Tymly repos cloned and packages installed, what next?__
