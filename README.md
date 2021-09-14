@@ -103,6 +103,8 @@ __...which should lead to output looking similar to:__
 
 __Just `npm run sync` anytime you want to ensure your local Tymly repos reflect those on GitHub.__
 
+You can also run `npm run sync public-only` to only pull in public packages only.
+
 # Bootstrapping
 
 After synchronizing, a red message may appear:
