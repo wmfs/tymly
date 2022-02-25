@@ -6,7 +6,8 @@
     "blueprints/*",
     "cardscript/*",
     "apps/*",
-    "mods/*"
+    "mods/*",
+    "e2e/*"
   ],
   "version": "fixed",
   "hoist": true,
