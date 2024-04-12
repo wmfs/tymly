@@ -59,6 +59,7 @@ package-lock.json
 
 # Webstorm
 .idea
+.run
 
 # VS Code
 .vscode
