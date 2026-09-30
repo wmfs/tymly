@@ -7,7 +7,9 @@
     "bootstrap": "lerna clean --yes && lerna bootstrap && lerna link --force-local",
     "clean": "lerna clean --yes",
     "test": "lerna run test",
-    "sync": "node ./lib/sync"
+    "sync": "node ./lib/sync",
+    "clean-git-remotes-dry": "node ./lib/clean-git-remotes",
+    "clean-git-remotes": "node ./lib/clean-git-remotes --apply"
   },
   "license": "MIT",
   "repository": {
