@@ -1,0 +1,23 @@
+# Directories that lerna-sync clones Tymly repos into.
+# This is the single source of truth: lib/sync.js generates lerna.json from it
+# (lerna-sync still reads that file), and .pnpmfile.cjs uses it to find local packages.
+packages:
+  - packages/*
+  - plugins/*
+  - blueprints/*
+  - cardscript/*
+  - apps/*
+  - mods/*
+  - e2e/*
+
+# By default pnpm is strict: a package can only require what it declares.
+# If too many packages break on undeclared ("phantom") dependencies that Lerna's
+# hoisting used to hide, uncomment this. It mirrors the old lerna.json
+# (hoist everything, except @wmfs/*) while you fix them properly.
+# publicHoistPattern:
+#   - '*'
+#   - '!@wmfs/*'
+
+# pnpm doesn't run dependencies' install/build scripts unless they're approved.
+# If a native module (e.g. a Postgres driver) misbehaves, run `pnpm approve-builds`,
+# which records the approval here under `allowBuilds`.
