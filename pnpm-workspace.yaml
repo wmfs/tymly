@@ -18,6 +18,17 @@ packages:
 #   - '*'
 #   - '!@wmfs/*'
 
-# pnpm doesn't run dependencies' install/build scripts unless they're approved.
-# If a native module (e.g. a Postgres driver) misbehaves, run `pnpm approve-builds`,
-# which records the approval here under `allowBuilds`.
+# Dependencies allowed to run install scripts. pnpm refuses to install if a
+# dependency with a script isn't listed here. Add new ones with `pnpm approve-builds`.
+allowBuilds:
+  canvas: true          # native binary
+  sharp: true           # native binary + libvips
+  sqlite3: true         # native binary
+  wd: true              # generates files it needs at runtime
+  vue-demi: true        # switches to the installed Vue version
+  is-hidden-file: true  # native module (Windows only)
+  core-js: false        # funding message only
+  core-js-pure: false   # funding message only
+
+minimumReleaseAgeExclude:
+  - ejs@7.0.1
