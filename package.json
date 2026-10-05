@@ -17,7 +17,7 @@
     "bootstrap": "node ./lib/clean && pnpm install",
     "clean": "node ./lib/clean",
     "test": "pnpm -r test",
-    "clean-git-remotes-dry": "node ./lib/clean-git-remotes",
+    "clean-git-remotes:dry": "node ./lib/clean-git-remotes",
     "clean-git-remotes": "node ./lib/clean-git-remotes --apply"
   },
   "license": "MIT",
