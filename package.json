@@ -3,12 +3,21 @@
   "description": "An empty husk for synchronizing Tymly related packages, plugins, blueprints etc.",
   "version": "0.0.0",
   "author": "Tim Needham",
+  "private": true,
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=12"
+  },
   "scripts": {
-    "bootstrap": "lerna clean --yes && lerna bootstrap && lerna link --force-local",
-    "clean": "lerna clean --yes",
-    "test": "lerna run test",
     "sync": "node ./lib/sync",
-    "clean-git-remotes-dry": "node ./lib/clean-git-remotes",
+    "sync:dry": "node ./lib/sync --dry-run",
+    "sync:verbose": "node ./lib/sync --verbose",
+    "sync:public-only": "node ./lib/sync --public-only",
+    "sync:no-install": "node ./lib/sync --no-install",
+    "bootstrap": "node ./lib/clean && pnpm install",
+    "clean": "node ./lib/clean",
+    "test": "pnpm -r test",
+    "clean-git-remotes:dry": "node ./lib/clean-git-remotes",
     "clean-git-remotes": "node ./lib/clean-git-remotes --apply"
   },
   "license": "MIT",
@@ -20,7 +29,7 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
-    "@wmfs/lerna-sync": "1.37.1"
+    "@wmfs/lerna-sync": "wmfs/lerna-sync#meenahoda/sc-33783/improve-lerna-sync-scalability"
   },
   "config": {
     "commitizen": {
