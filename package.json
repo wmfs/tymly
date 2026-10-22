@@ -8,6 +8,9 @@
     "clean": "lerna clean --yes",
     "test": "lerna run test",
     "sync": "node ./lib/sync",
+    "sync:dry": "node ./lib/sync --dry-run",
+    "sync:verbose": "node ./lib/sync --verbose",
+    "sync:public-only": "node ./lib/sync --public-only",
     "clean-git-remotes-dry": "node ./lib/clean-git-remotes",
     "clean-git-remotes": "node ./lib/clean-git-remotes --apply"
   },
