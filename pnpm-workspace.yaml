@@ -1,0 +1,34 @@
+# Directories that lerna-sync clones Tymly repos into.
+# This is the single source of truth: lib/sync.js generates lerna.json from it
+# (lerna-sync still reads that file), and .pnpmfile.cjs uses it to find local packages.
+packages:
+  - packages/*
+  - plugins/*
+  - blueprints/*
+  - cardscript/*
+  - apps/*
+  - mods/*
+  - e2e/*
+
+# By default pnpm is strict: a package can only require what it declares.
+# If too many packages break on undeclared ("phantom") dependencies that Lerna's
+# hoisting used to hide, uncomment this. It mirrors the old lerna.json
+# (hoist everything, except @wmfs/*) while you fix them properly.
+# publicHoistPattern:
+#   - '*'
+#   - '!@wmfs/*'
+
+# Dependencies allowed to run install scripts. pnpm refuses to install if a
+# dependency with a script isn't listed here. Add new ones with `pnpm approve-builds`.
+allowBuilds:
+  canvas: true          # native binary
+  sharp: true           # native binary + libvips
+  sqlite3: true         # native binary
+  wd: true              # generates files it needs at runtime
+  vue-demi: true        # switches to the installed Vue version
+  is-hidden-file: true  # native module (Windows only)
+  core-js: false        # funding message only
+  core-js-pure: false   # funding message only
+
+minimumReleaseAgeExclude:
+  - ejs@7.0.1
