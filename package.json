@@ -29,7 +29,7 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
-    "@wmfs/lerna-sync": "wmfs/lerna-sync#meenahoda/sc-33783/improve-lerna-sync-scalability"
+    "@wmfs/lerna-sync": "1.41.0"
   },
   "config": {
     "commitizen": {
