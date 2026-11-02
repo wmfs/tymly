@@ -43,8 +43,8 @@ String testOutputDir="${buildDir}/test"
 int test_timeout = 15000
 
 ////////////////////////////////////////////
-task pnpmInstall (type: CrossPlatformExec) {
-  commandLine 'pnpm', 'install'
+task npmBootstrap (type: CrossPlatformExec) {
+  commandLine 'npm', 'install'
 }
 
 task makeTestOutputDir {
@@ -154,11 +154,11 @@ task clean (dependsOn: [cleanNodeModules, cleanTestFiles, cleanBuild]) {
 }
 
 task bootstrap (type: CrossPlatformExec,
-                dependsOn: [cleanNodeModules, pnpmInstall]) {
+                dependsOn: [cleanNodeModules, npmBootstrap]) {
   group 'Build'
-  description 'Installs and links all dependencies with pnpm'
+  description 'Installs the npm dependencies'
 
-  commandLine 'pnpm', 'install'
+  commandLine 'npm', 'run', 'bootstrap'
 }
 
 task test (dependsOn: allTestTasks) {
