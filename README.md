@@ -80,6 +80,41 @@ __The token above is only used to ask GitHub which repos exist. Cloning and fetc
 
 Sync runs git without interactive prompts, so if your credentials are missing, the affected private repos are reported as errors rather than leaving sync waiting for a password.
 
+# npm Access Token
+
+__Many `@wmfs` packages are private on npm, so installing them needs an npm access token.__ You'll need an npm account that's a member of the `wmfs` organization. Ask a team member to add you if you're not.
+
+> __Not part of WMFS?__ You won't be able to install private packages, so you don't need an npm token. Use `pnpm sync:public-only`, which only syncs public packages.
+
+* Sign in at https://www.npmjs.com, then open __Access Tokens__ from your profile menu.
+* Click __"Generate New Token"__ and choose a __Granular Access Token__.
+* Give it a name like "*Tymly Monorepo*", and set the expiry to the longest allowed (90 days).
+* Give it __read-only__ access to packages, and no access to organizations. Installing doesn't need anything more, so don't use a token that can publish.
+* Generate the token and copy its value.
+
+Then add it to the `.npmrc` file in your home directory (create the file if it doesn't exist):
+
+```
+//registry.npmjs.org/:_authToken=npm_yourTokenHere
+```
+
+Check it works with `npm whoami`, which should print your npm username. __Keep the token secret__, and never commit it or put it in the repo's own `.npmrc`.
+
+### When your npm token expires
+
+npm tokens expire after 90 days. When that happens, installs fail with a misleading error, because npm answers __404 Not Found__ for private packages rather than "not authorised":
+
+```
+ERR_PNPM_FETCH_404
+GET https://registry.npmjs.org/@wmfs%2Fsome-private-package: Not Found - 404
+```
+
+__If you see a 404 for an `@wmfs` package, check your token before anything else.__ Create a new one as above, and replace the old line in `~/.npmrc`.
+
+`pnpm sync` and `pnpm bootstrap` check your npm token before doing anything, so an expired token stops them straight away with a clear message instead. You can run the same check yourself with `pnpm check-npm`.
+
+They also warn you when your token expires within 14 days, so you can replace it in good time. The expiry date is read from npm. If that isn't possible, you can record it yourself by setting the `TYMLY_NPM_TOKEN_EXPIRES` environment variable (see below). It's also worth setting a calendar reminder when you create a token.
+
 # Cloning
 
 Next you'll need to clone this repo. From the __Git__ shell:
@@ -95,11 +130,12 @@ pnpm install
 
 # Environment Variables
 
-__To integrate this repo with your GitHub account, an [environment variable](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) will need defining...__
+__To integrate this repo with your GitHub account, an [environment variable](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) will need defining. A second one is optional...__
 
 | Environment Variable | Notes                                                                 |
 | -------------------- | --------------------------------------------------------------------- |
 | `TYMLY_GITHUB_TOKEN` | And the value of this environment variable should be set to the personal __Access Token__ you previously generated. |
+| `TYMLY_NPM_TOKEN_EXPIRES` | Optional. The date your npm token expires, for example `2027-02-01`. Only needed if sync can't read the expiry from npm; see [When your npm token expires](#when-your-npm-token-expires). |
 
 # Synchronizing
 
@@ -162,6 +198,8 @@ Options can be combined, for example `pnpm sync --dry-run public-only`.
 
 If anything fails, sync finishes the other repos, lists the failures under *Errors*, and exits with a non-zero code.
 
+If the final install fails with a 404 for an `@wmfs` package, your npm token has probably expired. See [When your npm token expires](#when-your-npm-token-expires).
+
 ### Which repos are synced, and where
 
 A repo is synced if its `package.json` has `tymly` in its `keywords`. The directory it goes into comes from its other keywords:
@@ -206,7 +244,7 @@ If your install gets into a strange state, start from scratch with:
 
 ### `pnpm bootstrap`
 
-which deletes every `node_modules` directory and reinstalls.
+which checks your npm token, then deletes every `node_modules` directory and reinstalls.
 
 Other useful commands:
 
@@ -216,6 +254,7 @@ Other useful commands:
 | `pnpm --filter @wmfs/tymly test` | Runs `test` in a single package |
 | `pnpm -r --workspace-concurrency=1 test` | Runs tests one package at a time (useful if suites clash over a shared database) |
 | `pnpm clean` | Deletes every `node_modules` directory |
+| `pnpm check-npm` | Checks your npm token works, and warns if it expires soon |
 
 # Next steps
 
