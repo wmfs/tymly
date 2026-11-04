@@ -15,7 +15,7 @@ It's also important to ensure all these repos are linked together locally for th
 
 _And that's what this repo can help with!_
 
-Here we have an ___empty___ [Lerna](https://github.com/lerna/lerna)-powered [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9).
+Here we have an ___empty___ [pnpm workspace](https://pnpm.io/workspaces)-powered [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9).
 By following the instructions below, it's possible to automatically fill the empty `/packages`, `/plugins`, `/blueprints`, `/cardscript`, `/apps`, `/mods` and `/e2e` directories with the freshest Tymly code from https://github.com/wmfs.
 
 * __Subsequent synchronization attempts will update local repos as necessary, and clone anything new that's become available.__
@@ -39,17 +39,19 @@ __There are a couple of things you'll need installed for all this to work...__
 * https://nodejs.org
 * Node `v20` or later is required.
 
-### Lerna
+### pnpm
 
-> We use the Lerna tool tool to link together all the various Tymly packages, and also "hoist" shared dependencies to help reduce space/memory overheads.
+> We use [pnpm](https://pnpm.io) workspaces to link together all the various Tymly packages. Shared dependencies are stored once on disk and hard-linked into each package.
 
-With Node installed, install Lerna globally via this command:
+With Node installed, install pnpm globally:
 
 ``` bash
-npm install lerna@6 -g
+npm install -g pnpm
 ```
 
-> Lerna 7 and later removed the `lerna bootstrap` and `lerna link` commands used by `npm run bootstrap`, so stick with version 6 for now.
+Then check it's working with `pnpm --version`, which should print `12` or higher. Lerna is no longer needed.
+
+> If you have [Corepack](https://github.com/nodejs/corepack) enabled, it may intercept the `pnpm` command and fail with a `Cannot find module ... pnpm.cjs` error. Run `corepack disable pnpm` and install pnpm with npm as above.
 
 # GitHub Access Token
 
@@ -88,7 +90,7 @@ Then, from the command prompt, install all the __Node.js__ packages required to 
 
 ```
 cd tymly
-npm install
+pnpm install
 ```
 
 # Environment Variables
@@ -105,7 +107,7 @@ Nearly there! :smiley:
 
 To synchronize your empty Tymly [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9), run this from within the `/tymly` directory:
 
-### `npm run sync`
+### `pnpm sync`
 
 __Which will:__
 
@@ -140,20 +142,23 @@ Needs your attention (1)
 Dependencies may have changed. Reinstall/relink before running anything.
 
 Done (14 seconds).
+
+Running pnpm install...
 ```
 
-__Just `npm run sync` anytime you want to ensure your local Tymly repos reflect those on GitHub.__
+__Just `pnpm sync` anytime you want to ensure your local Tymly repos reflect those on GitHub.__
 
 ### Options
 
 | Command | What it does |
 | ------- | ------------ |
-| `npm run sync:dry` | Shows what sync *would* do, without changing anything. |
-| `npm run sync:verbose` | Also lists every repo that was skipped, and why. |
-| `npm run sync public-only` | Only syncs public packages. |
-| `npm run sync -- --concurrency=4` | Works on fewer repos at once (the default is 6). Useful on slow connections. |
+| `pnpm sync:dry` | Shows what sync *would* do, without changing anything. |
+| `pnpm sync:verbose` | Also lists every repo that was skipped, and why. |
+| `pnpm sync public-only` | Only syncs public packages. |
+| `pnpm sync --no-install` | Syncs repos but skips the `pnpm install` at the end. |
+| `pnpm sync --concurrency=4` | Works on fewer repos at once (the default is 6). Useful on slow connections. |
 
-Options can be combined, for example `npm run sync -- --dry-run public-only`.
+Options can be combined, for example `pnpm sync --dry-run public-only`.
 
 If anything fails, sync finishes the other repos, lists the failures under *Errors*, and exits with a non-zero code.
 
@@ -187,17 +192,30 @@ To stop a repo from being synced at all, set `"sync": false` in the same place:
 }
 ```
 
-# Bootstrapping
+# Linking and installing
 
-After synchronizing, this message may appear:
+After syncing, lerna-sync may show this message:
 
 > Dependencies may have changed. Reinstall/relink before running anything.
 
-It's shown when a repo was cloned or an update changed a `package.json`. When you see it, from within the `/tymly` directory, you'll need to:
+You don't need to do anything about it: `pnpm sync` finishes by running `pnpm install`, which links every synced package to its local siblings and installs everything else. It's incremental, so it's quick when little has changed. (It's skipped for `--dry-run` and `--no-install`.)
 
-### `npm run bootstrap`
+Local Tymly packages are always linked in preference to published versions, even when version ranges don't match. See `.pnpmfile.cjs` for how.
 
-And after a while, you're good to go! :sweat_smile:
+If your install gets into a strange state, start from scratch with:
+
+### `pnpm bootstrap`
+
+which deletes every `node_modules` directory and reinstalls.
+
+Other useful commands:
+
+| Command | What it does |
+| ------- | ------------ |
+| `pnpm test` | Runs `test` in every package that has one |
+| `pnpm --filter @wmfs/tymly test` | Runs `test` in a single package |
+| `pnpm -r --workspace-concurrency=1 test` | Runs tests one package at a time (useful if suites clash over a shared database) |
+| `pnpm clean` | Deletes every `node_modules` directory |
 
 # Next steps
 
