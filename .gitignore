@@ -94,12 +94,6 @@ package-deps.json
 package-lock.json
 lerna-debug.log
 
-TEST-result.xml
-.gradle/
-.embedpostgresql/
-
-build
-
 # pnpm
 # The set of synced packages differs per developer (e.g. public-only), so no shared lockfile yet.
 pnpm-lock.yaml
