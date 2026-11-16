@@ -30,7 +30,7 @@
     "url": "https://github.com/wmfs/tymly/issues"
   },
   "dependencies": {
-    "@wmfs/lerna-sync": "1.41.0"
+    "@wmfs/lerna-sync": "1.43.0"
   },
   "config": {
     "commitizen": {
